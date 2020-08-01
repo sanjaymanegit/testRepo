@@ -1,0 +1,7 @@
+beans\BatchCyclesData.class
+beans\RecipeData.class
+beans\BatchMstData.class
+beans\loadSoloDataSet.class
+beans\loadIndicatorDataV1.class
+beans\BatchAllData.class
+beans\loadIndicatorData.class
