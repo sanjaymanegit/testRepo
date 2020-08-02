@@ -1,0 +1,61 @@
+-- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
+--
+-- Host: localhost    Database: audiokit
+-- ------------------------------------------------------
+-- Server version	8.0.13
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `business_users`
+--
+
+DROP TABLE IF EXISTS `business_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `business_users` (
+  `USER_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FIRST_NAME` varchar(145) DEFAULT NULL,
+  `LAST_NAME` varchar(145) DEFAULT NULL,
+  `USER_LOGIN_ID` varchar(45) DEFAULT NULL,
+  `USER_PWD` varchar(45) DEFAULT NULL,
+  `CREATED_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CREATED_BY` varchar(45) NOT NULL DEFAULT 'SYS',
+  `ACTIVE` varchar(1) NOT NULL DEFAULT 'Y',
+  `ROLE_NAME` varchar(45) DEFAULT 'OPERATOR',
+  `EMAIL_ID` varchar(45) DEFAULT NULL,
+  `UPDATED_BY` varchar(45) DEFAULT NULL,
+  `UPDATED_ON` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`USER_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `business_users`
+--
+
+LOCK TABLES `business_users` WRITE;
+/*!40000 ALTER TABLE `business_users` DISABLE KEYS */;
+INSERT INTO `business_users` VALUES (1,'Sanjay','Mane','SM1610','admin1234','2019-01-09 16:23:27','SYS','Y','OPERATOR','sanjaymane1610@gmail.com',NULL,'2019-05-14 12:07:32'),(22,'Vikram','Gov','VK_SINGH','password1234','2019-05-12 13:41:32','SYS','Y','MONITOR','vikiy@gmail.com','VK_SINGH','2019-05-14 12:07:32'),(23,'Suresh','Virkar','SURESH_12345','password123','2019-05-12 13:43:00','SYS','Y','OPERATOR','suresh@gmail.com',NULL,'2019-05-14 12:07:32'),(24,'Sanjaykumar ','Mane','ADMIN','ADMIN1234','2019-05-13 14:01:30','SYS','Y','ADMIN','sanjaymane1610@gmail.com',NULL,'2019-05-14 12:07:32');
+/*!40000 ALTER TABLE `business_users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-08-02 13:52:57
