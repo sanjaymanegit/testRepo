@@ -1,0 +1,7 @@
+o/p:b'\x82\x82\x82\x8a\n\r\x02+0010000'
+Traceback (most recent call last):
+  File "/home/pi/WT_2.0/wt_04_weight_1.py", line 1655, in display_lcd_val
+    self.xstr3=str(self.line,'utf-8')
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfa in position 0: invalid start byte
+Backend terminated (returncode: -6)
+Fatal Python error: Aborted

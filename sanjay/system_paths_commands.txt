@@ -1,0 +1,39 @@
+############### USB mounting /unmounting setup #################
+ls -l /dev/disk/by-uuid/
+sudo mkdir /media/usb
+sudo chown -R pi:pi /media/usb
+sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi
+sudo umount /media/usb
+
+##splash.png ###
+/user/share/pymount/theam/pixes/splash.png  
+
+## Clean unsused apps ###
+sudo apt-get purge wolfram-engine libreoffice* scratch -y
+sudo apt-get clean
+sudo apt-get autoremove -y
+
+### USB Printer access setup ####
+sudo vi /etc/udev/rules.d/99-com.rules
+SUBSYSTEM=="usb", GROUP="pi", MODE="0660"
+
+#### HP Printer setup #####################
+sudo apt-get install hplip cups
+sudo apt-get install hplip hplip-gui hplip-ppds --fix-missing
+sudo hp-toolbox
+hp-toolbox
+export DISPLAY=: 0.0 
+export DISPLAY=:0.0 
+sudo hp-toolbox
+hp-toolbox
+############################################
+
+sudo apt-get install libgnome2-bin
+gnome-open Reportsxxx.pdf
+
+### install any desk ### 
+sudo dpkg -i anydesk_2.9.4-XXXX.deb
+
+
+
+

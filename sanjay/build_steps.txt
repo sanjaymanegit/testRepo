@@ -1,0 +1,22 @@
+
+export DISPLAY=:0.0
+## WT_2.0 ###
+sudo pyinstaller --clean --onedir --add-data "wt.db:." --add-data "services.db:." --name=WT "wt_01_main.py"
+sudo pyinstaller --clean --onefile --add-data "wt.db:." --add-data "services.db:." --name=daily_report_sms_1.0 "daily_report_sms.py"
+sudo pyinstaller --clean --onefile --add-data "wt.db:." --name=daily_data_backup_1.0 "daily_backup.py"
+
+## crontab setup ####
+45 16 * * * /home/pi/WT_2.0/send_sms_reports.sh
+
+### WT_ANIL ###
+sudo pyinstaller --clean --onedir --add-data "wt.db:." --add-data "services.db:." --name=WT_ANIL "wt_01_main.py"
+
+### TYR_18.5 #####
+sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.py"
+
+#### TYR Touch Screen ####
+sudo pyinstaller --onefile --add-data "tyr.db:." --name=TYR_1.0 "P1_main_screen.py"
+
+
+#### UR #####
+sudo pyinstaller --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "ur_01_TEST_P2.py"

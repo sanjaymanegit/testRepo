@@ -1,0 +1,52 @@
+###################################
+# Install and setup all packages
+####################################
+
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install xrdp
+sudo apt-get install xpdf
+sudo apt-get install sqlite3
+sudo apt-get install cups
+sudo apt-get install i2c-tools python-smbus
+
+#############################################
+# Setting for export PDF file to USB connected 
+#############################################
+sudo mkdir /media/usb
+sudo chown -R pi:pi /media/usb
+
+##################################
+# Change root password command 
+##################################
+sudo passwd root
+
+
+#####################################
+# Printer Configuration 
+# url 
+# sample ppd file \\Epson-LX-300plus-epson.ppd
+#####################################
+
+
+#####################################
+#  Boot Message Setting line
+# /boot/cmdline.txt 
+#####################################
+dwc_otg.lpm_enable=0 console=serial0,115200 console=tty3 root=/dev/mmcblk0p7 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait loglevel=3 logo.nologo vt.global_cursor_default=0 quiet splash plymouth.ignore-serial-consoles
+ quiet splash plymouth.ignore-serial-consoles
+
+
+############################################# 
+# image setting path
+/user/share/pymount/theam/pixes/splash.png 
+
+
+####################
+# RTC setup DS1307 
+# http://www.bristolwatch.com/rpi/rpi_i2c_ds1307.htm
+##################
+
+
+
+
+

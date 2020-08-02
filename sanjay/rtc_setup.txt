@@ -1,0 +1,47 @@
+##URL###
+http://www.bristolwatch.com/rpi/rpi_i2c_ds1307.htm
+
+## Prerequsite ###
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install i2c-tools python-smbus
+
+#################
+sudo vi /boot/config.txt
+# add
+device_tree=bcm2710-rpi-3-b.dtb 
+dtparam=i2c_arm=on 
+dtoverlay=12c-rtc,ds1307
+
+####################
+sudo vi /etc/modules
+i2c-dev 
+i2c-bcm2708 
+rtc-ds1307
+
+sudo vi /etc/rc.local
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+hwclock -s
+exit 0
+
+
+## both date should always same ####
+sudo hwclock -r 
+sudo date
+
+## Check command ####
+pi@raspberrypi:~ $ sudo i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- UU -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --       
+ 
+ 
+############################################## 
+# date setting command 
+##############################################
+date -s "28 APR 2019 10:42:00"

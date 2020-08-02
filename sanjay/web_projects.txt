@@ -1,0 +1,30 @@
+----------------------------
+rip : 148.66.143.213
+user : samruddhi
+pwd : Sudhakar@3112
+----------------------------
+raspberi:192.168.0.101
+user id :pi
+pwd:raspberry
+
+
+http://www.samruddhielectrotech.com/audiokit/rest/feedtxn/ping
+http://www.samruddhielectrotech.com/audiokit/rest/feedtxn/post
+http://www.samruddhielectrotech.com/audiokit_pages/
+http://localhost:8080/audiokit/rest/feedtxn/ping
+
+
+http://localhost:8080/IndicatorsData/rest/LoadIndData/ping
+http://localhost:8080/IndicatorsData/rest/LoadIndData/sample_batch
+http://www.samruddhielectrotech.com/IndicatorsData/rest/LoadIndData/load_batch_data
+
+
+pyuic4.bat -x menu_screen.ui -o menu_screen.py
+
+
+How to connect Tomcat 7 and IIS7
+Mysql pwd :31@dec2019
+
+goDaddy Id :sanjaymane
+pwd : Dhruv@1210
+

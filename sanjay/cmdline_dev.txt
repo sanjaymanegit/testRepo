@@ -1,0 +1,2 @@
+dwc_otg.lpm_enable=0 console=tty3 root=/dev/mmcblk0p7 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait loglevel=3 logo.nologo vt.global_cursor_default=0 quiet splash plymouth.ignore-serial-consoles
+ quiet splash plymouth.ignore-serial-consoles
