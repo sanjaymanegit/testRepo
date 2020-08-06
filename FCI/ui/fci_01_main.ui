@@ -39,7 +39,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>320</y>
+       <y>290</y>
        <width>281</width>
        <height>151</height>
       </rect>
@@ -60,8 +60,8 @@
      <property name="geometry">
       <rect>
        <x>900</x>
-       <y>310</y>
-       <width>251</width>
+       <y>290</y>
+       <width>321</width>
        <height>151</height>
       </rect>
      </property>
@@ -80,8 +80,8 @@
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>470</x>
-       <y>310</y>
+       <x>480</x>
+       <y>290</y>
        <width>321</width>
        <height>151</height>
       </rect>
@@ -95,16 +95,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Batches</string>
+      <string>Batches/Issues</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>70</y>
+       <x>340</x>
+       <y>50</y>
        <width>551</width>
-       <height>131</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
@@ -125,8 +125,8 @@
     <widget class="QLabel" name="label_20">
      <property name="geometry">
       <rect>
-       <x>970</x>
-       <y>40</y>
+       <x>1060</x>
+       <y>10</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -148,6 +148,76 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>790</x>
+       <y>630</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Shutdown</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>930</x>
+       <y>630</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Reboot</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_21">
+     <property name="geometry">
+      <rect>
+       <x>1080</x>
+       <y>620</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>AnyDesk Id: 456533323</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
