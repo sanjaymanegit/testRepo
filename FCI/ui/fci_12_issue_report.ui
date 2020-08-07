@@ -128,17 +128,17 @@
      </column>
      <column>
       <property name="text">
-       <string>Release Order Type</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Truck RTO No.</string>
+       <string>RO Type</string>
       </property>
      </column>
      <column>
       <property name="text">
        <string>Truck Sr. No.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Truck RTO No.</string>
       </property>
      </column>
      <column>
