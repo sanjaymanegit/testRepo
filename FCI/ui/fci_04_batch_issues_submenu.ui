@@ -47,10 +47,12 @@
      <property name="font">
       <font>
        <pointsize>22</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
-      <string>Batches</string>
+      <string>Weighing Batches</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_4">
@@ -71,7 +73,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Issues</string>
+      <string>Weighing Issues</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_20">
@@ -121,6 +123,34 @@
      </property>
      <property name="text">
       <string>Return</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_21">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>120</y>
+       <width>461</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>Please select the  Batch Or Issues for Weighing at Storage.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
