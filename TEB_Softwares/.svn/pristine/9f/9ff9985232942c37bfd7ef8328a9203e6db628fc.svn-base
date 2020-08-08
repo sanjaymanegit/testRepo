@@ -1,7 +1,0 @@
-<html>
-<frameset rows = "10%,90%">
-<frame src="header_page.jsp" name="Topframe">
-<frameset cols = "15%,85%">
-<frame src="left_bottom_page.jsp" name="bottom_left_frame">
-<frame src="about_us_page.jsp" name="bottom_right_frame">
-</html>
