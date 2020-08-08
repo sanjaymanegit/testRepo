@@ -23,8 +23,8 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
+      <x>30</x>
+      <y>20</y>
       <width>1311</width>
       <height>701</height>
      </rect>
@@ -93,7 +93,7 @@
        <x>30</x>
        <y>80</y>
        <width>91</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -111,7 +111,7 @@
        <x>170</x>
        <y>80</y>
        <width>91</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -129,7 +129,7 @@
        <x>300</x>
        <y>80</y>
        <width>91</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -179,37 +179,192 @@
       <property name="text">
        <string>Batch Id</string>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </column>
      <column>
       <property name="text">
        <string>Accpted Wt.Kg</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Accpted Bag.Count</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Received Wt. Kg</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Received Bag. Count</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TL.Received Kg</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TL.Received %</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TL Accpted Kg</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TL Accpted %</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
      </column>
      <column>
       <property name="text">
        <string>Material Type</string>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>No.Of Bags</string>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
      </column>
      <column>
       <property name="text">
        <string>No. Wagons</string>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Ava. Trucks</string>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
      </column>
-     <column>
+     <item row="0" column="0">
       <property name="text">
-       <string>Remark</string>
+       <string/>
       </property>
-     </column>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="2">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="3">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="4">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="6">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="7">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="8">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="9">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
+     <item row="0" column="10">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="label_21">
      <property name="geometry">
@@ -299,8 +454,8 @@
      <property name="geometry">
       <rect>
        <x>690</x>
-       <y>250</y>
-       <width>171</width>
+       <y>450</y>
+       <width>161</width>
        <height>31</height>
       </rect>
      </property>
@@ -327,8 +482,8 @@
      <property name="geometry">
       <rect>
        <x>690</x>
-       <y>310</y>
-       <width>111</width>
+       <y>500</y>
+       <width>141</width>
        <height>31</height>
       </rect>
      </property>
@@ -351,67 +506,11 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_26">
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>370</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>false</underline>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 255);</string>
-     </property>
-     <property name="text">
-      <string>Expected. Bags Count :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_27">
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>490</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>false</underline>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 255);</string>
-     </property>
-     <property name="text">
-      <string>Accpted Loss|(%) :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_28">
      <property name="geometry">
       <rect>
        <x>690</x>
-       <y>550</y>
+       <y>560</y>
        <width>181</width>
        <height>31</height>
       </rect>
@@ -438,7 +537,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>900</x>
+       <x>880</x>
        <y>150</y>
        <width>91</width>
        <height>31</height>
@@ -453,7 +552,7 @@
       <string notr="true">color: rgb(170, 85, 127);</string>
      </property>
      <property name="text">
-      <string> B000980</string>
+      <string> B20200807_00</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -462,7 +561,7 @@
     <widget class="QLineEdit" name="lineEdit">
      <property name="geometry">
       <rect>
-       <x>900</x>
+       <x>880</x>
        <y>200</y>
        <width>101</width>
        <height>31</height>
@@ -474,14 +573,14 @@
       </font>
      </property>
      <property name="text">
-      <string>5000</string>
+      <string>60000</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEdit_2">
      <property name="geometry">
       <rect>
-       <x>900</x>
-       <y>250</y>
+       <x>880</x>
+       <y>450</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -498,8 +597,8 @@
     <widget class="QLineEdit" name="lineEdit_3">
      <property name="geometry">
       <rect>
-       <x>900</x>
-       <y>310</y>
+       <x>880</x>
+       <y>500</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -513,93 +612,11 @@
       <string>40</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_4">
-     <property name="geometry">
-      <rect>
-       <x>900</x>
-       <y>370</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>5000</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_29">
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>430</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>false</underline>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 255);</string>
-     </property>
-     <property name="text">
-      <string>Net. Weight(Kg) :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_5">
-     <property name="geometry">
-      <rect>
-       <x>900</x>
-       <y>430</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>5000</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_6">
-     <property name="geometry">
-      <rect>
-       <x>900</x>
-       <y>490</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0.01</string>
-     </property>
-    </widget>
     <widget class="QComboBox" name="comboBox">
      <property name="geometry">
       <rect>
-       <x>900</x>
-       <y>550</y>
+       <x>870</x>
+       <y>560</y>
        <width>211</width>
        <height>31</height>
       </rect>
@@ -667,7 +684,7 @@
        <x>1060</x>
        <y>70</y>
        <width>101</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -685,7 +702,7 @@
        <x>1190</x>
        <y>70</y>
        <width>91</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -721,35 +738,11 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>490</y>
-       <width>91</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(170, 85, 127);</string>
-     </property>
-     <property name="text">
-      <string>100 kg</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_30">
      <property name="geometry">
       <rect>
-       <x>1020</x>
-       <y>250</y>
+       <x>690</x>
+       <y>400</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -776,8 +769,8 @@
     <widget class="QLineEdit" name="lineEdit_8">
      <property name="geometry">
       <rect>
-       <x>1190</x>
-       <y>250</y>
+       <x>880</x>
+       <y>400</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -788,7 +781,7 @@
       </font>
      </property>
      <property name="text">
-      <string>5000</string>
+      <string>1</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_31">
@@ -834,14 +827,14 @@
       </font>
      </property>
      <property name="text">
-      <string>5000</string>
+      <string>96000</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_32">
      <property name="geometry">
       <rect>
-       <x>1030</x>
-       <y>300</y>
+       <x>1020</x>
+       <y>400</y>
        <width>111</width>
        <height>31</height>
       </rect>
@@ -869,7 +862,7 @@
      <property name="geometry">
       <rect>
        <x>1190</x>
-       <y>300</y>
+       <y>400</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -883,7 +876,7 @@
       <string notr="true">color: rgb(170, 85, 127);</string>
      </property>
      <property name="text">
-      <string>100 kg</string>
+      <string>50 kg</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -905,6 +898,374 @@
      </property>
      <property name="text">
       <string>Batch Quantity Details</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_33">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>150</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>Batch Date :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>1120</x>
+       <y>150</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
+     <property name="text">
+      <string>08 Aug 2020</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_8">
+     <property name="geometry">
+      <rect>
+       <x>1210</x>
+       <y>150</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Get Date</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>250</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>Received Weight (Kg) :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>880</x>
+       <y>250</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>59950</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_34">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>250</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>Received. Bags Count :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_10">
+     <property name="geometry">
+      <rect>
+       <x>1190</x>
+       <y>250</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>59999</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_27">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>300</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>TL Received (Kg) :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_5">
+     <property name="geometry">
+      <rect>
+       <x>880</x>
+       <y>300</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>50</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_29">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>300</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>TL Received( %) :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>1190</x>
+       <y>300</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
+     <property name="text">
+      <string>0.005%</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_35">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>350</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>TL Accepted (Kg) :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_6">
+     <property name="geometry">
+      <rect>
+       <x>880</x>
+       <y>350</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>50</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_36">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>350</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>TL Accpted( %) :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>1190</x>
+       <y>350</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
+     <property name="text">
+      <string>0.005%</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QCalendarWidget" name="calendarWidget">
+     <property name="geometry">
+      <rect>
+       <x>990</x>
+       <y>440</y>
+       <width>296</width>
+       <height>183</height>
+      </rect>
      </property>
     </widget>
    </widget>
