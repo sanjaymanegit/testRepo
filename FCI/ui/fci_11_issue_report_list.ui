@@ -269,7 +269,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Custome Dates</string>
+      <string>Date Range</string>
      </property>
      <property name="checked">
       <bool>true</bool>

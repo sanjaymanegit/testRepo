@@ -143,16 +143,6 @@
      </column>
      <column>
       <property name="text">
-       <string>Source Location </string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Target Location</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>Status</string>
       </property>
      </column>
