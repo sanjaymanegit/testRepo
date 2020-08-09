@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
-    <height>782</height>
+    <width>1222</width>
+    <height>701</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -23,11 +23,14 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>1311</width>
-      <height>691</height>
+      <x>30</x>
+      <y>30</y>
+      <width>1121</width>
+      <height>611</height>
      </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -35,32 +38,69 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="label_19">
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>50</y>
-       <width>201</width>
-       <height>81</height>
+       <y>40</y>
+       <width>451</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>MS Sans Serif</family>
        <pointsize>22</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
      <property name="text">
-      <string> System User :</string>
+      <string>Printer Setup</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>60</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 255);
+color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Incorrect Password.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>30</y>
+       <x>230</x>
+       <y>130</y>
        <width>631</width>
-       <height>121</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="font">
@@ -128,142 +168,10 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>180</y>
-       <width>1231</width>
-       <height>471</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>15</pointsize>
-      </font>
-     </property>
-     <property name="title">
-      <string/>
-     </property>
-     <widget class="QPushButton" name="pushButton_11">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>80</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Factory Reset</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_12">
-      <property name="geometry">
-       <rect>
-        <x>460</x>
-        <y>190</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Wifi-Setting</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_13">
-      <property name="geometry">
-       <rect>
-        <x>790</x>
-        <y>80</y>
-        <width>281</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Database Backup</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_14">
-      <property name="geometry">
-       <rect>
-        <x>460</x>
-        <y>80</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Printer Setup</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_15">
-      <property name="geometry">
-       <rect>
-        <x>790</x>
-        <y>190</y>
-        <width>281</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Change Passwords</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_16">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>190</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Date/Time Set</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_17">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>310</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>API Config</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>940</x>
-       <y>80</y>
-       <width>181</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(170, 0, 127);</string>
-     </property>
-     <property name="text">
-      <string>Incorrect Password !!!!</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>1060</x>
+       <x>830</x>
        <y>20</y>
        <width>221</width>
        <height>31</height>
@@ -288,6 +196,95 @@ color: rgb(170, 0, 0);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>280</y>
+       <width>921</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>320</y>
+       <width>661</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>Printer Details</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>170</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Sans Serif</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>80</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Printer Model :</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>80</y>
+        <width>211</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>EPSON_LX-300</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>TVS - DOT MX</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>HP -  2000 ZZ</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -295,7 +292,7 @@ color: rgb(170, 0, 0);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1366</width>
+     <width>1222</width>
      <height>21</height>
     </rect>
    </property>
