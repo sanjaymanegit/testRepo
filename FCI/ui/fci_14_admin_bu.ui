@@ -156,7 +156,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Contratiors</string>
+       <string>Contractors</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_9">
