@@ -904,8 +904,8 @@
      <widget class="QPushButton" name="pushButton_10">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>200</y>
+        <x>360</x>
+        <y>220</y>
         <width>91</width>
         <height>31</height>
        </rect>
@@ -922,8 +922,8 @@
      <widget class="QPushButton" name="pushButton_11">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>200</y>
+        <x>470</x>
+        <y>220</y>
         <width>91</width>
         <height>31</height>
        </rect>
@@ -981,6 +981,34 @@
       </property>
       <property name="text">
        <string>200</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_33">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>170</y>
+        <width>251</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Sans Serif</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string>Please select the record to Delete.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
