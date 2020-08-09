@@ -363,9 +363,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>360</y>
+       <y>290</y>
        <width>171</width>
-       <height>301</height>
+       <height>371</height>
       </rect>
      </property>
      <property name="tabletTracking">
@@ -444,8 +444,8 @@
     <widget class="QLabel" name="label_22">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>320</y>
+       <x>30</x>
+       <y>250</y>
        <width>161</width>
        <height>31</height>
       </rect>
@@ -1665,24 +1665,20 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
        <rect>
         <x>570</x>
         <y>30</y>
-        <width>191</width>
+        <width>231</width>
         <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>MS Sans Serif</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>false</underline>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 170, 127);</string>
+       <string notr="true">color: rgb(0, 170, 0);</string>
       </property>
       <property name="text">
-       <string>Select Record to Delete</string>
+       <string>Error : Select Record to Delete !</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
