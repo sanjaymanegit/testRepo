@@ -1449,7 +1449,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <string notr="true">color: rgb(170, 85, 127);</string>
      </property>
      <property name="text">
-      <string>Pending Truck Count:</string>
+      <string>Total Trucks Count:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1477,7 +1477,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <string notr="true">color: rgb(0, 0, 255);</string>
      </property>
      <property name="text">
-      <string>144</string>
+      <string>150</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1487,7 +1487,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
      <property name="geometry">
       <rect>
        <x>650</x>
-       <y>510</y>
+       <y>530</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -1515,7 +1515,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
      <property name="geometry">
       <rect>
        <x>800</x>
-       <y>510</y>
+       <y>530</y>
        <width>41</width>
        <height>31</height>
       </rect>
@@ -1600,7 +1600,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
      <property name="geometry">
       <rect>
        <x>650</x>
-       <y>470</y>
+       <y>480</y>
        <width>121</width>
        <height>31</height>
       </rect>
@@ -1628,7 +1628,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
      <property name="geometry">
       <rect>
        <x>800</x>
-       <y>470</y>
+       <y>480</y>
        <width>41</width>
        <height>31</height>
       </rect>
