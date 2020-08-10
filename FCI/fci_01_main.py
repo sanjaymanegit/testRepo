@@ -181,6 +181,7 @@ class Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
         self.pushButton_6.setText(_translate("MainWindow", "Reports"))
         self.pushButton_7.setText(_translate("MainWindow", "Issues"))
+        
         self.pushButton_9.setText(_translate("MainWindow", "Online Status"))
         self.label_22.setText(_translate("MainWindow", "Online"))
         self.startx()
@@ -194,6 +195,8 @@ class Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_new_window4)
         self.pushButton_6.clicked.connect(self.open_new_window5)
         self.pushButton_3.clicked.connect(self.open_new_window6)
+        self.pushButton_7.setDisabled(True)
+        self.pushButton_9.setDisabled(True)
         
         
         

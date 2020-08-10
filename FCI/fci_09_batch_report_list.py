@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_09_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -276,13 +276,14 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(_translate("MainWindow", "Select Month"))
         self.pushButton_11.setText(_translate("MainWindow", "Month"))
         self.label_21.setText(_translate("MainWindow", "Batch Report as on 07 Aug 2020"))
+        self.pushButton_8.clicked.connect(MainWindow.close)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_09_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import datetime
+import time
 
 class fci_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -579,7 +580,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.label_47 = QtWidgets.QLabel(self.frame)
-        self.label_47.setGeometry(QtCore.QRect(1160, 10, 131, 31))
+        self.label_47.setGeometry(QtCore.QRect(1120, 10, 161, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -588,7 +589,7 @@ class fci_03_Ui_MainWindow(object):
         font.setWeight(75)
         self.label_47.setFont(font)
         self.label_47.setStyleSheet("color: rgb(170, 0, 255);")
-        self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        #self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(470, 380, 151, 31))
@@ -839,24 +840,10 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
         self.label_14.setText(_translate("MainWindow", "Vehical.No :"))
         self.pushButton_8.setText(_translate("MainWindow", "Print"))
-        __sortingEnabled = self.listWidget_2.isSortingEnabled()
-        self.listWidget_2.setSortingEnabled(False)
-        item = self.listWidget_2.item(0)
-        item.setText(_translate("MainWindow", "004-MH-55 DD 3422"))
-        item = self.listWidget_2.item(1)
-        item.setText(_translate("MainWindow", "005-MH45444322"))
-        self.listWidget_2.setSortingEnabled(__sortingEnabled)
+        
         self.radioButton.setText(_translate("MainWindow", "Auto"))
         self.radioButton_2.setText(_translate("MainWindow", "Manual"))
-        __sortingEnabled = self.listWidget_3.isSortingEnabled()
-        self.listWidget_3.setSortingEnabled(False)
-        item = self.listWidget_3.item(0)
-        item.setText(_translate("MainWindow", "001-MH430302"))
-        item = self.listWidget_3.item(1)
-        item.setText(_translate("MainWindow", "002-MH43RT09888"))
-        item = self.listWidget_3.item(2)
-        item.setText(_translate("MainWindow", "003-MH44AW3432"))
-        self.listWidget_3.setSortingEnabled(__sortingEnabled)
+        
         self.label_22.setText(_translate("MainWindow", "First Weight Trucks"))
         self.label_23.setText(_translate("MainWindow", "Second  Weight Trucks"))
         self.label_15.setText(_translate("MainWindow", "Batch Id:"))
@@ -882,34 +869,34 @@ class fci_03_Ui_MainWindow(object):
         self.label_40.setText(_translate("MainWindow", "41.00"))
         self.pushButton_11.setText(_translate("MainWindow", "Gross"))
         self.pushButton_16.setText(_translate("MainWindow", "Tare"))
-        self.lineEdit_2.setText(_translate("MainWindow", "MH 43 AW 0302"))
-        self.label_42.setText(_translate("MainWindow", "Rice - 5444"))
-        self.label_43.setText(_translate("MainWindow", "Contractor -100"))
+        self.lineEdit_2.setText(_translate("MainWindow", "MH_43 AW 0302"))
+        self.label_42.setText(_translate("MainWindow", ""))
+        self.label_43.setText(_translate("MainWindow", ""))
         self.lineEdit_3.setText(_translate("MainWindow", "345"))
         self.label_44.setText(_translate("MainWindow", "Net. Weight(Kg)  :"))
         self.label_45.setText(_translate("MainWindow", "159.00"))
         self.label_46.setText(_translate("MainWindow", "Remark :"))
         self.label_21.setText(_translate("MainWindow", "Current Truck Count:"))
-        self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "B000453"))
+        self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Select"))
         self.label_41.setText(_translate("MainWindow", "Total Trucks Count:"))
         self.label_48.setText(_translate("MainWindow", "150"))
         self.label_49.setText(_translate("MainWindow", "Accepted Bags:"))
         self.label_50.setText(_translate("MainWindow", "345"))
         self.label_51.setText(_translate("MainWindow", "Driver:"))
-        self.radioButton_3.setText(_translate("MainWindow", "IN"))
-        self.radioButton_4.setText(_translate("MainWindow", "OUT"))
+        self.radioButton_3.setText(_translate("MainWindow", "In"))
+        self.radioButton_4.setText(_translate("MainWindow", "Out"))
         self.label_52.setText(_translate("MainWindow", "Avg. Wt Per Bag Kg:"))
         self.label_53.setText(_translate("MainWindow", "50"))
         self.label_54.setText(_translate("MainWindow", "Target Storage:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Storage - Location 1"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Select"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Storage - Location 2"))
         self.label_55.setText(_translate("MainWindow", "Batch Weighing - Source"))
-        self.groupBox.setTitle(_translate("MainWindow", "First Wt - Mannual"))
+        self.groupBox.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_6.setText(_translate("MainWindow", "Tare"))
         self.pushButton_10.setText(_translate("MainWindow", "Update"))
-        self.groupBox_2.setTitle(_translate("MainWindow", "Second Wt - Mannual"))
+        self.groupBox_2.setTitle(_translate("MainWindow", "Second Wt - Manual"))
         self.radioButton_7.setText(_translate("MainWindow", "Gross"))
         self.radioButton_8.setText(_translate("MainWindow", "Tare"))
         self.pushButton_12.setText(_translate("MainWindow", "Update"))
@@ -923,8 +910,136 @@ class fci_03_Ui_MainWindow(object):
     def startx(self):
         self.groupBox.hide()
         self.groupBox_2.hide()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        self.radioButton_2.clicked.connect(self.mannual_onclick)
+        self.radioButton.clicked.connect(self.auto_onclick)
+        self.reset_fun()
+        self.pushButton_11.clicked.connect(self.gross_wt_onclick)
+        self.pushButton_16.clicked.connect(self.tare_wt_onclick)
+        self.pushButton_6.clicked.connect(self.reset_fun)
+        self.lineEdit_2.textChanged.connect(self.text_change_f)
+        self.lineEdit_2.setMaxLength(12)
+        
+
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
 
 
+    def text_change_f(self):
+        #print("insedie finct ")
+        string =self.lineEdit_2.text()
+        if not (string.isupper()):
+               self.lineEdit_2.setText(string.upper())
+               #print(string.upper())
+               
+               
+    def mannual_onclick(self):
+        #print("insidde mannual :"+str(self.radioButton_2.isChecked()))
+        if(self.radioButton_2.isChecked()):
+            self.groupBox.show()
+            self.groupBox_2.show()            
+        else:            
+            self.groupBox.hide()
+            self.groupBox_2.hide()
+    
+    def auto_onclick(self):
+        if(self.radioButton.isChecked()):
+            self.groupBox.hide()
+            self.groupBox_2.hide()
+        else:
+            self.groupBox.show()
+            self.groupBox_2.show()
+            
+
+    def reset_fun(self):
+        # First Wt
+        self.label_29.setText("--")         
+        self.label_30.setText("--")
+        self.label_31.setText("--:--")
+        self.label_32.setText("0")
+        
+        #second Wt                      
+        self.label_37.setText("--")
+        self.label_38.setText("--")        
+        self.label_39.setText("--:--")
+        self.label_40.setText("0")
+        
+        #Net Wt
+        self.label_45.setText("0")
+            
+        self.listWidget_2.clear()
+        self.listWidget_3.clear()
+        
+        #message 
+        self.label_56.setText("")
+        
+        # Vehical No
+        self.lineEdit_2.setText("")
+        
+        #Material Type
+        self.label_42.setText("--")
+        #Contractor Name
+        self.label_43.setText("--")
+        
+        #Accpted Wt
+        self.label_50.setText("0")
+        
+        #Proposed Wt
+        self.lineEdit_3.setText("0")
+        
+        #Avg. Wt
+        self.label_53.setText("0")
+        
+        #current truck count
+        self.label_24.setText("0")
+        
+        #Total truck count
+        self.label_48.setText("0")
+        
+    def gross_wt_onclick(self):
+        #print("self.label_46 : "+str(self.label_46.text()))
+        self.current_slip_no="0"
+        self.current_value="200"
+        if(str(self.current_slip_no) == "0"):
+               self.label_29.setText("Gross")         
+               self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+               self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
+               self.label_32.setText(str(self.current_value))
+               #self.label_29.setText(str("125"))
+               
+        else:     
+               self.label_37.setText("Gross")
+               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+               self.label_39.setText(str(self.current_value))
+               #self.label_35.setText(str("125"))
+               self.label_40.setText(datetime.datetime.now().strftime("%H:%M"))
+                       
+        #self.net_wt_calc()
+        
+        
+                   
+    def tare_wt_onclick(self):
+        self.current_slip_no="0"
+        self.current_value="120"
+        if(str(self.current_slip_no) == "0"):
+               self.label_29.setText("Tare")         
+               self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+               self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
+               self.label_32.setText(str(self.current_value))
+               #self.label_29.setText(str("125"))
+               
+        else:     
+               self.label_37.setText("Tare")
+               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+               self.label_39.setText(str(self.current_value))
+               #self.label_35.setText(str("125"))
+               self.label_40.setText(datetime.datetime.now().strftime("%H:%M"))
+                       
+        #self.net_wt_calc()
+   
 
 if __name__ == "__main__":
     import sys

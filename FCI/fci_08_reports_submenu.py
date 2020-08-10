@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from fci_09_batch_report_list import fci_09_Ui_MainWindow
 
 class fci_08_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -115,13 +115,23 @@ class fci_08_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Buffer Stocks Report"))
         self.pushButton_6.setText(_translate("MainWindow", "Other Reports"))
         self.pushButton_2.clicked.connect(MainWindow.close)
-        #self.startx()
+        self.startx()
 
 
 
-    #def startx(self):   
+    def startx(self):
+        self.pushButton_4.setDisabled(True)
+        self.pushButton_5.setDisabled(True)
+        self.pushButton_6.setDisabled(True)
+        self.pushButton.clicked.connect(self.open_new_window2)
 
-
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_09_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
 
 if __name__ == "__main__":
     import sys
