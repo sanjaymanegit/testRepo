@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 769)
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.pushButton_8.setObjectName("pushButton_8")
         self.listWidget_2 = QtWidgets.QListWidget(self.frame)
         self.listWidget_2.setGeometry(QtCore.QRect(1080, 380, 171, 301))
-        self.listWidget_2.setTabletTracking(False)
+        #self.listWidget_2.setTabletTracking(False)
         self.listWidget_2.setStyleSheet("background-color: rgb(220, 255, 247);")
         self.listWidget_2.setGridSize(QtCore.QSize(0, 0))
         self.listWidget_2.setObjectName("listWidget_2")
@@ -143,7 +143,7 @@ class Ui_MainWindow(object):
         self.radioButton_2.setObjectName("radioButton_2")
         self.listWidget_3 = QtWidgets.QListWidget(self.frame)
         self.listWidget_3.setGeometry(QtCore.QRect(20, 300, 171, 371))
-        self.listWidget_3.setTabletTracking(False)
+        #self.listWidget_3.setTabletTracking(False)
         self.listWidget_3.setStyleSheet("background-color: rgb(220, 255, 247);")
         self.listWidget_3.setGridSize(QtCore.QSize(0, 0))
         self.listWidget_3.setObjectName("listWidget_3")
@@ -660,9 +660,17 @@ class Ui_MainWindow(object):
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_3.setGeometry(QtCore.QRect(1150, 310, 41, 31))
         self.radioButton_3.setChecked(False)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.radioButton_3.setFont(font)
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_4.setGeometry(QtCore.QRect(1210, 310, 51, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.radioButton_4.setFont(font)
         self.radioButton_4.setObjectName("radioButton_4")
         self.label_52 = QtWidgets.QLabel(self.frame)
         self.label_52.setGeometry(QtCore.QRect(650, 480, 121, 31))
@@ -906,13 +914,23 @@ class Ui_MainWindow(object):
         self.radioButton_8.setText(_translate("MainWindow", "Tare"))
         self.pushButton_12.setText(_translate("MainWindow", "Update"))
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
+        
+        self.pushButton_7.clicked.connect(MainWindow.close)
+        self.startx()
+
+
+
+    def startx(self):
+        self.groupBox.hide()
+        self.groupBox_2.hide()
+
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_03_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_05_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -193,20 +193,20 @@ class Ui_MainWindow(object):
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_7.setGeometry(QtCore.QRect(1060, 70, 101, 31))
+        self.lineEdit_7.setGeometry(QtCore.QRect(990, 70, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_7.setFont(font)
         self.lineEdit_7.setText("")
         self.lineEdit_7.setObjectName("lineEdit_7")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1170, 70, 91, 31))
+        self.pushButton_6.setGeometry(QtCore.QRect(1100, 70, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(970, 70, 81, 31))
+        self.label_3.setGeometry(QtCore.QRect(900, 70, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_3.setFont(font)
@@ -489,6 +489,12 @@ class Ui_MainWindow(object):
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.pushButton_13 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_13.setGeometry(QtCore.QRect(1200, 70, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_13.setFont(font)
+        self.pushButton_13.setObjectName("pushButton_13")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -590,13 +596,20 @@ class Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Contractor:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Contractor 1000"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Contractor 1001"))
+        self.pushButton_13.setText(_translate("MainWindow", "Return"))
+        self.pushButton_13.clicked.connect(MainWindow.close)
+        #self.startx()
+
+
+
+    #def startx(self):   
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_05_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

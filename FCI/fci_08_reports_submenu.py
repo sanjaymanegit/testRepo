@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_08_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -24,9 +24,12 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(100, 170, 241, 121))
+        self.pushButton.setGeometry(QtCore.QRect(100, 170, 271, 121))
         font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(22)
+        font.setBold(False)
+        font.setWeight(50)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
@@ -104,20 +107,27 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Batches Report"))
+        self.pushButton.setText(_translate("MainWindow", "Batches Reports"))
         self.pushButton_4.setText(_translate("MainWindow", "Issues Reports"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
         self.label_21.setText(_translate("MainWindow", "Please select the Report of Batch Or Issues."))
         self.pushButton_5.setText(_translate("MainWindow", "Buffer Stocks Report"))
         self.pushButton_6.setText(_translate("MainWindow", "Other Reports"))
+        self.pushButton_2.clicked.connect(MainWindow.close)
+        #self.startx()
+
+
+
+    #def startx(self):   
+
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_08_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

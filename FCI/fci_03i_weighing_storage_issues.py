@@ -110,7 +110,7 @@ class Ui_MainWindow(object):
         self.pushButton_8.setObjectName("pushButton_8")
         self.listWidget_2 = QtWidgets.QListWidget(self.frame)
         self.listWidget_2.setGeometry(QtCore.QRect(1120, 400, 171, 291))
-        self.listWidget_2.setTabletTracking(False)
+       # self.listWidget_2.setTabletTracking(False)
         self.listWidget_2.setStyleSheet("background-color: rgb(220, 255, 247);")
         self.listWidget_2.setGridSize(QtCore.QSize(0, 0))
         self.listWidget_2.setObjectName("listWidget_2")
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.radioButton_2.setObjectName("radioButton_2")
         self.listWidget_3 = QtWidgets.QListWidget(self.frame)
         self.listWidget_3.setGeometry(QtCore.QRect(20, 290, 171, 371))
-        self.listWidget_3.setTabletTracking(False)
+       # self.listWidget_3.setTabletTracking(False)
         self.listWidget_3.setStyleSheet("background-color: rgb(220, 255, 247);")
         self.listWidget_3.setGridSize(QtCore.QSize(0, 0))
         self.listWidget_3.setObjectName("listWidget_3")
@@ -1030,6 +1030,19 @@ class Ui_MainWindow(object):
         self.radioButton_8.setText(_translate("MainWindow", "Tare"))
         self.pushButton_15.setText(_translate("MainWindow", "Update"))
         self.label_59.setText(_translate("MainWindow", "Record Successfully saved !!!"))
+        self.startx()
+
+
+
+    def startx(self):
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.radioButton_3.setFont(font)
+        self.radioButton_4.setFont(font)
+        
+        self.groupBox_2.hide()
+        self.groupBox_3.hide()
 
 
 if __name__ == "__main__":

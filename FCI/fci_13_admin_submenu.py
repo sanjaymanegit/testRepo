@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_13_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
@@ -26,8 +26,8 @@ class Ui_MainWindow(object):
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(70, 210, 481, 191))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(35)
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
@@ -35,8 +35,8 @@ class Ui_MainWindow(object):
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(720, 210, 421, 191))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(35)
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_5.setFont(font)
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(480, 70, 291, 71))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(22)
         self.label.setFont(font)
         self.label.setStyleSheet("color: rgb(170, 0, 127);")
@@ -77,18 +77,24 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_4.setText(_translate("MainWindow", "Busssiness User"))
+        self.pushButton_4.setText(_translate("MainWindow", "Business User"))
         self.pushButton_5.setText(_translate("MainWindow", "System User"))
         self.label.setText(_translate("MainWindow", "Administration"))
         self.label_2.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
+        self.pushButton_3.clicked.connect(MainWindow.close)
+        #self.startx()
+
+
+
+    #def startx(self):   
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_13_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

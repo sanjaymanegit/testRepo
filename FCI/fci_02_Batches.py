@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_02_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -564,6 +564,12 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_11.setFont(font)
         self.lineEdit_11.setObjectName("lineEdit_11")
+        self.pushButton_9 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_9.setGeometry(QtCore.QRect(1210, 650, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_9.setFont(font)
+        self.pushButton_9.setObjectName("pushButton_9")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -662,13 +668,22 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Tare Weighing"))
         self.label_38.setText(_translate("MainWindow", "Required Trucks :"))
         self.lineEdit_11.setText(_translate("MainWindow", "240"))
+        self.pushButton_9.setText(_translate("MainWindow", "Return"))
+        
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        #self.startx()
+
+
+
+    #def startx(self):        
+        
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_02_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
