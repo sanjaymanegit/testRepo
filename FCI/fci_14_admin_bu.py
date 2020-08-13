@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_14_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 782)
@@ -119,13 +119,15 @@ class Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "Update/Delete Record"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
+        
+        self.pushButton_3.clicked.connect(MainWindow.close)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_14_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

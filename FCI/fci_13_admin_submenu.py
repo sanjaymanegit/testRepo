@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from fci_15_admin_su import fci_15_Ui_MainWindow
+from fci_14_admin_bu import fci_14_Ui_MainWindow
 
 class fci_13_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -83,11 +84,26 @@ class fci_13_Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
         self.pushButton_3.clicked.connect(MainWindow.close)
-        #self.startx()
+        self.startx()
 
 
 
-    #def startx(self):   
+    def startx(self):
+        self.pushButton_5.clicked.connect(self.open_new_window2)
+        self.pushButton_4.clicked.connect(self.open_new_window3)
+        
+             
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_15_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window3(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_14_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
 
 
 if __name__ == "__main__":

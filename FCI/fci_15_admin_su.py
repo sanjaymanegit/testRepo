@@ -9,9 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from fci_20_wifi import fci_20_Ui_MainWindow
 
-
-class Ui_MainWindow(object):
+class fci_15_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 782)
@@ -137,13 +137,28 @@ class Ui_MainWindow(object):
         self.pushButton_19.setText(_translate("MainWindow", "Register"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
+        
+        self.pushButton_3.clicked.connect(MainWindow.close)
+        self.startx()
+
+
+
+    def startx(self):
+        self.pushButton_12.clicked.connect(self.open_new_window2)
+        
+             
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_20_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_15_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

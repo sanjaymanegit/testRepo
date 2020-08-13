@@ -9,6 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+
 
 
 class fci_02_Ui_MainWindow(object):
@@ -19,12 +25,12 @@ class fci_02_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 1311, 701))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 1311, 701))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(10, 10, 231, 51))
+        self.label.setGeometry(QtCore.QRect(10, 30, 251, 51))
         font = QtGui.QFont()
         font.setPointSize(24)
         self.label.setFont(font)
@@ -32,39 +38,33 @@ class fci_02_Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(1140, 10, 161, 31))
+        self.label_20.setGeometry(QtCore.QRect(1120, 10, 181, 31))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
-        font.setBold(True)
+        font.setBold(False)
         font.setUnderline(False)
-        font.setWeight(75)
+        font.setWeight(50)
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(30, 80, 91, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(170, 80, 91, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(700, 650, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(300, 80, 91, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(830, 650, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(30, 140, 581, 511))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 120, 581, 501))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(11)
+        self.tableWidget.setColumnCount(14)
         self.tableWidget.setRowCount(5)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -187,7 +187,7 @@ class fci_02_Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setItem(0, 10, item)
         self.label_21 = QtWidgets.QLabel(self.frame)
-        self.label_21.setGeometry(QtCore.QRect(500, 40, 331, 41))
+        self.label_21.setGeometry(QtCore.QRect(480, 30, 331, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -223,7 +223,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_23.setObjectName("label_23")
         self.label_24 = QtWidgets.QLabel(self.frame)
-        self.label_24.setGeometry(QtCore.QRect(690, 450, 161, 31))
+        self.label_24.setGeometry(QtCore.QRect(690, 460, 161, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -235,7 +235,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_24.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
         self.label_25 = QtWidgets.QLabel(self.frame)
-        self.label_25.setGeometry(QtCore.QRect(690, 500, 141, 31))
+        self.label_25.setGeometry(QtCore.QRect(690, 520, 141, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -247,7 +247,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.label_28 = QtWidgets.QLabel(self.frame)
-        self.label_28.setGeometry(QtCore.QRect(690, 560, 181, 31))
+        self.label_28.setGeometry(QtCore.QRect(690, 580, 161, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -258,55 +258,60 @@ class fci_02_Ui_MainWindow(object):
         self.label_28.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_28.setObjectName("label_28")
-        self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(880, 150, 91, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(170, 85, 127);")
-        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         self.lineEdit.setGeometry(QtCore.QRect(880, 200, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(880, 450, 101, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3.setGeometry(QtCore.QRect(880, 500, 101, 31))
+        self.lineEdit_3.setGeometry(QtCore.QRect(880, 520, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_3.setFont(font)
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.comboBox = QtWidgets.QComboBox(self.frame)
-        self.comboBox.setGeometry(QtCore.QRect(870, 560, 211, 31))
+        self.comboBox.setGeometry(QtCore.QRect(880, 580, 201, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox.setFont(font)
         self.comboBox.setObjectName("comboBox")
+        '''
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        '''
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(690, 650, 91, 31))
+        self.pushButton_4.setGeometry(QtCore.QRect(960, 650, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(830, 650, 91, 31))
+        self.pushButton_5.setGeometry(QtCore.QRect(1090, 650, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_7.setGeometry(QtCore.QRect(1060, 70, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_7.setFont(font)
@@ -319,8 +324,9 @@ class fci_02_Ui_MainWindow(object):
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(970, 70, 81, 41))
+        self.label_3.setGeometry(QtCore.QRect(970, 70, 81, 31))
         font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.label_3.setFont(font)
         self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
@@ -340,10 +346,18 @@ class fci_02_Ui_MainWindow(object):
         self.label_30.setObjectName("label_30")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_8.setGeometry(QtCore.QRect(880, 400, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_8.setFont(font)
         self.lineEdit_8.setObjectName("lineEdit_8")
+        
+        
         self.label_31 = QtWidgets.QLabel(self.frame)
         self.label_31.setGeometry(QtCore.QRect(1020, 200, 161, 31))
         font = QtGui.QFont()
@@ -358,6 +372,12 @@ class fci_02_Ui_MainWindow(object):
         self.label_31.setObjectName("label_31")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_9.setGeometry(QtCore.QRect(1190, 200, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_9.setFont(font)
@@ -375,7 +395,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.label_5 = QtWidgets.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(1190, 400, 91, 31))
+        self.label_5.setGeometry(QtCore.QRect(1140, 400, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_5.setFont(font)
@@ -383,7 +403,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(960, 650, 231, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(30, 650, 191, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_7.setFont(font)
@@ -428,6 +448,12 @@ class fci_02_Ui_MainWindow(object):
         self.label_26.setObjectName("label_26")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_4.setGeometry(QtCore.QRect(880, 250, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_4.setFont(font)
@@ -446,6 +472,12 @@ class fci_02_Ui_MainWindow(object):
         self.label_34.setObjectName("label_34")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_10.setGeometry(QtCore.QRect(1190, 250, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
+        self.lineEdit_10.setValidator(input_validator)
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_10.setFont(font)
@@ -464,6 +496,11 @@ class fci_02_Ui_MainWindow(object):
         self.label_27.setObjectName("label_27")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_5.setGeometry(QtCore.QRect(880, 300, 101, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_5.setFont(font)
@@ -502,10 +539,18 @@ class fci_02_Ui_MainWindow(object):
         self.label_35.setObjectName("label_35")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_6.setGeometry(QtCore.QRect(880, 350, 101, 31))
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_6.setFont(font)
         self.lineEdit_6.setObjectName("lineEdit_6")
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
+        
         self.label_36 = QtWidgets.QLabel(self.frame)
         self.label_36.setGeometry(QtCore.QRect(1020, 350, 141, 31))
         font = QtGui.QFont()
@@ -527,7 +572,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.label_37 = QtWidgets.QLabel(self.frame)
-        self.label_37.setGeometry(QtCore.QRect(1020, 450, 71, 31))
+        self.label_37.setGeometry(QtCore.QRect(1100, 580, 71, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -539,7 +584,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_37.setObjectName("label_37")
         self.label_4 = QtWidgets.QLabel(self.frame)
-        self.label_4.setGeometry(QtCore.QRect(1190, 450, 91, 31))
+        self.label_4.setGeometry(QtCore.QRect(1190, 580, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_4.setFont(font)
@@ -547,7 +592,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.label_38 = QtWidgets.QLabel(self.frame)
-        self.label_38.setGeometry(QtCore.QRect(1020, 500, 131, 31))
+        self.label_38.setGeometry(QtCore.QRect(1040, 520, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -559,7 +604,11 @@ class fci_02_Ui_MainWindow(object):
         self.label_38.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_38.setObjectName("label_38")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_11.setGeometry(QtCore.QRect(1190, 500, 101, 31))
+        self.lineEdit_11.setGeometry(QtCore.QRect(1190, 520, 101, 31))
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
+        self.lineEdit_11.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_11.setFont(font)
@@ -570,6 +619,23 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_9.setFont(font)
         self.pushButton_9.setObjectName("pushButton_9")
+        self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
+        self.calendarWidget.setGeometry(QtCore.QRect(940, 220, 312, 183))
+        self.calendarWidget.setGridVisible(True)
+        self.calendarWidget.setObjectName("calendarWidget")
+        self.lineEdit_12 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_12.setGeometry(QtCore.QRect(880, 150, 101, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.lineEdit_12.setFont(font)
+        self.lineEdit_12.setObjectName("lineEdit_12")
+        self.comboBox_2 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2.setGeometry(QtCore.QRect(880, 460, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.comboBox_2.setFont(font)
+        self.comboBox_2.setObjectName("comboBox_2")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -586,10 +652,9 @@ class fci_02_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Batch Details"))
-        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
-        self.pushButton.setText(_translate("MainWindow", "Add"))
-        self.pushButton_2.setText(_translate("MainWindow", "Edit"))
-        self.pushButton_3.setText(_translate("MainWindow", "Delete"))
+        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
+        self.pushButton_2.setText(_translate("MainWindow", "Add"))
+        self.pushButton_3.setText(_translate("MainWindow", "Save"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -631,14 +696,14 @@ class fci_02_Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_25.setText(_translate("MainWindow", "No. Wagons :"))
         self.label_28.setText(_translate("MainWindow", "Contractor Name :"))
-        self.label_2.setText(_translate("MainWindow", " B20200807_00"))
         self.lineEdit.setText(_translate("MainWindow", "60000"))
-        self.lineEdit_2.setText(_translate("MainWindow", "Wheat - 12"))
         self.lineEdit_3.setText(_translate("MainWindow", "40"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Contractor -01"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Contractor-02"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Contractor-03"))
-        self.pushButton_4.setText(_translate("MainWindow", "Save"))
+        '''
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Wheat -01"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Rice-02"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Paddy-03"))
+        '''
+        self.pushButton_4.setText(_translate("MainWindow", "Delete"))
         self.pushButton_5.setText(_translate("MainWindow", "Reset"))
         self.pushButton_6.setText(_translate("MainWindow", "Search "))
         self.label_3.setText(_translate("MainWindow", "Batch . Id. :"))
@@ -669,14 +734,336 @@ class fci_02_Ui_MainWindow(object):
         self.label_38.setText(_translate("MainWindow", "Required Trucks :"))
         self.lineEdit_11.setText(_translate("MainWindow", "240"))
         self.pushButton_9.setText(_translate("MainWindow", "Return"))
-        
+        self.lineEdit_12.setText(_translate("MainWindow", "B_20200812_01"))
+        '''
+        self.comboBox.setItemText(0, _translate("MainWindow", "Contractor -01"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Contractor-02"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Contractor-03"))
+        '''
         self.pushButton_9.clicked.connect(MainWindow.close)
-        #self.startx()
+        self.startx()
 
 
-
-    #def startx(self):        
+    def startx(self):
+        self.calendarWidget.hide()        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)       
+        self.rest_fun()
+        self.pushButton_2.clicked.connect(self.add_click)
+        self.tableWidget.doubleClicked.connect(self.fetch_data_from_tw)
+        self.pushButton_5.clicked.connect(self.rest_fun)
+        self.pushButton_4.clicked.connect(self.delete_click)
+        self.pushButton_3.clicked.connect(self.edit_click)
+        self.pushButton_8.clicked.connect(self.DOB_on_click)
+        self.pushButton_6.clicked.connect(self.search_load_data)
         
+        self.calendarWidget.clicked.connect(self.calendar_on_click)
+        
+        
+        self.lineEdit_12.setReadOnly(True)
+        
+        self.lineEdit_4.textChanged.connect(self.tl_recived_wt_calc)
+        self.lineEdit_5.textChanged.connect(self.tl_recived_perc_calc)
+        self.lineEdit_6.textChanged.connect(self.tl_accpted_perc_calc)
+        self.lineEdit_10.textChanged.connect(self.shortage_of_bags)
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT M_NAME FROM MATERIAL_TYPES ORDER BY M_NAME DESC ") 
+        for x in results:            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT C_NAME FROM CONTRACTOR_MST ORDER BY C_NAME DESC ") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+       
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def shortage_of_bags(self):
+        self.bags=0
+        if(self.lineEdit_9.text() != "") and (self.lineEdit_10.text() != ""):
+             self.accpted_bags_cnt=str(self.lineEdit_9.text())
+             self.recived_bags_cnt=str(self.lineEdit_10.text())
+             self.bags=float(float(self.accpted_bags_cnt) - float(self.recived_bags_cnt))
+            
+             self.lineEdit_8.setText(str(round(self.bags,2)))  # TL Received( %)    
+        else:        
+             self.lineEdit_8.setText("0")  # TL Received( %)
+             
+             
+    def tl_recived_wt_calc(self):
+        self.perc_r=0
+        if(self.lineEdit.text() != ""):
+             self.accpted_wt=str(self.lineEdit.text())
+             self.recived_wt=str(self.lineEdit_4.text())
+             self.r_wt=float(float(self.accpted_wt) - float(self.recived_wt))
+            
+             self.lineEdit_5.setText(str(round(self.r_wt,2)))  # TL Received( %)    
+        else:        
+             self.lineEdit_5.setText("0")  # TL Received( %)  
+        
+    def tl_recived_perc_calc(self):
+        self.perc_r=0
+        if(self.lineEdit.text() != "") and (self.lineEdit_5.text() != ""):
+             self.accpted_wt=str(self.lineEdit.text())
+             self.recived_TL=str(self.lineEdit_5.text())
+             self.perc_r=(float(self.recived_TL)/float(self.accpted_wt))
+             self.perc_r= float(self.perc_r) *100
+             self.label_7.setText(str(round(self.perc_r,2)))  # TL Received( %)    
+        else:        
+             self.label_7.setText("0")  # TL Received( %)    
+        
+    def tl_accpted_perc_calc(self):
+        self.perc_a=0
+        if(self.lineEdit.text() != "") and (self.lineEdit_6.text() != ""):
+             self.accpted_wt=str(self.lineEdit.text())
+             self.accpted_TL=str(self.lineEdit_6.text())
+             self.perc_a=(float(self.accpted_TL)/float(self.accpted_wt))
+             self.perc_a= float(self.perc_a) *100
+             self.label_8.setText(str(round(self.perc_a,2)))  # TL Received( %)    
+        else:        
+             self.label_8.setText("0")  # TL Received( %) 
+        
+        
+    def rest_fun(self):
+        self.lineEdit.setText("") #Accpted Weight (Kg)
+        #self.lineEdit_12.setText("") # material type
+        self.lineEdit_3.setText("") #no .of wagons
+        self.lineEdit_8.setText("") #Shortage of bags
+        self.lineEdit_9.setText("")  #Accepted bags count      
+        self.label_5.setText("50 Kg") # Avg Bag Wt
+        #self.label_6.setText("")   # BAtch Date
+        self.label_6.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        self.lineEdit_4.setText("") #received wt
+        self.lineEdit_10.setText("")    # received bag count  
+        self.lineEdit_5.setText("") #TL  Received Kg      
+        self.label_7.setText("0")  # TL Received( %)    
+        self.lineEdit_6.setText("")   #TL accepted Kg    
+        self.label_8.setText("0")     #TL Accpted( %) 
+        self.lineEdit_11.setText("")  #TRuck count
+        self.lineEdit_7.setText("") #search text line
+        self.pushButton_4.setDisabled(True) #delete
+        self.pushButton_7.setDisabled(True) #Batch Quantity Details
+        self.pushButton_2.setEnabled(True)
+        self.pushButton_3.setDisabled(True)  #Save
+        self.label_21.hide()
+        self.select_all_data()
+        self.label_4.setText("Pending")
+  
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'BATCH_MST'")       
+        for x in results:           
+                 self.lineEdit_12.setText(str(x[0]).zfill(6))
+        
+            
+        connection.close()  
+        
+     
+    def DOB_on_click(self):
+        self.calendarWidget.show()
+    
+    def calendar_on_click(self): 
+        self.label_6.setText(str(self.calendarWidget.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget.hide()
+        
+        
+   
+    
+            
+    def fetch_data_from_tw(self):
+        self.lineEdit_12.setText("ok fname")
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget.item(row, 0).text())
+            self.lineEdit_12.setText(str(self.tableWidget.item(row, 0).text())) #Batch ID
+            self.label_6.setText(str(self.tableWidget.item(row, 1).text()))  #Batch Date
+            self.lineEdit.setText(str(self.tableWidget.item(row, 2).text()))  #Accpt.Wt.Kg
+            self.lineEdit_9.setText(str(self.tableWidget.item(row, 3).text()))  # Accpt.Bags.Cnt
+            self.lineEdit_4.setText(str(self.tableWidget.item(row, 4).text())) #received wt
+            self.lineEdit_10.setText(str(self.tableWidget.item(row, 5).text()))    # received bag count
+            self.lineEdit_5.setText(str(self.tableWidget.item(row, 6).text())) #TL  Received Kg
+            self.lineEdit_6.setText(str(self.tableWidget.item(row, 7).text()))   #TL accepted Kg
+            
+            self.lineEdit_8.setText(str(self.tableWidget.item(row, 8).text())) #Shortage of bags
+            self.comboBox_2.setCurrentText(str(self.tableWidget.item(row, 9).text())) #material
+            self.label_4.setText(str(self.tableWidget.item(row, 10).text()))
+            self.lineEdit_3.setText(str(self.tableWidget.item(row, 11).text())) #no .of wagons
+            self.lineEdit_11.setText(str(self.tableWidget.item(row, 12).text()))  #TRuck count
+            self.comboBox.setCurrentText(str(self.tableWidget.item(row, 13).text())) #Contractor Name
+            
+            self.pushButton_4.setEnabled(True)
+            self.pushButton_3.setEnabled(True)
+            self.pushButton_2.setDisabled(True)
+            self.pushButton_7.setEnabled(True)
+            
+        else:    
+            self.label_3.setText("Please Select the record.")
+            self.label_3.show()
+            
+            
+    def select_all_data(self):     
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+      
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.Kg', 'Accpt.Bags.Cnt','Recved.Wt.Kg','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)
+            
+            
+            
+    def search_load_data(self):        
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)      
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.Kg', 'Accpt.Bags.Cnt','Recved.Wt.Kg','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+        
+        
+        if (self.lineEdit_7.text() ==""):            
+            q_str=" order by BATCH_ID"  
+        else:             
+            q_str=" where BATCH_ID='"+self.lineEdit_7.text()+"' order by BATCH_ID"
+        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST "+q_str)                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+                 
+            
+            
+            
+            
+            
+    
+    def load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def add_click(self):
+        self.operation_flg="ADD"       
+        self.load_data()
+        
+    def add_data(self):
+        if(self.lineEdit_12.text() != ""):            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS) values ('"+self.lineEdit_12.text()
+                                   +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
+                                   +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss')")                    
+            connection.commit();                    
+            connection.close()  
+      
+            self.label_21.setText("Record Added Successfully.")
+            self.label_21.show()
+        else :
+            self.label_21.setText("Batch Id is Empty.")
+            self.label_21.show()
+            
+        self.select_all_data()
+    
+    def edit_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.load_data()
+        else:    
+            self.label_21.setText("Please Select the record.")
+            self.label_21show() 
+    
+    def edit_data(self):
+        if(self.lineEdit_12.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.lineEdit_12.text()+"',ACCPT_WT_KG='"+self.lineEdit_6.text()+
+                                   "',ACCPT_BAGS_CNT='"+self.lineEdit.text()+"',RECV_WT_KG='"+self.lineEdit_9.text()+"',RECV_BAGS_CNT='"+self.lineEdit_4.text()+
+                                   "',TL_RECVED='"+self.lineEdit_10.text()+"',TL_ACCPTED='"+self.lineEdit_5.text()+"',STORAGE_BAGS='"+self.lineEdit_6.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
+                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"'  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()   
+       
+        self.label_21.setText("Record Saved Successfully.")
+        self.label_21.show()
+        self.select_all_data()
+    
+    def delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.load_data()
+        else:    
+            self.label_21.setText("Please Select the record.")
+            self.label_21.show()        
+     
+      
+    def delete_data(self):
+        if(self.lineEdit_12.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM BATCH_MST WHERE BATCH_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            
+            self.label_21.setText("Record Deleted Successfully.")
+            self.label_21.show()
+            
+            
+        self.select_all_data()   
+   
 
 
 if __name__ == "__main__":
