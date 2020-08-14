@@ -622,6 +622,9 @@ class fci_02_Ui_MainWindow(object):
         self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
         self.calendarWidget.setGeometry(QtCore.QRect(940, 220, 312, 183))
         self.calendarWidget.setGridVisible(True)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.calendarWidget.setFont(font)
         self.calendarWidget.setObjectName("calendarWidget")
         self.lineEdit_12 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_12.setGeometry(QtCore.QRect(880, 150, 101, 31))
@@ -923,7 +926,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.Kg', 'Accpt.Bags.Cnt','Recved.Wt.Kg','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST")                        
+        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

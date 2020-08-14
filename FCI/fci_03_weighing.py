@@ -11,6 +11,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
 import time
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+import re
 
 class fci_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -142,39 +146,18 @@ class fci_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_2.setFont(font)
         self.radioButton_2.setObjectName("radioButton_2")
+        
         self.listWidget_3 = QtWidgets.QListWidget(self.frame)
+        self.listWidget_3.setStyleSheet("background-color: rgb(189, 255, 255);")
         self.listWidget_3.setGeometry(QtCore.QRect(20, 300, 171, 371))
-        #self.listWidget_3.setTabletTracking(False)
-        self.listWidget_3.setStyleSheet("background-color: rgb(220, 255, 247);")
-        self.listWidget_3.setGridSize(QtCore.QSize(0, 0))
-        self.listWidget_3.setObjectName("listWidget_3")
-        item = QtWidgets.QListWidgetItem()
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
-        item.setFont(font)
-        brush = QtGui.QBrush(QtGui.QColor(143, 148, 48))
-        brush.setStyle(QtCore.Qt.NoBrush)
-        item.setBackground(brush)
-        brush = QtGui.QBrush(QtGui.QColor(131, 120, 128))
-        brush.setStyle(QtCore.Qt.NoBrush)
-        item.setForeground(brush)
-        self.listWidget_3.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        item.setFont(font)
-        brush = QtGui.QBrush(QtGui.QColor(190, 213, 113))
-        brush.setStyle(QtCore.Qt.NoBrush)
-        item.setBackground(brush)
-        self.listWidget_3.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        item.setFont(font)
-        self.listWidget_3.addItem(item)
+        self.listWidget_3.setFont(font)
+        self.listWidget_3.setObjectName("listWidget_2")
+        
+        
+        
         self.label_22 = QtWidgets.QLabel(self.frame)
         self.label_22.setGeometry(QtCore.QRect(20, 260, 161, 31))
         font = QtGui.QFont()
@@ -482,6 +465,7 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_16.setObjectName("pushButton_16")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_2.setGeometry(QtCore.QRect(470, 280, 261, 71))
+        
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(24)
@@ -518,6 +502,14 @@ class fci_03_Ui_MainWindow(object):
         self.label_43.setObjectName("label_43")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_3.setGeometry(QtCore.QRect(470, 530, 71, 31))
+        
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
+        
+        
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -566,6 +558,12 @@ class fci_03_Ui_MainWindow(object):
         self.label_46.setObjectName("label_46")
         self.textEdit = QtWidgets.QTextEdit(self.frame)
         self.textEdit.setGeometry(QtCore.QRect(470, 590, 391, 41))
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.textEdit.setFont(font)
+        
         self.textEdit.setObjectName("textEdit")
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(750, 280, 141, 31))
@@ -597,7 +595,7 @@ class fci_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox.setFont(font)
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
+        #self.comboBox.addItem("")
         self.label_41 = QtWidgets.QLabel(self.frame)
         self.label_41.setGeometry(QtCore.QRect(750, 320, 141, 31))
         font = QtGui.QFont()
@@ -658,6 +656,10 @@ class fci_03_Ui_MainWindow(object):
         self.label_51.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_51.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_51.setObjectName("label_51")
+        
+        
+        self.buttongroup = QtWidgets.QButtonGroup()
+        
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_3.setGeometry(QtCore.QRect(1150, 310, 41, 31))
         self.radioButton_3.setChecked(False)
@@ -666,6 +668,7 @@ class fci_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_3.setFont(font)
         self.radioButton_3.setObjectName("radioButton_3")
+        
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_4.setGeometry(QtCore.QRect(1210, 310, 51, 31))
         font = QtGui.QFont()
@@ -673,7 +676,11 @@ class fci_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_4.setFont(font)
         self.radioButton_4.setObjectName("radioButton_4")
-        self.label_52 = QtWidgets.QLabel(self.frame)
+        
+        self.buttongroup.addButton(self.radioButton_3, 1)
+        self.buttongroup.addButton(self.radioButton_4, 2)
+        
+        self.label_52 = QtWidgets.QLabel(self.frame)        
         self.label_52.setGeometry(QtCore.QRect(650, 480, 121, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -715,13 +722,13 @@ class fci_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
         self.label_55 = QtWidgets.QLabel(self.frame)
         self.label_55.setGeometry(QtCore.QRect(470, 0, 311, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(18)
+        font.setPointSize(16)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
@@ -758,6 +765,11 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_10.setObjectName("pushButton_10")
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit.setGeometry(QtCore.QRect(20, 70, 91, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -785,6 +797,11 @@ class fci_03_Ui_MainWindow(object):
         self.radioButton_8.setObjectName("radioButton_8")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.groupBox_2)
         self.lineEdit_4.setGeometry(QtCore.QRect(20, 70, 91, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -809,8 +826,14 @@ class fci_03_Ui_MainWindow(object):
         self.label_56.setStyleSheet("color: rgb(255, 0, 0);")
         self.label_56.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_56.setObjectName("label_56")
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)       
+        
         self.lineEdit_5.setGeometry(QtCore.QRect(860, 10, 141, 31))
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -824,6 +847,35 @@ class fci_03_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        ##### Variables initialiseations #####
+        self.vehicle_no=""
+        self.materail_name=""
+        self.batch_id=""
+        self.status=""
+        self.first_wt_mode=""
+        self.first_wt_val=""            
+        self.second_wt_mode=""
+        self.second_wt_val=""
+        self.weight_type=""
+        self.accepted_bags=""
+        self.avg_bag_wt=""            
+        self.remark=""
+        self.driver_in_out="OUT"                  
+        self.proposed_bags=0            
+        self.target_storage=""
+        self.curr_truck_cnt=""
+        self.total_truck_cnt=""
+        self.contractor_id=""
+        self.contractor_name=""
+        self.device_location_type=""
+        self.status="FIRST"
+        self.current_slip_no=0
+        ##########
+            
+            
+            
+      
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -891,14 +943,16 @@ class fci_03_Ui_MainWindow(object):
         self.label_54.setText(_translate("MainWindow", "Target Storage:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Select"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Storage - Location 2"))
-        self.label_55.setText(_translate("MainWindow", "Batch Weighing - Source"))
+        self.label_55.setText(_translate("MainWindow", "Batch Weighing @ Site"))
         self.groupBox.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
+        self.radioButton_5.setChecked(True)
         self.radioButton_6.setText(_translate("MainWindow", "Tare"))
         self.pushButton_10.setText(_translate("MainWindow", "Update"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Second Wt - Manual"))
         self.radioButton_7.setText(_translate("MainWindow", "Gross"))
         self.radioButton_8.setText(_translate("MainWindow", "Tare"))
+        self.radioButton_8.setChecked(True)
         self.pushButton_12.setText(_translate("MainWindow", "Update"))
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
         
@@ -920,13 +974,77 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.gross_wt_onclick)
         self.pushButton_16.clicked.connect(self.tare_wt_onclick)
         self.pushButton_6.clicked.connect(self.reset_fun)
+        self.pushButton_5.clicked.connect(self.save_data)
+        self.pushButton_9.clicked.connect(self.fetch_via_search)
+        
         self.lineEdit_2.textChanged.connect(self.text_change_f)
+        self.comboBox.currentTextChanged.connect(self.batch_id_onchange)
         self.lineEdit_2.setMaxLength(12)
+        self.listWidget_3.doubleClicked.connect(self.fetch_via_first_wt_vehical_list)
+        #self.listWidget_2.doubleClicked.connect(self.fetch_via_second_wt_vehical_list)
+        self.pushButton_10.clicked.connect(self.mannual_update1)
+        self.pushButton_12.clicked.connect(self.mannual_update2)
+        
+        self.lineEdit.setText("0")
+        self.lineEdit_4.setText("0")
+        #self.lineEdit_5.setText("7777") #serach line edit
+        
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC ") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]).zfill(6))            
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT STORAGE_NAME||'-'|| STORAGE_LOCATION  FROM STORAGE_DETAILS ORDER BY STORAGE_NAME  ") 
+        for x in results:            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'WEIGHT_MST'") 
+        for x in results:            
+            self.label_19.setText(str(x[0]).zfill(6))
+        connection.close()
         
 
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
 
+
+    def mannual_update1(self,):
+        mode=""
+        if(self.radioButton_5.isChecked()):
+                mode="Gross"
+        else:
+                mode="Tare"
+        
+        if(mode != self.label_37.text()):
+                self.label_29.setText(str(mode))  
+                self.label_32.setText(self.lineEdit.text())
+                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
+            
+    def mannual_update2(self,):
+        mode=""            
+        if(self.radioButton_7.isChecked()):
+                mode="Gross"
+        else:
+                mode="Tare"        
+        if(mode != self.label_29.text()):
+                self.label_37.setText(str(mode))  
+                self.label_40.setText(self.lineEdit_4.text())
+                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
+                self.net_wt_calc()
 
     def text_change_f(self):
         #print("insedie finct ")
@@ -979,67 +1097,330 @@ class fci_03_Ui_MainWindow(object):
         # Vehical No
         self.lineEdit_2.setText("")
         
-        #Material Type
-        self.label_42.setText("--")
-        #Contractor Name
-        self.label_43.setText("--")
+        
         
         #Accpted Wt
         self.label_50.setText("0")
         
-        #Proposed Wt
+        #Proposed Bag count
         self.lineEdit_3.setText("0")
         
-        #Avg. Wt
-        self.label_53.setText("0")
+        #serial num for search
+        self.lineEdit_5.setText("")
         
-        #current truck count
-        self.label_24.setText("0")
+        #Avg. bag. Wt
+        self.label_53.setText("50")
         
-        #Total truck count
-        self.label_48.setText("0")
+        #remark
+        self.textEdit.setText("") 
+        
+       
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID=(SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC  LIMIT 1)") 
+        for x in results:            
+               #Material Type
+                self.label_42.setText(str(x[1]))
+                #Contractor Name
+                self.label_43.setText(str(x[3]))
+                 #Total truck count
+                self.label_48.setText(str(x[2]))
+        connection.close()
+       
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*)+1 FROM WEIGHT_MST WHERE BATCH_ID=(SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC  LIMIT 1)") 
+        for x in results:            
+                 #current truck count
+                 self.label_24.setText(str(x[0]))
+        connection.close()
+       
+        self.load_1st_wt_vehicles()
+        self.radioButton_4.setChecked(True)
+        self.groupBox.hide()
+        self.groupBox_2.hide()
+        self.radioButton.setChecked(True)
+       
+       
+       
+    def batch_id_onchange(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID='"+self.comboBox.currentText()+"'") 
+        for x in results:            
+               #Material Type
+                self.label_42.setText(str(x[1]))
+                #Contractor Name
+                self.label_43.setText(str(x[3]))
+                 #Total truck count
+                self.label_48.setText(str(x[2]))
+        connection.close()
+        
+        
+        
+        
         
     def gross_wt_onclick(self):
         #print("self.label_46 : "+str(self.label_46.text()))
-        self.current_slip_no="0"
-        self.current_value="200"
+        
         if(str(self.current_slip_no) == "0"):
                self.label_29.setText("Gross")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText(str(self.current_value))
-               #self.label_29.setText(str("125"))
+               #self.label_32.setText(str(self.current_value))
+               self.label_32.setText(str("200"))
                
         else:     
                self.label_37.setText("Gross")
-               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
-               self.label_39.setText(str(self.current_value))
-               #self.label_35.setText(str("125"))
-               self.label_40.setText(datetime.datetime.now().strftime("%H:%M"))
+               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
+               self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
+               #self.label_40.setText(str(self.current_value))
+               self.label_40.setText(str("200"))
                        
         #self.net_wt_calc()
         
         
                    
     def tare_wt_onclick(self):
-        self.current_slip_no="0"
-        self.current_value="120"
+        
+        
         if(str(self.current_slip_no) == "0"):
                self.label_29.setText("Tare")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText(str(self.current_value))
-               #self.label_29.setText(str("125"))
+               #self.label_32.setText(str(self.current_value))
+               self.label_32.setText(str("80"))
                
         else:     
                self.label_37.setText("Tare")
-               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
-               self.label_39.setText(str(self.current_value))
-               #self.label_35.setText(str("125"))
-               self.label_40.setText(datetime.datetime.now().strftime("%H:%M"))
+               self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
+               self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
+               #self.label_40.setText(str(self.current_value))
+               self.label_40.setText(str("80"))
                        
-        #self.net_wt_calc()
-   
+        self.net_wt_calc()
+     
+    def net_wt_calc(self):        
+        print(" self.label_32.text : "+str(self.label_32.text()))
+        print(" self.label_40.text : "+str(self.label_40.text()))
+        self.first_wt=str(self.label_32.text())
+        self.second_wt=str(self.label_40.text())
+        if(int(self.first_wt) > 0 and  int(self.second_wt) > 0):            
+                if(int(self.first_wt) >= int(self.second_wt)):            
+                      self.net_wt=(int(self.first_wt)-int(self.second_wt))             
+                      self.label_45.setText(str(self.net_wt))
+                else:
+                      self.net_wt=(int(self.second_wt)-int(self.first_wt))             
+                      self.label_45.setText(str(self.net_wt))
+                      
+    def load_1st_wt_vehicles(self):
+        self.listWidget_2.clear()
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST'")       
+        for x in results:        
+               self.listWidget_3.addItem(str(x[0]))
+        connection.close() 
+    
+    
+    def fetch_via_search(self):
+        if(str(self.lineEdit_5.text()) != ""):
+                self.label_56.hide()
+                self.current_slip_no=str(self.lineEdit_5.text())
+                print("Slip No :"+str(self.current_slip_no))        
+                self.fetch_slip_data()
+        else:
+                self.label_56.setText("Slip No. is empty.")
+                self.label_56.show() 
+        
+         
+    def fetch_via_first_wt_vehical_list(self):
+        v_str=str(self.listWidget_3.currentItem().text())
+        self.re_str = str(v_str)                
+        self.current_slip_no= re.search('\(([^)]+)', self.re_str).group(1)
+        
+        print("self.current_slip_no:"+str(self.current_slip_no))
+        self.fetch_slip_data()
+        
+    
+    def fetch_slip_data(self):        
+        self.vehicle_no=""
+        connection = sqlite3.connect("fci.db")
+        #print("SELECT SERIAL_ID, PARTY_NAME,OPERATOR_NAME,FPRM_NO,MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,FIRST_WT_CRTEATED_ON,NET_WEIGHT_VAL,VEHICLE_NO,AMOUNT,TRANSPORT_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON  FROM WEIGHT_MST WHERE SERIAL_ID='"+self.slip_no+"'")
+        results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),BATCH_ID,TARGET_STORAGE FROM WEIGHT_MST WHERE SERIAL_ID='"+self.current_slip_no+"'")       
+        for x in results:        
+            #self.label_.setText(str(x[0]).zfill(4))
+            self.label_19.setText(str(x[0]).zfill(6))
+            self.current_slip_no=str(x[0])
+             # First Wt
+            self.label_29.setText(str(x[2]))         
+            self.label_30.setText(str(x[4])[0:11])
+            self.label_31.setText(str(x[4])[11:16])
+            self.label_32.setText(str(x[3]))
+         
+            # Vehical No
+            self.lineEdit_2.setText(str(x[5]))
+           
+            #second Wt                      
+            self.label_37.setText(str(x[6]))
+            self.label_38.setText(str(x[8])[0:11])        
+            self.label_39.setText(str(x[8])[11:16])
+            self.label_40.setText(str(x[7]))
+            
+            #Net Wt
+            self.label_45.setText("0")
+                
+            #remark
+            self.textEdit.setText(str(x[10])) 
+            
+            if(str(x[11]) == "OUT"):
+                self.radioButton_4.setChecked(True)
+                self.radioButton_3.setChecked(False)
+                
+            else:
+               self.radioButton_3.setChecked(True)
+               self.radioButton_4.setChecked(False)
+            
+            
+            
+            
+            #Accpted Bags
+            self.label_50.setText(str(x[18]))
+            
+            #Proposed Bag count
+            self.lineEdit_3.setText(str(x[12]))
+            
+            #Avg. bag. Wt
+            self.label_53.setText("50")
+            #current truc count
+            self.label_24.setText(str(x[14]))
+            #Total Truck count
+            self.label_48.setText(str(x[15]))
+            
+            #batch id
+            self.comboBox.setCurrentText(str(x[19]))
+            
+            #Target Storage
+            self.comboBox_2.setCurrentText(str(x[20]))
+            self.status="SECOND"
+            
+        connection.close()       
+     
+    def save_data(self):        
+        self.vehicle_no=str(self.lineEdit_2.text())        
+        if(len(self.vehicle_no) >= 4):            
+            self.materail_name=str(self.label_42.text())
+            self.batch_id=self.comboBox.currentText()
+            self.status=self.status
+            self.first_wt_mode=self.label_29.text()
+            self.first_wt_val=self.label_32.text()            
+            #self.second_wt_mode=self.label_37.text()
+            #self.second_wt_val=self.label_39.text()
+            if(self.radioButton_2.isChecked()):                
+                    self.weight_type="MANUAL"
+            else :
+                    self.weight_type="AUTO"
+                    
+            self.accepted_bags=self.label_50.text()
+            self.avg_bag_wt=self.label_53.text()          
+            self.remark=self.textEdit.toPlainText()
+            self.driver_in_out="OUT"
+            
+            if(self.radioButton_4.isChecked()):                
+                    self.driver_in_out="OUT"
+            else :
+                    self.driver_in_out="IN"
+            
+            
+            
+            if(self.lineEdit_3.text() != ""):
+                  self.proposed_bags=str(self.lineEdit_3.text())
+            else:       
+                  self.proposed_bags=0
+            
+            self.target_storage=self.comboBox_2.currentText()
+            self.curr_truck_cnt=self.label_24.text()
+            self.total_truck_cnt=self.label_48.text()
+            self.contractor_id="0"
+            self.contractor_name=self.label_43.text()
+            self.device_location_type="SITE"
+            self.accepted_bags=self.label_50.text()
+            
+            
+            
+            self.current_slip_no="0"     
+            if(str(self.current_slip_no)=="0"):
+               connection = sqlite3.connect("fci.db")
+               results=connection.execute("SELECT max(SERIAL_ID)+1 FROM WEIGHT_MST")       
+               for x in results:
+                   self.current_slip_no=str(x[0])
+               connection.close()    
+            else:
+                self.current_slip_no=str(self.label_19.text())
+                
+                
+            if(len(self.vehicle_no) >= 4):
+                 if(int(self.proposed_bags) > 0):
+                     if(self.status=="FIRST"):                     
+                         self.label_56.setText("First Weight loaded.")
+                         self.label_56.show()                        
+                         
+                         ### insert  Statements
+                         connection = sqlite3.connect("fci.db")
+                         with connection:                            
+                                    cursor = connection.cursor()       
+                                    print(" First Wt Date :"+str(self.label_30.text())+" First  Wt Time:"+str(self.label_31.text()))
+                                    cr_date_str=str(self.label_30.text()+" "+str(self.label_31.text())+":00")
+                                    #print("cr_date_str:"+str(cr_date_str))
+                                    cr_date= datetime.datetime.strptime(cr_date_str, '%Y-%m-%d %H:%M:%S')
+                                    
+                                    print("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
+                                        +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE)"
+                                                   +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
+                                                   +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
+                                                   +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"')")
+                                    
+                                    cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
+                                        +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,ACCPTED_BAGS)"
+                                                   +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
+                                                   +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
+                                                   +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"')")
+                                                  
+                         connection.commit();
+                         connection.close()
+                         print("Data Inserted !!!!") 
+                         
+                     elif(self.status=="SECOND"):
+                         
+                         if(self.label_29.text() != self.label_37.text()):
+                             if(int(self.label_45.text()) > 0 ):
+                                 self.label_56.setText("Successfully Lodaed Second Weight.")
+                                 self.label_56.show()
+                                 
+                             else:
+                                 self.label_56.setText("Error:Net Wt Should Not Zero.")
+                                 self.label_56.show()
+                         else:
+                                 self.label_56.setText("Error:Both Weights are of same Type.")
+                                 self.label_56.show()
+                         
+                         
+                         
+                        ### Update Statement
+                         
+                         
+                         
+                         
+                 
+                     else:
+                         self.label_56.setText("Weight FIRST /SECOND ?.")
+                         self.label_56.show()
+                 else:
+                     self.label_56.setText("Proposed Bags should not  empty Or zero.")
+                     self.label_56.show()
+                         
+                 
+        else:
+                 self.label_56.setText("Vehical Number is empty.")
+                 self.label_56.show() 
+     
 
 if __name__ == "__main__":
     import sys
