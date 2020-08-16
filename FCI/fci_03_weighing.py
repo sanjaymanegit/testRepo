@@ -15,6 +15,7 @@ import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 import re
+import os,sys
 
 class fci_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -968,7 +969,7 @@ class fci_03_Ui_MainWindow(object):
         self.listWidget_2.doubleClicked.connect(self.fetch_via_second_wt_vehical_list)
         self.pushButton_10.clicked.connect(self.mannual_update1)
         self.pushButton_12.clicked.connect(self.mannual_update2)
-        
+        self.pushButton_8.clicked.connect(self.print_recipt)
         self.lineEdit.setText("0")
         self.lineEdit_4.setText("0")
         #self.lineEdit_5.setText("7777") #serach line edit
@@ -996,7 +997,7 @@ class fci_03_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'WEIGHT_MST'") 
         for x in results:            
-            self.label_19.setText(str(x[0]).zfill(6))
+            self.label_19.setText(str(x[0]))
         connection.close()
         
 
@@ -1115,7 +1116,7 @@ class fci_03_Ui_MainWindow(object):
         results=connection.execute("SELECT COUNT(*)+1 FROM WEIGHT_MST WHERE BATCH_ID=(SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC  LIMIT 1)") 
         for x in results:            
                  #current truck count
-                 self.label_24.setText(str(x[0]))
+                 self.label_24.setText(str(x[0]).zfill(3))
         connection.close()
        
         self.load_1st_wt_vehicles()
@@ -1214,7 +1215,20 @@ class fci_03_Ui_MainWindow(object):
         results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+self.comboBox.currentText()+"'")       
         for x in results:        
                self.listWidget_2.addItem(str(x[0]))
-        connection.close() 
+        connection.close()
+        
+    def print_recipt(self):
+        self.serial_id=int(self.label_19.text())
+        print("Slip Id : "+str(str(self.serial_id)))
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT STATUS FROM WEIGHT_MST WHERE SERIAL_ID ='"+str(self.serial_id)+"'")
+        for x in results:
+                if (str(x[0])=='SECOND'):
+                        os.system("./job_print_recipt.sh")
+                        #os.system("./job_print_recipt.sh")
+                        #os.system("./job_print_recipt.sh")
+                else:
+                        os.system("./job_print_recipt.sh")
     
     def fetch_via_search(self):
         if(str(self.lineEdit_5.text()) != ""):
@@ -1306,12 +1320,12 @@ class fci_03_Ui_MainWindow(object):
             #Avg. bag. Wt
             self.label_53.setText("50")
             #current truc count
-            self.label_24.setText(str(x[14]))
+            self.label_24.setText(str(x[14]).zfill(3))
             #Total Truck count
             self.label_48.setText(str(x[15]))
             
             #batch id
-            self.comboBox.setCurrentText(str(x[19]))
+            self.comboBox.setCurrentText(str(x[19]).zfill(6))
             
             #Target Storage
             self.comboBox_2.setCurrentText(str(x[20]))

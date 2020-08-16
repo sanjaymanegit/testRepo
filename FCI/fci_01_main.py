@@ -12,7 +12,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 import datetime
-
+import sys
 import time
 from PyQt5.QtCore import QDate
 import sys,os

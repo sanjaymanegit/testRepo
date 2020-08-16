@@ -9,9 +9,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
+from PyQt5.QtCore import QDate
+import os,sys
 
-
-class Ui_MainWindow(object):
+class fci_10_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -203,8 +208,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Batch Report as on 07 Aug 2020"))
-        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
+        self.label.setText(_translate("MainWindow", "Batch Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
+        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 :00"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -247,13 +252,98 @@ class Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
         self.label_23.setText(_translate("MainWindow", "No. Of Batches :"))
         self.label_9.setText(_translate("MainWindow", "5450"))
-
+        self.pushButton_5.clicked.connect(MainWindow.close)
+        self.startx()
+    
+    def startx(self):
+        self.whr_sql=""
+        self.whr_sql2=""
+        self.pushButton_8.clicked.connect(self.select_all_data)
+        self.pushButton_7.clicked.connect(self.print_report)
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_BATCH_ID  FROM GLOBAL_VAR") 
+        for x in results:            
+                 self.label_2.setText(str(x[1]))
+                 if(self.label_2.text() == 'DATE_RANGE'):
+                     self.label_36.setText("Report selected for date range "+str(x[2])+" to "+str(x[3])+".")
+                     
+                     self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
+                     self.whr_sql2=" WHERE strftime('%Y-%m-%d',FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                 elif(self.label_2.text() == 'BY_BATCH_ID'):
+                     self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
+                     
+                     self.whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
+                     self.whr_sql2="WHERE BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
+                     
+                 else:
+                     self.label_36.setText("Report selected for unknow.")
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        #print("select count(BATCH_ID),sum(TOTAL_TRUCKS),SUM(TOTAL_NET_WT) from BATCH_LIST_VW "+str(self.whr_sql))
+        results=connection.execute("select count(BATCH_ID),sum(TOTAL_TRUCKS),SUM(TOTAL_NET_WT) from BATCH_LIST_VW "+str(self.whr_sql)) 
+        for x in results:            
+                     self.label_9.setText(str(x[0]))
+                     self.label_11.setText(str(x[1]))
+                     self.label_8.setText(str(x[2]))
+        connection.close()
+        
+        self.select_all_data()
+     
+    def print_report(self):        
+         os.system("./job_print_report.sh")
+                        
+    def select_all_data(self):
+        
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 100)    
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 200)    
+        self.tableWidget.setColumnWidth(10, 100)
+        
+        
+        
+      
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Kg','Tare Wt. Kg','Gross Wt. Kg','Target Location'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,ACCPTED_BAGS ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,NET_WEIGHT_VAL,TARE_WT_VAL,GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)     
+        
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_10_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
