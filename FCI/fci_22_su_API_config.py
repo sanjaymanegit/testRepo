@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_22_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -53,6 +53,18 @@ class Ui_MainWindow(object):
         self.pushButton_17 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_17.setGeometry(QtCore.QRect(370, 550, 61, 31))
         self.pushButton_17.setObjectName("pushButton_17")
+       
+        self.pushButton_19 = QtWidgets.QPushButton(self.frame)       
+        self.pushButton_19.setGeometry(QtCore.QRect(900, 20, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.pushButton_19.setFont(font)
+        self.pushButton_19.setObjectName("pushButton_18")
+        
         self.label_32 = QtWidgets.QLabel(self.groupBox_2)
         self.label_32.setGeometry(QtCore.QRect(20, 40, 91, 41))
         font = QtGui.QFont()
@@ -230,6 +242,7 @@ class Ui_MainWindow(object):
         self.pushButton_15.setText(_translate("MainWindow", "Save"))
         self.pushButton_16.setText(_translate("MainWindow", "Delete"))
         self.pushButton_17.setText(_translate("MainWindow", "Reset"))
+        self.pushButton_19.setText(_translate("MainWindow", "Return"))
         self.label_32.setText(_translate("MainWindow", "API ID :"))
         self.label_33.setText(_translate("MainWindow", "API URL :"))
         self.label_34.setText(_translate("MainWindow", "JSON INPUT String:"))
@@ -256,13 +269,15 @@ class Ui_MainWindow(object):
         self.label_35.setText(_translate("MainWindow", "Test Output :"))
         self.label_2.setText(_translate("MainWindow", "Material Category: Successfully Saved."))
         self.label_22.setText(_translate("MainWindow", "Online"))
+        
+        self.pushButton_19.clicked.connect(MainWindow.close)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_22_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

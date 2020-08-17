@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 import datetime
 import time
 from PyQt5.QtCore import QDate
@@ -115,14 +116,30 @@ class fci_18_Ui_MainWindow(object):
 "color: rgb(170, 0, 0);")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
+        
+        self.radioButton = QtWidgets.QRadioButton(self.groupBox_2)
+        self.radioButton.setGeometry(QtCore.QRect(120, 40, 141, 41))
+        self.radioButton.setObjectName("radioButton")
+        
+        self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox_2)
+        self.radioButton_2.setGeometry(QtCore.QRect(200, 40, 141, 41))
+        self.radioButton_2.setObjectName("radioButton_2")
+        
         self.checkBox = QtWidgets.QCheckBox(self.groupBox_2)
         self.checkBox.setGeometry(QtCore.QRect(120, 90, 141, 41))
         self.checkBox.setObjectName("checkBox")
+        
         self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox_2)
-        self.checkBox_2.setGeometry(QtCore.QRect(350, 90, 141, 41))
+        self.checkBox_2.setGeometry(QtCore.QRect(280, 90, 141, 41))
         self.checkBox.setChecked(True)
         self.checkBox_2.setChecked(True)
         self.checkBox_2.setObjectName("checkBox_2")
+        
+        self.checkBox_3 = QtWidgets.QCheckBox(self.groupBox_2)
+        self.checkBox_3.setGeometry(QtCore.QRect(450, 90, 141, 41))       
+        self.checkBox_3.setChecked(True)
+        self.checkBox_3.setObjectName("checkBox_3")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -131,6 +148,9 @@ class fci_18_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.device_location="SITE"
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -149,8 +169,13 @@ class fci_18_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Format"))
         self.label_5.setText(_translate("MainWindow", "Done."))
         self.label_5.hide()
-        self.checkBox.setText(_translate("MainWindow", "Clean All Data"))
+        self.checkBox.setText(_translate("MainWindow", "Weighing Data"))
         self.checkBox_2.setText(_translate("MainWindow", "Set Default Data"))
+        self.checkBox_3.setText(_translate("MainWindow", "Master Data Only"))
+        
+        self.radioButton.setText("Site")
+        self.radioButton.setChecked(True)
+        self.radioButton_2.setText("Storage")
         ## default to all 
         self.pushButton.clicked.connect(self.login_page)
         self.pushButton_3.clicked.connect(MainWindow.close)
@@ -191,35 +216,50 @@ class fci_18_Ui_MainWindow(object):
         
     def clean_data(self):
         if(self.checkBox.isChecked()):
-            connection = sqlite3.connect("wt.db")          
+            connection = sqlite3.connect("fci.db")          
             with connection:        
                         cursor = connection.cursor()                    
                         cursor.execute(" DELETE FROM WEIGHT_MST")
+                        cursor.execute(" DELETE FROM BATCH_MST")
             connection.commit();
             connection.close()
-            
-            connection = sqlite3.connect("services.db")          
-            with connection:        
-                        cursor = connection.cursor()                    
-                        cursor.execute(" DELETE FROM SMS_HISTORY")                        
-            connection.commit();
-            connection.close()
-            
-            
             self.label_3.setText("Done.") 
             self.label_3.show()
+        
         if(self.checkBox_2.isChecked()):            
-            connection = sqlite3.connect("wt.db")          
+            connection = sqlite3.connect("fci.db")          
             with connection:        
                         cursor = connection.cursor()                    
                         cursor.execute("UPDATE SERIVES_SET SET SS_PWD='12345' ")
-                        cursor.execute("UPDATE USER_RIGHT_SET SET UR_PWD='ss12345'")
-                        cursor.execute("DELETE FROM RATES_MST")
-                        cursor.execute("DELETE FROM TARE_WT_MST")
+                        cursor.execute("UPDATE USER_RIGHT_SET SET UR_PWD='ss12345'")                       
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
-            self.label_3.show()        
+            self.label_3.show()
+            
+        if(self.checkBox_3.isChecked()):            
+            connection = sqlite3.connect("fci.db")          
+            with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("DELETE FROM MATERIAL_TYPES")
+                        cursor.execute("DELETE FROM CONTRACTOR_MST")
+            connection.commit();
+            connection.close()
+            self.label_3.setText("Done.") 
+            self.label_3.show()
+            
+            
+        if(self.radioButton.isChecked()):
+            self.device_location="SITE"
+        elif(self.radioButton_2.isChecked()):
+            self.device_location="STORAGE"
+            
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_LOCATION_TYPE='"+str(self.device_location)+"' ")                        
+        connection.commit();
+        connection.close()    
 
 if __name__ == "__main__":
     import sys

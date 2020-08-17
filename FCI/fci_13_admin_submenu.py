@@ -86,8 +86,6 @@ class fci_13_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(MainWindow.close)
         self.startx()
 
-
-
     def startx(self):
         self.pushButton_5.clicked.connect(self.open_new_window2)
         self.pushButton_4.clicked.connect(self.open_new_window3)
