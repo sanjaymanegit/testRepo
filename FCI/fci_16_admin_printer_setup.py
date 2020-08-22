@@ -10,8 +10,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import datetime
+import time
+from PyQt5.QtCore import QDate
+import sys,os
+import sqlite3
 
-class Ui_MainWindow(object):
+class fci_16_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1222, 701)
@@ -109,6 +114,15 @@ class Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox_2)
+        self.lineEdit_2.setGeometry(QtCore.QRect(550, 80, 100, 41))
+        self.lineEdit_2.setText("")        
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_2.hide()
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -117,6 +131,8 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.current_printer_text=""
+        self.current_unknown_printer_txt=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -134,16 +150,92 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(_translate("MainWindow", "Printer Details"))
         self.pushButton_5.setText(_translate("MainWindow", "Save"))
         self.label_8.setText(_translate("MainWindow", "Printer Model :"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "EPSON_LX-300"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "TVS - DOT MX"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "HP -  2000 ZZ"))
-
+        self.comboBox.setItemText(0, _translate("MainWindow", "Epson"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "TVS"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "HP"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "Unknown"))
+        self.comboBox.currentTextChanged.connect(self.combo_on_change)
+        self.pushButton_5.clicked.connect(self.save_printer_key)
+        self.label_3.hide()
+        self.groupBox_2.hide()
+        self.pushButton.clicked.connect(self.login_page)
+        self.pushButton_3.clicked.connect(MainWindow.close)
+        self.pushButton_2.clicked.connect(self.reset_loging)
+    
+      
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+    def device_date(self):     
+        self.label_4.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+        
+    def login_page(self):
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'FACTORY_RESET' AND STATUS = 'ACTIVE'") 
+        for x in results:  
+            if(str(self.lineEdit.text()) == str(x[0])):          
+                self.go_ahead_flg="No"
+                self.groupBox_2.show()               
+                
+            else:
+                self.label_3.show()   
+                self.groupBox_2.hide()
+                 
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT PRINTER_KEY FROM GLOBAL_VAR") 
+        for x in results:
+            self.current_printer_text=str(x[0])
+            if(self.current_printer_text == 'Epson'):
+                self.comboBox.setCurrentText("Epson")
+            elif(self.current_printer_text == 'HP'):
+                self.comboBox.setCurrentText("HP")
+            elif(self.current_printer_text == 'TVS'):
+                self.comboBox.setCurrentText("TVS")
+            else:
+                self.comboBox.setCurrentText("Unknown")
+                self.lineEdit_2.setText(str(x[0]))
+        connection.close()
+    
+    def reset_loging(self):
+        self.lineEdit.setText("")
+        self.label_3.hide()
+        self.groupBox_2.hide()
+    
+    def combo_on_change(self):
+        self.label_3.hide()
+        if(self.comboBox.currentText() == "Unknown"):
+            self.lineEdit_2.show()
+        else:
+            self.lineEdit_2.hide()
+            
+    def save_printer_key(self):
+        print("xxx: "+str(self.comboBox.currentText()))
+        print("yyy: "+str(self.lineEdit_2.text()))
+        self.current_printer_text=str(self.comboBox.currentText())
+        self.current_unknown_printer_txt=str(self.lineEdit_2.text())
+        self.label_3.hide()
+        connection = sqlite3.connect("fci.db")
+        with connection:
+                    cursor = connection.cursor()
+                    if(self.current_printer_text != 'Unknown'):
+                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_printer_text)+"' ")
+                    else:
+                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_unknown_printer_txt)+"' ")
+        connection.commit();
+        connection.close()
+        self.label_3.setText("Sucessfully Saved.")
+        self.label_3.show()
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_16_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

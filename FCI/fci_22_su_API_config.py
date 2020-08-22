@@ -9,7 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.Qt import QTableWidgetItem
+import sqlite3
+import datetime
 
 class fci_22_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,9 +30,7 @@ class fci_22_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
+        
         self.label_47.setFont(font)
         self.label_47.setStyleSheet("color: rgb(170, 0, 255);")
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
@@ -243,9 +243,9 @@ class fci_22_Ui_MainWindow(object):
         self.pushButton_16.setText(_translate("MainWindow", "Delete"))
         self.pushButton_17.setText(_translate("MainWindow", "Reset"))
         self.pushButton_19.setText(_translate("MainWindow", "Return"))
-        self.label_32.setText(_translate("MainWindow", "API ID :"))
-        self.label_33.setText(_translate("MainWindow", "API URL :"))
-        self.label_34.setText(_translate("MainWindow", "JSON INPUT String:"))
+        self.label_32.setText(_translate("MainWindow", "Api Id :"))
+        self.label_33.setText(_translate("MainWindow", "Api URL :"))
+        self.label_34.setText(_translate("MainWindow", "Json :"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -271,7 +271,190 @@ class fci_22_Ui_MainWindow(object):
         self.label_22.setText(_translate("MainWindow", "Online"))
         
         self.pushButton_19.clicked.connect(MainWindow.close)
-
+        
+        self.c_select_all_data()
+        self.c_rest_fun()
+        self.tableWidget.doubleClicked.connect(self.c_fetch_data_from_tw)
+        self.pushButton_14.clicked.connect(self.c_add_click) 
+        self.pushButton_15.clicked.connect(self.c_edit_click)       
+        self.pushButton_16.clicked.connect(self.c_delete_click)
+        self.pushButton_17.clicked.connect(self.c_rest_fun)
+       
+       
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+        
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    
+    #Contractors            
+    def c_fetch_data_from_tw(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget.item(row, 0).text())
+            self.lineEdit_21.setText(str(self.tableWidget.item(row, 0).text())) 
+            self.textEdit.setText(str(self.tableWidget.item(row, 1).text()))
+            self.textEdit_2.setText(str(self.tableWidget.item(row, 2).text()))
+            self.api_method='POST'
+            
+            if(self.tableWidget.item(row, 1).text()=='GET'):
+                    self.api_method='GET'
+            else:
+                    self.api_method='POST'
+            
+            self.pushButton_14.setDisabled(True) #add
+            self.pushButton_15.setEnabled(True)  #save
+            self.pushButton_16.setEnabled(True) #delete           
+            self.pushButton_17.setEnabled(True) #reset
+            
+        else:    
+            self.label_2.setText("Please Select the record.")
+            self.label_2.show()
+            
+           
+    def c_rest_fun(self):
+        self.lineEdit_21.setText("1")  
+        self.textEdit.setText("") 
+        self.textEdit_2.setText("")         
+        
+        self.pushButton_14.setEnabled(True) #add
+        self.pushButton_15.setDisabled(True)  #save
+        self.pushButton_16.setDisabled(True) #delete           
+        self.pushButton_17.setEnabled(True) #reset
+        
+        self.label_2.hide()
+        self.c_select_all_data()        
+  
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'API_MST'")       
+        for x in results:           
+                 self.lineEdit_21.setText(str(x[0]).zfill(6))            
+        connection.close()         
+            
+   
+    def c_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.c_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.c_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.c_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def c_add_click(self):
+        self.operation_flg="ADD"       
+        self.c_load_data()
+        
+    def c_add_data(self):
+        self.api_method='POST'
+        if( self.radioButton.isChecked()):
+            self.api_method='GET'
+        else:
+            self.api_method='POST'
+        if(self.lineEdit_21.text() != ""):            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO API_MST(API_METHOD,API_URL,API_JSON) VALUES('"+str(self.api_method)+"','"+self.textEdit.toPlainText()+"','"+self.textEdit_2.toPlainText()+"')")                    
+            connection.commit();                    
+            connection.close()  
+      
+            self.label_2.setText("Contractor:Record Added Successfully.")
+            self.label_2.show()
+        else :
+            self.label_2.setText("Contractor:Id is Empty.")
+            self.label_2.show()
+            
+        self.c_select_all_data()
+    
+    def c_edit_click(self):
+        self.api_method='POST'
+        if( self.radioButton.isChecked()):
+            self.api_method='GET'
+        else:
+            self.api_method='POST'
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.c_load_data()
+        else:    
+            self.label_2.setText("Contractor:Please Select the record.")
+            self.label_2.show() 
+    
+    def c_edit_data(self):
+        if(self.lineEdit_21.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE API_MST SET API_METHOD='"+str(self.api_method)+"',API_URL='"+self.textEdit.toPlainText()+"',API_JSON='"+self.textEdit_2.toPlainText()+"' WHERE  API_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()   
+       
+        self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.label_2.show()
+        self.c_select_all_data()
+    
+    def c_delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.c_load_data()
+        else:    
+            self.label_2.setText("Contractor:Please Select the record.")
+            self.label_2.show()        
+     
+      
+    def c_delete_data(self):
+        if(self.lineEdit_21.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM API_MST WHERE API_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            
+            self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.label_2.show()
+            
+            self.c_select_all_data()
+            
+         
+    def c_select_all_data(self):     
+        self.c_delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+      
+        self.tableWidget.setHorizontalHeaderLabels(['Api ID.','Method', ' Api Url ', 'Json','Status','Outout'] )       
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select API_ID,API_METHOD,API_URL,API_JSON ,'','' FROM API_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def c_delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)        
+            
+    
 
 if __name__ == "__main__":
     import sys

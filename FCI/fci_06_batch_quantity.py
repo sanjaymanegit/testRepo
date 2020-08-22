@@ -9,9 +9,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
+from PyQt5.QtCore import QDate
+import os,sys
 
 
-class Ui_MainWindow(object):
+class fci_06_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -36,9 +41,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
+        
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
@@ -368,37 +371,123 @@ class Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(10)
         item.setText(_translate("MainWindow", "Status"))
         self.label_22.setText(_translate("MainWindow", "Batch Id :"))
-        self.label_23.setText(_translate("MainWindow", "Accpted Weight (Kg) :"))
-        self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_2.setText(_translate("MainWindow", " B000980"))
-        self.label_29.setText(_translate("MainWindow", "Net. Weight(Kg) :"))
-        self.pushButton_5.setText(_translate("MainWindow", "Return"))
-        self.pushButton_7.setText(_translate("MainWindow", "Print "))
+        #self.label_23.setText(_translate("MainWindow", "Accpted Weight (Kg) :"))
+        #self.label_7.setText(_translate("MainWindow", "5466"))
+        self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_6.setText(_translate("MainWindow", "Rice -232"))
-        self.label_7.setText(_translate("MainWindow", "5466"))
+        
+        self.label_29.setText(_translate("MainWindow", "Total.Net.Wt.(Kg) :"))
         self.label_8.setText(_translate("MainWindow", "5450"))
+        self.pushButton_5.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_7.setText(_translate("MainWindow", "Print Batch "))
+       
+        
+       
         self.label_33.setText(_translate("MainWindow", "Status :"))
-        self.label_34.setText(_translate("MainWindow", "Total  Loss in wt (Kg) :"))
+        self.label_34.setText(_translate("MainWindow", "Total  Bags. :"))
         self.label_9.setText(_translate("MainWindow", "120"))
         self.label_10.setText(_translate("MainWindow", "In Progress"))
-        self.pushButton_8.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
-        self.label_31.setText(_translate("MainWindow", "Received Trucks :"))
-        self.label_11.setText(_translate("MainWindow", "150"))
-        self.label_12.setText(_translate("MainWindow", "150"))
+        self.label_11.setText(_translate("MainWindow", "250"))
+        #self.label_31.setText(_translate("MainWindow", "Received Trucks :"))        
+        #self.label_12.setText(_translate("MainWindow", "150"))
         self.label_35.setText(_translate("MainWindow", "Contractor Name :"))
         self.label_13.setText(_translate("MainWindow", "xxxxxx  dfgfdg"))
-        self.label_36.setText(_translate("MainWindow", "Storage Loss in wt (Kg) :"))
-        self.label_14.setText(_translate("MainWindow", "30"))
-        self.label_37.setText(_translate("MainWindow", "Storage Slots:"))
-        self.label_15.setText(_translate("MainWindow", "22"))
+        #self.label_36.setText(_translate("MainWindow", "Storage Loss in wt (Kg) :"))
+        #self.label_14.setText(_translate("MainWindow", "30"))
+        #self.label_37.setText(_translate("MainWindow", "Storage Slots:"))
+        #self.label_15.setText(_translate("MainWindow", "22"))
+        self.pushButton_8.clicked.connect(MainWindow.close)
+        self.startx()
 
+
+
+    def startx(self):
+        print("x")
+        self.load_batch_data()
+        self.select_all_data()
+        self.pushButton_7.clicked.connect(self.print_report)
+        self.pushButton_5.clicked.connect(self.select_all_data)
+        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))  
+      
+    def load_batch_data(self):        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,ACCPT_WT_KG,RECV_BAGS_CNT,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID IN (SELECT BATCH_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                 self.label_2.setText(str(x[0]).zfill(4))
+                 self.label_6.setText(str(x[1]))
+                 self.label_8.setText(str(x[2]).zfill(6))
+                 self.label_9.setText(str(x[3]).zfill(4))
+                 self.label_13.setText(str(x[4]))
+        connection.close()
+    
+    def print_report(self):
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET REPORT_ENTITY='BATCH',REPORT_BY='BY_BATCH_ID',REPORT_FROM_DATE=null,REPORT_TO_DATE=null,REPORT_BATCH_ID='"+self.label_2.text()+"'")
+        connection.commit();                    
+        connection.close()
+        os.system("./job_print_report.sh")
+    
+    def select_all_data(self):
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 100)    
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 200)    
+        self.tableWidget.setColumnWidth(10, 100)
+        
+        
+        
+      
+        self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.Kg','Tare Wt. Kg','Gross Wt. Kg','Target Location'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,ACCPTED_BAGS ,MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,NET_WEIGHT_VAL,TARE_WT_VAL,GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i) 
+   
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_06_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

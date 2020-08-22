@@ -9,9 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sqlite3
+import re
+import datetime
+import time
 
-
-class Ui_MainWindow(object):
+class fci_25_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -91,9 +94,7 @@ class Ui_MainWindow(object):
         self.groupBox_7.setObjectName("groupBox_7")
         self.comboBox = QtWidgets.QComboBox(self.groupBox_7)
         self.comboBox.setGeometry(QtCore.QRect(60, 30, 101, 31))
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        self.comboBox.setObjectName("comboBox")        
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
         self.pushButton_9.setGeometry(QtCore.QRect(1160, 80, 91, 41))
         font = QtGui.QFont()
@@ -148,6 +149,13 @@ class Ui_MainWindow(object):
         self.label_24.setObjectName("label_24")
         self.listWidget = QtWidgets.QListWidget(self.frame)
         self.listWidget.setGeometry(QtCore.QRect(20, 240, 241, 441))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.listWidget.setFont(font)        
         self.listWidget.setObjectName("listWidget")
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(730, 210, 511, 381))
@@ -173,6 +181,7 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_6.setFont(font)
         self.comboBox_6.setObjectName("comboBox_6")
+        self.comboBox_6.addItem("")
         self.comboBox_6.addItem("")
         self.comboBox_6.addItem("")
         self.label_34 = QtWidgets.QLabel(self.groupBox)
@@ -242,6 +251,7 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_7.setFont(font)
         self.comboBox_7.setObjectName("comboBox_7")
+        self.comboBox_7.addItem("")
         self.comboBox_7.addItem("")
         self.comboBox_7.addItem("")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.groupBox)
@@ -562,16 +572,18 @@ class Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Search "))
         self.radioButton_5.setText(_translate("MainWindow", "Serial No."))
         self.label_23.setText(_translate("MainWindow", "Serial. No.:"))
-        self.label_24.setText(_translate("MainWindow", "Message: Successfully Ssaved .sdfsdfsdf"))
+        self.label_24.setText(_translate("MainWindow", "Message: "))
         self.groupBox.setTitle(_translate("MainWindow", "Weights"))
         self.label_33.setText(_translate("MainWindow", "First Wt. Mode:"))
         self.comboBox_6.setItemText(0, _translate("MainWindow", "Tare"))
         self.comboBox_6.setItemText(1, _translate("MainWindow", "Gross"))
+        self.comboBox_6.setItemText(2, _translate("MainWindow", "None"))
         self.label_34.setText(_translate("MainWindow", "First Wt.Date:"))
         self.label_35.setText(_translate("MainWindow", "First Wt.Time:"))
         self.label_36.setText(_translate("MainWindow", "First Wt Kg.:"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "Gross"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Tare"))
+        self.comboBox_7.setItemText(2, _translate("MainWindow", "None"))
         self.label_37.setText(_translate("MainWindow", "Second Wt Kg.:"))
         self.label_38.setText(_translate("MainWindow", "Second Wt. Mode:"))
         self.label_39.setText(_translate("MainWindow", "Second. Wt.Time:"))
@@ -585,20 +597,282 @@ class Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Target Location :"))
         self.label_32.setText(_translate("MainWindow", "00045"))
         self.label_41.setText(_translate("MainWindow", "Net.Wt.Kg.:"))
-        self.label_42.setText(_translate("MainWindow", "45333.00"))
+        self.label_42.setText(_translate("MainWindow", "0"))
         self.label_43.setText(_translate("MainWindow", "Truck Sr.No:"))
         self.label_44.setText(_translate("MainWindow", "0005"))
         self.label_45.setText(_translate("MainWindow", "Total Trucks :"))
-        self.label_46.setText(_translate("MainWindow", "250"))
+        self.label_46.setText(_translate("MainWindow", "0"))
         self.pushButton_10.setText(_translate("MainWindow", "Delete"))
         self.label_21.setText(_translate("MainWindow", "Vehicles List"))
-
+        self.pushButton_8.clicked.connect(MainWindow.close)
+        
+        self.load_data()
+        self.list_vehicles()
+        #self.lineEdit_3.setText("lineEdit_3")
+        #self.lineEdit_4.setText("lineEdit_4")
+        #self.lineEdit_12.setText("lineEdit_12")
+        self.lineEdit_11.setText("0")
+        #self.lineEdit_10.setText("lineEdit_10")
+        
+        self.lineEdit_9.setText("0")
+        #self.lineEdit_8.setText("lineEdit_8")
+        #self.lineEdit_7.setText("lineEdit_7")
+        
+        #self.lineEdit_6.setText("lineEdit_6")
+        #self.lineEdit_5.setText("lineEdit_5")
+        
+        
+        self.radioButton_5.clicked.connect(self.serial_no_onlick)
+        self.radioButton_3.clicked.connect(self.vehical_onlick)
+        self.radioButton_4.clicked.connect(self.batch_onlick)
+        self.pushButton_9.clicked.connect(self.list_vehicles)
+        self.listWidget.doubleClicked.connect(self.selected_record)
+        self.pushButton_7.clicked.connect(self.update_record)
+        self.pushButton_10.clicked.connect(self.delete_record)
+        self.lineEdit_9.textChanged.connect(self.text_change_first_wt)
+        self.lineEdit_11.textChanged.connect(self.text_change_second_wt)
+        self.label_24.hide()
+    
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+    
+    
+    def text_change_first_wt(self):        
+        if(self.lineEdit_9.text() == ""):
+               self.lineEdit_9.setText("0")
+        else:
+               net_wt=int(self.lineEdit_9.text()) - int(self.lineEdit_11.text())
+               if(int(net_wt) < 0 ):
+                   net_wt=int(net_wt)*(-1)
+               
+               self.label_42.setText(str(net_wt))
+               self.lineEdit_6.setText(str(int(int(net_wt)/50))) 
+               print(self.lineEdit_9.text())
+               
+               
+    def text_change_second_wt(self):        
+        if(self.lineEdit_11.text() == ""):
+               self.lineEdit_9.setText("0")
+        else:
+               net_wt=int(self.lineEdit_11.text()) - int(self.lineEdit_9.text())
+               if(int(net_wt) < 0 ):
+                   net_wt=int(net_wt)*(-1)
+               
+               self.label_42.setText(str(net_wt))
+               self.lineEdit_6.setText(str(int(int(net_wt)/50))) 
+               print(self.lineEdit_11.text())
+               
+    
+    def serial_no_onlick(self):
+        self.radioButton_5.setChecked(True) #serial no   
+        self.radioButton_4.setChecked(False) # batch 
+        self.radioButton_3.setChecked(False) # vehi No 
+        
+        self.groupBox_6.setEnabled(True) #bat        
+        self.groupBox_7.setDisabled(True) #vehical grp        
+        self.groupBox_5.setDisabled(True) #ser
+    
+   
+    def vehical_onlick(self):        
+        self.radioButton_5.setChecked(False) #serial no   
+        self.radioButton_4.setChecked(False) # batch 
+        self.radioButton_3.setChecked(True) # vehi No 
+        
+        self.groupBox_6.setDisabled(True) #bat        
+        self.groupBox_7.setDisabled(True) #vehical grp 
+        self.groupBox_5.setEnabled(True) #vehi No 
+     
+    def batch_onlick(self):
+        self.radioButton_5.setChecked(False) #serial no   
+        self.radioButton_4.setChecked(True) # batch 
+        self.radioButton_3.setChecked(False) # vehi No 
+        
+        self.groupBox_6.setDisabled(True) #bat        
+        self.groupBox_7.setEnabled(True) #vehical grp 
+        self.groupBox_5.setDisabled(True) #vehi No 
+            
+  
+    
+    
+    
+    
+    def load_data(self):
+        self.radioButton_5.setChecked(True) #serial no        
+        self.radioButton_3.setChecked(False) #vehical no        
+        self.radioButton_4.setChecked(False) #batch        
+        self.groupBox_6.setEnabled(True) #serial        
+        self.groupBox_7.setDisabled(True) #vehical grp        
+        self.groupBox_5.setDisabled(True) #batch
+        
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT distinct BATCH_ID FROM WEIGHT_MST WHERE BATCH_ID not in ('','None')") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))
+            self.i=self.i+1
+        connection.close()
+        
+        
+          
+    def list_vehicles(self):        
+        self.listWidget.clear()        
+        self.listWidget.addItem("==== Weighing List =====")
+        connection = sqlite3.connect("fci.db")
+        if(self.radioButton_3.isChecked()):  #vehical No            
+            if(self.lineEdit_3.text() != ""):
+                  self.whr_sql=" and VEHICLE_NO like '%"+str(self.lineEdit_3.text())+"%' order by serial_id desc "
+            else:    
+                  self.whr_sql=" order by serial_id desc"
+            results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE (ifnull(round((julianday(CURRENT_TIMESTAMP) - julianday(FIRST_WT_CRTEATED_ON) )),0) < 365)  "+str(self.whr_sql))
+        elif(self.radioButton_4.isChecked()): # batch id
+            if(self.comboBox.currentText() != ""):
+                  self.whr_sql=" and batch_id = '"+str(self.comboBox.currentText())+"'  order by serial_id desc"
+            else:    
+                  self.whr_sql=" order by serial_id desc"
+            
+            #print("PArty :"+str(self.comboBox.currentText()))
+            print(" wheresql :"+str(self.whr_sql))      
+            results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE (ifnull(round((julianday(CURRENT_TIMESTAMP) - julianday(FIRST_WT_CRTEATED_ON) )),0) < 365) "+str(self.whr_sql))           
+        elif(self.radioButton_5.isChecked()):  # Serial No
+            if(self.lineEdit_4.text() != ""):
+                  self.whr_sql=" and SERIAL_ID like '%"+str(self.lineEdit_4.text())+"%' order by serial_id desc "
+            else:    
+                  self.whr_sql=" order by serial_id desc"             
+            results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')'  AS SERIAL_ID FROM WEIGHT_MST WHERE (ifnull(round((julianday(CURRENT_TIMESTAMP) - julianday(FIRST_WT_CRTEATED_ON) )),0) < 365) "+str(self.whr_sql))
+        else:
+            results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')'  AS SERIAL_ID FROM WEIGHT_MST WHERE (ifnull(round((julianday(CURRENT_TIMESTAMP) - julianday(FIRST_WT_CRTEATED_ON) )),0) < 365) order by serial_id desc ")
+        for x in results:        
+               self.listWidget.addItem(str(x[0]))
+        connection.close()
+    
+    
+   
+    def selected_record(self): 
+        self.label_24.hide()
+        self.comboBox_2.clear()
+        self.comboBox_4.clear()
+        self.comboBox_5.clear() 
+        self.comboBox_3.clear() 
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT distinct BATCH_ID FROM WEIGHT_MST WHERE BATCH_ID not in ('','None')") 
+        for x in results:            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str(x[0]))
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT M_NAME FROM MATERIAL_TYPES ORDER BY M_NAME DESC ") 
+        for x in results:            
+            self.comboBox_3.addItem("")
+            self.comboBox_3.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT C_NAME FROM CONTRACTOR_MST ORDER BY C_NAME DESC ") 
+        for x in results:            
+            self.comboBox_4.addItem("")
+            self.comboBox_4.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT STORAGE_NAME||'-'|| STORAGE_LOCATION  FROM STORAGE_DETAILS ORDER BY STORAGE_NAME  ") 
+        for x in results:            
+            self.comboBox_5.addItem("")
+            self.comboBox_5.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        
+        
+        self.list_type=self.listWidget.item(0).text()
+        if(self.listWidget.currentItem().text() != self.listWidget.item(0).text()):
+            if(self.list_type=="==== Weighing List ====="):
+                #print("current test is :"+str(self.listWidget.currentItem().text()))
+                self.re_str = str(self.listWidget.currentItem().text())                
+                self.serial_id= re.search('\(([^)]+)', self.re_str).group(1)
+                print("SErial ID : "+str(int(self.serial_id)))
+                connection = sqlite3.connect("fci.db")
+                
+                
+                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,BATCH_ID,CONTRACTOR_NAME,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,ACCPTED_BAGS,TARGET_STORAGE,NET_WEIGHT_VAL,"+                                           
+                                   "FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON FROM WEIGHT_MST_FCI_VW where SERIAL_ID = '"+str(int(self.serial_id))+"'")
+                for x in results:                    
+                    print("ok")
+                    self.label_32.setText(str(x[0]).zfill(6))
+                    
+                    self.lineEdit_5.setText(str(x[1]))
+                    self.comboBox_3.setCurrentText(str(x[2]))
+                    self.comboBox_2.setCurrentText(str(x[3]))
+                    self.comboBox_4.setCurrentText(str(x[4]))
+                    self.label_44.setText(str(x[5]))
+                    self.label_46.setText(str(x[6]))
+                    self.lineEdit_6.setText(str(x[7]))
+                    self.comboBox_5.setCurrentText(str(x[8]))
+                    self.label_42.setText(str(x[9]))
+                    
+                    self.comboBox_6.setCurrentText(str(x[10]))
+                    self.lineEdit_9.setText(str(x[11]))
+                    self.lineEdit_7.setText(str(x[12])[0:10])
+                    self.lineEdit_8.setText(str(x[12])[11:16])
+                    
+                    self.comboBox_7.setCurrentText(str(x[13]))
+                    self.lineEdit_11.setText(str(x[14]))
+                    self.lineEdit_10.setText(str(x[15])[0:10])
+                    self.lineEdit_12.setText(str(x[15])[11:16])
+               
+            else:             
+                print("Invalid !!")
+                
+    def update_record(self):
+            self.label_24.show()            
+            #print("UPDATE WEIGHT_MST SET VEHICLE_NO="+str(self.lineEdit_5.text())+",PARTY_NAME="+str(self.lineEdit_7.text())+",FPRM_NO="+str(self.lineEdit_9.text())+",REMARK="+str(self.lineEdit_10.text())+",FIRST_WEIGHT_MODE="+self.comboBox_2.currentText()+",FIRST_WEIGHT_VAL="+str(self.lineEdit_14.text())+",SECOND_WT_MODE="+self.comboBox_3.currentText()+",SECOND_WT_VAL="+str(self.lineEdit_17.text())+"    WHERE SERIAL_ID='"+str(int(self.label_25.text()))+"'")       
+            connection = sqlite3.connect("fci.db")          
+            with connection:        
+                         cursor = connection.cursor()                    
+                         cursor.execute("UPDATE WEIGHT_MST SET MATERIAL_NAME='"+self.comboBox_3.currentText()+"',BATCH_ID='"+self.comboBox_2.currentText()+"',CONTRACTOR_NAME='"+self.comboBox_4.currentText()+"',CURR_TRUCK_CNT='"+self.label_44.text()+"',TOTAL_TRUCKS_CNT='"+self.label_46.text()+"',ACCPTED_BAGS='"+self.lineEdit_6.text()+"',TARGET_STORAGE='"+self.comboBox_5.currentText()+"',NET_WEIGHT_VAL='"+self.label_42.text()+"',VEHICLE_NO='"+str(self.lineEdit_5.text())+"',FIRST_WEIGHT_MODE='"+self.comboBox_6.currentText()
+                                        +"',FIRST_WEIGHT_VAL='"+str(self.lineEdit_9.text())+"',SECOND_WT_MODE='"+self.comboBox_7.currentText()+"',SECOND_WT_VAL='"
+                                        +str(self.lineEdit_11.text())+"'   WHERE SERIAL_ID='"
+                                        +str(int(self.label_32.text()))+"'") 
+            connection.commit();
+            connection.close()
+            print("Record updated"+str(int(self.label_32.text())))
+            self.label_24.setText("Saved Successfully.")
+            
+  
+    
+    def delete_record(self):
+           self.label_24.show()
+           connection = sqlite3.connect("fci.db")          
+           with connection:        
+                         cursor = connection.cursor()                    
+                         cursor.execute("DELETE FROM  WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.label_32.text()))+"'") 
+           connection.commit();
+           connection.close()
+           self.list_vehicles()
+           self.label_24.setText("Deleted  Successfully.")
+        
+        
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_25_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

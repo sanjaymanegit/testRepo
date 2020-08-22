@@ -12,7 +12,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 import datetime
-import sys
+import sys,os
 import time
 from PyQt5.QtCore import QDate
 import sys,os
@@ -75,9 +75,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
+        
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
@@ -195,11 +193,18 @@ class Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_new_window4)
         self.pushButton_6.clicked.connect(self.open_new_window5)
         self.pushButton_3.clicked.connect(self.open_new_window6)
+        self.pushButton_2.clicked.connect(self.shutdown_system)
+        self.pushButton_5.clicked.connect(self.reboot_system)
         self.pushButton_7.setDisabled(True)
         self.pushButton_9.setDisabled(True)
         
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
         
-        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))    
      
     def shutdown_system(self):
         os.system("sudo shutdown -P 0")

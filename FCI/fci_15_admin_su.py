@@ -11,6 +11,7 @@ from fci_24_su_register import fci_24_Ui_MainWindow
 from fci_18_admin_factory_reset import fci_18_Ui_MainWindow
 from fci_22_su_API_config import fci_22_Ui_MainWindow
 from fci_23_su_datetime import fci_23_Ui_MainWindow
+from fci_16_admin_printer_setup import fci_16_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -137,7 +138,7 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "Database Backup"))
         self.pushButton_13.setDisabled(True)
         self.pushButton_14.setText(_translate("MainWindow", "Printer Setup"))
-        self.pushButton_14.setDisabled(True)
+        #self.pushButton_14.setDisabled(True)
         self.pushButton_15.setText(_translate("MainWindow", "Change Passwords"))
         self.pushButton_15.setDisabled(True)
         self.pushButton_16.setText(_translate("MainWindow", "Date/Time Set"))
@@ -161,6 +162,7 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.open_new_window4)
         self.pushButton_17.clicked.connect(self.open_new_window5)
         self.pushButton_16.clicked.connect(self.open_new_window6)
+        self.pushButton_14.clicked.connect(self.open_new_window7)
         self.pushButton_2.clicked.connect(self.reset_fun)
         
         
@@ -169,8 +171,8 @@ class fci_15_Ui_MainWindow(object):
     
     
     def show_page(self):
-        connection = sqlite3.connect("fci.db")
-        results=connection.execute("select SS_PWD FROM SERIVES_SET")       
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("select SU_PWD FROM DAT_MST")       
         for x in results:        
               self.password_str=str(x[0])
         connection.close()
@@ -240,6 +242,12 @@ class fci_15_Ui_MainWindow(object):
     def open_new_window6(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_23_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window7(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_16_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

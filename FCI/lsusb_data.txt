@@ -1,5 +1,6 @@
-Bus 001 Device 005: ID 1a2c:2d23 China Resource Semico Co., Ltd 
+Bus 001 Device 010: ID 04b8:0005 Seiko Epson Corp. Printer
 Bus 001 Device 004: ID 093a:2510 Pixart Imaging, Inc. Optical Mouse
+Bus 001 Device 005: ID 1a2c:2d23 China Resource Semico Co., Ltd 
 Bus 001 Device 006: ID 0424:7800 Standard Microsystems Corp. 
 Bus 001 Device 003: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 002: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub

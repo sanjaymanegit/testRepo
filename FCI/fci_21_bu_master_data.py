@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.Qt import QTableWidgetItem
+import sqlite3
 
 class fci_21_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -98,6 +99,7 @@ class fci_21_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_12.setFont(font)
         self.lineEdit_12.setText("")
+        self.lineEdit_12.setReadOnly(True)
         self.lineEdit_12.setObjectName("lineEdit_12")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_13.setGeometry(QtCore.QRect(490, 90, 191, 31))
@@ -202,6 +204,7 @@ class fci_21_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_15.setFont(font)
         self.lineEdit_15.setText("")
+        self.lineEdit_15.setReadOnly(True)
         self.lineEdit_15.setObjectName("lineEdit_15")
         self.lineEdit_16 = QtWidgets.QLineEdit(self.groupBox_3)
         self.lineEdit_16.setGeometry(QtCore.QRect(630, 110, 191, 31))
@@ -336,6 +339,7 @@ class fci_21_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_21.setFont(font)
         self.lineEdit_21.setText("")
+        self.lineEdit_21.setReadOnly(True)
         self.lineEdit_21.setObjectName("lineEdit_21")
         self.lineEdit_22 = QtWidgets.QLineEdit(self.groupBox_2)
         self.lineEdit_22.setGeometry(QtCore.QRect(160, 100, 191, 31))
@@ -495,7 +499,479 @@ class fci_21_Ui_MainWindow(object):
         self.tableWidget_4.setSortingEnabled(__sortingEnabled)
         
         self.pushButton_9.clicked.connect(MainWindow.close)
-
+        self.startx()
+        
+    def startx(self):
+        self.label_2.hide()
+        ###   Material #####
+        self.m_select_all_data()        
+        self.tableWidget.doubleClicked.connect(self.m_fetch_data_from_tw)
+        self.pushButton.clicked.connect(self.m_add_click) 
+        self.pushButton_2.clicked.connect(self.m_edit_click)       
+        self.pushButton_3.clicked.connect(self.m_delete_click)
+        self.pushButton_4.clicked.connect(self.m_rest_fun)
+        
+         ###   Contractor #####
+        self.c_select_all_data()        
+        self.tableWidget_2.doubleClicked.connect(self.c_fetch_data_from_tw)
+        self.pushButton_5.clicked.connect(self.c_add_click) 
+        self.pushButton_6.clicked.connect(self.c_edit_click)       
+        self.pushButton_7.clicked.connect(self.c_delete_click)
+        self.pushButton_8.clicked.connect(self.c_rest_fun)
+        
+        ###   Storage #####
+        self.s_select_all_data()        
+        self.tableWidget_4.doubleClicked.connect(self.s_fetch_data_from_tw)
+        self.pushButton_14.clicked.connect(self.s_add_click) 
+        self.pushButton_15.clicked.connect(self.s_edit_click)       
+        self.pushButton_16.clicked.connect(self.s_delete_click)
+        self.pushButton_17.clicked.connect(self.s_rest_fun)
+        self.m_rest_fun()
+        self.c_rest_fun()
+        self.s_rest_fun()
+    
+    
+    def m_fetch_data_from_tw(self):
+        self.lineEdit_12.setText("ok fname")
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget.item(row, 0).text())
+            self.lineEdit_12.setText(str(self.tableWidget.item(row, 0).text())) 
+            self.lineEdit_13.setText(str(self.tableWidget.item(row, 1).text())) #Batch ID
+            self.lineEdit_14.setText(str(self.tableWidget.item(row, 2).text()))  #Batch Date
+            
+            self.pushButton.setDisabled(True) #add
+            self.pushButton_2.setEnabled(True)  #save
+            self.pushButton_3.setEnabled(True) #delete           
+            self.pushButton_4.setEnabled(True) #reset
+            
+        else:    
+            self.label_2.setText("Please Select the record.")
+            self.label_2.show()
+            
+            
+    def m_rest_fun(self):
+        self.lineEdit_12.setText("")  
+        self.lineEdit_13.setText("") 
+        self.lineEdit_14.setText("")         
+        self.pushButton.setEnabled(True) #add
+        self.pushButton_2.setDisabled(True)  #save
+        self.pushButton_3.setDisabled(True) #delete           
+        self.pushButton_4.setEnabled(True) #reset
+        self.label_2.hide()
+        self.m_select_all_data()        
+  
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'MATERIAL_TYPES'")       
+        for x in results:           
+                 self.lineEdit_12.setText(str(x[0]).zfill(6))
+            
+        connection.close()         
+            
+   
+    def m_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.m_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.m_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.m_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def m_add_click(self):
+        self.operation_flg="ADD"       
+        self.m_load_data()
+        
+    def m_add_data(self):
+        if(self.lineEdit_12.text() != ""):            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO MATERIAL_TYPES(M_NAME,M_RANK) VALUES('"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"')")                    
+            connection.commit();                    
+            connection.close()  
+      
+            self.label_2.setText("Material:Record Added Successfully.")
+            self.label_2.show()
+        else :
+            self.label_2.setText("Material:Id is Empty.")
+            self.label_2.show()
+            
+        self.m_select_all_data()
+    
+    def m_edit_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.m_load_data()
+        else:    
+            self.label_2.setText("Material:Please Select the record.")
+            self.label_2.show() 
+    
+    def m_edit_data(self):
+        if(self.lineEdit_12.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE MATERIAL_TYPES SET M_NAME='"+self.lineEdit_13.text()+"',M_RANK='"+self.lineEdit_14.text()+"' WHERE  M_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()   
+       
+        self.label_2.setText("Material:Record Saved Successfully.")
+        self.label_2.show()
+        self.m_select_all_data()
+    
+    def m_delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.m_load_data()
+        else:    
+            self.label_2.setText("Material:Please Select the record.")
+            self.label_2.show()        
+     
+      
+    def m_delete_data(self):
+        if(self.lineEdit_12.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM MATERIAL_TYPES WHERE M_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            
+            self.label_2.setText("Material:Record Deleted Successfully.")
+            self.label_2.show()
+            
+            self.m_select_all_data()
+            
+         
+    def m_select_all_data(self):     
+        self.m_delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+      
+        self.tableWidget.setHorizontalHeaderLabels(['Material ID.', ' Materail Name ', 'Rank'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select M_ID,M_NAME,M_RANK FROM MATERIAL_TYPES")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def m_delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)        
+    
+    #Contractors
+            
+    def c_fetch_data_from_tw(self):        
+        row = self.tableWidget_2.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget_2.item(row, 0).text())
+            self.lineEdit_15.setText(str(self.tableWidget_2.item(row, 0).text())) 
+            self.lineEdit_16.setText(str(self.tableWidget_2.item(row, 1).text()))
+            self.textEdit.setText(str(self.tableWidget_2.item(row, 2).text()))
+            self.lineEdit_18.setText(str(self.tableWidget_2.item(row, 3).text()))  
+            
+            self.pushButton_5.setDisabled(True) #add
+            self.pushButton_6.setEnabled(True)  #save
+            self.pushButton_7.setEnabled(True) #delete           
+            self.pushButton_8.setEnabled(True) #reset
+            
+        else:    
+            self.label_2.setText("Please Select the record.")
+            self.label_2.show()
+            
+            
+    def c_rest_fun(self):
+        self.lineEdit_15.setText("")  
+        self.lineEdit_16.setText("") 
+        self.lineEdit_18.setText("")         
+        self.pushButton_5.setEnabled(True) #add
+        self.pushButton_6.setDisabled(True)  #save
+        self.pushButton_7.setDisabled(True) #delete           
+        self.pushButton_8.setEnabled(True) #reset
+        self.label_2.hide()
+        self.c_select_all_data()        
+  
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'CONTRACTOR_MST'")       
+        for x in results:           
+                 self.lineEdit_15.setText(str(x[0]).zfill(6))            
+        connection.close()         
+            
+   
+    def c_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.c_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.c_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.c_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def c_add_click(self):
+        self.operation_flg="ADD"       
+        self.c_load_data()
+        
+    def c_add_data(self):
+        if(self.lineEdit_15.text() != ""):            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO CONTRACTOR_MST(C_NAME,C_ADDRESS,C_CONTACT_NO) VALUES('"+self.lineEdit_16.text()+"','"+self.textEdit.toPlainText()+"','"+self.lineEdit_18.text()+"')")                    
+            connection.commit();                    
+            connection.close()  
+      
+            self.label_2.setText("Contractor:Record Added Successfully.")
+            self.label_2.show()
+        else :
+            self.label_2.setText("Contractor:Id is Empty.")
+            self.label_2.show()
+            
+        self.c_select_all_data()
+    
+    def c_edit_click(self):
+        row = self.tableWidget_2.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.c_load_data()
+        else:    
+            self.label_2.setText("Contractor:Please Select the record.")
+            self.label_2.show() 
+    
+    def c_edit_data(self):
+        if(self.lineEdit_15.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE CONTRACTOR_MST SET C_NAME='"+self.lineEdit_16.text()+"',C_ADDRESS='"+self.textEdit.toPlainText()+"',C_CONTACT_NO='"+self.lineEdit_16.text()+"' WHERE  C_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()   
+       
+        self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.label_2.show()
+        self.c_select_all_data()
+    
+    def c_delete_click(self):
+        row = self.tableWidget_2.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.c_load_data()
+        else:    
+            self.label_2.setText("Contractor:Please Select the record.")
+            self.label_2.show()        
+     
+      
+    def c_delete_data(self):
+        if(self.lineEdit_15.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM CONTRACTOR_MST WHERE C_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            
+            self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.label_2.show()
+            
+            self.c_select_all_data()
+            
+         
+    def c_select_all_data(self):     
+        self.c_delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_2.setFont(font) 
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+      
+        self.tableWidget_2.setHorizontalHeaderLabels(['Contractor ID.', ' Contractor Name ', 'Address','Contact'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select C_ID,C_NAME,C_ADDRESS,C_CONTACT_NO FROM CONTRACTOR_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_2.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget_2.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget_2.resizeRowsToContents()
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def c_delete_all_records(self):
+        i = self.tableWidget_2.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget_2.removeRow(i)        
+            
+   #Storage
+            
+    def s_fetch_data_from_tw(self):        
+        row = self.tableWidget_4.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget_4.item(row, 0).text())
+            self.lineEdit_21.setText(str(self.tableWidget_4.item(row, 0).text())) 
+            self.lineEdit_22.setText(str(self.tableWidget_4.item(row, 1).text()))
+            self.lineEdit_23.setText(str(self.tableWidget_4.item(row, 2).text()))  
+            
+            self.pushButton_14.setDisabled(True) #add
+            self.pushButton_15.setEnabled(True)  #save
+            self.pushButton_16.setEnabled(True) #delete           
+            self.pushButton_17.setEnabled(True) #reset
+            
+        else:    
+            self.label_2.setText("Storage:Please Select the record.")
+            self.label_2.show()
+            
+            
+    def s_rest_fun(self):
+        self.lineEdit_21.setText("")  
+        self.lineEdit_22.setText("") 
+        self.lineEdit_23.setText("")         
+        self.pushButton_14.setEnabled(True) #add
+        self.pushButton_15.setDisabled(True)  #save
+        self.pushButton_16.setDisabled(True) #delete           
+        self.pushButton_17.setEnabled(True) #reset
+        self.label_2.hide()
+        self.s_select_all_data()        
+  
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'STORAGE_DETAILS'")       
+        for x in results:           
+                 self.lineEdit_21.setText(str(x[0]).zfill(6))            
+        connection.close()         
+            
+   
+    def s_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.s_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.s_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.s_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def s_add_click(self):
+        self.operation_flg="ADD"       
+        self.s_load_data()
+        
+    def s_add_data(self):
+        if(self.lineEdit_21.text() != ""):            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO STORAGE_DETAILS(STORAGE_NAME,STORAGE_LOCATION) VALUES('"+self.lineEdit_22.text()+"','"+self.lineEdit_23.text()+"')")                    
+            connection.commit();                    
+            connection.close()  
+      
+            self.label_2.setText("Storage:Record Added Successfully.")
+            self.label_2.show()
+        else :
+            self.label_2.setText("Storage:Id is Empty.")
+            self.label_2.show()
+            
+        self.s_select_all_data()
+    
+    def s_edit_click(self):
+        row = self.tableWidget_4.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.s_load_data()
+        else:    
+            self.label_2.setText("Storage:Please Select the record.")
+            self.label_2.show() 
+    
+    def s_edit_data(self):
+        if(self.lineEdit_21.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE STORAGE_DETAILS SET STORAGE_NAME='"+self.lineEdit_22.text()+"',STORAGE_LOCATION='"+self.lineEdit_23.text()+"' WHERE  STORAGE_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()   
+       
+        self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.label_2.show()
+        self.s_select_all_data()
+    
+    def s_delete_click(self):
+        row = self.tableWidget_4.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.s_load_data()
+        else:    
+            self.label_2.setText("Storage:Please Select the record.")
+            self.label_2.show()        
+     
+      
+    def s_delete_data(self):
+        if(self.lineEdit_21.text() != ""):
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM STORAGE_DETAILS WHERE STORAGE_ID ='"+str(self.dr_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            
+            self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.label_2.show()
+            
+            self.s_select_all_data()
+            
+         
+    def s_select_all_data(self):     
+        self.s_delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_4.setFont(font) 
+        self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
+      
+        self.tableWidget_2.setHorizontalHeaderLabels(['Contractor ID.', ' Contractor Name ', 'Address','Contact'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select STORAGE_ID,STORAGE_NAME,STORAGE_LOCATION FROM STORAGE_DETAILS")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_4.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget_4.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget_4.resizeRowsToContents()
+        self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_4.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def s_delete_all_records(self):
+        i = self.tableWidget_4.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget_4.removeRow(i)     
 
 if __name__ == "__main__":
     import sys

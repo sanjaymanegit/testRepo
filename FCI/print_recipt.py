@@ -15,58 +15,36 @@ import os,sys
 import sqlite3
 
 def dot_matrix_print():
-    serial_id=""
-    charges=""
+    serial_id=""       
     vehical_no=""
-    first_wt=""
-    first_wt_date=""
-    first_wr_time=""
-    second_wt=""
-    second_wt_date=""
-    second_wt_time=""
+    batch_id=""
+    tare_wt=""
+    tare_wt_dt=""
+    gross_wt=""
+    gross_wt_date=""        
     net_wt=""
-    supplier_name=""
-    party_name=""
-    material=""
+    accpted_bags=""
+    driver_in_out=""
+    contractor=""
+    Target_storage=""
         
-    company_name=""
-    address=""
-    first_wt_mode=""
-    second_wt_mode=""
-        
-    connection = sqlite3.connect("wt.db")       
-    results=connection.execute("SELECT COMPANY_NAME,COMPANY_ADDR FROM USER_RIGHT_SET")
-    for x in results:
-         company_name=str(x[0])
-         address=str(x[1])        
-    connection.close()
-        
-        
-    connection = sqlite3.connect("wt.db")       
-    results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,SECOND_WT_VAL,SECOND_WT_CREATED_ON,"+
-                                           "NET_WEIGHT_VAL ,FIRST_WEIGHT_MODE,SECOND_WT_MODE,MATERIAL_NAME,MANNUAL_INS_FLG FROM WEIGHT_MST WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+    connection = sqlite3.connect("fci.db")       
+    results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL,ACCPTED_BAGS,DRIVER_IN_OUT,CONTRACTOR_NAME,TARGET_STORAGE,MATERIAL_NAME  FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
         
     for x in results:                
-          serial_id=str(x[0])
-          charges=str(x[7])
+          serial_id=str(x[0])        
           vehical_no=str(x[1])
-          first_wt=str(x[2])
-          first_wt_date=str(x[3])
-          first_wr_time=str(x[3])
-          second_wt=str(x[4])
-          second_wt_date=str(x[5])
-          second_wt_time=str(x[5])
-          net_wt=str(x[6])
-          supplier_name=str(x[9])
-          party_name=str(x[8])
-          first_wt_mode=str(x[10])
-          second_wt_mode=str(x[11])
+          batch_id=str(x[2])
+          tare_wt=str(x[3])
+          tare_wt_dt=str(x[4])
+          gross_wt=str(x[5])
+          gross_wt_date=str(x[6])         
+          net_wt=str(x[7])
+          accpted_bags=str(x[8])
+          driver_in_out=str(x[9])
+          contractor=str(x[10])
+          Target_storage=str(x[11])
           material=str(x[12])
-          mannual_flag=str(x[13])
-          if(str(mannual_flag) == "Mannual"):
-                   mannual_flag="[Tare Weight is Mannual]"
-          else:
-                   mannual_flag=""
     connection.close()
         
     try:
@@ -85,30 +63,29 @@ def dot_matrix_print():
                               inputEndPoint=0x82,
                               outputEndPoint=0x01)
         print("ok2")
-        printer.text("===================================================================\n\r")
+        printer.text("=======================================================\n\r")
         printer.charSpacing(1)            
         printer.bold()
-        printer.text("              "+str(company_name)+"         \n\r" )              
-        printer.text("           "+str(address)+"         \n\r" )
+        printer.text("Contractor Name : "+str(contractor)+"         \n\r" )              
+        printer.text("Target Location   : "+str(Target_storage)+"         \n\r" )
         printer.bold(False)
         printer.align("left")
-        printer.text("===================================================================\n\r")        
-        printer.text("Serial No    : "+str(serial_id)+"                  Vehical No: "+str(vehical_no)+" \n\r")
-        printer.text("Supplier Name: "+str("")+"              Party Name: "+str("")+" \n\r")
+        printer.text("======================================================\n\r")        
+        printer.text("Serial No    : "+str(serial_id).zfill(6)+"                  Vehical No: "+str(vehical_no)+" \n\r")
+        printer.text("Total Bags   : "+str(accpted_bags).zfill(6)+"                  Batch.Id: "+str(batch_id).zfill(4)+" \n\r")
         printer.text("Material     : "+str(material)+"                         \n\r")
-        printer.text("|---------------------------------------------------------------- \n\r")
-        printer.text("| Weight Type          |    Date   |     Time    |Weight (Kg)|\n\r")
-        printer.text("|-----------------------------------------------------------------\n\r")
-        printer.text("| First Wt. ("+str(first_wt_mode)+")    | "+str(first_wt_date[0:10])+"  | "+str(first_wt_date[11:16])+"       |  "+str(first_wt)+"  |\n\r")
-        printer.text("|-----------------------------------------------------------------\n\r")
-        printer.text("| Second Wt. ("+str(second_wt_mode)+")    | "+str(second_wt_date[0:10])+" | "+str(second_wt_date[11:16])+"        |  "+str(second_wt)+"  |\n\r")
-        printer.text("|-----------------------------------------------------------------\n\r")
-        printer.text("                                   Net Weight (Kg): ")
-        printer.doubleWidth()
-        printer.doubleHeight()
-        printer.text(""+str(net_wt)+"  \n\r")       
-        printer.text(str(mannual_flag)+"\n\r") 
-        printer.text("---------*************  Thanking You   *************----------\n\r")             
+        printer.text("|------------------------------------------------------------- \n\r")
+        printer.text("| Weight Type     |    Weight (Kg)  |     Date \n\r")
+        printer.text("|-------------------------------------------------------------\n\r")
+        printer.text("| Tare Wt.        |     "+str(tare_wt).zfill(6)+"      |  "+str(tare_wt_dt)+"  \n\r")
+        printer.text("|------------------------------------------------------------\n\r")
+        printer.text("| Gross Wt.       |     "+str(gross_wt).zfill(6)+"      |  "+str(gross_wt_date)+"  \n\r")
+        printer.text("|-------------------------------------------------------------\n\r")
+        printer.text("  Net Weight (Kg): "+str(net_wt).zfill(6)+" \n\r")
+        printer.text(" \n\r")
+        printer.text(" \n\r")
+        printer.text(" \n\r")     
+        printer.text("*************  Thanking You   *************----------\n\r")             
         printer.lf()
         print("ok3")
     except IOError:
@@ -133,7 +110,7 @@ def get_vendor_id():
                 cnt=0
                 #print("line ==>"+str(line))
                 #print("line ==>"+str(line.find("Printer")))
-                cnt=int(line.find("Epson"))
+                cnt=int(line.find(str(printer_key)))
                 if cnt > 0 :
                    #print("line ==>"+str(line))
                    #print("vendor Id ==>"+str(line[23:27]))
@@ -157,7 +134,7 @@ def get_product_id():
                cnt=0
                 #print("line ==>"+str(line))
                 #print("line ==>"+str(line.find("Printer")))
-               cnt=int(line.find("Epson"))
+               cnt=int(line.find(str(printer_key)))
                if cnt > 0 :
                    #print("line ==>"+str(line))
                    #print("vendor Id ==>"+str(line[23:27]))
@@ -173,7 +150,13 @@ def get_product_id():
 ###### Main Code Started here ######
     
 go_for_print="No"
-
+printer_key="Epson"
+connection = sqlite3.connect("fci.db")       
+results=connection.execute("SELECT PRINTER_KEY FROM GLOBAL_VAR")         
+for x in results:                
+         printer_key=str(x[0])
+connection.close()
+print("printer_key:"+str(printer_key))
 #### Check for Printer Availablility #####
 os.system("rm -rf lsusb_data.txt") 
 os.system("lsusb >> lsusb_data.txt")        
@@ -181,7 +164,7 @@ try:
     f = open('lsusb_data.txt','r')
     for line in f:
         cnt=0
-        cnt=int(line.find("Epson"))  #Epson    #TVS
+        cnt=int(line.find(str(printer_key)))  #Epson    #TVS
         print (str(cnt))
         if cnt > 0 :
              go_for_print="Yes"

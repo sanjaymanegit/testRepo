@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtCore, QtGui, QtWidgets
+
 from PyQt5.Qt import QTableWidgetItem
 import datetime
 import sqlite3
@@ -41,9 +41,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
+        
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
@@ -290,7 +288,14 @@ class fci_10_Ui_MainWindow(object):
         connection.close()
         
         self.select_all_data()
-     
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
     def print_report(self):        
          os.system("./job_print_report.sh")
                         

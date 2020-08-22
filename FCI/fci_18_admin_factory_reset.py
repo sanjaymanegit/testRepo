@@ -140,6 +140,24 @@ class fci_18_Ui_MainWindow(object):
         self.checkBox_3.setChecked(True)
         self.checkBox_3.setObjectName("checkBox_3")
         
+        
+        self.label_6 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_6.setGeometry(QtCore.QRect(300, 40, 141, 41))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)        
+        self.label_6.setFont(font)       
+        self.label_6.setObjectName("label_6")
+        
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox_2)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)        
+        self.lineEdit_2.setFont(font)
+        self.lineEdit_2.setGeometry(QtCore.QRect(380, 46, 125, 31))               
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -168,6 +186,7 @@ class fci_18_Ui_MainWindow(object):
         self.groupBox_2.setTitle(_translate("MainWindow", "Factory Reset"))
         self.pushButton_5.setText(_translate("MainWindow", "Format"))
         self.label_5.setText(_translate("MainWindow", "Done."))
+        self.label_6.setText(_translate("MainWindow", "Device. Id:"))
         self.label_5.hide()
         self.checkBox.setText(_translate("MainWindow", "Weighing Data"))
         self.checkBox_2.setText(_translate("MainWindow", "Set Default Data"))
@@ -206,7 +225,13 @@ class fci_18_Ui_MainWindow(object):
                 self.label_3.show()   
                 self.groupBox_2.hide()
                  
-        connection.close()    
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR") 
+        for x in results:
+                self.lineEdit_2.setText(str(x[0]))
+        connection.close()
     
     def reset_loging(self):
         self.lineEdit.setText("")
@@ -227,11 +252,11 @@ class fci_18_Ui_MainWindow(object):
             self.label_3.show()
         
         if(self.checkBox_2.isChecked()):            
-            connection = sqlite3.connect("fci.db")          
+            connection = sqlite3.connect("services.db")          
             with connection:        
                         cursor = connection.cursor()                    
-                        cursor.execute("UPDATE SERIVES_SET SET SS_PWD='12345' ")
-                        cursor.execute("UPDATE USER_RIGHT_SET SET UR_PWD='ss12345'")                       
+                        cursor.execute("UPDATE DAT_MST SET BU_PWD='12345' ")
+                        cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                       
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
@@ -243,6 +268,7 @@ class fci_18_Ui_MainWindow(object):
                         cursor = connection.cursor()
                         cursor.execute("DELETE FROM MATERIAL_TYPES")
                         cursor.execute("DELETE FROM CONTRACTOR_MST")
+                        cursor.execute("DELETE FROM STORAGE_DETAILS")
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
@@ -257,7 +283,9 @@ class fci_18_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")          
         with connection:        
                         cursor = connection.cursor()
-                        cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_LOCATION_TYPE='"+str(self.device_location)+"' ")                        
+                        cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_LOCATION_TYPE='"+str(self.device_location)+"',DEVICE_ID='"+self.lineEdit_2.text()+"' ")
+                        self.label_3.setText("Done.") 
+                        self.label_3.show()
         connection.commit();
         connection.close()    
 
