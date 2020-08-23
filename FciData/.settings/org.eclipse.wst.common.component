@@ -2,7 +2,7 @@
     <wb-module deploy-name="IndicatorsData-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="IndicatorsData"/>
         <property name="java-output-path" value="/IndicatorsData/build/classes"/>
+        <property name="context-root" value="FciData"/>
     </wb-module>
 </project-modules>
