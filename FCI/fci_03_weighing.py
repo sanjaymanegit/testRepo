@@ -1342,6 +1342,7 @@ class fci_03_Ui_MainWindow(object):
                         #os.system("./job_print_recipt.sh")
                 else:
                         os.system("./job_print_recipt.sh")
+        connection.close()  
     
     def fetch_via_search(self):
         if(str(self.lineEdit_5.text()) != ""):
@@ -1574,7 +1575,7 @@ class fci_03_Ui_MainWindow(object):
                                              connection = sqlite3.connect("fci.db")
                                              with connection:                            
                                                     cursor = connection.cursor()
-                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',WEIGHT_TYPE='"+self.weight_type+"',ACCPTED_BAGS='"+self.accepted_bags+"',REMARK='"+self.remark+"',DRIVER_IN_OUT='"+self.driver_in_out+"',PROPOSED_BAGS='"+self.proposed_bags+"',TARGET_STORAGE='"+self.target_storage+"',DEVICE_ID='"+str(self.device_id)+"'");
+                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',WEIGHT_TYPE='"+self.weight_type+"',ACCPTED_BAGS='"+self.accepted_bags+"',REMARK='"+self.remark+"',DRIVER_IN_OUT='"+self.driver_in_out+"',PROPOSED_BAGS='"+self.proposed_bags+"',TARGET_STORAGE='"+self.target_storage+"',DEVICE_ID='"+str(self.device_id)+"'  WHERE SERIAL_ID='"+str(int(self.label_19.text()))+"'");
                                              connection.commit();
                                              connection.close()
                                              

@@ -267,7 +267,7 @@ class fci_10_Ui_MainWindow(object):
                      self.label_36.setText("Report selected for date range "+str(x[2])+" to "+str(x[3])+".")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE strftime('%Y-%m-%d',FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
@@ -320,7 +320,7 @@ class fci_10_Ui_MainWindow(object):
         
         
         
-      
+        print("whr_sql2 :"+str(self.whr_sql2))
         self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Kg','Tare Wt. Kg','Gross Wt. Kg','Target Location'])        
            
         connection = sqlite3.connect("fci.db")

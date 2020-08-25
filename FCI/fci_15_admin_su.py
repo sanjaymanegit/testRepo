@@ -196,7 +196,7 @@ class fci_15_Ui_MainWindow(object):
                self.pushButton_19.hide()
            else:               
                self.pushButton_19.show()
-               
+        connection.close()     
     def getserial(self):
         # Extract serial from cpuinfo file
         cpuserial = "0000000000000000"
