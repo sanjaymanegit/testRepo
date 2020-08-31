@@ -596,6 +596,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()  
       
             self.label_2.setText("Material:Record Added Successfully.")
+            self.log_audit("Master Data","Added Material Id :" +str(self.lineEdit_12.text()))
             self.label_2.show()
         else :
             self.label_2.setText("Material:Id is Empty.")
@@ -622,6 +623,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()   
        
         self.label_2.setText("Material:Record Saved Successfully.")
+        self.log_audit("Master Data","Updated Material Id :" +str(self.lineEdit_12.text()))
         self.label_2.show()
         self.m_select_all_data()
     
@@ -645,6 +647,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()
             
             self.label_2.setText("Material:Record Deleted Successfully.")
+            self.log_audit("Master Data","Deleted Material Id :" +str(self.lineEdit_12.text()))
             self.label_2.show()
             
             self.m_select_all_data()
@@ -744,6 +747,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()  
       
             self.label_2.setText("Contractor:Record Added Successfully.")
+            self.log_audit("Master Data","Added Contractor Id :" +str(self.lineEdit_15.text()))
             self.label_2.show()
         else :
             self.label_2.setText("Contractor:Id is Empty.")
@@ -770,6 +774,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()   
        
         self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.log_audit("Master Data","Updated Contractor Id :" +str(self.lineEdit_15.text()))
         self.label_2.show()
         self.c_select_all_data()
     
@@ -793,6 +798,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()
             
             self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.log_audit("Master Data","Deleted Contractor Id :" +str(self.lineEdit_15.text()))
             self.label_2.show()
             
             self.c_select_all_data()
@@ -891,6 +897,7 @@ class fci_21_Ui_MainWindow(object):
             connection.close()  
       
             self.label_2.setText("Storage:Record Added Successfully.")
+            self.log_audit("Master Data","Added Storage Id :" +str(self.lineEdit_21.text()))
             self.label_2.show()
         else :
             self.label_2.setText("Storage:Id is Empty.")
@@ -916,7 +923,8 @@ class fci_21_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()   
        
-        self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.label_2.setText("Storage:Record Saved Successfully.")
+        self.log_audit("Master Data","Updated Storage Id :" +str(self.dr_id))
         self.label_2.show()
         self.s_select_all_data()
     
@@ -926,7 +934,7 @@ class fci_21_Ui_MainWindow(object):
             self.operation_flg="DELETE"
             self.s_load_data()
         else:    
-            self.label_2.setText("Storage:Please Select the record.")
+            self.label_2.setText(":Please Select the record.")
             self.label_2.show()        
      
       
@@ -939,7 +947,8 @@ class fci_21_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()
             
-            self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.label_2.setText("Storage:Record Deleted Successfully.")
+            self.log_audit("Master Data","Deleted Storage Id :" +str(self.dr_id))
             self.label_2.show()
             
             self.s_select_all_data()
@@ -952,7 +961,7 @@ class fci_21_Ui_MainWindow(object):
         self.tableWidget_4.setFont(font) 
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget_2.setHorizontalHeaderLabels(['Contractor ID.', ' Contractor Name ', 'Address','Contact'])        
+        self.tableWidget_4.setHorizontalHeaderLabels(['Storage ID.', ' Storage location '])        
            
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select STORAGE_ID,STORAGE_NAME,STORAGE_LOCATION FROM STORAGE_DETAILS")                        
@@ -971,7 +980,17 @@ class fci_21_Ui_MainWindow(object):
         i = self.tableWidget_4.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget_4.removeRow(i)     
+            self.tableWidget_4.removeRow(i)
+            
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
+            
+        connection.commit();
+        connection.close() 
 
 if __name__ == "__main__":
     import sys

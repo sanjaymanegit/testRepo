@@ -460,7 +460,7 @@ class fci_22_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['Api ID.','Method', ' Api Url ', 'Json','Status','Outout'] )       
+        self.tableWidget.setHorizontalHeaderLabels(['Api ID.','Method', ' Api Url ','JSON', 'Status','OutPut'] )       
            
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select API_ID,API_METHOD,API_URL,API_JSON ,'','' FROM API_MST")                        

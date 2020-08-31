@@ -22,7 +22,7 @@ from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 
-class Ui_MainWindow(object):
+class fci_01_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -70,16 +70,28 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet("color: rgb(170, 85, 127);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
+        
+        
         self.label_20 = QtWidgets.QLabel(self.frame)
         self.label_20.setGeometry(QtCore.QRect(1060, 10, 251, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        
+        font.setPointSize(10)        
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
+        
+        self.label_20_1 = QtWidgets.QLabel(self.frame)
+        self.label_20_1.setGeometry(QtCore.QRect(950, 40, 351, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(8)        
+        self.label_20_1.setFont(font)
+        self.label_20_1.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_20_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_20_1.setObjectName("label_20_1")
+        
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
         self.pushButton_2.setGeometry(QtCore.QRect(760, 600, 101, 31))
         font = QtGui.QFont()
@@ -98,6 +110,17 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
+        
+        self.pushButton_5_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_5_1.setGeometry(QtCore.QRect(610, 600, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.pushButton_5_1.setFont(font)
+        self.pushButton_5_1.setObjectName("pushButton_5_1")
+        
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(1050, 590, 171, 41))
         font = QtGui.QFont()
@@ -174,8 +197,10 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Batches "))
         self.label.setText(_translate("MainWindow", "Material Handling and Transport System 1.0 \n @ Site"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
+        self.label_20_1.setText(_translate("MainWindow", "LoginBy: Sanjaykumar Mane (Super Admin) "))
         self.pushButton_2.setText(_translate("MainWindow", "Shutdown"))
         self.pushButton_5.setText(_translate("MainWindow", "Reboot"))
+        self.pushButton_5_1.setText(_translate("MainWindow", "SignOut"))
         self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
         self.pushButton_6.setText(_translate("MainWindow", "Reports"))
         self.pushButton_7.setText(_translate("MainWindow", "Issues"))
@@ -184,6 +209,7 @@ class Ui_MainWindow(object):
         
         self.label_22.setText(_translate("MainWindow", "Internet"))
         self.toolButton.setText(_translate("MainWindow", "On"))
+        self.pushButton_5_1.clicked.connect(MainWindow.close)
         self.startx()
 
 
@@ -204,7 +230,11 @@ class Ui_MainWindow(object):
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
-        self.timer1.start(1) 
+        self.timer1.start(1)
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_NAME  FROM GLOBAL_VAR") 
+        for x in results:
+            self.label_20_1.setText("Logged In : "+str(x[0]))
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -333,7 +363,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_01_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

@@ -675,19 +675,19 @@ class fci_02_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Batch Id"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Accpted Wt.Kg"))
+        item.setText(_translate("MainWindow", "Accpted Wt.t"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Accpted Bag.Count"))
         item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Received Wt. Kg"))
+        item.setText(_translate("MainWindow", "Received Wt. t"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Received Bag. Count"))
         item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "TL.Received Kg"))
+        item.setText(_translate("MainWindow", "TL.Received t"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "TL.Received %"))
         item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "TL Accpted Kg"))
+        item.setText(_translate("MainWindow", "TL Accpted t"))
         item = self.tableWidget.horizontalHeaderItem(8)
         item.setText(_translate("MainWindow", "TL Accpted %"))
         item = self.tableWidget.horizontalHeaderItem(9)
@@ -699,7 +699,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_21.setText(_translate("MainWindow", "Please select the record to Edit."))
         self.label_22.setText(_translate("MainWindow", "Batch Id :"))
-        self.label_23.setText(_translate("MainWindow", "Accpted Weight (Kg) :"))
+        self.label_23.setText(_translate("MainWindow", "Accpted Weight (t) :"))
         self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_25.setText(_translate("MainWindow", "No. Wagons :"))
         self.label_28.setText(_translate("MainWindow", "Contractor Name :"))
@@ -719,20 +719,20 @@ class fci_02_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Accepted. Bags Count :"))
         self.lineEdit_9.setText(_translate("MainWindow", "96000"))
         self.label_32.setText(_translate("MainWindow", "Avg. Bag. Wt :"))
-        self.label_5.setText(_translate("MainWindow", "50 kg"))
+        self.label_5.setText(_translate("MainWindow", "50 t"))
         self.pushButton_7.setText(_translate("MainWindow", "Batch Quantity Details"))
         self.label_33.setText(_translate("MainWindow", "Batch Date :"))
         self.label_6.setText(_translate("MainWindow", "08 Aug 2020"))
         self.pushButton_8.setText(_translate("MainWindow", "Get Date"))
-        self.label_26.setText(_translate("MainWindow", "Received Weight (Kg) :"))
+        self.label_26.setText(_translate("MainWindow", "Received Weight (t) :"))
         self.lineEdit_4.setText(_translate("MainWindow", "59950"))
         self.label_34.setText(_translate("MainWindow", "Received. Bags Count :"))
         self.lineEdit_10.setText(_translate("MainWindow", "59999"))
-        self.label_27.setText(_translate("MainWindow", "TL Received (Kg) :"))
+        self.label_27.setText(_translate("MainWindow", "TL Received (t) :"))
         self.lineEdit_5.setText(_translate("MainWindow", "50"))
         self.label_29.setText(_translate("MainWindow", "TL Received( %) :"))
         self.label_7.setText(_translate("MainWindow", "0.005%"))
-        self.label_35.setText(_translate("MainWindow", "TL Accepted (Kg) :"))
+        self.label_35.setText(_translate("MainWindow", "TL Accepted (t) :"))
         self.lineEdit_6.setText(_translate("MainWindow", "50"))
         self.label_36.setText(_translate("MainWindow", "TL Accpted( %) :"))
         self.label_8.setText(_translate("MainWindow", "0.005%"))
@@ -846,7 +846,7 @@ class fci_02_Ui_MainWindow(object):
         
         
     def rest_fun(self):
-        self.lineEdit.setText("") #Accpted Weight (Kg)
+        self.lineEdit.setText("") #Accpted Weight (t)
         #self.lineEdit_12.setText("") # material type
         self.lineEdit_3.setText("") #no .of wagons
         self.lineEdit_8.setText("") #Shortage of bags
@@ -928,7 +928,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.Kg', 'Accpt.Bags.Cnt','Recved.Wt.Kg','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
            
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST")                        
@@ -958,7 +958,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.Kg', 'Accpt.Bags.Cnt','Recved.Wt.Kg','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
         
         
         if (self.lineEdit_7.text() ==""):            
@@ -1013,8 +1013,9 @@ class fci_02_Ui_MainWindow(object):
                                    +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss')")                    
             connection.commit();                    
             connection.close()  
-      
+          
             self.label_21.setText("Record Added Successfully.")
+            self.log_audit("Batches","Added New Batch :" +str(self.lineEdit_12.text()))
             self.label_21.show()
         else :
             self.label_21.setText("Batch Id is Empty.")
@@ -1039,11 +1040,12 @@ class fci_02_Ui_MainWindow(object):
                     cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.lineEdit_12.text()+"',ACCPT_WT_KG='"+self.lineEdit_6.text()+
                                    "',ACCPT_BAGS_CNT='"+self.lineEdit.text()+"',RECV_WT_KG='"+self.lineEdit_9.text()+"',RECV_BAGS_CNT='"+self.lineEdit_4.text()+
                                    "',TL_RECVED='"+self.lineEdit_10.text()+"',TL_ACCPTED='"+self.lineEdit_5.text()+"',STORAGE_BAGS='"+self.lineEdit_6.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
-                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"'  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
+                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
             connection.commit();                    
             connection.close()   
        
         self.label_21.setText("Record Saved Successfully.")
+        self.log_audit("Batches","Updated Batch ID :"+str(self.dr_id))
         self.label_21.show()
         self.select_all_data()
     
@@ -1067,6 +1069,7 @@ class fci_02_Ui_MainWindow(object):
             connection.close()
             
             self.label_21.setText("Record Deleted Successfully.")
+            self.log_audit("Batches","Deleted Batch :" +str(self.lineEdit_12.text()))
             self.label_21.show()
             
             
@@ -1082,7 +1085,17 @@ class fci_02_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_06_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()   
+        self.window.show()
+        
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
+            
+        connection.commit();
+        connection.close()
 
 if __name__ == "__main__":
     import sys

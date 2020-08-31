@@ -9,6 +9,8 @@
 
 from fci_21_bu_master_data import fci_21_Ui_MainWindow
 from fci_25_update_delete_record import fci_25_Ui_MainWindow
+from fci_27_audits import fci_27_Ui_MainWindow
+from fci_26_users import fci_26_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 
@@ -69,6 +71,14 @@ class fci_14_Ui_MainWindow(object):
         font.setPointSize(15)
         self.pushButton_9.setFont(font)
         self.pushButton_9.setObjectName("pushButton_9")
+        
+        self.pushButton_11 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_11.setGeometry(QtCore.QRect(30, 190, 311, 61))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.pushButton_11.setFont(font)
+        self.pushButton_11.setObjectName("pushButton_11")
+        
         self.pushButton_10 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_10.setGeometry(QtCore.QRect(850, 70, 281, 61))
         font = QtGui.QFont()
@@ -115,10 +125,11 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Show Page"))
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
-        self.pushButton_5.setText(_translate("MainWindow", "Storage Loses"))
-        self.pushButton_5.setDisabled(True)
+        self.pushButton_5.setText(_translate("MainWindow", "User Management"))
+        #self.pushButton_5.setDisabled(True)
         self.pushButton_9.setText(_translate("MainWindow", "Master Data Update"))
         self.pushButton_10.setText(_translate("MainWindow", "Update/Delete Record"))
+        self.pushButton_11.setText(_translate("MainWindow", "Audit Logs"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         
@@ -129,6 +140,8 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.show_page)
         self.pushButton_9.clicked.connect(self.open_new_window2)
         self.pushButton_10.clicked.connect(self.open_new_window3)
+        self.pushButton_5.clicked.connect(self.open_new_window4)
+        self.pushButton_11.clicked.connect(self.open_new_window5)
         self.pushButton_2.clicked.connect(self.reset_fun)
         self.label_2.hide()
         self.groupBox_2.hide()
@@ -163,7 +176,20 @@ class fci_14_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_25_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()  
+        self.window.show()
+        
+    def open_new_window4(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_26_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window5(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_27_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
+    
     
     
         

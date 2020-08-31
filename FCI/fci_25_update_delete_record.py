@@ -852,6 +852,7 @@ class fci_25_Ui_MainWindow(object):
             connection.close()
             print("Record updated"+str(int(self.label_32.text())))
             self.label_24.setText("Saved Successfully.")
+            self.log_audit("Update/Delete Weighing","Updated Slip No :" +str(self.label_32.text()))
             
   
     
@@ -865,8 +866,18 @@ class fci_25_Ui_MainWindow(object):
            connection.close()
            self.list_vehicles()
            self.label_24.setText("Deleted  Successfully.")
+           self.log_audit("Update/Delete Weighing","Deleted Slip No :" +str(self.label_32.text()))
+           
         
-        
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
+            
+        connection.commit();
+        connection.close()   
 
 if __name__ == "__main__":
     import sys
