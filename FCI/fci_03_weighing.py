@@ -862,6 +862,7 @@ class fci_03_Ui_MainWindow(object):
         self.xstr2=""
         self.xstr4=""
         self.device_id=""
+        self.login_user_id=""
         ##########
             
             
@@ -1012,6 +1013,12 @@ class fci_03_Ui_MainWindow(object):
             self.label_19.setText(str(x[0]).zfill(6))
         connection.close()
         
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_ID FROM GLOBAL_VAR") 
+        for x in results:
+            self.login_user_id=str(x[0])
+        connection.close()
+        
 
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1019,27 +1026,31 @@ class fci_03_Ui_MainWindow(object):
 
     def mannual_update1(self,):
         mode=""
+        m_str=0
         if(self.radioButton_5.isChecked()):
                 mode="Gross"
         else:
                 mode="Tare"
         
         if(mode != self.label_37.text()):
-                self.label_29.setText(str(mode))  
-                self.label_32.setText(str(int(self.lineEdit.text())/1000))
+                self.label_29.setText(str(mode))
+                m_str=float(float(self.lineEdit.text())/1000)                
+                self.label_32.setText('{:06.3f}'.format(m_str))
                 self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                 self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
                 self.status="FIRST"
             
     def mannual_update2(self,):
-        mode=""            
+        mode=""
+        m_str=0
         if(self.radioButton_7.isChecked()):
                 mode="Gross"
         else:
                 mode="Tare"        
         if(mode != self.label_29.text()):
-                self.label_37.setText(str(mode))  
-                self.label_40.setText(str(int(self.lineEdit_4.text())/1000))
+                self.label_37.setText(str(mode))
+                m_str=float(float(self.lineEdit_4.text())/1000) 
+                self.label_40.setText('{:06.3f}'.format(m_str))
                 self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                 self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
                 self.net_wt_calc()
@@ -1256,14 +1267,14 @@ class fci_03_Ui_MainWindow(object):
                self.label_29.setText("Gross")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText(str(self.current_value))
+               self.label_32.setText('{:06.3f}'.format(self.current_value))
                #self.label_32.setText(str("200"))
                
         else:     
                self.label_37.setText("Gross")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText(str(self.current_value))
+               self.label_40.setText('{:06.3f}'.format(self.current_value))
                #self.label_40.setText(str("200"))
                        
         self.net_wt_calc()
@@ -1277,14 +1288,14 @@ class fci_03_Ui_MainWindow(object):
                self.label_29.setText("Tare")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText(str(self.current_value))
+               self.label_32.setText('{:06.3f}'.format(self.current_value))
                #self.label_32.setText(str("80"))
                
         else:     
                self.label_37.setText("Tare")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText(str(self.current_value))
+               self.label_40.setText('{:06.3f}'.format(self.current_value))
                #self.label_40.setText(str("80"))
                        
         self.net_wt_calc()
@@ -1297,11 +1308,11 @@ class fci_03_Ui_MainWindow(object):
         if(float(self.first_wt) > 0 and float(self.second_wt) > 0):            
                 if(float(self.first_wt) >= float(self.second_wt)):            
                       self.net_wt=(float(self.first_wt)-float(self.second_wt))             
-                      self.label_45.setText(str(self.net_wt))
+                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
                 else:
                       self.net_wt=(float(self.second_wt)-float(self.first_wt))             
-                      self.label_45.setText(str(self.net_wt))
-                accepted_bags=float(self.net_wt)/50
+                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
+                accepted_bags=float(self.net_wt)*1000/50
                 self.label_50.setText(str(accepted_bags))
                       
     def load_1st_wt_vehicles(self):
@@ -1394,7 +1405,7 @@ class fci_03_Ui_MainWindow(object):
             self.label_29.setText(str(x[2]))         
             self.label_30.setText(str(x[4])[0:11])
             self.label_31.setText(str(x[4])[11:16])
-            self.label_32.setText(str(x[3]))
+            self.label_32.setText('{:06.3f}'.format(x[3]))
          
             # Vehical No
             self.lineEdit_2.setText(str(x[5]))
@@ -1406,7 +1417,7 @@ class fci_03_Ui_MainWindow(object):
                    self.label_39.setText("--:--")
             else:
                    self.label_39.setText(str(x[8])[11:16])
-            self.label_40.setText(str(x[7]))
+            self.label_40.setText('{:06.3f}'.format(x[7]))
             
             #Net Wt
             self.label_45.setText("0")
@@ -1526,16 +1537,16 @@ class fci_03_Ui_MainWindow(object):
                                                         cr_date= datetime.datetime.strptime(cr_date_str, '%Y-%m-%d %H:%M:%S')
                                                         
                                                         print("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
-                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,DEVICE_ID)"
+                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,DEVICE_ID,CREATED_BY)"
                                                                        +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
                                                                        +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.device_id)+"')")
+                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"')")
                                                         
                                                         cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
-                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,ACCPTED_BAGS,DEVICE_ID)"
+                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,ACCPTED_BAGS,DEVICE_ID,CREATED_BY)"
                                                                        +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
                                                                        +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"','"+str(self.device_id)+"')")
+                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"')")
                                                                       
                                              self.reset_fun()
                                              self.label_56.setText("Successfully Loaded First Weight.")
@@ -1577,7 +1588,7 @@ class fci_03_Ui_MainWindow(object):
                                              connection = sqlite3.connect("fci.db")
                                              with connection:                            
                                                     cursor = connection.cursor()
-                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',WEIGHT_TYPE='"+self.weight_type+"',ACCPTED_BAGS='"+self.accepted_bags+"',REMARK='"+self.remark+"',DRIVER_IN_OUT='"+self.driver_in_out+"',PROPOSED_BAGS='"+self.proposed_bags+"',TARGET_STORAGE='"+self.target_storage+"',DEVICE_ID='"+str(self.device_id)+"' ,UPLOAD_STATUS=null  WHERE SERIAL_ID='"+str(int(self.label_19.text()))+"'");
+                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',WEIGHT_TYPE='"+self.weight_type+"',ACCPTED_BAGS='"+self.accepted_bags+"',REMARK='"+self.remark+"',DRIVER_IN_OUT='"+self.driver_in_out+"',PROPOSED_BAGS='"+self.proposed_bags+"',TARGET_STORAGE='"+self.target_storage+"',DEVICE_ID='"+str(self.device_id)+"' ,UPLOAD_STATUS=null, UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp  WHERE SERIAL_ID='"+str(int(self.label_19.text()))+"'");
                                              connection.commit();
                                              connection.close()
                                              
@@ -1587,10 +1598,10 @@ class fci_03_Ui_MainWindow(object):
                                              with connection:                            
                                                     cursor = connection.cursor()
                                                     cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
-                                                           +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,NET_WEIGHT_VAL,DEVICE_ID)"
+                                                           +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,NET_WEIGHT_VAL,DEVICE_ID,CREATED_BY)"
                                                            +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(first_wt_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
                                                            +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                           +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"')")
+                                                           +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"')")
                                              connection.commit();
                                              connection.close()
                                          self.reset_fun()

@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_15_admin_su import fci_15_Ui_MainWindow
 from fci_14_admin_bu import fci_14_Ui_MainWindow
+import sqlite3
 
 class fci_13_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -63,14 +64,39 @@ class fci_13_Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_3.setGeometry(QtCore.QRect(570, 500, 75, 31))
         self.pushButton_3.setObjectName("pushButton_3")
+        
+        self.label_21 = QtWidgets.QLabel(self.frame)
+        self.label_21.setGeometry(QtCore.QRect(940, 50, 241, 41))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_21.setFont(font)
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_21.setObjectName("label_21")
+        
+        
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
         self.menubar.setObjectName("menubar")
+        
+        
+        
+        
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.login_user_id=""
+        self.login_user_role=""
+        self.login_user_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -89,8 +115,29 @@ class fci_13_Ui_MainWindow(object):
     def startx(self):
         self.pushButton_5.clicked.connect(self.open_new_window2)
         self.pushButton_4.clicked.connect(self.open_new_window3)
+        self.load_login_dtls()
+        if(self.login_user_role=="ADMIN"):
+            self.pushButton_5.setEnabled(True)
+        elif(self.login_user_role=="SUPER_ADMIN"):
+            self.pushButton_5.setEnabled(True)
+        else:
+            self.pushButton_5.setDisabled(True)
+            
         
-             
+        self.load_login_dtls()
+        self.label_21.setText("Login By : "+str(self.login_user_name))
+        
+    def load_login_dtls(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()    
+        
+        
+        
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_15_Ui_MainWindow()
@@ -101,7 +148,16 @@ class fci_13_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_14_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show() 
+        self.window.show()
+        
+    def load_login_dtls(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close() 
 
 
 if __name__ == "__main__":

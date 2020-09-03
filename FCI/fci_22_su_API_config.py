@@ -393,10 +393,11 @@ class fci_22_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()  
       
-            self.label_2.setText("Contractor:Record Added Successfully.")
+            self.label_2.setText("Record Added Successfully.")
+            self.log_audit("API Config","Added API ID:"+str(self.lineEdit_21.text()))
             self.label_2.show()
         else :
-            self.label_2.setText("Contractor:Id is Empty.")
+            self.label_2.setText("Id is Empty.")
             self.label_2.show()
             
         self.c_select_all_data()
@@ -424,7 +425,8 @@ class fci_22_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()   
        
-        self.label_2.setText("Contractor:Record Saved Successfully.")
+        self.label_2.setText("Record Saved Successfully.")
+        self.log_audit("API Config","Edited API ID:"+str(self.lineEdit_21.text()))
         self.label_2.show()
         self.c_select_all_data()
     
@@ -447,7 +449,8 @@ class fci_22_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()
             
-            self.label_2.setText("Contractor:Record Deleted Successfully.")
+            self.label_2.setText("Record Deleted Successfully.")
+            self.log_audit("API Config","Deleted API ID:"+str(self.lineEdit_21.text()))
             self.label_2.show()
             
             self.c_select_all_data()
@@ -481,7 +484,16 @@ class fci_22_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)        
             
+        
     
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
 
 if __name__ == "__main__":
     import sys

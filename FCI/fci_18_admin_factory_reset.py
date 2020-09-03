@@ -246,6 +246,8 @@ class fci_18_Ui_MainWindow(object):
                         cursor = connection.cursor()                    
                         cursor.execute(" DELETE FROM WEIGHT_MST")
                         cursor.execute(" DELETE FROM BATCH_MST")
+                        cursor.execute(" DELETE FROM AUDIT_MST")
+                        cursor.execute(" DELETE FROM API_LOGS")
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
@@ -256,7 +258,7 @@ class fci_18_Ui_MainWindow(object):
             with connection:        
                         cursor = connection.cursor()                    
                         cursor.execute("UPDATE DAT_MST SET BU_PWD='12345' ")
-                        cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                       
+                        cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                        
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
@@ -269,6 +271,7 @@ class fci_18_Ui_MainWindow(object):
                         cursor.execute("DELETE FROM MATERIAL_TYPES")
                         cursor.execute("DELETE FROM CONTRACTOR_MST")
                         cursor.execute("DELETE FROM STORAGE_DETAILS")
+                        cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")                        
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 
@@ -287,7 +290,19 @@ class fci_18_Ui_MainWindow(object):
                         self.label_3.setText("Done.") 
                         self.label_3.show()
         connection.commit();
-        connection.close()    
+        connection.close()
+        
+        self.log_audit("Factory Reset","Factory Reset Done")
+    
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
+        
 
 if __name__ == "__main__":
     import sys

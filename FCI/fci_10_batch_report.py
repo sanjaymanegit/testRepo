@@ -231,16 +231,16 @@ class fci_10_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Net. Wt."))
         item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Tare Wt. Kg"))
+        item.setText(_translate("MainWindow", "Tare Wt. Ton"))
         item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Gross Wt. Kg"))
+        item.setText(_translate("MainWindow", "Gross Wt. Ton"))
         item = self.tableWidget.horizontalHeaderItem(8)
         item.setText(_translate("MainWindow", "Target Location"))
         item = self.tableWidget.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Target Slot.No"))
         self.label_22.setText(_translate("MainWindow", "Report Type :"))
         self.label_2.setText(_translate("MainWindow", "Monthly"))
-        self.label_29.setText(_translate("MainWindow", "Net. Weight(Kg) :"))
+        self.label_29.setText(_translate("MainWindow", "Net. Weight(Ton) :"))
         self.pushButton_5.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Print  Report"))
         self.label_8.setText(_translate("MainWindow", "5450"))
@@ -280,7 +280,7 @@ class fci_10_Ui_MainWindow(object):
         
         connection = sqlite3.connect("fci.db")
         #print("select count(BATCH_ID),sum(TOTAL_TRUCKS),SUM(TOTAL_NET_WT) from BATCH_LIST_VW "+str(self.whr_sql))
-        results=connection.execute("select count(BATCH_ID),sum(TOTAL_TRUCKS),SUM(TOTAL_NET_WT) from BATCH_LIST_VW "+str(self.whr_sql)) 
+        results=connection.execute("select count(BATCH_ID),sum(TOTAL_TRUCKS),round(SUM(TOTAL_NET_WT),3) from BATCH_LIST_VW "+str(self.whr_sql)) 
         for x in results:            
                      self.label_9.setText(str(x[0]))
                      self.label_11.setText(str(x[1]))
@@ -321,10 +321,10 @@ class fci_10_Ui_MainWindow(object):
         
         
         print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Kg','Tare Wt. Kg','Gross Wt. Kg','Target Location'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton','Target Location'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,ACCPTED_BAGS ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,NET_WEIGHT_VAL,TARE_WT_VAL,GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+        results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,round(ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,round(NET_WEIGHT_VAL,3),round(TARE_WT_VAL,3),round(GROSS_WT_VAL,3),TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

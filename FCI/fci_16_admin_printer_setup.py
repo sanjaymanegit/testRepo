@@ -133,6 +133,7 @@ class fci_16_Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.current_printer_text=""
         self.current_unknown_printer_txt=""
+        self.printer_key=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -224,12 +225,24 @@ class fci_16_Ui_MainWindow(object):
                     cursor = connection.cursor()
                     if(self.current_printer_text != 'Unknown'):
                             cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_printer_text)+"' ")
+                            self.printer_key=str(self.current_printer_text)
                     else:
                             cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_unknown_printer_txt)+"' ")
+                            self.printer_key=str(self.current_unknown_printer_txt)
         connection.commit();
         connection.close()
         self.label_3.setText("Sucessfully Saved.")
+        self.log_audit("Printer Setup","Added Printer :"+str(self.printer_key))
         self.label_3.show()
+        
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
 
 if __name__ == "__main__":
     import sys

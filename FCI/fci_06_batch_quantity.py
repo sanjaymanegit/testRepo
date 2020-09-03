@@ -377,7 +377,7 @@ class fci_06_Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_6.setText(_translate("MainWindow", "Rice -232"))
         
-        self.label_29.setText(_translate("MainWindow", "Total.Net.Wt.(Kg) :"))
+        self.label_29.setText(_translate("MainWindow", "Total.Net.Wt.(Ton) :"))
         self.label_8.setText(_translate("MainWindow", "5450"))
         self.pushButton_5.setText(_translate("MainWindow", "Refresh"))
         self.pushButton_7.setText(_translate("MainWindow", "Print Batch "))
@@ -421,12 +421,12 @@ class fci_06_Ui_MainWindow(object):
       
     def load_batch_data(self):        
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,ACCPT_WT_KG,RECV_BAGS_CNT,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID IN (SELECT BATCH_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,round(ACCPT_WT_TON,3),round(RECV_BAGS_CNT),CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID IN (SELECT BATCH_ID FROM GLOBAL_VAR)") 
         for x in results:
                  self.label_2.setText(str(x[0]).zfill(4))
                  self.label_6.setText(str(x[1]))
-                 self.label_8.setText(str(x[2]).zfill(6))
-                 self.label_9.setText(str(x[3]).zfill(4))
+                 self.label_8.setText(str(x[2]))
+                 self.label_9.setText(str(x[3]))
                  self.label_13.setText(str(x[4]))
         connection.close()
     
@@ -460,10 +460,10 @@ class fci_06_Ui_MainWindow(object):
         
         
       
-        self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.Kg','Tare Wt. Kg','Gross Wt. Kg','Target Location'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt. Ton','Gross Wt. Ton','Target Location'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,ACCPTED_BAGS ,MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,NET_WEIGHT_VAL,TARE_WT_VAL,GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
+        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,round(ACCPTED_BAGS),MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,round(NET_WEIGHT_VAL,3),round(TARE_WT_VAL,3),round(GROSS_WT_VAL,3),TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -180,6 +180,8 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Reboot"))
         self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
         self.label_22.setText(_translate("MainWindow", "Online"))
+        self.label_22.hide()
+        self.toolButton.hide()
         self.label_2.setText(_translate("MainWindow", "Login Id   :"))
         self.label_3.setText(_translate("MainWindow", "Password  :"))
         self.pushButton_3.setText(_translate("MainWindow", "Login"))
@@ -187,7 +189,8 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Failed to Login !"))
         
         self.label_4.hide()
-        self.check_internet_connection()
+        self.anydesk_open()
+        #self.check_internet_connection()
         self.pushButton_2.clicked.connect(self.shutdown_system)
         self.pushButton_5.clicked.connect(self.reboot_system)
         self.pushButton_4.clicked.connect(self.reset_fun)
@@ -195,7 +198,8 @@ class Ui_MainWindow(object):
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
-        self.timer1.start(1) 
+        self.timer1.start(1)
+        
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -232,6 +236,7 @@ class Ui_MainWindow(object):
     
     def anydesk_open(self):
         self.anydesk_id =0
+        os.system("rm -rf anydes_id_f.txt")
         os.system("anydesk --get-id >> anydes_id_f.txt")
         f = open('anydes_id_f.txt','r')
         for line in f:                 

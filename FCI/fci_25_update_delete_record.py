@@ -553,6 +553,7 @@ class fci_25_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.login_user_id=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -580,11 +581,11 @@ class fci_25_Ui_MainWindow(object):
         self.comboBox_6.setItemText(2, _translate("MainWindow", "None"))
         self.label_34.setText(_translate("MainWindow", "First Wt.Date:"))
         self.label_35.setText(_translate("MainWindow", "First Wt.Time:"))
-        self.label_36.setText(_translate("MainWindow", "First Wt Kg.:"))
+        self.label_36.setText(_translate("MainWindow", "First Wt Ton.:"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "Gross"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Tare"))
         self.comboBox_7.setItemText(2, _translate("MainWindow", "None"))
-        self.label_37.setText(_translate("MainWindow", "Second Wt Kg.:"))
+        self.label_37.setText(_translate("MainWindow", "Second Wt Ton.:"))
         self.label_38.setText(_translate("MainWindow", "Second Wt. Mode:"))
         self.label_39.setText(_translate("MainWindow", "Second. Wt.Time:"))
         self.label_40.setText(_translate("MainWindow", "Second Wt.Date:"))
@@ -596,7 +597,7 @@ class fci_25_Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", "Contractor Name:"))
         self.label_31.setText(_translate("MainWindow", "Target Location :"))
         self.label_32.setText(_translate("MainWindow", "00045"))
-        self.label_41.setText(_translate("MainWindow", "Net.Wt.Kg.:"))
+        self.label_41.setText(_translate("MainWindow", "Net.Wt.Ton.:"))
         self.label_42.setText(_translate("MainWindow", "0"))
         self.label_43.setText(_translate("MainWindow", "Truck Sr.No:"))
         self.label_44.setText(_translate("MainWindow", "0005"))
@@ -638,6 +639,12 @@ class fci_25_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_ID FROM GLOBAL_VAR") 
+        for x in results:
+            self.login_user_id=str(x[0])
+        connection.close()
+        
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
@@ -646,25 +653,25 @@ class fci_25_Ui_MainWindow(object):
         if(self.lineEdit_9.text() == ""):
                self.lineEdit_9.setText("0")
         else:
-               net_wt=int(self.lineEdit_9.text()) - int(self.lineEdit_11.text())
+               net_wt=float(self.lineEdit_9.text()) - float(self.lineEdit_11.text())
                if(int(net_wt) < 0 ):
                    net_wt=int(net_wt)*(-1)
                
                self.label_42.setText(str(net_wt))
-               self.lineEdit_6.setText(str(int(int(net_wt)/50))) 
+               self.lineEdit_6.setText(str(float(float(net_wt)*1000/50))) 
                print(self.lineEdit_9.text())
                
                
     def text_change_second_wt(self):        
         if(self.lineEdit_11.text() == ""):
-               self.lineEdit_9.setText("0")
+               self.lineEdit_11.setText("0")
         else:
-               net_wt=int(self.lineEdit_11.text()) - int(self.lineEdit_9.text())
-               if(int(net_wt) < 0 ):
-                   net_wt=int(net_wt)*(-1)
+               net_wt=float(self.lineEdit_11.text()) - float(self.lineEdit_9.text())
+               if(float(net_wt) < 0 ):
+                   net_wt=float(net_wt)*(-1)
                
                self.label_42.setText(str(net_wt))
-               self.lineEdit_6.setText(str(int(int(net_wt)/50))) 
+               self.lineEdit_6.setText(str(float(float(net_wt)*1000/50))) 
                print(self.lineEdit_11.text())
                
     
@@ -846,7 +853,7 @@ class fci_25_Ui_MainWindow(object):
                          cursor = connection.cursor()                    
                          cursor.execute("UPDATE WEIGHT_MST SET MATERIAL_NAME='"+self.comboBox_3.currentText()+"',BATCH_ID='"+self.comboBox_2.currentText()+"',CONTRACTOR_NAME='"+self.comboBox_4.currentText()+"',CURR_TRUCK_CNT='"+self.label_44.text()+"',TOTAL_TRUCKS_CNT='"+self.label_46.text()+"',ACCPTED_BAGS='"+self.lineEdit_6.text()+"',TARGET_STORAGE='"+self.comboBox_5.currentText()+"',NET_WEIGHT_VAL='"+self.label_42.text()+"',VEHICLE_NO='"+str(self.lineEdit_5.text())+"',FIRST_WEIGHT_MODE='"+self.comboBox_6.currentText()
                                         +"',FIRST_WEIGHT_VAL='"+str(self.lineEdit_9.text())+"',SECOND_WT_MODE='"+self.comboBox_7.currentText()+"',SECOND_WT_VAL='"
-                                        +str(self.lineEdit_11.text())+"'   WHERE SERIAL_ID='"
+                                        +str(self.lineEdit_11.text())+"' ,UPDATED_BY='"+str(self.login_user_id)+"', UPDATED_ON=current_timestamp WHERE SERIAL_ID='"
                                         +str(int(self.label_32.text()))+"'") 
             connection.commit();
             connection.close()

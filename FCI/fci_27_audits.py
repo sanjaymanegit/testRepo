@@ -105,12 +105,12 @@ class fci_27_Ui_MainWindow(object):
         self.label_21.setGeometry(QtCore.QRect(1040, 50, 241, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
+        font.setPointSize(8)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
         self.label_21.setFont(font)
-        self.label_21.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.label_2 = QtWidgets.QLabel(self.frame)
@@ -331,6 +331,10 @@ class fci_27_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.login_user_id=""
+        self.login_user_role=""
+        self.login_user_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -384,11 +388,17 @@ class fci_27_Ui_MainWindow(object):
         self.comboBox_2.setItemText(0, _translate("MainWindow", "ALL"))
         self.pushButton_8.setText(_translate("MainWindow", "Filter"))
         self.pushButton_9.setText(_translate("MainWindow", "Print"))
+        self.pushButton_9.setDisabled(True)
         self.pushButton_10.setText(_translate("MainWindow", "Get Audit Logs"))
+        self.pushButton_10.setDisabled(True)
         self.calendarWidget.hide()
         self.calendarWidget_2.hide()
         self.pushButton_5.clicked.connect(MainWindow.close)
+        self.pushButton_8.clicked.connect( self.s_select_all_data)
         self.tableWidget.doubleClicked.connect(self.s_fetch_data_from_tw)
+        self.load_login_dtls()
+        self.label_21.setText("Login By : "+str(self.login_user_name))
+        self.load_combos()
         self.s_select_all_data()
     
     
@@ -405,22 +415,49 @@ class fci_27_Ui_MainWindow(object):
           
             
        
+    def load_login_dtls(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()       
+
     
     
-    
-    def s_select_all_data(self):     
+    def s_select_all_data(self):
+        sql_str=""
         self.s_delete_all_records()        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['Audit Id.','Created On', 'User Name','Message','Audit Type','Role'])        
-           
-        connection = sqlite3.connect("fci.db")
+        self.tableWidget.setHorizontalHeaderLabels(['Audit Id.','Created On', 'User Name','Message','Audit Type','Role'])
+        if(str(self.login_user_role) ==  'SUPER_ADMIN'):                
+                sql_str="select A.AUDIT_ID,A.CREATED_ON,B.FIRST_NAME||' '||B.LAST_NAME as NAME,A.MESSAGE,A.AUDIT_TYPE,B.ROLE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID "                       
+        elif(str(self.login_user_role) ==  'ADMIN'):
+                sql_str="select A.AUDIT_ID,A.CREATED_ON,B.FIRST_NAME||' '||B.LAST_NAME as NAME,A.MESSAGE,A.AUDIT_TYPE,B.ROLE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)"                        
+
+            
+        elif(str(self.login_user_role) ==  'SUPERVISOR'):
+                sql_str="select A.AUDIT_ID,A.CREATED_ON,B.FIRST_NAME||' '||B.LAST_NAME as NAME,A.MESSAGE,A.AUDIT_TYPE,B.ROLE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)"                        
+
+            
+        else:
+                sql_str="select A.AUDIT_ID,A.CREATED_ON,B.FIRST_NAME||' '||B.LAST_NAME as NAME,A.MESSAGE,A.AUDIT_TYPE,B.ROLE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID= '"+str(self.login_user_id)+"'"                        
       
 
-        results=connection.execute("select A.AUDIT_ID,A.CREATED_ON,B.FIRST_NAME||' '||B.LAST_NAME as NAME,A.MESSAGE,A.AUDIT_TYPE,B.ROLE FROM AUDIT_MST A LEFT OUTER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID")                        
+        if(str(self.comboBox.currentText()) != 'ALL'):
+               sql_str=sql_str+" AND (B.FIRST_NAME||' '||B.LAST_NAME||'('||B.ROLE||')') = '"+str(self.comboBox.currentText())+"'"
+               
+        if(str(self.comboBox_2.currentText()) != 'ALL'):
+               sql_str=sql_str+" AND A.AUDIT_TYPE='"+str(self.comboBox_2.currentText())+"'"
+               
+        connection = sqlite3.connect("fci.db")
+        print("sql:"+str(sql_str))
+        results=connection.execute(sql_str)
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -430,6 +467,63 @@ class fci_27_Ui_MainWindow(object):
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+        
+         
+        
+    def load_combos(self):
+        #===Update user names
+        self.j=1
+        
+        connection = sqlite3.connect("fci.db")
+        if(str(self.login_user_role) ==  'SUPER_ADMIN'):                
+                results=connection.execute("select USER_ID,FIRST_NAME||' '||LAST_NAME||'('||ROLE||')' FROM USERS_MST ")                        
+        elif(str(self.login_user_role) ==  'ADMIN'):
+                results=connection.execute(" select USER_ID,FIRST_NAME||' '||LAST_NAME||'('||ROLE||')' FROM USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")                        
+
+            
+        elif(str(self.login_user_role) ==  'SUPERVISOR'):
+                results=connection.execute("select USER_ID,FIRST_NAME||' '||LAST_NAME||'('||ROLE||')' FROM USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")                        
+
+            
+        else:
+                results=connection.execute("select USER_ID,FIRST_NAME||' '||LAST_NAME||'('||ROLE||')' FROM USERS_MST WHERE USER_ID= '"+str(self.login_user_id)+"'")                        
+        for x in results:
+                self.comboBox.addItem("")
+                self.comboBox.setItemText(self.j, str(x[1]))
+                self.j=self.j+1
+        
+        connection.close()
+        
+        #===Update audit types
+        self.j=1
+        connection = sqlite3.connect("fci.db")
+        if(str(self.login_user_role) ==  'SUPER_ADMIN'):
+               
+                       results=connection.execute("select distinct A.AUDIT_TYPE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID ")
+                
+        elif(str(self.login_user_role) ==  'ADMIN'):
+               
+                      results=connection.execute("select distinct A.AUDIT_TYPE  FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")                        
+
+            
+        elif(str(self.login_user_role) ==  'SUPERVISOR'):
+               
+                      results=connection.execute("select distinct A.AUDIT_TYPE  FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")                        
+
+            
+        else:
+              
+                      
+                   
+                      results=connection.execute("select distinct A.AUDIT_TYPE FROM AUDIT_MST A INNER JOIN  USERS_MST B ON A.USER_ID=B.USER_ID AND B.USER_ID= '"+str(self.login_user_id)+"'")                        
+                             
+        for x in results:
+                self.comboBox_2.addItem("")
+                self.comboBox_2.setItemText(self.j, str(x[0]))
+                self.j=self.j+1
+        
+        connection.close()
         
     
     def s_delete_all_records(self):

@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['fci_01_main.py'],
+a = Analysis(['fci_28_login.py'],
              pathex=['/home/pi/FCI'],
              binaries=[],
              datas=[('fci.db', '.'), ('services.db', '.')],

@@ -208,7 +208,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Online Status"))
         
         self.label_22.setText(_translate("MainWindow", "Internet"))
-        self.toolButton.setText(_translate("MainWindow", "On"))
+        self.toolButton.setText(_translate("MainWindow", "On"))        
         self.pushButton_5_1.clicked.connect(MainWindow.close)
         self.startx()
 
@@ -235,6 +235,7 @@ class fci_01_Ui_MainWindow(object):
         results=connection.execute("SELECT LOGIN_USER_NAME  FROM GLOBAL_VAR") 
         for x in results:
             self.label_20_1.setText("Logged In : "+str(x[0]))
+        connection.close()
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -260,13 +261,24 @@ class fci_01_Ui_MainWindow(object):
     
     
     def shutdown_system(self):
+        self.log_audit("Login","SignOut From System.")
         os.system("sudo shutdown -P 0")
         
     def reboot_system(self):
+        self.log_audit("Login","SignOut From System.")
         os.system("sudo reboot")
+    
+    def closeEvent(self,event):
+        self.log_audit("Login","SignOut From System-close_event.")
+        print("closed window")        
+        #self.event.accept()
+        #quit.triggered.connect(self.close)
+    
+    
     
     def anydesk_open(self):
         self.anydesk_id =0
+        os.system("rm -rf anydes_id_f.txt")
         os.system("anydesk --get-id >> anydes_id_f.txt")
         f = open('anydes_id_f.txt','r')
         for line in f:                 
@@ -357,6 +369,16 @@ class fci_01_Ui_MainWindow(object):
         except:
            cpuserial = "ERROR000000000"
         return cpuserial
+    
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
+            
+        connection.commit();
+        connection.close()
 
 
 if __name__ == "__main__":

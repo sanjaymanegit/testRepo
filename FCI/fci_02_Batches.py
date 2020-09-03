@@ -261,7 +261,7 @@ class fci_02_Ui_MainWindow(object):
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         self.lineEdit.setGeometry(QtCore.QRect(880, 200, 101, 31))
         
-        reg_ex = QRegExp("\d+")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit)
         self.lineEdit.setValidator(input_validator)
         
@@ -269,6 +269,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
+       
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_3.setGeometry(QtCore.QRect(880, 520, 101, 31))
         
@@ -449,7 +450,7 @@ class fci_02_Ui_MainWindow(object):
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_4.setGeometry(QtCore.QRect(880, 250, 101, 31))
         
-        reg_ex = QRegExp("\d+")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
         self.lineEdit_4.setValidator(input_validator)
         
@@ -497,7 +498,7 @@ class fci_02_Ui_MainWindow(object):
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_5.setGeometry(QtCore.QRect(880, 300, 101, 31))
         
-        reg_ex = QRegExp("\d+")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
         self.lineEdit_5.setValidator(input_validator)
         
@@ -547,7 +548,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_6.setFont(font)
         self.lineEdit_6.setObjectName("lineEdit_6")
-        reg_ex = QRegExp("\d+")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
         self.lineEdit_6.setValidator(input_validator)
         
@@ -651,7 +652,7 @@ class fci_02_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.login_user_id=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -795,6 +796,12 @@ class fci_02_Ui_MainWindow(object):
             self.i=self.i+1
         connection.close()
         
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_ID FROM GLOBAL_VAR") 
+        for x in results:
+            self.login_user_id=str(x[0])
+        connection.close()
+        
        
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -827,7 +834,11 @@ class fci_02_Ui_MainWindow(object):
         if(self.lineEdit.text() != "") and (self.lineEdit_5.text() != ""):
              self.accpted_wt=str(self.lineEdit.text())
              self.recived_TL=str(self.lineEdit_5.text())
-             self.perc_r=(float(self.recived_TL)/float(self.accpted_wt))
+             if(float(self.accpted_wt) > 0):
+                     self.perc_r=(float(self.recived_TL)/float(self.accpted_wt))
+             else:
+                     self.perc_r=0
+             
              self.perc_r= float(self.perc_r) *100
              self.label_7.setText(str(round(self.perc_r,2)))  # TL Received( %)    
         else:        
@@ -838,7 +849,10 @@ class fci_02_Ui_MainWindow(object):
         if(self.lineEdit.text() != "") and (self.lineEdit_6.text() != ""):
              self.accpted_wt=str(self.lineEdit.text())
              self.accpted_TL=str(self.lineEdit_6.text())
-             self.perc_a=(float(self.accpted_TL)/float(self.accpted_wt))
+             if(float(self.accpted_wt) > 0):
+                 self.perc_a=(float(self.accpted_TL)/float(self.accpted_wt))
+             else:
+                 self.perc_a=0
              self.perc_a= float(self.perc_a) *100
              self.label_8.setText(str(round(self.perc_a,2)))  # TL Received( %)    
         else:        
@@ -931,7 +945,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST")                        
+        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),IFNULL(ACCPT_BAGS_CNT,0),IFNULL(RECV_WT_TON,'0.0'),ifnull(RECV_BAGS_CNT,0),ifnull(TL_RECVED,'0.0'),ifnull(TL_ACCPTED,'0.0'),ifnull(STORAGE_BAGS,0),MATERIAL_TYPE,STATUS,ifnull(WAGON_CNT,0),ifnull(REQUIRED_TRUCKS,0),CONTRACTOR_NAME from BATCH_MST")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -968,7 +982,7 @@ class fci_02_Ui_MainWindow(object):
         
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST "+q_str)                        
+        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),ACCPT_BAGS_CNT,ifNULL(RECV_WT_TON,'0.0'),RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST "+q_str)                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1008,9 +1022,9 @@ class fci_02_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_KG,ACCPT_BAGS_CNT,RECV_WT_KG,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS) values ('"+self.lineEdit_12.text()
+                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.lineEdit_12.text()
                                    +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
-                                   +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss')")                    
+                                   +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss','"+str(self.login_user_id)+"')")                    
             connection.commit();                    
             connection.close()  
           
@@ -1030,17 +1044,17 @@ class fci_02_Ui_MainWindow(object):
             self.load_data()
         else:    
             self.label_21.setText("Please Select the record.")
-            self.label_21show() 
+            self.label_21.show() 
     
     def edit_data(self):
         if(self.lineEdit_12.text() != ""):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.lineEdit_12.text()+"',ACCPT_WT_KG='"+self.lineEdit_6.text()+
-                                   "',ACCPT_BAGS_CNT='"+self.lineEdit.text()+"',RECV_WT_KG='"+self.lineEdit_9.text()+"',RECV_BAGS_CNT='"+self.lineEdit_4.text()+
-                                   "',TL_RECVED='"+self.lineEdit_10.text()+"',TL_ACCPTED='"+self.lineEdit_5.text()+"',STORAGE_BAGS='"+self.lineEdit_6.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
-                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
+                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.lineEdit_12.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
+                                   "',ACCPT_BAGS_CNT='"+self.lineEdit_9.text()+"',RECV_WT_TON='"+self.lineEdit_4.text()+"',RECV_BAGS_CNT='"+self.lineEdit_10.text()+
+                                   "',TL_RECVED='"+self.lineEdit_5.text()+"',TL_ACCPTED='"+self.lineEdit_6.text()+"',STORAGE_BAGS='"+self.lineEdit_8.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
+                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
             connection.commit();                    
             connection.close()   
        

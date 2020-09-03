@@ -171,12 +171,12 @@ class fci_26_Ui_MainWindow(object):
         self.label_21.setGeometry(QtCore.QRect(1000, 40, 261, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
+        font.setPointSize(8)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
         self.label_21.setFont(font)
-        self.label_21.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.label_22 = QtWidgets.QLabel(self.frame)
@@ -341,6 +341,10 @@ class fci_26_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.login_user_id=""
+        self.login_user_role=""
+        self.login_user_name=""
+        self.go_ahead="No"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -403,15 +407,18 @@ class fci_26_Ui_MainWindow(object):
         
         
         self.pushButton_5.clicked.connect(MainWindow.close)
-        self.s_select_all_data()        
+        self.load_login_dtls()
+        self.s_rest_fun()
+        
+        #self.s_select_all_data()        
         self.tableWidget.doubleClicked.connect(self.s_fetch_data_from_tw)
         self.pushButton_4.clicked.connect(self.s_add_click) 
         self.pushButton_3.clicked.connect(self.s_edit_click)       
         self.pushButton_2.clicked.connect(self.s_delete_click)
         self.pushButton_6.clicked.connect(self.s_rest_fun)
         
-        self.s_rest_fun()
         
+        self.label_21.setText("Login By : "+str(self.login_user_name))
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -421,7 +428,14 @@ class fci_26_Ui_MainWindow(object):
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
 
 
-
+    def load_login_dtls(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()       
 
 
 
@@ -435,19 +449,24 @@ class fci_26_Ui_MainWindow(object):
             self.lineEdit_2.setText(str(self.tableWidget.item(row, 2).text()))
             self.comboBox.setCurrentText(str(self.tableWidget.item(row, 3).text()))
             self.lineEdit_3.setText(str(self.tableWidget.item(row, 4).text()))
-            self.lineEdit_4.setText(str(self.tableWidget.item(row, 5).text())) 
-            self.lineEdit_5.setText(str(self.tableWidget.item(row, 5).text()))
-            self.lineEdit_6.setText(str(self.tableWidget.item(row, 6).text()))
-            self.lineEdit_7.setText(str(self.tableWidget.item(row, 7).text()))
-            
-            
-            self.pushButton_4.setDisabled(True) #add
-            self.pushButton_3.setEnabled(True)  #save
-            self.pushButton_2.setEnabled(True) #delete           
-            self.pushButton_6.setEnabled(True) #reset
+            self.lineEdit_4.setText(str(self.tableWidget.item(row, 7).text())) 
+            self.lineEdit_5.setText(str(self.tableWidget.item(row, 7).text()))
+            self.lineEdit_6.setText(str(self.tableWidget.item(row, 5).text()))
+            self.lineEdit_7.setText(str(self.tableWidget.item(row, 6).text()))
+            if(str(self.login_user_role) ==  'OPERATOR'):
+                    self.pushButton_4.setDisabled(True)
+                    self.comboBox.setDisabled(True)
+                    self.pushButton_2.setDisabled(True) #delete           
+                    self.pushButton_6.setDisabled(True) #reset
+                    self.pushButton_3.setEnabled(True)  #save
+            else:
+                    self.pushButton_4.setDisabled(True) #add
+                    self.pushButton_3.setEnabled(True)  #save
+                    self.pushButton_2.setEnabled(True) #delete           
+                    self.pushButton_6.setEnabled(True) #reset
             
         else:    
-            self.label_22.setText("Storage:Please Select the record.")
+            self.label_22.setText("Please Select the record.")
             self.label_22.show()
             
             
@@ -491,19 +510,21 @@ class fci_26_Ui_MainWindow(object):
         self.s_load_data()
         
     def s_add_data(self):
-        if(self.label_23.text() != ""):            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("INSERT INTO USERS_MST(FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PWD,PHONE_NO,EMAIL_ID) VALUES('"+self.lineEdit.text()+"','"+self.lineEdit_2.text()+"','"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_7.text()+"')")                    
-            connection.commit();                    
-            connection.close()  
-      
-            self.label_22.setText("Users:Record Added Successfully.")
-            self.log_audit("Users Management","Added New User: " +str(self.label_23.text()))
-            self.label_22.show()
+        if(self.label_23.text() != ""):
+            self.validate_ip()
+            if(str(self.go_ahead )== 'Yes'):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO USERS_MST(FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PWD,PHONE_NO,EMAIL_ID) VALUES('"+self.lineEdit.text()+"','"+self.lineEdit_2.text()+"','"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_7.text()+"')")                    
+                    connection.commit();                    
+                    connection.close()  
+              
+                    self.label_22.setText("Record Added Successfully.")
+                    self.log_audit("Users Management","Added New User: " +str(self.label_23.text()))
+                    self.label_22.show()
         else :
-            self.label_22.setText("Users:Id is Empty.")
+            self.label_22.setText("Id is Empty.")
             self.label_22.show()
             
         self.s_select_all_data()
@@ -514,22 +535,25 @@ class fci_26_Ui_MainWindow(object):
             self.operation_flg="EDIT"
             self.s_load_data()
         else:    
-            self.label_22.setText("Users:Please Select the record.")
+            self.label_22.setText("Please Select the record.")
             self.label_22.show() 
     
     def s_edit_data(self):
         if(self.label_23.text() != ""):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE USERS_MST SET FIRST_NAME='"+self.lineEdit.text()+"',LAST_NAME='"+self.lineEdit_2.text()+"',ROLE='"+self.comboBox.currentText()+"',LOGIN_ID='"+self.lineEdit_3.text()+"',PWD='"+self.lineEdit_4.text()+"',PHONE_NO='"+self.lineEdit_6.text()+"',EMAIL_ID='"+self.lineEdit_7.text()+"' WHERE  USER_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()   
-       
-        self.label_22.setText("Users:Record Saved Successfully.")
-        self.log_audit("Users Management","Updated User: " +str(self.label_23.text()))
-        self.label_22.show()
-        self.s_select_all_data()
+            self.validate_ip()
+            if(str(self.go_ahead )== 'Yes'):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("UPDATE USERS_MST SET FIRST_NAME='"+self.lineEdit.text()+"',LAST_NAME='"+self.lineEdit_2.text()+"',ROLE='"+self.comboBox.currentText()+"',LOGIN_ID='"+self.lineEdit_3.text()+"',PWD='"+self.lineEdit_4.text()+"',PHONE_NO='"+self.lineEdit_6.text()+"',EMAIL_ID='"+self.lineEdit_7.text()+"' WHERE  USER_ID ='"+str(self.dr_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    self.label_22.setText("Record Saved Successfully.")
+                    self.log_audit("Users Management","Updated User: " +str(self.label_23.text()))
+                    self.label_22.show()
+                    self.s_select_all_data()
+           
+                   
     
     def s_delete_click(self):
         row = self.tableWidget.currentRow()     
@@ -537,7 +561,7 @@ class fci_26_Ui_MainWindow(object):
             self.operation_flg="DELETE"
             self.s_load_data()
         else:    
-            self.label_22.setText("Users:Please Select the record.")
+            self.label_22.setText("Please Select the record.")
             self.label_22.show()        
      
       
@@ -550,7 +574,7 @@ class fci_26_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()
             
-            self.label_22.setText("Users:Record Deleted Successfully.")
+            self.label_22.setText("Record Deleted Successfully.")
             self.log_audit("Users Management","Deleted User: " +str(self.label_23.text()))
             self.label_22.show()
             
@@ -564,10 +588,30 @@ class fci_26_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['User Id.', ' First Name ', 'Last Name','Role','LoginId','Phone','Email Id','Password'])        
-           
+        self.tableWidget.setHorizontalHeaderLabels(['User Id.', ' First Name ', 'Last Name','Role','LoginId','Phone','Email Id','Password'])
+        print("role :"+str(self.login_user_role))
+       
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST")                        
+        if(str(self.login_user_role) ==  'SUPER_ADMIN'):
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST where ROLE != 'SUPER_ADMIN'")
+                self.comboBox.setEnabled(True)
+                self.pushButton_2.setDisabled(True) #delete           
+                self.pushButton_6.setEnabled(True) #reset
+                #self.pushButton_4.setEnabled(True) #add
+        elif(str(self.login_user_role) ==  'ADMIN'):
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")
+        elif(str(self.login_user_role) ==  'SUPERVISOR'):
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")
+        else:
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID='"+str(self.login_user_id)+"'")
+                self.comboBox.setDisabled(True)
+                self.pushButton_2.setDisabled(True) #delete           
+                self.pushButton_6.setDisabled(True) #reset
+                self.pushButton_4.setDisabled(True) #add
+        
+        
+        
+        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -585,7 +629,27 @@ class fci_26_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)
             
-            
+     
+    def validate_ip(self):
+        self.go_ahead="No"
+        if(self.lineEdit.text() == ""):
+             self.label_22.setText("First Name is Empty.")
+             self.label_22.show()  
+        elif(self.lineEdit_3.text()== ""):
+             self.label_22.setText("Login Id is Empty.")
+             self.label_22.show() 
+        elif(self.lineEdit_4.text()== ""):
+             self.label_22.setText("Password is Empty.")
+             self.label_22.show()
+        elif(self.lineEdit_5.text()== ""):
+             self.label_22.setText("Confirm Password is Empty.")
+             self.label_22.show()
+        elif(str(self.lineEdit_5.text()) != str(self.lineEdit_4.text())):
+             self.label_22.setText("Both Passwords are not same.")
+             self.label_22.show() 
+        else:
+             self.go_ahead="Yes"
+    
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")
         with connection:        

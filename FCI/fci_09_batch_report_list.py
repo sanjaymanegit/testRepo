@@ -394,10 +394,10 @@ class fci_09_Ui_MainWindow(object):
         else:
             self.whr_sql="Order by BATCH_ID DESC"
       
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Total Trucks ', 'Total Net.Wt kg','Total Accpt.Bags.Cnt','Status','Release Date','Release Time' ,'Started On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Total Trucks ', 'Total Net.Wt Ton','Total Accpt.Bags.Cnt','Status','Release Date','Release Time' ,'Started On'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,TOTAL_TRUCKS,TOTAL_NET_WT,TOTAL_ACCEPTED_BAGS,STATUS,RELEASE_DATE,RELEASE_TIME,START_DATE FROM BATCH_LIST_VW "+str(self.whr_sql))                        
+        results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,TOTAL_TRUCKS,round(TOTAL_NET_WT,3),round(TOTAL_ACCEPTED_BAGS),STATUS,RELEASE_DATE,RELEASE_TIME,START_DATE FROM BATCH_LIST_VW "+str(self.whr_sql))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
