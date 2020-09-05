@@ -50,7 +50,7 @@ Statement st= con.createStatement();
 		 }
 		  else
 		   {
-			  document.inputs_frm.target ="rightbottomframe"; 
+			  document.inputs_frm.target ="rightmidframe"; 
 			  document.inputs_frm.action="batch_list.jsp";
 			  document.inputs_frm.method="post";
 			  document.inputs_frm.submit();
@@ -62,7 +62,7 @@ Statement st= con.createStatement();
   function dev_on_change() 
   {
    
-      document.inputs_frm.target ="leftbottomframe";      
+      document.inputs_frm.target ="leftframe";      
 	  document.inputs_frm.action="BatchReportsInputPage.jsp";
 	  document.inputs_frm.work_order_ids.selectcted.value=document.inputs_frm.work_order_ids.value;	  
 	  document.inputs_frm.device_id.selectcted.value=document.inputs_frm.device_id.value;	  
@@ -105,7 +105,7 @@ select {
 String rolename = request.getParameter("role_name");
 String wo_id = request.getParameter("work_order_ids");
 String username = request.getParameter("username");
-//out.println(" user_name :"+username);
+out.println(" user_name :"+username);
 //out.println(" work_order_ids :"+wo_id);
 out.println("<input type=hidden name=username value="+username+">");
 out.println("<input type=hidden name=role_name value="+rolename+">");

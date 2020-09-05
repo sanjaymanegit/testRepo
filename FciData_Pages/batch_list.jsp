@@ -85,7 +85,7 @@ function curr_page_poponload()
 function del_fun()
 {
 	document.frm_batch_list.del_batch_flag.value="Yes"; 
-	document.frm_batch_list.target ="rightbottomframe"; 
+	//document.frm_batch_list.target ="rightbottomframe"; 
     document.frm_batch_list.action="batch_list.jsp";
     document.frm_batch_list.method="post";
     document.frm_batch_list.submit();	
@@ -150,9 +150,9 @@ if(!(rolename == null || (rolename.equals(""))))
 <tr><td></td></tr>
 <tr bgcolor="#CFF7EC">
 <td><input type="checkbox" name="select_all" value="select_all" onclick="SelectAll(this)" > Batch Id </td>
-<td>Batch Date </td>
+<td>Started On </td>
 <td>No.Of.Bags </td>
-<td>Net.Weight.Kg </td>
+<td>Net.Weight.Ton </td>
 <td>No.Of Trucks </td>
 <td>Status </td>
 </tr>
@@ -165,7 +165,7 @@ if (record_count > 0 )
 <%
  try{ 
  statement=con.createStatement(); 
- String sql ="select BATCH_ID, COUNT(SERIAL_NO) as TOTAL_TRUCKS, SUM(NET_WEIGHT_VAL) TOTAL_NET_WT, SUM(ACCPTED_BAGS) as TOTAL_ACCEPTED_BAGS, substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),0,11) as RELEASE_DATE , substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),11,6) as RELEASE_TIME,MIN(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)) as START_DATE , CASE WHEN COUNT(SERIAL_NO) >= AVG(TOTAL_TRUCKS_CNT) THEN 'COMPLETE' ELSE 'IN PROGRESS' END as STATUS from WEIGHT_MST where DEVICE_ID='"+device_id+"' AND DATE(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") GROUP BY BATCH_ID ORDER BY BATCH_ID desc ";
+ String sql ="select BATCH_ID, COUNT(SERIAL_NO) as TOTAL_TRUCKS, truncate(SUM(NET_WEIGHT_VAL),3) as TOTAL_NET_WT, SUM(ACCPTED_BAGS) as TOTAL_ACCEPTED_BAGS, substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),0,11) as RELEASE_DATE , substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),11,6) as RELEASE_TIME,MIN(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) as START_DATE , CASE WHEN COUNT(SERIAL_NO) >= AVG(TOTAL_TRUCKS_CNT) THEN 'COMPLETE' ELSE 'IN PROGRESS' END as STATUS from WEIGHT_MST where DEVICE_ID='"+device_id+"' AND DATE(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") GROUP BY BATCH_ID ORDER BY BATCH_ID desc ";
  //out.println("SQL : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){

@@ -62,7 +62,8 @@ for(int i=0; i<BatchIdsArr.length; i++)
  BatchIDs=BatchIdsArr[i];
  try{ 
  statement=con.createStatement();
- String sql ="SELECT BATCH_ID,BATCH_DATE,RECV_WT_KG,RECV_BAGS_CNT,ACCPT_WT_KG,ACCPT_BAGS_CNT,MATERIAL_TYPE,WAGON_CNT FROM BATCH_MST WHERE BATCH_ID= '"+BatchIDs+"' LIMIT 1";
+ String sql ="SELECT BATCH_ID,DATE(BATCH_DATE) as dt,RECV_WT_KG,RECV_BAGS_CNT,ACCPT_WT_KG,ACCPT_BAGS_CNT,MATERIAL_TYPE,WAGON_CNT FROM BATCH_MST WHERE BATCH_ID= '"+BatchIDs+"' LIMIT 1";
+ //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
 	 // v_batch_id =resultSet.getString("BATCH_ID") 
@@ -72,10 +73,10 @@ for(int i=0; i<BatchIdsArr.length; i++)
 <tr> <td>
 <table border="0" align="left" style="width: 1000px;">
 <tr > <td colspan=5>Batch Id     : <b> <%=resultSet.getString("BATCH_ID")%> </b> </td>
-<td colspan=5> Batch Date        : <%=resultSet.getString("BATCH_DATE")%></td>
+<td colspan=5> Batch Date        : <%=resultSet.getString("dt")%></td>
 </tr>
-<tr> <td colspan=5>Received Weight (Kg)     : <%=resultSet.getString("RECV_WT_KG")%></td>
-<td colspan=5>Accepted Weight (Kg)         : <%=resultSet.getString("ACCPT_WT_KG")%>
+<tr> <td colspan=5>Received Weight (Ton)     : <%=resultSet.getString("RECV_WT_KG")%></td>
+<td colspan=5>Accepted Weight (Ton)         : <%=resultSet.getString("ACCPT_WT_KG")%>
 </td>
 </tr>
 <tr> <td colspan=5>Received Bags     : <%=resultSet.getString("RECV_BAGS_CNT")%></td>
@@ -99,11 +100,12 @@ for(int i=0; i<BatchIdsArr.length; i++)
 </td></tr>
 <tr> <td>
 <table border="0" align="left" style="width: 1000px;">
-<tr bgcolor="#CFF7EC"><td> Truck.No.</td> <td> Vehicle No</td> <td> Net Weight Kg. </td>  <td> No. Of. Bags. </td>  <td> Tare Weight Kg. </td> <td> Gross Weight Kg. </td> <td> Slip No.</td></tr>
+<tr bgcolor="#CFF7EC"><td> Truck.No.</td> <td> Vehicle No</td> <td> Net Weight Ton. </td>  <td> No. Of. Bags. </td>  <td> Tare Weight Ton. </td> <td> Gross Weight Ton. </td> <td> Slip No.</td></tr>
 <%
 try{ 
  statement=con.createStatement();
- String sql ="select CURR_TRUCK_CNT,VEHICLE_NO,NET_WEIGHT_VAL,ACCPTED_BAGS,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FIRST_WEIGHT_VAL WHEN SECOND_WT_MODE='Tare' THEN SECOND_WT_VAL END as TARE_WT, CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FIRST_WEIGHT_VAL WHEN SECOND_WT_MODE='Gross' THEN SECOND_WT_VAL END  AS GROSS_WT , SERIAL_NO,CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Gross' THEN SECOND_WT_CREATED_ON END as GROSS_WT_DATE,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Tare' THEN SECOND_WT_CREATED_ON END as TARE_WT_DATE FROM WEIGHT_MST WHERE BATCH_ID ='"+BatchIDs+"' order by CURR_TRUCK_CNT ASC";
+ String sql ="select CURR_TRUCK_CNT,VEHICLE_NO,truncate(NET_WEIGHT_VAL,3) as NET_WEIGHT_VAL ,ACCPTED_BAGS,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN truncate(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Tare' THEN truncate(SECOND_WT_VAL,3) END as TARE_WT, CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN truncate(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Gross' THEN truncate(SECOND_WT_VAL,3) END  AS GROSS_WT , SERIAL_NO,CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Gross' THEN SECOND_WT_CREATED_ON END as GROSS_WT_DATE,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Tare' THEN SECOND_WT_CREATED_ON END as TARE_WT_DATE FROM WEIGHT_MST WHERE BATCH_ID ='"+BatchIDs+"' order by CURR_TRUCK_CNT ASC";
+  //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){   
  %>

@@ -16,6 +16,8 @@ Statement st= con.createStatement();
  String username = request.getParameter("username");
 String password = request.getParameter("password");	
 String status_str ="disabled" ;
+//out.println("username :"+username);
+//out.println("password :"+password);
  %> 	
 	
 	
@@ -35,14 +37,20 @@ body {
 <script>
 function f_ch_password()
 {
-document.header_form.target = "rightbottomframe";
+document.header_form.target = "bottomframe";
 document.header_form.action="change_password.jsp";
 document.header_form.submit();
 }
 function f_admin()
 {
-document.header_form.target = "leftbottomframe";
+document.header_form.target = "bottomframe";
 document.header_form.action="admin_frame.html";
+document.header_form.submit();
+}
+function f_batch()
+{
+document.header_form.target = "bottomframe";
+document.header_form.action="batch_frame.jsp";
 document.header_form.submit();
 }
 </script>
@@ -56,25 +64,29 @@ document.header_form.submit();
   <td width="55%" align="right">
  <table border="0">
  <tr width="100%">   
- <% 
-try {	
-statement=con.createStatement();  
-String sql="SELECT FIRST_NAME, LAST_NAME,ROLE_NAME,EMAIL_ID FROM business_users where USER_LOGIN_ID='"+username+"' and USER_PWD='"+password+"' AND ROLE_NAME='ADMIN'";
-resultSet=statement.executeQuery(sql);
-while(resultSet.next())
-{				
-status_str ="disabled" ; 
+ <%
+
+status_str ="disabled" ;
+try{	   
+	statement=con.createStatement(); 
+	String sql= "SELECT status  as  STATUS_STR FROM ACTIONS_USER_MAP WHERE USER_ID in (select user_id FROM business_users where USER_LOGIN_ID='"+username+"' and USER_PWD='"+password+"') and ACTION_KEY='ADMIN'";
+	//out.println(" sql: "+sql);
+    resultSet = statement.executeQuery(sql);
+ while(resultSet.next()){
+    status_str = resultSet.getString("STATUS_STR");    
 }
  connection.close();
  } catch (Exception e) {
  e.printStackTrace();
- }
+ }	 
+ //out.println(" status_str: "+status_str);
 %>
 <td>
-<td><input type="button" name="batch_reports" value="Batch Reports"  onclick=""></td>
-<td><input type="button" name="report_button" value="Other Reports"  onclick="" <%=status_str%>></td>
- <td><input type="button" name="admin_button" value="Admin"  onclick="" <%=status_str%>></td>
- <td><input type="button" name="change_my_password" value="Change My Password"  onclick="f_ch_password()" disabled></td>  
+<td><input type="button" name="batch_reports" value="Batch Reports"  onclick="f_batch()"></td>
+<td><input type="button" name="report_button" value="Issues Reports"   disabled ></td>
+<td><input type="button" name="report_button" value="Buffer Stock"   disabled ></td>
+ <td><input type="button" name="admin_button" value="Admin"  onclick="f_admin()" <%=status_str%> ></td>
+ <td><input type="button" name="change_my_password" value="Change My Password"  onclick="f_ch_password()" ></td>  
  </tr> 
  </table>
  </td>
@@ -86,6 +98,7 @@ status_str ="disabled" ;
 try {	
 statement=con.createStatement();  
 String sql="SELECT FIRST_NAME, LAST_NAME,ROLE_NAME,EMAIL_ID FROM business_users where USER_LOGIN_ID='"+username+"' and USER_PWD='"+password+"'";
+//out.println(" sql: "+sql);
 resultSet=statement.executeQuery(sql);
 while(resultSet.next())
 {				
