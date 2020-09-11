@@ -21,6 +21,7 @@ from fci_02_Batches import fci_02_Ui_MainWindow
 from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
+from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
 
 class fci_01_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -185,6 +186,8 @@ class fci_01_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.device_location_type = ""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -195,7 +198,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", " Weighing"))
         self.pushButton_3.setText(_translate("MainWindow", "Admin."))
         self.pushButton_4.setText(_translate("MainWindow", "Batches "))
-        self.label.setText(_translate("MainWindow", "Material Handling and Transport System 1.0 \n @ Site"))
+        self.label.setText(_translate("MainWindow", "Hi-Tech Materail Handling System"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.label_20_1.setText(_translate("MainWindow", "LoginBy: Sanjaykumar Mane (Super Admin) "))
         self.pushButton_2.setText(_translate("MainWindow", "Shutdown"))
@@ -205,7 +208,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Reports"))
         self.pushButton_7.setText(_translate("MainWindow", "Issues"))
         
-        self.pushButton_9.setText(_translate("MainWindow", "Online Status"))
+        self.pushButton_9.setText(_translate("MainWindow", "Stacks"))
         
         self.label_22.setText(_translate("MainWindow", "Internet"))
         self.toolButton.setText(_translate("MainWindow", "On"))        
@@ -223,8 +226,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.open_new_window6)
         self.pushButton_2.clicked.connect(self.shutdown_system)
         self.pushButton_5.clicked.connect(self.reboot_system)
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_9.setDisabled(True)
+        
         self.toolButton.clicked.connect(self.check_internet_connection)
         self.check_internet_connection()
         self.timer1=QtCore.QTimer()
@@ -232,10 +234,20 @@ class fci_01_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT LOGIN_USER_NAME  FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
         for x in results:
-            self.label_20_1.setText("Logged In : "+str(x[0]))
+            self.label_20_1.setText("Logged In : "+str(x[0])+"\n @ "+str(x[1]))
+            self.device_location_type=str(x[1])
         connection.close()
+        
+        if(str(self.device_location_type) == 'SITE'):
+             #self.label.setText("Material Handling and Transport System 1.0 \n @ Site")
+             self.pushButton_7.setDisabled(True)
+             self.pushButton_9.setDisabled(True)
+        else:
+            #self.label.setText("Material Handling and Transport System 1.0 \n @ Storage")
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_9.setEnabled(True)
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -317,11 +329,18 @@ class fci_01_Ui_MainWindow(object):
                     
                     #print("date dt :"+str(DAT_DT))
                     #print("curr dt :"+str(CURR_DT))                
-                    if(DAT_DT > CURR_DT):        
-                            self.window = QtWidgets.QMainWindow()
-                            self.ui=fci_03_Ui_MainWindow()
-                            self.ui.setupUi(self.window)           
-                            self.window.show()        
+                    if(DAT_DT > CURR_DT):
+                         if(str(self.device_location_type) == 'SITE'):
+                             self.window = QtWidgets.QMainWindow()
+                             self.ui=fci_03_Ui_MainWindow()
+                             self.ui.setupUi(self.window)           
+                             self.window.show()
+                         else:
+                             self.window = QtWidgets.QMainWindow()
+                             self.ui=fci_04_Ui_MainWindow()
+                             self.ui.setupUi(self.window)           
+                             self.window.show()
+                             
                     else:
                         print("DAT date problem.")
                 connection.close()         

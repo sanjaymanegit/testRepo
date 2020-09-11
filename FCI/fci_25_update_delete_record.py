@@ -554,6 +554,8 @@ class fci_25_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.login_user_id=""
+        self.login_user_role=""
+        self.net_wt=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -640,40 +642,43 @@ class fci_25_Ui_MainWindow(object):
         self.timer1.start(1)
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT LOGIN_USER_ID FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT LOGIN_USER_ID ,LOGIN_USER_ROLE FROM GLOBAL_VAR") 
         for x in results:
             self.login_user_id=str(x[0])
+            self.login_user_role=str(x[1])
         connection.close()
-        
+        print("self.login_user_role :"+str(self.login_user_role))
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
     
-    def text_change_first_wt(self):        
-        if(self.lineEdit_9.text() == ""):
+    def text_change_first_wt(self):
+        self.net_wt=0
+        if(self.lineEdit_9.text() == "" or self.lineEdit_9.text()=="0" ):
                self.lineEdit_9.setText("0")
         else:
-               net_wt=float(self.lineEdit_9.text()) - float(self.lineEdit_11.text())
-               if(int(net_wt) < 0 ):
-                   net_wt=int(net_wt)*(-1)
+               self.net_wt_calc()
+    
+    def net_wt_calc(self):
+        #print("xxx :"+str(float(self.lineEdit_11.text())))
+        if(float(self.lineEdit_11.text()) > 0 ):        
+               self.net_wt=float(self.lineEdit_11.text()) - float(self.lineEdit_9.text())
+               if(float(self.net_wt) < 0 ):
+                       self.net_wt=float(self.net_wt)*(-1)
+               self.label_42.setText(str(round(self.net_wt,3)))
+               self.net_wt=float(float(self.net_wt)*1000/50)
+               self.lineEdit_6.setText(str(round(self.net_wt,3)))
+        
                
-               self.label_42.setText(str(net_wt))
-               self.lineEdit_6.setText(str(float(float(net_wt)*1000/50))) 
-               print(self.lineEdit_9.text())
                
-               
-    def text_change_second_wt(self):        
-        if(self.lineEdit_11.text() == ""):
+    def text_change_second_wt(self):
+        self.net_wt=0
+        if(str(self.lineEdit_11.text()) == "" or str(self.lineEdit_11.text()) == "0"):
                self.lineEdit_11.setText("0")
         else:
-               net_wt=float(self.lineEdit_11.text()) - float(self.lineEdit_9.text())
-               if(float(net_wt) < 0 ):
-                   net_wt=float(net_wt)*(-1)
-               
-               self.label_42.setText(str(net_wt))
-               self.lineEdit_6.setText(str(float(float(net_wt)*1000/50))) 
-               print(self.lineEdit_11.text())
-               
+               self.net_wt_calc()
+            
+              
     
     def serial_no_onlick(self):
         self.radioButton_5.setChecked(True) #serial no   
@@ -766,7 +771,10 @@ class fci_25_Ui_MainWindow(object):
         self.comboBox_2.clear()
         self.comboBox_4.clear()
         self.comboBox_5.clear() 
-        self.comboBox_3.clear() 
+        self.comboBox_3.clear()
+        self.lineEdit_11.setText("0")
+        self.lineEdit_9.setText("0")
+        self.label_42.setText("0")
         self.i=0
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT distinct BATCH_ID FROM WEIGHT_MST WHERE BATCH_ID not in ('','None')") 
@@ -816,11 +824,14 @@ class fci_25_Ui_MainWindow(object):
                 connection = sqlite3.connect("fci.db")
                 
                 
-                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,BATCH_ID,CONTRACTOR_NAME,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,ACCPTED_BAGS,TARGET_STORAGE,NET_WEIGHT_VAL,"+                                           
-                                   "FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON FROM WEIGHT_MST_FCI_VW where SERIAL_ID = '"+str(int(self.serial_id))+"'")
+                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,BATCH_ID,CONTRACTOR_NAME,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,ACCPTED_BAGS,TARGET_STORAGE,round(NET_WEIGHT_VAL,2),"+                                           
+                                   "FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,IFNULL(MANNUAL_INS_FLG,'')  FROM WEIGHT_MST_FCI_VW where SERIAL_ID = '"+str(int(self.serial_id))+"'")
                 for x in results:                    
                     print("ok")
                     self.label_32.setText(str(x[0]).zfill(6))
+                    print("role:"+str(self.login_user_role))
+                    if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
+                            self.label_25.setText("Serial.No."+str(x[16]))
                     
                     self.lineEdit_5.setText(str(x[1]))
                     self.comboBox_3.setCurrentText(str(x[2]))
@@ -830,7 +841,7 @@ class fci_25_Ui_MainWindow(object):
                     self.label_46.setText(str(x[6]))
                     self.lineEdit_6.setText(str(x[7]))
                     self.comboBox_5.setCurrentText(str(x[8]))
-                    self.label_42.setText(str(x[9]))
+                    #self.label_42.setText(str(x[9]))
                     
                     self.comboBox_6.setCurrentText(str(x[10]))
                     self.lineEdit_9.setText(str(x[11]))
@@ -841,6 +852,8 @@ class fci_25_Ui_MainWindow(object):
                     self.lineEdit_11.setText(str(x[14]))
                     self.lineEdit_10.setText(str(x[15])[0:10])
                     self.lineEdit_12.setText(str(x[15])[11:16])
+                    self.net_wt_calc()
+                    
                
             else:             
                 print("Invalid !!")

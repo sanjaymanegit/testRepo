@@ -64,7 +64,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(30, 120, 581, 501))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(14)
+        self.tableWidget.setColumnCount(15)
         self.tableWidget.setRowCount(5)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -132,6 +132,32 @@ class fci_02_Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(10, item)
         item = QtWidgets.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(11, item)
+        item = QtWidgets.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(12, item)
+        item = QtWidgets.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(13, item)
+        item = QtWidgets.QTableWidgetItem()
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(14, item)
+        item = QtWidgets.QTableWidgetItem()
+        
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         item.setFont(font)
@@ -395,7 +421,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
-        self.label_5 = QtWidgets.QLabel(self.frame)
+        self.label_5 = QtWidgets.QLineEdit(self.frame)
         self.label_5.setGeometry(QtCore.QRect(1140, 400, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -719,8 +745,8 @@ class fci_02_Ui_MainWindow(object):
         self.lineEdit_8.setText(_translate("MainWindow", "1"))
         self.label_31.setText(_translate("MainWindow", "Accepted. Bags Count :"))
         self.lineEdit_9.setText(_translate("MainWindow", "96000"))
-        self.label_32.setText(_translate("MainWindow", "Avg. Bag. Wt :"))
-        self.label_5.setText(_translate("MainWindow", "50 t"))
+        self.label_32.setText(_translate("MainWindow", "Rack.Ref.No. :"))
+        self.label_5.setText(_translate("MainWindow", "000012"))
         self.pushButton_7.setText(_translate("MainWindow", "Batch Quantity Details"))
         self.label_33.setText(_translate("MainWindow", "Batch Date :"))
         self.label_6.setText(_translate("MainWindow", "08 Aug 2020"))
@@ -865,7 +891,7 @@ class fci_02_Ui_MainWindow(object):
         self.lineEdit_3.setText("") #no .of wagons
         self.lineEdit_8.setText("") #Shortage of bags
         self.lineEdit_9.setText("")  #Accepted bags count      
-        self.label_5.setText("50 Kg") # Avg Bag Wt
+        #self.label_5.setText("50 Kg") # Refernce No
         #self.label_6.setText("")   # BAtch Date
         self.label_6.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.lineEdit_4.setText("") #received wt
@@ -888,6 +914,7 @@ class fci_02_Ui_MainWindow(object):
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'BATCH_MST'")       
         for x in results:           
                  self.lineEdit_12.setText(str(x[0]).zfill(6))
+                 self.label_5.setText("R"+str(x[0]).zfill(6))
         
             
         connection.close()  
@@ -924,6 +951,7 @@ class fci_02_Ui_MainWindow(object):
             self.lineEdit_3.setText(str(self.tableWidget.item(row, 11).text())) #no .of wagons
             self.lineEdit_11.setText(str(self.tableWidget.item(row, 12).text()))  #TRuck count
             self.comboBox.setCurrentText(str(self.tableWidget.item(row, 13).text())) #Contractor Name
+            self.label_5.setText(str(self.tableWidget.item(row, 14).text())) #TL  Received Kg
             
             self.pushButton_4.setEnabled(True)
             self.pushButton_3.setEnabled(True)
@@ -942,10 +970,10 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name',' Rack.Ref.No.'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),IFNULL(ACCPT_BAGS_CNT,0),IFNULL(RECV_WT_TON,'0.0'),ifnull(RECV_BAGS_CNT,0),ifnull(TL_RECVED,'0.0'),ifnull(TL_ACCPTED,'0.0'),ifnull(STORAGE_BAGS,0),MATERIAL_TYPE,STATUS,ifnull(WAGON_CNT,0),ifnull(REQUIRED_TRUCKS,0),CONTRACTOR_NAME from BATCH_MST")                        
+        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),IFNULL(ACCPT_BAGS_CNT,0),IFNULL(RECV_WT_TON,'0.0'),ifnull(RECV_BAGS_CNT,0),ifnull(TL_RECVED,'0.0'),ifnull(TL_ACCPTED,'0.0'),ifnull(STORAGE_BAGS,0),MATERIAL_TYPE,STATUS,ifnull(WAGON_CNT,0),ifnull(REQUIRED_TRUCKS,0),CONTRACTOR_NAME,BATCH_ID_DISPLAY from BATCH_MST")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -972,7 +1000,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name','Reference No.'])        
         
         
         if (self.lineEdit_7.text() ==""):            
@@ -982,7 +1010,7 @@ class fci_02_Ui_MainWindow(object):
         
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),ACCPT_BAGS_CNT,ifNULL(RECV_WT_TON,'0.0'),RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME from BATCH_MST "+q_str)                        
+        results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),ACCPT_BAGS_CNT,ifNULL(RECV_WT_TON,'0.0'),RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,STATUS,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,BATCH_ID_DISPLAY from BATCH_MST "+q_str)                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1022,7 +1050,7 @@ class fci_02_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.lineEdit_12.text()
+                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.label_5.text()
                                    +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
                                    +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss','"+str(self.login_user_id)+"')")                    
             connection.commit();                    
@@ -1051,7 +1079,7 @@ class fci_02_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.lineEdit_12.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
+                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.label_5.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
                                    "',ACCPT_BAGS_CNT='"+self.lineEdit_9.text()+"',RECV_WT_TON='"+self.lineEdit_4.text()+"',RECV_BAGS_CNT='"+self.lineEdit_10.text()+
                                    "',TL_RECVED='"+self.lineEdit_5.text()+"',TL_ACCPTED='"+self.lineEdit_6.text()+"',STORAGE_BAGS='"+self.lineEdit_8.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
                                    +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    

@@ -10,6 +10,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_09_batch_report_list import fci_09_Ui_MainWindow
+import sqlite3
+import datetime
+
 
 class fci_08_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -100,6 +103,8 @@ class fci_08_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.device_location_type=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -124,6 +129,32 @@ class fci_08_Ui_MainWindow(object):
         self.pushButton_5.setDisabled(True)
         self.pushButton_6.setDisabled(True)
         self.pushButton.clicked.connect(self.open_new_window2)
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
+        for x in results:            
+            self.device_location_type=str(x[1])
+        connection.close()
+        
+        if(str(self.device_location_type) == 'SITE'):             
+             self.pushButton.setDisabled(True)
+             self.pushButton_4.setDisabled(True)
+             self.pushButton_5.setDisabled(True)
+             self.pushButton_6.setDisabled(True)
+        else:          
+            self.pushButton.setEnabled(True)
+            self.pushButton_4.setEnabled(True)
+            self.pushButton_5.setEnabled(True)
+            self.pushButton_6.setEnabled(True)
+            
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+           
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
 
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()

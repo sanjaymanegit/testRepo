@@ -599,8 +599,20 @@ class fci_26_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True) #reset
                 #self.pushButton_4.setEnabled(True) #add
         elif(str(self.login_user_role) ==  'ADMIN'):
+                self.comboBox.clear()
+                self.comboBox.addItem("")
+                self.comboBox.setItemText(0, "OPERATOR")
+                self.comboBox.addItem("")
+                self.comboBox.setItemText(1, "SUPERVISOR")                
+            
                 results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")
         elif(str(self.login_user_role) ==  'SUPERVISOR'):
+                self.comboBox.clear()
+                self.comboBox.addItem("")
+                self.comboBox.setItemText(0, "OPERATOR")
+               
+                
+                
                 results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")
         else:
                 results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID='"+str(self.login_user_id)+"'")
