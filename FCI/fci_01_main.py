@@ -22,6 +22,7 @@ from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
+from fci_29_stacks import fci_29_Ui_MainWindow
 
 class fci_01_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -224,6 +225,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_new_window4)
         self.pushButton_6.clicked.connect(self.open_new_window5)
         self.pushButton_3.clicked.connect(self.open_new_window6)
+        self.pushButton_9.clicked.connect(self.open_new_window7)
         self.pushButton_2.clicked.connect(self.shutdown_system)
         self.pushButton_5.clicked.connect(self.reboot_system)
         
@@ -375,6 +377,11 @@ class fci_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    def open_new_window7(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_29_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def getserial(self):
         # Extract serial from cpuinfo file

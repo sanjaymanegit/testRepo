@@ -9,6 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+
 
 
 class fci_05_Ui_MainWindow(object):
@@ -417,10 +424,7 @@ class fci_05_Ui_MainWindow(object):
         self.label_33.setGeometry(QtCore.QRect(310, 170, 251, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
+        font.setPointSize(10)       
         self.label_33.setFont(font)
         self.label_33.setStyleSheet("color: rgb(255, 0, 0);")
         self.label_33.setAlignment(QtCore.Qt.AlignCenter)
@@ -494,15 +498,34 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox.setFont(font)
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        self.comboBox.setObjectName("comboBox")        
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
         self.pushButton_13.setGeometry(QtCore.QRect(1200, 70, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_13.setFont(font)
         self.pushButton_13.setObjectName("pushButton_13")
+        
+        
+        
+        self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
+        self.calendarWidget.setGeometry(QtCore.QRect(940, 220, 312, 183))
+        self.calendarWidget.setGridVisible(True)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.calendarWidget.setFont(font)
+        self.calendarWidget.setObjectName("calendarWidget")
+        
+        self.calendarWidget_2 = QtWidgets.QCalendarWidget(self.frame)
+        self.calendarWidget_2.setGeometry(QtCore.QRect(940, 220, 312, 183))
+        self.calendarWidget_2.setGridVisible(True)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.calendarWidget_2.setFont(font)
+        self.calendarWidget_2.setObjectName("calendarWidget_2")
+        
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -510,6 +533,8 @@ class fci_05_Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
+        
+        
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
@@ -524,6 +549,7 @@ class fci_05_Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Save"))
         self.pushButton_3.setText(_translate("MainWindow", "Delete"))
         self.pushButton_3_1.setText(_translate("MainWindow", "Reset"))
+       
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -537,13 +563,13 @@ class fci_05_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Release Order Id"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Release Quantity(Kg)"))
+        item.setText(_translate("MainWindow", "Release Quantity(Ton)"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Expiry Date"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Issue Date"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Net.Wt.Kg"))
+        item.setText(_translate("MainWindow", "Curr.Net.Wt.Ton"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Total No. of Bags"))
         item = self.tableWidget.horizontalHeaderItem(6)
@@ -556,11 +582,13 @@ class fci_05_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "RO TYPE"))
         self.label_21.setText(_translate("MainWindow", "Please select the record to Edit."))
         self.label_22.setText(_translate("MainWindow", "Release Order Id :"))
-        self.label_23.setText(_translate("MainWindow", "Relase Quantityt (Kg) :"))
+        self.label_23.setText(_translate("MainWindow", "Total Quantity (Ton) :"))
         self.label_28.setText(_translate("MainWindow", "Status:"))
         self.lineEdit.setText(_translate("MainWindow", "5000"))
         self.pushButton_4.setText(_translate("MainWindow", "Save"))
-        self.pushButton_5.setText(_translate("MainWindow", "Reset"))
+        self.pushButton_4.hide()
+        self.pushButton_5.setText(_translate("MainWindow", "Return"))
+        
         self.pushButton_6.setText(_translate("MainWindow", "Search "))
         self.label_3.setText(_translate("MainWindow", "Batch . Id. :"))
         self.pushButton_7.setText(_translate("MainWindow", "Issue Quantity Details"))
@@ -579,7 +607,7 @@ class fci_05_Ui_MainWindow(object):
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Category"))
         item = self.tableWidget_2.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Quantity Kg"))
+        item.setText(_translate("MainWindow", "Quantity(Ton)"))
         item = self.tableWidget_2.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "No.Of.Bags"))
         __sortingEnabled = self.tableWidget_2.isSortingEnabled()
@@ -589,11 +617,11 @@ class fci_05_Ui_MainWindow(object):
         self.comboBox_2.setItemText(1, _translate("MainWindow", "002-Rice"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "003-Paddy"))
         self.label_24.setText(_translate("MainWindow", "Category:"))
-        self.label_25.setText(_translate("MainWindow", "Quantity Kg:"))
+        self.label_25.setText(_translate("MainWindow", "Quantity Ton:"))
         self.lineEdit_2.setText(_translate("MainWindow", "200"))
         self.pushButton_10.setText(_translate("MainWindow", "Add"))
         self.pushButton_11.setText(_translate("MainWindow", "Delete"))
-        self.label_26.setText(_translate("MainWindow", "No. Of Bags:"))
+        self.label_26.setText(_translate("MainWindow", "No.Of Bags:"))
         self.lineEdit_4.setText(_translate("MainWindow", "200"))
         self.label_33.setText(_translate("MainWindow", "Please select the record to Delete."))
         self.pushButton_12.setText(_translate("MainWindow", "Released Categories"))
@@ -603,15 +631,76 @@ class fci_05_Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "9000"))
         self.label_8.setText(_translate("MainWindow", "In Progress"))
         self.label_31.setText(_translate("MainWindow", "Contractor:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Contractor 1000"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Contractor 1001"))
+        
         self.pushButton_13.setText(_translate("MainWindow", "Return"))
-        self.pushButton_13.clicked.connect(MainWindow.close)
-        #self.startx()
+        self.pushButton_13.hide()
+        self.pushButton_5.clicked.connect(MainWindow.close)
+        
+        self.pushButton_9.clicked.connect(self.EXP_DT_on_click)
+        self.pushButton_8.clicked.connect(self.ISSUE_DT_on_click)
+        self.calendarWidget.clicked.connect(self.calendar_on_click)
+        self.calendarWidget_2.clicked.connect(self.calendar_2_on_click)
+        
+        self.calendarWidget.hide()
+        self.calendarWidget_2.hide()
+        self.select_all_data()
+        
+        self.i=0
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT C_NAME FROM CONTRACTOR_MST ORDER BY C_NAME DESC ") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+               
+    
+    def EXP_DT_on_click(self):
+        self.calendarWidget_2.show()
+    
+    def ISSUE_DT_on_click(self):
+        self.calendarWidget.show()
+    
+    def calendar_on_click(self): 
+        self.label_4.setText(str(self.calendarWidget.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget.hide()
+        
+    def calendar_2_on_click(self): 
+        self.label_6.setText(str(self.calendarWidget_2.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget_2.hide()
+    
+    
+    def select_all_data(self):     
+            self.delete_all_records()        
+            font = QtGui.QFont()
+            font.setPointSize(10)
+            self.tableWidget.setFont(font) 
+            self.tableWidget.horizontalHeader().setStretchLastSection(True)
+          
+            self.tableWidget.setHorizontalHeaderLabels(['Issue. Id','Release Order Id.', ' Total Release Quantity(Ton) ', 'Expiry Date', 'Issue Date','Curr.Net.Wt.Ton','Current Bag.Count' ,'Status','Contractor Name','RO TYPE'])        
+               
+            connection = sqlite3.connect("fci.db")
+            results=connection.execute("select ISSUE_ID,ISSUE_REF_NO, RELESED_QUANTITY_WT,EXPIRY_DATE,ISSUE_DATE,CURR_NET_WT,CURR_BAGS_COUNT,STATUS,CONTRACTOR_NAME ,RO_TYPE from ISSUE_MST")                        
+            for row_number, row_data in enumerate(results):            
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                    #self.lineEdit.setText("")
+            connection.close()   
+            self.tableWidget.resizeColumnsToContents()
+            self.tableWidget.resizeRowsToContents()
+            self.tableWidget.horizontalHeader().setStretchLastSection(True)
+            self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+            
+        
+    def delete_all_records(self):
+            i = self.tableWidget.rowCount()       
+            while (i>0):             
+                i=i-1
+                self.tableWidget.removeRow(i)
 
 
 
-    #def startx(self):   
 
 
 if __name__ == "__main__":
