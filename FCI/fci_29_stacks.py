@@ -9,9 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from fci_30_batch_pop import fci_30_Ui_MainWindow
+from fci_31_issue_pop import fci_31_Ui_MainWindow
 
-
-class Ui_MainWindow(object):
+class fci_29_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -461,13 +462,28 @@ class Ui_MainWindow(object):
         self.label_35.setText(_translate("MainWindow", "Remark:"))
         self.label_36.setText(_translate("MainWindow", "Last Updated On :"))
         self.label_53.setText(_translate("MainWindow", "2020-09-20 12:33:44"))
+        self.pushButton_8.clicked.connect(MainWindow.close)
+        self.pushButton_7.clicked.connect(self.open_new_window)
+        self.pushButton_10.clicked.connect(self.open_new_window2)
+        
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_30_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_31_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_29_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
