@@ -10,6 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_09_batch_report_list import fci_09_Ui_MainWindow
+from fci_11_issue_report_list import fci_11_Ui_MainWindow
+
 import sqlite3
 import datetime
 
@@ -119,6 +121,7 @@ class fci_08_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Please select the Report of Batch Or Issues."))
         self.pushButton_5.setText(_translate("MainWindow", "Buffer Stocks Report"))
         self.pushButton_6.setText(_translate("MainWindow", "Other Reports"))
+        self.pushButton_6.hide()
         self.pushButton_2.clicked.connect(MainWindow.close)
         self.startx()
 
@@ -129,7 +132,7 @@ class fci_08_Ui_MainWindow(object):
         self.pushButton_5.setDisabled(True)
         self.pushButton_6.setDisabled(True)
         self.pushButton.clicked.connect(self.open_new_window2)
-        
+        self.pushButton_4.clicked.connect(self.open_new_window3)
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
         for x in results:            
@@ -159,6 +162,12 @@ class fci_08_Ui_MainWindow(object):
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_09_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window3(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_11_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         

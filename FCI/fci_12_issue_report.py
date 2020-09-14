@@ -9,9 +9,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
+from PyQt5.QtCore import QDate
+import os,sys
 
 
-class Ui_MainWindow(object):
+class fci_12_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -46,7 +51,7 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(20, 190, 1261, 431))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(12)
+        self.tableWidget.setColumnCount(9)
         self.tableWidget.setRowCount(5)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -200,6 +205,8 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.login_user_id=""
+        self.login_user_role=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -237,12 +244,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Net. Wt."))
         item = self.tableWidget.horizontalHeaderItem(8)
         item.setText(_translate("MainWindow", "No. Bags"))
-        item = self.tableWidget.horizontalHeaderItem(9)
-        item.setText(_translate("MainWindow", "Batch Id"))
-        item = self.tableWidget.horizontalHeaderItem(10)
-        item.setText(_translate("MainWindow", "Slot Id"))
-        item = self.tableWidget.horizontalHeaderItem(11)
-        item.setText(_translate("MainWindow", "Status"))
+        
         self.label_22.setText(_translate("MainWindow", "Report Type :"))
         self.label_2.setText(_translate("MainWindow", "Monthly"))
         self.label_29.setText(_translate("MainWindow", "Net. Weight(Kg) :"))
@@ -255,13 +257,115 @@ class Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
         self.label_23.setText(_translate("MainWindow", "No. Of Issues :"))
         self.label_9.setText(_translate("MainWindow", "12"))
+        self.pushButton_5.clicked.connect(MainWindow.close)
+        self.startx()
+    
+    def startx(self):
+        self.whr_sql=""
+        self.whr_sql2=""
+        self.pushButton_5.clicked.connect(self.select_all_data)
+        self.pushButton_7.clicked.connect(self.print_report)
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT LOGIN_USER_ID ,LOGIN_USER_ROLE FROM GLOBAL_VAR") 
+        for x in results:
+            self.login_user_id=str(x[0])
+            self.login_user_role=str(x[1])
+        connection.close()
+        #print("self.login_user_role :"+str(self.login_user_role))
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_ISSUE_ID  FROM GLOBAL_VAR") 
+        for x in results:            
+                 self.label_2.setText(str(x[1]))
+                 if(self.label_2.text() == 'DATE_RANGE'):
+                     self.label_36.setText("Report selected for date range "+str(x[2])+" to "+str(x[3])+".")
+                     
+                     self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
+                     self.whr_sql2=" WHERE strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by ISSUE_ID,CURR_TRUCK_CNT limit 400"
+                 elif(self.label_2.text() == 'BY_ISSUE_ID'):
+                     self.label_36.setText("Report selected for Issue id:"+str(x[4])+".")
+                     
+                     self.whr_sql="WHERE ISSUE_ID = '"+str(x[4])+"'"
+                     self.whr_sql2="WHERE ISSUE_ID = '"+str(x[4])+"' order by ISSUE_ID,CURR_TRUCK_CNT "
+                     
+                 else:
+                     self.label_36.setText("Report selected for unknow.")
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        #print("select count(BATCH_ID),sum(TOTAL_TRUCKS),SUM(TOTAL_NET_WT) from BATCH_LIST_VW "+str(self.whr_sql))
+        results=connection.execute("select count(ISSUE_ID),sum(TOTAL_TRUCKS),round(SUM(TOTAL_NET_WT),3) from ISSUE_LIST_VW "+str(self.whr_sql)) 
+        for x in results:            
+                     self.label_9.setText(str(x[0]))
+                     self.label_11.setText(str(x[1]))
+                     self.label_8.setText(str(x[2]))
+        connection.close()
+        
+        self.select_all_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def print_report(self):        
+         os.system("./job_print_report.sh")
+                        
+    def select_all_data(self):
+        
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 100)    
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 150)
+      
+        
+        
+        
+        print("whr_sql2 :"+str(self.whr_sql2))
+        self.tableWidget.setHorizontalHeaderLabels(['Issue ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton'])        
+           
+        connection = sqlite3.connect("fci.db")
+        if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
+                results=connection.execute("SELECT printf(\"%06d\", ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+      
+        else:
+                results=connection.execute("SELECT printf(\"%06d\", ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i) 
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_12_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

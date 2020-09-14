@@ -11,6 +11,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_30_batch_pop import fci_30_Ui_MainWindow
 from fci_31_issue_pop import fci_31_Ui_MainWindow
+import sqlite3
+import re
+import datetime
+import time
 
 class fci_29_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -132,6 +136,10 @@ class fci_29_Ui_MainWindow(object):
         self.label_24.setObjectName("label_24")
         self.listWidget = QtWidgets.QListWidget(self.frame)
         self.listWidget.setGeometry(QtCore.QRect(20, 210, 241, 441))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)        
+        self.listWidget.setFont(font)
         self.listWidget.setObjectName("listWidget")
         self.line_2 = QtWidgets.QFrame(self.frame)
         self.line_2.setGeometry(QtCore.QRect(290, 160, 20, 521))
@@ -427,23 +435,25 @@ class fci_29_Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.radioButton_3.setText(_translate("MainWindow", "Batch ID."))
         self.groupBox_5.setTitle(_translate("MainWindow", "."))
-        self.comboBox.setItemText(0, _translate("MainWindow", "R0001"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "All"))
         self.comboBox.setItemText(1, _translate("MainWindow", "R0002"))
         self.radioButton_4.setText(_translate("MainWindow", "Issue ID."))
-        self.comboBox_9.setItemText(0, _translate("MainWindow", "ISSUE_0001"))
+        self.comboBox_9.setItemText(0, _translate("MainWindow", "All"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "ISSUE_0002"))
         self.pushButton_9.setText(_translate("MainWindow", "Search "))
-        self.radioButton_5.setText(_translate("MainWindow", "Materails"))
-        self.comboBox_8.setItemText(0, _translate("MainWindow", "Wheat (5001)"))
+        self.radioButton_5.setText(_translate("MainWindow", "Materials"))
+        self.comboBox_8.setItemText(0, _translate("MainWindow", "All"))
         self.comboBox_8.setItemText(1, _translate("MainWindow", "Rice (4001)"))
         self.comboBox_8.setItemText(2, _translate("MainWindow", "Paddy(300)"))
-        self.comboBox_8.setItemText(3, _translate("MainWindow", "Maiz (44)"))
+        self.comboBox_8.setItemText(3, _translate("MainWindow", "Wheat (5001)"))
         self.label_24.setText(_translate("MainWindow", "Message: Successfully Ssaved .sdfsdfsdf"))
+        self.label_24.hide()
         self.label_25.setText(_translate("MainWindow", "Rec. No.:"))
         self.label_26.setText(_translate("MainWindow", "Slot.Id.:"))
         self.label_27.setText(_translate("MainWindow", "Material Name:"))
         self.label_28.setText(_translate("MainWindow", "Batch Id."))
         self.label_29.setText(_translate("MainWindow", "Issue.Id."))
+        self.label_29.hide()
         self.label_30.setText(_translate("MainWindow", "Current Bags.Count:"))
         self.label_32.setText(_translate("MainWindow", "00045"))
         self.label_21.setText(_translate("MainWindow", "Slots List:"))
@@ -451,21 +461,86 @@ class fci_29_Ui_MainWindow(object):
         self.label_48.setText(_translate("MainWindow", "Wheat(5001)"))
         self.label_49.setText(_translate("MainWindow", "R0001"))
         self.label_50.setText(_translate("MainWindow", "ISSUE_0001"))
-        self.label_33.setText(_translate("MainWindow", "Current Net.Weight(Ton):"))
+        self.label_50.hide()
+        self.label_33.setText(_translate("MainWindow", "Current Net.Wt(Ton):"))
         self.label_51.setText(_translate("MainWindow", "5400"))
         self.label_52.setText(_translate("MainWindow", "2345.997"))
         self.groupBox.setTitle(_translate("MainWindow", "Set Depo Loss"))
         self.label_31.setText(_translate("MainWindow", "Lost  Bags.Count:"))
-        self.label_34.setText(_translate("MainWindow", "Lost  Net. Weight(Ton):"))
+        self.label_34.setText(_translate("MainWindow", "Lost  Net. Wt(Ton):"))
         self.pushButton_11.setText(_translate("MainWindow", "Save"))
         self.pushButton_10.setText(_translate("MainWindow", "Issue Details"))
+        self.pushButton_10.setDisabled(True)
         self.label_35.setText(_translate("MainWindow", "Remark:"))
         self.label_36.setText(_translate("MainWindow", "Last Updated On :"))
         self.label_53.setText(_translate("MainWindow", "2020-09-20 12:33:44"))
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.pushButton_7.clicked.connect(self.open_new_window)
         self.pushButton_10.clicked.connect(self.open_new_window2)
+        self.listWidget.doubleClicked.connect(self.selected_record)
         
+        
+        
+        self.list_slots()
+        
+    
+    
+    
+          
+    def list_slots(self):        
+        self.listWidget.clear()        
+        self.listWidget.addItem("==== Slots =====")
+        connection = sqlite3.connect("fci.db")
+        if(self.radioButton_3.isChecked()):  #batch id           
+            results=connection.execute("SELECT SLOT_ID||'-'||MATERAIL_NAME||'-'||REC_ID FROM SLOTS_BATCH_MST ")
+        elif(self.radioButton_4.isChecked()): # issue id                 
+            results=connection.execute("SELECT SLOT_ID||'-'||MATERAIL_NAME||'-'||REC_ID  FROM SLOTS_BATCH_MST")           
+        elif(self.radioButton_5.isChecked()):  # #Material    
+                       
+            results=connection.execute("SELECT SLOT_ID||'-'||MATERAIL_NAME||'-'||REC_ID FROM SLOTS_BATCH_MST")
+        else:
+            results=connection.execute("SELECT SLOT_ID||'-'||MATERAIL_NAME||'-'||REC_ID  FROM SLOTS_BATCH_MST")
+        for x in results:        
+               self.listWidget.addItem(str(x[0]))
+        connection.close()
+    
+    def selected_record(self):
+         self.list_type=self.listWidget.item(0).text()
+         if(self.listWidget.currentItem().text() != self.listWidget.item(0).text()):
+            if(self.list_type=="==== Slots ====="):
+                #print("current test is :"+str(self.listWidget.currentItem().text()))
+                self.slot_id = str(self.listWidget.currentItem().text())               
+                arr_item=str(self.slot_id).split("-")
+                
+                self.rec_id=str(arr_item[2])
+                print("rec: "+str(self.rec_id))
+                connection = sqlite3.connect("fci.db")               
+                
+                results=connection.execute("SELECT SLOT_ID,BATCH_ID,MATERAIL_NAME,LOADED_BAGS_CNT,LOADED_NET_WT,IFNULL(DL_BAGS,0),IFNULL(DL_NET_WT,0),IFNULL(UPDATED_ON,CREATED_ON) as LAST_DT  FROM SLOTS_BATCH_MST where REC_ID ='"+str(self.rec_id)+"'")
+                for x in results:
+                    self.label_32.setText(str(self.rec_id).zfill(4))
+                    self.label_47.setText(str(x[0]))
+                    self.label_49.setText(str(x[1]))
+                    self.label_48.setText(str(x[2]))
+                    self.label_51.setText(str(x[3]))
+                    self.label_52.setText(str(x[4]))
+                    self.lineEdit_6.setText(str(x[5]))
+                    self.lineEdit_7.setText(str(x[6]))
+                    self.label_53.setText(str(x[7]))
+                connection.close()
+                connection = sqlite3.connect("fci.db")
+                with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET BATCH_ID_POP = '"+str(self.label_49.text())+"'" )                    
+                connection.commit();                    
+                connection.close()
+                
+                
+            else:             
+                print("Invalid !!")
+        
+    
+    
     def open_new_window(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_30_Ui_MainWindow()

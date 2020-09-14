@@ -76,7 +76,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_20.setFont(font)
-        self.label_20.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_20.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.label_19 = QtWidgets.QLabel(self.frame)
@@ -107,7 +107,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(75)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_14.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_14.setObjectName("label_14")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -197,7 +197,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_25.setFont(font)
-        self.label_25.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_25.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.label_26 = QtWidgets.QLabel(self.frame)
@@ -209,7 +209,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_26.setFont(font)
-        self.label_26.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_26.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
         self.label_27 = QtWidgets.QLabel(self.frame)
@@ -221,7 +221,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_27.setFont(font)
-        self.label_27.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_27.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_27.setObjectName("label_27")
         self.label_28 = QtWidgets.QLabel(self.frame)
@@ -233,7 +233,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_28.setFont(font)
-        self.label_28.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_28.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_28.setObjectName("label_28")
         self.line = QtWidgets.QFrame(self.frame)
@@ -298,7 +298,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_33.setFont(font)
-        self.label_33.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_33.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.label_34 = QtWidgets.QLabel(self.frame)
@@ -310,7 +310,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_34.setFont(font)
-        self.label_34.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_34.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_34.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
         self.label_35 = QtWidgets.QLabel(self.frame)
@@ -322,7 +322,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_35.setFont(font)
-        self.label_35.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_35.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_35.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_35.setObjectName("label_35")
         self.label_36 = QtWidgets.QLabel(self.frame)
@@ -334,7 +334,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_36.setFont(font)
-        self.label_36.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_36.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_36.setObjectName("label_36")
         self.label_37 = QtWidgets.QLabel(self.frame)
@@ -433,7 +433,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_44.setFont(font)
-        self.label_44.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_44.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_44.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_44.setObjectName("label_44")
         self.label_45 = QtWidgets.QLabel(self.frame)
@@ -457,7 +457,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_21.setFont(font)
-        self.label_21.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_21.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.label_47 = QtWidgets.QLabel(self.frame)
@@ -478,7 +478,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_41.setFont(font)
-        self.label_41.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_41.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_41.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_41.setObjectName("label_41")
         self.label_48 = QtWidgets.QLabel(self.frame)
@@ -502,7 +502,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(75)
         self.label_51.setFont(font)
-        self.label_51.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_51.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_51.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_51.setObjectName("label_51")
         
@@ -543,7 +543,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_15.setFont(font)
-        self.label_15.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_15.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_15.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_15.setObjectName("label_15")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
@@ -561,7 +561,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_17.setFont(font)
-        self.label_17.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_17.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_17.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_17.setObjectName("label_17")
         self.label_43 = QtWidgets.QLabel(self.groupBox)
@@ -585,7 +585,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_18.setFont(font)
-        self.label_18.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_18.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_18.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_18.setObjectName("label_18")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.groupBox)
@@ -604,7 +604,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_16.setFont(font)
-        self.label_16.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_16.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_16.setObjectName("label_16")
         self.label_42 = QtWidgets.QLabel(self.groupBox)
@@ -628,7 +628,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_49.setFont(font)
-        self.label_49.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_49.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_49.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_49.setObjectName("label_49")
         self.label_50 = QtWidgets.QLabel(self.groupBox)
@@ -652,7 +652,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_46.setFont(font)
-        self.label_46.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_46.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_46.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_46.setObjectName("label_46")
         self.checkBox = QtWidgets.QCheckBox(self.groupBox)
@@ -669,7 +669,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_52.setFont(font)
-        self.label_52.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_52.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_52.setObjectName("label_52")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.groupBox)
@@ -715,7 +715,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_54.setFont(font)
-        self.label_54.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_54.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_54.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_54.setObjectName("label_54")
         self.label_55 = QtWidgets.QLabel(self.groupBox)
@@ -727,7 +727,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_55.setFont(font)
-        self.label_55.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_55.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_55.setObjectName("label_55")
         self.label_53 = QtWidgets.QLabel(self.frame)
@@ -739,7 +739,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_53.setFont(font)
-        self.label_53.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_53.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_53.setAlignment(QtCore.Qt.AlignCenter)
         self.label_53.setObjectName("label_53")
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
@@ -823,6 +823,28 @@ class fci_03b_Ui_MainWindow(object):
         self.label_56.setStyleSheet("color: rgb(255, 0, 0);")
         self.label_56.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_56.setObjectName("label_56")
+        
+        
+        self.pushButton_13 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_13.setGeometry(QtCore.QRect(200, 10, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        self.pushButton_13.setFont(font)
+        self.pushButton_13.setObjectName("pushButton_13")
+        self.label_57 = QtWidgets.QLabel(self.frame)
+        self.label_57.setGeometry(QtCore.QRect(400, 150, 31, 21))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_57.setFont(font)
+        self.label_57.setStyleSheet("")
+        self.label_57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_57.setObjectName("label_57")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
@@ -953,6 +975,8 @@ class fci_03b_Ui_MainWindow(object):
         self.radioButton_8.setChecked(True)
         self.pushButton_12.setText(_translate("MainWindow", "Update"))        
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
+        self.pushButton_13.setText(_translate("MainWindow", "New Weighing"))
+        self.label_57.setText(_translate("MainWindow", ".Kg"))
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.lineEdit_6.setText("66")
         self.lineEdit_7.setText("77")
@@ -977,6 +1001,7 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.gross_wt_onclick)
         self.pushButton_16.clicked.connect(self.tare_wt_onclick)
         self.pushButton_6.clicked.connect(self.reset_fun)
+        self.pushButton_13.clicked.connect(self.reset_fun)
         self.pushButton_5.clicked.connect(self.save_data)
         self.pushButton_9.clicked.connect(self.fetch_via_search)
         
@@ -1209,6 +1234,8 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_5.setEnabled(True)
         self.status="FIRST"
         self.pushButton_8.setDisabled(True)
+        self.lineEdit_6.setDisabled(True)
+        self.lineEdit_3.setDisabled(True)
        
        
     def batch_id_onchange(self):
@@ -1339,8 +1366,11 @@ class fci_03b_Ui_MainWindow(object):
                 else:
                       self.net_wt=(float(self.second_wt)-float(self.first_wt))             
                       self.label_45.setText('{:06.3f}'.format(self.net_wt))
-                accepted_bags=float(self.net_wt)*1000/50
+                accepted_bags=round(float(self.net_wt)*1000/50)
                 self.label_50.setText(str(accepted_bags))
+                self.lineEdit_6.setText(str(accepted_bags))
+                self.lineEdit_6.setEnabled(True)
+                self.lineEdit_3.setEnabled(True)
                       
     def load_1st_wt_vehicles(self):
         self.listWidget_3.clear()
@@ -1465,6 +1495,7 @@ class fci_03b_Ui_MainWindow(object):
             #Accpted Bags
             self.label_50.setText(str(x[18]))
             
+            
             #Proposed Bag count
             self.lineEdit_5.setText(str(x[12]))
             
@@ -1502,6 +1533,8 @@ class fci_03b_Ui_MainWindow(object):
                   self.save_diable=1
             else:
                   self.save_diable=0
+                  self.lineEdit_6.setDisabled(True)
+                  self.lineEdit_3.setDisabled(True)
         connection.close()       
      
     def save_data(self):        
@@ -1671,6 +1704,11 @@ class fci_03b_Ui_MainWindow(object):
                                              connection.commit();
                                              connection.close()
                                          #self.reset_fun()
+                                            
+                                         self.update_slot(str(self.slot_no),str(self.batch_id),str(self.materail_name),str(self.quantity),str(self.net_wt_val))                                            
+                                             
+                                             
+                                             
                                          self.label_56.setText("Successfully Loaded Second Weight.")
                                          self.log_audit("Weighing","Loaded Second Weight. slip No:"+str(int(self.label_19.text())))
                                          self.label_56.show()
@@ -1712,6 +1750,42 @@ class fci_03b_Ui_MainWindow(object):
                  self.label_56.setText("Vehical Number is empty.")
                  self.label_56.show() 
      
+    def update_slot(self,slot_id,batch_id,material_name,no_of_bags,net_wt):
+        self.slot_exist_flg="No"
+        ## check record exist
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT count(*) FROM SLOTS_BATCH_MST WHERE SLOT_ID= '"+str(slot_id)+"' and BATCH_ID ='"+str(batch_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")       
+        for x in results:
+                   if(int(x[0]) == 1 ):
+                       self.slot_exist_flg="Yes"
+                   else:
+                       self.slot_exist_flg="No" 
+        connection.close()
+        ##if yes then update
+        if(self.slot_exist_flg=="Yes"):
+            connection = sqlite3.connect("fci.db")
+            with connection:                            
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE SLOTS_BATCH_MST SET LOADED_BAGS_CNT=LOADED_BAGS_CNT+ '"+str(no_of_bags)+"',LOADED_NET_WT=LOADED_NET_WT+ '"+str(net_wt)+"',UPDATED_ON=current_timestamp where SLOT_ID= '"+str(slot_id)+"' and BATCH_ID ='"+str(batch_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")
+                    
+            connection.commit();
+            connection.close()
+            
+        elif(self.slot_exist_flg=="No"):
+            connection = sqlite3.connect("fci.db")
+            with connection:                            
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO  SLOTS_BATCH_MST(SLOT_ID,BATCH_ID,MATERAIL_NAME,LOADED_BAGS_CNT,LOADED_NET_WT) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"')")
+                       
+            connection.commit();
+            connection.close()
+            
+        else:
+              print("No action ")  
+        ## No then INSERT 
+        
+    
+    
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")
         with connection:        
