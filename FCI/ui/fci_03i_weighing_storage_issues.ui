@@ -146,7 +146,7 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(170, 85, 127);</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Serial.No:</string>
@@ -756,7 +756,7 @@
       <string notr="true">background-color: rgb(255, 170, 255);</string>
      </property>
      <property name="text">
-      <string>200.00</string>
+      <string>200.000</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -963,7 +963,7 @@
       <rect>
        <x>910</x>
        <y>180</y>
-       <width>91</width>
+       <width>101</width>
        <height>41</height>
       </rect>
      </property>
@@ -980,7 +980,7 @@
       <string notr="true">background-color: rgb(255, 170, 255);</string>
      </property>
      <property name="text">
-      <string>41.00</string>
+      <string>41.000</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1313,9 +1313,9 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
      <property name="geometry">
       <rect>
        <x>240</x>
-       <y>370</y>
+       <y>360</y>
        <width>841</width>
-       <height>281</height>
+       <height>291</height>
       </rect>
      </property>
      <property name="font">
@@ -1505,7 +1505,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>Released Bags :</string>
+       <string>Accepted  Bags :</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1525,77 +1525,6 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <family>MS Shell Dlg 2</family>
         <pointsize>10</pointsize>
        </font>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_56">
-      <property name="geometry">
-       <rect>
-        <x>300</x>
-        <y>30</y>
-        <width>61</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Batcht ID :</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_3">
-      <property name="geometry">
-       <rect>
-        <x>380</x>
-        <y>30</y>
-        <width>111</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>12</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_60">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>180</y>
-        <width>121</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Released Wt.Ton :</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QLineEdit" name="lineEdit_5">
@@ -1618,9 +1547,9 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <property name="geometry">
        <rect>
         <x>290</x>
-        <y>80</y>
-        <width>501</width>
-        <height>181</height>
+        <y>20</y>
+        <width>531</width>
+        <height>251</height>
        </rect>
       </property>
       <property name="title">
@@ -1659,7 +1588,7 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <rect>
          <x>90</x>
          <y>30</y>
-         <width>111</width>
+         <width>171</width>
          <height>31</height>
         </rect>
        </property>
@@ -1677,8 +1606,8 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <widget class="QLabel" name="label_57">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>80</y>
+         <x>280</x>
+         <y>30</y>
          <width>61</width>
          <height>31</height>
         </rect>
@@ -1705,8 +1634,8 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <widget class="QLabel" name="label_46">
        <property name="geometry">
         <rect>
-         <x>90</x>
-         <y>80</y>
+         <x>380</x>
+         <y>30</y>
          <width>121</width>
          <height>31</height>
         </rect>
@@ -1730,39 +1659,11 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_61">
+      <widget class="QLabel" name="label_64">
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>120</y>
-         <width>71</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <underline>false</underline>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>No.Of.Bags</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_49">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>120</y>
+         <x>10</x>
+         <y>80</y>
          <width>61</width>
          <height>31</height>
         </rect>
@@ -1771,27 +1672,27 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <font>
          <family>MS Shell Dlg 2</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>false</underline>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(0, 0, 255);</string>
+        <string notr="true"/>
        </property>
        <property name="text">
-        <string>500</string>
+        <string>Slots.Bags.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_62">
+      <widget class="QLabel" name="label_60">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>120</y>
-         <width>141</width>
+         <x>230</x>
+         <y>80</y>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -1808,17 +1709,134 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Available .Net Wt.Ton</string>
+        <string>Slot Wt.Ton :</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_10">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>80</y>
+         <width>121</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>251</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>If Above Slot has minimum Quantity</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_56">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>61</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Slot ID 2 :</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_5">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>160</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>SL001</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SL002</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_61">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>160</y>
+         <width>61</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Material:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
       <widget class="QLabel" name="label_50">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>120</y>
+         <x>350</x>
+         <y>160</y>
          <width>121</width>
          <height>31</height>
         </rect>
@@ -1836,18 +1854,21 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <string notr="true">color: rgb(0, 0, 255);</string>
        </property>
        <property name="text">
-        <string>25.000</string>
+        <string>001-Wheat</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_63">
+      <widget class="QLabel" name="label_65">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>70</y>
-         <width>71</width>
+         <x>10</x>
+         <y>200</y>
+         <width>61</width>
          <height>31</height>
         </rect>
        </property>
@@ -1864,18 +1885,21 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Age :</string>
+        <string>Slots2.Bags.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_52">
+      <widget class="QLineEdit" name="lineEdit_11">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>70</y>
-         <width>81</width>
+         <x>90</x>
+         <y>200</y>
+         <width>101</width>
          <height>31</height>
         </rect>
        </property>
@@ -1883,21 +1907,103 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
         <font>
          <family>MS Shell Dlg 2</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_62">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>200</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>false</underline>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(0, 0, 255);</string>
+        <string notr="true"/>
        </property>
        <property name="text">
-        <string>35 days</string>
+        <string>Slot2 Wt.Ton :</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
+      <widget class="QLineEdit" name="lineEdit_12">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>350</x>
+         <y>200</y>
+         <width>121</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_13">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>80</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="label_49">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Accepted Wt :</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </widget>
     <widget class="QLabel" name="label_58">
@@ -1913,8 +2019,8 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
       <font>
        <family>MS Sans Serif</family>
        <pointsize>18</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
        <underline>false</underline>
       </font>
      </property>
@@ -2082,22 +2188,6 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_9">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>60</y>
-        <width>91</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>MS Shell Dlg 2</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-     </widget>
      <widget class="QPushButton" name="pushButton_15">
       <property name="geometry">
        <rect>
@@ -2117,13 +2207,29 @@ font: 24pt &quot;MS Shell Dlg 2&quot;;</string>
        <string>Update</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="lineEdit_9">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </widget>
     </widget>
     <widget class="QLabel" name="label_59">
      <property name="geometry">
       <rect>
        <x>260</x>
        <y>240</y>
-       <width>321</width>
+       <width>311</width>
        <height>31</height>
       </rect>
      </property>
