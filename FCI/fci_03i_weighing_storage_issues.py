@@ -984,7 +984,7 @@ class fci_03i_Ui_MainWindow(object):
         self.radioButton_3.setText(_translate("MainWindow", "In"))
         self.radioButton_4.setText(_translate("MainWindow", "Out"))
         self.groupBox.setTitle(_translate("MainWindow", "Issue Information"))
-        self.label_15.setText(_translate("MainWindow", "Issue Id:"))
+        self.label_15.setText(_translate("MainWindow", "Order Id:"))
         #self.comboBox.setItemText(0, _translate("MainWindow", "B000453"))
         self.label_17.setText(_translate("MainWindow", "Contractor Name :"))
         self.label_43.setText(_translate("MainWindow", "Contractor -100"))
@@ -993,7 +993,7 @@ class fci_03i_Ui_MainWindow(object):
         #self.comboBox_2.setItemText(1, _translate("MainWindow", "002-Rice"))
         #self.comboBox_2.setItemText(2, _translate("MainWindow", "003-Paddy"))
         self.label_42.setText(_translate("MainWindow", "Released Bags :"))
-        self.label_56.setText(_translate("MainWindow", "Batcht ID :"))
+        self.label_56.setText(_translate("MainWindow", "Recipt ID :"))
         #self.comboBox_3.setItemText(0, _translate("MainWindow", "12"))
         self.label_60.setText(_translate("MainWindow", "Released Wt.Ton :"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Slot Availability"))
@@ -1079,7 +1079,7 @@ class fci_03i_Ui_MainWindow(object):
         
         self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT ISSUE_ID FROM ISSUE_MST ORDER BY ISSUE_ID DESC ") 
+        results=connection.execute("SELECT ORDER_ID FROM ISSUE_MST ORDER BY ISSUE_ID DESC ") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            
@@ -1097,11 +1097,12 @@ class fci_03i_Ui_MainWindow(object):
     
         self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID  FROM SLOTS_BATCH_MST  ORDER BY BATCH_ID DESC ") 
+        results=connection.execute("SELECT BATCH_ID_DISPLAY,BATCH_ID FROM BATCH_MST WHERE BATCH_ID IN (SELECT DISTINCT BATCH_ID  FROM SLOTS_BATCH_MST ) ORDER BY BATCH_ID DESC ") 
         for x in results:            
             self.comboBox_3.addItem("")
             self.comboBox_3.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
+            self.batch_id=str(x[1])
         connection.close()
         self.batch_id_onchange()
         
@@ -1268,7 +1269,16 @@ class fci_03i_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID=(SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC  LIMIT 1)") 
+        results=connection.execute("SELECT ISSUE_ID,ORDER_ID FROM ISSUE_MST ORDER BY ISSUE_ID DESC  LIMIT 1") 
+        for x in results:
+                self.issue_id=str(x[0])
+                self.comboBox.setCurrentText(str(x[1]))
+                
+        connection.close()
+       
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST  ORDER BY BATCH_ID DESC  LIMIT 1") 
         for x in results:            
                #Material Type
                 #self.label_42.setText(str(x[1]))
@@ -1312,7 +1322,7 @@ class fci_03i_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         #print("SELECT SLOT_ID,MATERAIL_NAME,LOADED_NET_WT,LOADED_BAGS_CNT FROM SLOTS_BATCH_MST WHERE BATCH_ID='"+self.comboBox_3.currentText()+"'") 
        
-        results=connection.execute("SELECT SLOT_ID,MATERAIL_NAME,LOADED_NET_WT,LOADED_BAGS_CNT,(current_timestamp - created_on) as DAYS FROM SLOTS_BATCH_MST WHERE BATCH_ID='"+self.comboBox_3.currentText()+"'") 
+        results=connection.execute("SELECT SLOT_ID,MATERAIL_NAME,LOADED_NET_WT,LOADED_BAGS_CNT,(current_timestamp - created_on) as DAYS FROM SLOTS_BATCH_MST WHERE BATCH_ID='"+str(self.batch_id)+"'") 
         for x in results:            
                self.comboBox_4.addItem("")
                self.comboBox_4.setItemText(self.k,str(x[0]))            
@@ -1328,10 +1338,16 @@ class fci_03i_Ui_MainWindow(object):
     def issue_id_onchange(self):
         self.comboBox_2.clear()
         self.j=0
-        #print("SELECT distinct MATERIAL_NAME FROM ISSUE_QUANTITY_DTLS WHERE  ISSUE_ID = '"+self.comboBox.currentText()+"'  ORDER BY MATERIAL_NAME  ")        
         
+        #print("SELECT distinct MATERIAL_NAME FROM ISSUE_QUANTITY_DTLS WHERE  ISSUE_ID = '"+self.comboBox.currentText()+"'  ORDER BY MATERIAL_NAME  ")        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT ISSUE_ID FROM ISSUE_MST  WHERE  ISSUE_ID = '"+str(self.comboBox.currentText())+"' ") 
+        for x in results:
+                self.issue_id=str(x[0])        
+        connection.close()
+       
         connection = sqlite3.connect("fci.db")        
-        results=connection.execute("SELECT distinct MATERIAL_NAME FROM ISSUE_QUANTITY_DTLS WHERE  ISSUE_ID = '"+self.comboBox.currentText()+"'  ORDER BY MATERIAL_NAME  ") 
+        results=connection.execute("SELECT distinct MATERIAL_NAME FROM ISSUE_QUANTITY_DTLS WHERE  ISSUE_ID = '"+str(self.issue_id)+"'  ORDER BY MATERIAL_NAME  ") 
         for x in results:            
             self.comboBox_2.addItem("")
             self.comboBox_2.setItemText(self.j,str(x[0]))            
@@ -1346,11 +1362,12 @@ class fci_03i_Ui_MainWindow(object):
         self.l=0
         connection = sqlite3.connect("fci.db")
         #print("SELECT distinct BATCH_ID FROM SLOTS_BATCH_MST WHERE  MATERAIL_NAME = '"+self.comboBox_2.currentText()+"'  ORDER BY BATCH_ID  ")
-        results=connection.execute("SELECT distinct BATCH_ID FROM SLOTS_BATCH_MST WHERE  MATERAIL_NAME = '"+self.comboBox_2.currentText()+"'  ORDER BY BATCH_ID  ") 
+        results=connection.execute("SELECT BATCH_ID_DISPLAY,BATCH_ID FROM BATCH_MST WHERE BATCH_ID IN (SELECT distinct BATCH_ID FROM SLOTS_BATCH_MST WHERE  MATERAIL_NAME = '"+self.comboBox_2.currentText()+"')  ORDER BY BATCH_ID  ") 
         for x in results:            
             self.comboBox_3.addItem("")
             self.comboBox_3.setItemText(self.l,str(x[0]))            
             self.l=self.l+1
+            self.batch_id=str(x[1])
         connection.close()
         
         #self.load_1st_wt_vehicles()
@@ -1476,9 +1493,9 @@ class fci_03i_Ui_MainWindow(object):
     def load_1st_wt_vehicles(self):
         self.listWidget_3.clear()
         connection = sqlite3.connect("fci.db")
-        #print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+self.comboBox_3.currentText()+"'")       
-       
-        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+self.comboBox_3.currentText()+"'")       
+        print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and issue_id='"+str(self.issue_id)+"'")       
+        
+        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and issue_id='"+str(self.issue_id)+"'")       
         for x in results:        
                self.listWidget_3.addItem(str(x[0]))
         connection.close() 
@@ -1486,7 +1503,7 @@ class fci_03i_Ui_MainWindow(object):
     def load_2nd_wt_vehicles(self):
         self.listWidget_2.clear()
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+self.comboBox_3.currentText()+"'")       
+        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and issue_id='"+str(self.issue_id)+"'")       
         for x in results:        
                self.listWidget_2.addItem(str(x[0]))
         connection.close()
@@ -1641,7 +1658,7 @@ class fci_03i_Ui_MainWindow(object):
         if(len(self.vehicle_no) >= 4):            
             self.materail_name=str(self.comboBox.currentText())
             self.batch_id=self.comboBox_3.currentText()
-            self.issue_id=self.comboBox.currentText()
+            #self.issue_id=self.comboBox.currentText()
             self.status=self.status
             self.first_wt_mode=self.label_29.text()
             self.first_wt_val=self.label_32.text()            
@@ -1709,8 +1726,8 @@ class fci_03i_Ui_MainWindow(object):
                                                         cr_date= datetime.datetime.strptime(cr_date_str, '%Y-%m-%d %H:%M:%S')
                                                         
                                                         cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,"
-                                                            +"DRIVER_IN_OUT,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,DEVICE_LOCATION_TYPE,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG)"
-                                                                       +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+str(self.driver_in_out)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.device_location_type)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"')")
+                                                            +"DRIVER_IN_OUT,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,DEVICE_LOCATION_TYPE,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,ISSUE_ID)"
+                                                                       +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+str(self.driver_in_out)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.device_location_type)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.issue_id)+"')")
                                                                       
                                              #self.reset_fun()
                                              self.label_59.setText("Successfully Loaded First Weight.")
@@ -1753,7 +1770,7 @@ class fci_03i_Ui_MainWindow(object):
                                              with connection:                            
                                                     cursor = connection.cursor()
                                                    
-                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',DRIVER_IN_OUT='"+self.driver_in_out+"',DEVICE_ID='"+str(self.device_id)+"' ,UPLOAD_STATUS=null, UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp,MANNUAL_INS_FLG='"+str(self.manual_ins_flg)+"', ISSUE_ID='"+str(self.issue_id)+"'  WHERE SERIAL_ID='"+str(int(self.label_19.text()))+"'");
+                                                    cursor.execute("UPDATE WEIGHT_MST SET STATUS='SECOND',SECOND_WT_MODE='"+str(self.second_wt_mode)+"',SECOND_WT_VAL='"+str(self.second_wt_val)+"',SECOND_WT_CREATED_ON='"+str(second_wt_date)+"',NET_WEIGHT_VAL='"+str(self.net_wt_val)+"',DRIVER_IN_OUT='"+self.driver_in_out+"',DEVICE_ID='"+str(self.device_id)+"' ,UPLOAD_STATUS=null, UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp,MANNUAL_INS_FLG='"+str(self.manual_ins_flg)+"', ISSUE_ID='"+str(self.issue_id)+"', SLOT_1='"+str(self.slot_no)+"'  WHERE SERIAL_ID='"+str(int(self.label_19.text()))+"'");
                                              connection.commit();
                                              connection.close()
                                              
@@ -1764,10 +1781,10 @@ class fci_03i_Ui_MainWindow(object):
                                                     cursor = connection.cursor()                                                    
                                                       
                                                     cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,"
-                                                           +"DRIVER_IN_OUT,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,DEVICE_LOCATION_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,NET_WEIGHT_VAL,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,ISSUE_ID)"
+                                                           +"DRIVER_IN_OUT,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,DEVICE_LOCATION_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,NET_WEIGHT_VAL,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,ISSUE_ID,SLOT_1)"
                                                            +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(first_wt_date)
                                                                    +"','"+str(self.driver_in_out)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)
-                                                                   +"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.issue_id)+"')")
+                                                                   +"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.issue_id)+"','"+str(self.slot_no)+"')")
                                              connection.commit();
                                              connection.close()
                                          
