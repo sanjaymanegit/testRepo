@@ -32,7 +32,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(24)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label.setStyleSheet("color: rgb(170, 85, 127);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_20 = QtWidgets.QLabel(self.frame)
@@ -171,7 +171,11 @@ class fci_05_Ui_MainWindow(object):
         self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_28.setObjectName("label_28")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(840, 180, 111, 31))
+        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit.setFont(font)
@@ -206,7 +210,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_3.setFont(font)
-        self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
@@ -238,7 +242,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_4.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -264,7 +268,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_6.setFont(font)
-        self.label_6.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_6.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
@@ -374,6 +378,9 @@ class fci_05_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         self.lineEdit_2.setGeometry(QtCore.QRect(170, 110, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -404,6 +411,10 @@ class fci_05_Ui_MainWindow(object):
         self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.groupBox)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
+        
         self.lineEdit_4.setGeometry(QtCore.QRect(170, 160, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -450,7 +461,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_5.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.label_9 = QtWidgets.QLabel(self.groupBox)
@@ -458,7 +469,7 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_9.setFont(font)
-        self.label_9.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_9.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
         self.pushButton_12 = QtWidgets.QPushButton(self.groupBox)
@@ -508,15 +519,15 @@ class fci_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_7.setFont(font)
-        self.label_7.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_7.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
-        self.label_8 = QtWidgets.QLabel(self.frame)
+        self.label_8 = QtWidgets.QLineEdit(self.frame)
         self.label_8.setGeometry(QtCore.QRect(750, 590, 111, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_8.setFont(font)
-        self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.label_31 = QtWidgets.QLabel(self.frame)
@@ -581,6 +592,7 @@ class fci_05_Ui_MainWindow(object):
         self.rec_id=0
         self.dr_id="0"
         self.dr_id2="0"
+        self.device_id=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -728,6 +740,11 @@ class fci_05_Ui_MainWindow(object):
             self.comboBox_2.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
         connection.close()
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR")       
+        for x in results:
+                   self.device_id=str(x[0])
+        connection.close()
         
     def no_of_bags_calc(self):
         if(self.lineEdit.text() != ""):
@@ -743,7 +760,7 @@ class fci_05_Ui_MainWindow(object):
         self.label_6.setText("")  #exp date
         self.label_4.setText("")  #issue date
         self.label_7.setText("")  #bags
-        self.label_8.setText("Pending")  #status        
+        self.label_8.setText("Open")  #status        
         self.lineEdit_3.setText("") #RO Type    
         self.pushButton_7.setDisabled(True)
         self.lineEdit_2.setText("") #
@@ -755,6 +772,7 @@ class fci_05_Ui_MainWindow(object):
         self.label_6.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.label_4.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.label_21.hide()
+        self.label_33.hide()
         self.delete_data2_all()
         self.select_all_data2()
         self.select_all_data()
@@ -829,35 +847,37 @@ class fci_05_Ui_MainWindow(object):
         self.operation_flg="ADD"       
         self.load_data()
         
-    def add_data(self):
-        if(self.lineEdit_10.text() != ""):            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("INSERT INTO ISSUE_MST(ORDER_ID, TOTAL_NET_WT_DEMAND,EXPIRY_DATE,ISSUE_DATE,TOTAL_BAGS_DEMAND,STATUS,CONTRACTOR_NAME ,RO_TYPE) VALUES('"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.label_6.text()+"','"+self.label_4.text()+"','"+self.label_7.text()+"','"+self.label_8.text()+"','"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"')")                    
-            connection.commit();                    
-            connection.close()
-            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    print ("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
-                    print("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_QUANTITY_DTLS) WHERE ISSUE_ID IS NULL ")                    
-           
+    def add_data(self):        
+            self.validation()
+            self.duplicate_check()
+            if(str(self.goAhead)=="Yes"):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO ISSUE_MST(ORDER_ID, TOTAL_NET_WT_DEMAND,EXPIRY_DATE,ISSUE_DATE,TOTAL_BAGS_DEMAND,STATUS,CONTRACTOR_NAME ,RO_TYPE,DEVICE_ID) VALUES('"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.label_6.text()+"','"+self.label_4.text()+"','"+self.label_7.text()+"','"+self.label_8.text()+"','"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+str(self.device_id)+"')")                    
+                    connection.commit();                    
+                    connection.close()
                     
-                    cursor.execute("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
-                    cursor.execute("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_MST) WHERE ISSUE_ID IS NULL ")                    
-           
-                    
-           
-            connection.commit();                    
-            connection.close()
-          
-            self.label_21.setText("Record Added Successfully.")
-            self.log_audit("Batches","Added New Issue :" +str(self.lineEdit_10.text()))
-            self.label_21.show()
-            self.select_all_data()
-            self.select_all_data2()
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            print ("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
+                            print("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_QUANTITY_DTLS) WHERE ISSUE_ID IS NULL ")                    
+                   
+                            
+                            cursor.execute("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
+                            cursor.execute("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_MST) WHERE ISSUE_ID IS NULL ")                    
+                   
+                            
+                   
+                    connection.commit();                    
+                    connection.close()
+                  
+                    self.label_21.setText("Record Added Successfully.")
+                    self.log_audit("Batches","Added New Issue :" +str(self.lineEdit_10.text()))
+                    self.label_21.show()
+                    self.select_all_data()
+                    self.select_all_data2()
        
             
         
@@ -873,29 +893,56 @@ class fci_05_Ui_MainWindow(object):
     
     def edit_data(self):
         if(self.lineEdit_10.text() != ""):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE ISSUE_MST SET ORDER_ID='"+self.lineEdit_10.text()+"', TOTAL_NET_WT_DEMAND='"+self.lineEdit.text()+"',EXPIRY_DATE='"+self.label_6.text()+"',ISSUE_DATE='"+self.label_4.text()+"',TOTAL_BAGS_DEMAND='"+self.label_7.text()+"',CONTRACTOR_NAME ='"+self.comboBox.currentText()+"',RO_TYPE='"+self.lineEdit_3.text()+"'  WHERE  ISSUE_ID ='"+str(self.dr_id)+"'")
+            self.validation()
+            self.duplicate_check()
+            if(str(self.goAhead)=="Yes"):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("UPDATE ISSUE_MST SET ORDER_ID='"+self.lineEdit_10.text()+"', TOTAL_NET_WT_DEMAND='"+self.lineEdit.text()+"',EXPIRY_DATE='"+self.label_6.text()+"',ISSUE_DATE='"+self.label_4.text()+"',TOTAL_BAGS_DEMAND='"+self.label_7.text()+"',CONTRACTOR_NAME ='"+self.comboBox.currentText()+"',RO_TYPE='"+self.lineEdit_3.text()+"',STATUS='"+self.label_8.text()+"', DEVICE_ID='"+str(self.device_id)+"'  WHERE  ISSUE_ID ='"+str(self.dr_id)+"'")
+                            
+                    connection.commit();                    
+                    connection.close()
                     
-            connection.commit();                    
-            connection.close()
-            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("DELETE FROM ISSUE_QUANTITY_DTLS WHERE ISSUE_ID='"+str(self.dr_id)+"'") 
-                    cursor.execute("INSERT INTO ISSUE_QUANTITY_DTLS(ISSUE_ID,MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT '"+str(self.dr_id)+"' as ISSUE_ID,MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")                    
-           
-            connection.commit();                    
-            connection.close() 
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM ISSUE_QUANTITY_DTLS WHERE ISSUE_ID='"+str(self.dr_id)+"'") 
+                            cursor.execute("INSERT INTO ISSUE_QUANTITY_DTLS(ISSUE_ID,MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT '"+str(self.dr_id)+"' as ISSUE_ID,MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")                    
+                   
+                    connection.commit();                    
+                    connection.close() 
        
-        self.label_21.setText("Record Saved Successfully.")
-        self.log_audit("Batches","Updated Issue order ID :"+str(self.dr_id))
-        self.label_21.show()
-        self.select_all_data()
-        self.select_all_data2()
+                    self.label_21.setText("Record Saved Successfully.")
+                    self.log_audit("Batches","Updated Issue order ID :"+str(self.dr_id))
+                    self.label_21.show()
+                    self.select_all_data()
+                    self.select_all_data2()
     
+    def validation(self):
+        self.goAhead="No"
+        if(self.lineEdit_10.text() == ""):
+                self.label_21.setText("Order.Id Is Empty.")               
+                self.label_21.show()        
+        elif(self.lineEdit.text() == ""):
+                self.label_21.setText("Demanded Net  Weight Is Empty.")               
+                self.label_21.show()         
+        elif(self.lineEdit.text() == "0"):
+                self.label_21.setText("Demanded Net Weight should be greater than 0.")               
+                self.label_21.show()  
+        else:
+                self.goAhead="Yes"
+        
+    def duplicate_check(self):
+        if(self.lineEdit_10.text() != ""):
+                connection = sqlite3.connect("fci.db")
+                results=connection.execute("select count(*) from ISSUE_MST WHERE ORDER_ID = '"+self.label_5.text()+"' and ISSUE_ID !='"+str(self.dr_id)+"' ")       
+                for x in results: 
+                      if(int(x[0]) > 0):
+                          self.label_21.setText("Order Id Is Already Exist.")               
+                          self.label_21.show()
+                          self.goAhead="No"
+                connection.close()
     def delete_click(self):
         row = self.tableWidget.currentRow()     
         if(row != -1 ):
@@ -998,6 +1045,8 @@ class fci_05_Ui_MainWindow(object):
         self.pushButton_11.setDisabled(True)
         self.pushButton_14.setEnabled(True)
         self.label_33.hide()
+        self.label_21.hide()
+        
         #self.delete_data2_all()
         self.select_all_data2()
         
@@ -1046,7 +1095,7 @@ class fci_05_Ui_MainWindow(object):
         self.load_data2()
         
     def add_data2(self):
-        self.validation_fun()
+        self.validation_fun2()
         if(self.goAhead=="Yes"):            
             connection = sqlite3.connect("fci.db")
             with connection:        
@@ -1070,18 +1119,21 @@ class fci_05_Ui_MainWindow(object):
     
     def edit_data2(self):       
         if(self.rec_id != "0"):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE ISSUE_QUANTITY_DTLS_TMP  SET MATERIAL_NAME='"+str(self.comboBox_2.currentText())+"',QUANTITY_BAGS='"+self.lineEdit_4.text()+"',QUANTITY_NET_WT='"+self.lineEdit_2.text()+"',RELEASED_BAGS='"+self.label_9.text()+"',RELEASE_NET_WT ='"+self.label_5.text()+"'  WHERE  ID ='"+str(self.rec_id)+"'")                    
-            connection.commit();                    
-            connection.close()
-            self.label_33.setText("Record Saved Successfully.")      
-            self.label_33.show()       
-            self.select_all_data2()
+            self.validation_fun2()
+            if(self.goAhead=="Yes"):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("UPDATE ISSUE_QUANTITY_DTLS_TMP  SET MATERIAL_NAME='"+str(self.comboBox_2.currentText())+"',QUANTITY_BAGS='"+self.lineEdit_4.text()+"',QUANTITY_NET_WT='"+self.lineEdit_2.text()+"',RELEASED_BAGS='"+self.label_9.text()+"',RELEASE_NET_WT ='"+self.label_5.text()+"'  WHERE  ID ='"+str(self.rec_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    self.label_33.setText("Record Saved Successfully.")      
+                    self.label_33.show()       
+                    self.select_all_data2()
+            
        
         
-    def validation_fun(self):
+    def validation_fun2(self):
         self.goAhead="No"
         
         if(self.lineEdit_2.text() == ""):
@@ -1102,7 +1154,7 @@ class fci_05_Ui_MainWindow(object):
         
         if(rec_count > 0): 
             connection = sqlite3.connect("fci.db")
-            results=connection.execute("SELECT count(*) from ISSUE_QUANTITY_DTLS_TMP where MATERIAL_NAME = '"+str(self.comboBox_2.currentText())+"'") 
+            results=connection.execute("SELECT count(*) from ISSUE_QUANTITY_DTLS_TMP where MATERIAL_NAME = '"+str(self.comboBox_2.currentText())+"' and  ID != '"+str(self.rec_id)+"'") 
             for x in results:
                 if(int(x[0])==1):
                     self.goAhead="No"

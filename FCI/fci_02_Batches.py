@@ -34,7 +34,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(24)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label.setStyleSheet("color: rgb(170, 85, 127);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_20 = QtWidgets.QLabel(self.frame)
@@ -356,7 +356,7 @@ class fci_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.label_3.setFont(font)
-        self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.label_30 = QtWidgets.QLabel(self.frame)
@@ -426,7 +426,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_5.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
@@ -452,7 +452,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_6.setFont(font)
-        self.label_6.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_6.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -549,7 +549,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_7.setFont(font)
-        self.label_7.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_7.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.label_35 = QtWidgets.QLabel(self.frame)
@@ -595,7 +595,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_8.setFont(font)
-        self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.label_37 = QtWidgets.QLabel(self.frame)
@@ -610,12 +610,12 @@ class fci_02_Ui_MainWindow(object):
         self.label_37.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_37.setObjectName("label_37")
-        self.label_4 = QtWidgets.QLabel(self.frame)
+        self.label_4 = QtWidgets.QLineEdit(self.frame)
         self.label_4.setGeometry(QtCore.QRect(1190, 580, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_4.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.label_38 = QtWidgets.QLabel(self.frame)
@@ -669,7 +669,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
-        
+        self.goAhead="No"
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -685,7 +685,7 @@ class fci_02_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Batch Details"))
+        self.label.setText(_translate("MainWindow", "Recipt Details"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_2.setText(_translate("MainWindow", "Add"))
         self.pushButton_3.setText(_translate("MainWindow", "Save"))
@@ -700,7 +700,7 @@ class fci_02_Ui_MainWindow(object):
         item = self.tableWidget.verticalHeaderItem(4)
         item.setText(_translate("MainWindow", "5"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Batch Id"))
+        item.setText(_translate("MainWindow", "Recipt Id"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Accpted Wt.t"))
         item = self.tableWidget.horizontalHeaderItem(2)
@@ -725,7 +725,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_21.setText(_translate("MainWindow", "Please select the record to Edit."))
-        self.label_22.setText(_translate("MainWindow", "Batch Id :"))
+        self.label_22.setText(_translate("MainWindow", "Recipt Id :"))
         self.label_23.setText(_translate("MainWindow", "Accpted Weight (t) :"))
         self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_25.setText(_translate("MainWindow", "No. Wagons :"))
@@ -740,15 +740,15 @@ class fci_02_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Delete"))
         self.pushButton_5.setText(_translate("MainWindow", "Reset"))
         self.pushButton_6.setText(_translate("MainWindow", "Search "))
-        self.label_3.setText(_translate("MainWindow", "Batch . Id. :"))
+        self.label_3.setText(_translate("MainWindow", "Recipt . Id. :"))
         self.label_30.setText(_translate("MainWindow", "Shortage of  Bags :"))
         self.lineEdit_8.setText(_translate("MainWindow", "1"))
         self.label_31.setText(_translate("MainWindow", "Accepted. Bags Count :"))
         self.lineEdit_9.setText(_translate("MainWindow", "96000"))
         self.label_32.setText(_translate("MainWindow", "Rack.Ref.No. :"))
         self.label_5.setText(_translate("MainWindow", "000012"))
-        self.pushButton_7.setText(_translate("MainWindow", "Batch Quantity Details"))
-        self.label_33.setText(_translate("MainWindow", "Batch Date :"))
+        self.pushButton_7.setText(_translate("MainWindow", "Recipt Quantity Details"))
+        self.label_33.setText(_translate("MainWindow", "Recipt Date :"))
         self.label_6.setText(_translate("MainWindow", "08 Aug 2020"))
         self.pushButton_8.setText(_translate("MainWindow", "Get Date"))
         self.label_26.setText(_translate("MainWindow", "Received Weight (t) :"))
@@ -908,7 +908,7 @@ class fci_02_Ui_MainWindow(object):
         self.pushButton_3.setDisabled(True)  #Save
         self.label_21.hide()
         self.select_all_data()
-        self.label_4.setText("Pending")
+        self.label_4.setText("Open")
   
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'BATCH_MST'")       
@@ -970,7 +970,7 @@ class fci_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
       
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Batch Date ', 'Accpt.Wt.t', 'Accpt.Bags.Cnt','Recved.Wt.t','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name',' Rack.Ref.No.'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Recipt ID.', ' Recipt Date ', 'Accpt.Wt.ton', 'Accpt.Bags.Cnt','Recved.Wt.ton','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name',' Rack.Ref.No.'])        
            
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select printf(\"%06d\", BATCH_ID) as BATCH_ID,BATCH_DATE,IFNULL(ACCPT_WT_TON,'0.0'),IFNULL(ACCPT_BAGS_CNT,0),IFNULL(RECV_WT_TON,'0.0'),ifnull(RECV_BAGS_CNT,0),ifnull(TL_RECVED,'0.0'),ifnull(TL_ACCPTED,'0.0'),ifnull(STORAGE_BAGS,0),MATERIAL_TYPE,STATUS,ifnull(WAGON_CNT,0),ifnull(REQUIRED_TRUCKS,0),CONTRACTOR_NAME,BATCH_ID_DISPLAY from BATCH_MST")                        
@@ -1046,19 +1046,22 @@ class fci_02_Ui_MainWindow(object):
         self.load_data()
         
     def add_data(self):
-        if(self.lineEdit_12.text() != ""):            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.label_5.text()
-                                   +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
-                                   +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','In Progresss','"+str(self.login_user_id)+"')")                    
-            connection.commit();                    
-            connection.close()  
-          
-            self.label_21.setText("Record Added Successfully.")
-            self.log_audit("Batches","Added New Batch :" +str(self.lineEdit_12.text()))
-            self.label_21.show()
+        if(self.lineEdit_12.text() != ""):
+            self.validation()
+            self.duplicate_check()
+            if(str(self.goAhead)=="Yes"):
+                    connection = sqlite3.connect("fci.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.label_5.text()
+                                           +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
+                                           +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','"+self.label_4.text()+"','"+str(self.login_user_id)+"')")                    
+                    connection.commit();                    
+                    connection.close()  
+                  
+                    self.label_21.setText("Record Added Successfully.")
+                    self.log_audit("Batches","Added New Batch :" +str(self.lineEdit_12.text()))
+                    self.label_21.show()
         else :
             self.label_21.setText("Batch Id is Empty.")
             self.label_21.show()
@@ -1076,21 +1079,61 @@ class fci_02_Ui_MainWindow(object):
     
     def edit_data(self):
         if(self.lineEdit_12.text() != ""):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.label_5.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
-                                   "',ACCPT_BAGS_CNT='"+self.lineEdit_9.text()+"',RECV_WT_TON='"+self.lineEdit_4.text()+"',RECV_BAGS_CNT='"+self.lineEdit_10.text()+
-                                   "',TL_RECVED='"+self.lineEdit_5.text()+"',TL_ACCPTED='"+self.lineEdit_6.text()+"',STORAGE_BAGS='"+self.lineEdit_8.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
-                                   +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()   
-       
-        self.label_21.setText("Record Saved Successfully.")
-        self.log_audit("Batches","Updated Batch ID :"+str(self.dr_id))
-        self.label_21.show()
-        self.select_all_data()
+            self.validation()
+            self.duplicate_check()
+            if(str(self.goAhead)=="Yes"):
+                        connection = sqlite3.connect("fci.db")
+                        with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.label_5.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
+                                               "',ACCPT_BAGS_CNT='"+self.lineEdit_9.text()+"',RECV_WT_TON='"+self.lineEdit_4.text()+"',RECV_BAGS_CNT='"+self.lineEdit_10.text()+
+                                               "',TL_RECVED='"+self.lineEdit_5.text()+"',TL_ACCPTED='"+self.lineEdit_6.text()+"',STORAGE_BAGS='"+self.lineEdit_8.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
+                                               +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp,STATUS='"+self.label_4.text()+"'  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
+                        connection.commit();                    
+                        connection.close()   
+                   
+                        self.label_21.setText("Record Saved Successfully.")
+                        self.log_audit("Batches","Updated Batch ID :"+str(self.dr_id))
+                        self.label_21.show()
+                        self.select_all_data()
     
+    def validation(self):
+        self.goAhead="No"
+        if(self.label_5.text() == ""):
+                self.label_21.setText("Rekh Ref.Id Is Empty.")               
+                self.label_21.show()        
+        elif(self.lineEdit.text() == ""):
+                self.label_21.setText("Accepted Weight Is Empty.")               
+                self.label_21.show()
+        elif(self.lineEdit_4.text() == ""):
+                self.label_21.setText("Recived Weight Is Empty.")               
+                self.label_21.show()        
+        elif(self.lineEdit.text() == "0"):
+                self.label_21.setText("Accepted Weight should be greater than 0.")               
+                self.label_21.show()
+        elif(self.lineEdit_4.text() == "0"):
+                self.label_21.setText("Recived Weight should be greater than 0.")               
+                self.label_21.show()
+        elif(self.lineEdit_11.text() == ""):
+                self.label_21.setText("Required Truck Is Empty.")               
+                self.label_21.show()
+        elif(self.lineEdit_11.text() == "0"):
+                self.label_21.setText("Required Truck should be greater than 0.")               
+                self.label_21.show()
+        else:
+                self.goAhead="Yes"
+        
+    def duplicate_check(self):
+        if(self.label_5.text() != ""):
+                connection = sqlite3.connect("fci.db")
+                results=connection.execute("select count(*) from BATCH_MST WHERE BATCH_ID_DISPLAY = '"+self.label_5.text()+"' and  BATCH_ID !='"+self.lineEdit_12.text()+"' ")       
+                for x in results: 
+                      if(int(x[0]) > 0):
+                          self.label_21.setText("Rekh Ref.Id Is Already Exist.")               
+                          self.label_21.show()
+                          self.goAhead="No"
+                connection.close()
+        
     def delete_click(self):
         row = self.tableWidget.currentRow()     
         if(row != -1 ):

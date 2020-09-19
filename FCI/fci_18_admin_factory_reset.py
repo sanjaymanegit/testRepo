@@ -228,9 +228,16 @@ class fci_18_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT DEVICE_ID,DEVICE_LOCATION_TYPE FROM GLOBAL_VAR") 
         for x in results:
                 self.lineEdit_2.setText(str(x[0]))
+                if(str(x[1]) =='SITE'):
+                    self.radioButton.setChecked(True)
+                    self.radioButton_2.setChecked(False)
+                else:
+                    self.radioButton.setChecked(False)
+                    self.radioButton_2.setChecked(True)
+                    
         connection.close()
     
     def reset_loging(self):
@@ -248,6 +255,12 @@ class fci_18_Ui_MainWindow(object):
                         cursor.execute(" DELETE FROM BATCH_MST")
                         cursor.execute(" DELETE FROM AUDIT_MST")
                         cursor.execute(" DELETE FROM API_LOGS")
+                        cursor.execute(" DELETE FROM SLOTS_BATCH_MST")
+                        cursor.execute(" DELETE FROM SLOTS_ISSUE_MST")
+                        cursor.execute(" DELETE FROM SLOTS_DEPO_LOSS")
+                        cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
+                        cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
+                        cursor.execute(" DELETE FROM ISSUE_MST")
             connection.commit();
             connection.close()
             self.label_3.setText("Done.") 

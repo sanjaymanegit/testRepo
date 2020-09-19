@@ -24,6 +24,7 @@ from fci_13_admin_submenu import fci_13_Ui_MainWindow
 from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
 from fci_29_stacks import fci_29_Ui_MainWindow
 
+
 class fci_01_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -69,7 +70,7 @@ class fci_01_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(24)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label.setStyleSheet("color: rgb(0, 85, 0);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         
@@ -90,7 +91,7 @@ class fci_01_Ui_MainWindow(object):
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(8)        
         self.label_20_1.setFont(font)
-        self.label_20_1.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_20_1.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_20_1.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20_1.setObjectName("label_20_1")
         
@@ -198,8 +199,8 @@ class fci_01_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", " Weighing"))
         self.pushButton_3.setText(_translate("MainWindow", "Admin."))
-        self.pushButton_4.setText(_translate("MainWindow", "Batches "))
-        self.label.setText(_translate("MainWindow", "Hi-Tech Materail Handling System"))
+        self.pushButton_4.setText(_translate("MainWindow", "Recipts "))
+        self.label.setText(_translate("MainWindow", "HI-Tech Material Handling System"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.label_20_1.setText(_translate("MainWindow", "LoginBy: Sanjaykumar Mane (Super Admin) "))
         self.pushButton_2.setText(_translate("MainWindow", "Shutdown"))
@@ -380,6 +381,12 @@ class fci_01_Ui_MainWindow(object):
     def open_new_window7(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_29_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window8(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_32_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

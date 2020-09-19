@@ -33,7 +33,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label.setStyleSheet("color: rgb(170, 85, 127);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_20 = QtWidgets.QLabel(self.frame)
@@ -98,7 +98,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_2.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.label_29 = QtWidgets.QLabel(self.frame)
@@ -130,7 +130,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_8.setFont(font)
-        self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_8.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -156,7 +156,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_11.setFont(font)
-        self.label_11.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_11.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_11.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
         self.label_36 = QtWidgets.QLabel(self.frame)
@@ -188,7 +188,7 @@ class fci_10_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_9.setFont(font)
-        self.label_9.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_9.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -208,7 +208,7 @@ class fci_10_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Batch Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
+        self.label.setText(_translate("MainWindow", "Recipt Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 :00"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -221,7 +221,7 @@ class fci_10_Ui_MainWindow(object):
         item = self.tableWidget.verticalHeaderItem(4)
         item.setText(_translate("MainWindow", "5"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Batch Id"))
+        item.setText(_translate("MainWindow", "Recipt Id"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Truck Sr. No"))
         item = self.tableWidget.horizontalHeaderItem(2)
@@ -250,7 +250,7 @@ class fci_10_Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
         self.label_11.setText(_translate("MainWindow", "150"))
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
-        self.label_23.setText(_translate("MainWindow", "No. Of Batches :"))
+        self.label_23.setText(_translate("MainWindow", "No. Of Recipt :"))
         self.label_9.setText(_translate("MainWindow", "5450"))
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.startx()
@@ -276,12 +276,12 @@ class fci_10_Ui_MainWindow(object):
                      self.label_36.setText("Report selected for date range "+str(x[2])+" to "+str(x[3])+".")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE ISSUE_ID IS NULL AND  strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
                      self.whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
-                     self.whr_sql2="WHERE BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
+                     self.whr_sql2="WHERE ISSUE_ID IS NULL AND BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
                      
                  else:
                      self.label_36.setText("Report selected for unknow.")
@@ -330,14 +330,14 @@ class fci_10_Ui_MainWindow(object):
         
         
         print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Batch ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton','Target Location'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Recipt ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton','Target Location'])        
            
         connection = sqlite3.connect("fci.db")
         if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
-                results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT (SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
       
         else:
-                results=connection.execute("SELECT printf(\"%06d\", BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT (SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

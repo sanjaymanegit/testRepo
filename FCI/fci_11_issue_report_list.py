@@ -264,7 +264,7 @@ class fci_11_Ui_MainWindow(object):
         item = self.tableWidget.verticalHeaderItem(4)
         item.setText(_translate("MainWindow", "5"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Batch ID"))
+        item.setText(_translate("MainWindow", "Recipt ID"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "No. Of Trucks."))
         item = self.tableWidget.horizontalHeaderItem(2)
@@ -289,8 +289,8 @@ class fci_11_Ui_MainWindow(object):
         self.label_34.setText(_translate("MainWindow", "To  Date :"))
         self.pushButton_5.setText(_translate("MainWindow", "Date"))
         self.pushButton_6.setText(_translate("MainWindow", "Date"))
-        self.radioButton_4.setText(_translate("MainWindow", " Issue Id only"))
-        self.groupBox_7.setTitle(_translate("MainWindow", "Select  Issue ID"))
+        self.radioButton_4.setText(_translate("MainWindow", " Order Id only"))
+        self.groupBox_7.setTitle(_translate("MainWindow", "Select  Order ID"))
         self.comboBox.setItemText(0, _translate("MainWindow", "ISSUE_20200806_0"))
         self.comboBox.setItemText(1, _translate("MainWindow", "ISSUE_20200805_0"))
         self.pushButton_9.setText(_translate("MainWindow", "Search "))
@@ -309,6 +309,10 @@ class fci_11_Ui_MainWindow(object):
         self.calendarWidget.hide()
         self.radioButton.setDisabled(True)
         self.radioButton_2.setDisabled(True)
+        
+        
+    
+        
         self.select_all_data()
         self.radioButton_3.clicked.connect(self.date_range_onclick)
         self.radioButton_4.clicked.connect(self.batches_onlick)
@@ -336,6 +340,12 @@ class fci_11_Ui_MainWindow(object):
         self.from_date=str(var_name)
         self.to_date=str(var_name)
         self.update_report_param()
+        temp_var =QDate.currentDate()
+        var_name = temp_var.toPyDate()
+        self.from_date=str(var_name)
+        self.to_date=str(var_name)      
+        self.select_all_data()
+        
     
     def date_range_onclick(self):        
         self.groupBox_5.setEnabled(True)  # Datetrange Group
@@ -393,10 +403,12 @@ class fci_11_Ui_MainWindow(object):
         else:
             self.whr_sql="Order by ISSUE_ID DESC"
       
-        self.tableWidget.setHorizontalHeaderLabels(['Issue ID.', ' Total Trucks ', 'Total Net.Wt Ton','Total Accpt.Bags.Cnt','Status','Release Date','Release Time' ,'Started On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Order ID.', ' Total Trucks ', 'Total Net.Wt Ton','Total Accpt.Bags.Cnt','Status','Release Date','Release Time' ,'Started On'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT printf(\"%06d\", ISSUE_ID) as ISSUE_ID,TOTAL_TRUCKS,printf(\"%.3f\", TOTAL_NET_WT),printf(\"%3d\", TOTAL_ACCEPTED_BAGS),STATUS,RELEASE_DATE,RELEASE_TIME,START_DATE FROM ISSUE_LIST_VW "+str(self.whr_sql))                        
+        print("SELECT (SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID ) as ISSUE_ID,TOTAL_TRUCKS,printf(\"%.3f\", TOTAL_NET_WT),printf(\"%3d\", TOTAL_ACCEPTED_BAGS),STATUS,RELEASE_DATE,RELEASE_TIME,START_DATE FROM ISSUE_LIST_VW "+str(self.whr_sql))                        
+       
+        results=connection.execute("SELECT (SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID ) as ISSUE_ID,TOTAL_TRUCKS,printf(\"%.3f\", TOTAL_NET_WT),printf(\"%3d\", TOTAL_ACCEPTED_BAGS),STATUS,RELEASE_DATE,RELEASE_TIME,START_DATE FROM ISSUE_LIST_VW "+str(self.whr_sql))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

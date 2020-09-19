@@ -94,7 +94,7 @@ class fci_30_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_9.setText(_translate("MainWindow", "Close"))
-        self.label.setText(_translate("MainWindow", "Batch Details for batch Id: xxxxxxxxxxx"))
+        self.label.setText(_translate("MainWindow", "Recipt Details for batch Id: xxxxxxxxxxx"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Slip No"))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -108,9 +108,9 @@ class fci_30_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Net.Wt.Ton"))
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID_POP FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT SLOT_POP_ID FROM GLOBAL_VAR") 
         for x in results:            
-            self.label.setText("Batch Details for batch Id: "+str(x[0]))
+            self.label.setText("Details of Slot.ID: "+str(x[0]))
         connection.close()
         
         self.pushButton_9.clicked.connect(MainWindow.close)
@@ -123,10 +123,10 @@ class fci_30_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
     
-        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Vehicle No.','Material','No.Of.Bags','Net.Wt.Ton','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Recipt Id','Vehicle No.','Material','No.Of.Bags','Net.Wt.Ton','Created On'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,round(ACCPTED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE BATCH_ID IN (SELECT BATCH_ID_POP FROM GLOBAL_VAR)")                        
+        results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,round(ACCPTED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

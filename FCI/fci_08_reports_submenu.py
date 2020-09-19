@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_09_batch_report_list import fci_09_Ui_MainWindow
 from fci_11_issue_report_list import fci_11_Ui_MainWindow
+from fci_32_buffer_stock_report import fci_32_Ui_MainWindow
 
 import sqlite3
 import datetime
@@ -114,11 +115,11 @@ class fci_08_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Batches Reports"))
+        self.pushButton.setText(_translate("MainWindow", "Recipts Reports"))
         self.pushButton_4.setText(_translate("MainWindow", "Issues Reports"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
-        self.label_21.setText(_translate("MainWindow", "Please select the Report of Batch Or Issues."))
+        self.label_21.setText(_translate("MainWindow", "Please select the Report of Recipt Or Issues."))
         self.pushButton_5.setText(_translate("MainWindow", "Buffer Stocks Report"))
         self.pushButton_6.setText(_translate("MainWindow", "Other Reports"))
         self.pushButton_6.hide()
@@ -133,6 +134,7 @@ class fci_08_Ui_MainWindow(object):
         self.pushButton_6.setDisabled(True)
         self.pushButton.clicked.connect(self.open_new_window2)
         self.pushButton_4.clicked.connect(self.open_new_window3)
+        self.pushButton_5.clicked.connect(self.open_new_window4)
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
         for x in results:            
@@ -140,7 +142,7 @@ class fci_08_Ui_MainWindow(object):
         connection.close()
         
         if(str(self.device_location_type) == 'SITE'):             
-             self.pushButton.setDisabled(True)
+             self.pushButton.setEnabled(True)
              self.pushButton_4.setDisabled(True)
              self.pushButton_5.setDisabled(True)
              self.pushButton_6.setDisabled(True)
@@ -168,6 +170,12 @@ class fci_08_Ui_MainWindow(object):
     def open_new_window3(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_11_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window4(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_32_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         

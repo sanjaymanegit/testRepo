@@ -9,6 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import datetime
+import sqlite3
 
 
 class fci_31_Ui_MainWindow(object):
@@ -38,7 +41,7 @@ class fci_31_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(40, 100, 651, 192))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -110,10 +113,45 @@ class fci_31_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Ne.Wt.Ton"))
         item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Material"))
-        item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Created On"))
+        item.setText(_translate("MainWindow", "Material"))       
         self.pushButton_9.clicked.connect(MainWindow.close)
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT SLOT_POP_ID FROM GLOBAL_VAR") 
+        for x in results:            
+            self.label.setText("All Issues Transactions of SLOT ID: "+str(x[0]))
+        connection.close()
+        
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        self.select_all_data()
+        
+    def select_all_data(self):     
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+    
+        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Order Id','Vehicle No.','Material','No.Of.Bags','Net.Wt.Ton','Created On'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select SERIAL_ID,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,VEHICLE_NO,MATERIAL_NAME,round(ACCPTED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NOT NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)
 
 
 if __name__ == "__main__":

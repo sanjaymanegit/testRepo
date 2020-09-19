@@ -916,7 +916,7 @@ class fci_03_Ui_MainWindow(object):
         
         self.label_22.setText(_translate("MainWindow", "First Weight Trucks"))
         self.label_23.setText(_translate("MainWindow", "Second  Weight Trucks"))
-        self.label_15.setText(_translate("MainWindow", "Batch Id:"))
+        self.label_15.setText(_translate("MainWindow", "Recipt Id:"))
         self.label_16.setText(_translate("MainWindow", "Material Type :"))
         self.label_17.setText(_translate("MainWindow", "Contractor Name :"))
         self.label_18.setText(_translate("MainWindow", "Proposed Bags:"))
@@ -961,7 +961,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_54.setText(_translate("MainWindow", "Target Storage:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Select"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Storage - Location 2"))
-        self.label_55.setText(_translate("MainWindow", "Batch Weighing @ Site"))
+        self.label_55.setText(_translate("MainWindow", "Recipt Loading @ Site"))
         self.groupBox.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
@@ -991,7 +991,7 @@ class fci_03_Ui_MainWindow(object):
         self.timer1.start(1)
         self.radioButton_2.clicked.connect(self.mannual_onclick)
         self.radioButton.clicked.connect(self.auto_onclick)
-        self.reset_fun()
+        
         self.pushButton_11.clicked.connect(self.gross_wt_onclick)
         self.pushButton_16.clicked.connect(self.tare_wt_onclick)
         self.pushButton_6.clicked.connect(self.reset_fun)
@@ -1011,14 +1011,14 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.mannual_update1)
         self.pushButton_12.clicked.connect(self.mannual_update2)
         self.pushButton_8.clicked.connect(self.print_recipt)
-        self.lineEdit.setText("0")
-        self.lineEdit_4.setText("0")
+        self.lineEdit.setText("")
+        self.lineEdit_4.setText("")
         #self.lineEdit_5.setText("7777") #serach line edit
         self.start_wt()
         
         self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC ") 
+        results=connection.execute("SELECT BATCH_ID_DISPLAY,BATCH_ID FROM BATCH_MST ORDER BY BATCH_ID DESC ") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            
@@ -1046,7 +1046,7 @@ class fci_03_Ui_MainWindow(object):
         for x in results:
             self.login_user_id=str(x[0])
         connection.close()
-        
+        self.reset_fun()
 
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1061,12 +1061,13 @@ class fci_03_Ui_MainWindow(object):
                 mode="Tare"
         
         if(mode != self.label_37.text()):
-                self.label_29.setText(str(mode))
-                m_str=float(float(self.lineEdit.text())/1000)                
-                self.label_32.setText('{:06.3f}'.format(m_str))
-                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
-                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-                self.status="FIRST"
+            if(self.lineEdit.text() != ""):
+                    self.label_29.setText(str(mode))
+                    m_str=float(float(self.lineEdit.text())/1000)                
+                    self.label_32.setText('{:06.3f}'.format(m_str))
+                    self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+                    self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
+                    self.status="FIRST"
             
     def mannual_update2(self,):
         mode=""
@@ -1076,6 +1077,7 @@ class fci_03_Ui_MainWindow(object):
         else:
                 mode="Tare"        
         if(mode != self.label_29.text()):
+            if(self.lineEdit_4.text() != ""):
                 self.label_37.setText(str(mode))
                 m_str=float(float(self.lineEdit_4.text())/1000) 
                 self.label_40.setText('{:06.3f}'.format(m_str))
@@ -1155,7 +1157,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_50.setText("0")
         
         #Proposed Bag count
-        self.lineEdit_3.setText("0")
+        self.lineEdit_3.setText("")
         
         #serial num for search
         self.lineEdit_5.setText("")
@@ -1168,10 +1170,10 @@ class fci_03_Ui_MainWindow(object):
         
        
         #Mannual First Wt
-        self.lineEdit.setText("0")
+        self.lineEdit.setText("")
         
         #Mannual Second Wt
-        self.lineEdit_4.setText("0")
+        self.lineEdit_4.setText("")
          
         #message
         self.label_56.hide()
@@ -1217,8 +1219,9 @@ class fci_03_Ui_MainWindow(object):
        
     def batch_id_onchange(self):
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID='"+self.comboBox.currentText()+"'") 
-        for x in results:            
+        results=connection.execute("SELECT BATCH_ID,MATERIAL_TYPE,REQUIRED_TRUCKS,CONTRACTOR_NAME FROM BATCH_MST WHERE BATCH_ID_DISPLAY='"+self.comboBox.currentText()+"'") 
+        for x in results:
+                self.batch_id=str(x[0])
                #Material Type
                 self.label_42.setText(str(x[1]))
                 #Contractor Name
@@ -1348,7 +1351,9 @@ class fci_03_Ui_MainWindow(object):
     def load_1st_wt_vehicles(self):
         self.listWidget_3.clear()
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+self.comboBox.currentText()+"'")       
+        print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+str(self.batch_id)+"'")       
+        
+        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+str(self.batch_id)+"'")       
         for x in results:        
                self.listWidget_3.addItem(str(x[0]))
         connection.close() 
@@ -1356,7 +1361,9 @@ class fci_03_Ui_MainWindow(object):
     def load_2nd_wt_vehicles(self):
         self.listWidget_2.clear()
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+self.comboBox.currentText()+"'")       
+        print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+str(self.batch_id)+"'")       
+        
+        results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+str(self.batch_id)+"'")       
         for x in results:        
                self.listWidget_2.addItem(str(x[0]))
         connection.close()
@@ -1499,7 +1506,7 @@ class fci_03_Ui_MainWindow(object):
         self.vehicle_no=str(self.lineEdit_2.text())        
         if(len(self.vehicle_no) >= 4):            
             self.materail_name=str(self.label_42.text())
-            self.batch_id=self.comboBox.currentText()
+            #self.batch_id=self.comboBox.currentText()
             self.status=self.status
             self.first_wt_mode=self.label_29.text()
             self.first_wt_val=self.label_32.text()            

@@ -85,7 +85,7 @@ class fci_04_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Weighing Batches"))
+        self.pushButton.setText(_translate("MainWindow", "Weighing Recipts"))
         self.pushButton_4.setText(_translate("MainWindow", "Weighing Issues"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
