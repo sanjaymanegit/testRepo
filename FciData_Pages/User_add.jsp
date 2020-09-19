@@ -10,7 +10,7 @@
 
 <%
 Class.forName("com.mysql.jdbc.Driver"); 
-java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/audiokit","root","31@dec2019"); 
+java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fci","root","31@dec2019"); 
 Statement st= con.createStatement(); 
  Connection connection = null;
  Statement statement = null;
@@ -133,7 +133,7 @@ else
 <%
  try{
   statement=con.createStatement();
-  sql ="SELECT ROLE_NAME FROM role_mst where ROLE_NAME <> 'ADMIN'";
+  sql ="SELECT ROLE_NAME FROM role_mst where ROLE_NAME <> 'SUPER_ADMIN'";
   resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>
@@ -209,8 +209,24 @@ if (flag != null && flag.equals("add") && (u_cnt==0))
  sql="INSERT INTO BUSINESS_USERS(FIRST_NAME,LAST_NAME,ROLE_NAME,EMAIL_ID,USER_LOGIN_ID,USER_PWD) values ('"+f_name+"','"+l_name+"','"+role_name+"','"+email_id+"','"+loging_id+"','"+u_password+"')"; 
  //out.println("sql  :"+sql); 
  statement.executeUpdate(sql);
- //connection.close();
+ connection.close();
  out.println("Added Record Sccessfully !!!!!!");
+ 
+ statement=con.createStatement(); 
+ sql="INSERT INTO actions_user_map(ACTION_KEY)  SELECT DISTINCT ACTION_KEY FROM ACTION_MST"; 
+ //out.println("sql  :"+sql); 
+ statement.executeUpdate(sql);
+ connection.close();
+ 
+ statement=con.createStatement(); 
+ sql="UPDATE  actions_user_map SET USER_ID = (SELECT MAX(USER_ID) FROM BUSINESS_USERS),STATUS='disabled' WHERE USER_ID IS NULL"; 
+ //out.println("sql  :"+sql); 
+ statement.executeUpdate(sql);
+ connection.close();
+ 
+ 
+ out.println("All actions are added but in disable format!!!!!!");
+ 
  }	
 %>
 </form>

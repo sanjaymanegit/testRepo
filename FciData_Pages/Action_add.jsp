@@ -34,7 +34,7 @@ body {
   background-color: #4CAF50 ; /* Green background #4CAF50*/
   border: 1px solid green; /* Green border */
   color: white; /* White text */
-  padding: 5px 40px; /* Some padding */
+  padding: 5px 20px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   float: left; /* Float the buttons side by side */
 }
@@ -60,21 +60,26 @@ body {
 function f_add()
 {
 
-if (document.user_add_form.r_name.value == "")
+if (document.action_add_form.action_key.value == "")
 {
-    alert("Role Name must be filled out");
+    alert("Action Key must be filled out");
     return false;
  }
- else if(document.user_add_form.r_desc.value == "")
+ else if(document.action_add_form.action_name.value == "")
+{
+    alert("Action Name must be filled out");
+    return false;
+ }
+ else if(document.action_add_form.action_desc.value == "")
 {
     alert("Description must be filled out");
     return false;
  }
 else 
 {	
-	document.user_add_form.flag_add.value='add';
-	document.user_add_form.action = "Role_add.jsp";
-	document.user_add_form.submit();
+	document.action_add_form.flag_add.value='add';
+	document.action_add_form.action = "Action_add.jsp";
+	document.action_add_form.submit();
 }		
 }
 
@@ -83,44 +88,39 @@ else
 </head>
 <body style="font-size:15px">
 <font style='font-family="Calibri"'>
-<form name="user_add_form" method="post">
-<h3>  ADD New Role </h3>   ( Note: All fields are mandatory)
+<form name="action_add_form" method="post">
+<h3>  ADD New Module </h3>   ( Note: All fields are mandatory)
 <input type="hidden" value="x" name="flag_add">
-<table border=0  style="height:150px;">
+<table border="0"  style="height:150px;">
 <tr>
-<td width="30%">Role Name :</td>
-<td width="70%"> <input type="text" name="r_name"></td>
+<td width="30%">Module Key  :</td>
+<td width="70%"> <input type="text" name="action_key"></td>
 </tr>
 <tr>
-<td width="30%">Role Description :</td>
-<td width="70%"><input type="text" name="r_desc"></td>
+<td width="30%">Module Name  :</td>
+<td width="70%"><input type="text" name="action_name"></td>
 </tr>
 <tr>
-<td width="20%">
-</td>
-<td width="70%">
-</td>
+<td width="30%"> Description  :</td>
+<td width="70%"><input type="text" name="action_desc"></td>
 </tr>
-<tr>
-<td width="20%">
-</td>
-<td width="70%">
-<div class="btn-group">
-  <button type="button" name="add_role" onclick="f_add()">Add</button> <button type="reset">Reset</button> 
-</div>  
-</td>
+<tr><td width="30%"></td>
+<td width="70%"><div class="btn-group">
+  <button type="button" name="add_action" onclick="f_add()">Add</button> <button type="reset">Reset</button> 
+</div></td>
 </tr>
 </table>
 <%
 String flag=request.getParameter("flag_add");
-String r_name = request.getParameter("r_name");
-String r_desc = request.getParameter("r_desc");
-
+if (flag != null && flag.equals("add"))
+{
+String action_key = request.getParameter("action_key");
+String action_name = request.getParameter("action_name");
+String action_desc = request.getParameter("action_desc");
 int u_cnt = 0;
-//check for the unique login _id 
 try{
 	statement=con.createStatement(); 
-	sql= "select count(1) as u_cnt from ROLE_MST WHERE ROLE_NAME= '"+r_name+"'";
+	sql= "select count(1) as u_cnt from ACTION_MST WHERE ACTION_KEY= '"+action_key+"'";
     resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
    u_cnt=resultSet.getInt("u_cnt");
@@ -133,19 +133,20 @@ try{
 
 if (u_cnt > 0) 
 {	
-out.println("Role Name :<b>"+r_name+"  </b>      :Already Exist please choose another !!!!!!");	
+out.println("Action key :<b>"+action_key+"  </b>      :Already Exist please choose another !!!!!!");	
 }	
 	 
 
 if (flag != null && flag.equals("add") && (u_cnt==0))
 {
  statement=con.createStatement(); 
- sql="INSERT INTO ROLE_MST(ROLE_NAME ,COMMENT) values ('"+r_name+"','"+r_desc+"')"; 
+ sql="INSERT INTO ACTION_MST(ACTION_KEY,ACTION_NAME,ACTION_DESC) values ('"+action_key+"','"+action_name+"','"+action_desc+"')"; 
  //out.println("sql  :"+sql); 
  statement.executeUpdate(sql);
  //connection.close();
  out.println("Added Record Sccessfully !!!!!!");
  }	
+}
 %>
 </form>
 </font>

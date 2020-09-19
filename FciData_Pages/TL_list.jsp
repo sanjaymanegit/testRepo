@@ -66,7 +66,7 @@ function poponload()
 	//alert("device id :"+document.frm_batch_list.device_id.value);    
     testwindow = window.open("", "mywindow", "location=1,status=1,scrollbars=1,width=1150,height=1000");
     document.frm_batch_list.target="mywindow";
-    document.frm_batch_list.action="BatchDetailsPrint.jsp";
+    document.frm_batch_list.action="TLDetailsPrint.jsp";
     document.frm_batch_list.method="post";
     document.frm_batch_list.submit();
     testwindow.moveTo(500, 300);
@@ -86,7 +86,7 @@ function del_fun()
 {
 	document.frm_batch_list.del_batch_flag.value="Yes"; 
 	//document.frm_batch_list.target ="rightbottomframe"; 
-    document.frm_batch_list.action="batch_list.jsp";
+    document.frm_batch_list.action="TL_list.jsp";
     document.frm_batch_list.method="post";
     document.frm_batch_list.submit();	
 }
@@ -120,6 +120,7 @@ if(device_id==null)
 {
 	device_id="202008/15";
 }	
+	
 
 //out.println(" rolename :"+rolename);
 //out.println(" to_dt :"+to_dt);
@@ -147,7 +148,7 @@ e.printStackTrace();
 
 <table border="0" style="width: 1000px;">
 <tbody>
-<tr> <td colspan=4><input type="button" value=" Generate Report" onclick="poponload()"><input type="button" value=" Print Report" onclick="curr_page_poponload()" disabled> 
+<tr> <td colspan=4><input type="button" value=" Transit Loss Details" onclick="poponload()"><input type="button" value=" Print Report" onclick="curr_page_poponload()" disabled> 
 <%
 String rolename = request.getParameter("role_name");
 out.println("<input type=hidden name=role_name value="+rolename+">");
@@ -161,12 +162,12 @@ if(!(rolename == null || (rolename.equals(""))))
 </tr>
 <tr><td></td></tr>
 <tr bgcolor="#CFF7EC">
-<td><input type="checkbox" name="select_all" value="select_all" onclick="SelectAll(this)" > Batch. Id </td>
+<td><input type="checkbox" name="select_all" value="select_all" onclick="SelectAll(this)" > Recipt. Id </td>
 <td>Started On </td>
-<td>No.Of.Bags </td>
-<td>Net.Weight.Ton </td>
-<td>No.Of Trucks </td>
+<td>Material </td>
 <td>Status </td>
+<td> </td>
+<td></td>
 </tr>
 
 </tr>
@@ -177,18 +178,18 @@ if (record_count > 0 )
 <%
  try{ 
  statement=con.createStatement(); 
- String sql ="select BATCH_ID, COUNT(SERIAL_NO) as TOTAL_TRUCKS, FORMAT(SUM(NET_WEIGHT_VAL),3) as TOTAL_NET_WT, FORMAT(SUM(ACCPTED_BAGS),0) as TOTAL_ACCEPTED_BAGS, substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),0,11) as RELEASE_DATE , substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),11,6) as RELEASE_TIME,MIN(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) as START_DATE , CASE WHEN COUNT(SERIAL_NO) >= AVG(TOTAL_TRUCKS_CNT) THEN 'COMPLETE' ELSE 'IN PROGRESS' END as STATUS from WEIGHT_MST where ISSUE_ID = 0 AND DEVICE_ID='"+device_id+"' AND DATE(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") GROUP BY BATCH_ID ORDER BY BATCH_ID desc ";
+ String sql ="select  BATCH_ID,BATCH_ID_DISPLAY,BATCH_DATE,MATERIAL_TYPE,STATUS  from BATCH_MST where  DEVICE_ID='"+device_id+"' AND DATE(BATCH_DATE) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") ORDER BY BATCH_ID DESC ";
  //out.println("SQL : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>
 <tr>
- <td><input type="checkbox" name="chkbox_for_batch" value="<%=resultSet.getString("BATCH_ID")%>"><%=resultSet.getString("BATCH_ID")%></td> 
- <td><%=resultSet.getString("START_DATE") %></td> 
-<td><%=resultSet.getString("TOTAL_ACCEPTED_BAGS") %></td>
-<td><%=resultSet.getString("TOTAL_NET_WT") %> </td>
-<td><%=resultSet.getString("TOTAL_TRUCKS") %> </td>
+ <td><input type="checkbox" name="chkbox_for_batch" value="<%=resultSet.getString("BATCH_ID")%>"><%=resultSet.getString("BATCH_ID_DISPLAY")%></td> 
+ <td><%=resultSet.getString("BATCH_DATE") %></td> 
+<td><%=resultSet.getString("MATERIAL_TYPE") %></td>
 <td><%=resultSet.getString("STATUS") %> </td>
+<td> </td>
+<td </td>
 
 <%
 }

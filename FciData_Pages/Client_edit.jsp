@@ -57,24 +57,23 @@ body {
 
 </style>
 <script>
-function f_add()
+function f_save()
 {
-
-if (document.user_add_form.r_name.value == "")
+if (document.client_edit_form.client_name.value == "")
 {
-    alert("Role Name must be filled out");
+    alert("Client Name must be filled out");
     return false;
  }
- else if(document.user_add_form.r_desc.value == "")
+ else if(document.client_edit_form.client_desc.value == "")
 {
     alert("Description must be filled out");
     return false;
  }
 else 
-{	
-	document.user_add_form.flag_add.value='add';
-	document.user_add_form.action = "Role_add.jsp";
-	document.user_add_form.submit();
+{	//alert(document.client_edit_form.edit_radio.value);
+	document.client_edit_form.flag_save.value='save';
+	document.client_edit_form.action = "Client_edit.jsp";
+	document.client_edit_form.submit();
 }		
 }
 
@@ -83,17 +82,37 @@ else
 </head>
 <body style="font-size:15px">
 <font style='font-family="Calibri"'>
-<form name="user_add_form" method="post">
-<h3>  ADD New Role </h3>   ( Note: All fields are mandatory)
-<input type="hidden" value="x" name="flag_add">
+<form name="client_edit_form" method="post">
+<%
+String client_id=request.getParameter("edit_radio");
+String client_name ="" ;
+String client_desc ="" ; 
+//out.println("client_id:"+client_id);
+try{	   
+	statement=con.createStatement(); 
+	sql= "select device_id_str,company_name from device_dtls WHERE device_id= '"+client_id+"'";
+    resultSet = statement.executeQuery(sql);
+ while(resultSet.next()){
+    client_name = resultSet.getString("device_id_str");
+    client_desc = resultSet.getString("company_name");
+}
+ connection.close();
+ } catch (Exception e) {
+ e.printStackTrace();
+ }	 
+%>
+
+<h3>  Edit New Device </h3>   
+<input type="hidden" value="x" name="flag_save">
+<input type="hidden" name="edit_radio" value="<%=client_id%>">
 <table border=0  style="height:150px;">
 <tr>
-<td width="30%">Role Name :</td>
-<td width="70%"> <input type="text" name="r_name"></td>
+<td width="30%">Device Name :</td>
+<td width="70%"> <input type="text" name="client_name" value="<%=client_name%>"></td>
 </tr>
 <tr>
-<td width="30%">Role Description :</td>
-<td width="70%"><input type="text" name="r_desc"></td>
+<td width="30%">Device Description :</td>
+<td width="70%"><input type="text" name="client_desc" value="<%=client_desc%>"></td>
 </tr>
 <tr>
 <td width="20%">
@@ -106,45 +125,24 @@ else
 </td>
 <td width="70%">
 <div class="btn-group">
-  <button type="button" name="add_role" onclick="f_add()">Add</button> <button type="reset">Reset</button> 
+  <button type="submit" name="edit_Client" onclick="f_save()">Save</button> <button type="reset">Reset</button> 
 </div>  
 </td>
 </tr>
 </table>
 <%
-String flag=request.getParameter("flag_add");
-String r_name = request.getParameter("r_name");
-String r_desc = request.getParameter("r_desc");
-
-int u_cnt = 0;
-//check for the unique login _id 
-try{
-	statement=con.createStatement(); 
-	sql= "select count(1) as u_cnt from ROLE_MST WHERE ROLE_NAME= '"+r_name+"'";
-    resultSet = statement.executeQuery(sql);
- while(resultSet.next()){
-   u_cnt=resultSet.getInt("u_cnt");
-}
- connection.close();
- } catch (Exception e) {
- e.printStackTrace();
- }	 
-//out.println("u_cnt:"+u_cnt);
-
-if (u_cnt > 0) 
-{	
-out.println("Role Name :<b>"+r_name+"  </b>      :Already Exist please choose another !!!!!!");	
-}	
-	 
-
-if (flag != null && flag.equals("add") && (u_cnt==0))
+client_name = request.getParameter("client_name");
+client_desc = request.getParameter("client_desc");
+String flag = request.getParameter("flag_save");
+//out.println("r_id:"+r_id);
+if (flag != null && flag.equals("save"))
 {
  statement=con.createStatement(); 
- sql="INSERT INTO ROLE_MST(ROLE_NAME ,COMMENT) values ('"+r_name+"','"+r_desc+"')"; 
+ sql="UPDATE device_dtls SET device_id_str='"+client_name+"' ,company_name='"+client_desc+"' WHERE device_id ='"+client_id+"'"; 
  //out.println("sql  :"+sql); 
  statement.executeUpdate(sql);
  //connection.close();
- out.println("Added Record Sccessfully !!!!!!");
+ out.println("Saved Record Sccessfully !!!!!!");
  }	
 %>
 </form>

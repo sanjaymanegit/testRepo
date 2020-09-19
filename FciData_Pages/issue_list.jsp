@@ -66,7 +66,7 @@ function poponload()
 	//alert("device id :"+document.frm_batch_list.device_id.value);    
     testwindow = window.open("", "mywindow", "location=1,status=1,scrollbars=1,width=1150,height=1000");
     document.frm_batch_list.target="mywindow";
-    document.frm_batch_list.action="BatchDetailsPrint.jsp";
+    document.frm_batch_list.action="IssueDetailsPrint.jsp";
     document.frm_batch_list.method="post";
     document.frm_batch_list.submit();
     testwindow.moveTo(500, 300);
@@ -161,10 +161,10 @@ if(!(rolename == null || (rolename.equals(""))))
 </tr>
 <tr><td></td></tr>
 <tr bgcolor="#CFF7EC">
-<td><input type="checkbox" name="select_all" value="select_all" onclick="SelectAll(this)" > Batch. Id </td>
+<td><input type="checkbox" name="select_all" value="select_all" onclick="SelectAll(this)" > Issue. Id </td>
 <td>Started On </td>
-<td>No.Of.Bags </td>
-<td>Net.Weight.Ton </td>
+<td>Released.Bags </td>
+<td>Released.Wt.Ton </td>
 <td>No.Of Trucks </td>
 <td>Status </td>
 </tr>
@@ -177,13 +177,13 @@ if (record_count > 0 )
 <%
  try{ 
  statement=con.createStatement(); 
- String sql ="select BATCH_ID, COUNT(SERIAL_NO) as TOTAL_TRUCKS, FORMAT(SUM(NET_WEIGHT_VAL),3) as TOTAL_NET_WT, FORMAT(SUM(ACCPTED_BAGS),0) as TOTAL_ACCEPTED_BAGS, substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),0,11) as RELEASE_DATE , substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),11,6) as RELEASE_TIME,MIN(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) as START_DATE , CASE WHEN COUNT(SERIAL_NO) >= AVG(TOTAL_TRUCKS_CNT) THEN 'COMPLETE' ELSE 'IN PROGRESS' END as STATUS from WEIGHT_MST where ISSUE_ID = 0 AND DEVICE_ID='"+device_id+"' AND DATE(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") GROUP BY BATCH_ID ORDER BY BATCH_ID desc ";
+ String sql ="select  ISSUE_ID, COUNT(SERIAL_NO) as TOTAL_TRUCKS, FORMAT(SUM(NET_WEIGHT_VAL),3) as TOTAL_NET_WT, FORMAT(SUM(ACCPTED_BAGS),0) as TOTAL_ACCEPTED_BAGS, substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),0,11) as RELEASE_DATE , substr(MAX(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)),11,6) as RELEASE_TIME,MIN(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) as START_DATE , CASE WHEN COUNT(SERIAL_NO) >= AVG(TOTAL_TRUCKS_CNT) THEN 'COMPLETE' ELSE 'IN PROGRESS' END as STATUS,ISSUE_ID from WEIGHT_MST where ISSUE_ID > 0 AND DEVICE_ID='"+device_id+"' AND DATE(IFNULL(FIRST_WT_CRTEATED_ON,SECOND_WT_CREATED_ON)) between STR_TO_DATE('"+from_dt+"',\"%m/%d/%Y\") and STR_TO_DATE('"+to_dt+"',\"%m/%d/%Y\") GROUP BY ISSUE_ID ORDER BY ISSUE_ID desc ";
  //out.println("SQL : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>
 <tr>
- <td><input type="checkbox" name="chkbox_for_batch" value="<%=resultSet.getString("BATCH_ID")%>"><%=resultSet.getString("BATCH_ID")%></td> 
+ <td><input type="checkbox" name="chkbox_for_batch" value="<%=resultSet.getString("ISSUE_ID")%>"><%=resultSet.getString("ISSUE_ID")%></td> 
  <td><%=resultSet.getString("START_DATE") %></td> 
 <td><%=resultSet.getString("TOTAL_ACCEPTED_BAGS") %></td>
 <td><%=resultSet.getString("TOTAL_NET_WT") %> </td>

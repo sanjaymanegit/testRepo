@@ -51,7 +51,7 @@ Statement st= con.createStatement();
 		  else
 		   {
 			  document.inputs_frm.target ="rightmidframe"; 
-			  document.inputs_frm.action="batch_list.jsp";
+			  document.inputs_frm.action="issue_list.jsp";
 			  document.inputs_frm.method="post";
 			  document.inputs_frm.submit();
 			  return true;			  
@@ -63,7 +63,7 @@ Statement st= con.createStatement();
   {
    
       document.inputs_frm.target ="leftframe";      
-	  document.inputs_frm.action="BatchReportsInputPage.jsp";
+	  document.inputs_frm.action="IssueReportsInputPage.jsp";
 	  document.inputs_frm.work_order_ids.selectcted.value=document.inputs_frm.work_order_ids.value;	  
 	  document.inputs_frm.device_id.selectcted.value=document.inputs_frm.device_id.value;	  
 	  document.inputs_frm.method="post";
@@ -99,7 +99,7 @@ select {
   
 </head>
 <body>
-<label for="note"> Search Batch. </label>
+<label for="note"> Search Issues. </label>
 <form name="inputs_frm" >
 <%
 String rolename = request.getParameter("role_name");

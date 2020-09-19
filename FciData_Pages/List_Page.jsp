@@ -36,10 +36,7 @@ try{
   resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
 	 u_cnt=resultSet.getInt("U_COUNT");
-	 out.println("<frameset rows="+"12%,88%"+">");
-     out.println("<frame src=header_page.jsp?&username="+user_name+"&password="+user_pass+" name=topframe />");
-	 out.println("<frame src=batch_frame.jsp?&username="+user_name+" name=bottomframe />");
-     out.println("</frameset></html>");            
+	           
      connection.close();
 }
  connection.close();
@@ -47,8 +44,17 @@ try{
  e.printStackTrace();
  }
 
-if(u_cnt != 1)
+if(u_cnt == 1)
 {
+ out.println("<frameset rows="+"12%,88%"+">");
+ out.println("<frame src=header_page.jsp?&username="+user_name+"&password="+user_pass+" name=topframe />");
+ out.println("<frame src=batch_frame.jsp?&username="+user_name+" name=bottomframe />");
+ out.println("</frameset></html>"); 	
+	
+}
+else
+{
+//out.println("sql:"+sql);
 out.println("<h2><b> Login Failed !!!!!!!! Please contact Administrator.</b></h2> </html>")	;	
 }
 %>

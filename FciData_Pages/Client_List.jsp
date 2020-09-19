@@ -60,74 +60,83 @@ body {
 <script>
 function f1()
 {	
-document.role_list_form.target = "rightframe";
-document.role_list_form.action="Role_add.jsp";
-document.role_list_form.submit();
+document.client_list_form.target = "rightframe";
+document.client_list_form.action="Client_add.jsp";
+document.client_list_form.submit();
 }
 
 function f2()
 {	
 //alert(document.role_list_form.radio_edit.value);
 //alert('hiffff');
-document.role_list_form.target = "rightframe";
-document.role_list_form.action="Role_edit.jsp";
-document.role_list_form.submit();}
+document.client_list_form.target = "rightframe";
+document.client_list_form.action="Client_edit.jsp";
+document.client_list_form.submit();}
 
 function f3()
 {	
-var input_flag = confirm(" Confirm the Role which is going to delete : "+document.role_list_form.elements['edit_radio'].value);
+var input_flag = confirm(" Confirm the Client which is going to delete : "+document.client_list_form.elements['edit_radio'].value);
 	if(input_flag == true)
 	{
-		document.role_list_form.del_flag.value="Yes";
-		document.role_list_form.target = "rightmidframe";
-		document.role_list_form.action="Role_List.jsp";
-		document.role_list_form.submit();
+		document.client_list_form.del_flag.value="Yes";
+		document.client_list_form.target = "rightmidframe";
+		document.client_list_form.action="Client_List.jsp";
+		document.client_list_form.submit();
 	}
 }	
+
+function f4()
+{	
+//alert(document.role_list_form.radio_edit.value);
+//alert('hiffff');
+document.client_list_form.target = "rightframe";
+document.client_list_form.action="Client_user_map.jsp";
+document.client_list_form.submit();}
 
 </script>
 </head>
 <body style="font-size:15px">
 <font style='font-family="Calibri"'>
-<form name="role_list_form">
+<form name="client_list_form">
 <input type="hidden" name="del_flag" value="">
-<input type="hidden" name="role_name" value="">
+<input type="hidden" name="client_name" value="">
 <%
 String del_flag=request.getParameter("del_flag");
-String role_id = request.getParameter("edit_radio");
-//out.println("del_flag"+del_flag+" role_id: "+role_id);
+String client_id = request.getParameter("edit_radio");
+//out.println("del_flag"+del_flag+" client_id: "+client_id);
 if (del_flag != null && del_flag.equals("Yes"))
 {
  statement=con.createStatement(); 
- sql="DELETE FROM ROLE_MST WHERE ROLE_ID='"+role_id+"'"; 
+ sql="DELETE FROM device_dtls WHERE device_id='"+client_id+"'"; 
  //out.println("sql  :"+sql); 
  statement.executeUpdate(sql);
  //connection.close();
  //out.println("User deleted sccessfully !!!!!!");
  }	
 %>
-<h3>  ROLES </h3>   
+<h3>  Clients </h3>   
 <div class="btn-group">
-  <button type="button" onclick="f1()"> Add Role</button> 
-  <button type="button" onclick="f2()">Edit Role</button>  
-  <button type="button" onclick="f3()">Delete Role</button>  
+  <button type="button" onclick="f1()"> Add Device</button> 
+  <button type="button" onclick="f2()">Edit Device</button>  
+  <button type="button" onclick="f3()">Delete Device</button>  
+  <button type="button" onclick="f4()">User Device Mapping</button> 
 </div>  
   <br> 
 <table border=0 >
 <tr bgcolor="grey" >
-<td width="10%">Role Name</td>
+<td width="10%">Device ID</td>
 <td width="20%">Description</td>
 </tr>
 <%
  try{
   statement=con.createStatement();
-  sql ="SELECT ROLE_ID,ROLE_NAME,COMMENT FROM role_mst";
+  sql ="SELECT device_id,device_id_str,company_name FROM device_dtls;";
   resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>
 <tr>
-<td><input type="radio" name="edit_radio" value="<%=resultSet.getString("ROLE_ID")%>"><%=resultSet.getString("ROLE_NAME")%></td>
-<td><%=resultSet.getString("COMMENT")%></td>
+<td><input type="radio" name="edit_radio" value="<%=resultSet.getString("device_id")%>"><%=resultSet.getString("device_id_str")%></td>
+<td><%=resultSet.getString("company_name")%></td>
 </tr>
 <%
 }

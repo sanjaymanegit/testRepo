@@ -60,21 +60,21 @@ body {
 function f_add()
 {
 
-if (document.user_add_form.r_name.value == "")
+if (document.client_add_form.client_name.value == "")
 {
-    alert("Role Name must be filled out");
+    alert("Client Name must be filled out");
     return false;
  }
- else if(document.user_add_form.r_desc.value == "")
+ else if(document.client_add_form.client_desc.value == "")
 {
     alert("Description must be filled out");
     return false;
  }
 else 
 {	
-	document.user_add_form.flag_add.value='add';
-	document.user_add_form.action = "Role_add.jsp";
-	document.user_add_form.submit();
+	document.client_add_form.flag_add.value='add';
+	document.client_add_form.action = "Client_add.jsp";
+	document.client_add_form.submit();
 }		
 }
 
@@ -83,17 +83,17 @@ else
 </head>
 <body style="font-size:15px">
 <font style='font-family="Calibri"'>
-<form name="user_add_form" method="post">
-<h3>  ADD New Role </h3>   ( Note: All fields are mandatory)
+<form name="client_add_form" method="post">
+<h3>  ADD New Device </h3>   ( Note: All fields are mandatory)
 <input type="hidden" value="x" name="flag_add">
 <table border=0  style="height:150px;">
 <tr>
-<td width="30%">Role Name :</td>
-<td width="70%"> <input type="text" name="r_name"></td>
+<td width="30%"> Device Name :</td>
+<td width="70%"> <input type="text" name="client_name"></td>
 </tr>
 <tr>
-<td width="30%">Role Description :</td>
-<td width="70%"><input type="text" name="r_desc"></td>
+<td width="30%">Device Description :</td>
+<td width="70%"><input type="text" name="client_desc"></td>
 </tr>
 <tr>
 <td width="20%">
@@ -106,21 +106,21 @@ else
 </td>
 <td width="70%">
 <div class="btn-group">
-  <button type="button" name="add_role" onclick="f_add()">Add</button> <button type="reset">Reset</button> 
+  <button type="button" name="add_client" onclick="f_add()">Add</button> <button type="reset">Reset</button> 
 </div>  
 </td>
 </tr>
 </table>
 <%
 String flag=request.getParameter("flag_add");
-String r_name = request.getParameter("r_name");
-String r_desc = request.getParameter("r_desc");
+String client_name = request.getParameter("client_name");
+String client_desc = request.getParameter("client_desc");
 
 int u_cnt = 0;
 //check for the unique login _id 
 try{
 	statement=con.createStatement(); 
-	sql= "select count(1) as u_cnt from ROLE_MST WHERE ROLE_NAME= '"+r_name+"'";
+	sql= "select count(1) as u_cnt from device_dtls WHERE device_id_str= '"+client_name+"'";
     resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
    u_cnt=resultSet.getInt("u_cnt");
@@ -133,18 +133,35 @@ try{
 
 if (u_cnt > 0) 
 {	
-out.println("Role Name :<b>"+r_name+"  </b>      :Already Exist please choose another !!!!!!");	
+out.println("Role Name :<b>"+client_name+"  </b>      :Already Exist please choose another !!!!!!");	
 }	
 	 
 
 if (flag != null && flag.equals("add") && (u_cnt==0))
 {
  statement=con.createStatement(); 
- sql="INSERT INTO ROLE_MST(ROLE_NAME ,COMMENT) values ('"+r_name+"','"+r_desc+"')"; 
+ sql="INSERT INTO device_dtls(device_id_str,company_name) values ('"+client_name+"','"+client_desc+"')"; 
  //out.println("sql  :"+sql); 
  statement.executeUpdate(sql);
  //connection.close();
+ 
+ 
+ 
+ statement=con.createStatement(); 
+ sql="INSERT INTO user_device_map(user_id) SELECT user_id FROM Business_users"; 
+ out.println("sql  :"+sql); 
+ statement.executeUpdate(sql);
+ //connection.close();
+ //out.println("Added Record Sccessfully !!!!!!");
+ 
+ statement=con.createStatement(); 
+ sql="UPDATE user_device_map set device_id = (select max(device_id) from device_dtls) where device_id is null "; 
+ //out.println("sql  :"+sql); 
+ statement.executeUpdate(sql);
+ //connection.close();
+ //out.println("updated Record Sccessfully !!!!!!");
  out.println("Added Record Sccessfully !!!!!!");
+ 
  }	
 %>
 </form>

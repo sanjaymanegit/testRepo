@@ -62,34 +62,31 @@ for(int i=0; i<BatchIdsArr.length; i++)
  BatchIDs=BatchIdsArr[i];
  try{ 
  statement=con.createStatement();
- String sql ="SELECT BATCH_ID,BATCH_ID_DISPLAY,DATE(BATCH_DATE) as dt,FORMAT(RECV_WT_KG,3) as RECV_WT_KG, FORMAT(RECV_BAGS_CNT,0) as RECV_BAGS_CNT ,FORMAT(ACCPT_WT_KG,3) as ACCPT_WT_KG, FORMAT(ACCPT_BAGS_CNT,0) as ACCPT_BAGS_CNT,MATERIAL_TYPE,WAGON_CNT FROM BATCH_MST WHERE BATCH_ID= '"+BatchIDs+"' LIMIT 1";
+ String sql ="SELECT ISSUE_ID,ORDER_ID,DATE(ISSUE_DATE) as ISSUE_DATE,DATE(EXPIRY_DATE) as EXPIRY_DATE,RO_TYPE,CONTRACTOR_NAME,FORMAT(TOTAL_BAGS_DEMAND,0) as TOTAL_BAGS_DEMAND, FORMAT(TOTAL_NET_WT_DEMAND,3) as TOTAL_NET_WT_DEMAND  FROM ISSUE_MST WHERE ISSUE_ID= '"+BatchIDs+"' LIMIT 1";
  //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
-	 // v_batch_id =resultSet.getString("BATCH_ID") 
+	 // v_batch_id =resultSet.getString("ORDER_ID") 
 	 //out.println("<h>v_batch_id : "+v_batch_id+"</h>");
  %>
 <table border="1">
 <tr> <td>
 <table border="0" align="left" style="width: 1000px;">
-<tr > <td colspan=5>Batch Id     : <b> <%=resultSet.getString("BATCH_ID")%> </b> </td>
-<td colspan=5> Batch Date        : <%=resultSet.getString("dt")%></td>
+<tr > <td colspan=5>Order Id     : <b> <%=resultSet.getString("ORDER_ID")%> </b> </td>
+<td colspan=5> Contractor Name        : <%=resultSet.getString("CONTRACTOR_NAME")%></td>
 </tr>
-<tr> <td colspan=5>Received Weight (Ton)     : <%=resultSet.getString("RECV_WT_KG")%></td>
-<td colspan=5>Accepted Weight (Ton)         : <%=resultSet.getString("ACCPT_WT_KG")%>
+<tr> <td colspan=5>Expiry Date     : <%=resultSet.getString("EXPIRY_DATE")%></td>
+<td colspan=5>Issue Date         : <%=resultSet.getString("ISSUE_DATE")%>
 </td>
 </tr>
-<tr> <td colspan=5>Received Bags     : <%=resultSet.getString("RECV_BAGS_CNT")%></td>
-<td colspan=5>Accepted Bags         : <%=resultSet.getString("ACCPT_BAGS_CNT")%>
+<tr> <td colspan=5>Demanaded. Bags     : <%=resultSet.getString("TOTAL_BAGS_DEMAND")%></td>
+<td colspan=5>Demanded Net Wt.Ton         : <%=resultSet.getString("TOTAL_NET_WT_DEMAND")%>
 </td>
 </tr>
-<tr > <td colspan=5>Material         : <%=resultSet.getString("MATERIAL_TYPE")%>
+<tr > <td colspan=5> Issue Id     : <%=resultSet.getString("ISSUE_ID")%>    
 </td>
-<td colspan=5>Wagon Count           : <%=resultSet.getString("WAGON_CNT")%>
+<td colspan=5> 
 </td>
-</tr>
-<tr > <td colspan=5>Recipt Id           : <%=resultSet.getString("BATCH_ID_DISPLAY")%> </b> </td>
-<td colspan=5 > </td>
 </tr>
 <%
 }
@@ -103,11 +100,11 @@ for(int i=0; i<BatchIdsArr.length; i++)
 </td></tr>
 <tr> <td>
 <table border="0" align="left" style="width: 1000px;">
-<tr bgcolor="#CFF7EC"><td> Truck.No.</td> <td> Vehicle No</td> <td> Net Weight Ton. </td>  <td> No. Of. Bags. </td>  <td> Tare Weight Ton. </td> <td> Gross Weight Ton. </td> <td> Slip No.</td></tr>
+<tr bgcolor="#CFF7EC"><td> Truck.No.</td> <td> Vehicle No</td><td>  Material  </td> <td> Net Weight Ton. </td>  <td> No. Of. Bags. </td>  <td> Tare Weight Ton. </td> <td> Gross Weight Ton. </td> <td> Slip No.</td></tr>
 <%
 try{ 
  statement=con.createStatement();
- String sql ="select CURR_TRUCK_CNT,VEHICLE_NO,FORMAT(NET_WEIGHT_VAL,3) as NET_WEIGHT_VAL ,FORMAT(ACCPTED_BAGS,0) as ACCPTED_BAGS,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FORMAT(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Tare' THEN FORMAT(SECOND_WT_VAL,3) END as TARE_WT, CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FORMAT(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Gross' THEN FORMAT(SECOND_WT_VAL,3) END  AS GROSS_WT , SERIAL_NO,CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Gross' THEN SECOND_WT_CREATED_ON END as GROSS_WT_DATE,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Tare' THEN SECOND_WT_CREATED_ON END as TARE_WT_DATE FROM WEIGHT_MST WHERE BATCH_ID ='"+BatchIDs+"' order by CURR_TRUCK_CNT ASC";
+ String sql ="select CURR_TRUCK_CNT,VEHICLE_NO,MATERIAL_NAME,FORMAT(NET_WEIGHT_VAL,3) as NET_WEIGHT_VAL ,FORMAT(ACCPTED_BAGS,0) as ACCPTED_BAGS,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FORMAT(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Tare' THEN FORMAT(SECOND_WT_VAL,3) END as TARE_WT, CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FORMAT(FIRST_WEIGHT_VAL,3) WHEN SECOND_WT_MODE='Gross' THEN FORMAT(SECOND_WT_VAL,3) END  AS GROSS_WT , SERIAL_NO,CASE WHEN FIRST_WEIGHT_MODE='Gross' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Gross' THEN SECOND_WT_CREATED_ON END as GROSS_WT_DATE,CASE WHEN FIRST_WEIGHT_MODE='Tare' THEN FIRST_WT_CRTEATED_ON WHEN SECOND_WT_MODE='Tare' THEN SECOND_WT_CREATED_ON END as TARE_WT_DATE FROM WEIGHT_MST WHERE ISSUE_ID ='"+BatchIDs+"' order by CURR_TRUCK_CNT ASC";
   //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){   
@@ -115,6 +112,7 @@ try{
  <tr> 
  <td><%=resultSet.getString("CURR_TRUCK_CNT") %></td> 
  <td><%=resultSet.getString("VEHICLE_NO") %></td>
+ <td><%=resultSet.getString("MATERIAL_NAME") %> </td> 
  <td><%=resultSet.getString("NET_WEIGHT_VAL") %> </td>  
  <td><%=resultSet.getString("ACCPTED_BAGS") %> </td>  
  <td><%=resultSet.getString("TARE_WT") %> &nbsp; &nbsp;  [  <%=resultSet.getString("TARE_WT_DATE") %> ]  </td> 

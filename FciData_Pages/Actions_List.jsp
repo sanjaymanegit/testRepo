@@ -60,74 +60,55 @@ body {
 <script>
 function f1()
 {	
-document.role_list_form.target = "rightframe";
-document.role_list_form.action="Role_add.jsp";
-document.role_list_form.submit();
+document.actions_list_form.target = "rightframe";
+document.actions_list_form.action="Action_add.jsp";
+document.actions_list_form.submit();
 }
 
 function f2()
 {	
-//alert(document.role_list_form.radio_edit.value);
-//alert('hiffff');
-document.role_list_form.target = "rightframe";
-document.role_list_form.action="Role_edit.jsp";
-document.role_list_form.submit();}
+document.actions_list_form.target = "rightframe";
+document.actions_list_form.action="Action_edit.jsp";
+document.actions_list_form.submit();
+}
 
 function f3()
 {	
-var input_flag = confirm(" Confirm the Role which is going to delete : "+document.role_list_form.elements['edit_radio'].value);
-	if(input_flag == true)
-	{
-		document.role_list_form.del_flag.value="Yes";
-		document.role_list_form.target = "rightmidframe";
-		document.role_list_form.action="Role_List.jsp";
-		document.role_list_form.submit();
-	}
-}	
-
+document.actions_list_form.target = "rightframe";
+document.actions_list_form.action="Action_user_map.jsp";
+document.actions_list_form.submit();
+}
 </script>
 </head>
 <body style="font-size:15px">
 <font style='font-family="Calibri"'>
-<form name="role_list_form">
+<form name="actions_list_form">
 <input type="hidden" name="del_flag" value="">
-<input type="hidden" name="role_name" value="">
-<%
-String del_flag=request.getParameter("del_flag");
-String role_id = request.getParameter("edit_radio");
-//out.println("del_flag"+del_flag+" role_id: "+role_id);
-if (del_flag != null && del_flag.equals("Yes"))
-{
- statement=con.createStatement(); 
- sql="DELETE FROM ROLE_MST WHERE ROLE_ID='"+role_id+"'"; 
- //out.println("sql  :"+sql); 
- statement.executeUpdate(sql);
- //connection.close();
- //out.println("User deleted sccessfully !!!!!!");
- }	
-%>
-<h3>  ROLES </h3>   
+<input type="hidden" name="user_id" value="">
+<h3> Modules </h3>   
 <div class="btn-group">
-  <button type="button" onclick="f1()"> Add Role</button> 
-  <button type="button" onclick="f2()">Edit Role</button>  
-  <button type="button" onclick="f3()">Delete Role</button>  
+  <button type="button" onclick="f1()"> Add Module</button> 
+  <button type="button" onclick="f2()">Edit Module</button> 
+  <button type="button" onclick="f3()">User-Module Map</button>   
 </div>  
   <br> 
 <table border=0 >
 <tr bgcolor="grey" >
-<td width="10%">Role Name</td>
+<td width="10%">Module ID</td>
+<td width="20%">Module Name</td>
 <td width="20%">Description</td>
 </tr>
 <%
  try{
   statement=con.createStatement();
-  sql ="SELECT ROLE_ID,ROLE_NAME,COMMENT FROM role_mst";
+  sql ="SELECT ACTION_ID, ACTION_NAME , ACTION_DESC FROM ACTION_MST";
   resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>
 <tr>
-<td><input type="radio" name="edit_radio" value="<%=resultSet.getString("ROLE_ID")%>"><%=resultSet.getString("ROLE_NAME")%></td>
-<td><%=resultSet.getString("COMMENT")%></td>
+<td><input type="radio" name="edit_radio" value="<%=resultSet.getString("ACTION_ID")%>"><%=resultSet.getString("ACTION_ID")%></td>
+<td><%=resultSet.getString("ACTION_NAME")%></td>
+<td><%=resultSet.getString("ACTION_DESC")%></td>
 </tr>
 <%
 }
@@ -137,8 +118,6 @@ if (del_flag != null && del_flag.equals("Yes"))
  }
 %>
 </table>
-
-
 </form>
 </font>
 </body>

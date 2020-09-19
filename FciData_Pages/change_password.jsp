@@ -10,7 +10,7 @@
 
 <%
 Class.forName("com.mysql.jdbc.Driver"); 
-java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/indicators_db","root","31@dec2019"); 
+java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fci","root","31@dec2019"); 
 Statement st= con.createStatement(); 
  Connection connection = null;
  Statement statement = null;

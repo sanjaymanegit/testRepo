@@ -10,7 +10,7 @@
 
 <%
 Class.forName("com.mysql.jdbc.Driver"); 
-java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/audiokit","root","31@dec2019"); 
+java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fci","root","31@dec2019"); 
 Statement st= con.createStatement(); 
  Connection connection = null;
  Statement statement = null;
@@ -60,14 +60,14 @@ body {
 <script>
 function f1()
 {	
-document.user_list_form.target = "bottomframe2";
+document.user_list_form.target = "rightframe";
 document.user_list_form.action="User_add.jsp";
 document.user_list_form.submit();
 }
 
 function f2()
 {	
-document.user_list_form.target = "bottomframe2";
+document.user_list_form.target = "rightframe";
 document.user_list_form.action="User_edit.jsp";
 document.user_list_form.submit();}
 
@@ -77,7 +77,7 @@ var input_flag = confirm(" Confirm the User which is going to delete : "+documen
 	if(input_flag == true)
 	{
 		document.user_list_form.del_flag.value="Yes";
-		document.user_list_form.target = "bottomframe";
+		document.user_list_form.target = "rightmidframe";
 		document.user_list_form.action="User_List.jsp";
 		document.user_list_form.submit();
 	}
@@ -122,7 +122,7 @@ if (del_flag != null && del_flag.equals("Yes"))
 <%
  try{
   statement=con.createStatement();
-  sql ="SELECT USER_ID, USER_LOGIN_ID,CONCAT(FIRST_NAME,' ',LAST_NAME) as USER_NAME , ROLE_NAME,EMAIL_ID FROM business_users WHERE ROLE_NAME <> 'ADMIN'";
+  sql ="SELECT USER_ID, USER_LOGIN_ID,CONCAT(FIRST_NAME,' ',LAST_NAME) as USER_NAME , ROLE_NAME,EMAIL_ID FROM business_users WHERE ROLE_NAME <> 'SUPER_ADMIN'";
   resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
  %>

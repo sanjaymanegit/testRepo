@@ -27,9 +27,9 @@ function f1(var_in)
 
 if (var_in == 'users')	
 {
-	alert("hi")
-document.reportInput.parent.target = "rightmidframe";	
-//document.reportInput.action="User_List.jsp";
+	//alert("hi")
+document.reportInput.target = "rightmidframe";	
+document.reportInput.action="User_List.jsp";
 document.reportInput.method="post";
 document.reportInput.submit();
 document.reportInput.target = "rightframe";
@@ -131,14 +131,14 @@ body {
 <tr>
 <td>
 <div class="btn-group">
-  <button type="button" onclick="f1('actions')" style="width:100%">ACTIONS</button> 
+  <button type="button" onclick="f1('actions')" style="width:100%">MODULES</button> 
 </div>  
 </td>
 </tr>
 <tr>
 <td>
 <div class="btn-group">
-  <button type="button" onclick="f1('clients')" style="width:100%">CLIENTS</button> 
+  <button type="button" onclick="f1('clients')" style="width:100%">DEVICES</button> 
 </div>  
 </td>
 </tr>

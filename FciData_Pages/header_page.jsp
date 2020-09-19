@@ -44,7 +44,7 @@ document.header_form.submit();
 function f_admin()
 {
 document.header_form.target = "bottomframe";
-document.header_form.action="admin_frame.html";
+document.header_form.action="admin_frame.jsp";
 document.header_form.submit();
 }
 function f_batch()
@@ -53,6 +53,21 @@ document.header_form.target = "bottomframe";
 document.header_form.action="batch_frame.jsp";
 document.header_form.submit();
 }
+
+function f_issue()
+{
+document.header_form.target = "bottomframe";
+document.header_form.action="issue_frame.jsp";
+document.header_form.submit();
+}
+
+function f_TL()
+{
+document.header_form.target = "bottomframe";
+document.header_form.action="TL_frame.jsp";
+document.header_form.submit();
+}
+
 </script>
 </head>
 <body>
@@ -82,11 +97,12 @@ try{
  //out.println(" status_str: "+status_str);
 %>
 <td>
-<td><input type="button" name="batch_reports" value="Batch Reports"  onclick="f_batch()"></td>
-<td><input type="button" name="report_button" value="Issues Reports"   disabled ></td>
+<td><input type="button" name="batch_reports" value="Recipts Reports"  onclick="f_batch()"></td>
+<td><input type="button" name="report_button" value="Issues Reports"   onclick="f_issue()" ></td>
 <td><input type="button" name="report_button" value="Buffer Stock"   disabled ></td>
+<td><input type="button" name="report_button" value="Transit Loss"  onclick="f_TL()"></td>
  <td><input type="button" name="admin_button" value="Admin"  onclick="f_admin()" <%=status_str%> ></td>
- <td><input type="button" name="change_my_password" value="Change My Password"  onclick="f_ch_password()" ></td>  
+ <td><input type="button" name="change_my_password" value="Change My Password"  onclick="f_ch_password()" disabled ></td>  
  </tr> 
  </table>
  </td>
