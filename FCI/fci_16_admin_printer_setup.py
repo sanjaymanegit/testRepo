@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 import datetime
 import time
 from PyQt5.QtCore import QDate
@@ -24,13 +23,13 @@ class fci_16_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1121, 611))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1121, 621))
         self.frame.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label_19 = QtWidgets.QLabel(self.frame)
-        self.label_19.setGeometry(QtCore.QRect(40, 40, 451, 51))
+        self.label_19.setGeometry(QtCore.QRect(20, 10, 221, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(22)
@@ -42,7 +41,7 @@ class fci_16_Ui_MainWindow(object):
         self.label_19.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_19.setObjectName("label_19")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(460, 60, 221, 31))
+        self.label_3.setGeometry(QtCore.QRect(360, 20, 221, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -54,7 +53,7 @@ class fci_16_Ui_MainWindow(object):
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.groupBox = QtWidgets.QGroupBox(self.frame)
-        self.groupBox.setGeometry(QtCore.QRect(230, 130, 631, 131))
+        self.groupBox.setGeometry(QtCore.QRect(30, 80, 621, 131))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -87,42 +86,59 @@ class fci_16_Ui_MainWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.line = QtWidgets.QFrame(self.frame)
-        self.line.setGeometry(QtCore.QRect(110, 280, 921, 16))
+        self.line.setGeometry(QtCore.QRect(20, 240, 1051, 16))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
-        self.groupBox_2.setGeometry(QtCore.QRect(200, 320, 661, 241))
+        self.groupBox_2.setGeometry(QtCore.QRect(20, 280, 1051, 311))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.groupBox_2.setFont(font)
         self.groupBox_2.setObjectName("groupBox_2")
         self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_5.setGeometry(QtCore.QRect(310, 170, 131, 31))
+        self.pushButton_5.setGeometry(QtCore.QRect(510, 270, 101, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
         self.label_8 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_8.setGeometry(QtCore.QRect(130, 80, 121, 41))
+        self.label_8.setGeometry(QtCore.QRect(30, 40, 121, 41))
         self.label_8.setObjectName("label_8")
         self.comboBox = QtWidgets.QComboBox(self.groupBox_2)
-        self.comboBox.setGeometry(QtCore.QRect(300, 80, 211, 41))
+        self.comboBox.setGeometry(QtCore.QRect(160, 40, 211, 41))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         
+        self.lineEdit_2_1 = QtWidgets.QLineEdit(self.groupBox_2)
+        self.lineEdit_2_1.setGeometry(QtCore.QRect(550, 40, 100, 41))
+        self.lineEdit_2_1.setText("")        
+        self.lineEdit_2_1.setObjectName("lineEdit_2_1")
+        self.lineEdit_2_1.hide()
+        
+        self.label_9 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_9.setGeometry(QtCore.QRect(20, 110, 121, 41))
+        self.label_9.setObjectName("label_9")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox_2)
-        self.lineEdit_2.setGeometry(QtCore.QRect(550, 80, 100, 41))
-        self.lineEdit_2.setText("")        
+        self.lineEdit_2.setGeometry(QtCore.QRect(160, 110, 311, 31))
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit_2.hide()
-        
-        
+        self.label_10 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_10.setGeometry(QtCore.QRect(20, 160, 101, 41))
+        self.label_10.setObjectName("label_10")
+        self.textEdit = QtWidgets.QTextEdit(self.groupBox_2)
+        self.textEdit.setGeometry(QtCore.QRect(160, 170, 311, 91))
+        self.textEdit.setObjectName("textEdit")
+        self.label_11 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_11.setGeometry(QtCore.QRect(560, 170, 71, 31))
+        self.label_11.setObjectName("label_11")
+        self.textEdit_2 = QtWidgets.QTextEdit(self.groupBox_2)
+        self.textEdit_2.setGeometry(QtCore.QRect(650, 170, 311, 101))
+        self.textEdit_2.setObjectName("textEdit_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -131,9 +147,6 @@ class fci_16_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.current_printer_text=""
-        self.current_unknown_printer_txt=""
-        self.printer_key=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -155,6 +168,22 @@ class fci_16_Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "TVS"))
         self.comboBox.setItemText(2, _translate("MainWindow", "HP"))
         self.comboBox.setItemText(3, _translate("MainWindow", "Unknown"))
+        self.label_9.setText(_translate("MainWindow", "Header Titlle:"))
+        self.lineEdit_2.setText(_translate("MainWindow", "HI TECH EQUIPMENTS"))
+        self.label_10.setText(_translate("MainWindow", "Header Lines:"))
+        self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Sans Serif\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">White House , 441 , Patana, India 400544</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Contact No: 9773540255</p></body></html>"))
+        self.label_11.setText(_translate("MainWindow", "Footer:"))
+        self.textEdit_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Sans Serif\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">*********** Thanking You *********</p></body></html>"))
+        
         self.comboBox.currentTextChanged.connect(self.combo_on_change)
         self.pushButton_5.clicked.connect(self.save_printer_key)
         self.label_3.hide()
@@ -188,8 +217,17 @@ class fci_16_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT PRINTER_KEY FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT PRINTER_KEY ,PRINTER_HEATER_TITLE , PRINTER_HEADER, PRINTER_FOOTER FROM GLOBAL_VAR") 
         for x in results:
+            self.header_title=str(x[1])
+            self.lineEdit_2.setText(str(x[1]))
+            
+            self.header_str=str(x[2])
+            self.textEdit.setText(str(x[2]))
+            
+            self.footer_str=str(str(x[3]))
+            self.textEdit_2.setText(str(x[3]))
+            
             self.current_printer_text=str(x[0])
             if(self.current_printer_text == 'Epson'):
                 self.comboBox.setCurrentText("Epson")
@@ -199,7 +237,7 @@ class fci_16_Ui_MainWindow(object):
                 self.comboBox.setCurrentText("TVS")
             else:
                 self.comboBox.setCurrentText("Unknown")
-                self.lineEdit_2.setText(str(x[0]))
+                self.lineEdit_2_1.setText(str(x[0]))
         connection.close()
     
     def reset_loging(self):
@@ -210,24 +248,27 @@ class fci_16_Ui_MainWindow(object):
     def combo_on_change(self):
         self.label_3.hide()
         if(self.comboBox.currentText() == "Unknown"):
-            self.lineEdit_2.show()
+            self.lineEdit_2_1.show()
         else:
-            self.lineEdit_2.hide()
+            self.lineEdit_2_1.hide()
             
     def save_printer_key(self):
         print("xxx: "+str(self.comboBox.currentText()))
-        print("yyy: "+str(self.lineEdit_2.text()))
+        print("yyy: "+str(self.lineEdit_2_1.text()))
         self.current_printer_text=str(self.comboBox.currentText())
-        self.current_unknown_printer_txt=str(self.lineEdit_2.text())
+        self.current_unknown_printer_txt=str(self.lineEdit_2_1.text())
+        self.header_title=self.lineEdit_2.text()
+        self.header_str=self.textEdit.toPlainText()            
+        self.footer_str=self.textEdit_2.toPlainText()
         self.label_3.hide()
         connection = sqlite3.connect("fci.db")
         with connection:
                     cursor = connection.cursor()
                     if(self.current_printer_text != 'Unknown'):
-                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_printer_text)+"' ")
+                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_printer_text)+"', PRINTER_HEATER_TITLE='"+str(self.header_title)+"' , PRINTER_HEADER='"+str(self.header_str)+"', PRINTER_FOOTER='"+str(self.footer_str)+"'  ")
                             self.printer_key=str(self.current_printer_text)
                     else:
-                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_unknown_printer_txt)+"' ")
+                            cursor.execute("UPDATE GLOBAL_VAR SET PRINTER_KEY='"+str(self.current_unknown_printer_txt)+"',PRINTER_HEATER_TITLE='"+str(self.header_title)+"' , PRINTER_HEADER='"+str(self.header_str)+"', PRINTER_FOOTER='"+str(self.footer_str)+"' ")
                             self.printer_key=str(self.current_unknown_printer_txt)
         connection.commit();
         connection.close()
@@ -243,6 +284,7 @@ class fci_16_Ui_MainWindow(object):
             cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
         connection.commit();
         connection.close()
+
 
 if __name__ == "__main__":
     import sys
