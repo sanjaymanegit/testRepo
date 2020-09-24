@@ -261,7 +261,7 @@ class fci_32_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Material Name','No.Of.Bags','Net.Wt.Ton'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT MATERAIL_NAME,printf(\"%3d\", CURR_STOCK_BAGS),printf(\"%.3f\", CURR_STOCK_WT_TONS) FROM BUFFER_STOCK_VW")                        
+        results=connection.execute("SELECT MATERIAL,printf(\"%3d\", sum(IFNULL(BAL_BAGS,0))),printf(\"%.3f\", sum(IFNULL(BAL_NET_WT,0))) FROM SLOTS_MST group by MATERIAL")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -299,7 +299,7 @@ class Canvas_Pie(FigureCanvas):
         
        
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT MATERAIL_NAME,printf(\"%3d\", CURR_STOCK_BAGS),printf(\"%.3f\", CURR_STOCK_WT_TONS) FROM BUFFER_STOCK_VW ") 
+        results=connection.execute("SELECT MATERIAL,printf(\"%3d\", sum(IFNULL(BAL_BAGS,0))),printf(\"%.3f\", sum(IFNULL(BAL_NET_WT,0))) FROM SLOTS_MST group by MATERIAL") 
         for x in results:
           self.x.append(float(x[2]))
           self.labels.append(str(x[0]))

@@ -126,7 +126,7 @@ class fci_30_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Recipt Id','Vehicle No.','Material','No.Of.Bags','Net.Wt.Ton','Created On'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,round(ACCPTED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
+        results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,round(PROPOSED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

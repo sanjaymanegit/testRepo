@@ -19,6 +19,7 @@ from PyQt5.Qt import QTableWidgetItem
 from fci_30_batch_pop import fci_30_Ui_MainWindow
 from fci_31_issue_pop import fci_31_Ui_MainWindow
 
+
 class fci_29_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -32,7 +33,7 @@ class fci_29_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(1120, 30, 161, 31))
+        self.label_20.setGeometry(QtCore.QRect(1090, 20, 161, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -44,13 +45,13 @@ class fci_29_Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(560, 380, 111, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(330, 620, 161, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_7.setFont(font)
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(1200, 650, 91, 31))
+        self.pushButton_8.setGeometry(QtCore.QRect(1140, 620, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_8.setFont(font)
@@ -68,13 +69,6 @@ class fci_29_Ui_MainWindow(object):
         self.line.setObjectName("line")
         self.listWidget = QtWidgets.QListWidget(self.frame)
         self.listWidget.setGeometry(QtCore.QRect(20, 150, 191, 521))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.listWidget.setFont(font)
         self.listWidget.setObjectName("listWidget")
         self.line_2 = QtWidgets.QFrame(self.frame)
         self.line_2.setGeometry(QtCore.QRect(240, 100, 20, 581))
@@ -93,12 +87,6 @@ class fci_29_Ui_MainWindow(object):
         self.label_21.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
-        self.pushButton_10 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_10.setGeometry(QtCore.QRect(1120, 390, 111, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_10.setFont(font)
-        self.pushButton_10.setObjectName("pushButton_10")
         self.label_22 = QtWidgets.QLabel(self.frame)
         self.label_22.setGeometry(QtCore.QRect(20, 30, 71, 41))
         font = QtGui.QFont()
@@ -120,180 +108,13 @@ class fci_29_Ui_MainWindow(object):
         font.setPointSize(22)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(290, 120, 181, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(860, 110, 151, 41))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-        self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(290, 160, 381, 181))
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(3)
-        self.tableWidget.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        self.tableWidget_2 = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget_2.setGeometry(QtCore.QRect(850, 160, 381, 181))
-        self.tableWidget_2.setObjectName("tableWidget_2")
-        self.tableWidget_2.setColumnCount(3)
-        self.tableWidget_2.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_2.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_2.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_2.setHorizontalHeaderItem(2, item)
-        self.label_23 = QtWidgets.QLabel(self.frame)
-        self.label_23.setGeometry(QtCore.QRect(290, 350, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_23.setFont(font)
-        self.label_23.setStyleSheet("")
-        self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_23.setObjectName("label_23")
-        self.line_3 = QtWidgets.QFrame(self.frame)
-        self.line_3.setGeometry(QtCore.QRect(740, 100, 20, 331))
-        self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_3.setObjectName("line_3")
-        self.label_25 = QtWidgets.QLabel(self.frame)
-        self.label_25.setGeometry(QtCore.QRect(290, 380, 161, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_25.setFont(font)
-        self.label_25.setStyleSheet("")
-        self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_25.setObjectName("label_25")
-        self.label_26 = QtWidgets.QLabel(self.frame)
-        self.label_26.setGeometry(QtCore.QRect(470, 350, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_26.setFont(font)
-        self.label_26.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_26.setObjectName("label_26")
-        self.label_27 = QtWidgets.QLabel(self.frame)
-        self.label_27.setGeometry(QtCore.QRect(470, 380, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_27.setFont(font)
-        self.label_27.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_27.setObjectName("label_27")
-        self.label_28 = QtWidgets.QLabel(self.frame)
-        self.label_28.setGeometry(QtCore.QRect(850, 360, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_28.setFont(font)
-        self.label_28.setStyleSheet("")
-        self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_28.setObjectName("label_28")
-        self.label_29 = QtWidgets.QLabel(self.frame)
-        self.label_29.setGeometry(QtCore.QRect(1030, 390, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_29.setFont(font)
-        self.label_29.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_29.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_29.setObjectName("label_29")
-        self.label_30 = QtWidgets.QLabel(self.frame)
-        self.label_30.setGeometry(QtCore.QRect(1030, 360, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_30.setFont(font)
-        self.label_30.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_30.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_30.setObjectName("label_30")
-        self.label_31 = QtWidgets.QLabel(self.frame)
-        self.label_31.setGeometry(QtCore.QRect(850, 390, 161, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_31.setFont(font)
-        self.label_31.setStyleSheet("")
-        self.label_31.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_31.setObjectName("label_31")
         self.line_4 = QtWidgets.QFrame(self.frame)
-        self.line_4.setGeometry(QtCore.QRect(250, 420, 1041, 20))
+        self.line_4.setGeometry(QtCore.QRect(320, 180, 881, 20))
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
-        self.label_4 = QtWidgets.QLabel(self.frame)
-        self.label_4.setGeometry(QtCore.QRect(920, 470, 151, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_4.setFont(font)
-        self.label_4.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_4.setObjectName("label_4")
-        self.label_5 = QtWidgets.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(920, 520, 151, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_5.setFont(font)
-        self.label_5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.frame)
-        self.label_6.setGeometry(QtCore.QRect(1100, 470, 91, 31))
+        self.label_6.setGeometry(QtCore.QRect(500, 460, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -302,7 +123,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_6.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.frame)
-        self.label_7.setGeometry(QtCore.QRect(1100, 520, 101, 41))
+        self.label_7.setGeometry(QtCore.QRect(660, 450, 101, 51))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -310,155 +131,8 @@ class fci_29_Ui_MainWindow(object):
         self.label_7.setFont(font)
         self.label_7.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_7.setObjectName("label_7")
-        self.label_8 = QtWidgets.QLabel(self.frame)
-        self.label_8.setGeometry(QtCore.QRect(920, 580, 151, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_8.setFont(font)
-        self.label_8.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_8.setObjectName("label_8")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(1100, 580, 91, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.label_9 = QtWidgets.QLabel(self.frame)
-        self.label_9.setGeometry(QtCore.QRect(1220, 580, 51, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_9.setFont(font)
-        self.label_9.setObjectName("label_9")
-        self.groupBox = QtWidgets.QGroupBox(self.frame)
-        self.groupBox.setGeometry(QtCore.QRect(260, 440, 641, 251))
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.groupBox.setFont(font) 
-        self.groupBox.setObjectName("groupBox")
-        self.label_12 = QtWidgets.QLabel(self.groupBox)
-        self.label_12.setGeometry(QtCore.QRect(10, 40, 81, 41))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_12.setFont(font)
-        self.label_12.setObjectName("label_12")
-        self.comboBox = QtWidgets.QComboBox(self.groupBox)
-        self.comboBox.setGeometry(QtCore.QRect(110, 50, 141, 31))
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.comboBox.setFont(font)        
-        self.comboBox.setObjectName("comboBox")
-        self.label_10 = QtWidgets.QLabel(self.groupBox)
-        self.label_10.setGeometry(QtCore.QRect(10, 110, 81, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_10.setFont(font)
-        self.label_10.setObjectName("label_10")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit_3.setGeometry(QtCore.QRect(110, 110, 91, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.label_13 = QtWidgets.QLabel(self.groupBox)
-        self.label_13.setGeometry(QtCore.QRect(10, 160, 81, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label_13.setFont(font)
-        self.label_13.setObjectName("label_13")
-        self.label_32 = QtWidgets.QLabel(self.groupBox)
-        self.label_32.setGeometry(QtCore.QRect(110, 160, 91, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_32.setFont(font)
-        self.label_32.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_32.setObjectName("label_32")
-        self.tableWidget_3 = QtWidgets.QTableWidget(self.groupBox)
-        self.tableWidget_3.setGeometry(QtCore.QRect(300, 40, 311, 141))
-        self.tableWidget_3.setObjectName("tableWidget_3")
-        self.tableWidget_3.setColumnCount(4)
-        self.tableWidget_3.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_3.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_3.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_3.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget_3.setHorizontalHeaderItem(3, item)
-        
-        
-        
-        
-        
-        self.label_24 = QtWidgets.QLabel(self.groupBox)
-        self.label_24.setGeometry(QtCore.QRect(10, 210, 271, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_24.setFont(font)
-        self.label_24.setStyleSheet("color: rgb(255, 0, 0);")
-        self.label_24.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_24.setObjectName("label_24")
-        self.pushButton_11 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_11.setGeometry(QtCore.QRect(270, 200, 91, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_11.setFont(font)
-        self.pushButton_11.setObjectName("pushButton_11")
-        self.pushButton_12 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_12.setGeometry(QtCore.QRect(380, 200, 61, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_12.setFont(font)
-        self.pushButton_12.setObjectName("pushButton_12")
-        self.pushButton_13 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_13.setGeometry(QtCore.QRect(470, 200, 61, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_13.setFont(font)
-        self.pushButton_13.setObjectName("pushButton_13")
-        self.pushButton_14 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_14.setGeometry(QtCore.QRect(550, 200, 61, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_14.setFont(font)
-        self.pushButton_14.setObjectName("pushButton_14")
         self.label_33 = QtWidgets.QLabel(self.frame)
-        self.label_33.setGeometry(QtCore.QRect(1180, 110, 111, 31))
+        self.label_33.setGeometry(QtCore.QRect(410, 120, 121, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -470,34 +144,391 @@ class fci_29_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(1090, 110, 81, 31))
+        self.label_11.setGeometry(QtCore.QRect(300, 120, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)
         self.label_11.setFont(font)
-        self.label_11.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_11.setStyleSheet("")
         self.label_11.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
-        self.label_14 = QtWidgets.QLabel(self.frame)
-        self.label_14.setGeometry(QtCore.QRect(910, 650, 111, 31))
+        self.label_12 = QtWidgets.QLabel(self.frame)
+        self.label_12.setGeometry(QtCore.QRect(570, 120, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)
-        self.label_14.setFont(font)
-        self.label_14.setStyleSheet("color: rgb(170, 85, 127);")
-        self.label_14.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_14.setObjectName("label_14")
-        self.label_34 = QtWidgets.QLabel(self.frame)
-        self.label_34.setGeometry(QtCore.QRect(1050, 650, 131, 31))
+        self.label_12.setFont(font)
+        self.label_12.setStyleSheet("")
+        self.label_12.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_12.setObjectName("label_12")
+        self.label_13 = QtWidgets.QLabel(self.frame)
+        self.label_13.setGeometry(QtCore.QRect(810, 120, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_13.setFont(font)
+        self.label_13.setStyleSheet("")
+        self.label_13.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_13.setObjectName("label_13")
+        self.label_15 = QtWidgets.QLabel(self.frame)
+        self.label_15.setGeometry(QtCore.QRect(1030, 120, 111, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_15.setFont(font)
+        self.label_15.setStyleSheet("")
+        self.label_15.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_15.setObjectName("label_15")
+        self.label_35 = QtWidgets.QLabel(self.frame)
+        self.label_35.setGeometry(QtCore.QRect(670, 120, 91, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(9)        
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_35.setFont(font)
+        self.label_35.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_35.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_35.setObjectName("label_35")
+        self.label_36 = QtWidgets.QLabel(self.frame)
+        self.label_36.setGeometry(QtCore.QRect(900, 120, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_36.setFont(font)
+        self.label_36.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_36.setObjectName("label_36")
+        self.label_37 = QtWidgets.QLabel(self.frame)
+        self.label_37.setGeometry(QtCore.QRect(1160, 120, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_37.setFont(font)
+        self.label_37.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_37.setObjectName("label_37")
+        self.line_5 = QtWidgets.QFrame(self.frame)
+        self.line_5.setGeometry(QtCore.QRect(320, 250, 881, 20))
+        self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_5.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_5.setObjectName("line_5")
+        self.line_6 = QtWidgets.QFrame(self.frame)
+        self.line_6.setGeometry(QtCore.QRect(320, 310, 881, 20))
+        self.line_6.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_6.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_6.setObjectName("line_6")
+        self.line_7 = QtWidgets.QFrame(self.frame)
+        self.line_7.setGeometry(QtCore.QRect(320, 370, 881, 20))
+        self.line_7.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_7.setObjectName("line_7")
+        self.label_16 = QtWidgets.QLabel(self.frame)
+        self.label_16.setGeometry(QtCore.QRect(360, 210, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_16.setFont(font)
+        self.label_16.setStyleSheet("")
+        self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_16.setObjectName("label_16")
+        self.label_17 = QtWidgets.QLabel(self.frame)
+        self.label_17.setGeometry(QtCore.QRect(510, 210, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_17.setFont(font)
+        self.label_17.setStyleSheet("")
+        self.label_17.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_17.setObjectName("label_17")
+        self.label_18 = QtWidgets.QLabel(self.frame)
+        self.label_18.setGeometry(QtCore.QRect(660, 210, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_18.setFont(font)
+        self.label_18.setStyleSheet("")
+        self.label_18.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_18.setObjectName("label_18")
+        self.label_19 = QtWidgets.QLabel(self.frame)
+        self.label_19.setGeometry(QtCore.QRect(830, 210, 101, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_19.setFont(font)
+        self.label_19.setStyleSheet("")
+        self.label_19.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_19.setObjectName("label_19")
+        self.label_23 = QtWidgets.QLabel(self.frame)
+        self.label_23.setGeometry(QtCore.QRect(1030, 210, 81, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_23.setFont(font)
+        self.label_23.setStyleSheet("")
+        self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_23.setObjectName("label_23")
+        self.line_8 = QtWidgets.QFrame(self.frame)
+        self.line_8.setGeometry(QtCore.QRect(320, 430, 881, 20))
+        self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_8.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_8.setObjectName("line_8")
+        self.line_9 = QtWidgets.QFrame(self.frame)
+        self.line_9.setGeometry(QtCore.QRect(320, 500, 881, 20))
+        self.line_9.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_9.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_9.setObjectName("line_9")
+        self.line_3 = QtWidgets.QFrame(self.frame)
+        self.line_3.setGeometry(QtCore.QRect(313, 190, 20, 321))
+        self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_3.setObjectName("line_3")
+        self.line_10 = QtWidgets.QFrame(self.frame)
+        self.line_10.setGeometry(QtCore.QRect(450, 190, 20, 321))
+        self.line_10.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_10.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_10.setObjectName("line_10")
+        self.line_11 = QtWidgets.QFrame(self.frame)
+        self.line_11.setGeometry(QtCore.QRect(610, 190, 20, 321))
+        self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_11.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_11.setObjectName("line_11")
+        self.line_12 = QtWidgets.QFrame(self.frame)
+        self.line_12.setGeometry(QtCore.QRect(790, 190, 20, 321))
+        self.line_12.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_12.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_12.setObjectName("line_12")
+        self.line_13 = QtWidgets.QFrame(self.frame)
+        self.line_13.setGeometry(QtCore.QRect(950, 190, 20, 321))
+        self.line_13.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_13.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_13.setObjectName("line_13")
+        self.line_14 = QtWidgets.QFrame(self.frame)
+        self.line_14.setGeometry(QtCore.QRect(1190, 190, 20, 321))
+        self.line_14.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_14.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_14.setObjectName("line_14")
+        self.label_10 = QtWidgets.QLabel(self.frame)
+        self.label_10.setGeometry(QtCore.QRect(850, 460, 61, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_10.setFont(font)
+        self.label_10.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_10.setObjectName("label_10")
+        self.pushButton_10 = QtWidgets.QPushButton(self.frame)
+        #self.pushButton_10.setEnabled(False)
+        self.pushButton_10.setGeometry(QtCore.QRect(530, 620, 161, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_10.setFont(font)
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.label_24 = QtWidgets.QLabel(self.frame)
+        self.label_24.setGeometry(QtCore.QRect(360, 270, 81, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_24.setFont(font)
+        self.label_24.setStyleSheet("")
+        self.label_24.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_24.setObjectName("label_24")
+        self.label_25 = QtWidgets.QLabel(self.frame)
+        self.label_25.setGeometry(QtCore.QRect(360, 330, 81, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_25.setFont(font)
+        self.label_25.setStyleSheet("")
+        self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_25.setObjectName("label_25")
+        self.label_26 = QtWidgets.QLabel(self.frame)
+        self.label_26.setGeometry(QtCore.QRect(360, 390, 81, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_26.setFont(font)
+        self.label_26.setStyleSheet("")
+        self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_26.setObjectName("label_26")
+        self.label_27 = QtWidgets.QLabel(self.frame)
+        self.label_27.setGeometry(QtCore.QRect(360, 450, 81, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_27.setFont(font)
+        self.label_27.setStyleSheet("")
+        self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_27.setObjectName("label_27")
+        self.label_8 = QtWidgets.QLabel(self.frame)
+        self.label_8.setGeometry(QtCore.QRect(500, 270, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_8.setFont(font)
+        self.label_8.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_8.setObjectName("label_8")
+        self.label_9 = QtWidgets.QLabel(self.frame)
+        self.label_9.setGeometry(QtCore.QRect(500, 330, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_9.setFont(font)
+        self.label_9.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_9.setObjectName("label_9")
+        self.label_14 = QtWidgets.QLabel(self.frame)
+        self.label_14.setGeometry(QtCore.QRect(500, 390, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_14.setFont(font)
+        self.label_14.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_14.setObjectName("label_14")
+        self.label_28 = QtWidgets.QLabel(self.frame)
+        self.label_28.setGeometry(QtCore.QRect(660, 270, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_28.setFont(font)
+        self.label_28.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_28.setObjectName("label_28")
+        self.label_29 = QtWidgets.QLabel(self.frame)
+        self.label_29.setGeometry(QtCore.QRect(660, 330, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_29.setFont(font)
+        self.label_29.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_29.setObjectName("label_29")
+        self.label_30 = QtWidgets.QLabel(self.frame)
+        self.label_30.setGeometry(QtCore.QRect(660, 390, 91, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_30.setFont(font)
+        self.label_30.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_30.setObjectName("label_30")
+        self.label_31 = QtWidgets.QLabel(self.frame)
+        self.label_31.setGeometry(QtCore.QRect(850, 390, 61, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_31.setFont(font)
+        self.label_31.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_31.setObjectName("label_31")
+        self.label_32 = QtWidgets.QLabel(self.frame)
+        self.label_32.setGeometry(QtCore.QRect(850, 330, 61, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_32.setFont(font)
+        self.label_32.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_32.setObjectName("label_32")
+        self.label_34 = QtWidgets.QLabel(self.frame)
+        self.label_34.setGeometry(QtCore.QRect(840, 270, 61, 31))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_34.setFont(font)
-        self.label_34.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_34.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_34.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_34.setObjectName("label_34")
+        self.label_38 = QtWidgets.QLabel(self.frame)
+        self.label_38.setGeometry(QtCore.QRect(990, 270, 161, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_38.setFont(font)
+        self.label_38.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_38.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_38.setObjectName("label_38")
+        self.label_39 = QtWidgets.QLabel(self.frame)
+        self.label_39.setGeometry(QtCore.QRect(990, 330, 161, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_39.setFont(font)
+        self.label_39.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_39.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_39.setObjectName("label_39")
+        self.label_41 = QtWidgets.QLabel(self.frame)
+        self.label_41.setGeometry(QtCore.QRect(990, 460, 161, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_41.setFont(font)
+        self.label_41.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_41.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_41.setObjectName("label_41")
+        self.label_40 = QtWidgets.QLabel(self.frame)
+        self.label_40.setGeometry(QtCore.QRect(320, 540, 301, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_40.setFont(font)
+        self.label_40.setStyleSheet("")
+        self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_40.setObjectName("label_40")
+        self.label_42 = QtWidgets.QLabel(self.frame)
+        self.label_42.setGeometry(QtCore.QRect(1010, 530, 181, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.label_42.setFont(font)
+        self.label_42.setStyleSheet("")
+        self.label_42.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_42.setObjectName("label_42")
+        self.pushButton_11 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_11.setGeometry(QtCore.QRect(730, 620, 161, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_11.setFont(font)
+        self.pushButton_11.setObjectName("pushButton_11")
+        self.pushButton_12 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_12.setGeometry(QtCore.QRect(930, 620, 161, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_12.setFont(font)
+        self.pushButton_12.setObjectName("pushButton_12")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -507,15 +538,6 @@ class fci_29_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.slot_id=""
-        self.dr_id=""
-        self.net_wt=0.000
-        self.total_bags=0
-        self.booked_loss_bags=0
-        self.booked_loss_net_wt=0.000
-        self.device_id=""
-        self.slot_id=""
-        self.bags=""
-        self.net_wt=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -524,474 +546,163 @@ class fci_29_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
-        self.pushButton_7.setText(_translate("MainWindow", "Recipt Details"))
-        self.pushButton_7.setDisabled(True)
+        self.pushButton_7.setText(_translate("MainWindow", "Book Storage Loss"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Search "))
         self.label_21.setText(_translate("MainWindow", "Slots List:"))
-        self.pushButton_10.setText(_translate("MainWindow", "Issue Details"))
-        self.pushButton_10.setDisabled(True)
         self.label_22.setText(_translate("MainWindow", "Slots Id:"))
         self.label.setText(_translate("MainWindow", "Storage Stacks Details"))
-        self.label_2.setText(_translate("MainWindow", "Loaded Materials"))
-        self.label_3.setText(_translate("MainWindow", "Released Materials"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Material Name"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "No.Of.Bags"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Net .Weight Ton"))
-        item = self.tableWidget_2.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Material Name"))
-        item = self.tableWidget_2.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "No.Of.Bags"))
-        item = self.tableWidget_2.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Net .Weight Ton"))
-        self.label_23.setText(_translate("MainWindow", "Total Loaded Bags:"))
-        self.label_25.setText(_translate("MainWindow", "Total Loaded  Net Wt Ton :"))
-        self.label_26.setText(_translate("MainWindow", "0"))
-        self.label_27.setText(_translate("MainWindow", "0.000"))
-        self.label_28.setText(_translate("MainWindow", "Total Release Bags:"))
-        self.label_29.setText(_translate("MainWindow", "0.000"))
-        self.label_30.setText(_translate("MainWindow", "0"))
-        self.label_31.setText(_translate("MainWindow", "Total Released  Net Wt Ton:"))
-        self.label_4.setText(_translate("MainWindow", "Current Bags Count:"))
-        self.label_5.setText(_translate("MainWindow", "Current Net Weigth Ton:"))
-        self.label_6.setText(_translate("MainWindow", "0"))
-        self.label_7.setText(_translate("MainWindow", "0.0"))
-        self.label_8.setText(_translate("MainWindow", "Slot Total Capacity :"))
-        self.lineEdit_2.setText(_translate("MainWindow", "3500"))
-        self.label_9.setText(_translate("MainWindow", "Bags."))
-        self.groupBox.setTitle(_translate("MainWindow", "Book Loss"))
-        self.label_12.setText(_translate("MainWindow", " Material:"))
-        self.label_10.setText(_translate("MainWindow", "Lost Bags:"))
-        self.lineEdit_3.setText(_translate("MainWindow", "0"))
-        self.label_13.setText(_translate("MainWindow", "Lost Net.Wt.Ton:"))
-        self.label_32.setText(_translate("MainWindow", "0.000"))
-        
-        item = self.tableWidget_3.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Material"))
-        item = self.tableWidget_3.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "No.Of.Bags"))
-        item = self.tableWidget_3.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Net.Weight Ton"))
-        
-        self.label_24.setText(_translate("MainWindow", "Successfully Saved Record"))
-        self.label_24.hide()
-        self.pushButton_11.setText(_translate("MainWindow", "Book Loss"))
-        
-        self.pushButton_12.setText(_translate("MainWindow", "Save"))
-        self.pushButton_13.setText(_translate("MainWindow", "Delete"))
-        self.pushButton_14.setText(_translate("MainWindow", "Reset"))
-        self.label_33.setText(_translate("MainWindow", "SL0001"))
+        #self.label_6.setText(_translate("MainWindow", "67888"))
+        #self.label_7.setText(_translate("MainWindow", "3434.888"))
+        #self.label_33.setText(_translate("MainWindow", "SL001/R000019"))
         self.label_11.setText(_translate("MainWindow", "Slot No.:"))
-        self.label_14.setText(_translate("MainWindow", "Status :"))
-        self.label_34.setText(_translate("MainWindow", "Aquired"))
-        
-       
+        self.label_12.setText(_translate("MainWindow", "Status:"))
+        self.label_13.setText(_translate("MainWindow", "Material:"))
+        self.label_15.setText(_translate("MainWindow", "Capacity (In Bags)"))
+        #self.label_35.setText(_translate("MainWindow", "Recipted"))
+        #self.label_36.setText(_translate("MainWindow", "Wheat"))
+        #self.label_37.setText(_translate("MainWindow", "3500"))
+        self.label_16.setText(_translate("MainWindow", "Particulers"))
+        self.label_17.setText(_translate("MainWindow", "No.Of.Bags"))
+        self.label_18.setText(_translate("MainWindow", "Net.Wt.Ton"))
+        self.label_19.setText(_translate("MainWindow", "Avg.Bag.Wt.Kg"))
+        self.label_23.setText(_translate("MainWindow", "Date"))
+        #self.label_10.setText(_translate("MainWindow", "48xx"))
+        self.pushButton_10.setText(_translate("MainWindow", "Undo Storage Loss"))
+        self.label_24.setText(_translate("MainWindow", "Recipted"))
+        self.label_25.setText(_translate("MainWindow", "Issued"))
+        self.label_26.setText(_translate("MainWindow", "Storage Loss"))
+        self.label_27.setText(_translate("MainWindow", "Balance"))
+        #self.label_8.setText(_translate("MainWindow", "3000"))
+        #self.label_9.setText(_translate("MainWindow", "2500"))
+        #self.label_14.setText(_translate("MainWindow", "0zz"))
+        #self.label_28.setText(_translate("MainWindow", "1.500"))
+        #self.label_29.setText(_translate("MainWindow", "1.250"))
+        #self.label_30.setText(_translate("MainWindow", "0.000"))
+        #self.label_31.setText(_translate("MainWindow", "0"))
+        #self.label_32.setText(_translate("MainWindow", "48yy"))
+        #self.label_34.setText(_translate("MainWindow", "50"))
+        #self.label_38.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
+        #self.label_39.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
+        #self.label_41.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
+#        self.label_40.setText(_translate("MainWindow", "Note  : This data is available as on 05 Aug 2020"))
+        #self.label_42.setText(_translate("MainWindow", "Loss Percentage : 0.025 %"))
+        self.pushButton_11.setText(_translate("MainWindow", "Recipted Trucks"))
+        self.pushButton_12.setText(_translate("MainWindow", "Issued Trucks"))
         self.pushButton_8.clicked.connect(MainWindow.close)
-        self.pushButton_7.clicked.connect(self.open_new_window)
-        self.pushButton_10.clicked.connect(self.open_new_window2)
-              
-        self.tableWidget_3.doubleClicked.connect(self.s_fetch_data_from_tw)
-        self.pushButton_11.clicked.connect(self.s_add_click) 
-        self.pushButton_12.clicked.connect(self.s_edit_click)       
-        self.pushButton_13.clicked.connect(self.s_delete_click)
-        self.pushButton_14.clicked.connect(self.s_rest_fun)
-        self.s_rest_fun()
-        self.listWidget.doubleClicked.connect(self.selected_record)
         self.list_slots()
-        self.select_all_data1()
-        self.select_all_data2()
-        self.select_all_data3()
-        self.pushButton_11.setDisabled(True)
+        self.listWidget.doubleClicked.connect(self.selected_record)
+        self.pushButton_11.clicked.connect(self.open_new_window)
+        self.pushButton_12.clicked.connect(self.open_new_window2)
+        self.pushButton_7.clicked.connect(self.book_loss)
+        self.pushButton_10.clicked.connect(self.undo_book_loss)
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
         
-        
-        connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT DEVICE_ID  FROM GLOBAL_VAR") 
-        for x in results:
-            self.device_id=str(x[0])            
-        connection.close()
-        
-        self.lineEdit_3.textChanged.connect(self.wt_calc)
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
-      
-       
+    
         
-    def wt_calc(self):
-        self.net_wt=0
-        if(self.lineEdit_3.text() != ""):
-             self.net_wt=str(self.lineEdit_3.text())
-             
-             self.net_wt=float((int(self.net_wt)*50)/1000)
-            
-             self.label_32.setText(str(round(self.net_wt,2)))  
-        else:        
-             self.lineEdit_3.setText("0") 
-    def selected_record(self):
-         self.pushButton_7.setEnabled(True)
-         self.pushButton_10.setEnabled(True)
-         self.pushButton_11.setEnabled(True)
-         self.list_type=self.listWidget.item(0).text()
-         if(self.listWidget.currentItem().text() != self.listWidget.item(0).text()):
-            if(self.list_type=="==== Slots ====="):
-                #print("current test is :"+str(self.listWidget.currentItem().text()))
-                self.slot_id = str(self.listWidget.currentItem().text())               
-                
-                
-                connection = sqlite3.connect("fci.db")               
-                
-                results=connection.execute("SELECT SLOT_ID,IFNULL(SUM(LOADED_BAGS_CNT),0),IFNULL(SUM(LOADED_NET_WT),0) FROM SLOTS_BATCH_MST where SLOT_ID ='"+str(self.slot_id)+"'")
-                for x in results:
-                    self.label_33.setText(str(self.slot_id))
-                    self.label_26.setText(str(round(x[1])))
-                    self.label_27.setText(str(round(x[2],3)))
-                    
-                connection.close()
-                
-                
-                
-                connection = sqlite3.connect("fci.db")              
-                
-                results=connection.execute("SELECT SLOT_ID,IFNULL(SUM(RELEASED_BAGS_CNT),0),IFNULL(SUM(RELEASED_NET_WT),0) FROM SLOTS_ISSUE_MST where SLOT_ID ='"+str(self.slot_id)+"'")
-                for x in results:                    
-                    self.label_30.setText(str(round(x[1])))
-                    self.label_29.setText(str(round(x[2],3)))
-                    
-                connection.close()
-                
-                connection = sqlite3.connect("fci.db")              
-                
-                results=connection.execute("SELECT SLOT_NO,IFNULL(SUM(NO_OF_BAGS),0) , IFNULL(SUM(NET_WT),0) FROM SLOTS_DEPO_LOSS where SLOT_NO ='"+str(self.slot_id)+"'")
-                for x in results:                    
-                    self.booked_loss_bags=(int(x[1]))
-                    self.booked_loss_net_wt=(float(x[2]))
-                    
-                connection.close()
-                
-                self.total_bags=int(self.label_26.text()) - int(self.label_30.text())
-                self.net_wt=float(self.label_27.text()) - float(self.label_29.text())
-                self.total_bags=self.total_bags-int(self.booked_loss_bags)
-                self.net_wt=self.net_wt-float(self.booked_loss_net_wt)
-                
-                
-                
-                self.label_6.setText(str(round(self.total_bags)))
-               
-                self.label_7.setText(str(round(self.net_wt,3)))
-               
-                
-                self.comboBox.clear()
-                self.i=0
-                connection = sqlite3.connect("fci.db")
-                results=connection.execute("SELECT MATERAIL_NAME FROM SLOTS_BATCH_MST where SLOT_ID ='"+str(self.slot_id)+"'") 
-                for x in results:            
-                    self.comboBox.addItem("")
-                    self.comboBox.setItemText(self.i,str(x[0]))            
-                    self.i=self.i+1
-                connection.close()
-                
-                
-                connection = sqlite3.connect("fci.db")
-                with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR  SET  SLOT_POP_ID='"+str(self.slot_id)+"'")            
-                connection.commit();
-                connection.close() 
-                
-                self.select_all_data1()
-                self.select_all_data2()
-                self.select_all_data3()
-                if(int(self.booked_loss_bags) > 0):
-                        self.default_s_fetch_data_from_tw()
-                        self.label_34.setText("Released") 
-                else:
-                        self.lineEdit_3.setText(str(self.total_bags))
-                        self.label_32.setText(str(self.net_wt))
-                        self.label_34.setText("Aquired") 
 
-                
-            else:             
-                print("Invalid !!")
-        
-    
-    
+
     def list_slots(self):        
         self.listWidget.clear()        
         self.listWidget.addItem("==== Slots =====")
         connection = sqlite3.connect("fci.db")
         
-        results=connection.execute("SELECT DISTINCT SLOT_ID FROM SLOTS_BATCH_MST")
+        results=connection.execute("SELECT DISTINCT SLOT_NO FROM SLOTS_MST")
         for x in results:        
                self.listWidget.addItem(str(x[0]))
         connection.close()
         
-    def select_all_data1(self):     
-        self.delete_all_records1()        
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget.setFont(font) 
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-      
-        self.tableWidget.setHorizontalHeaderLabels(['Material Name','No.Of.Bags','Net.Wt.Ton'])        
-           
+        
+    def book_loss(self):
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT MATERAIL_NAME,LOADED_BAGS,printf(\"%.3f\", LOADED_NET_WT) FROM LOADED_MATERIAL_VW WHERE SLOT_ID='"+str(self.slot_id)+"' ")                        
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
-                #self.lineEdit.setText("")
-        connection.close()   
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        
-        
-    def delete_all_records1(self):
-        i = self.tableWidget.rowCount()       
-        while (i>0):             
-            i=i-1
-            self.tableWidget.removeRow(i)
-            
-            
-    def select_all_data2(self):     
-        self.delete_all_records2()        
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget_2.setFont(font) 
-        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
-      
-        self.tableWidget_2.setHorizontalHeaderLabels(['Material Name','No.Of.Bags','Net.Wt.Ton'])        
-           
-        connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT MATERAIL_NAME,RELEASED_BAGS,printf(\"%.3f\", RELEASED_NET_WT) FROM RELEASED_MATERIAL_VW WHERE SLOT_ID='"+str(self.slot_id)+"'")                        
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget_2.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget_2.setItem(row_number,column_number,QTableWidgetItem(str (data)))
-                #self.lineEdit.setText("")
-        connection.close()   
-        #self.tableWidget_2.resizeColumnsToContents()
-        self.tableWidget_2.resizeRowsToContents()
-        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        
-        
-    def delete_all_records2(self):
-        i = self.tableWidget_2.rowCount()       
-        while (i>0):             
-            i=i-1
-            self.tableWidget_2.removeRow(i)
-            
-    
-    def select_all_data3(self):     
-        self.delete_all_records3()        
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget_3.setFont(font) 
-        self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
-      
-        self.tableWidget_3.setHorizontalHeaderLabels(['Material Name','No.Of.Bags','Net.Wt.Ton','Record ID'])        
-           
-        connection = sqlite3.connect("fci.db")
-        #print("SELECT MATERIAL,NO_OF_BAGS,NET_WT,REC_ID FROM slots_depo_loss WHERE SLOT_NO= '"+str(self.slot_id)+"'") 
-        results=connection.execute("SELECT MATERIAL,NO_OF_BAGS,NET_WT,REC_ID FROM slots_depo_loss WHERE SLOT_NO= '"+str(self.slot_id)+"'")                        
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget_3.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget_3.setItem(row_number,column_number,QTableWidgetItem(str (data)))
-                #self.lineEdit.setText("")
-        connection.close()   
-        #self.tableWidget_3.resizeColumnsToContents()
-        self.tableWidget_3.resizeRowsToContents()
-        self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_3.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        
-        
-        
-        
-    def delete_all_records3(self):
-        i = self.tableWidget_3.rowCount()       
-        while (i>0):             
-            i=i-1
-            self.tableWidget_3.removeRow(i)
-     
-     
-    def s_fetch_data_from_tw(self):        
-        row = self.tableWidget_3.currentRow()     
-        if(row != -1 ):            
-            self.comboBox.setCurrentText(str(self.tableWidget_3.item(row, 0).text()))
-            self.lineEdit_3.setText(str(self.tableWidget_3.item(row, 1).text()))
-            self.label_32.setText(str(self.tableWidget_3.item(row, 2).text()))
-            self.dr_id=str(self.tableWidget_3.item(row, 3).text())           
-            
-            
-            self.pushButton_11.setDisabled(True) #add
-            self.pushButton_12.setDisabled(True)  #save
-            self.pushButton_13.setEnabled(True) #delete           
-            self.pushButton_14.setEnabled(True) #reset
-            
-        else:    
-            self.label_2.setText("Storage:Please Select the record.")
-            self.label_2.show()
-            
-    def default_s_fetch_data_from_tw(self):
-        self.comboBox.setCurrentText(str(self.tableWidget_3.item(0, 0).text()))
-        self.lineEdit_3.setText(str(self.tableWidget_3.item(0, 1).text()))
-        self.label_32.setText(str(self.tableWidget_3.item(0, 2).text()))
-        self.dr_id=str(self.tableWidget_3.item(0, 3).text())           
-            
-            
-            
-            
-      
-            
-       
-    def s_rest_fun(self):
-        self.lineEdit_3.setText("")
-        self.label_32.setText("0.000")
-        self.dr_id=""
-        self.label_24.hide()
-            
-            
-        self.pushButton_11.setEnabled(True) #add
-        self.pushButton_12.setDisabled(True)  #save
-        self.pushButton_13.setDisabled(True) #delete           
-        self.pushButton_14.setEnabled(True) #reset
-        
-   
-    def s_load_data(self):        
-        if(self.operation_flg=="ADD"):
-                #print("inside Add ")
-                self.s_add_data()
-        elif(self.operation_flg=="EDIT"):
-                #print("inside edit ")
-                self.s_edit_data()
-        elif(self.operation_flg=="DELETE"):
-                #print("inside delete ")
-                self.s_delete_data()
-        else:
-                print("Invalid Operation.")
-         
-    def s_add_click(self):
-        self.operation_flg="ADD"       
-        self.s_load_data()
-        
-    def s_add_data(self):
-        if(str(self.dr_id) == ""):            
-            connection = sqlite3.connect("fci.db")
-            with connection:        
+        with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO slots_depo_loss(MATERIAL,NO_OF_BAGS,NET_WT,SLOT_NO) VALUES('"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+self.label_32.text()+"','"+self.label_33.text()+"')")                    
-            
-            connection.commit();                    
+                    cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=IFNULL(BAL_BAGS,'0'), LOSS_NET_WT=IFNULL(BAL_NET_WT,'0'), status='Issued'    where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=0,BAL_NET_WT=0 , LOSS_AVG_BAG_WT=0  where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET LOSS_AVG_BAG_WT=((LOSS_NET_WT*1000)/LOSS_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
+                    
+        connection.commit();
+        connection.close()
+        self.populate_data()
+        self.pushButton_10.setEnabled(True)
+        self.pushButton_7.setDisabled(True)
+     
+    def undo_book_loss(self):
+        connection = sqlite3.connect("fci.db")
+        with connection:                            
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-I_BAGS, BAL_NET_WT=R_NET_WT-I_NET_WT     where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=0,LOSS_NET_WT=0 ,LOSS_AVG_BAG_WT=0 ,status='Recipted' where SLOT_NO= '"+str(self.slot_id)+"'")                      
+        connection.commit();
+        connection.close()
+        self.populate_data()
+        self.pushButton_10.setDisabled(True)
+        self.pushButton_7.setEnabled(True)
+    
+    def selected_record(self):
+         self.pushButton_10.setDisabled(True)         
+         self.list_type=self.listWidget.item(0).text()
+         if(self.listWidget.currentItem().text() != self.listWidget.item(0).text()):
+            if(self.list_type=="==== Slots ====="):
+                #print("current test is :"+str(self.listWidget.currentItem().text()))
+                self.slot_id = str(self.listWidget.currentItem().text())               
+                self.populate_data()   
+            else:             
+                print("Invalid !!")
+    
+    def populate_data(self):
+        if(str(self.slot_id) != ""):
+            connection = sqlite3.connect("fci.db")              
+                    
+            results=connection.execute("SELECT SLOT_NO,CAPACITY_IN_BAGS,MATERIAL,IFNULL(R_BAGS,'0'),IFNULL(round(R_NET_WT,3),'0.000'),printf(\"%.2f\", R_AVG_BAG_WT),R_DATE,IFNULL(I_BAGS,'0'),IFNULL(I_NET_WT,'0.000'),IFNULL(I_AVG_BAG_WT,'0'),I_DATE,IFNULL(LOSS_BAGS,'0'),IFNULL(LOSS_NET_WT,'0.000'),IFNULL(BAL_BAGS,'0'),IFNULL(BAL_NET_WT,'0.000'),IFNULL(BAL_AVG_BAG_WT,'0.00'),IFNULL(LOSS_AVG_BAG_WT,'0.000'),IFNULL(LOSS_PERC ,'0'), IFNULL(status,'Recipted') FROM SLOTS_MST where SLOT_NO ='"+str(self.slot_id)+"'")
+            for x in results:
+                        
+                        
+                        
+                          self.label_33.setText(str(x[0]))  #slot No
+                          self.label_37.setText(str(x[1]))  #capacity
+                          self.label_36.setText(str(x[2]))  #material
+                          self.label_8.setText(str(x[3]))
+                          self.label_28.setText('{:06.3f}'.format(float(x[4])))
+                          self.label_34.setText('{:04.2f}'.format(float(x[5])))
+                          self.label_38.setText(str(x[6])) #R_DATE
+                          self.label_9.setText(str(x[7])) #I_BAGS
+                          x_str=str(x[8])
+                          self.label_29.setText('{:06.3f}'.format(float(x_str))) #I_NET_WT
+                          self.label_32.setText('{:04.2f}'.format(float(x[9]))) #I_AVG_BAG_WT
+                          self.label_39.setText(str(x[10])) #I_DATE
+                          self.label_14.setText(str(x[11])) #LOSS BAGS
+                          self.label_30.setText('{:06.3f}'.format(float(x[12]))) #LOSS_NET_WT
+                          self.label_6.setText(str(x[13])) #BAL_BAGS
+                          self.label_7.setText('{:06.3f}'.format(float(x[14]))) #BAL_NET_WT
+                          self.label_10.setText('{:04.2f}'.format(float(x[15]))) #BAL_AVG_BAG_WT
+                          self.label_42.setText("Loss Percentage : "+str(x[17])+" %")
+                          self.label_31.setText('{:04.2f}'.format(float(x[16]))) #LOSS_AVG_BAG_WT
+                          self.label_35.setText(str(x[18])) 
+                          
+                          
+                          
+                          
+                          
+                          
             connection.close()
-            self.slot_id=str(self.label_33.text())
-            self.bags=str(self.lineEdit_3.text())
-            self.net_wt=str(self.label_32.text())
-            self.update_storage_loss(self.slot_id,self.bags,self.net_wt)
-            self.label_24.setText("Loss Booked Successfully.")
-            self.log_audit("Storage Stacks","Added Depo loss :" +str(self.dr_id))
-            self.label_24.show()
-        else :
-            self.label_24.setText("Id is Empty.")
-            self.label_24.show()
-            
-        self.select_all_data3()
-    
-    def update_storage_loss(self,slot_id,bags,net_wt):
-        update_flg=0       
-        arr=[]
-        recipt_id=""
-        if(str(slot_id) != ""):             
-            arr=str(slot_id).split("/")
-            if(str(arr[1]) != ""):
-                    recipt_id=str(arr[1])
-                    print("Recipt ID: "+str(arr[1]))
-                    connection = sqlite3.connect("fci.db")
-                    results=connection.execute("SELECT count(*) from  BATCH_STORAGE_LOSS where RECIPT_ID ='"+str(str(arr[1]))+"'") 
-                    for x in results: 
-                         update_flg=int(x[0])
-                    connection.close()
-                    connection = sqlite3.connect("fci.db")
-                    with connection:        
-                            cursor = connection.cursor()
-                            if(int(update_flg)==1):
-                                cursor.execute("UPDATE BATCH_STORAGE_LOSS SET TOTAL_BAGS=TOTAL_BAGS+'"+str(bags)+"',TOTAL_NET_WT=TOTAL_NET_WT+'"+str(net_wt)+"',UPLOAD_STATUS=NULL,DEVICE_ID='"+str(self.device_id)+"'  WHERE RECIPT_ID='"+str(recipt_id)+"'")                    
-                     
-                            else:
-                                cursor.execute("INSERT INTO BATCH_STORAGE_LOSS(RECIPT_ID,TOTAL_BAGS,TOTAL_NET_WT,DEVICE_ID) VALUES('"+str(recipt_id)+"','"+str(bags)+"','"+str(net_wt)+"','"+str(self.device_id)+"')")                    
-                     
-                    connection.commit();                    
-                    connection.close()
-                    
-        
-    def s_edit_click(self):
-        row = self.tableWidget_3.currentRow()     
-        if(row != -1 ):
-            self.operation_flg="EDIT"
-            self.s_load_data()
-        else:    
-            self.label_24.setText("Please Select the record.")
-            self.label_24.show() 
-    
-    def s_edit_data(self):
-        if(str(self.dr_id) != ""):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE slots_depo_loss SET MATERIAL='"+self.comboBox.currentText()+"',NO_OF_BAGS='"+self.lineEdit_3.text()+"',NET_WT='"+self.label_32.text()+"' WHERE  REC_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()   
-        self.slot_id=str(self.label_33.text())
-        self.bags=str(self.lineEdit_3.text())
-        self.net_wt=str(self.label_32.text())
-        self.update_storage_loss(self.slot_id,self.bags,self.net_wt)
-        self.label_24.setText("Loss Updated Successfully.")
-        self.log_audit("Storage Stacks","Updated Depo Loss Id :" +str(self.dr_id))
-        self.label_24.show()
-        self.select_all_data3()
-    
-    def s_delete_click(self):
-        row = self.tableWidget_3.currentRow()     
-        if(row != -1 ):
-            self.operation_flg="DELETE"
-            self.s_load_data()
-        else:    
-            self.label_24.setText("Please Select the record.")
-            self.label_24.show()        
-     
-      
-    def s_delete_data(self):
-        if(str(self.dr_id)  != ""):
-            recipt_id=""
-            arr=str(self.slot_id ).split("/")
-            if(str(arr[1]) != ""):
-                    recipt_id=str(arr[1])
                     
             connection = sqlite3.connect("fci.db")
             with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("DELETE FROM slots_depo_loss WHERE REC_ID ='"+str(self.dr_id)+"'")
-                    cursor.execute("DELETE FROM BATCH_STORAGE_LOSS WHERE RECIPT_ID ='"+str(recipt_id)+"'")
-                    
-            connection.commit();                    
-            connection.close()
-            
-            self.label_24.setText("Record Deleted Successfully.")
-            self.log_audit("Storage Stacks","Deleted Depo losss Id :" +str(self.dr_id))
-            self.label_24.show()
-            
-            self.select_all_data3() 
-     
-     
-
-     
-     
-     
-            
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE GLOBAL_VAR  SET  SLOT_POP_ID='"+str(self.slot_id)+"'")            
+            connection.commit();
+            connection.close() 
+    
+    
+    
     def open_new_window(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_30_Ui_MainWindow()
@@ -1003,7 +714,7 @@ class fci_29_Ui_MainWindow(object):
         self.ui=fci_31_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-        
+    
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")
         with connection:        
@@ -1012,8 +723,8 @@ class fci_29_Ui_MainWindow(object):
             cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
             
         connection.commit();
-        connection.close() 
-            
+        connection.close()
+    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

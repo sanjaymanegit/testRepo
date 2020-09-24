@@ -1045,7 +1045,7 @@ class fci_03b_Ui_MainWindow(object):
         
         self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT BATCH_ID ,BATCH_ID_DISPLAY FROM BATCH_MST ORDER BY BATCH_ID DESC ") 
+        results=connection.execute("SELECT BATCH_ID ,BATCH_ID_DISPLAY FROM BATCH_MST WHERE STATUS='Open' ORDER BY BATCH_ID DESC ") 
         for x in results:            
             self.comboBox.addItem(str(x[1]),self.i)
             self.comboBox.setItemText(self.i,str(x[1]))            
@@ -1318,7 +1318,7 @@ class fci_03b_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select substr(SLOT_ID ,0,6) from SLOTS_BATCH_MST WHERE MATERAIL_NAME ='"+str(self.material)+"' order by created_on desc limit 1") 
+        results=connection.execute("select substr(SLOT_NO ,0,6) from SLOTS_MST WHERE MATERIAL ='"+str(self.material)+"' order by R_DATE desc limit 1") 
         for x in results:
             #self.label_34.setText(str(x[0]))
             self.lineEdit_3.setText(str(x[0]))
@@ -1654,7 +1654,7 @@ class fci_03b_Ui_MainWindow(object):
             
             self.avg_bags_wt_calc()
                     
-            self.accepted_bags=self.label_50.text()
+            self.accepted_bags=self.lineEdit_5.text()
             self.avg_bag_wt=self.label_50.text()          
             #self.remark=self.textEdit.toPlainText()
             self.driver_in_out="OUT"
@@ -1797,12 +1797,12 @@ class fci_03b_Ui_MainWindow(object):
                                                                    +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,SECOND_WT_MODE,SECOND_WT_VAL,SECOND_WT_CREATED_ON,NET_WEIGHT_VAL,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,SLOT_1,SLOT_1_QUANTITY,SLOT_2,SLOT_2_QUANTITY,AVG_BAG_WT)"
                                                                    +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(first_wt_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
                                                                    +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                                   +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.avg_bag_wt)+"' )")
+                                                                   +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.second_wt_mode)+"','"+self.second_wt_val+"','"+str(second_wt_date)+"','"+str(self.net_wt_val)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.slot_no)+"/"+str(self.order_id)+"','"+str(self.quantity)+"','"+str(self.slot_no2)+"/"+str(self.order_id)+"','"+str(self.quantity2)+"','"+str(self.avg_bag_wt)+"' )")
                                                      connection.commit();
                                                      connection.close()
                                                  #self.reset_fun()
                                                 
-                                                 self.update_slot(str(self.slot_no)+"/"+str(self.order_id),str(self.batch_id),str(self.materail_name),str(self.quantity),str(self.net_wt_val))                                            
+                                                 self.update_slot(str(self.slot_no)+"/"+str(self.order_id),str(self.batch_id),str(self.materail_name),str(self.quantity),str(self.net_wt_val),str(self.avg_bag_wt))                                            
                                                      
                                                      
                                                      
@@ -1877,11 +1877,11 @@ class fci_03b_Ui_MainWindow(object):
                  else:
                          self.goAhead="Yes"
         
-    def update_slot(self,slot_id,batch_id,material_name,no_of_bags,net_wt):
+    def update_slot(self,slot_id,batch_id,material_name,no_of_bags,net_wt,avg_bag_wt):
         self.slot_exist_flg="No"
         ## check record exist
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT count(*) FROM SLOTS_BATCH_MST WHERE SLOT_ID= '"+str(slot_id)+"' and BATCH_ID ='"+str(batch_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")       
+        results=connection.execute("SELECT count(*) FROM SLOTS_MST WHERE SLOT_NO= '"+str(slot_id)+"'")       
         for x in results:
                    if(int(x[0]) == 1 ):
                        self.slot_exist_flg="Yes"
@@ -1893,8 +1893,12 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE SLOTS_BATCH_MST SET LOADED_BAGS_CNT=LOADED_BAGS_CNT+ '"+str(no_of_bags)+"',LOADED_NET_WT=LOADED_NET_WT+ '"+str(net_wt)+"',UPDATED_ON=current_timestamp where SLOT_ID= '"+str(slot_id)+"' and BATCH_ID ='"+str(batch_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET R_BAGS=R_BAGS+ '"+str(no_of_bags)+"',R_NET_WT=R_NET_WT+ '"+str(net_wt)+"',R_DATE=current_timestamp ,MATERIAL='"+str(material_name)+"',BATCH_ID='"+str(batch_id)+"' where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET R_AVG_BAG_WT=((R_NET_WT*1000)/R_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT ,0)    where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
                     
+          
             connection.commit();
             connection.close()
             
@@ -1902,7 +1906,7 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO  SLOTS_BATCH_MST(SLOT_ID,BATCH_ID,MATERAIL_NAME,LOADED_BAGS_CNT,LOADED_NET_WT) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"')")
+                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"')")
                        
             connection.commit();
             connection.close()

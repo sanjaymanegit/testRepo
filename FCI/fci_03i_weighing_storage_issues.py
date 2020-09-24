@@ -1364,7 +1364,7 @@ class fci_03i_Ui_MainWindow(object):
         self.comboBox.clear()
         self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT ORDER_ID,ISSUE_ID FROM ISSUE_MST ORDER BY ISSUE_ID DESC ") 
+        results=connection.execute("SELECT ORDER_ID,ISSUE_ID FROM ISSUE_MST WHERE STATUS='Open' ORDER BY ISSUE_ID DESC ") 
         for x in results:
             #self.issue_id=str(x[1])
             self.comboBox.addItem("")
@@ -1391,7 +1391,7 @@ class fci_03i_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         print("SELECT SLOT_ID FROM SLOTS_BATCH_MST WHERE MATERAIL_NAME ='"+str(self.comboBox_2.currentText())+"' ") 
         
-        results=connection.execute("SELECT SLOT_ID FROM SLOTS_BATCH_MST WHERE MATERAIL_NAME ='"+str(self.comboBox_2.currentText())+"' ") 
+        results=connection.execute("SELECT SLOT_NO FROM SLOTS_MST WHERE MATERIAL ='"+str(self.comboBox_2.currentText())+"' ") 
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))
@@ -1460,7 +1460,7 @@ class fci_03i_Ui_MainWindow(object):
         self.l=0
         connection = sqlite3.connect("fci.db")
         #print("SELECT distinct BATCH_ID FROM SLOTS_BATCH_MST WHERE  MATERAIL_NAME = '"+self.comboBox_2.currentText()+"'  ORDER BY BATCH_ID  ")
-        results=connection.execute("SELECT SLOT_ID FROM SLOTS_BATCH_MST WHERE  MATERAIL_NAME = '"+self.comboBox_2.currentText()+"'  ORDER BY BATCH_ID  ") 
+        results=connection.execute("SELECT SLOT_NO FROM SLOTS_MST WHERE  MATERIAL = '"+self.comboBox_2.currentText()+"'  ORDER BY SLOT_NO  ") 
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.l,str(x[0]))
@@ -1784,12 +1784,12 @@ class fci_03i_Ui_MainWindow(object):
             else :
                     self.driver_in_out="IN"
             
-            self.proposed_bags=999
+            #self.proposed_bags=999
             #self.update_slot(str(self.slot_no),str(self.issue_id),str(self.materail_name),str(self.quantity),str(self.net_wt_val))
             self.slot_no=self.comboBox_4.currentText()
             self.rel_quantiy=self.lineEdit_4.text()
             self.rel_net_wt=self.lineEdit_5.text()
-               
+            self.net_wt_val=self.label_45.text()  
             
             #self.target_storage=self.comboBox_2.currentText()
             self.curr_truck_cnt=self.label_24.text()
@@ -1918,7 +1918,7 @@ class fci_03i_Ui_MainWindow(object):
                                                      connection.close()
                                                  
                                                   
-                                                 self.update_slot(str(self.slot_no),str(self.issue_id),str(self.materail_name),str(self.rel_quantiy),str(self.rel_net_wt))                                            
+                                                 self.update_slot(str(self.slot_no),str(self.issue_id),str(self.materail_name),str(self.accepted_bags),str(self.net_wt_val),str(self.avg_bag_wt))                                            
                                                      
                                                    
                                                  #self.reset_fun()
@@ -1965,7 +1965,11 @@ class fci_03i_Ui_MainWindow(object):
     
     def validation(self):
         self.goAhead="No"
-        if(self.avg_bag_wt > "51.5"):
+        
+        if(str(self.slot_no) == ""):
+                 self.label_59.setText("SLot Id Should Not Be Empty.")
+                 self.label_59.show()
+        elif(self.avg_bag_wt > "51.5"):
                  self.label_59.setText("Please Check the Bags Count (Upper Limit Crossed).")
                  self.label_59.show()
         elif(self.avg_bag_wt < "45"):
@@ -1986,11 +1990,11 @@ class fci_03i_Ui_MainWindow(object):
     
     
     
-    def update_slot(self,slot_id,issue_id,material_name,no_of_bags,net_wt):
+    def update_slot(self,slot_id,issue_id,material_name,no_of_bags,net_wt,avg_bag_wt):
         self.slot_exist_flg="No"
         ## check record exist
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT count(*) FROM SLOTS_ISSUE_MST WHERE SLOT_ID= '"+str(slot_id)+"' and ISSUE_ID ='"+str(issue_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")       
+        results=connection.execute("SELECT count(*) FROM SLOTS_MST WHERE SLOT_NO= '"+str(slot_id)+"' ")       
         for x in results:
                    if(int(x[0]) == 1 ):
                        self.slot_exist_flg="Yes"
@@ -2002,8 +2006,13 @@ class fci_03i_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE SLOTS_ISSUE_MST SET RELEASED_BAGS_CNT=RELEASED_BAGS_CNT+ '"+str(no_of_bags)+"',RELEASED_NET_WT=RELEASED_NET_WT+ '"+str(net_wt)+"',UPDATED_ON=current_timestamp where SLOT_ID= '"+str(slot_id)+"' and ISSUE_ID ='"+str(issue_id)+"' and MATERAIL_NAME = '"+str(material_name)+"'")
                     
+                    cursor.execute("UPDATE SLOTS_MST SET I_BAGS=IFNULL(I_BAGS,'0')+'"+str(no_of_bags)+"',I_NET_WT=IFNULL(I_NET_WT,'0')+'"+str(net_wt)+"',I_DATE=current_timestamp ,MATERIAL='"+str(material_name)+"' where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET I_AVG_BAG_WT=((I_NET_WT*1000)/I_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT,0)     where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
+                    
+                    #print("Net Wet :"+str(net_wt))
             connection.commit();
             connection.close()
             
@@ -2011,8 +2020,9 @@ class fci_03i_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO  SLOTS_ISSUE_MST(SLOT_ID,ISSUE_ID,MATERAIL_NAME,RELEASED_BAGS_CNT,RELEASED_NET_WT) VALUES('"+str(slot_id)+"','"+str(issue_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"')")
+                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,MATERIAL,I_BAGS,I_NET_WT,I_DATE,I_AVG_BAG_WT, BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT) VALUES('"+str(slot_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"',0,0,0)")
                        
+        
             connection.commit();
             connection.close()
             
