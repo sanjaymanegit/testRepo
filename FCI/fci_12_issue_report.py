@@ -311,7 +311,7 @@ class fci_12_Ui_MainWindow(object):
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     def print_report(self):        
-         os.system("./job_print_report.sh")
+         os.system("./job_print_report_issues.sh")
                         
     def select_all_data(self):
         

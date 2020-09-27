@@ -453,7 +453,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_32.setObjectName("label_32")
         self.label_34 = QtWidgets.QLabel(self.frame)
-        self.label_34.setGeometry(QtCore.QRect(840, 270, 61, 31))
+        self.label_34.setGeometry(QtCore.QRect(850, 270, 61, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -624,7 +624,7 @@ class fci_29_Ui_MainWindow(object):
         with connection:                            
                     cursor = connection.cursor()
                     cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=IFNULL(BAL_BAGS,'0'), LOSS_NET_WT=IFNULL(BAL_NET_WT,'0'), status='Issued'    where SLOT_NO= '"+str(self.slot_id)+"'")
-                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=0,BAL_NET_WT=0 , LOSS_AVG_BAG_WT=0  where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=0,BAL_NET_WT=0 , BAL_AVG_BAG_WT=0  where SLOT_NO= '"+str(self.slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET LOSS_AVG_BAG_WT=((LOSS_NET_WT*1000)/LOSS_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
                     
         connection.commit();
@@ -637,7 +637,7 @@ class fci_29_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-I_BAGS, BAL_NET_WT=R_NET_WT-I_NET_WT     where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT,0)     where SLOT_NO= '"+str(self.slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=0,LOSS_NET_WT=0 ,LOSS_AVG_BAG_WT=0 ,status='Recipted' where SLOT_NO= '"+str(self.slot_id)+"'")                      
         connection.commit();

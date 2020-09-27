@@ -593,10 +593,15 @@ class fci_03b_Ui_MainWindow(object):
         self.label_18.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_18.setObjectName("label_18")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit_3.setGeometry(QtCore.QRect(380, 110, 61, 31))
+        self.lineEdit_3.setGeometry(QtCore.QRect(380, 110, 110, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_3.setStyleSheet("background-color: rgb(189, 255, 255);\n"
+"font: 24pt \"MS Shell Dlg 2\";")
+        self.lineEdit_3.setMaxLength(5)
         self.lineEdit_3.setFont(font)
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.label_16 = QtWidgets.QLabel(self.groupBox)
@@ -678,13 +683,18 @@ class fci_03b_Ui_MainWindow(object):
         self.label_52.setObjectName("label_52")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_4.setEnabled(False)
-        self.lineEdit_4.setGeometry(QtCore.QRect(380, 190, 61, 31))
+        self.lineEdit_4.setGeometry(QtCore.QRect(380, 190, 110, 41))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
-        self.lineEdit_4.setFont(font)
-       
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_4.setStyleSheet("background-color: rgb(189, 255, 255);\n"
+"font: 24pt \"MS Shell Dlg 2\";")
+        self.lineEdit_4.setMaxLength(5)
+        self.lineEdit_4.setFont(font)       
         self.lineEdit_4.setObjectName("lineEdit_4")
+        
         self.lineEdit_5 = QtWidgets.QLineEdit(self.groupBox)
         reg_ex = QRegExp("\d+")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
@@ -698,36 +708,44 @@ class fci_03b_Ui_MainWindow(object):
         self.lineEdit_5.setFont(font)
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit_6.setGeometry(QtCore.QRect(580, 110, 61, 31))
+        self.lineEdit_6.setGeometry(QtCore.QRect(580, 110, 91, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_6.setStyleSheet("background-color: rgb(189, 255, 255);\n"
+"font: 24pt \"MS Shell Dlg 2\";")
+        self.lineEdit_6.setMaxLength(5)
         self.lineEdit_6.setFont(font)
         ##self.lineEdit_6.setText("66")
         self.lineEdit_6.setObjectName("lineEdit_6")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_7.setEnabled(False)
-        self.lineEdit_7.setGeometry(QtCore.QRect(580, 190, 61, 31))
+        self.lineEdit_7.setGeometry(QtCore.QRect(580, 190, 91, 41))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
-        self.lineEdit_7.setFont(font)
-        #self.lineEdit_7.setText("77")
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_7.setStyleSheet("background-color: rgb(189, 255, 255);\n"
+"font: 24pt \"MS Shell Dlg 2\";")
+        self.lineEdit_7.setMaxLength(5)
         self.lineEdit_7.setObjectName("lineEdit_7")
         self.label_54 = QtWidgets.QLabel(self.groupBox)
-        self.label_54.setGeometry(QtCore.QRect(450, 110, 100, 31))
+        self.label_54.setGeometry(QtCore.QRect(500, 110, 100, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
-        self.label_54.setFont(font)
-        #self.label_54.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_54.setFont(font)        
         self.label_54.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_54.setObjectName("label_54")
         self.label_55 = QtWidgets.QLabel(self.groupBox)
-        self.label_55.setGeometry(QtCore.QRect(450, 190, 100, 31))
+        self.label_55.setGeometry(QtCore.QRect(500, 190, 100, 31))
+        self.label_55.setEnabled(False)
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -905,6 +923,8 @@ class fci_03b_Ui_MainWindow(object):
         self.slot_no2="0"
         self.quantity2="0"
         self.goAhead="No"
+        self.slot_1_wt=0
+        self.slot_2_wt=0
         ##########
             
 
@@ -954,7 +974,7 @@ class fci_03b_Ui_MainWindow(object):
         self.label_45.setText(_translate("MainWindow", "159.00")) #net .wt
         self.label_21.setText(_translate("MainWindow", "Current Truck Count:"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
-        self.label_41.setText(_translate("MainWindow", "Pending Truck Count:"))
+        self.label_41.setText(_translate("MainWindow", "Total Truck Count:"))
         self.label_48.setText(_translate("MainWindow", "144"))
         self.label_51.setText(_translate("MainWindow", "Driver:"))
         self.radioButton_3.setText(_translate("MainWindow", "In"))
@@ -973,11 +993,12 @@ class fci_03b_Ui_MainWindow(object):
         self.label_50.setText(_translate("MainWindow", "201"))  #avg.bag.wt.kg
         self.label_46.setText(_translate("MainWindow", "Slot ID1.:"))
         self.checkBox.setText(_translate("MainWindow", "if Slot ID1 Full"))
+        self.checkBox.setDisabled(True)
         self.label_52.setText(_translate("MainWindow", "Slot ID2.:"))
         self.lineEdit_5.setText(_translate("MainWindow", "207")) # Actual bags
         self.lineEdit_6.setText(_translate("MainWindow", "200")) #quantity
-        self.label_54.setText(_translate("MainWindow", "Quantity(Bags) :"))
-        self.label_55.setText(_translate("MainWindow", "Quantity(Bags) :"))
+        self.label_54.setText(_translate("MainWindow", "Bags:"))
+        self.label_55.setText(_translate("MainWindow", "Bags:"))
         self.label_53.setText(_translate("MainWindow", "Recipt Unloading @ Storage"))
         self.groupBox_2.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
@@ -1025,6 +1046,9 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_9.clicked.connect(self.fetch_via_search)
         
         self.lineEdit_2.textChanged.connect(self.text_change_f)
+        self.lineEdit_3.textChanged.connect(self.text_change_f2)
+        self.lineEdit_4.textChanged.connect(self.text_change_f3)
+        
         self.lineEdit.textChanged.connect(self.text_change_mannual_first_wt)
         self.lineEdit_4.textChanged.connect(self.text_change_mannual_second_wt)
         self.lineEdit_5.textChanged.connect(self.avg_bags_wt_calc)
@@ -1093,9 +1117,13 @@ class fci_03b_Ui_MainWindow(object):
         if(self.checkBox.isChecked()):
             self.lineEdit_4.setEnabled(True)
             self.lineEdit_7.setEnabled(True)
+            self.label_52.setEnabled(True)
+            self.label_55.setEnabled(True)
         if(not (self.checkBox.isChecked())):
             self.lineEdit_4.setDisabled(True)
             self.lineEdit_7.setDisabled(True)
+            self.label_52.setDisabled(True)
+            self.label_55.setDisabled(True)
             
             
             
@@ -1142,6 +1170,17 @@ class fci_03b_Ui_MainWindow(object):
         if not (string.isupper()):
                self.lineEdit_2.setText(string.upper())
                #print(string.upper())
+    def text_change_f2(self):
+        #print("insedie finct ")
+        string =self.lineEdit_3.text()
+        if not (string.isupper()):
+               self.lineEdit_3.setText(string.upper())
+               
+    def text_change_f3(self):
+        #print("insedie finct ")
+        string =self.lineEdit_4.text()
+        if not (string.isupper()):
+               self.lineEdit_4.setText(string.upper())            
                
     def text_change_mannual_first_wt(self):        
         if(self.lineEdit_8.text() == ""):
@@ -1454,8 +1493,8 @@ class fci_03b_Ui_MainWindow(object):
                 self.avg_bags_wt_calc()
                 #self.lineEdit_6.setText("")
                 #self.lineEdit_3.setText("")
-                self.lineEdit_4.setText("")
-                self.lineEdit_7.setText("") 
+                #self.lineEdit_4.setText("")
+                #self.lineEdit_7.setText("") 
                       
     def load_1st_wt_vehicles(self):
         self.listWidget_3.clear()
@@ -1492,11 +1531,11 @@ class fci_03b_Ui_MainWindow(object):
         results=connection.execute("SELECT STATUS FROM WEIGHT_MST WHERE SERIAL_ID ='"+str(self.serial_id)+"'")
         for x in results:
                 if (str(x[0])=='SECOND'):
-                        os.system("./job_print_recipt.sh")
+                        os.system("./job_print_recipt_storage.sh")
                         #os.system("./job_print_recipt.sh")
                         #os.system("./job_print_recipt.sh")
                 else:
-                        os.system("./job_print_recipt.sh")
+                        os.system("./job_print_recipt_storage.sh")
         connection.close()  
     
     def fetch_via_search(self):
@@ -1538,7 +1577,6 @@ class fci_03b_Ui_MainWindow(object):
     def fetch_slip_data(self):        
         self.vehicle_no=""
         connection = sqlite3.connect("fci.db")
-        print("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0') FROM WEIGHT_MST WHERE SERIAL_ID='"+self.current_slip_no+"'")       
         
         results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0') FROM WEIGHT_MST WHERE SERIAL_ID='"+self.current_slip_no+"'")       
         for x in results:        
@@ -1604,19 +1642,34 @@ class fci_03b_Ui_MainWindow(object):
             #self.comboBox_2.setCurrentText(str(x[20]))
             
             if(str(x[9]) == "SECOND"):
+                    
                     #slot 1 ID
                     arr=[]
                     only_slot_id=""
                     arr=str(x[21]).split("/")
                     only_slot_id=arr[0]
                     print("slot id 1 :"+(str(x[21])))
+                    '''
+                    arr=[]
+                    only_slot_id2=""
+                    arr=str(x[23]).split("/")
+                    only_slot_id2=arr[0]
+                    '''
+                    #print("slot id 2 :"+(str(x[23])))
+                    print("quantity:"+(str(x[24])))
+                    
                     self.lineEdit_3.setText(str(only_slot_id))
                     # quantyy 1
+                    
                     self.lineEdit_6.setText(str(x[22]))
-                    #slot 2 id
-                    self.lineEdit_4.setText(str(x[23]))
-                    #quantity 2
-                    self.lineEdit_7.setText(str(x[24]))
+                    
+                    
+                    if(str(x[24]) == "0"):
+                             self.lineEdit_4.setText("")
+                             self.lineEdit_7.setText("")
+                    else:#slot 2 id
+                             self.lineEdit_4.setText(str(x[23]))
+                             self.lineEdit_7.setText(str(x[24]))
             else:
                     self.lineEdit_3.setText("")
                     # quantyy 1
@@ -1673,18 +1726,32 @@ class fci_03b_Ui_MainWindow(object):
                 
             if(self.lineEdit_3.text() != ""):
                   self.slot_no=str(self.lineEdit_3.text())
-                  self.quantity=str(self.lineEdit_6.text())
+                  if(self.lineEdit_6.text() != ""):
+                      self.quantity=str(self.lineEdit_6.text())                  
+                      self.slot_1_wt=(int(self.lineEdit_6.text())*int(self.avg_bag_wt))/1000
+                  else:
+                      self.quantity=0
+                      self.slot_1_wt=0
             else:       
                   self.slot_no=0
                   self.quantity=0
+                  self.slot_1_wt=0
                   
                   
             if(self.lineEdit_4.text() != ""):
                   self.slot_no2=str(self.lineEdit_4.text())
-                  self.quantity2=str(self.lineEdit_7.text())
+                  if(self.lineEdit_7.text() != ""):                      
+                          self.quantity2=str(self.lineEdit_7.text())
+                          self.slot_2_wt=(int(self.lineEdit_7.text())*int(self.avg_bag_wt))/1000
+                  else:
+                          self.slot_no2=0
+                          self.quantity2=0
+                          self.slot_2_wt=0
+                        
             else:       
                   self.slot_no2=0
                   self.quantity2=0
+                  self.slot_2_wt=0
                 
                 
             
@@ -1726,18 +1793,12 @@ class fci_03b_Ui_MainWindow(object):
                                                         cr_date_str=str(self.label_30.text()+" "+str(self.label_31.text())+":00")
                                                         #print("cr_date_str:"+str(cr_date_str))
                                                         cr_date= datetime.datetime.strptime(cr_date_str, '%Y-%m-%d %H:%M:%S')
-                                                        
-                                                        print("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
-                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,SLOT_1,SLOT_1_QUANTITY,SLOT_2,SLOT_2_QUANTITY)"
-                                                                       +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
-                                                                       +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.slot_no)+"','"+str(self.quantity)+"','"+str(self.slot_no2)+"','"+str(self.quantity2)+"')")
-                                                        
+                                                         
                                                         cursor.execute("INSERT INTO WEIGHT_MST(VEHICLE_NO,MATERIAL_NAME,BATCH_ID,STATUS,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON,WEIGHT_TYPE,ACCPTED_BAGS,AVG_BAG_WT,REMARK,"
-                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,ACCPTED_BAGS,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG,SLOT_1,SLOT_1_QUANTITY,SLOT_2,SLOT_2_QUANTITY)"
+                                                            +"DRIVER_IN_OUT,PROPOSED_BAGS,TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,DEVICE_LOCATION_TYPE,ACCPTED_BAGS,DEVICE_ID,CREATED_BY,MANNUAL_INS_FLG)"
                                                                        +"VALUES ('"+self.vehicle_no+"','"+self.materail_name+"','"+self.batch_id+"','"+self.status+"','"+self.first_wt_mode+"','"+self.first_wt_val+"','"+str(cr_date)+"','"+self.weight_type+"','"+self.accepted_bags+"','"
                                                                        +self.avg_bag_wt+"','"+self.remark+"','"+str(self.driver_in_out)+"','"+str(self.proposed_bags)+"','"+str(self.target_storage)+"','"+str(self.curr_truck_cnt)+"','"+str(self.total_truck_cnt)+"','"+str(self.contractor_id)
-                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"','"+str(self.slot_no)+"','"+str(self.quantity)+"','"+str(self.slot_no2)+"','"+str(self.quantity2)+"')")
+                                                                       +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"')")
                                                                       
                                              #self.reset_fun()
                                              self.label_56.setText("Successfully Loaded First Weight.")
@@ -1801,9 +1862,12 @@ class fci_03b_Ui_MainWindow(object):
                                                      connection.commit();
                                                      connection.close()
                                                  #self.reset_fun()
-                                                
-                                                 self.update_slot(str(self.slot_no)+"/"+str(self.order_id),str(self.batch_id),str(self.materail_name),str(self.quantity),str(self.net_wt_val),str(self.avg_bag_wt))                                            
-                                                     
+                                                 
+                                                 self.update_slot(str(self.slot_no)+"/"+str(self.order_id),str(self.batch_id),str(self.materail_name),str(self.quantity),str(self.slot_1_wt),str(self.avg_bag_wt))                                            
+                                                 if(self.checkBox.isChecked()):
+                                                         print("Slot 2 upadated")
+                                                         self.update_slot(str(self.slot_no2)+"/"+str(self.order_id),str(self.batch_id),str(self.materail_name),str(self.quantity2),str(self.slot_2_wt),str(self.avg_bag_wt))                                            
+                                                 
                                                      
                                                      
                                                  self.label_56.setText("Successfully Loaded Second Weight.")
@@ -1870,9 +1934,14 @@ class fci_03b_Ui_MainWindow(object):
                         if(self.lineEdit_4.text()== ""):
                                  self.label_56.setText("Slot ID 2 is empty.")
                                  self.label_56.show()
+                        elif(self.lineEdit_4.text()== self.lineEdit_3.text()):
+                                 self.label_56.setText("Both Slots should not same.")
+                                 self.label_56.show()
                         elif(self.lineEdit_7.text()== ""):
                                   self.label_56.setText("Quantity 2 is empty.")
                                   self.label_56.show()
+                        else:
+                                  self.goAhead="Yes"
                  
                  else:
                          self.goAhead="Yes"
@@ -1893,9 +1962,10 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE SLOTS_MST SET R_BAGS=R_BAGS+ '"+str(no_of_bags)+"',R_NET_WT=R_NET_WT+ '"+str(net_wt)+"',R_DATE=current_timestamp ,MATERIAL='"+str(material_name)+"',BATCH_ID='"+str(batch_id)+"' where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET R_BAGS=R_BAGS+ '"+str(no_of_bags)+"',R_NET_WT=R_NET_WT+ '"+str(net_wt)+"',R_DATE=current_timestamp ,MATERIAL='"+str(material_name)+"',BATCH_ID='"+str(batch_id)+"',DEVICVE_ID='"+str(self.device_id)+"' where SLOT_NO= '"+str(slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET R_AVG_BAG_WT=((R_NET_WT*1000)/R_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT ,0)    where SLOT_NO= '"+str(slot_id)+"'")
+                    
                     cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
                     
           
@@ -1906,7 +1976,7 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"')")
+                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT,DEVICVE_ID) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"','"+str(self.device_id)+"')")
                        
             connection.commit();
             connection.close()

@@ -669,7 +669,7 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
-        self.goAhead="No"
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -679,6 +679,8 @@ class fci_02_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.login_user_id=""
+        self.goAhead="No"
+        self.device_location_type=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -823,10 +825,14 @@ class fci_02_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT LOGIN_USER_ID FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT LOGIN_USER_ID,DEVICE_ID,DEVICE_LOCATION_TYPE FROM GLOBAL_VAR") 
         for x in results:
             self.login_user_id=str(x[0])
+            self.device_id=str(x[1])
+            self.device_location_type=str(x[2])
         connection.close()
+        
+        
         
        
     def device_date(self):     
@@ -1053,9 +1059,9 @@ class fci_02_Ui_MainWindow(object):
                     connection = sqlite3.connect("fci.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY) values ('"+self.label_5.text()
+                            cursor.execute("INSERT INTO BATCH_MST(BATCH_ID_DISPLAY ,BATCH_DATE,ACCPT_WT_TON,ACCPT_BAGS_CNT,RECV_WT_TON,RECV_BAGS_CNT,TL_RECVED,TL_ACCPTED,STORAGE_BAGS,MATERIAL_TYPE,WAGON_CNT,REQUIRED_TRUCKS,CONTRACTOR_NAME,STATUS,CREATED_BY,DEVICE_ID,DEVICE_LOCATION_TYPE) values ('"+self.label_5.text()
                                            +"','"+self.label_6.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()
-                                           +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','"+self.label_4.text()+"','"+str(self.login_user_id)+"')")                    
+                                           +"','"+self.lineEdit_8.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_11.text()+"','"+self.comboBox.currentText()+"','"+self.label_4.text()+"','"+str(self.login_user_id)+"','"+str(self.device_id)+"','"+str(self.device_location_type)+"')")                    
                     connection.commit();                    
                     connection.close()  
                   
@@ -1088,7 +1094,7 @@ class fci_02_Ui_MainWindow(object):
                                 cursor.execute("UPDATE BATCH_MST SET BATCH_ID_DISPLAY='"+self.label_5.text()+"',ACCPT_WT_TON='"+self.lineEdit.text()+
                                                "',ACCPT_BAGS_CNT='"+self.lineEdit_9.text()+"',RECV_WT_TON='"+self.lineEdit_4.text()+"',RECV_BAGS_CNT='"+self.lineEdit_10.text()+
                                                "',TL_RECVED='"+self.lineEdit_5.text()+"',TL_ACCPTED='"+self.lineEdit_6.text()+"',STORAGE_BAGS='"+self.lineEdit_8.text()+"',MATERIAL_TYPE='"+self.comboBox_2.currentText()+"',WAGON_CNT='"+self.lineEdit_3.text()
-                                               +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp,STATUS='"+self.label_4.text()+"'  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
+                                               +"',REQUIRED_TRUCKS='"+self.lineEdit_11.text()+"',CONTRACTOR_NAME='"+self.comboBox.currentText()+"',UPLOAD_STATUS=null,UPDATED_BY='"+str(self.login_user_id)+"',UPDATED_ON=current_timestamp,STATUS='"+self.label_4.text()+"', DEVICE_ID='"+str(self.device_id)+"'  WHERE  BATCH_ID ='"+str(self.dr_id)+"'")                    
                         connection.commit();                    
                         connection.close()   
                    

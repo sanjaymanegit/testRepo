@@ -27,9 +27,23 @@ def dot_matrix_print():
     driver_in_out=""
     contractor=""
     Target_storage=""
-        
+    printer_header=""
+    printer_title=""
+    printer_footer=""
+    recipt_id=""
+    truck_num=""
+    
+    
     connection = sqlite3.connect("fci.db")       
-    results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL,ACCPTED_BAGS,DRIVER_IN_OUT,CONTRACTOR_NAME,TARGET_STORAGE,MATERIAL_NAME  FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+    results=connection.execute("SELECT  PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER FROM GLOBAL_VAR")         
+    for x in results:
+         printer_header=str(x[1]) 
+         printer_title=str(x[0]) 
+         printer_footer=str(x[2]) 
+    connection.close()
+    
+    connection = sqlite3.connect("fci.db")       
+    results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL,ACCPTED_BAGS,DRIVER_IN_OUT,CONTRACTOR_NAME,TARGET_STORAGE,MATERIAL_NAME,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) AS RECIPT_ID ,(CURR_TRUCK_CNT||'/'||TOTAL_TRUCKS_CNT) as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
         
     for x in results:                
           serial_id=str(x[0])        
@@ -45,6 +59,9 @@ def dot_matrix_print():
           contractor=str(x[10])
           Target_storage=str(x[11])
           material=str(x[12])
+          recipt_id=str(x[13])
+          truck_num=str(x[14])
+          
     connection.close()
         
     try:
@@ -66,12 +83,13 @@ def dot_matrix_print():
         printer.text("=======================================================\n\r")
         printer.charSpacing(1)            
         printer.bold()
-        printer.text("Contractor Name : "+str(contractor)+"         \n\r" )              
-        printer.text("Target Location   : "+str(Target_storage)+"         \n\r" )
+        printer.text("                    "+str(printer_title)+"         \n\r" )              
+        printer.text("   "+str(printer_header)+"         \n\r" )
         printer.bold(False)
         printer.align("left")
         printer.text("======================================================\n\r")        
         printer.text("Serial No    : "+str(serial_id).zfill(6)+"                  Vehical No: "+str(vehical_no)+" \n\r")
+        printer.text("Recipt ID    : "+str(recipt_id)+"                Truck.Sr.No: "+str(truck_num)+" \n\r")
         printer.text("Total Bags   : "+str(accpted_bags).zfill(6)+"                  Batch.Id: "+str(batch_id).zfill(4)+" \n\r")
         printer.text("Material     : "+str(material)+"                         \n\r")
         printer.text("|------------------------------------------------------------- \n\r")
@@ -85,7 +103,7 @@ def dot_matrix_print():
         printer.text(" \n\r")
         printer.text(" \n\r")
         printer.text(" \n\r")     
-        printer.text("*************  Thanking You   *************----------\n\r")             
+        printer.text(str(printer_footer)+" \n\r")             
         printer.lf()
         print("ok3")
     except IOError:

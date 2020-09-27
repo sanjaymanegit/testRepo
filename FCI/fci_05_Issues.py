@@ -799,6 +799,20 @@ class fci_05_Ui_MainWindow(object):
             connection.commit();                    
             connection.close()
             
+            connection = sqlite3.connect("fci.db")
+            results=connection.execute("SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS WHERE ISSUE_ID= '"+str(self.dr_id)+"' LIMIT 1")       
+            for x in results:
+                 self.comboBox_2.setCurrentText(str(x[0]))  #material
+                 self.lineEdit_2.setText(str(str(x[2]))) # issue net wt
+                 self.lineEdit_4.setText(str(str(x[1]))) # issue bags
+                 self.label_5.setText(str(str(x[3])))  #Release weight
+                 self.label_9.setText(str(str(x[4])))  #Released bags
+                 self.pushButton_10.setDisabled(True) #Add
+                 self.pushButton_12.setEnabled(True) #save
+                 self.pushButton_11.setEnabled(True) #Delete
+                 self.pushButton_14.setEnabled(True) #refresh
+                 
+            connection.close()
             
             self.pushButton_3.setEnabled(True)
             self.pushButton_4.setEnabled(True)
@@ -861,12 +875,12 @@ class fci_05_Ui_MainWindow(object):
                     connection = sqlite3.connect("fci.db")
                     with connection:        
                             cursor = connection.cursor()
-                            print ("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
-                            print("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_QUANTITY_DTLS) WHERE ISSUE_ID IS NULL ")                    
+                            #print ("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
+                            #print("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_QUANTITY_DTLS), WHERE ISSUE_ID IS NULL ")                    
                    
                             
                             cursor.execute("INSERT INTO ISSUE_QUANTITY_DTLS(MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT)  SELECT MATERIAL_NAME,QUANTITY_BAGS,QUANTITY_NET_WT,RELEASED_BAGS,RELEASE_NET_WT FROM ISSUE_QUANTITY_DTLS_TMP")
-                            cursor.execute("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_MST) WHERE ISSUE_ID IS NULL ")                    
+                            cursor.execute("UPDATE ISSUE_QUANTITY_DTLS SET ISSUE_ID=(SELECT MAX(ISSUE_ID) FROM ISSUE_MST) ,DEVICE_ID=(SELECT DEVICE_ID FROM GLOBAL_VAR) WHERE ISSUE_ID IS NULL ")                    
                    
                             
                    

@@ -20,29 +20,39 @@ import sys,os
 
 def report_print():
     whr_sql=""
-    Title="Dispatch Report as on "+datetime.datetime.now().strftime("%d %b %Y")
-    SiteAddress="Niharika 401, Plot No 105,Sector 50 new Nerul Navi Mumbai Pin 400706"
+    #Title="Dispatch Report as on "+datetime.datetime.now().strftime("%d %b %Y")
+    #SiteAddress="Niharika 401, Plot No 105,Sector 50 new Nerul Navi Mumbai Pin 400706"
     BATCH_IDS=[]
     TOTAL_TRUCKS=[]
     TOTAL_NET_WT=[]
     TOTAL_ACCEPTED_BAGS=[]
+    RECIPT_IDS=[]
+    printer_header=""
+    printer_title=""
+    printer_footer=""
     
     connection = sqlite3.connect("fci.db")
-    results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_BATCH_ID  FROM GLOBAL_VAR") 
+    results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_BATCH_ID,PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER  FROM GLOBAL_VAR") 
     for x in results:
             if(str(x[1]) == 'DATE_RANGE'):
                 whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
             elif(str(x[1]) == 'BY_BATCH_ID'):
                 whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
+            
+            printer_header=str(x[6]) 
+            printer_title=str(x[5]) 
+            printer_footer=str(x[7]) 
+            
     connection.close()
     
     connection = sqlite3.connect("fci.db")        
-    results=connection.execute("select BATCH_ID ,TOTAL_TRUCKS, TOTAL_NET_WT, TOTAL_ACCEPTED_BAGS from BATCH_LIST_VW "+str(whr_sql)) 
+    results=connection.execute("select BATCH_ID ,TOTAL_TRUCKS, TOTAL_NET_WT, TOTAL_ACCEPTED_BAGS,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as RECIPT_ID from BATCH_LIST_VW "+str(whr_sql)) 
     for x in results:            
                 BATCH_IDS.append(str(x[0]))
                 TOTAL_TRUCKS.append(str(x[1]))
                 TOTAL_NET_WT.append(str(x[2]))
                 TOTAL_ACCEPTED_BAGS.append(str(x[3]))
+                RECIPT_IDS.append(str(x[4]))
     connection.close()
         
         
@@ -66,15 +76,15 @@ def report_print():
         printer.text("     \n\r")
         printer.charSpacing(1)            
         printer.bold()
-        printer.text(" "+str(Title)+"         \n\r" )              
-        printer.text(" "+str(SiteAddress)+"         \n\r" )
+        printer.text("                      "+str(printer_title)+"         \n\r" )              
+        printer.text("            "+str(printer_header)+"         \n\r" )
         printer.bold(False)
         printer.align("left")
         printer.text("     \n\r")
         printer.text("========================================================================\n\r")
         printer.text("     \n\r")
         for i in range(len(BATCH_IDS)):
-                    printer.text("Batch Id        : "+str(BATCH_IDS[i]).zfill(6)+"                     Total Trucks    : "+str(TOTAL_TRUCKS[i]).zfill(4)+" \n\r")
+                    printer.text("Recipt Id        : "+str(RECIPT_IDS[i]).zfill(6)+"                     Total Trucks    : "+str(TOTAL_TRUCKS[i]).zfill(4)+" \n\r")
                     printer.text("Total Net Wt(Kg): "+str(TOTAL_NET_WT[i]).zfill(6)+"                Total Accepted Bags  : "+str(TOTAL_ACCEPTED_BAGS[i]).zfill(4)+" \n\r")
                     
                     printer.text("     \n\r")
@@ -92,7 +102,7 @@ def report_print():
                     printer.text("|------------------------------------------------------------------------\n\r") 
         
               
-        printer.text("*********************  Thanking You   **************************\n\r")             
+        printer.text(str(printer_footer)+" \n\r")                 
         printer.lf()
         print("ok3")
     except IOError:
