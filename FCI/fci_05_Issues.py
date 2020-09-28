@@ -913,7 +913,7 @@ class fci_05_Ui_MainWindow(object):
                     connection = sqlite3.connect("fci.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("UPDATE ISSUE_MST SET ORDER_ID='"+self.lineEdit_10.text()+"', TOTAL_NET_WT_DEMAND='"+self.lineEdit.text()+"',EXPIRY_DATE='"+self.label_6.text()+"',ISSUE_DATE='"+self.label_4.text()+"',TOTAL_BAGS_DEMAND='"+self.label_7.text()+"',CONTRACTOR_NAME ='"+self.comboBox.currentText()+"',RO_TYPE='"+self.lineEdit_3.text()+"',STATUS='"+self.label_8.text()+"', DEVICE_ID='"+str(self.device_id)+"'  WHERE  ISSUE_ID ='"+str(self.dr_id)+"'")
+                            cursor.execute("UPDATE ISSUE_MST SET ORDER_ID='"+self.lineEdit_10.text()+"', TOTAL_NET_WT_DEMAND='"+self.lineEdit.text()+"',EXPIRY_DATE='"+self.label_6.text()+"',ISSUE_DATE='"+self.label_4.text()+"',TOTAL_BAGS_DEMAND='"+self.label_7.text()+"',CONTRACTOR_NAME ='"+self.comboBox.currentText()+"',RO_TYPE='"+self.lineEdit_3.text()+"',STATUS='"+self.label_8.text()+"', DEVICE_ID='"+str(self.device_id)+"' , UPLOAD_STATUS = null  WHERE  ISSUE_ID ='"+str(self.dr_id)+"'")
                             
                     connection.commit();                    
                     connection.close()

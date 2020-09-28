@@ -18,6 +18,7 @@ import time
 from PyQt5.Qt import QTableWidgetItem
 from fci_30_batch_pop import fci_30_Ui_MainWindow
 from fci_31_issue_pop import fci_31_Ui_MainWindow
+from fci_33_total_loss_op import fci_33_Ui_MainWindow
 
 
 class fci_29_Ui_MainWindow(object):
@@ -340,6 +341,15 @@ class fci_29_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_10.setFont(font)
         self.pushButton_10.setObjectName("pushButton_10")
+        
+        self.pushButton_10_1 = QtWidgets.QPushButton(self.frame)
+        #self.pushButton_10.setEnabled(False)
+        self.pushButton_10_1.setGeometry(QtCore.QRect(530, 540, 161, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_10_1.setFont(font)
+        self.pushButton_10_1.setObjectName("pushButton_10_1")
+        
         self.label_24 = QtWidgets.QLabel(self.frame)
         self.label_24.setGeometry(QtCore.QRect(360, 270, 81, 41))
         font = QtGui.QFont()
@@ -569,6 +579,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_23.setText(_translate("MainWindow", "Date"))
         #self.label_10.setText(_translate("MainWindow", "48xx"))
         self.pushButton_10.setText(_translate("MainWindow", "Undo Storage Loss"))
+        self.pushButton_10_1.setText(_translate("MainWindow", "Storages List and Losses"))
         self.label_24.setText(_translate("MainWindow", "Recipted"))
         self.label_25.setText(_translate("MainWindow", "Issued"))
         self.label_26.setText(_translate("MainWindow", "Storage Loss"))
@@ -585,7 +596,7 @@ class fci_29_Ui_MainWindow(object):
         #self.label_38.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
         #self.label_39.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
         #self.label_41.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
-#        self.label_40.setText(_translate("MainWindow", "Note  : This data is available as on 05 Aug 2020"))
+        self.label_40.setText(_translate("MainWindow", "Storage Name  : Txxx"))
         #self.label_42.setText(_translate("MainWindow", "Loss Percentage : 0.025 %"))
         self.pushButton_11.setText(_translate("MainWindow", "Recipted Trucks"))
         self.pushButton_12.setText(_translate("MainWindow", "Issued Trucks"))
@@ -594,6 +605,7 @@ class fci_29_Ui_MainWindow(object):
         self.listWidget.doubleClicked.connect(self.selected_record)
         self.pushButton_11.clicked.connect(self.open_new_window)
         self.pushButton_12.clicked.connect(self.open_new_window2)
+        self.pushButton_10_1.clicked.connect(self.open_new_window3)
         self.pushButton_7.clicked.connect(self.book_loss)
         self.pushButton_10.clicked.connect(self.undo_book_loss)
         self.timer1=QtCore.QTimer()
@@ -624,8 +636,9 @@ class fci_29_Ui_MainWindow(object):
         with connection:                            
                     cursor = connection.cursor()
                     cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=IFNULL(BAL_BAGS,'0'), LOSS_NET_WT=IFNULL(BAL_NET_WT,'0'), status='Issued'    where SLOT_NO= '"+str(self.slot_id)+"'")
-                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=0,BAL_NET_WT=0 , BAL_AVG_BAG_WT=0  where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=0,BAL_NET_WT=0 , BAL_AVG_BAG_WT=0 , upload_status=null where SLOT_NO= '"+str(self.slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET LOSS_AVG_BAG_WT=((LOSS_NET_WT*1000)/LOSS_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET LOSS_PERC=((LOSS_NET_WT/R_NET_WT)*100) where SLOT_NO= '"+str(self.slot_id)+"'")
                     
         connection.commit();
         connection.close()
@@ -639,7 +652,7 @@ class fci_29_Ui_MainWindow(object):
                     cursor = connection.cursor()
                     cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT,0)     where SLOT_NO= '"+str(self.slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(self.slot_id)+"'")
-                    cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=0,LOSS_NET_WT=0 ,LOSS_AVG_BAG_WT=0 ,status='Recipted' where SLOT_NO= '"+str(self.slot_id)+"'")                      
+                    cursor.execute("UPDATE SLOTS_MST SET LOSS_BAGS=0,LOSS_NET_WT=0 ,LOSS_AVG_BAG_WT=0 ,LOSS_PERC=0,status='Recipted',upload_status=null where SLOT_NO= '"+str(self.slot_id)+"'")                      
         connection.commit();
         connection.close()
         self.populate_data()
@@ -661,7 +674,7 @@ class fci_29_Ui_MainWindow(object):
         if(str(self.slot_id) != ""):
             connection = sqlite3.connect("fci.db")              
                     
-            results=connection.execute("SELECT SLOT_NO,CAPACITY_IN_BAGS,MATERIAL,IFNULL(R_BAGS,'0'),IFNULL(round(R_NET_WT,3),'0.000'),printf(\"%.2f\", R_AVG_BAG_WT),R_DATE,IFNULL(I_BAGS,'0'),IFNULL(I_NET_WT,'0.000'),IFNULL(I_AVG_BAG_WT,'0'),I_DATE,IFNULL(LOSS_BAGS,'0'),IFNULL(LOSS_NET_WT,'0.000'),IFNULL(BAL_BAGS,'0'),IFNULL(BAL_NET_WT,'0.000'),IFNULL(BAL_AVG_BAG_WT,'0.00'),IFNULL(LOSS_AVG_BAG_WT,'0.000'),IFNULL(LOSS_PERC ,'0'), IFNULL(status,'Recipted') FROM SLOTS_MST where SLOT_NO ='"+str(self.slot_id)+"'")
+            results=connection.execute("SELECT SLOT_NO,CAPACITY_IN_BAGS,MATERIAL,IFNULL(R_BAGS,'0'),IFNULL(round(R_NET_WT,3),'0.000'),printf(\"%.2f\", R_AVG_BAG_WT),R_DATE,IFNULL(I_BAGS,'0'),IFNULL(I_NET_WT,'0.000'),IFNULL(I_AVG_BAG_WT,'0'),I_DATE,IFNULL(LOSS_BAGS,'0'),IFNULL(LOSS_NET_WT,'0.000'),IFNULL(BAL_BAGS,'0'),IFNULL(BAL_NET_WT,'0.000'),IFNULL(BAL_AVG_BAG_WT,'0.00'),IFNULL(LOSS_AVG_BAG_WT,'0.000'),IFNULL(LOSS_PERC ,'0'), IFNULL(status,'Recipted') ,storage_name FROM SLOTS_MST where SLOT_NO ='"+str(self.slot_id)+"'")
             for x in results:
                         
                         
@@ -683,9 +696,10 @@ class fci_29_Ui_MainWindow(object):
                           self.label_6.setText(str(x[13])) #BAL_BAGS
                           self.label_7.setText('{:06.3f}'.format(float(x[14]))) #BAL_NET_WT
                           self.label_10.setText('{:04.2f}'.format(float(x[15]))) #BAL_AVG_BAG_WT
-                          self.label_42.setText("Loss Percentage : "+str(x[17])+" %")
+                          self.label_42.setText("Loss Percentage : <font color=blue>"+'{:04.2f}'.format(float(x[17]))+" % </font>")
                           self.label_31.setText('{:04.2f}'.format(float(x[16]))) #LOSS_AVG_BAG_WT
-                          self.label_35.setText(str(x[18])) 
+                          self.label_35.setText(str(x[18]))
+                          self.label_40.setText("Storage Name : <font color=blue> "+str(x[19])+" </font>") 
                           
                           
                           
@@ -712,6 +726,12 @@ class fci_29_Ui_MainWindow(object):
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_31_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window3(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_33_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

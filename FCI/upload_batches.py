@@ -46,7 +46,7 @@ if(get_internet_status()):
                     if(str(batch_id) != ""):
                         #### create Json string ######
                         connection = sqlite3.connect("fci.db")       
-                        results=connection.execute("SELECT  BATCH_ID,BATCH_ID_DISPLAY,IFNULL(BATCH_DATE,'1999-01-01 12:00:00'), IFNULL(ACCPT_WT_TON,0) ,IFNULL(ACCPT_BAGS_CNT,0), IFNULL(RECV_WT_TON,0), IFNULL(RECV_BAGS_CNT,0) ,IFNULL(TL_RECVED,0), IFNULL(TL_ACCPTED,0) ,IFNULL(STORAGE_BAGS,0), MATERIAL_TYPE, STATUS ,IFNULL(WAGON_CNT,0), IFNULL(REQUIRED_TRUCKS,0) ,CONTRACTOR_NAME ,DEVICE_ID FROM BATCH_MST  WHERE BATCH_ID='"+str(batch_id)+"'")         
+                        results=connection.execute("SELECT  BATCH_ID,BATCH_ID_DISPLAY,IFNULL(BATCH_DATE,'1999-01-01 12:00:00'), IFNULL(ACCPT_WT_TON,0) ,IFNULL(ACCPT_BAGS_CNT,0), IFNULL(RECV_WT_TON,0), IFNULL(RECV_BAGS_CNT,0) ,IFNULL(TL_RECVED,0), IFNULL(TL_ACCPTED,0) ,IFNULL(STORAGE_BAGS,0), MATERIAL_TYPE, STATUS ,IFNULL(WAGON_CNT,0), IFNULL(REQUIRED_TRUCKS,0) ,CONTRACTOR_NAME ,DEVICE_ID,DEVICE_LOCATION_TYPE FROM BATCH_MST  WHERE BATCH_ID='"+str(batch_id)+"'")         
                         for x in results:
                             
                             json_str["batchId"] = str(x[0])
@@ -65,6 +65,7 @@ if(get_internet_status()):
                             json_str["requiredTrucks"] = str(x[13])
                             json_str["contractorName"] = str(x[14])
                             json_str["deviceId"] = str(x[15])
+                            json_str["deviceLocationType"] = str(x[16])
                            
                         connection.close()                        
                         print("Joson String"+str(json_str))

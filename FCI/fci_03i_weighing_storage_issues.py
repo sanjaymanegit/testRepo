@@ -648,6 +648,22 @@ class fci_03i_Ui_MainWindow(object):
         self.comboBox_4.setObjectName("comboBox_4")
         #self.comboBox_4.addItem("")
         #self.comboBox_4.addItem("")
+        
+        self.label_55_1 = QtWidgets.QLabel(self.groupBox_4)
+        self.label_55_1.setGeometry(QtCore.QRect(320, 30, 171, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_55_1.setFont(font)
+        self.label_55_1.setStyleSheet("")
+        self.label_55_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_55_1.setObjectName("label_55_1")
+        
+        
+        
         self.label_57 = QtWidgets.QLabel(self.groupBox_4)
         self.label_57.setGeometry(QtCore.QRect(280, 30, 61, 31))
         font = QtGui.QFont()
@@ -830,7 +846,7 @@ class fci_03i_Ui_MainWindow(object):
         self.label_58.setGeometry(QtCore.QRect(410, 10, 331, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(18)
+        font.setPointSize(14)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
@@ -1065,6 +1081,7 @@ class fci_03i_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Actual Bags:"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Slot Availability"))
         self.label_55.setText(_translate("MainWindow", "Slot ID :"))
+        self.label_55_1.setText(_translate("MainWindow", "GoDown-1"))
         #self.comboBox_4.setItemText(0, _translate("MainWindow", "SL001"))
         #self.comboBox_4.setItemText(1, _translate("MainWindow", "SL002"))
         self.label_57.setText(_translate("MainWindow", "Material:"))
@@ -1085,7 +1102,7 @@ class fci_03i_Ui_MainWindow(object):
         self.label_65.setText(_translate("MainWindow", "Slots2.Bags."))
         self.label_62.setText(_translate("MainWindow", "Slot2 Wt.Ton :"))
         self.label_49.setText(_translate("MainWindow", "Avg.Bag.Wt.Kg:"))
-        self.label_58.setText(_translate("MainWindow", "Issues Weighing at Storage"))
+        self.label_58.setText(_translate("MainWindow", "ISSUES WEIGHING AT STORAGE"))
         self.groupBox_2.setTitle(_translate("MainWindow", "First Wt - Mannual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
@@ -1176,6 +1193,7 @@ class fci_03i_Ui_MainWindow(object):
        # self.comboBox_3.currentTextChanged.connect(self.batch_id_onchange)
         self.comboBox.currentTextChanged.connect(self.order_id_onchange)
         self.comboBox_2.currentTextChanged.connect(self.material_name_onchange)
+        self.comboBox_4.currentTextChanged.connect(self.show_godown_name)
         self.start_wt()
         self.reset_fun()
     
@@ -1515,7 +1533,12 @@ class fci_03i_Ui_MainWindow(object):
             self.l=self.l+1               
         connection.close()
        
-       
+    def show_godown_name(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT STORAGE_NAME FROM SLOTS_MST  WHERE SLOT_NO= '"+str(self.comboBox_4.currentText())+"'") 
+        for x in results:         
+                 self.label_55_1.setText(str(x[0]))
+        connection.close()
         
     def start_wt(self):
         #print("Weight Started ....")

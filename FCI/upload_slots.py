@@ -46,7 +46,7 @@ if(get_internet_status()):
                     if(str(slot_no) != ""):
                         #### create Json string ######
                         connection = sqlite3.connect("fci.db")
-                        results=connection.execute("SELECT  SLOT_NO ,CAPACITY_IN_BAGS ,CAPACITY_IN_WT , MATERIAL,  BATCH_ID,  R_BAGS , R_NET_WT ,R_AVG_BAG_WT, R_DATE ,I_BAGS ,I_NET_WT,  I_DATE ,I_AVG_BAG_WT,  LOSS_BAGS , LOSS_NET_WT , LOSS_AVG_BAG_WT,  LOSS_PERC , DEVICVE_ID ,BAL_BAGS ,BAL_NET_WT ,BAL_AVG_BAG_WT,  STATUS FROM SLOTS_MST  WHERE SLOT_NO='"+str(slot_no)+"'")         
+                        results=connection.execute("SELECT  SLOT_NO ,IFNULL(CAPACITY_IN_BAGS,0) ,IFNULL(CAPACITY_IN_WT,0) , MATERIAL,  BATCH_ID,  IFNULL(R_BAGS,0) , IFNULL(R_NET_WT,0) ,IFNULL(R_AVG_BAG_WT,0), IFNULL(R_DATE,'1999-01-01 12:00:00') ,IFNULL(I_BAGS,0) ,IFNULL(I_NET_WT,0),  IFNULL(I_DATE ,'1999-01-01 12:00:00'),IFNULL(I_AVG_BAG_WT,0),  IFNULL(LOSS_BAGS,0) , IFNULL(LOSS_NET_WT,0) , IFNULL(LOSS_AVG_BAG_WT,0),  IFNULL(LOSS_PERC,0) , DEVICVE_ID ,IFNULL(BAL_BAGS,0) ,IFNULL(BAL_NET_WT,0) ,IFNULL(BAL_AVG_BAG_WT,0),  STATUS FROM SLOTS_MST  WHERE SLOT_NO='"+str(slot_no)+"'")         
                         for x in results:                            
                             json_str["slotNo"] = str(x[0])
                             json_str["capacityBags"] = str(x[1])

@@ -568,7 +568,9 @@ class fci_03b_Ui_MainWindow(object):
         #self.label_17.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_17.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_17.setObjectName("label_17")
-        self.label_43 = QtWidgets.QLabel(self.groupBox)
+        
+        '''
+        self.label_43 = QtWidgets.QLabel(self.groupBox)        
         self.label_43.setGeometry(QtCore.QRect(460, 40, 151, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -580,6 +582,20 @@ class fci_03b_Ui_MainWindow(object):
         self.label_43.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_43.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_43.setObjectName("label_43")
+        '''
+        self.stroagecombo = QtWidgets.QComboBox(self.groupBox)        
+        self.stroagecombo.setGeometry(QtCore.QRect(460, 40, 151, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.stroagecombo.setFont(font)
+        #self.stroagecombo.setStyleSheet("color: rgb(0, 0, 255);")
+        #self.stroagecombo.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.stroagecombo.setObjectName("label_43")
+        
         self.label_18 = QtWidgets.QLabel(self.groupBox)
         self.label_18.setGeometry(QtCore.QRect(20, 140, 121, 31))
         font = QtGui.QFont()
@@ -760,7 +776,7 @@ class fci_03b_Ui_MainWindow(object):
         self.label_53.setGeometry(QtCore.QRect(400, 10, 331, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(18)
+        font.setPointSize(14)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
@@ -983,8 +999,8 @@ class fci_03b_Ui_MainWindow(object):
         self.groupBox.show()
         self.label_15.setText(_translate("MainWindow", "Recipt Id:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "B000453"))
-        self.label_17.setText(_translate("MainWindow", "Contractor Name :"))
-        self.label_43.setText(_translate("MainWindow", "Contractor -100"))
+        self.label_17.setText(_translate("MainWindow", "Storage Name :"))
+        #self.label_43.setText(_translate("MainWindow", "Contractor -100"))
         self.label_18.setText(_translate("MainWindow", "Actual Bags:"))
         self.lineEdit_3.setText(_translate("MainWindow", "SL001"))  #slot Id 1
         self.label_16.setText(_translate("MainWindow", "Material Type :"))
@@ -999,7 +1015,7 @@ class fci_03b_Ui_MainWindow(object):
         self.lineEdit_6.setText(_translate("MainWindow", "200")) #quantity
         self.label_54.setText(_translate("MainWindow", "Bags:"))
         self.label_55.setText(_translate("MainWindow", "Bags:"))
-        self.label_53.setText(_translate("MainWindow", "Recipt Unloading @ Storage"))
+        self.label_53.setText(_translate("MainWindow", "RECIPT UNLOADING AT STORAGE"))
         self.groupBox_2.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
@@ -1286,7 +1302,7 @@ class fci_03b_Ui_MainWindow(object):
                #Material Type
                 self.label_42.setText(str(x[1]))
                 #Contractor Name
-                self.label_43.setText(str(x[3]))
+                #self.label_43.setText(str(x[3]))
                  #Total truck count
                 self.label_48.setText(str(x[2]))
                 
@@ -1311,17 +1327,17 @@ class fci_03b_Ui_MainWindow(object):
         connection.close()
         
         
-        '''
+        self.i=0
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select substr(SLOT_ID ,0,6)from SLOTS_BATCH_MST WHERE MATERAIL_NAME ='"+str(self.material)+"' order by created_on desc limit 1") 
+        results=connection.execute("select STORAGE_NAME,STORAGE_LOCATION from STORAGE_DETAILS ") 
         for x in results:
+            self.stroagecombo.addItem(str(x[0]),self.i)
+            self.stroagecombo.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
             
-            #self.label_34.setText(str(x[0]))
-            self.lineEdit_3.setText(str(x[0]))
-            self.lineEdit_4.setText(str(x[0]))
             
         connection.close()
-        '''
+        
         
         
         self.load_1st_wt_vehicles()
@@ -1350,7 +1366,7 @@ class fci_03b_Ui_MainWindow(object):
                #Material Type
                 self.label_42.setText(str(x[1]))
                 #Contractor Name
-                self.label_43.setText(str(x[3]))
+                #self.label_43.setText(str(x[3]))
                  #Total truck count
                 self.label_48.setText(str(x[2]))
         connection.close()
@@ -1759,7 +1775,7 @@ class fci_03b_Ui_MainWindow(object):
             self.curr_truck_cnt=self.label_24.text()
             self.total_truck_cnt=self.label_48.text()
             self.contractor_id="0"
-            self.contractor_name=self.label_43.text()
+            #self.contractor_name=self.label_43.text()
             #self.device_location_type="SITE"
             #self.device_location_type=str(x[1])
             self.accepted_bags=self.label_50.text()
@@ -1966,7 +1982,7 @@ class fci_03b_Ui_MainWindow(object):
                     cursor.execute("UPDATE SLOTS_MST SET R_AVG_BAG_WT=((R_NET_WT*1000)/R_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
                     cursor.execute("UPDATE SLOTS_MST SET BAL_BAGS=R_BAGS-IFNULL(I_BAGS,0), BAL_NET_WT=R_NET_WT-IFNULL(I_NET_WT ,0)    where SLOT_NO= '"+str(slot_id)+"'")
                     
-                    cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS) where SLOT_NO= '"+str(slot_id)+"'")
+                    cursor.execute("UPDATE SLOTS_MST SET BAL_AVG_BAG_WT=((BAL_NET_WT*1000)/BAL_BAGS),storage_name ='"+str(self.stroagecombo.currentText())+"' where SLOT_NO= '"+str(slot_id)+"'")
                     
           
             connection.commit();
@@ -1976,7 +1992,7 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT,DEVICVE_ID) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"','"+str(self.device_id)+"')")
+                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT,DEVICVE_ID,storage_name) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"','"+str(self.device_id)+"','"+str(self.stroagecombo.currentText())+"')")
                        
             connection.commit();
             connection.close()
