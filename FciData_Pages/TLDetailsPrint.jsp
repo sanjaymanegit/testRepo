@@ -63,7 +63,7 @@ for(int i=0; i<BatchIdsArr.length; i++)
  BatchIDs=BatchIdsArr[i];
  try{ 
  statement=con.createStatement();
- String sql ="SELECT STATUS,BATCH_ID_DISPLAY, BATCH_ID,DATE(BATCH_DATE) as dt,FORMAT(RECV_WT_KG,3) as RECV_WT_KG,FORMAT(ACCPT_WT_KG,3) as ACCPT_WT_KG, FORMAT(TL_ACCPTED,3) as TL_ACCPTED  FROM BATCH_MST WHERE BATCH_ID= '"+BatchIDs+"' LIMIT 1";
+ String sql ="SELECT STATUS,BATCH_ID_DISPLAY FROM BATCH_MST WHERE BATCH_ID= '"+BatchIDs+"' LIMIT 1";
  //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
  while(resultSet.next()){
@@ -78,40 +78,37 @@ for(int i=0; i<BatchIdsArr.length; i++)
 <tr > <td></td><td></td></tr>
 <tr > <td></td><td></td></tr>
 </table>
-<table border="1">
-<tr> <td>
-<table>
-<tr bgcolor="#CFF7EC"> <td style="width: 300px;" > Description </td><td style="width:100px;" > Weight in Ton</td><td style="width: 500px;" > Lost Weight in Ton </td>
-</tr>
-<tr> <td >Accepted Weight (Ton)     :</td><td align="left"> <%=resultSet.getString("ACCPT_WT_KG")%></td><td > </td>
-</tr>
-<tr> <td >Received Weight (Ton)    : </td><td ><%=resultSet.getString("RECV_WT_KG")%></td><td > </td>
-</tr>
-<tr > <td > <b>Accepted TL (Ton) [A] </b>        :</td><td > </td><td ><b> <%=resultSet.getString("TL_ACCPTED")%></b> </td>
-</tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> Received Weight (Ton) :  </td><td >  <%=resultSet.getString("RECV_WT_KG")%></td><td > </td></tr>
 <%
 }
  connection.close();
  } catch (Exception e) {
  e.printStackTrace();
  }
-
 %>
 <%
 try{ 
  statement=con.createStatement();
- String sql ="SELECT FORMAT(SUM(NET_WEIGHT_VAL),3) as NET_WEIGHT_VAL  FROM WEIGHT_MST WHERE ISSUE_ID=0 AND BATCH_ID ='"+BatchIDs+"' ";
-//io.println("sql : "+sql);
+ String sql ="SELECT ID,    RECIPT_ID,    RAIL_RECIPT_WT,    RAIL_RECIPT_BAGS,    RAIL_RECIPT_AVG_BAG_WT,    DECLAIRED_WT, DECLAIRED_BAGS, DECLAIRED_AVG_BAG_WT,   ACCPT_WT,   ACCPT_BAGS,   ACCPT_AVG_BAG_WT,   ACCPT_LOSS_WT,   ACCPT_LOSS_BAGS,   ACCPT_LOSS_AVG_BAG_WT,   STORAGE_WT,   STORAGE_BAGS,   STORAGE_AVG_BAG_WT,   TRANSIT_LOSS_WT,   TRANSIT_LOSS_BAGS,   TRANSIT_LOSS_AVG_BAG_WT,   BOOKED_DEPO_LOSS_WT,   BOOKED_DEPO_LOSS_BAGS,   BOOKED_DEPO_AVG_BAGS_WT,   TOTAL_NET_LOSS_WT, TOTAL_NET_LOSS_BAGS,   TOTAL_NET_LOSS_AVG_BAG_WT FROM transit_loss_report";
+ //out.println("sql : "+sql);
  resultSet = statement.executeQuery(sql);
- while(resultSet.next()){
-	   //v_received_wt =resultSet.getString("RECV_WT_KG") 
-	  //out.println("<h>RECV_WT_KG : "+v_received_wt+"</h>");
+ while(resultSet.next()){   
  %>
-<tr > <td> Dispatched Weight (Ton) :  </td><td > <%=resultSet.getString("NET_WEIGHT_VAL")%> </td><td > </td></tr>
+<table border="0">
+<tr bgcolor="#CFF7EC"> <td style="width: 400px;" > Description </td><td style="width:300px;" > Net.Weight Ton</td><td style="width:150px;" > No.Of.Bags</td><td style="width:150px;" >Avg.Bag.Wt.(Kg)</td></tr>
+<tr> <td style="width: 400px;" > Rail Recipt Weight  </td><td style="width:50px;" > <%=resultSet.getString("RAIL_RECIPT_WT")%></td><td style="width:150px;" ><%=resultSet.getString("RAIL_RECIPT_BAGS")%></td><td style="width:150px;" ><%=resultSet.getString("RAIL_RECIPT_AVG_BAG_WT")%></td></tr>
+<tr> <td style="width: 400px;" > Declaired Weight  </td><td style="width:50px;" > <%=resultSet.getString("DECLAIRED_WT")%></td><td style="width:150px;" ><%=resultSet.getString("DECLAIRED_BAGS")%></td><td style="width:150px;" ><%=resultSet.getString("DECLAIRED_AVG_BAG_WT")%></td></tr>
+<tr> <td style="width: 400px;" >Accepted Weight  </td><td style="width:50px;" > <%=resultSet.getString("ACCPT_WT")%></td><td style="width:150px;" ><%=resultSet.getString("ACCPT_BAGS")%></td><td style="width:150px;" ><%=resultSet.getString("ACCPT_AVG_BAG_WT")%></td></tr>
+<tr> <td style="width: 400px;" > <b> Accepted Loss [ A ] </b>  </td><td style="width:50px;" ><b> <%=resultSet.getString("ACCPT_LOSS_WT")%> </b></td><td style="width:150px;" ><b><%=resultSet.getString("ACCPT_LOSS_BAGS")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("ACCPT_LOSS_AVG_BAG_WT")%></b></td></tr>
+
+<tr> <td style="width: 400px;" >Dispatched Weight  </td><td style="width:50px;" > <%=resultSet.getString("ACCPT_WT")%></td><td style="width:150px;" ><%=resultSet.getString("ACCPT_BAGS")%></td><td style="width:150px;" ><%=resultSet.getString("ACCPT_AVG_BAG_WT")%></td></tr>
+<tr> <td style="width: 400px;" >Weight at Storage  </td><td style="width:50px;" > <%=resultSet.getString("STORAGE_WT")%></td><td style="width:150px;" ><%=resultSet.getString("STORAGE_BAGS")%></td><td style="width:150px;" ><%=resultSet.getString("STORAGE_AVG_BAG_WT")%></td></tr>
+<tr> <td style="width: 400px;" > <b> Transit Loss [ B ] </b>  </td><td style="width:50px;" ><b> <%=resultSet.getString("TRANSIT_LOSS_WT")%> </b></td><td style="width:150px;" ><b><%=resultSet.getString("TRANSIT_LOSS_BAGS")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("TRANSIT_LOSS_AVG_BAG_WT")%></b></td></tr>
+
+<tr> <td style="width: 400px;" >  <b> Booked Depo Loss [ C ] </b>   </td><td style="width:50px;" ><b> <%=resultSet.getString("BOOKED_DEPO_LOSS_WT")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("BOOKED_DEPO_LOSS_BAGS")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("BOOKED_DEPO_AVG_BAGS_WT")%></b></td></tr>
+<tr> <td style="width: 400px;" >  <b> Total Net Loss [ A+B+C ]   </td><td style="width:50px;" ><b> <%=resultSet.getString("TOTAL_NET_LOSS_WT")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("TOTAL_NET_LOSS_BAGS")%></b></td><td style="width:150px;" ><b><%=resultSet.getString("TOTAL_NET_LOSS_AVG_BAG_WT")%></b></td></tr>
+
+
+</table>
 <%
 }
  connection.close();
@@ -119,54 +116,11 @@ try{
  e.printStackTrace();
  }
 %>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td ><b>Dispatched Loss (Ton) [B] </b>        :</td><td >  </td><td ><b>345.977 </b> </td>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> Dispatched Weight (Ton) :  </td><td >  865.566</td><td > </td></tr>
-<%
-try{ 
- statement=con.createStatement();
- String sql ="SELECT FORMAT(SUM(NET_WEIGHT_VAL),3) as NET_WEIGHT_VAL  FROM WEIGHT_MST WHERE ISSUE_ID=0 AND BATCH_ID ='"+BatchIDs+"' ";
-//out.println("sql : "+sql);
- resultSet = statement.executeQuery(sql);
- while(resultSet.next()){
-	   //v_received_wt =resultSet.getString("RECV_WT_KG") 
-	   //out.println("<h>RECV_WT_KG : "+v_received_wt+"</h>");
-%>
-<tr > <td> Arrived Weight (Ton) :  </td><td > <%=resultSet.getString("NET_WEIGHT_VAL")%> </td><td > </td></tr>
-<%
-}
- connection.close();
- } catch (Exception e) {
- e.printStackTrace();
- }
-%>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td ><b>Transportation Loss (Ton) [C] </b>        :</td><td >  </td><td ><b>11.213  </b></td>
-
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td ><b>Storage Loss (Ton) [D] </b>        :</td><td >  </td><td ><b>32.213 </b> </td>
-
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td> </td><td >  </td><td > </td></tr>
-<tr > <td ><b>Net Loss (Ton) [A+B+C+D] </b>        :</td><td >  </td><td ><b> 50.213  </b> </td>
-</table>
-</td>
-</tr>
-</table>
+<br><br>
 <%
 } 
 }
 %>
-
-
 </form>
 
 </body>

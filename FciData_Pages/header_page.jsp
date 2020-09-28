@@ -67,6 +67,12 @@ document.header_form.target = "bottomframe";
 document.header_form.action="TL_frame.jsp";
 document.header_form.submit();
 }
+function f_BFS()
+{
+document.header_form.target = "bottomframe";
+document.header_form.action="BFS_frame.jsp";
+document.header_form.submit();
+}
 
 </script>
 </head>
@@ -99,7 +105,7 @@ try{
 <td>
 <td><input type="button" name="batch_reports" value="Recipts Reports"  onclick="f_batch()"></td>
 <td><input type="button" name="report_button" value="Issues Reports"   onclick="f_issue()" ></td>
-<td><input type="button" name="report_button" value="Buffer Stock"   disabled ></td>
+<td><input type="button" name="report_button" value="Buffer Stock"   onclick="f_BFS()" ></td>
 <td><input type="button" name="report_button" value="Transit Loss"  onclick="f_TL()"></td>
  <td><input type="button" name="admin_button" value="Admin"  onclick="f_admin()" <%=status_str%> ></td>
  <td><input type="button" name="change_my_password" value="Change My Password"  onclick="f_ch_password()" disabled ></td>  
