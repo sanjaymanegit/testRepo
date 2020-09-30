@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.Qt import QTableWidgetItem
+import sqlite3
 
 class fci_33_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -252,6 +253,7 @@ class fci_33_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.storage_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -284,14 +286,113 @@ class fci_33_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "LostWeightTon"))
         item = self.tableWidget_2.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Loss%"))
-        self.label_10.setText(_translate("MainWindow", "Total Loss Bags"))
-        self.label_11.setText(_translate("MainWindow", "Godown No.1"))
+        self.label_10.setText(_translate("MainWindow", "Total Lost Bags"))
+        #self.label_11.setText(_translate("MainWindow", "Godown No.1"))
         self.label_12.setText(_translate("MainWindow", "Storage Name"))
-        self.label_13.setText(_translate("MainWindow", "6544"))
-        self.label_14.setText(_translate("MainWindow", "11.003"))
-        self.label_15.setText(_translate("MainWindow", "Total Loss Weigt (Ton)"))
+        #self.label_13.setText(_translate("MainWindow", "6544"))
+        #self.label_14.setText(_translate("MainWindow", "11.003"))
+        self.label_15.setText(_translate("MainWindow", "Total Lost Weight (Ton)"))
         self.pushButton_9.clicked.connect(MainWindow.close)
-
+        self.tableWidget.doubleClicked.connect(self.fetch_data_from_tw)
+        self.select_all_data()
+        self.show_details()
+   
+    def show_details(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(STORAGE_NAME), SUM(LOST_BAGS),SUM(LOST_WT) FROM TOTAL_LOSS_VW ")
+        for x in results:        
+                self.label_7.setText(str(x[0]))
+                self.label_9.setText(str(x[1]))
+                self.label_8.setText(str(x[2]))
+        connection.close()
+      
+    def fetch_data_from_tw(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.storage_name=str(self.tableWidget.item(row, 1).text())
+            self.label_11.setText(str(self.tableWidget.item(row, 1).text())) 
+            self.label_13.setText(str(self.tableWidget.item(row, 3).text()))
+            self.label_14.setText(str(self.tableWidget.item(row, 4).text()))
+            self.select_all_data2()
+        else:
+            self.label_11.setText("") 
+            self.label_13.setText("")
+            self.label_14.setText("")
+      
+               
+    def select_all_data(self):     
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 80)
+        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 50)
+        
+    
+        self.tableWidget.setHorizontalHeaderLabels(['Storage.Id.','Name','Total.Slots.','Lost.Bags','Lost.Wt.Ton'])        
+           
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("select STORAGE_ID,STORAGE_NAME,SLOTS_CNT,LOST_BAGS,LOST_WT FROM  TOTAL_LOSS_VW")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)
+    
+    
+    def select_all_data2(self):     
+        self.delete_all_records2()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_2.setFont(font) 
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setColumnWidth(0, 120)
+        self.tableWidget_2.setColumnWidth(1, 80)
+        self.tableWidget_2.setColumnWidth(2, 100)
+        self.tableWidget_2.setColumnWidth(3, 100)
+       
+        
+    
+        self.tableWidget_2.setHorizontalHeaderLabels(['Slot.No','Lost Bags','Lost.Wt.','Lost.%'])        
+           
+        connection = sqlite3.connect("fci.db")
+        print("select SLOT_NO,LOSS_BAGS,LOSS_NET_WT,LOSS_PERC FROM SLOTS_MST where  STORAGE_NAME= '"+str(self.label_11.text())+"'")                        
+        
+        results=connection.execute("select SLOT_NO,LOSS_BAGS,LOSS_NET_WT,printf(\"%3d\", LOSS_PERC)  FROM SLOTS_MST where  STORAGE_NAME= '"+str(self.label_11.text())+"'")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_2.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget_2.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget_2.resizeRowsToContents()
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records2(self):
+        k = self.tableWidget_2.rowCount()       
+        while (k>0):             
+            k=k-1
+            self.tableWidget_2.removeRow(k) 
+    
 
 if __name__ == "__main__":
     import sys

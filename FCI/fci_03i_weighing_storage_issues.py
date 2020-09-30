@@ -37,6 +37,9 @@ class fci_03i_Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(880, 10, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -100,11 +103,11 @@ class fci_03i_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(12)
-        font.setBold(False)
+        font.setBold(True)
         font.setUnderline(False)
         font.setWeight(50)
         self.label_14.setFont(font)
-        self.label_14.setStyleSheet("color: rgb(170, 85, 127);")
+        #self.label_14.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_14.setObjectName("label_14")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -156,7 +159,7 @@ class fci_03i_Ui_MainWindow(object):
        
         '''
         self.label_22 = QtWidgets.QLabel(self.frame)
-        self.label_22.setGeometry(QtCore.QRect(30, 250, 161, 31))
+        self.label_22.setGeometry(QtCore.QRect(30, 330, 161, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -377,7 +380,7 @@ class fci_03i_Ui_MainWindow(object):
         self.label_39.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_39.setObjectName("label_39")
         self.label_40 = QtWidgets.QLabel(self.frame)
-        self.label_40.setGeometry(QtCore.QRect(910, 180, 101, 41))
+        self.label_40.setGeometry(QtCore.QRect(910, 180, 111, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(22)
@@ -1012,6 +1015,7 @@ class fci_03i_Ui_MainWindow(object):
         self.issue_id=""
         self.slot_1_wt=0
         self.slot_2_wt=0
+        self.save_diable=0
         ##########
 
         self.retranslateUi(MainWindow)
@@ -1119,7 +1123,7 @@ class fci_03i_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(MainWindow.close)
         #self.lineEdit_4.setReadOnly(True)
         self.lineEdit_5.setReadOnly(True)
-       
+        self.lineEdit.setText("222")
         self.lineEdit_4.setText("676")
         self.lineEdit_5.setText("76.338")
         self.lineEdit_13.setText("13")
@@ -1369,7 +1373,8 @@ class fci_03i_Ui_MainWindow(object):
         # Vehical No
         self.lineEdit_2.setText("")
         
-        
+        #Search line edit
+        self.lineEdit.setText("")
         
         #Accpted Wt
         #self.label_50.setText("0")
@@ -1537,7 +1542,7 @@ class fci_03i_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT STORAGE_NAME FROM SLOTS_MST  WHERE SLOT_NO= '"+str(self.comboBox_4.currentText())+"'") 
         for x in results:         
-                 self.label_55_1.setText(str(x[0]))
+                 self.label_55_1.setText("<font color=blue>"+str(x[0])+"</font>")
         connection.close()
         
     def start_wt(self):
@@ -1705,9 +1710,9 @@ class fci_03i_Ui_MainWindow(object):
         connection.close()  
     
     def fetch_via_search(self):
-        if(str(self.lineEdit_5.text()) != ""):
+        if(str(self.lineEdit.text()) != ""):
                 self.label_59.hide()
-                self.current_slip_no=str(self.lineEdit_5.text())
+                self.current_slip_no=str(self.lineEdit.text())
                 print("Slip No :"+str(self.current_slip_no))        
                 self.fetch_slip_data()
                 print(" self.save_diable :"+str(self.save_diable))

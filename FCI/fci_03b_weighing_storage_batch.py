@@ -39,6 +39,9 @@ class fci_03b_Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(880, 10, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -940,7 +943,8 @@ class fci_03b_Ui_MainWindow(object):
         self.quantity2="0"
         self.goAhead="No"
         self.slot_1_wt=0
-        self.slot_2_wt=0
+        self.slot_2_wt=0        
+        self.save_diable=0
         ##########
             
 
@@ -1051,6 +1055,8 @@ class fci_03b_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         
+       
+        
         self.radioButton_2.clicked.connect(self.mannual_onclick)
         self.radioButton.clicked.connect(self.auto_onclick)
         
@@ -1078,8 +1084,8 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_12.clicked.connect(self.mannual_update2)
         self.pushButton_8.clicked.connect(self.print_recipt)
         self.checkBox.clicked.connect(self.slot2_enable)
-        self.lineEdit.setText("0")
-        self.lineEdit_4.setText("0")
+        self.lineEdit.setText("")
+        self.lineEdit_4.setText("")
         #self.lineEdit_5.setText("7777") #serach line edit
         self.start_wt()
         
@@ -1110,8 +1116,11 @@ class fci_03b_Ui_MainWindow(object):
     
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
-    
-    
+        
+        
+   
+        
+        
     def avg_bags_wt_calc(self):
         bags=0
         net_wt=0
@@ -1271,7 +1280,9 @@ class fci_03b_Ui_MainWindow(object):
         #self.label_53.setText("50")
         
         #remark
-        #self.textEdit.setText("") 
+        #self.textEdit.setText("")
+        #Search lineedit
+        self.lineEdit.setText("") 
         
         #Quantity
         self.lineEdit_6.setText("")
@@ -1326,7 +1337,7 @@ class fci_03b_Ui_MainWindow(object):
             self.label_19.setText(str(x[0]).zfill(6))
         connection.close()
         
-        
+        self.stroagecombo.clear()
         self.i=0
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select STORAGE_NAME,STORAGE_LOCATION from STORAGE_DETAILS ") 
@@ -1555,9 +1566,9 @@ class fci_03b_Ui_MainWindow(object):
         connection.close()  
     
     def fetch_via_search(self):
-        if(str(self.lineEdit_5.text()) != ""):
+        if(str(self.lineEdit.text()) != ""):
                 self.label_56.hide()
-                self.current_slip_no=str(self.lineEdit_5.text())
+                self.current_slip_no=str(self.lineEdit.text())
                 #print("Slip No :"+str(self.current_slip_no))        
                 self.fetch_slip_data()
                 #print(" self.save_diable :"+str(self.save_diable))

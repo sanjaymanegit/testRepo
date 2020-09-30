@@ -579,7 +579,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_23.setText(_translate("MainWindow", "Date"))
         #self.label_10.setText(_translate("MainWindow", "48xx"))
         self.pushButton_10.setText(_translate("MainWindow", "Undo Storage Loss"))
-        self.pushButton_10_1.setText(_translate("MainWindow", "Storages List and Losses"))
+        self.pushButton_10_1.setText(_translate("MainWindow", "Total Storage Loss"))
         self.label_24.setText(_translate("MainWindow", "Recipted"))
         self.label_25.setText(_translate("MainWindow", "Issued"))
         self.label_26.setText(_translate("MainWindow", "Storage Loss"))

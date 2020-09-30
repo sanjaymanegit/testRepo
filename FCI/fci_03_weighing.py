@@ -712,8 +712,8 @@ class fci_03_Ui_MainWindow(object):
         self.label_55.setGeometry(QtCore.QRect(470, 0, 311, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(16)
-        font.setBold(False)
+        font.setPointSize(14)
+        font.setBold(True)
         font.setUnderline(False)
         font.setWeight(50)
         self.label_55.setFont(font)
@@ -890,6 +890,8 @@ class fci_03_Ui_MainWindow(object):
         self.login_user_id=""
         self.manual_ins_flg=""
         self.goAhead="No"
+       
+        self.save_diable=0
         ##########
             
             
@@ -962,7 +964,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_54.setText(_translate("MainWindow", "Target Storage:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Select"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Storage - Location 2"))
-        self.label_55.setText(_translate("MainWindow", "Recipt Loading @ Site"))
+        self.label_55.setText(_translate("MainWindow", "RECIPT LOADING AT SITE"))
         self.groupBox.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
