@@ -615,11 +615,11 @@ class TY_02_Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "CS Area(mm2):   "))
         self.label_29.setText(_translate("MainWindow", "Thickness(mm):"))
         self.label_30.setText(_translate("MainWindow", "Width(mm):    "))
-        self.label_35.setText(_translate("MainWindow", "Force at Peak (Kg):"))
+        self.label_35.setText(_translate("MainWindow", "Force at Peak (Kgf):"))
         self.label_36.setText(_translate("MainWindow", "100"))
         self.label_37.setText(_translate("MainWindow", "Length at Peak(mm):   "))
         self.label_38.setText(_translate("MainWindow", "220"))
-        self.label_33.setText(_translate("MainWindow", " Force (Kg):   "))
+        self.label_33.setText(_translate("MainWindow", " Force (Kgf):   "))
         #self.label_34.setText(_translate("MainWindow", "120"))
         self.label_39.setText(_translate("MainWindow", "Displacement (mm):"))
         #self.label_40.setText(_translate("MainWindow", "12.4"))
@@ -628,7 +628,7 @@ class TY_02_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "CS Area (mm2)"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Force at Peak(Kg)"))
+        item.setText(_translate("MainWindow", "Force at Peak(Kgf)"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Length at Peak(mm)"))
         item = self.tableWidget.horizontalHeaderItem(3)
@@ -636,13 +636,13 @@ class TY_02_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Guage Length(mm)"))
         item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Tensile Strength \n (Kg/Cm2)"))
+        item.setText(_translate("MainWindow", "Tensile Strength \n (Kgf/Cm2)"))
         item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Mod@100% \n (Kg/Cm2)"))
+        item.setText(_translate("MainWindow", "Mod@100% \n (Kgf/Cm2)"))
         item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Mod@200% \n (Kg/Cm2)"))
+        item.setText(_translate("MainWindow", "Mod@200% \n (Kgf/Cm2)"))
         item = self.tableWidget.horizontalHeaderItem(8)
-        item.setText(_translate("MainWindow", "Mod@300% \n (Kg/Cm2)"))
+        item.setText(_translate("MainWindow", "Mod@300% \n (Kgf/Cm2)"))
         
         item = self.tableWidget.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "%E@Peak"))
@@ -853,7 +853,7 @@ class TY_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CS_AREA,round(PEAK_LOAD_KG,2),round(E_AT_PEAK_LOAD_MM,2),SHAPE,GUAGE100,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(PRC_E_AT_PEAK,2),round(PRC_E_AT_BREAK,2),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),round(PEAK_LOAD_KG,2),round(E_AT_PEAK_LOAD_MM,2),SHAPE,GUAGE100,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(PRC_E_AT_PEAK,2),round(PRC_E_AT_BREAK,2),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -871,10 +871,10 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kg) ','Guage Length (mm)', 'Compression (mm)', 'Compressive Strength (Kg/Cm2)','% Compression','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ','Guage Length (mm)', 'Compression (mm)', 'Compressive Strength (Kgf/Cm2)','% Compression','Created On'])        
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CS_AREA,round(PEAK_LOAD_KG,2),GUAGE100,round(E_AT_BREAK_MM,2),round(TENSILE_STRENGTH,2),round(PRC_E_AT_BREAK,0),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),round(PEAK_LOAD_KG,2),GUAGE100,round(E_AT_BREAK_MM,2),round(TENSILE_STRENGTH,2),round(PRC_E_AT_BREAK,0),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -892,7 +892,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(4)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kg) ','Tear Strength (Kg/Cm)','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On'])        
        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT round(THINCKNESS,2),round(PEAK_LOAD_KG,2),round((round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10),2),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
@@ -913,7 +913,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Force at Peak(Kg)',' Length down at Peak (mm) ','Span Length(mm)','Width(mm)','Thickness(mm)','Flexural Strength (Kg/cm2)','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Force at Peak(Kgf)',' Length down at Peak (mm) ','Span Length(mm)','Width(mm)','Thickness(mm)','Flexural Strength (Kgf/cm2)','Created On'])        
        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT round(PEAK_LOAD_KG,2),round(E_AT_BREAK_MM,2),(SELECT NEW_TEST_MAX_LOAD FROM GLOBAL_VAR),WIDTH,round(THINCKNESS,2),FLEXURAL_STRENGTH_KG_CM,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
@@ -1207,13 +1207,21 @@ class TY_02_Ui_MainWindow(object):
            self.lineEdit_4.hide()            
         
         if(str(rows[0][14])=="Compress"):
-            self.show_grid_data_compress()
+            self.show_grid_data_compress()            
         elif(str(rows[0][14])=="Tear"):
             self.show_grid_data_tear()
+            self.label_28.hide()
+            self.label_30.hide()
+            self.lineEdit_3.hide()
+            self.lineEdit_2.hide()
         elif(str(rows[0][14])=="Flexural"):
             self.show_grid_data_flexure()
         else:
-            self.show_grid_data()    
+            self.show_grid_data()
+            self.label_28.show()
+            self.label_30.show()
+            self.lineEdit_3.show()
+            self.lineEdit_2.show()
         self.radioButton_4.setChecked(True)
         
         
@@ -1415,7 +1423,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=int(x[0])
              self.test_type=str(x[1])
              self.max_load=int(x[2])
-             self.max_length=int(x[3])
+             self.max_length=(int(x[0])-int(x[3]))
         connection.close()
         
         try:
@@ -1607,7 +1615,7 @@ class PlotCanvas(FigureCanvas):
             ax.set_xlabel('Compression (mm)')
         else:
             ax.set_xlabel('Elongation (mm)')
-        ax.set_ylabel('Load (Kg)')
+        ax.set_ylabel('Load (Kgf)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
@@ -1669,7 +1677,7 @@ class PlotCanvas_blank(FigureCanvas):
              self.test_type=str(x[0])            
         connection.close()
         
-        ax.set_ylabel('Load (Kg)')
+        ax.set_ylabel('Load (Kgf)')
         
         
         if(self.test_type=="Compress"):

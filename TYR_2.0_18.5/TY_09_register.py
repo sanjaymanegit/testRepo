@@ -174,7 +174,7 @@ class TY_09_Ui_MainWindow(object):
         
     def login_page(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'smx507171903' FROM GLOBAL_REPORTS_PARAM") 
+        results=connection.execute("SELECT 'sm507171903' FROM GLOBAL_REPORTS_PARAM") 
         for x in results:  
             if(str(self.lineEdit.text()) == str(x[0])):          
                 self.go_ahead_flg="No"

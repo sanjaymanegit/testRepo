@@ -27,20 +27,6 @@ class TY_01_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
-        self.shape=0
-        self.thickness=0
-        self.width=0
-        self.diameter=0
-        self.cs_area=0
-        self.inn_dia=0
-        self.out_dia=0
-        self.party_name=0
-        self.guage_mm=0
-        self.pre_load=0
-        self.motor_speed=0
-        self.specs=0
-        
-        self.test_type=""
         
         self.label_6 = QtWidgets.QLabel(self.frame)
         self.label_6.setGeometry(QtCore.QRect(70, 20, 261, 41))
@@ -71,45 +57,45 @@ class TY_01_Ui_MainWindow(object):
         self.label_1_1.setGeometry(QtCore.QRect(700, 450, 130, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.label_1_1.setFont(font)
+        self.label_1_1.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_1_1.setObjectName("label_1_1")        
-        self.label_1_1.setText("Max.Load (Kg):")
-        self.label_1_1.hide()
+        
         
         self.lineEdit_1_1 = QtWidgets.QLineEdit(self.frame)
         reg_ex = QRegExp("(\d+(\.\d+)?)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_1_1)
         self.lineEdit_1_1.setValidator(input_validator)
-        self.lineEdit_1_1.setGeometry(QtCore.QRect(830, 450, 100, 41))
+        self.lineEdit_1_1.setGeometry(QtCore.QRect(810, 450, 80, 41))
         self.lineEdit_1_1.setMaxLength(6)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.lineEdit_1_1.setFont(font)
         self.lineEdit_1_1.setText("0")
         self.lineEdit_1_1.setObjectName("lineEdit_1_1")
         self.lineEdit_1_1.hide()
         
         self.label_2_1 = QtWidgets.QLabel(self.frame)
-        self.label_2_1.setGeometry(QtCore.QRect(960, 450, 141, 41))
+        self.label_2_1.setGeometry(QtCore.QRect(960, 450, 176, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(12)
-        self.label_2_1.setFont(font)        
+        font.setPointSize(10)
+        self.label_2_1.setFont(font)
+        self.label_2_1.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_2_1.setObjectName("label_2_1")        
-        self.label_2_1.setText("Max.Length (mm):")
-        self.label_2_1.hide()
+        
         
         self.lineEdit_2_1 = QtWidgets.QLineEdit(self.frame)
         reg_ex = QRegExp("(\d+(\.\d+)?)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_2_1)
         self.lineEdit_2_1.setValidator(input_validator)
-        self.lineEdit_2_1.setGeometry(QtCore.QRect(1120, 450, 100, 41))
+        self.lineEdit_2_1.setGeometry(QtCore.QRect(1140, 450, 80, 41))
         self.lineEdit_2_1.setMaxLength(6)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.lineEdit_2_1.setFont(font)
         self.lineEdit_2_1.setText("0")
         self.lineEdit_2_1.setObjectName("lineEdit_2_1")
@@ -355,7 +341,7 @@ class TY_01_Ui_MainWindow(object):
         #self.comboBox.addItem("")
         self.gridLayout_2.addWidget(self.comboBox, 1, 1, 1, 1)
         self.label_23 = QtWidgets.QLabel(self.frame)
-        self.label_23.setGeometry(QtCore.QRect(690, 40, 351, 51))
+        self.label_23.setGeometry(QtCore.QRect(690, 40, 551, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
@@ -372,6 +358,21 @@ class TY_01_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.goAhead="No"
+        self.shape=0
+        self.thickness=0
+        self.width=0
+        self.diameter=0
+        self.cs_area=0
+        self.inn_dia=0
+        self.out_dia=0
+        self.party_name=0
+        self.guage_mm=0
+        self.pre_load=0
+        self.motor_speed=0
+        self.specs=0        
+        self.test_type=""
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -411,6 +412,10 @@ class TY_01_Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "Pipes-Jian"))
         self.label_23.setText(_translate("MainWindow", "Error : Batch Id and Job Id should not null."))
         self.label_23.hide()
+        self.label_1_1.setText("Max.Load (Kgf):")
+        self.label_1_1.hide()
+        self.label_2_1.setText("Compressive.Length(mm):")
+        self.label_2_1.hide()
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_7.clicked.connect(self.reset_job)
         self.pushButton_3.clicked.connect(self.open_window)
@@ -453,7 +458,7 @@ class TY_01_Ui_MainWindow(object):
              self.label_2_1.hide()
              self.lineEdit_2_1.hide()
              
-        
+        connection.close()
         self.i=0
         connection = sqlite3.connect("tyr.db")
         if(self.test_type=="Tear" or self.test_type=="Flexural"):
@@ -497,8 +502,9 @@ class TY_01_Ui_MainWindow(object):
            if (x[0]=="Rectangle"):
                self.label_17.setText("Thickness(mm):")
                self.label_18.setText(str(x[1]))
-               self.label_19.setText("Width(mm):")               
-               self.label_20.setText(str(x[2]))
+               if(self.test_type != "Tear"):
+                       self.label_19.setText("Width(mm):")               
+                       self.label_20.setText(str(x[2]))
            elif(x[0]=="Pipe"):    
                self.label_17.setText("In.Dia(mm):")
                self.label_18.setText(str(x[5]))
@@ -549,6 +555,8 @@ class TY_01_Ui_MainWindow(object):
            if(self.test_type=="Flexural"):
                        self.lineEdit_1_1.setText(str(x[8]))
            
+           self.label_15.show()
+           self.label_16.show()
            self.label_17.show()
            self.label_18.show()
            self.label_19.show()
@@ -559,8 +567,14 @@ class TY_01_Ui_MainWindow(object):
                self.label_20.show()
                self.label_17.setText("Thickness:")
                self.label_18.setText(str(x[1]))
-               self.label_19.setText("Width:")               
-               self.label_20.setText(str(x[2]))
+               if(self.test_type != "Tear"):
+                       self.label_19.setText("Width:")               
+                       self.label_20.setText(str(x[2]))
+               else:
+                       self.label_19.hide()               
+                       self.label_20.hide()
+                       self.label_15.hide()               
+                       self.label_16.hide()
            elif(x[0]=="Pipe"):    
                self.label_17.setText("In.Diameter:")
                self.label_18.setText(str(x[5]))
@@ -587,18 +601,36 @@ class TY_01_Ui_MainWindow(object):
         self.lineEdit_1_1.setText("0")
         self.lineEdit_2_1.setText("0")
         self.label_23.hide()
-        
-    def open_window(self): 
-        #print("Thickness :"+str(self.thickness))
-        #print("Width :"+str(self.width))
-        #print("cs area :"+str(self.cs_area))       
+    
+    def validation(self):
+        self.goAhead="No"
         if (self.lineEdit.text() == ""):
             self.label_23.setText(" Job Name Should not Emplty ")    
             self.label_23.show()
         elif(self.lineEdit_2.text() == ""):
             self.label_23.setText(" Batch Id Should not Emplty ")    
-            self.label_23.show()
+            self.label_23.show()           
+        elif(self.test_type=='Compress'):
+                if(self.lineEdit_2_1.text() == ""):
+                    self.label_23.setText(" Compressive Length Should not Emplty ")    
+                    self.label_23.show()
+                elif(int(self.lineEdit_2_1.text() ) <=  0):
+                    self.label_23.setText(" Compressive Length Should not be 0 ")    
+                    self.label_23.show()
+                elif(int(self.lineEdit_2_1.text() ) > int(self.guage_mm)):
+                    self.label_23.setText(" Compressive Length Should not be less than Guage Length ")    
+                    self.label_23.show()
+                else:
+                    self.goAhead="Yes"
         else:
+             self.goAhead="Yes" 
+            
+    def open_window(self): 
+        #print("Thickness :"+str(self.thickness))
+        #print("Width :"+str(self.width))
+        #print("cs area :"+str(self.cs_area))
+        self.validation()                   
+        if(self.goAhead=="Yes"):        
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    

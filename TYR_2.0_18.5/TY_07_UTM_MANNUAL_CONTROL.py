@@ -112,6 +112,17 @@ class TY_07_Ui_MainWindow(object):
         font.setPointSize(12)
         self.pushButton_14.setFont(font)
         self.pushButton_14.setObjectName("pushButton_14")
+        
+        self.toolButton = QtWidgets.QToolButton(self.centralwidget)
+        self.toolButton.setGeometry(QtCore.QRect(250, 310, 70, 97))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("./images/up1.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.toolButton.setIcon(icon)
+        self.toolButton.setIconSize(QtCore.QSize(70, 141))
+        self.toolButton.setStyleSheet("background-color: rgb(221, 255, 234);")
+        self.toolButton.setObjectName("toolButton")
+        self.toolButton.hide()
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
@@ -174,6 +185,11 @@ class TY_07_Ui_MainWindow(object):
         #print("Reverse Run ....")
         self.validate_speed()
         #self.label_9_1.hide()
+        self.toolButton.show()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("./images/down.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.toolButton.setIcon(icon)
+        self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
            self.ser = serial.Serial(
                 port='/dev/ttyUSB0',
@@ -201,6 +217,11 @@ class TY_07_Ui_MainWindow(object):
         print("Forward Run ....")
         self.validate_speed()
         #self.label_9_1.hide()
+        self.toolButton.show()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("./images/up1.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.toolButton.setIcon(icon)
+        self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
            self.ser = serial.Serial(
                 port='/dev/ttyUSB0',
@@ -226,6 +247,7 @@ class TY_07_Ui_MainWindow(object):
     def stop_run(self):
         #print("Forward Run ....")
         self.label_9_1.hide()
+        self.toolButton.hide()
         try:
            self.ser = serial.Serial(
                 port='/dev/ttyUSB0',

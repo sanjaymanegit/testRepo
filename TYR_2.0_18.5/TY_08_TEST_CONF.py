@@ -142,7 +142,7 @@ class TY_08_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Save"))
         self.checkBox.setText(_translate("MainWindow", "Tensile Test"))
         self.checkBox_2.setText(_translate("MainWindow", "Compression Test"))
-        self.checkBox_3.setText(_translate("MainWindow", "Tare Test"))
+        self.checkBox_3.setText(_translate("MainWindow", "Tear Test"))
         self.checkBox_4.setText(_translate("MainWindow", "Flexural Test"))
         
         self.pushButton_3.clicked.connect(MainWindow.close)
