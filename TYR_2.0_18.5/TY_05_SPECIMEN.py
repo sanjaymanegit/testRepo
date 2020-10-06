@@ -240,7 +240,10 @@ class TY_05_Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)        
         self.lineEdit_3.setGeometry(QtCore.QRect(820, 400, 111, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -337,6 +340,9 @@ class TY_05_Ui_MainWindow(object):
         self.label_38.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_38.setObjectName("label_38")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
+        self.lineEdit_11.setValidator(input_validator)
         self.lineEdit_11.setGeometry(QtCore.QRect(1150, 460, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -377,6 +383,9 @@ class TY_05_Ui_MainWindow(object):
         self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_27.setObjectName("label_27")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
         self.lineEdit_6.setGeometry(QtCore.QRect(1150, 400, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -395,6 +404,9 @@ class TY_05_Ui_MainWindow(object):
         self.label_29.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_29.setObjectName("label_29")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
         self.lineEdit_8.setGeometry(QtCore.QRect(820, 460, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -413,6 +425,9 @@ class TY_05_Ui_MainWindow(object):
         self.label_30.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_30.setObjectName("label_30")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
+        self.lineEdit_13.setValidator(input_validator)
         self.lineEdit_13.setGeometry(QtCore.QRect(820, 520, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -431,6 +446,9 @@ class TY_05_Ui_MainWindow(object):
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
+        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(1150, 520, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -639,15 +657,15 @@ class TY_05_Ui_MainWindow(object):
                         self.cs_area=(float(self.thickness)) * (float(self.width))                    
                         self.lineEdit_14.setText(str(round(self.cs_area,2)))
                     except ValueError:
-                        self.lineEdit_14.setText("0")
-                        self.lineEdit_3.setText("0")
-                        self.lineEdit_6.setText("0")
+                        self.lineEdit_14.setText("")
+                        self.lineEdit_3.setText("")
+                        self.lineEdit_6.setText("")
             else:
-                    self.lineEdit_14.setText("0")
-                    self.lineEdit_6.setText("0")
+                    self.lineEdit_14.setText("")
+                    self.lineEdit_6.setText("")
         else:
-            self.lineEdit_14.setText("0")
-            self.lineEdit_3.setText("0")
+            self.lineEdit_14.setText("")
+            self.lineEdit_3.setText("")
             
     def diameter_onchange(self):
         if(str(self.lineEdit_13.text()) != ""):
@@ -656,11 +674,11 @@ class TY_05_Ui_MainWindow(object):
                 self.cs_area=(float(self.diameter)*3.14)/2 
                 self.lineEdit_14.setText(str(round(self.cs_area,2)))
             except ValueError:
-                self.lineEdit_14.setText("0")
-                self.lineEdit_13.setText("0")
+                self.lineEdit_14.setText("")
+                self.lineEdit_13.setText("")
         else:
-            self.lineEdit_14.setText("0")
-            self.lineEdit_13.setText("0")
+            self.lineEdit_14.setText("")
+            self.lineEdit_13.setText("")
             
       
     def out_diameter_onchange(self):
@@ -672,16 +690,16 @@ class TY_05_Ui_MainWindow(object):
                     self.cs_area=((float(self.out_diameter)*3.14)/2)-((float(self.inn_diamter)*3.14)/2) 
                     self.lineEdit_14.setText(str(round(self.cs_area,2)))
                 except ValueError:
-                    self.lineEdit_14.setText("0")
-                    self.lineEdit_11.setText("0")
-                    self.lineEdit_8.setText("0")
+                    self.lineEdit_14.setText("")
+                    self.lineEdit_11.setText("")
+                    self.lineEdit_8.setText("")
                     
             else:
-                    self.lineEdit_14.setText("0")
-                    self.lineEdit_11.setText("0")
+                    self.lineEdit_14.setText("")
+                    self.lineEdit_11.setText("")
         else: 
-            self.lineEdit_14.setText("0")
-            self.lineEdit_8.setText("0")
+            self.lineEdit_14.setText("")
+            self.lineEdit_8.setText("")
     
     
     
@@ -725,17 +743,17 @@ class TY_05_Ui_MainWindow(object):
         self.lineEdit_9.setText("")
         self.lineEdit_7.setText("")
        
-        self.lineEdit_4.setText("0")
-        self.lineEdit_10.setText("0")
+        self.lineEdit_4.setText("")
+        self.lineEdit_10.setText("")
             
-        self.lineEdit.setText("0")
-        self.lineEdit_3.setText("0")
-        self.lineEdit_6.setText("0")
+        self.lineEdit.setText("")
+        self.lineEdit_3.setText("")
+        self.lineEdit_6.setText("")
             
-        self.lineEdit_8.setText("0")
-        self.lineEdit_11.setText("0")
-        self.lineEdit_13.setText("0")
-        self.lineEdit_14.setText("0")
+        self.lineEdit_8.setText("")
+        self.lineEdit_11.setText("")
+        self.lineEdit_13.setText("")
+        self.lineEdit_14.setText("")
         
         self.pushButton_2.setEnabled(True) #add
         self.pushButton_3.setDisabled(True)  #save
@@ -817,7 +835,16 @@ class TY_05_Ui_MainWindow(object):
              self.label_21.show()  
         elif(self.lineEdit_7.text()== ""):
              self.label_21.setText("Party is Empty.")
-             self.label_21.show()          
+             self.label_21.show()
+        elif(self.lineEdit_10.text()== ""):
+             self.label_21.setText("Guage length is Empty.")
+             self.label_21.show()
+        elif(self.lineEdit_14.text()== ""):
+             self.label_21.setText("CS.Area is Empty.")
+             self.label_21.show()  
+        elif(float(self.lineEdit_14.text()) <= 0):
+             self.label_21.setText("CS.Area should be greater than zero.")
+             self.label_21.show()      
         else:
              self.go_ahead="Yes"
         

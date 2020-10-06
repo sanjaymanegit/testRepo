@@ -52,6 +52,7 @@ class TY_02_Ui_MainWindow(object):
         self.load200_guage=0
         self.load300_guage=0
         self.guage_length_mm=0
+        self.goAhead="No"
         
         
         self.groupBox = QtWidgets.QGroupBox(self.frame)
@@ -585,7 +586,7 @@ class TY_02_Ui_MainWindow(object):
         self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(790, 170, 201, 41))
+        self.label_3.setGeometry(QtCore.QRect(790, 170, 301, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -962,26 +963,102 @@ class TY_02_Ui_MainWindow(object):
         elif(self.shape=="DirectValue"):
             self.cs_area=str(self.lineEdit_2.text())
         
-        connection = sqlite3.connect("tyr.db")             
-        with connection:        
-              cursor = connection.cursor()            
-              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.thickness)+"',NEW_TEST_WIDTH="+str(self.width)+",NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.diameter)+"', NEW_TEST_INN_DIAMETER='"+str(self.inn_dia)+"', NEW_TEST_OUTER_DIAMETER='"+str(self.out_dia)+"'")                                              
-       
-        connection.commit();
-        connection.close()
+        self.validation()
+        if(self.goAhead=="Yes"):
+                connection = sqlite3.connect("tyr.db")             
+                with connection:        
+                      cursor = connection.cursor()            
+                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.thickness)+"',NEW_TEST_WIDTH="+str(self.width)+",NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.diameter)+"', NEW_TEST_INN_DIAMETER='"+str(self.inn_dia)+"', NEW_TEST_OUTER_DIAMETER='"+str(self.out_dia)+"'")                                              
+               
+                connection.commit();
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                rows=results.fetchall()
+                connection.close()
+                #self.label_4.setText(str(rows[0][0]))
+                #print("count of stg records :"+str(rows[0][0]))
+                if(int(rows[0][0]) > -2 ):
+                    self.timer3=QtCore.QTimer()
+                    self.timer3.setInterval(1000)        
+                    self.timer3.timeout.connect(self.show_load_cell_val)
+                    self.timer3.start() 
+     
+    def validation(self):
+        self.goAhead="No"
+        if(self.shape=="Rectangle"):           
+            self.thickness=str(self.lineEdit_4.text())
+            self.width=str(self.lineEdit_3.text())
+            self.cs_area=str(self.lineEdit_2.text())
+            if(self.cs_area != "" and self.thickness !="" and self.width != ""):
+                if(float(self.thickness) <= 0):
+                    self.label_3.setText("Thickness should be greater than zero.")
+                    self.label_3.show()
+                elif(float(self.width) <= 0):
+                    self.label_3.setText("Paramater should be greater than zero.")
+                    self.label_3.show()                    
+                elif(float(self.cs_area) <= 0):
+                    self.label_3.setText("CS.Area should be greater than zero.")
+                    self.label_3.show()
+                else:
+                    self.label_3.show()
+                    self.goAhead="Yes"
+            else:
+                self.label_3.setText("Specimen Parameter(s) empty.")
+                self.label_3.show()
+        elif(self.shape=="Pipe"):
+            self.lineEdit_3.show()
+            self.inn_dia=str(self.lineEdit_4.text())
+            self.out_dia=str(self.lineEdit_3.text())
+            self.cs_area=str(self.lineEdit_2.text())
+            if(self.cs_area != "" and self.inn_dia !="" and self.out_dia != ""):
+                if(float(self.out_dia) <= 0):
+                    self.label_3.setText("Out.Dia should be greater than zero.")
+                    self.label_3.show()
+                elif(float(self.inn_dia) <= 0):
+                    self.label_3.setText("Inn.Dia should be greater than zero.")
+                    self.label_3.show()                    
+                elif(float(self.cs_area) <= 0):
+                    self.label_3.setText("CS.Area should be greater than zero.")
+                    self.label_3.show()
+                else:
+                    self.label_3.show()
+                    self.goAhead="Yes"
+            else:
+                self.label_3.setText("Specimen Parameter(s) empty.")
+                self.label_3.show()
+        elif(self.shape=="Cylindrical"):     
+            self.diameter=str(self.lineEdit_4.text())
+            self.cs_area=str(self.lineEdit_2.text())
+            if(self.cs_area != "" and self.diameter !=""):
+                if(float(self.diameter) <= 0):
+                    self.label_3.setText("Diameter should be greater than zero.")
+                    self.label_3.show()                                   
+                elif(float(self.cs_area) <= 0):
+                    self.label_3.setText("CS.Area should be greater than zero.")
+                    self.label_3.show()
+                else:
+                    self.label_3.show()
+                    self.goAhead="Yes"
+            else:
+                self.label_3.setText("Specimen Parameter(s) empty.")
+                self.label_3.show()
+            
+        elif(self.shape=="DirectValue"):
+            self.cs_area=str(self.lineEdit_2.text())
+            if(self.cs_area != ""):
+                if(float(self.cs_area) <= 0):
+                    self.label_3.setText("CS.Area should be greater than zero.")
+                    self.label_3.show()
+                else:
+                    self.label_3.show()
+                    self.goAhead="Yes"
+            else:
+                self.label_3.setText("Specimen Parameter(s) empty.")
+                self.label_3.show()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
-        rows=results.fetchall()
-        connection.close()
-        #self.label_4.setText(str(rows[0][0]))
-        #print("count of stg records :"+str(rows[0][0]))
-        if(int(rows[0][0]) > -2 ):
-            self.timer3=QtCore.QTimer()
-            self.timer3.setInterval(1000)        
-            self.timer3.timeout.connect(self.show_load_cell_val)
-            self.timer3.start() 
-                    
+        
     def save_graph_data(self):                 
         ### LOAD_CYCLE_MST
         self.sc_new.on_stop()
@@ -1153,7 +1230,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_26.setText(str(rows[0][0]))
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
@@ -1180,7 +1257,7 @@ class TY_02_Ui_MainWindow(object):
            self.lineEdit_3.setText(str(rows[0][2]))
            self.label_28.show()
                      
-           print("thick ness value "+str(rows[0][1]))                                
+           #print("thick ness value "+str(rows[0][1]))                                
         elif(self.shape=="Cylindrical"):           
            self.label_28.show() 
            self.lineEdit_2.setText(str(rows[0][6]))
@@ -1209,11 +1286,12 @@ class TY_02_Ui_MainWindow(object):
         if(str(rows[0][14])=="Compress"):
             self.show_grid_data_compress()            
         elif(str(rows[0][14])=="Tear"):
-            self.show_grid_data_tear()
+            self.show_grid_data_tear()            
             self.label_28.hide()
             self.label_30.hide()
-            self.lineEdit_3.hide()
+            self.lineEdit_4.hide()
             self.lineEdit_2.hide()
+            
         elif(str(rows[0][14])=="Flexural"):
             self.show_grid_data_flexure()
         else:
