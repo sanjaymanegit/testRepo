@@ -326,7 +326,7 @@ class fci_29_Ui_MainWindow(object):
         self.line_14.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_14.setObjectName("line_14")
         self.label_10 = QtWidgets.QLabel(self.frame)
-        self.label_10.setGeometry(QtCore.QRect(850, 460, 61, 31))
+        self.label_10.setGeometry(QtCore.QRect(850, 460, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -436,7 +436,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_29.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_29.setObjectName("label_29")
         self.label_30 = QtWidgets.QLabel(self.frame)
-        self.label_30.setGeometry(QtCore.QRect(660, 390, 91, 31))
+        self.label_30.setGeometry(QtCore.QRect(660, 390, 91, 41))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -445,7 +445,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_30.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_30.setObjectName("label_30")
         self.label_31 = QtWidgets.QLabel(self.frame)
-        self.label_31.setGeometry(QtCore.QRect(850, 390, 61, 31))
+        self.label_31.setGeometry(QtCore.QRect(850, 390, 71, 41))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -454,7 +454,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_31.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_31.setObjectName("label_31")
         self.label_32 = QtWidgets.QLabel(self.frame)
-        self.label_32.setGeometry(QtCore.QRect(850, 330, 61, 31))
+        self.label_32.setGeometry(QtCore.QRect(850, 330, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -463,7 +463,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_32.setObjectName("label_32")
         self.label_34 = QtWidgets.QLabel(self.frame)
-        self.label_34.setGeometry(QtCore.QRect(850, 270, 61, 31))
+        self.label_34.setGeometry(QtCore.QRect(850, 270, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -692,6 +692,13 @@ class fci_29_Ui_MainWindow(object):
                           self.label_32.setText('{:04.2f}'.format(float(x[9]))) #I_AVG_BAG_WT
                           self.label_39.setText(str(x[10])) #I_DATE
                           self.label_14.setText(str(x[11])) #LOSS BAGS
+                          if(int(x[11]) > 0):
+                                  self.pushButton_10.setEnabled(True)
+                                  self.pushButton_7.setDisabled(True)
+                          else:
+                                  self.pushButton_10.setDisabled(True)
+                                  self.pushButton_7.setEnabled(True)
+                              
                           self.label_30.setText('{:06.3f}'.format(float(x[12]))) #LOSS_NET_WT
                           self.label_6.setText(str(x[13])) #BAL_BAGS
                           self.label_7.setText('{:06.3f}'.format(float(x[14]))) #BAL_NET_WT

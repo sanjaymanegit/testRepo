@@ -16,12 +16,13 @@ import sys,os
 import time
 from PyQt5.QtCore import QDate
 import sys,os
-from fci_03_weighing import fci_03_Ui_MainWindow
+
 from fci_02_Batches import fci_02_Ui_MainWindow
 from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
+
 from fci_29_stacks import fci_29_Ui_MainWindow
 
 
@@ -33,10 +34,11 @@ class fci_01_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1291, 671))
+        self.frame.setGeometry(QtCore.QRect(25, 25, 1291, 718))
         self.frame.setStyleSheet("")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setStyleSheet("background-color: rgb(47, 141, 255);")
         self.frame.setObjectName("frame")
         self.pushButton = QtWidgets.QPushButton(self.frame)
         self.pushButton.setGeometry(QtCore.QRect(110, 180, 211, 121))
@@ -46,6 +48,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_3.setGeometry(QtCore.QRect(870, 400, 211, 121))
@@ -55,6 +58,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_3.setFont(font)
+        self.pushButton_3.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(490, 180, 211, 121))
@@ -64,13 +68,17 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
+        self.pushButton_4.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(290, 30, 721, 91))
         font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(24)
+        font.setBold(True)
+        font.setWeight(75)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label.setStyleSheet("color: rgb(255, 255, 0);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         
@@ -79,19 +87,20 @@ class fci_01_Ui_MainWindow(object):
         self.label_20.setGeometry(QtCore.QRect(1060, 10, 251, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)        
+        font.setBold(True)
+        font.setPointSize(12)        
         self.label_20.setFont(font)
-        self.label_20.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_20.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         
         self.label_20_1 = QtWidgets.QLabel(self.frame)
-        self.label_20_1.setGeometry(QtCore.QRect(950, 40, 351, 31))
+        self.label_20_1.setGeometry(QtCore.QRect(300, 100, 721, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(8)        
+        font.setPointSize(14)        
         self.label_20_1.setFont(font)
-        self.label_20_1.setStyleSheet("color: rgb(0, 85, 0);")
+        self.label_20_1.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_20_1.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20_1.setObjectName("label_20_1")
         
@@ -112,6 +121,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_5.setFont(font)
+        #self.pushButton_5.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_5.setObjectName("pushButton_5")
         
         self.pushButton_5_1 = QtWidgets.QPushButton(self.frame)
@@ -125,15 +135,15 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_5_1.setObjectName("pushButton_5_1")
         
         self.label_21 = QtWidgets.QLabel(self.frame)
-        self.label_21.setGeometry(QtCore.QRect(1050, 590, 171, 41))
+        self.label_21.setGeometry(QtCore.QRect(1060, 590, 250, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
+        font.setPointSize(12)
         font.setBold(True)
         font.setUnderline(False)
         font.setWeight(75)
         self.label_21.setFont(font)
-        self.label_21.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_21.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
@@ -144,6 +154,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_6.setFont(font)
+        self.pushButton_6.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
         self.pushButton_7.setGeometry(QtCore.QRect(870, 180, 211, 121))
@@ -153,6 +164,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7.setFont(font)
+        self.pushButton_7.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
         self.pushButton_9.setGeometry(QtCore.QRect(490, 400, 211, 121))
@@ -162,6 +174,7 @@ class fci_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
+        self.pushButton_9.setStyleSheet("background-color: rgb(255, 200, 158);")
         self.pushButton_9.setObjectName("pushButton_9")
         self.toolButton = QtWidgets.QToolButton(self.frame)
         self.toolButton.setGeometry(QtCore.QRect(20, 20, 51, 41))
@@ -169,15 +182,15 @@ class fci_01_Ui_MainWindow(object):
         self.toolButton.setText("")
         self.toolButton.setObjectName("toolButton")
         self.label_22 = QtWidgets.QLabel(self.frame)
-        self.label_22.setGeometry(QtCore.QRect(80, 20, 51, 41))
+        self.label_22.setGeometry(QtCore.QRect(80, 20, 81, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setUnderline(False)
         font.setWeight(75)
         self.label_22.setFont(font)
-        self.label_22.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_22.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_22.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_22.setObjectName("label_22")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -200,7 +213,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", " Weighing"))
         self.pushButton_3.setText(_translate("MainWindow", "Admin."))
         self.pushButton_4.setText(_translate("MainWindow", "Recipts "))
-        self.label.setText(_translate("MainWindow", "HI-Tech Material Handling System"))
+        self.label.setText(_translate("MainWindow", "HI-TECH MATERIAL HANDLING SYSTEM"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.label_20_1.setText(_translate("MainWindow", "LoginBy: Sanjaykumar Mane (Super Admin) "))
         self.pushButton_2.setText(_translate("MainWindow", "Shutdown"))
@@ -239,7 +252,7 @@ class fci_01_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
         for x in results:
-            self.label_20_1.setText("Logged In : "+str(x[0])+"\n @ "+str(x[1]))
+            self.label_20_1.setText("Logged In : "+str(x[0])+" @ "+str(x[1]))
             self.device_location_type=str(x[1])
         connection.close()
         
@@ -328,17 +341,11 @@ class fci_01_Ui_MainWindow(object):
                 for x in results:
                     #print("DATE Str :"+str(x[0]))
                     DAT_DT=datetime.datetime.strptime(str(x[0]),"%Y-%m-%d").date()
-                    CURR_DT=datetime.date.today()                
+                    CURR_DT=datetime.date.today()               
                     
                     #print("date dt :"+str(DAT_DT))
                     #print("curr dt :"+str(CURR_DT))                
-                    if(DAT_DT > CURR_DT):
-                         if(str(self.device_location_type) == 'SITE'):
-                             self.window = QtWidgets.QMainWindow()
-                             self.ui=fci_03_Ui_MainWindow()
-                             self.ui.setupUi(self.window)           
-                             self.window.show()
-                         else:
+                    if(DAT_DT > CURR_DT):                         
                              self.window = QtWidgets.QMainWindow()
                              self.ui=fci_04_Ui_MainWindow()
                              self.ui.setupUi(self.window)           
