@@ -19,15 +19,27 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(47, 141, 255);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
+      <x>30</x>
+      <y>10</y>
       <width>1311</width>
-      <height>691</height>
+      <height>721</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Sans Serif</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -38,18 +50,24 @@
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>111</width>
-       <height>41</height>
+       <x>560</x>
+       <y>440</y>
+       <width>171</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <family>Arial</family>
+       <pointsize>20</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(170, 0, 0);
+</string>
      </property>
      <property name="text">
       <string>ZERO</string>
@@ -58,23 +76,22 @@
     <widget class="QLabel" name="label_20">
      <property name="geometry">
       <rect>
-       <x>1070</x>
-       <y>20</y>
-       <width>201</width>
-       <height>31</height>
+       <x>50</x>
+       <y>0</y>
+       <width>221</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>MS Sans Serif</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-       <underline>false</underline>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 255);</string>
+      <string notr="true">color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
       <string>05 Aug 2020 12:45:00</string>
@@ -86,10 +103,10 @@
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>310</x>
-       <y>610</y>
+       <x>50</x>
+       <y>620</y>
        <width>111</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -98,6 +115,10 @@
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
       <string>RECIPT</string>
@@ -106,10 +127,10 @@
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>610</y>
-       <width>141</width>
-       <height>41</height>
+       <x>230</x>
+       <y>620</y>
+       <width>111</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -118,6 +139,10 @@
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(0, 180, 0);</string>
      </property>
      <property name="text">
       <string>ISSUE</string>
@@ -126,10 +151,10 @@
     <widget class="QPushButton" name="pushButton_5">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>610</y>
-       <width>121</width>
-       <height>41</height>
+       <x>410</x>
+       <y>620</y>
+       <width>111</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -139,6 +164,10 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(0, 0, 255);</string>
+     </property>
      <property name="text">
       <string>OTHER</string>
      </property>
@@ -146,10 +175,10 @@
     <widget class="QLCDNumber" name="lcdNumber">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>60</y>
-       <width>991</width>
-       <height>341</height>
+       <x>50</x>
+       <y>90</y>
+       <width>1141</width>
+       <height>311</height>
       </rect>
      </property>
      <property name="layoutDirection">
@@ -161,35 +190,35 @@ font: 10pt &quot;MS Sans Serif&quot;;
 color: rgb(255, 0, 0);</string>
      </property>
      <property name="digitCount">
-      <number>6</number>
+      <number>7</number>
      </property>
      <property name="value" stdset="0">
-      <double>-20000.000000000000000</double>
+      <double>-200000.000000000000000</double>
      </property>
      <property name="intValue" stdset="0">
-      <number>-20000</number>
+      <number>-200000</number>
      </property>
     </widget>
     <widget class="QLabel" name="label_53">
      <property name="geometry">
       <rect>
-       <x>1180</x>
-       <y>350</y>
-       <width>51</width>
-       <height>31</height>
+       <x>1210</x>
+       <y>300</y>
+       <width>81</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>MS Shell Dlg 2</family>
-       <pointsize>14</pointsize>
+       <pointsize>28</pointsize>
        <weight>75</weight>
        <bold>true</bold>
        <underline>false</underline>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>.Kg</string>
@@ -201,10 +230,202 @@ color: rgb(255, 0, 0);</string>
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>130</y>
+       <x>570</x>
+       <y>620</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>MENU</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>20</y>
+       <width>421</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 0);</string>
+     </property>
+     <property name="text">
+      <string>HI-TECH WEIGHING</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>510</y>
+       <width>20</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_3">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>520</y>
+       <width>121</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>GROSS</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_4">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>520</y>
        <width>111</width>
-       <height>41</height>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>TARE</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>530</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(170, 255, 255);
+color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>0001</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_9">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>440</y>
+       <width>211</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 0);</string>
+     </property>
+     <property name="text">
+      <string>NEW SLIP</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_10">
+     <property name="geometry">
+      <rect>
+       <x>950</x>
+       <y>440</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 0);</string>
+     </property>
+     <property name="text">
+      <string>OLD SLIP</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>970</x>
+       <y>530</y>
+       <width>111</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -214,8 +435,114 @@ color: rgb(255, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(170, 0, 0);</string>
+     </property>
      <property name="text">
-      <string>RETURN</string>
+      <string>CHECK</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_7">
+     <property name="geometry">
+      <rect>
+       <x>1180</x>
+       <y>620</y>
+       <width>101</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+
+background-color: rgb(0, 0, 255);</string>
+     </property>
+     <property name="text">
+      <string>CLEAR</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_11">
+     <property name="geometry">
+      <rect>
+       <x>1120</x>
+       <y>530</y>
+       <width>161</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 0);</string>
+     </property>
+     <property name="text">
+      <string>DUPLICATE</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>620</y>
+       <width>391</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 0);
+background-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>SERIAL NO NOT EXISTS</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_8">
+     <property name="geometry">
+      <rect>
+       <x>1200</x>
+       <y>10</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>LOGOUT</string>
      </property>
     </widget>
    </widget>
