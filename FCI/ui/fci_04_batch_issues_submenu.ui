@@ -38,10 +38,10 @@
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>450</y>
-       <width>211</width>
-       <height>71</height>
+       <x>10</x>
+       <y>60</y>
+       <width>111</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
@@ -52,14 +52,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Set Zero</string>
+      <string>ZERO</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_20">
      <property name="geometry">
       <rect>
-       <x>1080</x>
-       <y>10</y>
+       <x>1070</x>
+       <y>20</y>
        <width>201</width>
        <height>31</height>
       </rect>
@@ -83,34 +83,13 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>610</x>
-       <y>590</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Return</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>440</x>
-       <y>450</y>
-       <width>211</width>
-       <height>71</height>
+       <x>310</x>
+       <y>610</y>
+       <width>111</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
@@ -121,16 +100,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Weighing Batches</string>
+      <string>RECIPT</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>730</x>
-       <y>450</y>
-       <width>211</width>
-       <height>71</height>
+       <x>450</x>
+       <y>610</y>
+       <width>141</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
@@ -141,16 +120,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Weighing Issues</string>
+      <string>ISSUE</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_5">
      <property name="geometry">
       <rect>
-       <x>1020</x>
-       <y>450</y>
-       <width>211</width>
-       <height>71</height>
+       <x>620</x>
+       <y>610</y>
+       <width>121</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
@@ -161,16 +140,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Other Weighing</string>
+      <string>OTHER</string>
      </property>
     </widget>
     <widget class="QLCDNumber" name="lcdNumber">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>90</y>
-       <width>761</width>
-       <height>251</height>
+       <x>150</x>
+       <y>60</y>
+       <width>991</width>
+       <height>341</height>
       </rect>
      </property>
      <property name="layoutDirection">
@@ -181,17 +160,23 @@
 font: 10pt &quot;MS Sans Serif&quot;;
 color: rgb(255, 0, 0);</string>
      </property>
+     <property name="digitCount">
+      <number>6</number>
+     </property>
      <property name="value" stdset="0">
-      <double>20000.000000000000000</double>
+      <double>-20000.000000000000000</double>
+     </property>
+     <property name="intValue" stdset="0">
+      <number>-20000</number>
      </property>
     </widget>
     <widget class="QLabel" name="label_53">
      <property name="geometry">
       <rect>
-       <x>1060</x>
-       <y>290</y>
+       <x>1180</x>
+       <y>350</y>
        <width>51</width>
-       <height>51</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -211,6 +196,26 @@ color: rgb(255, 0, 0);</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>111</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>RETURN</string>
      </property>
     </widget>
    </widget>

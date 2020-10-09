@@ -24,6 +24,7 @@ class fci_03b_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 769)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        MainWindow.setStyleSheet("background-color: rgb(244, 186, 255 );")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)

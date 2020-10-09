@@ -22,6 +22,7 @@ class fci_02_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -313,6 +314,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox.setFont(font)
+        self.comboBox.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         '''
         self.comboBox.addItem("")
@@ -668,6 +670,7 @@ class fci_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
+        self.comboBox_2.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -853,11 +856,15 @@ class fci_02_Ui_MainWindow(object):
     def tl_recived_wt_calc(self):
         self.perc_r=0
         if(self.lineEdit.text() != ""):
-             self.accpted_wt=str(self.lineEdit.text())
-             self.recived_wt=str(self.lineEdit_4.text())
-             self.r_wt=float(float(self.accpted_wt) - float(self.recived_wt))
-            
-             self.lineEdit_5.setText(str(round(self.r_wt,2)))  # TL Received( %)    
+            if(self.lineEdit_4.text() != ""):
+                     self.accpted_wt=str(self.lineEdit.text())
+                     self.recived_wt=str(self.lineEdit_4.text())
+                     self.r_wt=float(float(self.accpted_wt) - float(self.recived_wt))
+                    
+                     self.lineEdit_5.setText(str(round(self.r_wt,2)))  # TL Received( %)
+            else:        
+                     self.lineEdit_5.setText("0")  # TL Received( %)  
+                     
         else:        
              self.lineEdit_5.setText("0")  # TL Received( %)  
         
@@ -975,6 +982,21 @@ class fci_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 150)
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 100)
+        self.tableWidget.setColumnWidth(9, 100)
+        self.tableWidget.setColumnWidth(10, 150)
+        self.tableWidget.setColumnWidth(11, 150)
+        self.tableWidget.setColumnWidth(12, 150)
+        self.tableWidget.setColumnWidth(13, 150)
+        self.tableWidget.setColumnWidth(14, 150) 
       
         self.tableWidget.setHorizontalHeaderLabels(['Recipt ID.', ' Recipt Date ', 'Accpt.Wt.ton', 'Accpt.Bags.Cnt','Recved.Wt.ton','Recved.Bags.Cnt' ,'TL Recved','TL Accpted','Shortage.Of.Bags','Material','Status','Wagons','Total.Trucks','Contractor Name',' Rack.Ref.No.'])        
            
@@ -986,7 +1008,7 @@ class fci_02_Ui_MainWindow(object):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
                 #self.lineEdit.setText("")
         connection.close()   
-        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)

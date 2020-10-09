@@ -20,6 +20,7 @@ class fci_11_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -41,6 +42,7 @@ class fci_11_Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(5)
+        '''
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -65,6 +67,7 @@ class fci_11_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(6, item)
+        '''
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
         self.pushButton_7.setGeometry(QtCore.QRect(40, 660, 151, 31))
         font = QtGui.QFont()
@@ -253,6 +256,7 @@ class fci_11_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
+        '''
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -277,6 +281,7 @@ class fci_11_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Release Date"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Release Time"))
+        '''
         self.pushButton_7.setText(_translate("MainWindow", "Show Report"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.radioButton.setText(_translate("MainWindow", "Daily"))
@@ -387,9 +392,9 @@ class fci_11_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 100)
-        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 200)

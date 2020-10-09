@@ -26,6 +26,7 @@ class fci_29_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -344,7 +345,7 @@ class fci_29_Ui_MainWindow(object):
         
         self.pushButton_10_1 = QtWidgets.QPushButton(self.frame)
         #self.pushButton_10.setEnabled(False)
-        self.pushButton_10_1.setGeometry(QtCore.QRect(530, 540, 161, 31))
+        self.pushButton_10_1.setGeometry(QtCore.QRect(730, 540, 161, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_10_1.setFont(font)

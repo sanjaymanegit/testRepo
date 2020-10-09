@@ -21,7 +21,7 @@ from fci_02_Batches import fci_02_Ui_MainWindow
 from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
-from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
+#from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
 
 from fci_29_stacks import fci_29_Ui_MainWindow
 
@@ -31,11 +31,12 @@ class fci_01_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        MainWindow.setStyleSheet("background-color: rgb(47, 141, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(25, 25, 1291, 718))
-        self.frame.setStyleSheet("")
+        #self.frame.setStyleSheet("")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setStyleSheet("background-color: rgb(47, 141, 255);")
@@ -125,11 +126,11 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_5.setObjectName("pushButton_5")
         
         self.pushButton_5_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5_1.setGeometry(QtCore.QRect(610, 600, 91, 31))
+        self.pushButton_5_1.setGeometry(QtCore.QRect(530, 600, 91, 31))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(False)
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(14)
+        font.setBold(True)
         font.setWeight(50)
         self.pushButton_5_1.setFont(font)
         self.pushButton_5_1.setObjectName("pushButton_5_1")
@@ -210,20 +211,20 @@ class fci_01_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", " Weighing"))
-        self.pushButton_3.setText(_translate("MainWindow", "Admin."))
-        self.pushButton_4.setText(_translate("MainWindow", "Recipts "))
+        self.pushButton.setText(_translate("MainWindow", " DASHBOARD"))
+        self.pushButton_3.setText(_translate("MainWindow", "ADMIN."))
+        self.pushButton_4.setText(_translate("MainWindow", "RECIPTS "))
         self.label.setText(_translate("MainWindow", "HI-TECH MATERIAL HANDLING SYSTEM"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         self.label_20_1.setText(_translate("MainWindow", "LoginBy: Sanjaykumar Mane (Super Admin) "))
         self.pushButton_2.setText(_translate("MainWindow", "Shutdown"))
         self.pushButton_5.setText(_translate("MainWindow", "Reboot"))
-        self.pushButton_5_1.setText(_translate("MainWindow", "SignOut"))
+        self.pushButton_5_1.setText(_translate("MainWindow", "Retrun"))
         self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
-        self.pushButton_6.setText(_translate("MainWindow", "Reports"))
-        self.pushButton_7.setText(_translate("MainWindow", "Issues"))
+        self.pushButton_6.setText(_translate("MainWindow", "REPORTS"))
+        self.pushButton_7.setText(_translate("MainWindow", "ISSUES"))
         
-        self.pushButton_9.setText(_translate("MainWindow", "Stacks"))
+        self.pushButton_9.setText(_translate("MainWindow", "STACKS"))
         
         self.label_22.setText(_translate("MainWindow", "Internet"))
         self.toolButton.setText(_translate("MainWindow", "On"))        
@@ -234,8 +235,8 @@ class fci_01_Ui_MainWindow(object):
 
     def startx(self): 
         self.anydesk_open()
-        self.pushButton.clicked.connect(self.open_new_window)
-        self.pushButton_4.clicked.connect(self.open_new_window2)
+        #self.pushButton.clicked.connect(self.open_new_window)
+        self.pushButton_4.clicked.connect(self.open_new_window)
         self.pushButton_7.clicked.connect(self.open_new_window4)
         self.pushButton_6.clicked.connect(self.open_new_window5)
         self.pushButton_3.clicked.connect(self.open_new_window6)
@@ -296,11 +297,7 @@ class fci_01_Ui_MainWindow(object):
         self.log_audit("Login","SignOut From System.")
         os.system("sudo reboot")
     
-    def closeEvent(self,event):
-        self.log_audit("Login","SignOut From System-close_event.")
-        print("closed window")        
-        #self.event.accept()
-        #quit.triggered.connect(self.close)
+    
     
     
     
@@ -346,10 +343,13 @@ class fci_01_Ui_MainWindow(object):
                     #print("date dt :"+str(DAT_DT))
                     #print("curr dt :"+str(CURR_DT))                
                     if(DAT_DT > CURR_DT):                         
+                             
                              self.window = QtWidgets.QMainWindow()
-                             self.ui=fci_04_Ui_MainWindow()
+                             self.ui=fci_02_Ui_MainWindow()
                              self.ui.setupUi(self.window)           
                              self.window.show()
+                             
+                             #print("DAT date problem")
                              
                     else:
                         print("DAT date problem.")

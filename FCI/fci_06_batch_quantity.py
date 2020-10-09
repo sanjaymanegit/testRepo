@@ -21,6 +21,7 @@ class fci_06_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -48,9 +49,17 @@ class fci_06_Ui_MainWindow(object):
         self.label_20.setObjectName("label_20")
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(20, 190, 1261, 431))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        #font.setWeight(50)
+        self.tableWidget.setFont(font)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(11)
         self.tableWidget.setRowCount(5)
+        '''
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -83,6 +92,9 @@ class fci_06_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(9, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(10, item)
+        '''
+        
+        
         self.label_22 = QtWidgets.QLabel(self.frame)
         self.label_22.setGeometry(QtCore.QRect(20, 70, 71, 31))
         font = QtGui.QFont()
@@ -338,6 +350,7 @@ class fci_06_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Batch Quantity"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
+        '''
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -369,7 +382,9 @@ class fci_06_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Transit Loss Kg"))
         item = self.tableWidget.horizontalHeaderItem(10)
+        
         item.setText(_translate("MainWindow", "Status"))
+        '''
         self.label_22.setText(_translate("MainWindow", "Batch Id :"))
         self.label_2.setText(_translate("MainWindow", " B000980"))
         #self.label_23.setText(_translate("MainWindow", "Accpted Weight (Kg) :"))
@@ -440,10 +455,8 @@ class fci_06_Ui_MainWindow(object):
         os.system("./job_print_report.sh")
     
     def select_all_data(self):
-        self.delete_all_records()        
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget.setFont(font) 
+        self.delete_all_records()       
+        
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
@@ -455,13 +468,20 @@ class fci_06_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(7, 100)
         self.tableWidget.setColumnWidth(8, 150)
         self.tableWidget.setColumnWidth(9, 200)    
-        self.tableWidget.setColumnWidth(10, 100)
-        
+        self.tableWidget.setColumnWidth(10, 100)      
         
         
       
         self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt. Ton','Gross Wt. Ton','Target Location'])        
-           
+        '''
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        #font.setWeight(50)
+        self.tableWidget.setFont(font)
+        '''
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,round(ACCPTED_BAGS),MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,round(NET_WEIGHT_VAL,3),round(TARE_WT_VAL,3),round(GROSS_WT_VAL,3),TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            

@@ -19,6 +19,7 @@ class fci_23_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1238, 682)
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -68,6 +69,7 @@ class fci_23_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.comboBox.setFont(font)
+        self.comboBox.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setGeometry(QtCore.QRect(640, 180, 31, 31))
@@ -82,6 +84,7 @@ class fci_23_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
+        self.comboBox_2.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_3.setGeometry(QtCore.QRect(330, 300, 111, 41))

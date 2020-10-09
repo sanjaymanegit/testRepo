@@ -11,6 +11,7 @@ from fci_03b_weighing_storage_batch import fci_03b_Ui_MainWindow
 from fci_03i_weighing_storage_issues import fci_03i_Ui_MainWindow
 from fci_03_weighing import fci_03_Ui_MainWindow
 from fci_34_weighing_others import fci_34_Ui_MainWindow
+from fci_01_main import fci_01_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
@@ -29,6 +30,7 @@ class fci_04_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
+        MainWindow.setStyleSheet("background-color: rgb(47, 141, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -37,8 +39,19 @@ class fci_04_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setStyleSheet("background-color: rgb(47, 141, 255);")
         self.frame.setObjectName("frame")
+        self.label = QtWidgets.QLabel(self.frame)
+        self.label.setGeometry(QtCore.QRect(290, 30, 721, 91))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setStyleSheet("color: rgb(255, 255, 0);")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(150, 450, 211, 71))
+        self.pushButton.setGeometry(QtCore.QRect(150, 490, 211, 71))
         #self.pushButton.setStyleSheet("color: rgb(255, 255, 0);")
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -60,7 +73,7 @@ class fci_04_Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(610, 590, 101, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(680, 635, 101, 31))  #SIGNOUT
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(14)
@@ -68,8 +81,22 @@ class fci_04_Ui_MainWindow(object):
         font.setWeight(50)
         self.pushButton_2.setFont(font)       
         self.pushButton_2.setObjectName("pushButton_2")
+        
+        
+        self.pushButton_2_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_2_1.setGeometry(QtCore.QRect(520, 635, 101, 31)) #MENU
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(50)
+        self.pushButton_2_1.setFont(font)       
+        self.pushButton_2_1.setObjectName("pushButton_2_1")
+        
+        
+        
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(440, 450, 211, 71))
+        self.pushButton_3.setGeometry(QtCore.QRect(440, 490, 211, 71))
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 200, 158);color: rgb(212, 0, 255);")
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -78,7 +105,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(730, 450, 211, 71))
+        self.pushButton_4.setGeometry(QtCore.QRect(730, 490, 211, 71))
         self.pushButton_4.setStyleSheet("background-color: rgb(255, 200, 158); color: rgb(0, 180, 0);")
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -87,7 +114,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_4.setFont(font)
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(1020, 450, 211, 71))
+        self.pushButton_5.setGeometry(QtCore.QRect(1020, 490, 211, 71))
         self.pushButton_5.setStyleSheet("background-color: rgb(255, 200, 158); color: rgb(0, 0, 255);")
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -96,7 +123,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber.setGeometry(QtCore.QRect(270, 90, 761, 251))
+        self.lcdNumber.setGeometry(QtCore.QRect(270, 165, 761, 251))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
@@ -104,7 +131,7 @@ class fci_04_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 20000)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_53 = QtWidgets.QLabel(self.frame)
-        self.label_53.setGeometry(QtCore.QRect(1040, 270, 81, 91))
+        self.label_53.setGeometry(QtCore.QRect(1040, 340, 81, 91))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(24)
@@ -139,7 +166,9 @@ class fci_04_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "ZERO"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
-        self.pushButton_2.setText(_translate("MainWindow", "RETURN"))
+        self.label.setText(_translate("MainWindow", "HI-TECH MATERIAL HANDLING SYSTEM"))
+        self.pushButton_2.setText(_translate("MainWindow", "SIGNOUT"))
+        self.pushButton_2_1.setText(_translate("MainWindow", "MENU"))        
         self.pushButton_3.setText(_translate("MainWindow", "RECIPT"))
         self.pushButton_4.setText(_translate("MainWindow", "ISSUE"))
         self.pushButton_5.setText(_translate("MainWindow", "OTHER"))
@@ -166,6 +195,7 @@ class fci_04_Ui_MainWindow(object):
             self.pushButton_4.clicked.connect(self.open_new_window5)
             
         self.pushButton_5.clicked.connect(self.open_new_window7)
+        self.pushButton_2_1.clicked.connect(self.open_new_window8)
         self.start_wt()
         
     def device_date(self):     
@@ -262,7 +292,14 @@ class fci_04_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_34_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()   
+        self.window.show()
+        
+        
+    def open_new_window8(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_01_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()  
 
 
 if __name__ == "__main__":
