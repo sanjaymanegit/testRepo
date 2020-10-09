@@ -1535,13 +1535,13 @@ class TY_03_Ui_MainWindow(object):
                 data= [['Spe. \n No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (kgf)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
 
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,round(A.DIAMETER,2),printf(\"%.4f\", A.CS_AREA),round(A.PEAK_LOAD,0),round(A.E_PAEK_LOAD,2),round(A.PREC_E_AT_PEAK,2),round(A.E_BREAK_LOAD,2),round(A.PREC_E_AT_BREAK,2) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.DIAMETER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%3d\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%3d\", A.PREC_E_AT_BREAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
             for x in results:
                 data.append(x)
             connection.close()  
         
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TYPE_STR,round(DIAMETER,2),printf(\"%.4f\", CS_AREA),round(PEAK_LOAD,0),round(E_PAEK_LOAD,0),round(PREC_E_AT_PEAK,2),round(E_BREAK_LOAD,2),round(PREC_E_AT_BREAK,2) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", DIAMETER),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             for x in results:
                 data.append(x)
             connection.close()            
@@ -1580,13 +1580,13 @@ class TY_03_Ui_MainWindow(object):
                 data= [['Spec.\n No.', 'CS.Area \n (mm2)','Force at Peak \n (kgf)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']] 
                 
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),round(A.PEAK_LOAD,2),round(A.E_PAEK_LOAD,2),round(A.PREC_E_AT_PEAK,2),round(A.E_BREAK_LOAD,2),round(A.PREC_E_AT_BREAK,2) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%3d\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%3d\", A.PREC_E_AT_BREAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
             for x in results:
                 data.append(x)
             connection.close()  
         
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),round(PEAK_LOAD,2),round(E_PAEK_LOAD,2),round(PREC_E_AT_PEAK,2),round(E_BREAK_LOAD,2),round(PREC_E_AT_BREAK,2) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%3d\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%3d\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             for x in results:
                 data.append(x)
             connection.close()            
@@ -1633,13 +1633,13 @@ class TY_03_Ui_MainWindow(object):
         connection.close()
                    
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_100),printf(\"%.2f\", A.MODULUS_200) ,printf(\"%.2f\", A.MODULUS_300),printf(\"%.2f\", A.MOD_AT_ANY) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
+        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%3d\", A.MODULUS_100),printf(\"%3d\", A.MODULUS_200) ,printf(\"%3d\", A.MODULUS_300),printf(\"%3d\", A.MOD_AT_ANY) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
         for x in results:
             data2.append(x)
         connection.close()  
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200) ,printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200) ,printf(\"%3d\", MODULUS_300),printf(\"%3d\", MOD_AT_ANY) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
         for x in results:
             data2.append(x)
         connection.close()           

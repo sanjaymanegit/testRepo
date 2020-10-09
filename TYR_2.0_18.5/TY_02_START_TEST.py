@@ -629,13 +629,13 @@ class TY_02_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "CS Area (mm2)"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Force at Peak(Kgf)"))
+        item.setText(_translate("MainWindow", "Force at Peak \n (Kgf)"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Length at Peak(mm)"))
+        item.setText(_translate("MainWindow", "Length at Peak \n (mm)"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Shape"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Guage Length(mm)"))
+        item.setText(_translate("MainWindow", "Guage Length \n (mm)"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Tensile Strength \n (Kgf/Cm2)"))
         item = self.tableWidget.horizontalHeaderItem(6)
@@ -853,13 +853,25 @@ class TY_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 120)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 150)    
+        self.tableWidget.setColumnWidth(7, 120)
+        self.tableWidget.setColumnWidth(8, 150) 
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),round(PEAK_LOAD_KG,2),round(E_AT_PEAK_LOAD_MM,2),SHAPE,GUAGE100,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(PRC_E_AT_PEAK,2),round(PRC_E_AT_BREAK,2),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200),printf(\"%3d\", MODULUS_300),printf(\"%3d\", PRC_E_AT_PEAK),printf(\"%3d\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()  
@@ -872,15 +884,23 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ','Guage Length (mm)', 'Compression (mm)', 'Compressive Strength (Kgf/Cm2)','% Compression','Created On'])        
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 200)
+        self.tableWidget.setColumnWidth(4, 200)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 150)
+        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Guage Length (mm)','% Compression','Created On'])        
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),round(PEAK_LOAD_KG,2),GUAGE100,round(E_AT_BREAK_MM,2),round(TENSILE_STRENGTH,2),round(PRC_E_AT_BREAK,0),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100),printf(\"%3d\", PRC_E_AT_BREAK) ,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()  
@@ -892,16 +912,19 @@ class TY_02_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(4)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        #self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On'])        
-       
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 100)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT round(THINCKNESS,2),round(PEAK_LOAD_KG,2),round((round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10),2),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()     
@@ -915,14 +938,20 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setHorizontalHeaderLabels(['Force at Peak(Kgf)',' Length down at Peak (mm) ','Span Length(mm)','Width(mm)','Thickness(mm)','Flexural Strength (Kgf/cm2)','Created On'])        
-       
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 250)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 250)
+        self.tableWidget.setColumnWidth(6, 100)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT round(PEAK_LOAD_KG,2),round(E_AT_BREAK_MM,2),(SELECT NEW_TEST_MAX_LOAD FROM GLOBAL_VAR),WIDTH,round(THINCKNESS,2),FLEXURAL_STRENGTH_KG_CM,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
@@ -941,12 +970,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_3.hide()
         #print("shape:"+str(self.shape))
         #self.sc_new =PlotCanvas_new1(self,width=5, height=4, dpi=80)
-        self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
-        self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
-        
-        
-        
-        
+          
         if(self.shape=="Rectangle"):
             self.lineEdit_3.show()
             self.thickness=str(self.lineEdit_4.text())
@@ -965,6 +989,10 @@ class TY_02_Ui_MainWindow(object):
         
         self.validation()
         if(self.goAhead=="Yes"):
+                
+                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
+                
                 connection = sqlite3.connect("tyr.db")             
                 with connection:        
                       cursor = connection.cursor()            
@@ -995,6 +1023,7 @@ class TY_02_Ui_MainWindow(object):
                 if(float(self.thickness) <= 0):
                     self.label_3.setText("Thickness should be greater than zero.")
                     self.label_3.show()
+                    
                 elif(float(self.width) <= 0):
                     self.label_3.setText("Paramater should be greater than zero.")
                     self.label_3.show()                    
@@ -1002,7 +1031,7 @@ class TY_02_Ui_MainWindow(object):
                     self.label_3.setText("CS.Area should be greater than zero.")
                     self.label_3.show()
                 else:
-                    self.label_3.show()
+                    self.label_3.hide()
                     self.goAhead="Yes"
             else:
                 self.label_3.setText("Specimen Parameter(s) empty.")
@@ -1023,7 +1052,7 @@ class TY_02_Ui_MainWindow(object):
                     self.label_3.setText("CS.Area should be greater than zero.")
                     self.label_3.show()
                 else:
-                    self.label_3.show()
+                    self.label_3.hide()
                     self.goAhead="Yes"
             else:
                 self.label_3.setText("Specimen Parameter(s) empty.")
@@ -1501,7 +1530,8 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=int(x[0])
              self.test_type=str(x[1])
              self.max_load=int(x[2])
-             self.max_length=(int(x[0])-int(x[3]))
+             self.max_length=(float(x[0])-float(x[3]))
+             print("Guage length :"+str(x[0])+" Max length :"+str(x[3]))
         connection.close()
         
         try:
@@ -1545,7 +1575,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.flush()
             if(self.test_type=="Compress"):
                 self.command_str="*S2C%.1f"%float(self.max_load)+" %.1f"%float(self.max_length)+"\r"
-                #print("self.command_str:"+str(self.command_str))
+                print("self.command_str:"+str(self.command_str))
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)                
             elif(self.test_type=="Flexural"):
