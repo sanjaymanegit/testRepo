@@ -950,7 +950,9 @@ class fci_03_Ui_MainWindow(object):
         self.label_39.setText(_translate("MainWindow", "14:30"))
         self.label_40.setText(_translate("MainWindow", "41.00"))
         self.pushButton_11.setText(_translate("MainWindow", "Gross"))
+        self.pushButton_11.hide()
         self.pushButton_16.setText(_translate("MainWindow", "Tare"))
+        self.pushButton_16.hide()
         self.lineEdit_2.setText(_translate("MainWindow", "MH_43 AW 0302"))
         self.label_42.setText(_translate("MainWindow", ""))
         self.label_43.setText(_translate("MainWindow", ""))
@@ -986,6 +988,7 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Update"))
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
         self.pushButton_13.setText(_translate("MainWindow", "New Weighing"))
+        self.pushButton_13.hide()
         self.label_57.setText(_translate("MainWindow", ".Kg"))
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.startx()
@@ -1027,7 +1030,7 @@ class fci_03_Ui_MainWindow(object):
         self.lineEdit.setText("")
         self.lineEdit_4.setText("")
         #self.lineEdit_5.setText("7777") #serach line edit
-        self.start_wt()
+        #self.start_wt()
         
         self.i=0
         connection = sqlite3.connect("fci.db")
@@ -1153,7 +1156,21 @@ class fci_03_Ui_MainWindow(object):
         else:
             self.groupBox.show()
             self.groupBox_2.show()
-            
+    
+    def load_default(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT OLD_NEW_SLIP_FLAG, GROSS_TARE_FLAG ,OLD_SLIP_NO,LCD_WEIGHT FROM GLOBAL_VAR") 
+        for x in results:
+            self.current_value=float(x[3])
+            self.lcdNumber.setProperty("value", float(self.current_value))
+            if(str(x[1]) == "GROSS"):
+                self.gross_wt_onclick()                
+            elif(str(x[1]) == "TARE"):
+                self.tare_wt_onclick() 
+            else:
+                 print("NONE")
+        connection.close()
+                    
 
     def reset_fun(self):
         # First Wt
@@ -1245,6 +1262,7 @@ class fci_03_Ui_MainWindow(object):
         self.status="FIRST"
         self.pushButton_8.setDisabled(True)
         self.lineEdit_3.setDisabled(True)
+        self.load_default()
        
        
     def batch_id_onchange(self):
@@ -1262,7 +1280,7 @@ class fci_03_Ui_MainWindow(object):
         self.load_1st_wt_vehicles()
         self.load_2nd_wt_vehicles()
         
-        
+    '''    
     def start_wt(self):
         #print("Weight Started ....")
         try:
@@ -1321,7 +1339,7 @@ class fci_03_Ui_MainWindow(object):
                 self.IO_error_flg=1  
               
             
-            
+    '''       
         
     def gross_wt_onclick(self):
         #print("self.current_slip_no: "+strself.current_slip_no))

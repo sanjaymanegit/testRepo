@@ -13,6 +13,8 @@ from fci_22_su_API_config import fci_22_Ui_MainWindow
 from fci_23_su_datetime import fci_23_Ui_MainWindow
 from fci_16_admin_printer_setup import fci_16_Ui_MainWindow
 from fci_36_calibration_login import fci_36_Ui_MainWindow
+from fci_43_admin_maintns import fci_43_Ui_MainWindow
+from fci_19_admin_change_password import fci_19_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -137,12 +139,12 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
         self.pushButton_11.setText(_translate("MainWindow", "Factory Reset"))
         self.pushButton_12.setText(_translate("MainWindow", "Wifi-Setting"))
-        self.pushButton_13.setText(_translate("MainWindow", "Database Backup"))
-        self.pushButton_13.setDisabled(True)
+        self.pushButton_13.setText(_translate("MainWindow", "Maintaince"))
+        #self.pushButton_13.setDisabled(True)
         self.pushButton_14.setText(_translate("MainWindow", "Printer Setup"))
         #self.pushButton_14.setDisabled(True)
         self.pushButton_15.setText(_translate("MainWindow", "Change Passwords"))
-        self.pushButton_15.setDisabled(True)
+        #self.pushButton_15.setDisabled(True)
         self.pushButton_16.setText(_translate("MainWindow", "Date/Time Set"))
         self.pushButton_17.setText(_translate("MainWindow", "API Config"))
         self.pushButton_18.setText(_translate("MainWindow", "Callibration"))
@@ -166,6 +168,8 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_16.clicked.connect(self.open_new_window6)
         self.pushButton_14.clicked.connect(self.open_new_window7)
         self.pushButton_18.clicked.connect(self.open_new_window8)
+        self.pushButton_13.clicked.connect(self.open_new_window9)
+        self.pushButton_15.clicked.connect(self.open_new_window10)
         self.pushButton_2.clicked.connect(self.reset_fun)
         
         
@@ -260,7 +264,17 @@ class fci_15_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
 
-
+    def open_new_window9(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_43_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window10(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_19_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
 
 if __name__ == "__main__":

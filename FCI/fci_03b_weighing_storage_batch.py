@@ -402,7 +402,8 @@ class fci_03b_Ui_MainWindow(object):
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 0, 0);")
-        self.lcdNumber.setProperty("value", 20000.0)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber.setDigitCount(7)
         self.lcdNumber.setObjectName("lcdNumber")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(30, 190, 91, 41))
@@ -998,7 +999,9 @@ class fci_03b_Ui_MainWindow(object):
         self.label_39.setText(_translate("MainWindow", "14:30"))
         self.label_40.setText(_translate("MainWindow", "41.00"))
         self.pushButton_11.setText(_translate("MainWindow", "Gross"))
+        self.pushButton_11.hide()
         self.pushButton_16.setText(_translate("MainWindow", "Tare"))
+        self.pushButton_16.hide()
         self.lineEdit_2.setText(_translate("MainWindow", "MH 43 AW 0302"))
         self.label_44.setText(_translate("MainWindow", "Net. Weight :"))
         self.label_45.setText(_translate("MainWindow", "159.00")) #net .wt
@@ -1042,6 +1045,7 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Update"))        
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
         self.pushButton_13.setText(_translate("MainWindow", "New Weighing"))
+        self.pushButton_13.hide()
         self.label_57.setText(_translate("MainWindow", ".Kg"))
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.lineEdit_5.setText("11") #actual Bags
@@ -1097,7 +1101,7 @@ class fci_03b_Ui_MainWindow(object):
         self.lineEdit.setText("")
         self.lineEdit_4.setText("")
         #self.lineEdit_5.setText("7777") #serach line edit
-        self.start_wt()
+        #self.start_wt()
         
         self.i=0
         connection = sqlite3.connect("fci.db")
@@ -1120,7 +1124,7 @@ class fci_03b_Ui_MainWindow(object):
         for x in results:
             self.login_user_id=str(x[0])
             self.device_location_type=str(x[1])
-        connection.close()
+        connection.close()        
         self.reset_fun()
     
     
@@ -1248,7 +1252,19 @@ class fci_03b_Ui_MainWindow(object):
             self.groupBox_3.show()
             self.groupBox_2.show()
             
-            
+    def load_default(self):
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT OLD_NEW_SLIP_FLAG, GROSS_TARE_FLAG ,OLD_SLIP_NO,LCD_WEIGHT FROM GLOBAL_VAR") 
+        for x in results:
+            self.current_value=float(x[3])
+            self.lcdNumber.setProperty("value", float(self.current_value))
+            if(str(x[1]) == "GROSS"):
+                self.gross_wt_onclick()                
+            elif(str(x[1]) == "TARE"):
+                self.tare_wt_onclick() 
+            else:
+                 print("NONE")
+        connection.close()
             
     def reset_fun(self):
         # First Wt
@@ -1374,6 +1390,7 @@ class fci_03b_Ui_MainWindow(object):
         self.lineEdit_6.setDisabled(True)
         self.lineEdit_3.setDisabled(True)
         self.lineEdit_5.setDisabled(True)
+        self.load_default()
        
        
     def batch_id_onchange(self):
@@ -1407,7 +1424,7 @@ class fci_03b_Ui_MainWindow(object):
         self.load_1st_wt_vehicles()
         self.load_2nd_wt_vehicles()
         
-        
+    '''    
     def start_wt(self):
         #print("Weight Started ....")
         try:
@@ -1466,7 +1483,7 @@ class fci_03b_Ui_MainWindow(object):
                 print("IO Errors : Data Read Error") 
                 self.IO_error_flg=1  
               
-            
+     '''       
             
         
     def gross_wt_onclick(self):
