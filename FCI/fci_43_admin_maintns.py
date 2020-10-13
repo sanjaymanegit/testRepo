@@ -9,7 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import datetime
+import time
+import sqlite3
+import serial
 
 class fci_43_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -19,7 +22,7 @@ class fci_43_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 10, 1221, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1221, 691))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.frame.setFont(font)
@@ -72,9 +75,11 @@ class fci_43_Ui_MainWindow(object):
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 255, 255);")
+        self.lcdNumber.setDigitCount(7)
+        self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_4 = QtWidgets.QLabel(self.groupBox_6)
-        self.label_4.setGeometry(QtCore.QRect(550, 230, 47, 51))
+        self.label_4.setGeometry(QtCore.QRect(520, 250, 47, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -83,7 +88,7 @@ class fci_43_Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.label_6 = QtWidgets.QLabel(self.groupBox_6)
-        self.label_6.setGeometry(QtCore.QRect(540, 110, 81, 61))
+        self.label_6.setGeometry(QtCore.QRect(520, 120, 81, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -100,6 +105,8 @@ class fci_43_Ui_MainWindow(object):
         font.setItalic(False)
         font.setWeight(50)
         self.lcdNumber_2.setFont(font)
+        self.lcdNumber_2.setDigitCount(7)
+        self.lcdNumber_2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber_2.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "\n"
 "font: 10pt \"MS Sans Serif\";\n"
@@ -142,11 +149,12 @@ class fci_43_Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(300, 90, 271, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(24)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit.setFont(font)
-        self.lineEdit.setText("")
+        self.lineEdit.setText("")        
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(70, 90, 191, 61))
@@ -188,6 +196,23 @@ class fci_43_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.ld_flag="No"
+        self.capacity_flag="No"
+        self.off_position_flag="No"
+        self.flag="No"
+        self.ser =""
+        self.line =""                   
+       
+        self.xstr0=""
+        self.xstr1=""
+        self.xstr2=""
+        self.buff=[]
+        
+        self.IO_error_flg=0
+        self.xstr3=""
+        self.xstr2=""
+        self.xstr4=""
+        self.current_value=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -198,14 +223,158 @@ class fci_43_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
         self.label.setText(_translate("MainWindow", "MAINTAINCE "))
         self.groupBox_6.setTitle(_translate("MainWindow", " LOAD CELL SIGNAL"))
+        self.groupBox_6.hide()
         self.label_4.setText(_translate("MainWindow", ".kg"))
         self.label_6.setText(_translate("MainWindow", "Count"))
         self.pushButton_9.setText(_translate("MainWindow", "RETURN"))
         self.groupBox_7.setTitle(_translate("MainWindow", " MESSAGE"))
+        self.groupBox_7.hide()
         self.label_44.setText(_translate("MainWindow", "Successfully set Capacity."))
+        
         self.label_2.setText(_translate("MainWindow", "PASSWORD :"))
         self.pushButton_10.setText(_translate("MainWindow", "SHOW"))
         self.pushButton_11.setText(_translate("MainWindow", "CLEAR"))
+        
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        self.pushButton_11.clicked.connect(self.reset_loging)
+        self.pushButton_10.clicked.connect(self.login_page)
+        self.timer2=QtCore.QTimer()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+       
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+    
+    def login_page(self):        
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("SELECT PWD,xxx FROM SERVICES_MST WHERE SERVICE_NAME = 'MAINTAINACE' AND STATUS = 'ACTIVE'") 
+        for x in results:
+            val=str(x[0])
+            '''
+            #print("key:"+str(x[1]))
+            key=str(x[1])
+            #val=str(x[0])
+           
+            val2=str.encode(val)
+            #val2=bytes(x[0],'utf-8')
+            #print("pwd:"+str(x[0]))
+            d_cipher_suite = Fernet(str(x[1]))
+            #print("type:"+str(type(val2)))
+            plain_text = d_cipher_suite.decrypt(val2)
+            #print("plain_text :"+str(plain_text,'utf-8'))
+            '''
+        connection.close()
+        print("pwd:"+self.lineEdit.text()+" db val:"+str(val))
+        if(str(self.lineEdit.text()) == str(val)):
+                self.start_wt()               
+                self.groupBox_6.show()
+                self.groupBox_7.hide()
+        else:
+                self.label_44.show()
+                self.label_44.setText("INCORRECT PASSWORD.")
+                self.groupBox_6.hide()
+                self.groupBox_7.show()
+                self.stop_timer()
+    
+    def reset_loging(self):
+        self.lineEdit.setText("")
+        self.label_44.hide()
+        self.label_44.setText("")
+        self.groupBox_6.hide()
+        self.groupBox_7.hide()
+        self.stop_timer()
+        
+        
+    def start_wt(self):
+        #print("Weight Started ....")
+        try:
+            self.ser = serial.Serial(
+                                port='/dev/ttyAMA0',
+                                baudrate=115200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+        
+            self.ser.flush()       
+            #=======
+            self.command_str="T"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+           
+            #====================
+            self.command_str="S"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #======================
+            
+            self.line = self.ser.readline(15)
+            print("o/p:"+str(self.line))
+             
+            self.timer2.setInterval(5000)        
+            self.timer2.timeout.connect(self.display_lcd_val)
+            self.timer2.start(1)
+            
+            
+        except IOError:
+            print("IO Errors-load cell connections error")
+            self.IO_error_flg=1
+            self.groupBox_7.show()
+            self.label_44.show()
+            self.label_44.setText("LOAD CELL CONNECTION ERROR.")
+            
+            
+    def display_lcd_val(self):               
+        #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        if(self.IO_error_flg==0):
+            try:
+                self.line = self.ser.readline()
+                print(" raw o/p:"+str(self.line))
+                print("self.line:"+str(self.line,'utf-8'))
+                self.xstr0=str(self.line,'utf-8')
+                self.xstr1=self.xstr0.replace("\r","")
+                self.xstr2=self.xstr1.replace("\n","")
+                self.buff=self.xstr2.split("_")                
+                if(len(self.buff)> 2):
+                        if(str(self.buff[3]) == 'R'): 
+                                self.xstr2=str(self.buff[0])
+                                try:
+                                     self.xstr4=int(self.xstr2)
+                                except ValueError:                        
+                                    print("Value Error"+str(self.xstr2))
+                                    self.xstr4=0                    
+                                try:
+                                    self.current_value=float(int(self.xstr4)/1000)
+                                except ValueError:
+                                    print("Value Error :"+str(self.xstr4))
+                                    self.xstr4=0
+                                    self.current_value=0                    
+                                self.lcdNumber.setProperty("value", str(self.xstr4))
+                                self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                
+                    
+            except IOError:
+                print("IO Errors : Data Read Error") 
+                self.IO_error_flg=1
+                self.groupBox_7.show()
+                self.label_44.show()
+                self.label_44.setText("IO Errors .")
+        
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop(1)           
+           self.command_str="T"
+           print("Stop Command : "+str(self.command_str))
+           b = bytes(self.command_str, 'utf-8')
+           self.ser.write(b)
 
 
 if __name__ == "__main__":

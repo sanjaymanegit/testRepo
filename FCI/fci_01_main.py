@@ -22,6 +22,7 @@ from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 #from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
+from fci_45_pendings import fci_45_Ui_MainWindow
 
 from fci_29_stacks import fci_29_Ui_MainWindow
 
@@ -211,7 +212,7 @@ class fci_01_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", " DASHBOARD"))
+        self.pushButton.setText(_translate("MainWindow", " PENDING"))
         self.pushButton_3.setText(_translate("MainWindow", "ADMIN."))
         self.pushButton_4.setText(_translate("MainWindow", "RECIPTS "))
         self.label.setText(_translate("MainWindow", "HI-TECH MATERIAL HANDLING SYSTEM"))
@@ -241,6 +242,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_6.clicked.connect(self.open_new_window5)
         self.pushButton_3.clicked.connect(self.open_new_window6)
         self.pushButton_9.clicked.connect(self.open_new_window7)
+        self.pushButton.clicked.connect(self.open_new_window9)
         self.pushButton_2.clicked.connect(self.shutdown_system)
         self.pushButton_5.clicked.connect(self.reboot_system)
         
@@ -394,6 +396,12 @@ class fci_01_Ui_MainWindow(object):
     def open_new_window8(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_32_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window9(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_45_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

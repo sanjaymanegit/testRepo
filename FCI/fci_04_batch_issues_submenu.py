@@ -52,7 +52,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(560, 440, 171, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(20)
+        font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton.setFont(font)
@@ -61,7 +61,7 @@ class fci_04_Ui_MainWindow(object):
 "")
         self.pushButton.setObjectName("pushButton")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(50, 7, 321, 51))
+        self.label_20.setGeometry(QtCore.QRect(10, 7, 321, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(14)
@@ -108,11 +108,11 @@ class fci_04_Ui_MainWindow(object):
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 0, 0);")
         self.lcdNumber.setDigitCount(7)
-        self.lcdNumber.setProperty("value", -200000.0)
-        self.lcdNumber.setProperty("intValue", -200000)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber.setProperty("intValue", 0)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_53 = QtWidgets.QLabel(self.frame)
-        self.label_53.setGeometry(QtCore.QRect(1210, 300, 81, 91))
+        self.label_53.setGeometry(QtCore.QRect(1210, 325, 81, 91))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(28)
@@ -173,6 +173,9 @@ class fci_04_Ui_MainWindow(object):
         self.radioButton_4.setStyleSheet("color: rgb(255, 255, 255);")
         self.radioButton_4.setObjectName("radioButton_4")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(760, 530, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -342,7 +345,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.duplicate_onclick)
         self.pushButton.clicked.connect(self.set_zero_fun)
         
-        self.start_wt()
+        #self.start_wt()
         self.new_slip_hide()
         self.old_slip_hide()
         
@@ -365,6 +368,7 @@ class fci_04_Ui_MainWindow(object):
             cursor.execute("UPDATE GLOBAL_VAR SET OLD_NEW_SLIP_FLAG='"+str(self.slip_status)+"' , GROSS_TARE_FLAG='"+str(self.gross_tare_flag)+"' ,OLD_SLIP_NO='"+str(self.old_slip_no)+"', LCD_WEIGHT='"+str(self.current_value)+"'")
         connection.commit();
         connection.close()
+        self.stop_timer()
     
     def start_wt(self):
         #print("Weight Started ....")
@@ -380,6 +384,19 @@ class fci_04_Ui_MainWindow(object):
                             )
         
             self.ser.flush()       
+            
+            #=======
+            self.command_str="T"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+           
+            #=======
+            self.command_str="S"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #======
             
             self.line = self.ser.readline(15)
             print("o/p:"+str(self.line))
@@ -425,8 +442,22 @@ class fci_04_Ui_MainWindow(object):
                 print("IO Errors : Data Read Error") 
                 self.IO_error_flg=1  
     
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop()           
+           self.command_str="T"
+           print("Stop Command : "+str(self.command_str))
+           b = bytes(self.command_str, 'utf-8')
+           self.ser.write(b)
     
-    
+    def start_timer(self):
+        if(self.timer2.isActive()):
+           print("Already Started ")
+        else:
+           print("started again")
+           self.start_wt()
+                    
+           
     
     def new_slip_hide(self):
         self.radioButton_3.hide()
@@ -455,6 +486,7 @@ class fci_04_Ui_MainWindow(object):
             self.new_slip_show()
     
     def new_field_onlcick(self):
+        self.start_timer()
         self.old_slip_hide()
         self.new_slip_flag="SHOW"
         self.display_new_slip_fields()
@@ -488,6 +520,7 @@ class fci_04_Ui_MainWindow(object):
             self.old_slip_show()
     
     def old_field_onlcick(self):
+        self.start_timer()
         self.lineEdit.setFocus(True)
         self.new_slip_hide()
         self.old_slip_flag="SHOW"
@@ -521,8 +554,16 @@ class fci_04_Ui_MainWindow(object):
             
     def check_onclick(self):        
         ###Check if serial number exist
+        self.save_data()
+        self.serial_no = ""
+        self.batch_id=""
+        self.issue_id=""
+        self.dev_loc_type=""
+        self.status=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")
+            print("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
+            
             results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
             for x in results:            
                 self.serial_no=str(x[0])
@@ -535,30 +576,42 @@ class fci_04_Ui_MainWindow(object):
                     if(self.status=="SECOND"):
                         self.label_2.setText("Completed Serial.No :"+str(self.serial_no))
                     else:
-                        if(int(self.batch_id) > 0):
-                            if(self.dev_loc_type == "STORAGE"):
-                                self.label_2.setText("")
-                                #call recipt of storage
-                                self.open_new_window4()
-                            else:
-                                self.label_2.setText("")
-                                #call recipt of site
-                                self.open_new_window6()
-                        elif(int(self.issue_id) > 0):
-                                self.label_2.setText("")
-                                #call issue of storage
-                                self.open_new_window5()
+                        print("batch_id:"+str(self.batch_id)+" issue_id:"+str(self.issue_id))
+                        if(self.batch_id == "" and  self.issue_id==""):
+                             self.open_new_window7()
                         else:
-                            self.label_2.setText("ERROR.")
-                            self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
+                            if(self.batch_id  != ""):
+                                 if(int(self.batch_id) > 0):
+                                    if(self.dev_loc_type == "STORAGE"):
+                                        self.label_2.setText("")
+                                        #call recipt of storage
+                                        self.open_new_window4()
+                                    else:
+                                        self.label_2.setText("")
+                                        #call recipt of site
+                                        self.open_new_window6()
+                            elif(self.issue_id  != ""):
+                                    if(int(self.issue_id) > 0):
+                                            self.label_2.setText("")
+                                            #call issue of storage
+                                            self.open_new_window5()
+                            else:
+                                self.label_2.setText("ERROR.")
+                                self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
             else:
-                    self.label_2.setText("SERIAL.NO. DOES NOT EXIST.")
+                    self.label_2.setText("SERIAL NO. DOES NOT EXIST.")
         else:
             self.label_2.setText("ENTER SERIAL NO.")
     
     
     def duplicate_onclick(self):        
         ###Check if serial number exist
+        self.save_data()
+        self.serial_no = ""
+        self.batch_id=""
+        self.issue_id=""
+        self.dev_loc_type=""
+        self.status=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")
             results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
@@ -570,25 +623,28 @@ class fci_04_Ui_MainWindow(object):
                 self.status=str(x[4])
             connection.close()
             if(self.serial_no != ""):
-                    if(self.status=="SECOND"):
-                        self.label_2.setText("Completed Serial.No :"+str(self.serial_no))
-                    else:
-                        if(int(self.batch_id) > 0):
-                            if(self.dev_loc_type == "STORAGE"):
-                                self.label_2.setText("")
-                                #call recipt of storage
-                                self.open_new_window9()
-                            else:
-                                self.label_2.setText("")
-                                #call recipt of site
-                                self.open_new_window10()
-                        elif(int(self.issue_id) > 0):
-                                self.label_2.setText("")
-                                #call issue of storage
-                                self.open_new_window11()
-                        else:
-                            self.label_2.setText("ERROR.")
-                            self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
+                   print("batch_id:"+str(self.batch_id)+" issue_id:"+str(self.issue_id))
+                   if(self.batch_id == "" and  self.issue_id==""):
+                             self.open_new_window12()
+                   else:                       
+                       if(self.batch_id  != ""):
+                             if(int(self.batch_id) > 0):
+                                if(self.dev_loc_type == "STORAGE"):
+                                    self.label_2.setText("")
+                                    #call recipt of storage
+                                    self.open_new_window9()
+                                else:
+                                    self.label_2.setText("")
+                                    #call recipt of site
+                                    self.open_new_window10()
+                       elif(self.issue_id  != ""):      
+                             if(int(self.issue_id) > 0):
+                                    self.label_2.setText("")
+                                    #call issue of storage
+                                    self.open_new_window9()
+                             else:
+                                self.label_2.setText("ERROR.")
+                                self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
             else:
                     self.label_2.setText("SERIAL.NO. DOES NOT EXIST.")
         else:

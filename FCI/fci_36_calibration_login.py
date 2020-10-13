@@ -121,7 +121,7 @@ class fci_36_Ui_MainWindow(object):
         
     def login_system(self):
         connection = sqlite3.connect("services.db")
-        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'FACTORY_RESET' AND STATUS = 'ACTIVE'") 
+        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'CALLIBRATION' AND STATUS = 'ACTIVE'") 
         for x in results:  
             if(str(self.lineEdit.text()) == str(x[0])):                
                  self.window = QtWidgets.QMainWindow()

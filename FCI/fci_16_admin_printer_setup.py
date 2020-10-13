@@ -14,6 +14,7 @@ import time
 from PyQt5.QtCore import QDate
 import sys,os
 import sqlite3
+from cryptography.fernet import Fernet
 
 class fci_16_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -205,17 +206,36 @@ class fci_16_Ui_MainWindow(object):
         
     def login_page(self):
         connection = sqlite3.connect("services.db")
-        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'FACTORY_RESET' AND STATUS = 'ACTIVE'") 
+        results=connection.execute("SELECT PWD,xxx FROM SERVICES_MST WHERE SERVICE_NAME = 'PRINTER_SETUP' AND STATUS = 'ACTIVE'") 
         for x in results:  
-            if(str(self.lineEdit.text()) == str(x[0])):          
-                self.go_ahead_flg="No"
-                self.groupBox_2.show()               
+            if(str(self.lineEdit.text()) == str(x[0])):
+                 #print("key:"+str(x[1]))
+                 key=str(x[1])
+                 #val=str(x[0])
+                 val=str(x[0])
+                 val2=str.encode(val)
+                 #val2=bytes(x[0],'utf-8')
+                 #print("pwd:"+str(x[0]))
+                 d_cipher_suite = Fernet(str(x[1]))
+                 #print("type:"+str(type(val2)))
+                 plain_text = d_cipher_suite.decrypt(val2)
+                 #print("plain_text :"+str(plain_text,'utf-8'))
+                 
+                          
                 
             else:
                 self.label_3.show()   
                 self.groupBox_2.hide()
                  
         connection.close()
+        
+        
+        if(str(self.lineEdit.text()) == str(plain_text,'utf-8')):          
+                self.go_ahead_flg="No"
+                self.groupBox_2.show()                
+        else:
+                self.label_3.show()   
+                self.groupBox_2.hide()
         
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT PRINTER_KEY ,PRINTER_HEATER_TITLE , PRINTER_HEADER, PRINTER_FOOTER FROM GLOBAL_VAR") 

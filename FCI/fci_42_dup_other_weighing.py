@@ -9,7 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sqlite3
+import datetime
+import time
+import sqlite3
 
 class fci_42_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -527,12 +530,55 @@ class fci_42_Ui_MainWindow(object):
         self.label_74.setText(_translate("MainWindow", "41.000"))
         self.comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "2"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "4"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "5"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "3"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "4"))
         self.label_42.setText(_translate("MainWindow", "Print Copies :"))
         self.label_75.setText(_translate("MainWindow", "250.00"))
         self.label_45.setText(_translate("MainWindow", "Charges(Rs.)  :"))
         self.pushButton_7.clicked.connect(MainWindow.close)
+        self.fetch_slip_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+    
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+       
+    def fetch_slip_data(self):        
+        self.vehicle_no=""
+        connection = sqlite3.connect("fci.db")        
+        results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),NET_WEIGHT_VAL,STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0'),PARTY_NAME FROM WEIGHT_MST WHERE SERIAL_ID IN (SELECT OLD_SLIP_NO FROM GLOBAL_VAR)")       
+        for x in results:        
+            #self.label_.setText(str(x[0]).zfill(4))
+            self.label_19.setText(str(x[0]).zfill(6))
+            self.current_slip_no=str(x[0])
+             # First Wt
+            self.label_29.setText(str(x[2]))         
+            self.label_30.setText(str(x[4])[0:11])
+            self.label_31.setText(str(x[4])[11:16])
+            self.label_32.setText('{:06.3f}'.format(x[3]))
+         
+            # Vehical No
+            self.lineEdit_2.setText(str(x[5]))
+           
+            #second Wt
+            self.label_67.setText(str(x[6]))           
+            self.label_66.setText(str(x[8])[0:11])            
+            self.label_68.setText(str(x[8])[11:16])
+            self.label_65.setText('{:06.3f}'.format(x[7]))
+           
+            #Net Wt
+            self.label_74.setText('{:06.3f}'.format(x[9]))
+            #Driver
+            self.label_69.setText(str(x[12]))
+            #Cahrges            
+            self.label_75.setText(str(x[11]))
+            #Party Name            
+            self.label_49.setText(str(x[26]))
+           
+            
+        connection.close()
 
 
 if __name__ == "__main__":

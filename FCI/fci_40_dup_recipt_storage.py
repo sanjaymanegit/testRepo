@@ -9,7 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sqlite3
+import datetime
+import time
+import sqlite3
 
 class fci_40_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -732,7 +735,7 @@ class fci_40_Ui_MainWindow(object):
         self.label_56.setText(_translate("MainWindow", "Slot ID 2 :"))
         self.label_54.setText(_translate("MainWindow", " Bags-1 :"))
         self.label_59.setText(_translate("MainWindow", "Bags-2"))
-        self.label_49.setText(_translate("MainWindow", "R003434"))
+        self.label_49.setText(_translate("MainWindow", "R003434xx"))
         self.label_50.setText(_translate("MainWindow", "SL001/R009344"))
         self.label_60.setText(_translate("MainWindow", "54"))
         self.label_61.setText(_translate("MainWindow", "None"))
@@ -746,7 +749,7 @@ class fci_40_Ui_MainWindow(object):
         self.label_70.setText(_translate("MainWindow", "Contractor -100"))
         self.label_22.setText(_translate("MainWindow", "Current Truck Count:"))
         self.label_71.setText(_translate("MainWindow", "144"))
-        self.label_72.setText(_translate("MainWindow", "Issued Truck Count:"))
+        self.label_72.setText(_translate("MainWindow", "Total Truck Count:"))
         self.label_37.setText(_translate("MainWindow", "006"))
         self.label_73.setText(_translate("MainWindow", "Driver:"))
         self.label_18.setText(_translate("MainWindow", "Contractor Name :"))
@@ -757,12 +760,79 @@ class fci_40_Ui_MainWindow(object):
         self.label_113.setText(_translate("MainWindow", "Avg.Bag.Wt.Kg.:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "2"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "4"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "5"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "3"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "4"))
         self.label_42.setText(_translate("MainWindow", "Print Copies :"))
         self.label_45.setText(_translate("MainWindow", "Storage Name :"))
         self.label_114.setText(_translate("MainWindow", "Godown-1"))
         self.pushButton_7.clicked.connect(MainWindow.close)
+       
+        self.fetch_slip_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+    
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+       
+    def fetch_slip_data(self):        
+        self.vehicle_no=""
+        connection = sqlite3.connect("fci.db")        
+        results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),NET_WEIGHT_VAL,STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0'),(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) FROM WEIGHT_MST WHERE SERIAL_ID IN (SELECT OLD_SLIP_NO FROM GLOBAL_VAR)")       
+        for x in results:        
+            #self.label_.setText(str(x[0]).zfill(4))
+            self.label_19.setText(str(x[0]).zfill(6))
+            self.current_slip_no=str(x[0])
+             # First Wt
+            self.label_29.setText(str(x[2]))         
+            self.label_30.setText(str(x[4])[0:11])
+            self.label_31.setText(str(x[4])[11:16])
+            self.label_32.setText('{:06.3f}'.format(x[3]))
+         
+            # Vehical No
+            self.lineEdit_2.setText(str(x[5]))
+           
+            #second Wt
+            self.label_67.setText(str(x[6]))           
+            self.label_66.setText(str(x[8])[0:11])            
+            self.label_68.setText(str(x[8])[11:16])
+            self.label_65.setText('{:06.3f}'.format(x[7]))
+           
+            #Net Wt
+            self.label_74.setText('{:06.3f}'.format(x[9]))
+            #Driver
+            self.label_69.setText(str(x[12]))
+            #Truck current count            
+            self.label_37.setText(str(x[15]))
+            #Total Truck count            
+            self.label_71.setText(str(x[16]))
+            
+            #Actual Bags
+            self.label_111.setText(str(x[13]))
+            
+            #Avg.Bag.Wt 
+            self.label_110.setText(str(x[19]))
+            
+            #Contractor Name
+            self.label_70.setText(str(x[18]))
+            #GoDown Name
+            self.label_114.setText(str(x[21]))
+            
+            #Material
+            self.label_46.setText(str(x[1]))
+            #slot 1
+            self.label_50.setText(str(x[22]))
+            #quantity 1
+            self.label_60.setText(str(x[23]))
+            
+            #slot 2
+            self.label_61.setText(str(x[24]))
+            #quantity 2
+            self.label_62.setText(str(x[25]))
+            self.label_49.setText(str(x[26]))
+        connection.close()       
+     
 
 
 if __name__ == "__main__":

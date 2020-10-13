@@ -1397,14 +1397,20 @@ class fci_03i_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT OLD_NEW_SLIP_FLAG, GROSS_TARE_FLAG ,OLD_SLIP_NO,LCD_WEIGHT FROM GLOBAL_VAR") 
         for x in results:
-            self.current_value=float(x[3])
-            self.lcdNumber.setProperty("value", float(self.current_value))
-            if(str(x[1]) == "GROSS"):
-                self.gross_wt_onclick()                
-            elif(str(x[1]) == "TARE"):
-                self.tare_wt_onclick() 
-            else:
-                 print("NONE")
+             if(str(x[0]) == "NEW"):
+                    self.current_value=float(x[3])
+                    self.lcdNumber.setProperty("value", float(self.current_value))
+                    if(str(x[1]) == "GROSS"):
+                        self.gross_wt_onclick()                
+                    elif(str(x[1]) == "TARE"):
+                        self.tare_wt_onclick() 
+                    else:
+                         print("NONE")
+                         
+             elif(str(x[0]) == "OLD"):
+                    self.current_value=float(x[3])
+                    self.lineEdit.setText(str(x[2]))
+                    self.fetch_via_search()
         connection.close()       
             
     def reset_fun(self):
@@ -2005,7 +2011,7 @@ class fci_03i_Ui_MainWindow(object):
                connection.close()    
             else:
                 self.current_slip_no=str(self.label_19.text())
-                
+            self.batch_id=""    
                 
             if(len(self.vehicle_no) >= 4):
                  #if(int(self.proposed_bags) > 0):

@@ -227,6 +227,7 @@ class fci_35_Ui_MainWindow(object):
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 255, 255);")
+        self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_4 = QtWidgets.QLabel(self.groupBox_6)
         self.label_4.setGeometry(QtCore.QRect(330, 240, 47, 51))
@@ -255,6 +256,7 @@ class fci_35_Ui_MainWindow(object):
         font.setItalic(False)
         font.setWeight(50)
         self.lcdNumber_2.setFont(font)
+        self.lcdNumber_2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber_2.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "\n"
 "font: 10pt \"MS Sans Serif\";\n"
@@ -414,6 +416,12 @@ class fci_35_Ui_MainWindow(object):
         self.xstr2=""
         self.xstr4=""
         self.current_value=0
+        
+        self.line1 =""
+        self.xstr10=""
+        self.xstr11=""
+        self.xstr12=""
+        self.buff1=[]
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -479,6 +487,7 @@ class fci_35_Ui_MainWindow(object):
         self.label_44.hide()
         self.pushButton_9.clicked.connect(MainWindow.close)
         self.timer2=QtCore.QTimer()
+        self.timer3=QtCore.QTimer()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -488,7 +497,7 @@ class fci_35_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.off_position_set)
         self.pushButton_14.clicked.connect(self.pre_calibration_steps)
         self.pushButton_17.clicked.connect(self.start_calibration)
-        self.pushButton_16.clicked.connect(self.verify)
+        self.pushButton_16.clicked.connect(self.verify_job)
         self.pushButton_8.clicked.connect(self.open_new_window)
         self.radioButton.clicked.connect(self.flag_set)
         self.radioButton_2.clicked.connect(self.flag_set)
@@ -554,7 +563,7 @@ class fci_35_Ui_MainWindow(object):
         self.label_44.setText("Successfully Configured OFF Position.")
         self.label_44.show()
         self.off_position_flag="Yes"
-        self.enable_calibration()
+       
     
     def flag_set(self):        
         if(self.radioButton.isChecked()):
@@ -573,16 +582,7 @@ class fci_35_Ui_MainWindow(object):
         
         
      
-    def enable_calibration(self):
-        self.label_44.hide()
-        if( self.ld_flag=="Yes" and  self.capacity_flag=="Yes" and self.off_position_flag=="Yes"):
-            self.groupBox_4.show()
-            self.label_44.setText("Please Procced on Calibration.")
-            self.label_44.show()
-        else:
-            self.groupBox_4.hide()
-            self.label_44.setText("Please set all configuration.")
-            self.label_44.show()
+   
         
     def pre_calibration_steps(self):
         self.label_41.show()
@@ -591,8 +591,7 @@ class fci_35_Ui_MainWindow(object):
         
         
     def start_calibration(self):
-        if(self.lineEdit.text() != ""):
-            
+        if(self.lineEdit.text() != ""):            
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
@@ -610,7 +609,19 @@ class fci_35_Ui_MainWindow(object):
                                     xonxoff=False,
                                     timeout = 0.05
                                 )
-            
+                #============
+                self.command_str="T"
+                print("Start Command : "+str(self.command_str))
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+           
+                #================
+                self.command_str="S"
+                print("Start Command : "+str(self.command_str))
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+                #===========
+                time.sleep(1)
                 self.ser.flush()
                 b = bytes('C', 'utf-8')
                 self.ser.write(b)           
@@ -631,8 +642,45 @@ class fci_35_Ui_MainWindow(object):
         else:
             self.label_44.setText("Please Enter the Load used." )  
             self.label_44.show()
-            
+    
+    def verify_job(self):
+        self.timer3.setInterval(5000)        
+        self.timer3.timeout.connect(self.verify)
+        self.timer3.start(1)
+    
     def verify(self):
+        try:
+            self.line1 = self.ser.readline()
+            print(" xxxxxxxx"+str(self.line1))
+            print("zzzzzz:"+str(self.line1,'utf-8'))
+            self.xstr10=str(self.line1,'utf-8')
+            self.xstr11=self.xstr10.replace("\r","")
+            self.xstr12=self.xstr11.replace("\n","")
+            self.buff1=self.xstr12.split("_")
+            print("xstr12:"+str(self.xstr12))
+            if(len(self.buff1)> 2):
+                    if(str(self.buff1[3]) == 'R'): 
+                        self.label_44.setText("Current Weight is : "+str(self.buff1[0])+" kg." )  
+                        self.label_44.show()
+                    else:
+                        self.label_44.setText("Retry" )  
+                        self.label_44.show()
+            else:
+                self.label_44.setText("")  
+                self.label_44.show()
+        except IOError:
+            #print("IO Errors")
+            self.label_44.setText("IO Errors" )  
+            self.label_44.show()
+    
+    def stop_timer3(self):
+       if(self.timer3.isActive()):
+           self.timer3.stop(1)           
+           
+            
+            
+    def start_wt(self):
+        #print("Weight Started ....")
         try:
             self.ser = serial.Serial(
                                 port='/dev/ttyAMA0',
@@ -642,42 +690,21 @@ class fci_35_Ui_MainWindow(object):
                                 stopbits=serial.STOPBITS_ONE,
                                 xonxoff=False,
                                 timeout = 0.05
-                            )        
-              
-            self.line = self.ser.readline()
-            time.sleep(1)
-            #print("o/p:"+str(self.line))
-            self.xstr0=str(self.line,'utf-8')
-            self.xstr1=self.xstr0.replace("\r","")
-            self.xstr2=self.xstr1.replace("\n","")
-            self.buff=self.xstr2.split("_")
-            if(len(self.buff) > 2):
-                self.label_44.setText("Current Weight is : "+str(self.buff[0])+" kg." )  
-                self.label_44.show()
-            else:
-                self.label_44.setText("OP:"+str(self.line))  
-                self.label_44.show()
-        except IOError:
-            #print("IO Errors")
-            self.label_44.setText("IO Errors" )  
-            self.label_44.show()
-            
-            
-            
-    def start_wt(self):
-        #print("Weight Started ....")
-        try:
-            self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=9600,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.05
                             )
         
             self.ser.flush()       
+            #=======
+            self.command_str="T"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+           
+            #=======
+            self.command_str="S"
+            print("Start Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #======
             
             self.line = self.ser.readline(15)
             print("o/p:"+str(self.line))
@@ -690,39 +717,53 @@ class fci_35_Ui_MainWindow(object):
         except IOError:
             print("IO Errors-load cell connections error")
             self.IO_error_flg=1
-            self.label_44.setText("Load-Cell Connection Error.")
+            self.label_44.setText("LOAD CELL CONNECTION ERROR")  
             self.label_44.show()
+            self.stop_timer()
             
             
     def display_lcd_val(self):               
         #print(" inside display_lcd_val:"+str(self.IO_error_flg))
         if(self.IO_error_flg==0):
             try:
-                self.line = self.ser.readline(20)
-                print(" raw o/p:"+str(self.line)) 
-                if (len(self.line) > 2):
-                    
-                    self.ser.flush()
-                    self.ser.write(b'*D\r')
-                    self.xstr3=str(self.line,'utf-8')
-                    self.xstr2=self.xstr3[0:6]
-                    #print("self.xstr3:"+str(self.xstr3)+" self.xstr2: "+str(self.xstr2))
-                    try:
-                         self.xstr4=int(self.xstr2)
-                    except ValueError:                        
-                        print("Value Error"+str(self.xstr2))
-                        self.xstr4=0                    
-                    try:
-                        self.current_value=float(int(self.xstr4)/1000)
-                    except ValueError:
-                        print("Value Error :"+str(self.xstr4))
-                        self.xstr4=0                                           
-                    self.lcdNumber.setProperty("value", str(self.xstr4))                    
+                self.line = self.ser.readline()
+                print(" raw o/p:"+str(self.line))
+                print("self.line:"+str(self.line,'utf-8'))
+                self.xstr0=str(self.line,'utf-8')
+                self.xstr1=self.xstr0.replace("\r","")
+                self.xstr2=self.xstr1.replace("\n","")
+                self.buff=self.xstr2.split("_")                
+                if(len(self.buff)> 2):
+                        if(str(self.buff[3]) == 'R'): 
+                                self.xstr2=str(self.buff[0])
+                                try:
+                                     self.xstr4=int(self.xstr2)
+                                except ValueError:                        
+                                    print("Value Error"+str(self.xstr2))
+                                    self.xstr4=0                    
+                                try:
+                                    self.current_value=float(int(self.xstr4)/1000)
+                                except ValueError:
+                                    print("Value Error :"+str(self.xstr4))
+                                    self.xstr4=0
+                                    self.current_value=0                    
+                                self.lcdNumber.setProperty("value", str(self.xstr4))
+                                self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                
                     
             except IOError:
                 print("IO Errors : Data Read Error") 
-                self.IO_error_flg=1  
+                self.IO_error_flg=1
+                self.label_44.setText("DATA READ ERROR")  
+                self.label_44.show()
     
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop(1)           
+           self.command_str="T"
+           print("Stop Command : "+str(self.command_str))
+           b = bytes(self.command_str, 'utf-8')
+           self.ser.write(b)
     
     def open_new_window(self):       
         self.window = QtWidgets.QMainWindow()
