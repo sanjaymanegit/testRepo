@@ -89,7 +89,7 @@ def report_print():
                     
                     printer.text("     \n\r")
                     printer.text("|------------------------------------------------------------------------\n\r")
-                    printer.text("| Slip.No. |  Vehical No  | No.Of.Bags. | Net Wt | Target Location    |\n\r")
+                    printer.text("| Slip.No. |  Vehical No  | No.Of.Bags. | Net Wt | Storage Name    |\n\r")
                     printer.text("|------------------------------------------------------------------------\n\r")        
                     
                     

@@ -13,6 +13,13 @@ import sqlite3
 import datetime
 import time
 import sqlite3
+import os,sys
+
+#### pdf library
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import landscape, letter,inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
+from reportlab.lib import colors
 
 class fci_41_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -627,7 +634,7 @@ class fci_41_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.current_slip_no=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -692,7 +699,8 @@ class fci_41_Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:14pt;\">Smaple remark</span></p></body></html>"))
 
         self.pushButton_7.clicked.connect(MainWindow.close)
-        
+        self.pushButton_8.clicked.connect(self.print_recipt)
+        self.pushButton_9.clicked.connect(self.open_pdf)
         self.fetch_slip_data()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -751,7 +759,137 @@ class fci_41_Ui_MainWindow(object):
             self.textEdit.setText(str(x[11]))
             
         connection.close()
+       
+    def print_recipt(self):
+        self.serial_id=int(self.label_19.text())
+        print("Slip Id : "+str(str(self.serial_id)))
+        self.pushButton_8.setDisabled(True)
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+             cursor = connection.cursor()                    
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"'") 
+        connection.commit();
+        connection.close()  
+        y=0
+        y=(int(self.comboBox.currentText()))
+        print("y:"+str(y))
+        for x in range(y):
+                         print("print count :"+str(x))
+                         os.system("./job_print_recipt.sh")
+        connection.close()  
+      
+    def open_pdf(self):
+        self.create_pdf()
+        os.system("xpdf ./reports/recipt_site.pdf")
+     
+    def create_pdf(self):
+        self.tare_wt=""
+        self.tare_wt_date=""
+        self.gross_wt=""
+        self.gross_wt_date=""
+        self.net_wt=""        
+        self.title=""
+        self.address=""
+        self.company_name_font=16
+        self.company_address_font=12
+        self.note=""
+       
         
+        
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+             cursor = connection.cursor()                    
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"'") 
+        connection.commit();
+        connection.close()   
+        
+        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        
+        connection = sqlite3.connect("fci.db")       
+        print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        
+        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        for x in results:
+            self.tare_wt=str(x[0])
+            self.tare_wt_date=str(x[1])
+            self.gross_wt=str(x[2])
+            self.gross_wt_date=str(x[3])
+            self.net_wt=str(x[4])
+        connection.close()
+        
+        data.append(["Tare Weight",str(self.tare_wt_date),"     "+str(self.tare_wt)])
+        data.append(["Gross Weight",str(self.gross_wt_date),"     "+str(self.gross_wt)]) 
+        data.append(["Net Weight","","     "+str(self.net_wt)])
+        
+        
+        
+        c = Canvas("./reports/recipt_site.pdf")
+        #c.setPageSize( landscape(letter) )
+        #############################
+        c.setFont('Helvetica-Bold', int(self.company_name_font) )
+        PAGE_HEIGHT = letter[1]
+        PAGE_WIDTH = letter[0]
+        
+        
+            
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT  PRINTER_HEATER_TITLE,PRINTER_HEADER,PRINTER_FOOTER FROM GLOBAL_VAR") 
+        for x in results:
+                   c.drawString(170,790,str(x[0]))             
+                   self.address=str(x[1])
+                   self.note=str(x[2])
+        connection.close()
+        
+        
+        
+        c.setFont('Helvetica-Bold', int(self.company_address_font) )
+        c.drawString(100,770,str(self.address))
+        #c.drawString(150,770,str(self.address[76:200]))
+        
+        c.line( 0.5*inch, PAGE_HEIGHT-( 0.45*inch ), PAGE_WIDTH-( 0.5*inch ), PAGE_HEIGHT-( 0.45*inch ) )
+        ###################################################
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,ACCPTED_BAGS,MATERIAL_NAME,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) AS RECIPT_ID ,(CURR_TRUCK_CNT||'/'||TOTAL_TRUCKS_CNT) as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+                
+        for x in results:
+                c.setFont('Helvetica',10)
+                c.drawString(50,740,"Serial ID        : "+str(x[0]))
+                c.drawString(250,740,"Vehicle No      : "+str(x[1]))
+                
+                c.drawString(50,710,"Recipt.Id.       : "+str(x[5]))
+                c.drawString(250,710,"Truck.Sr.No.       : "+str(x[6]))
+                
+                c.drawString(50,680,"Total Bags    : "+str(x[3]))
+                c.drawString(250,680,"Batch.Id    : "+str(x[2]).zfill(4))
+                
+                c.drawString(50,650,"Material         : "+str(x[4]))
+                
+                
+               
+                
+                c.drawString(50,530,str(self.note))
+                #c.drawString(250,550,"Net Wt. (Kg)    : "+str(x[11]))
+                #c.drawString(250,530,"Total Amount(Rs): "+str(x[8]))
+                c.line(0.5*inch,520,580,520)
+        
+        connection.close()
+  
+        ##############################################
+        c.setFont('Helvetica',10)        
+        f = Table(data)        
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black), ('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))
+        width = 200
+        height_1 = 400
+        f.wrapOn(c, width, height_1)
+        x = 40
+        y = 560
+        f.drawOn(c, x, y)        
+        ############################################
+        
+        c.showPage()
+        c.save() 
         
 if __name__ == "__main__":
     import sys

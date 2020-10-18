@@ -21,7 +21,7 @@ class fci_06_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
-        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
+        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -348,7 +348,7 @@ class fci_06_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Batch Quantity"))
+        self.label.setText(_translate("MainWindow", "Recpit Details"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         '''
         item = self.tableWidget.verticalHeaderItem(0)
@@ -392,7 +392,7 @@ class fci_06_Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Material Type:"))
         self.label_6.setText(_translate("MainWindow", "Rice -232"))
         
-        self.label_29.setText(_translate("MainWindow", "Total.Net.Wt.(Ton) :"))
+        self.label_29.setText(_translate("MainWindow", "Total.Net.Wt.:"))
         self.label_8.setText(_translate("MainWindow", "5450"))
         self.pushButton_5.setText(_translate("MainWindow", "Refresh"))
         self.pushButton_7.setText(_translate("MainWindow", "Print Batch "))
@@ -405,7 +405,7 @@ class fci_06_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "In Progress"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
-        self.label_11.setText(_translate("MainWindow", "250"))
+        self.label_11.setText(_translate("MainWindow", "5/250"))
         #self.label_31.setText(_translate("MainWindow", "Received Trucks :"))        
         #self.label_12.setText(_translate("MainWindow", "150"))
         self.label_35.setText(_translate("MainWindow", "Contractor Name :"))

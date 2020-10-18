@@ -9,7 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from fci_46_status_recipt_pop import fci_46_Ui_MainWindow
+from fci_47_status_issue_pop import fci_47_Ui_MainWindow
+from fci_48_status_other_pop import fci_48_Ui_MainWindow
+from fci_49_status_ALL_pop import fci_49_Ui_MainWindow
 
+import datetime
+import sqlite3
 
 class fci_45_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -30,12 +36,12 @@ class fci_45_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(1030, 10, 290, 51))
+        self.label_20.setGeometry(QtCore.QRect(1030, 10, 260, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(14)
         font.setBold(True)
-        font.setWeight(75)
+        font.setWeight(60)
         self.label_20.setFont(font)
         self.label_20.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
@@ -71,7 +77,7 @@ class fci_45_Ui_MainWindow(object):
 "background-color: rgb(0, 0, 255);")
         self.pushButton_5.setObjectName("pushButton_5")
         self.line = QtWidgets.QFrame(self.frame)
-        self.line.setGeometry(QtCore.QRect(650, 50, 20, 611))
+        self.line.setGeometry(QtCore.QRect(650, 200, 20, 611))
         self.line.setStyleSheet("color: rgb(255, 255, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -119,6 +125,7 @@ class fci_45_Ui_MainWindow(object):
         self.label_3.setStyleSheet("color: rgb(255, 255, 0);")
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
+        
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
         self.pushButton_8.setGeometry(QtCore.QRect(370, 110, 131, 41))
         font = QtGui.QFont()
@@ -130,6 +137,20 @@ class fci_45_Ui_MainWindow(object):
         self.pushButton_8.setStyleSheet("background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_8.setObjectName("pushButton_8")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(600, 110, 101, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        
         self.label_4 = QtWidgets.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(40, 250, 91, 41))
         font = QtGui.QFont()
@@ -141,6 +162,7 @@ class fci_45_Ui_MainWindow(object):
         self.label_4.setStyleSheet("color: rgb(255, 255, 0);")
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
+        
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_2.setGeometry(QtCore.QRect(150, 250, 151, 41))
         font = QtGui.QFont()
@@ -185,12 +207,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        
         self.label_6 = QtWidgets.QLabel(self.frame)
         self.label_6.setGeometry(QtCore.QRect(370, 180, 41, 41))
         font = QtGui.QFont()
@@ -213,12 +230,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_2.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+       
         self.comboBox_7 = QtWidgets.QComboBox(self.frame)
         self.comboBox_7.setGeometry(QtCore.QRect(420, 320, 61, 41))
         font = QtGui.QFont()
@@ -230,12 +242,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_7.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_7.setObjectName("comboBox_7")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
+        
         self.label_11 = QtWidgets.QLabel(self.frame)
         self.label_11.setGeometry(QtCore.QRect(40, 320, 91, 41))
         font = QtGui.QFont()
@@ -269,12 +276,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_8.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_8.setObjectName("comboBox_8")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
+       
         self.line_2 = QtWidgets.QFrame(self.frame)
         self.line_2.setGeometry(QtCore.QRect(0, 390, 661, 20))
         self.line_2.setStyleSheet("color: rgb(255, 255, 255);")
@@ -424,6 +426,21 @@ class fci_45_Ui_MainWindow(object):
 "color: rgb(0, 0, 0);")
         self.calendarWidget_2.setGridVisible(True)
         self.calendarWidget_2.setObjectName("calendarWidget_2")
+        
+        self.calendarWidget_3 = QtWidgets.QCalendarWidget(self.frame)
+        self.calendarWidget_3.setGeometry(QtCore.QRect(100, 150, 341, 231))
+        self.calendarWidget_3.setStyleSheet("background-color: rgb(170, 255, 255);\n"
+"color: rgb(0, 0, 0);")
+        self.calendarWidget_3.setGridVisible(True)
+        self.calendarWidget_3.setObjectName("calendarWidget_3")
+        
+        self.calendarWidget_4 = QtWidgets.QCalendarWidget(self.frame)
+        self.calendarWidget_4.setGeometry(QtCore.QRect(260, 310, 341, 231))
+        self.calendarWidget_4.setStyleSheet("background-color: rgb(170, 255, 255);\n"
+"color: rgb(0, 0, 0);")
+        self.calendarWidget_4.setGridVisible(True)
+        self.calendarWidget_4.setObjectName("calendarWidget_4")
+        
         self.label_7 = QtWidgets.QLabel(self.frame)
         self.label_7.setGeometry(QtCore.QRect(730, 110, 91, 41))
         font = QtGui.QFont()
@@ -490,12 +507,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_9.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_9.setObjectName("comboBox_9")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
-        self.comboBox_9.addItem("")
+        
         self.label_14 = QtWidgets.QLabel(self.frame)
         self.label_14.setGeometry(QtCore.QRect(730, 310, 91, 41))
         font = QtGui.QFont()
@@ -529,12 +541,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_10.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_10.setObjectName("comboBox_10")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
-        self.comboBox_10.addItem("")
+        
         self.label_8 = QtWidgets.QLabel(self.frame)
         self.label_8.setGeometry(QtCore.QRect(730, 240, 91, 41))
         font = QtGui.QFont()
@@ -557,12 +564,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_3.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
+       
         self.label_9 = QtWidgets.QLabel(self.frame)
         self.label_9.setGeometry(QtCore.QRect(1060, 170, 41, 41))
         font = QtGui.QFont()
@@ -596,12 +598,7 @@ class fci_45_Ui_MainWindow(object):
         self.comboBox_4.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_4.setObjectName("comboBox_4")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
+        
         self.line_9 = QtWidgets.QFrame(self.frame)
         self.line_9.setGeometry(QtCore.QRect(1137, 400, 20, 301))
         self.line_9.setFrameShape(QtWidgets.QFrame.VLine)
@@ -771,6 +768,19 @@ class fci_45_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.from_dt=""
+        self.to_dt=""
+        self.from_dt2=""
+        self.to_dt2=""
+        self.pending_all_cnt=0
+        self.pending_recipt_cnt=0
+        self.pending_issue_cnt=0
+        self.pending_other_cnt=0
+        
+        self.completed_all_cnt=0
+        self.completed_recipt_cnt=0
+        self.completed_issue_cnt=0
+        self.completed_other_cnt=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -787,38 +797,48 @@ class fci_45_Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "COMPLETED"))
         self.label_3.setText(_translate("MainWindow", "FROM:"))
         self.pushButton_8.setText(_translate("MainWindow", "DATE"))
+        self.pushButton_8_1.setText(_translate("MainWindow", " RETURN "))
         self.label_4.setText(_translate("MainWindow", "TO:"))
         self.lineEdit_2.setText(_translate("MainWindow", "2020-10-14"))
         self.pushButton_12.setText(_translate("MainWindow", "DATE"))
         self.label_5.setText(_translate("MainWindow", "HH:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "06"))
+        
+        self.i=0        
+        for x in range(24):            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+       
         self.label_6.setText(_translate("MainWindow", "MI:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_2.setItemText(5, _translate("MainWindow", "06"))
-        self.comboBox_7.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_7.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_7.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_7.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_7.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_7.setItemText(5, _translate("MainWindow", "06"))
+        
+        self.i=0        
+        for x in range(60):            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+        
+        self.i=0        
+        for x in range(60):            
+            self.comboBox_7.addItem("")
+            self.comboBox_7.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
         self.label_11.setText(_translate("MainWindow", "HH:"))
         self.label_12.setText(_translate("MainWindow", "MI:"))
-        self.comboBox_8.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_8.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_8.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_8.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_8.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_8.setItemText(5, _translate("MainWindow", "06"))
+        
+        self.i=0        
+        for x in range(24):            
+            self.comboBox_8.addItem("")
+            self.comboBox_8.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+            
+            
         self.pushButton_13.setText(_translate("MainWindow", "LIST"))
+       
+       
         self.label_21.setText(_translate("MainWindow", "100"))
         self.label_22.setText(_translate("MainWindow", "50"))
         self.label_23.setText(_translate("MainWindow", "30"))
@@ -826,56 +846,460 @@ class fci_45_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "ALL"))
         self.label_26.setText(_translate("MainWindow", "RECIPT"))
         self.label_27.setText(_translate("MainWindow", "ISSUE"))
-        self.label_28.setText(_translate("MainWindow", "OTHES"))
+        self.label_28.setText(_translate("MainWindow", "OTHER"))
         self.label_7.setText(_translate("MainWindow", "FROM:"))
         self.pushButton_11.setText(_translate("MainWindow", "DATE"))
         self.lineEdit_3.setText(_translate("MainWindow", "2020-10-14"))
         self.label_13.setText(_translate("MainWindow", "MI:"))
+        
         self.pushButton_14.setText(_translate("MainWindow", "DATE"))
-        self.comboBox_9.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_9.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_9.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_9.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_9.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_9.setItemText(5, _translate("MainWindow", "06"))
+        
+        self.i=0        
+        for x in range(60):            
+            self.comboBox_9.addItem("")
+            self.comboBox_9.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+       
+        
         self.label_14.setText(_translate("MainWindow", "HH:"))
         self.lineEdit_4.setText(_translate("MainWindow", "2020-10-14"))
-        self.comboBox_10.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_10.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_10.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_10.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_10.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_10.setItemText(5, _translate("MainWindow", "06"))
+        self.i=0        
+        for x in range(24):            
+            self.comboBox_10.addItem("")
+            self.comboBox_10.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+        
         self.label_8.setText(_translate("MainWindow", "TO:"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_3.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_3.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_3.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_3.setItemText(5, _translate("MainWindow", "06"))
+        self.i=0        
+        for x in range(60):            
+            self.comboBox_3.addItem("")
+            self.comboBox_3.setItemText(self.i,str("%02d"%x))           
+            self.i=self.i+1
+        
         self.label_9.setText(_translate("MainWindow", "MI:"))
         self.label_10.setText(_translate("MainWindow", "HH:"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_4.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_4.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_4.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_4.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_4.setItemText(5, _translate("MainWindow", "06"))
+        self.i=0        
+        for x in range(24):            
+            self.comboBox_4.addItem("")
+            self.comboBox_4.setItemText(self.i,str("%02d"%x))           
+            self.i=self.i+1
         self.label_29.setText(_translate("MainWindow", "ISSUE"))
-        self.label_30.setText(_translate("MainWindow", "OTHES"))
+        self.label_30.setText(_translate("MainWindow", "OTHER"))
         self.label_31.setText(_translate("MainWindow", "RECIPT"))
         self.label_32.setText(_translate("MainWindow", "ALL"))
         self.label_53.setText(_translate("MainWindow", "50"))
         self.label_54.setText(_translate("MainWindow", "100"))
         self.label_55.setText(_translate("MainWindow", "30"))
         self.label_56.setText(_translate("MainWindow", "20"))
-        self.pushButton_23.setText(_translate("MainWindow", "LIST"))
-        self.pushButton_24.setText(_translate("MainWindow", "LIST"))
-        self.pushButton_25.setText(_translate("MainWindow", "LIST"))
-        self.pushButton_26.setText(_translate("MainWindow", "LIST"))
+        self.pushButton_23.setText(_translate("MainWindow", "LIST")) #issue
+        self.pushButton_24.setText(_translate("MainWindow", "LIST")) #all
+        self.pushButton_25.setText(_translate("MainWindow", "LIST")) #recipt
+        self.pushButton_26.setText(_translate("MainWindow", "LIST")) #other
+        self.comboBox.setCurrentText("00")
+        self.comboBox.setCurrentText("00")
+        self.comboBox_8.setCurrentText("23")
+        self.comboBox_7.setCurrentText("59")
+        
+        self.comboBox_3.setCurrentText("00")
+        self.comboBox_4.setCurrentText("00")
+        self.comboBox_10.setCurrentText("23")
+        self.comboBox_9.setCurrentText("59")
+        
+        self.lineEdit.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        self.lineEdit_2.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        self.pushButton_8_1.clicked.connect(MainWindow.close)
         self.calendarWidget.hide()
         self.calendarWidget_2.hide()
+        self.calendarWidget_3.hide()
+        self.calendarWidget_4.hide()
+        self.pushButton_9.clicked.connect(self.load_pending)
+        self.pushButton_10.clicked.connect(self.load_completed)
+        
+        self.pushButton_3.clicked.connect(self.open_new_window2)
+        self.pushButton_4.clicked.connect(self.open_new_window3)
+        self.pushButton_5.clicked.connect(self.open_new_window4)
+        self.pushButton_13.clicked.connect(self.open_new_window5)
+        
+        self.pushButton_26.clicked.connect(self.open_new_window4) #other
+        self.pushButton_25.clicked.connect(self.open_new_window2) #recipt
+        self.pushButton_24.clicked.connect(self.open_new_window5) #all
+        self.pushButton_23.clicked.connect(self.open_new_window3) #issue
+        
+        #self.load_data()
+        
+        self.pushButton_8.clicked.connect(self.from_on_click1)
+        self.pushButton_12.clicked.connect(self.to_on_click2)
+        
+        self.pushButton_11.clicked.connect(self.from2_on_click1)
+        self.pushButton_14.clicked.connect(self.to2_on_click2)
+       
+        self.calendarWidget.clicked.connect(self.calendar1_on_click)
+        self.calendarWidget_2.clicked.connect(self.calendar2_on_click)
+        self.calendarWidget_3.clicked.connect(self.calendar3_on_click)
+        self.calendarWidget_4.clicked.connect(self.calendar4_on_click)
+        self.load_pending()
+        
+        self.comboBox.currentTextChanged.connect(self.load_pending)
+        self.comboBox.currentTextChanged.connect(self.load_pending)
+        self.comboBox_8.currentTextChanged.connect(self.load_pending)
+        self.comboBox_7.currentTextChanged.connect(self.load_pending)
+        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1) 
+    
+    
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def from_on_click1(self):
+        self.calendarWidget.show()
+    
+    def to_on_click2(self):
+        self.calendarWidget_2.show()
+        
+    def calendar1_on_click(self):
+        temp_var = self.calendarWidget.selectedDate() 
+        var_name = temp_var.toPyDate()        
+        self.from_dt=str(var_name)
+        self.lineEdit.setText(str(self.calendarWidget.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget.hide()
+        self.load_pending()
+    
+    def calendar2_on_click(self):
+        temp_var = self.calendarWidget_2.selectedDate() 
+        var_name = temp_var.toPyDate()        
+        self.to_dt=str(var_name)
+        self.lineEdit_2.setText(str(self.calendarWidget_2.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget_2.hide()
+        self.load_pending()
+        
+        
+    def from2_on_click1(self):
+        self.calendarWidget_3.show()
+    
+    def to2_on_click2(self):
+        self.calendarWidget_4.show()
+        
+    def calendar3_on_click(self):
+        temp_var = self.calendarWidget_3.selectedDate() 
+        var_name = temp_var.toPyDate()        
+        self.from_dt2=str(var_name)
+        self.lineEdit_3.setText(str(self.calendarWidget_3.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget_3.hide()
+        self.load_completed()
+    
+    def calendar4_on_click(self):
+        temp_var = self.calendarWidget_4.selectedDate() 
+        var_name = temp_var.toPyDate()        
+        self.to_dt2=str(var_name)
+        self.lineEdit_4.setText(str(self.calendarWidget_4.selectedDate().toString(QtCore.Qt.ISODate)))
+        self.calendarWidget_4.hide()
+        self.load_completed()
+        
+        
+    def load_data(self):        
+        
+        self.from_dt=self.lineEdit.text()+" "+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
+        self.to_dt=self.lineEdit_2.text()+" "+" "+str(self.comboBox_8.currentText())+":"+str(self.comboBox_7.currentText())+":00"
+        
+        self.from_dt2=self.lineEdit_3.text()+" "+" "+str(self.comboBox_3.currentText())+":"+str(self.comboBox_4.currentText())+":00"
+        self.to_dt2=self.lineEdit_4.text()+" "+" "+str(self.comboBox_10.currentText())+":"+str(self.comboBox_9.currentText())+":00"
+        
+        
+ 
+        
 
+
+    def load_pending(self):
+        self.pending_show()
+        self.completed_hide()
+        self.load_data()
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()
+            cursor.execute("UPDATE GLOBAL_VAR SET STATUS = 'PENDING', STATUS_FROM='"+str(self.from_dt)+"', STATUS_TO='"+str(self.to_dt)+"'")
+        connection.commit();
+        connection.close()
+        self.pending_all_cnt=0
+        self.pending_recipt_cnt=0
+        self.pending_issue_cnt=0
+        self.pending_other_cnt=0
+        
+        #print("SELECT COUNT(*) FROM WEIGHT_MST WHERE BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        for x in results:
+            self.pending_all_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ID IS NOT NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        for x in results:
+            self.pending_recipt_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        for x in results:
+            self.pending_issue_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND  BATCH_ID IS  NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        for x in results:
+            self.pending_other_cnt=str(x[0])
+        connection.close()
+        
+        
+        self.label_21.setText(str(self.pending_all_cnt))
+        self.label_22.setText(str(self.pending_recipt_cnt))
+        self.label_23.setText(str(self.pending_issue_cnt))
+        self.label_24.setText(str(self.pending_other_cnt))
+        
+    def load_completed(self):
+        self.completed_show()
+        self.pending_hide()
+        self.load_data()
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()
+            cursor.execute("UPDATE GLOBAL_VAR SET STATUS = 'COMPLETED', STATUS_FROM='"+str(self.from_dt2)+"', STATUS_TO='"+str(self.to_dt2)+"'")
+        connection.commit();
+        connection.close()
+        
+        self.completed_all_cnt=0
+        self.completed_recipt_cnt=0
+        self.completed_issue_cnt=0
+        self.completed_other_cnt=0
+        
+        #print("SELECT COUNT(*) FROM WEIGHT_MST WHERE BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        for x in results:
+            self.completed_all_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ID IS NOT NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        for x in results:
+            self.completed_recipt_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        for x in results:
+            self.completed_issue_cnt=str(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ID IS  NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        for x in results:
+            self.completed_other_cnt=str(x[0])
+        connection.close()
+        
+        
+        self.label_54.setText(str(self.completed_all_cnt))
+        self.label_53.setText(str(self.completed_recipt_cnt))
+        self.label_55.setText(str(self.completed_issue_cnt))
+        self.label_56.setText(str(self.completed_other_cnt))
+        
+       
+
+    def pending_hide(self):
+        self.pushButton_3.hide()
+        self.pushButton_4.hide()
+        self.pushButton_5.hide()
+        self.lineEdit.hide()
+        self.label_3.hide()
+        self.pushButton_8.hide()
+        self.label_4.hide()
+        self.lineEdit_2.hide()
+        self.pushButton_12.hide()
+        self.pushButton_13.hide()
+        self.comboBox.hide()
+        self.label_6.hide()
+        self.comboBox_2.hide()
+        self.label_5.hide()
+        
+        self.label_11.hide()
+        self.label_12.hide()
+        self.comboBox_7.hide()
+        self.comboBox_8.hide()
+        
+        self.label_21.hide()
+        self.label_22.hide()
+        self.label_23.hide()
+        self.label_24.hide()
+        
+        self.label_25.hide()
+        self.label_26.hide()
+        self.label_27.hide()
+        self.label_28.hide()
+        
+        
+        #self.line.hide()
+        self.line_2.hide()
+        self.line_3.hide()
+        self.line_4.hide()
+        
+        self.line_5.hide()
+        self.line_6.hide()
+        self.line_7.hide()
+        self.line_8.hide()
+       
+        
+        
+    def pending_show(self):
+        self.pushButton_3.show()
+        self.pushButton_4.show()
+        self.pushButton_5.show()
+        self.lineEdit.show()
+        self.label_3.show()
+        self.pushButton_8.show()
+        self.label_4.show()
+        self.lineEdit_2.show()
+        self.pushButton_12.show()
+        self.pushButton_13.show()
+        self.comboBox.show()
+        self.label_6.show()
+        self.comboBox_2.show()
+        self.label_5.show()
+        
+        self.label_11.show()
+        self.label_12.show()
+        self.comboBox_7.show()
+        self.comboBox_8.show()
+        
+        self.label_21.show()
+        self.label_22.show()
+        self.label_23.show()
+        self.label_24.show()
+        
+        self.label_25.show()
+        self.label_26.show()
+        self.label_27.show()
+        self.label_28.show()
+        
+        
+        #self.line.show()
+        self.line_2.show()
+        self.line_3.show()
+        self.line_4.show()
+        
+        self.line_5.show()
+        self.line_6.show()
+        self.line_7.show()
+        self.line_8.show()
+       
+    
+    def completed_hide(self):
+        self.pushButton_14.hide()
+        self.comboBox_9.hide()
+        self.comboBox_10.hide()
+        self.comboBox_3.hide()
+        self.comboBox_4.hide()
+        self.label_14.hide()
+        self.lineEdit_4.hide()
+        self.label_29.hide()
+        self.label_30.hide()
+        self.label_31.hide()
+        self.label_32.hide()
+        self.label_53.hide()
+        self.label_54.hide()
+        self.label_55.hide()
+        self.label_56.hide()
+        self.pushButton_23.hide()
+        self.pushButton_24.hide()
+        self.pushButton_25.hide()
+        self.pushButton_26.hide()
+        
+        self.pushButton_11.hide()
+        self.lineEdit_3.hide()
+        self.label_13.hide()
+        
+        self.label_7.hide()
+        self.label_8.hide()
+        self.label_9.hide()
+        self.label_10.hide()
+        
+        self.line_9.hide()
+        self.line_10.hide()
+        self.line_11.hide()
+        
+        self.line_12.hide()
+        self.line_13.hide()
+        self.line_14.hide()
+        
+        
+    def completed_show(self):
+        self.pushButton_14.show()
+        self.comboBox_9.show()
+        self.comboBox_10.show()
+        self.comboBox_3.show()
+        self.comboBox_4.show()
+        self.label_14.show()
+        self.lineEdit_4.show()
+        self.label_29.show()
+        self.label_30.show()
+        self.label_31.show()
+        self.label_32.show()
+        self.label_53.show()
+        self.label_54.show()
+        self.label_55.show()
+        self.label_56.show()
+        self.pushButton_23.show()
+        self.pushButton_24.show()
+        self.pushButton_25.show()
+        self.pushButton_26.show()
+        
+        self.pushButton_11.show()
+        self.lineEdit_3.show()
+        self.label_13.show()
+        
+        self.label_7.show()
+        self.label_8.show()
+        self.label_9.show()
+        self.label_10.show()
+        
+        self.line_9.show()
+        self.line_10.show()
+        self.line_11.show()
+        
+        self.line_12.show()
+        self.line_13.show()
+        self.line_14.show()
+        
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_46_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window3(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_47_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window4(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_48_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window5(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_49_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    
 
 if __name__ == "__main__":
     import sys

@@ -579,9 +579,6 @@ class fci_35_Ui_MainWindow(object):
         self.label_44.setText("Successfully Configured Flag.")
         self.label_44.show()
         self.off_position_flag="Yes"
-        
-        
-     
    
         
     def pre_calibration_steps(self):

@@ -11,12 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class fci_07_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
-        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
+        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -49,6 +49,14 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(5)
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -284,7 +292,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Issue Quantity"))
+        self.label.setText(_translate("MainWindow", "Issue Details"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 "))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -323,19 +331,20 @@ class Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "Refresh"))
         self.label_35.setText(_translate("MainWindow", "Contractor Name :"))
         self.label_13.setText(_translate("MainWindow", "xxxxxx  dfgfdg"))
-        self.label_25.setText(_translate("MainWindow", "Batch Id:"))
+        self.label_25.setText(_translate("MainWindow", "Recipt Id:"))
         self.label_3.setText(_translate("MainWindow", "RO003434554"))
         self.label_26.setText(_translate("MainWindow", "Slots:"))
         self.label_9.setText(_translate("MainWindow", "4"))
-        self.label_30.setText(_translate("MainWindow", "Godown Location :"))
+        self.label_30.setText(_translate("MainWindow", "Storage Name :"))
         self.label_4.setText(_translate("MainWindow", "godown ggdsgsdfg"))
+        self.pushButton_5.clicked.connect(MainWindow.close)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_07_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

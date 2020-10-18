@@ -11,6 +11,7 @@ from fci_21_bu_master_data import fci_21_Ui_MainWindow
 from fci_25_update_delete_record import fci_25_Ui_MainWindow
 from fci_27_audits import fci_27_Ui_MainWindow
 from fci_26_users import fci_26_Ui_MainWindow
+from fci_32_buffer_stock_report import fci_32_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 
@@ -65,25 +66,36 @@ class fci_14_Ui_MainWindow(object):
         self.groupBox_2.setObjectName("groupBox_2")
         self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_5.setGeometry(QtCore.QRect(450, 70, 301, 61))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
+        
+        self.pushButton_5_1 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_5_1.setGeometry(QtCore.QRect(450, 70, 301, 61))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_5_1.setFont(font)
+        self.pushButton_5_1.setObjectName("pushButton_5_1")
+        
         self.pushButton_9 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_9.setGeometry(QtCore.QRect(30, 70, 311, 61))
         font = QtGui.QFont()
-        font.setPointSize(15)
+        font.setPointSize(12)
         self.pushButton_9.setFont(font)
         self.pushButton_9.setObjectName("pushButton_9")
         
         self.pushButton_11 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_11.setGeometry(QtCore.QRect(30, 190, 311, 61))
         font = QtGui.QFont()
-        font.setPointSize(15)
+        font.setPointSize(12)
         self.pushButton_11.setFont(font)
         self.pushButton_11.setObjectName("pushButton_11")
         
         self.pushButton_10 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_10.setGeometry(QtCore.QRect(850, 70, 281, 61))
         font = QtGui.QFont()
-        font.setPointSize(15)
+        font.setPointSize(12)
         self.pushButton_10.setFont(font)
         self.pushButton_10.setObjectName("pushButton_10")
         self.label_2 = QtWidgets.QLabel(self.frame)
@@ -126,11 +138,12 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Show Page"))
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
-        self.pushButton_5.setText(_translate("MainWindow", "User Management"))
+        self.pushButton_5.setText(_translate("MainWindow", "USER MANAGEMENT"))
+        self.pushButton_5_1.setText(_translate("MainWindow", "BUFFER STOCK"))
         #self.pushButton_5.setDisabled(True)
-        self.pushButton_9.setText(_translate("MainWindow", "Master Data Update"))
-        self.pushButton_10.setText(_translate("MainWindow", "Update/Delete Record"))
-        self.pushButton_11.setText(_translate("MainWindow", "Audit Logs"))
+        self.pushButton_9.setText(_translate("MainWindow", "MASTER DATA"))
+        self.pushButton_10.setText(_translate("MainWindow", "UPDATE/DELETE RECORD"))
+        self.pushButton_11.setText(_translate("MainWindow", "AUDIT LOGS"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         
@@ -143,6 +156,7 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.open_new_window3)
         self.pushButton_5.clicked.connect(self.open_new_window4)
         self.pushButton_11.clicked.connect(self.open_new_window5)
+        self.pushButton_5_1.clicked.connect(self.open_new_window6)
         self.pushButton_2.clicked.connect(self.reset_fun)
         self.label_2.hide()
         self.groupBox_2.hide()
@@ -191,6 +205,11 @@ class fci_14_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show() 
     
+    def open_new_window6(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_32_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
     
     
         

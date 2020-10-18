@@ -212,7 +212,7 @@ class fci_01_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", " PENDING"))
+        self.pushButton.setText(_translate("MainWindow", " STATUS"))
         self.pushButton_3.setText(_translate("MainWindow", "ADMIN."))
         self.pushButton_4.setText(_translate("MainWindow", "RECIPTS "))
         self.label.setText(_translate("MainWindow", "HI-TECH MATERIAL HANDLING SYSTEM"))

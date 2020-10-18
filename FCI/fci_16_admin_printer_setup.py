@@ -205,14 +205,17 @@ class fci_16_Ui_MainWindow(object):
         
         
     def login_page(self):
+        val=""
         connection = sqlite3.connect("services.db")
         results=connection.execute("SELECT PWD,xxx FROM SERVICES_MST WHERE SERVICE_NAME = 'PRINTER_SETUP' AND STATUS = 'ACTIVE'") 
         for x in results:  
             if(str(self.lineEdit.text()) == str(x[0])):
+                 val=str(x[0])
+                 '''
                  #print("key:"+str(x[1]))
                  key=str(x[1])
                  #val=str(x[0])
-                 val=str(x[0])
+                 
                  val2=str.encode(val)
                  #val2=bytes(x[0],'utf-8')
                  #print("pwd:"+str(x[0]))
@@ -220,7 +223,7 @@ class fci_16_Ui_MainWindow(object):
                  #print("type:"+str(type(val2)))
                  plain_text = d_cipher_suite.decrypt(val2)
                  #print("plain_text :"+str(plain_text,'utf-8'))
-                 
+                 '''
                           
                 
             else:
@@ -230,7 +233,7 @@ class fci_16_Ui_MainWindow(object):
         connection.close()
         
         
-        if(str(self.lineEdit.text()) == str(plain_text,'utf-8')):          
+        if(str(self.lineEdit.text()) == str(val)):          
                 self.go_ahead_flg="No"
                 self.groupBox_2.show()                
         else:

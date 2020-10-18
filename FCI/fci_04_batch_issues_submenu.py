@@ -274,8 +274,7 @@ class fci_04_Ui_MainWindow(object):
         self.command_str=""
         self.ser=""
         self.gross_tare_flag=""
-        self.old_slip_no=""
-        self.current_value=0
+        self.old_slip_no=""       
         self.IO_error_flg=0
         self.line = ""
        
@@ -289,6 +288,14 @@ class fci_04_Ui_MainWindow(object):
         self.issue_id=0
         self.dev_loc_type=""
         self.status=""
+        
+        self.last_value=0
+        self.current_value=0
+        self.enable_buttons_flag="No"
+        self.enable_counter=0
+        self.weighing_crosses_min_wt_lim="No"
+        self.wt_min_limit=0
+        self.wt_max_limit=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -323,9 +330,11 @@ class fci_04_Ui_MainWindow(object):
         self.timer1.start(1)
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT DEVICE_LOCATION_TYPE,IFNULL(OFF_POSITION_SET,0),(IFNULL(CAPACITY_SET,0)*1000) FROM GLOBAL_VAR") 
         for x in results:            
             self.device_location_type=str(x[0])
+            self.wt_min_limit=int(x[1])
+            self.wt_max_limit=int(x[2])
         connection.close()
         
         if(self.device_location_type == "SITE"):
@@ -421,7 +430,8 @@ class fci_04_Ui_MainWindow(object):
                 self.xstr0=str(self.line,'utf-8')
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
-                self.buff=self.xstr2.split("_")                
+                self.buff=self.xstr2.split("_")
+                self.last_value=self.current_value 
                 if(len(self.buff)> 2):
                         if(str(self.buff[3]) == 'R'): 
                                 self.xstr2=str(self.buff[0])
@@ -432,11 +442,39 @@ class fci_04_Ui_MainWindow(object):
                                     self.xstr4=0                    
                                 try:
                                     self.current_value=float(int(self.xstr4)/1000)
+                                    self.lcdNumber.setProperty("value", str(self.xstr4))
                                 except ValueError:
                                     print("Value Error :"+str(self.xstr4))
                                     self.xstr4=0
-                                    self.current_value=0                    
-                                self.lcdNumber.setProperty("value", str(self.xstr4))                    
+                                    self.current_value=0
+                                '''
+                                if(self.weighing_crosses_min_wt_lim=="Yes" and self.weighing_crosses_max_wt_lim=="No"):    
+                                    self.lcdNumber.setProperty("value", str(self.xstr4))
+                                else:
+                                    self.lcdNumber.setProperty("value", 0)
+                                '''   
+                                if(float(self.current_value) > 500):
+                                    self.pushButton.hide()
+                                else:
+                                    self.pushButton.show()
+                                if(self.last_value==self.current_value):
+                                        self.enable_counter=self.enable_counter+1
+                                        if(self.enable_counter > 15):
+                                             self.enable_buttons_flag="Yes"
+                                             if(int(self.current_value) > int(self.wt_min_limit)):                                                     
+                                                      self.weighing_crosses_min_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_min_wt_lim="No"
+                                             if(int(self.current_value) > int(self.wt_max_limit)):                                                     
+                                                      self.weighing_crosses_max_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_max_wt_lim="No"
+                                        else:
+                                             
+                                             self.enable_buttons_flag="No"                                            
+                                else:            
+                                        self.enable_buttons_flag="No"
+                                        self.enable_counter=0
                     
             except IOError:
                 print("IO Errors : Data Read Error") 

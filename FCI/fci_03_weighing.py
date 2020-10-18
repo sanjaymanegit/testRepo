@@ -18,6 +18,12 @@ import re
 import os,sys
 import serial,time
 
+#### pdf library
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import landscape, letter,inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
+from reportlab.lib import colors
+
 class fci_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -53,7 +59,7 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(730, 660, 101, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(590, 660, 101, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -103,7 +109,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_14.setObjectName("label_14")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(590, 660, 101, 31))
+        self.pushButton_8.setGeometry(QtCore.QRect(730, 660, 101, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -112,7 +118,7 @@ class fci_03_Ui_MainWindow(object):
         
         self.listWidget_2 = QtWidgets.QListWidget(self.frame)
         self.listWidget_2.setStyleSheet("background-color: rgb(189, 255, 255);")
-        self.listWidget_2.setGeometry(QtCore.QRect(1080, 380, 171, 301))
+        self.listWidget_2.setGeometry(QtCore.QRect(1080, 380, 171, 241))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -322,13 +328,12 @@ class fci_03_Ui_MainWindow(object):
         self.label_32.setGeometry(QtCore.QRect(590, 180, 111, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(24)
+        font.setPointSize(22)
         font.setBold(False)
-        font.setItalic(False)
+        font.setUnderline(False)
         font.setWeight(50)
         self.label_32.setFont(font)
-        self.label_32.setStyleSheet("background-color: rgb(255, 170, 255);\n"
-"font: 24pt \"MS Shell Dlg 2\";")
+        self.label_32.setStyleSheet("background-color: rgb(189, 255, 255); color: rgb(255, 0, 0);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.label_33 = QtWidgets.QLabel(self.frame)
@@ -419,13 +424,13 @@ class fci_03_Ui_MainWindow(object):
         self.label_40.setGeometry(QtCore.QRect(890, 180, 111, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(24)
+        font.setPointSize(22)
         font.setBold(False)
-        font.setItalic(False)
+        font.setUnderline(False)
         font.setWeight(50)
         self.label_40.setFont(font)
-        self.label_40.setStyleSheet("background-color: rgb(255, 170, 255);\n"
-"font: 24pt \"MS Shell Dlg 2\";")
+        self.label_40.setStyleSheet("background-color: rgb(189, 255, 255); color: rgb(255, 0, 0);")
+        
         self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_40.setObjectName("label_40")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
@@ -524,15 +529,15 @@ class fci_03_Ui_MainWindow(object):
         self.label_44.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_44.setObjectName("label_44")
         self.label_45 = QtWidgets.QLabel(self.frame)
-        self.label_45.setGeometry(QtCore.QRect(920, 230, 71, 31))
+        self.label_45.setGeometry(QtCore.QRect(890, 236, 111, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
+        font.setPointSize(22)
         font.setBold(True)
         font.setUnderline(False)
-        font.setWeight(75)
+        font.setWeight(50)
         self.label_45.setFont(font)
-        self.label_45.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_45.setStyleSheet("background-color: rgb(189, 255, 255); color: rgb(0, 170, 0);")
         self.label_45.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_45.setObjectName("label_45")
         self.label_46 = QtWidgets.QLabel(self.frame)
@@ -855,6 +860,37 @@ class fci_03_Ui_MainWindow(object):
         self.label_57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_57.setObjectName("label_57")
         
+        self.pushButton_7_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_7_1.setGeometry(QtCore.QRect(1075, 660, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        self.pushButton_7_1.setFont(font)
+        self.pushButton_7_1.setObjectName("pushButton_7_1")
+        
+        self.label_57_1 = QtWidgets.QLabel(self.frame)
+        self.label_57_1.setGeometry(QtCore.QRect(875, 660, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_57_1.setFont(font)        
+        self.label_57_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_57_1.setObjectName("label_57_1")
+        
+        self.comboBox_2_1 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2_1.setGeometry(QtCore.QRect(940, 660, 50, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.comboBox_2_1.addItem("")
+        self.comboBox_2_1.addItem("")
+        self.comboBox_2_1.addItem("")
+        self.comboBox_2_1.addItem("")
+        self.comboBox_2_1.setFont(font)
+        self.comboBox_2_1.setStyleSheet("background-color: rgb(244, 186, 255); color:rgb(0, 0, 0)")
+        self.comboBox_2_1.setObjectName("comboBox_2_1")
         
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -914,14 +950,16 @@ class fci_03_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Serial. No."))
-        self.pushButton_5.setText(_translate("MainWindow", "Save"))
-        self.pushButton_6.setText(_translate("MainWindow", "Reset"))
-        self.pushButton_7.setText(_translate("MainWindow", "Return"))
+        self.pushButton_5.setText(_translate("MainWindow", "SAVE"))
+        self.pushButton_6.setText(_translate("MainWindow", "RESET"))
+        self.pushButton_7.setText(_translate("MainWindow", "RETURN"))
+        self.pushButton_7_1.setText(_translate("MainWindow", "VIEW PRINT"))
+        self.label_57_1.setText(_translate("MainWindow", "Copies :"))
         self.label_20.setText(_translate("MainWindow", "Serial.No:"))
         self.label_19.setText(_translate("MainWindow", "10001"))
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
         self.label_14.setText(_translate("MainWindow", "Vehical.No :"))
-        self.pushButton_8.setText(_translate("MainWindow", "Print"))
+        self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
         
         self.radioButton.setText(_translate("MainWindow", "Auto"))
         self.radioButton_2.setText(_translate("MainWindow", "Manual"))
@@ -972,10 +1010,12 @@ class fci_03_Ui_MainWindow(object):
         self.radioButton_4.setText(_translate("MainWindow", "Out"))
         self.label_52.setText(_translate("MainWindow", "Avg.Bag.Wt Kg:"))
         self.label_53.setText(_translate("MainWindow", "0"))
-        self.label_54.setText(_translate("MainWindow", "Target Storage:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Select"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Storage - Location 2"))
-        self.label_55.setText(_translate("MainWindow", "RECIPT LOADING AT SITE"))
+        self.label_54.setText(_translate("MainWindow", "Storage Name:"))
+        self.comboBox_2_1.setItemText(0, _translate("MainWindow", "1"))
+        self.comboBox_2_1.setItemText(1, _translate("MainWindow", "2"))
+        self.comboBox_2_1.setItemText(2, _translate("MainWindow", "3"))
+        self.comboBox_2_1.setItemText(3, _translate("MainWindow", "4"))
+        self.label_55.setText(_translate("MainWindow", "RECIPT AT SITE"))
         self.groupBox.setTitle(_translate("MainWindow", "First Wt - Manual"))
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
@@ -1022,11 +1062,12 @@ class fci_03_Ui_MainWindow(object):
         
         self.comboBox.currentTextChanged.connect(self.batch_id_onchange)
         self.lineEdit_2.setMaxLength(12)
-        self.listWidget_3.doubleClicked.connect(self.fetch_via_first_wt_vehical_list)
-        self.listWidget_2.doubleClicked.connect(self.fetch_via_second_wt_vehical_list)
+        #self.listWidget_3.doubleClicked.connect(self.fetch_via_first_wt_vehical_list)
+        #self.listWidget_2.doubleClicked.connect(self.fetch_via_second_wt_vehical_list)
         self.pushButton_10.clicked.connect(self.mannual_update1)
         self.pushButton_12.clicked.connect(self.mannual_update2)
         self.pushButton_8.clicked.connect(self.print_recipt)
+        self.pushButton_7_1.clicked.connect(self.open_pdf)
         self.lineEdit.setText("")
         self.lineEdit_4.setText("")
         #self.lineEdit_5.setText("7777") #serach line edit
@@ -1097,6 +1138,7 @@ class fci_03_Ui_MainWindow(object):
                     self.label_29.setText(str(mode))
                     m_str=float(float(self.lineEdit.text())/1000)                
                     self.label_32.setText('{:06.3f}'.format(m_str))
+                    self.lcdNumber.setProperty("value", str(m_str)) 
                     self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                     self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
                     self.status="FIRST"
@@ -1113,6 +1155,7 @@ class fci_03_Ui_MainWindow(object):
                 self.label_37.setText(str(mode))
                 m_str=float(float(self.lineEdit_4.text())/1000) 
                 self.label_40.setText('{:06.3f}'.format(m_str))
+                self.lcdNumber.setProperty("value", str(m_str)) 
                 self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                 self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
                 self.net_wt_calc()
@@ -1434,18 +1477,12 @@ class fci_03_Ui_MainWindow(object):
              cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"'") 
         connection.commit();
         connection.close()  
-        
-        
-        
-        connection = sqlite3.connect("fci.db")       
-        results=connection.execute("SELECT STATUS FROM WEIGHT_MST WHERE SERIAL_ID ='"+str(self.serial_id)+"'")
-        for x in results:
-                if (str(x[0])=='SECOND'):
-                        os.system("./job_print_recipt.sh")
-                        #os.system("./job_print_recipt.sh")
-                        #os.system("./job_print_recipt.sh")
-                else:
-                        os.system("./job_print_recipt.sh")
+        y=0
+        y=(int(self.comboBox_2_1.currentText()))
+        print("y:"+str(y))
+        for x in range(y):
+                         print("print count :"+str(x))
+                         os.system("./job_print_recipt.sh")
         connection.close()  
     
     def fetch_via_search(self):
@@ -1751,6 +1788,126 @@ class fci_03_Ui_MainWindow(object):
         else:
                 
                    self.goAhead="Yes"            
+     
+    def open_pdf(self):
+        self.create_pdf()
+        os.system("xpdf ./reports/recipt_site.pdf")
+     
+    def create_pdf(self):
+        self.tare_wt=""
+        self.tare_wt_date=""
+        self.gross_wt=""
+        self.gross_wt_date=""
+        self.net_wt=""        
+        self.title=""
+        self.address=""
+        self.company_name_font=16
+        self.company_address_font=12
+        self.note=""
+       
+        
+        
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+             cursor = connection.cursor()                    
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"'") 
+        connection.commit();
+        connection.close()   
+        
+        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        
+        connection = sqlite3.connect("fci.db")       
+        print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        
+        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        for x in results:
+            self.tare_wt=str(x[0])
+            self.tare_wt_date=str(x[1])
+            self.gross_wt=str(x[2])
+            self.gross_wt_date=str(x[3])
+            self.net_wt=str(x[4])
+        connection.close()
+        
+        data.append(["Tare Weight",str(self.tare_wt_date),"     "+str(self.tare_wt)])
+        data.append(["Gross Weight",str(self.gross_wt_date),"     "+str(self.gross_wt)]) 
+        data.append(["Net Weight","","     "+str(self.net_wt)])
+        
+        
+        
+        c = Canvas("./reports/recipt_site.pdf")
+        #c.setPageSize( landscape(letter) )
+        #############################
+        c.setFont('Helvetica-Bold', int(self.company_name_font) )
+        PAGE_HEIGHT = letter[1]
+        PAGE_WIDTH = letter[0]
+        
+        
+            
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT  PRINTER_HEATER_TITLE,PRINTER_HEADER,PRINTER_FOOTER FROM GLOBAL_VAR") 
+        for x in results:
+                   c.drawString(170,790,str(x[0]))             
+                   self.address=str(x[1])
+                   self.note=str(x[2])
+        connection.close()
+        
+        
+        
+        c.setFont('Helvetica-Bold', int(self.company_address_font) )
+        c.drawString(100,770,str(self.address))
+        #c.drawString(150,770,str(self.address[76:200]))
+        
+        c.line( 0.5*inch, PAGE_HEIGHT-( 0.45*inch ), PAGE_WIDTH-( 0.5*inch ), PAGE_HEIGHT-( 0.45*inch ) )
+        ###################################################
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,ACCPTED_BAGS,MATERIAL_NAME,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) AS RECIPT_ID ,(CURR_TRUCK_CNT||'/'||TOTAL_TRUCKS_CNT) as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+                
+        for x in results:
+                c.setFont('Helvetica',10)
+                c.drawString(50,740,"Serial ID        : "+str(x[0]))
+                c.drawString(250,740,"Vehicle No      : "+str(x[1]))
+                
+                c.drawString(50,710,"Recipt.Id.       : "+str(x[5]))
+                c.drawString(250,710,"Truck.Sr.No.       : "+str(x[6]))
+                
+                c.drawString(50,680,"Total Bags    : "+str(x[3]))
+                c.drawString(250,680,"Batch.Id    : "+str(x[2]).zfill(4))
+                
+                c.drawString(50,650,"Material         : "+str(x[4]))
+                
+                
+               
+                
+                c.drawString(50,530,str(self.note))
+                #c.drawString(250,550,"Net Wt. (Kg)    : "+str(x[11]))
+                #c.drawString(250,530,"Total Amount(Rs): "+str(x[8]))
+                c.line(0.5*inch,520,580,520)
+        
+        connection.close()
+  
+        ##############################################
+        c.setFont('Helvetica',10)        
+        f = Table(data)        
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black), ('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))
+        width = 200
+        height_1 = 400
+        f.wrapOn(c, width, height_1)
+        x = 40
+        y = 560
+        f.drawOn(c, x, y)        
+        ############################################
+        
+        c.showPage()
+        c.save()  
+        
+                        
+    
+    
+         
+    
+     
      
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")

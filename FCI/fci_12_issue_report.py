@@ -14,6 +14,14 @@ import datetime
 import sqlite3
 from PyQt5.QtCore import QDate
 import os,sys
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import landscape, letter,inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak,Spacer, PageTemplate
+from reportlab.lib import colors
+import os,sys
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import landscape, letter,inch,A4
 
 
 class fci_12_Ui_MainWindow(object):
@@ -202,12 +210,36 @@ class fci_12_Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
         self.menubar.setObjectName("menubar")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(470, 650, 121, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        self.label_30_1 = QtWidgets.QLabel(self.frame)
+        self.label_30_1.setGeometry(QtCore.QRect(620, 650, 201, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_30_1.setFont(font)
+        self.label_30_1.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_30_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_30_1.setObjectName("label_30")
+        
+        
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.login_user_id=""
         self.login_user_role=""
+        self.from_dt=""
+        self.to_dt=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -248,11 +280,16 @@ class fci_12_Ui_MainWindow(object):
         
         self.label_22.setText(_translate("MainWindow", "Report Type :"))
         self.label_2.setText(_translate("MainWindow", "Monthly"))
-        self.label_29.setText(_translate("MainWindow", "Net.Weight(Ton) :"))
-        self.pushButton_5.setText(_translate("MainWindow", "Return"))
-        self.pushButton_7.setText(_translate("MainWindow", "Print  Report"))
+        self.label_29.setText(_translate("MainWindow", "Net.Weight:"))
+        self.pushButton_5.setText(_translate("MainWindow", "RETURN"))
+        
+        
+        self.pushButton_8_1.setText(_translate("MainWindow", "VIEW PRINT"))
+        self.label_30_1.setText(_translate("MainWindow", "Max. Print Pages : 4"))
+        
+        self.pushButton_7.setText(_translate("MainWindow", "PRINT"))
         self.label_8.setText(_translate("MainWindow", "5450"))
-        self.pushButton_8.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_8.setText(_translate("MainWindow", "REFRESH"))
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
         self.label_11.setText(_translate("MainWindow", "150"))
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
@@ -266,6 +303,7 @@ class fci_12_Ui_MainWindow(object):
         self.whr_sql2=""
         self.pushButton_5.clicked.connect(self.select_all_data)
         self.pushButton_7.clicked.connect(self.print_report)
+        self.pushButton_8_1.clicked.connect(self.open_pdf)
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT LOGIN_USER_ID ,LOGIN_USER_ROLE FROM GLOBAL_VAR") 
         for x in results:
@@ -278,8 +316,10 @@ class fci_12_Ui_MainWindow(object):
         results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_ISSUE_ID  FROM GLOBAL_VAR") 
         for x in results:            
                  self.label_2.setText(str(x[1]))
+                 self.from_dt=str(x[2])
+                 self.to_dt=str(x[3])
                  if(self.label_2.text() == 'DATE_RANGE'):
-                     self.label_36.setText("Report selected for date range "+str(x[2])+" to "+str(x[3])+".")
+                     self.label_36.setText("Report selected for date range <font color=blue> [ "+str(x[2])+" ] </font> to <font color=blue>[ "+str(x[3])+" ]</font>.")
                      
                      self.whr_sql=" WHERE  ISSUE_ID IS NOT NULL AND strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
                      self.whr_sql2=" WHERE ISSUE_ID IS NOT NULL AND strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by ISSUE_ID,CURR_TRUCK_CNT limit 400"
@@ -335,14 +375,14 @@ class fci_12_Ui_MainWindow(object):
         
         
         print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Order ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Serial.No','Order ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt.Ton','Gross Wt.Ton'])        
            
         connection = sqlite3.connect("fci.db")
         if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
-                results=connection.execute("SELECT (SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT serial_id,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
       
         else:
-                results=connection.execute("SELECT (SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW   "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT serial_id,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%.3f\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL FROM WEIGHT_MST_FCI_VW   "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -359,7 +399,67 @@ class fci_12_Ui_MainWindow(object):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget.removeRow(i) 
+            self.tableWidget.removeRow(i)
+            
+    def open_pdf(self):
+        self.create_report_pdf()
+        os.system("xpdf ./reports/dr_other_report.pdf")
+    
+    def create_report_pdf(self):
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        total_amount="0"
+        #styles.add(ParagraphStyle(name="x", fontSize=12, leading = 7, alignment=TA_LEFT))
+        #styles.add(ParagraphStyle(name="x2", fontSize=10, leading = 7, alignment=TA_LEFT))
+        
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT  PRINTER_HEATER_TITLE,PRINTER_HEADER,PRINTER_FOOTER FROM GLOBAL_VAR") 
+        for x in results:
+                   Title = Paragraph(str(x[0]), styles["Title"])
+                   ptext = "<font name=Helvetica size=10>"+str(x[1])+" </font>"
+                   Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        
+        
+        connection = sqlite3.connect("fci.db")        
+        results=connection.execute("SELECT count(*) FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
+        for x in results:
+                total_amount=str(x[0])                
+        connection.close()
+        
+        
+                
+                
+                
+        summary_data=[["From Date: "+str(self.from_dt),"To Date: "+str(self.to_dt) , "Total Trucks: "+str(total_amount), "Report Date: "+str(datetime.datetime.now().strftime("%d %b %Y %H:%M"))]]
+                       
+        
+        
+         
+        f3=Table(summary_data)
+        #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
+        
+        Elements = [Title,Spacer(1,12),Title2,Spacer(1,12),f3,Spacer(1,12),Spacer(1,12)]
+         
+        
+        childs_data=[]
+        childs_data=[['Serial ID.','Order Id', ' Vehicle.No ','Material Name' ,' Net Wt. (Ton)',' Tare Wt. (Ton)',' Gross Wt. (Ton)','Storage Name']]
+        connection = sqlite3.connect("fci.db")           
+           
+        results=connection.execute("SELECT SERIAL_ID_DISPLY,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) as ISSUE_ID,VEHICLE_NO,MATERIAL_NAME,printf(\"%.3f\",IFNULL(NET_WEIGHT_VAL,0)),printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))             
+        for k in results:
+                childs_data.append(k)
+        connection.close()
+        f=Table(childs_data)
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+         
+        Elements.append(f)
+        
+        doc = SimpleDocTemplate('./reports/dr_other_report.pdf',pagesize=A4)
+        doc.pagesize = landscape(A4)
+        doc.build(Elements)
+        print("Done")
+        self.filter_col_name=""
 
 
 if __name__ == "__main__":
