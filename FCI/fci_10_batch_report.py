@@ -154,7 +154,7 @@ class fci_10_Ui_MainWindow(object):
         self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_36.setObjectName("label_36")
         self.label_23 = QtWidgets.QLabel(self.frame)
-        self.label_23.setGeometry(QtCore.QRect(20, 120, 111, 31))
+        self.label_23.setGeometry(QtCore.QRect(16, 120, 111, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -230,7 +230,7 @@ class fci_10_Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
         self.label_11.setText(_translate("MainWindow", "150"))
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
-        self.label_23.setText(_translate("MainWindow", "No. Of Recipt(s):"))
+        self.label_23.setText(_translate("MainWindow", "No.Of Recipts:"))
         self.label_9.setText(_translate("MainWindow", "5450"))
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.startx()
@@ -260,12 +260,12 @@ class fci_10_Ui_MainWindow(object):
                      self.label_36.setText("Report selected for date range  <font color=blue> [ "+str(x[2])+" ] </font>  to  <font color=blue> [ "+str(x[3])+" ] </font>.")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE BATCH_ID IS NOT NULL AND  strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='BATCH'  AND  IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
                      self.whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
-                     self.whr_sql2="WHERE BATCH_ID IS NOT NULL AND BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
+                     self.whr_sql2="WHERE  BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
                      
                  else:
                      self.label_36.setText("Report selected for unknow.")
@@ -278,6 +278,14 @@ class fci_10_Ui_MainWindow(object):
                      self.label_9.setText(str(x[0]))
                      self.label_11.setText(str(x[1]))
                      self.label_8.setText(str(x[2]))
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")        
+        results=connection.execute("SELECT count(*),printf(\"%.3f\",  sum(net_weight_val)),count(distinct batch_id)  FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
+        for x in results:
+                self.label_11.setText(str(x[0]))
+                self.label_8.setText(str(x[1]))
+                self.label_9.setText(str(x[2]))
         connection.close()
         
         self.select_all_data()

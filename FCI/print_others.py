@@ -33,6 +33,8 @@ def dot_matrix_print():
     recipt_id=""
     truck_num=""
     
+    duplicate_flg=""
+    duplicate_str=""
     
     connection = sqlite3.connect("fci.db")       
     results=connection.execute("SELECT  PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER FROM GLOBAL_VAR")         
@@ -40,6 +42,16 @@ def dot_matrix_print():
          printer_header=str(x[1]) 
          printer_title=str(x[0]) 
          printer_footer=str(x[2]) 
+    connection.close()
+    
+    connection = sqlite3.connect("fci.db")       
+    results=connection.execute("SELECT DUPLICATE_FLG FROM PRINTER_DATA")         
+    for x in results:
+         duplicate_flg=str(x[0])
+         if(str(duplicate_flg) == "Yes"):
+             duplicate_str="DUPLICATE"
+         else:
+             duplicate_str="" 
     connection.close()
     
     connection = sqlite3.connect("fci.db")       
@@ -88,7 +100,7 @@ def dot_matrix_print():
         printer.bold(False)
         printer.align("left")
         printer.text("======================================================\n\r")        
-        printer.text("Serial No    : "+str(serial_id).zfill(6)+"                  Vehical No: "+str(vehical_no)+" \n\r")
+        printer.text("Serial No    : "+str(serial_id).zfill(6)+" "+str(duplicate_str)+"                 Vehical No: "+str(vehical_no)+" \n\r")
         printer.text("Party Name   : "+str(party_name)+"                                  \n\r")       
         printer.text("Material     : "+str(material)+"                         \n\r")
         printer.text("|------------------------------------------------------------- \n\r")

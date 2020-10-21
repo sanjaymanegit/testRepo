@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
 import sqlite3
 import re
 import datetime
@@ -888,16 +890,23 @@ class fci_25_Ui_MainWindow(object):
   
     
     def delete_record(self):
-           self.label_24.show()
-           connection = sqlite3.connect("fci.db")          
-           with connection:        
-                         cursor = connection.cursor()                    
-                         cursor.execute("DELETE FROM  WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.label_32.text()))+"'") 
-           connection.commit();
-           connection.close()
-           self.list_vehicles()
-           self.label_24.setText("Deleted  Successfully.")
-           self.log_audit("Update/Delete Weighing","Deleted Slip No :" +str(self.label_32.text()))
+           close = QMessageBox()
+           close.setText("This would remove important data from system.Are You Sure Want to Delete ? ")
+           close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+           close = close.exec()
+           if close == QMessageBox.Yes:                
+                   self.label_24.show()
+                   connection = sqlite3.connect("fci.db")          
+                   with connection:        
+                                 cursor = connection.cursor()                    
+                                 cursor.execute("DELETE FROM  WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.label_32.text()))+"'") 
+                   connection.commit();
+                   connection.close()
+                   self.list_vehicles()
+                   self.label_24.setText("Deleted  Successfully.")
+                   self.log_audit("Update/Delete Weighing","Deleted Slip No :" +str(self.label_32.text()))
+           else:
+                  self.label_24.setText("Cancled Delete")
            
         
     def log_audit(self,event_name,desc_str):        

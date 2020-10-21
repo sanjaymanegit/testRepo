@@ -42,7 +42,7 @@ class fci_37_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(40, 100, 651, 192))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(8)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -84,6 +84,11 @@ class fci_37_Ui_MainWindow(object):
         font.setPointSize(10)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(8, item)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 769, 21))
@@ -134,12 +139,13 @@ class fci_37_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 100)
         self.tableWidget.setColumnWidth(4, 100)
         self.tableWidget.setColumnWidth(5, 50)
-        self.tableWidget.setColumnWidth(6, 100) 
+        self.tableWidget.setColumnWidth(6, 100)
+        self.tableWidget.setColumnWidth(7, 100)
     
-        self.tableWidget.setHorizontalHeaderLabels(['User Name.','Logged On','LD','Capacity','OFF.Positon','Flag','Calibration Wt'])        
+        self.tableWidget.setHorizontalHeaderLabels(['User Name.','Logged On','LD','Capacity','OFF.Positon','Flag','Calibration Wt','K-Factor'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select USER_NAME,CREATED_ON,LD_SET,CAPACITY_SET ,OFF_POSITON_SET ,FLAG_SET ,CALI_WT FROM CALIBRATION_LOG order by CREATED_ON desc")                        
+        results=connection.execute("select USER_NAME,CREATED_ON,LD_SET,CAPACITY_SET ,OFF_POSITON_SET ,FLAG_SET ,CALI_WT,K_FACTOR  FROM CALIBRATION_LOG order by CREATED_ON desc")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

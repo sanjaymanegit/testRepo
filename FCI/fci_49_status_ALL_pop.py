@@ -145,6 +145,7 @@ class fci_49_Ui_MainWindow(object):
         self.pushButton_9.clicked.connect(MainWindow.close)
         self.select_all_data()
         
+        
     def select_all_data(self):     
         self.delete_all_records()        
         font = QtGui.QFont()
@@ -163,14 +164,15 @@ class fci_49_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(9, 150)
         self.tableWidget.setColumnWidth(10, 150)
        
-    
-        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Weighing Type','Batch Id','Issue Id','Party Name','Vehicle No.','First Weight Type','First Weight','First Weight On','Material','Net.Wt'])        
-           
+         
+        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Weighing Type','Recipt Id','Issue Id','Party Name','Vehicle No.','First Weight Type','First Weight','First Weight On','Material','Net.Wt'])        
+        
+         
         connection = sqlite3.connect("fci.db")
         if(self.status == "PENDING"):
-                results=connection.execute("select SERIAL_ID,NULL,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG  ,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         else:
-                results=connection.execute("select SERIAL_ID,NULL,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -182,6 +184,8 @@ class fci_49_Ui_MainWindow(object):
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+        
         
     
     def delete_all_records(self):

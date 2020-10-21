@@ -39,20 +39,21 @@ class fci_04_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 10, 1311, 721))
+        self.frame.setGeometry(QtCore.QRect(30, 10, 1311, 711))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
         self.frame.setFont(font)
-        self.frame.setStyleSheet("color: rgb(255, 255, 255);\n"
-"")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setStyleSheet("color: rgb(255, 255, 255);\n")
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton = QtWidgets.QPushButton(self.frame)
         self.pushButton.setGeometry(QtCore.QRect(560, 440, 171, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(22)
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton.setFont(font)
@@ -61,9 +62,9 @@ class fci_04_Ui_MainWindow(object):
 "")
         self.pushButton.setObjectName("pushButton")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(10, 7, 321, 51))
+        self.label_20.setGeometry(QtCore.QRect(50, 20, 221, 51))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
+        font.setFamily("Arial")
         font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
@@ -102,20 +103,23 @@ class fci_04_Ui_MainWindow(object):
 "background-color: rgb(0, 0, 255);")
         self.pushButton_5.setObjectName("pushButton_5")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber.setGeometry(QtCore.QRect(50, 90, 1141, 311))
+        self.lcdNumber.setGeometry(QtCore.QRect(50, 90, 1141, 321))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"font: 10pt \"MS Sans Serif\";\n"
-"color: rgb(255, 0, 0);")
+        self.lcdNumber.setStyleSheet("color: rgb(255, 0, 0);\n"
+"background-color: rgb(0, 0, 0);")
+        self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
+        self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.lcdNumber.setLineWidth(4)
         self.lcdNumber.setDigitCount(7)
-        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
+        self.lcdNumber.setProperty("value", 0)
         self.lcdNumber.setProperty("intValue", 0)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_53 = QtWidgets.QLabel(self.frame)
-        self.label_53.setGeometry(QtCore.QRect(1210, 325, 81, 91))
+        self.label_53.setGeometry(QtCore.QRect(1200, 340, 91, 91))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(28)
+        font.setFamily("Arial")
+        font.setPointSize(36)
         font.setBold(True)
         font.setUnderline(False)
         font.setWeight(75)
@@ -148,8 +152,9 @@ class fci_04_Ui_MainWindow(object):
         self.line.setGeometry(QtCore.QRect(630, 510, 20, 101))
         self.line.setStyleSheet("color: rgb(255, 255, 255);\n"
 "border-color: rgb(255, 255, 255);")
+        self.line.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line.setLineWidth(3)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_3.setGeometry(QtCore.QRect(110, 520, 121, 61))
@@ -159,11 +164,11 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.radioButton_3.setFont(font)
-        self.radioButton_3.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton_3.setStyleSheet("color: rgb(255, 255, 255);background-color: rgb(0, 0, 255);")
         self.radioButton_3.setChecked(True)
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
-        self.radioButton_4.setGeometry(QtCore.QRect(330, 520, 111, 61))
+        self.radioButton_4.setGeometry(QtCore.QRect(330, 520, 121, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -171,11 +176,14 @@ class fci_04_Ui_MainWindow(object):
         font.setWeight(75)
         self.radioButton_4.setFont(font)
         self.radioButton_4.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton_4.setIconSize(QtCore.QSize(16, 16))
+        self.radioButton_4.setAutoRepeat(False)
         self.radioButton_4.setObjectName("radioButton_4")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         reg_ex = QRegExp("\d+")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit)
         self.lineEdit.setValidator(input_validator)
+        
         self.lineEdit.setGeometry(QtCore.QRect(760, 530, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -308,7 +316,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "RECIPT"))
         self.pushButton_4.setText(_translate("MainWindow", "ISSUE"))
         self.pushButton_5.setText(_translate("MainWindow", "OTHER"))
-        self.label_53.setText(_translate("MainWindow", ".Kg"))
+        self.label_53.setText(_translate("MainWindow", "Kg."))
         self.pushButton_2.setText(_translate("MainWindow", "MENU"))
         self.label.setText(_translate("MainWindow", "HI-TECH WEIGHING"))
         self.radioButton_3.setText(_translate("MainWindow", "GROSS"))
@@ -321,6 +329,7 @@ class fci_04_Ui_MainWindow(object):
         self.pushButton_11.setText(_translate("MainWindow", "DUPLICATE"))
         self.label_2.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "LOGOUT"))
+        
         self.pushButton_8.clicked.connect(MainWindow.close)
         
         self.timer2=QtCore.QTimer()
@@ -338,9 +347,11 @@ class fci_04_Ui_MainWindow(object):
         connection.close()
         
         if(self.device_location_type == "SITE"):
+            
             self.pushButton_3.clicked.connect(self.open_new_window6)
             self.pushButton_4.setDisabled(True)
         else:
+            
             self.pushButton_3.clicked.connect(self.open_new_window4)
             self.pushButton_4.clicked.connect(self.open_new_window5)
         
@@ -353,6 +364,8 @@ class fci_04_Ui_MainWindow(object):
         
         self.pushButton_11.clicked.connect(self.duplicate_onclick)
         self.pushButton.clicked.connect(self.set_zero_fun)
+        self.radioButton_3.clicked.connect(self.goss_onclick)
+        self.radioButton_4.clicked.connect(self.tare_onclick)
         
         #self.start_wt()
         self.new_slip_hide()
@@ -360,6 +373,14 @@ class fci_04_Ui_MainWindow(object):
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def goss_onclick(self):
+        self.radioButton_3.setStyleSheet("color: rgb(255, 255, 255);background-color: rgb(0, 0, 255);")
+        self.radioButton_4.setStyleSheet("color: rgb(255, 255, 255);")
+    
+    def tare_onclick(self):
+        self.radioButton_4.setStyleSheet("color: rgb(255, 255, 255);background-color: rgb(0, 0, 255);")
+        self.radioButton_3.setStyleSheet("color: rgb(255, 255, 255);")
 
     def clear_onclick(self):
         self.lineEdit.setText("")
@@ -377,7 +398,7 @@ class fci_04_Ui_MainWindow(object):
             cursor.execute("UPDATE GLOBAL_VAR SET OLD_NEW_SLIP_FLAG='"+str(self.slip_status)+"' , GROSS_TARE_FLAG='"+str(self.gross_tare_flag)+"' ,OLD_SLIP_NO='"+str(self.old_slip_no)+"', LCD_WEIGHT='"+str(self.current_value)+"'")
         connection.commit();
         connection.close()
-        self.stop_timer()
+        #self.stop_timer()
     
     def start_wt(self):
         #print("Weight Started ....")
@@ -393,19 +414,7 @@ class fci_04_Ui_MainWindow(object):
                             )
         
             self.ser.flush()       
-            
-            #=======
-            self.command_str="T"
-            print("Start Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
            
-            #=======
-            self.command_str="S"
-            print("Start Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #======
             
             self.line = self.ser.readline(15)
             print("o/p:"+str(self.line))
@@ -432,8 +441,8 @@ class fci_04_Ui_MainWindow(object):
                 self.xstr2=self.xstr1.replace("\n","")
                 self.buff=self.xstr2.split("_")
                 self.last_value=self.current_value 
-                if(len(self.buff)> 2):
-                        if(str(self.buff[3]) == 'R'): 
+                if(len(self.buff)> 1):
+                       # if(str(self.buff[3]) == 'R'): 
                                 self.xstr2=str(self.buff[0])
                                 try:
                                      self.xstr4=int(self.xstr2)
@@ -453,7 +462,7 @@ class fci_04_Ui_MainWindow(object):
                                 else:
                                     self.lcdNumber.setProperty("value", 0)
                                 '''   
-                                if(float(self.current_value) > 500):
+                                if(float(self.xstr4) > 500):
                                     self.pushButton.hide()
                                 else:
                                     self.pushButton.show()
@@ -482,11 +491,11 @@ class fci_04_Ui_MainWindow(object):
     
     def stop_timer(self):
        if(self.timer2.isActive()):
-           self.timer2.stop()           
-           self.command_str="T"
-           print("Stop Command : "+str(self.command_str))
-           b = bytes(self.command_str, 'utf-8')
-           self.ser.write(b)
+           self.timer2.stop()
+       else:
+           print("Already stoped")
+           #self.start_wt()
+           
     
     def start_timer(self):
         if(self.timer2.isActive()):
@@ -578,14 +587,12 @@ class fci_04_Ui_MainWindow(object):
                                 timeout = 0.05
                             )        
             self.ser.flush()
-            
-            #self.lcdNumber.display("-------")
-            #self.lcdNumber.setProperty("intValue", ------)
             #=======
-            self.command_str="Z"
-            print("Start Command : "+str(self.command_str))
+            self.command_str="T"
+            print("Tare Command : "+str(self.command_str))
             b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
+            self.ser.write(b)          
+           
             time.sleep(1)
         except IOError:
             print("IO Errors")
@@ -598,18 +605,30 @@ class fci_04_Ui_MainWindow(object):
         self.issue_id=""
         self.dev_loc_type=""
         self.status=""
+        self.first_wt_type=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")
             print("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
             
-            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
+            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS,FIRST_WEIGHT_MODE FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
             for x in results:            
                 self.serial_no=str(x[0])
                 self.batch_id=str(x[2])
                 self.issue_id=str(x[3])
                 self.dev_loc_type=str(x[1])
                 self.status=str(x[4])
+                self.first_wt_type=str(x[5])
             connection.close()
+            print("first wt mode :"+str(self.first_wt_type))
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                cursor = connection.cursor()
+                cursor.execute("UPDATE GLOBAL_VAR SET OLD_NEW_SLIP_FLAG='OLD' , GROSS_TARE_FLAG='"+str(self.first_wt_type)+"' ,OLD_SLIP_NO='"+str(self.serial_no)+"', LCD_WEIGHT='"+str(self.current_value)+"'")
+            connection.commit();
+            connection.close()
+            
+            
+            
             if(self.serial_no != ""):
                     if(self.status=="SECOND"):
                         self.label_2.setText("Completed Serial.No :"+str(self.serial_no))
@@ -650,6 +669,7 @@ class fci_04_Ui_MainWindow(object):
         self.issue_id=""
         self.dev_loc_type=""
         self.status=""
+        self.first_wt_type=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")
             results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
@@ -660,6 +680,15 @@ class fci_04_Ui_MainWindow(object):
                 self.dev_loc_type=str(x[1])
                 self.status=str(x[4])
             connection.close()
+            
+            connection = sqlite3.connect("fci.db")
+            with connection:        
+                cursor = connection.cursor()
+                cursor.execute("UPDATE GLOBAL_VAR SET OLD_NEW_SLIP_FLAG='OLD' , GROSS_TARE_FLAG='"+str(self.first_wt_type)+"' ,OLD_SLIP_NO='"+str(self.serial_no)+"', LCD_WEIGHT='"+str(self.current_value)+"'")
+            connection.commit();
+            connection.close()
+            
+            
             if(self.serial_no != ""):
                    print("batch_id:"+str(self.batch_id)+" issue_id:"+str(self.issue_id))
                    if(self.batch_id == "" and  self.issue_id==""):
@@ -670,11 +699,11 @@ class fci_04_Ui_MainWindow(object):
                                 if(self.dev_loc_type == "STORAGE"):
                                     self.label_2.setText("")
                                     #call recipt of storage
-                                    self.open_new_window9()
+                                    self.open_new_window10()
                                 else:
                                     self.label_2.setText("")
                                     #call recipt of site
-                                    self.open_new_window10()
+                                    self.open_new_window11()
                        elif(self.issue_id  != ""):      
                              if(int(self.issue_id) > 0):
                                     self.label_2.setText("")
@@ -687,37 +716,46 @@ class fci_04_Ui_MainWindow(object):
                     self.label_2.setText("SERIAL.NO. DOES NOT EXIST.")
         else:
             self.label_2.setText("ENTER SERIAL NO.")
-        
+    
+    
     def open_new_window4(self):
-        self.save_data()
+        if(str(self.slip_status) == "NEW"):
+                        self.save_data()
+        print("self.slip_status4 :"+str(self.slip_status))
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_03b_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()     
     
     def open_new_window5(self):
-        self.save_data()
+        if(str(self.slip_status) == "NEW"):
+                        self.save_data()
+        print("self.slip_status 5 :"+str(self.slip_status))
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_03i_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
     def open_new_window6(self):
-        self.save_data()
+        if(str(self.slip_status) == "NEW"):
+                self.save_data()
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
     def open_new_window7(self):
-        self.save_data()
+        if(str(self.slip_status) == "NEW"):
+                self.save_data()
+        print("self.slip_status7 :"+str(self.slip_status))
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_34_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
     def open_new_window8(self):
-        self.save_data()
+        if(str(self.slip_status) == "NEW"):
+                self.save_data()
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_01_Ui_MainWindow()
         self.ui.setupUi(self.window)           
@@ -753,6 +791,7 @@ class fci_04_Ui_MainWindow(object):
         self.ui=fci_42_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 
 import datetime
 import time
@@ -42,10 +43,10 @@ class fci_18_Ui_MainWindow(object):
         self.label_19.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_19.setObjectName("label_19")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(460, 60, 221, 31))
+        self.label_3.setGeometry(QtCore.QRect(460, 60, 321, 31))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
+        font.setFamily("Arial")
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
@@ -102,7 +103,7 @@ class fci_18_Ui_MainWindow(object):
         self.pushButton_5.setGeometry(QtCore.QRect(230, 170, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
         self.label_5 = QtWidgets.QLabel(self.groupBox_2)
@@ -185,7 +186,7 @@ class fci_18_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
         self.label_4.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Factory Reset"))
-        self.pushButton_5.setText(_translate("MainWindow", "Format"))
+        self.pushButton_5.setText(_translate("MainWindow", "FORMAT"))
         self.label_5.setText(_translate("MainWindow", "Done."))
         self.label_6.setText(_translate("MainWindow", "Device. Id:"))
         self.label_5.hide()
@@ -248,63 +249,75 @@ class fci_18_Ui_MainWindow(object):
         
         
     def clean_data(self):
-        if(self.checkBox.isChecked()):
-            connection = sqlite3.connect("fci.db")          
-            with connection:        
-                        cursor = connection.cursor()                    
-                        cursor.execute(" DELETE FROM WEIGHT_MST")
-                        cursor.execute(" DELETE FROM BATCH_MST")
-                        cursor.execute(" DELETE FROM AUDIT_MST")
-                        cursor.execute(" DELETE FROM API_LOGS")
-                        cursor.execute(" DELETE FROM SLOTS_MST")                        
-                        cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
-                        cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
-                        cursor.execute(" DELETE FROM ISSUE_MST")
-            connection.commit();
-            connection.close()
-            self.label_3.setText("Done.") 
-            self.label_3.show()
-        
-        if(self.checkBox_2.isChecked()):            
-            connection = sqlite3.connect("services.db")          
-            with connection:        
-                        cursor = connection.cursor()                    
-                        cursor.execute("UPDATE DAT_MST SET BU_PWD='12345' ")
-                        cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                        
-            connection.commit();
-            connection.close()
-            self.label_3.setText("Done.") 
-            self.label_3.show()
-            
-        if(self.checkBox_3.isChecked()):            
-            connection = sqlite3.connect("fci.db")          
-            with connection:        
-                        cursor = connection.cursor()
-                        cursor.execute("DELETE FROM MATERIAL_TYPES")
-                        cursor.execute("DELETE FROM CONTRACTOR_MST")
-                        cursor.execute("DELETE FROM STORAGE_DETAILS")
-                        cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")                        
-            connection.commit();
-            connection.close()
-            self.label_3.setText("Done.") 
-            self.label_3.show()
-            
-            
-        if(self.radioButton.isChecked()):
-            self.device_location="SITE"
-        elif(self.radioButton_2.isChecked()):
-            self.device_location="STORAGE"
-            
-        connection = sqlite3.connect("fci.db")          
-        with connection:        
-                        cursor = connection.cursor()
-                        cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_LOCATION_TYPE='"+str(self.device_location)+"',DEVICE_ID='"+self.lineEdit_2.text()+"' ")
-                        self.label_3.setText("Done.") 
-                        self.label_3.show()
-        connection.commit();
-        connection.close()
-        
-        self.log_audit("Factory Reset","Factory Reset Done")
+        close = QMessageBox()
+        close.setText("This would remove important data from system.Are You Sure Want to Delete ? ")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:
+                if(self.checkBox.isChecked()):
+                    connection = sqlite3.connect("fci.db")          
+                    with connection:        
+                                cursor = connection.cursor()                    
+                                cursor.execute(" DELETE FROM WEIGHT_MST")
+                                cursor.execute(" DELETE FROM BATCH_MST")
+                                cursor.execute(" DELETE FROM AUDIT_MST")
+                                cursor.execute(" DELETE FROM API_LOGS")
+                                cursor.execute(" DELETE FROM SLOTS_MST")                        
+                                cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
+                                cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
+                                cursor.execute(" DELETE FROM ISSUE_MST")
+                              
+                                
+                    connection.commit();
+                    connection.close()
+                    self.label_3.setText("Factory-reset completed successfully.") 
+                    self.label_3.show()
+                
+                if(self.checkBox_2.isChecked()):            
+                    connection = sqlite3.connect("services.db")          
+                    with connection:        
+                                cursor = connection.cursor()                    
+                                cursor.execute("UPDATE DAT_MST SET BU_PWD='12345' ")
+                                cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                               
+                                
+                    connection.commit();
+                    connection.close()
+                    self.label_3.setText("Factory-reset completed successfully.") 
+                    self.label_3.show()
+                    
+                if(self.checkBox_3.isChecked()):            
+                    connection = sqlite3.connect("fci.db")          
+                    with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("DELETE FROM MATERIAL_TYPES")
+                                cursor.execute("DELETE FROM CONTRACTOR_MST")
+                                cursor.execute("DELETE FROM STORAGE_DETAILS")
+                                cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")
+                                cursor.execute("DELETE FROM CALIBRATION_LOG") 
+                    connection.commit();
+                    connection.close()
+                    self.label_3.setText("Factory-reset completed successfully.") 
+                    self.label_3.show()
+                    
+                    
+                if(self.radioButton.isChecked()):
+                    self.device_location="SITE"
+                elif(self.radioButton_2.isChecked()):
+                    self.device_location="STORAGE"
+                    
+                connection = sqlite3.connect("fci.db")          
+                with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_LOCATION_TYPE='"+str(self.device_location)+"',DEVICE_ID='"+self.lineEdit_2.text()+"' ")
+                                self.label_3.setText("Factory-reset completed successfully.") 
+                                self.label_3.show()
+                connection.commit();
+                connection.close()
+                
+                self.log_audit("Factory Reset","Factory Reset Done")
+        else:
+                self.label_3.setText("Cancled Factory Reset.") 
+                self.label_3.show() 
     
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")

@@ -36,8 +36,9 @@ class fci_40_Ui_MainWindow(object):
         font.setPointSize(12)
         self.frame.setFont(font)
         self.frame.setStyleSheet("")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
         self.pushButton_7.setGeometry(QtCore.QRect(680, 580, 101, 41))
@@ -850,7 +851,7 @@ class fci_40_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")          
         with connection:        
              cursor = connection.cursor()                    
-             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"'") 
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"',DUPLICATE_FLG='Yes'") 
         connection.commit();
         connection.close()  
         
@@ -885,7 +886,7 @@ class fci_40_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")          
         with connection:        
              cursor = connection.cursor()                    
-             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"'") 
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"',DUPLICATE_FLG='Yes'") 
         connection.commit();
         connection.close()   
         

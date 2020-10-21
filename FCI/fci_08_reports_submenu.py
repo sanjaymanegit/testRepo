@@ -27,14 +27,15 @@ class fci_08_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1311, 701))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 1311, 701))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         self.frame.setFont(font)
         self.frame.setStyleSheet("color: rgb(255, 255, 255);\n"
 "")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
         self.label_20.setGeometry(QtCore.QRect(1000, 20, 301, 51))
@@ -96,7 +97,8 @@ class fci_08_Ui_MainWindow(object):
         self.line.setStyleSheet("color: rgb(255, 255, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line.setLineWidth(3)
         self.line.setObjectName("line")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         self.lineEdit.setGeometry(QtCore.QRect(150, 220, 141, 41))
@@ -327,7 +329,8 @@ class fci_08_Ui_MainWindow(object):
         self.line_2.setStyleSheet("color: rgb(255, 255, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_2.setLineWidth(3)
         self.line_2.setObjectName("line_2")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(1070, 120, 161, 41))
@@ -486,6 +489,8 @@ class fci_08_Ui_MainWindow(object):
         self.comboBox.setCurrentText("00")
         self.comboBox_8.setCurrentText("23")
         self.comboBox_7.setCurrentText("59")
+        self.lineEdit.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        self.lineEdit_2.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.calendarWidget.hide()
         self.calendarWidget_2.hide()
         self.pushButton_9.clicked.connect(self.load_data_range)
@@ -631,8 +636,8 @@ class fci_08_Ui_MainWindow(object):
      
          
     def update_report_param(self):
-        self.from_dt=self.lineEdit.text()+" "+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
-        self.to_dt=self.lineEdit_2.text()+" "+" "+str(self.comboBox_8.currentText())+":"+str(self.comboBox_7.currentText())+":00"
+        self.from_dt=self.lineEdit.text()+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
+        self.to_dt=self.lineEdit_2.text()+" "+str(self.comboBox_8.currentText())+":"+str(self.comboBox_7.currentText())+":00"
         if(self.report=="DATE_RANGE"):
             connection = sqlite3.connect("fci.db")
             with connection:        

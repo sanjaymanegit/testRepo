@@ -12,89 +12,103 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from fci_15_admin_su import fci_15_Ui_MainWindow
 from fci_14_admin_bu import fci_14_Ui_MainWindow
 import sqlite3
+import datetime
+
 
 class fci_13_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
-        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
+        MainWindow.setStyleSheet("background-color: rgb(47, 141, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(50, 40, 1261, 651))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setStyleSheet("color: rgb(255, 255, 255);")
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(70, 210, 481, 191))
+        self.pushButton_4.setGeometry(QtCore.QRect(70, 280, 481, 121))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(22)
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(35)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
+        self.pushButton_4.setStyleSheet("background-color: rgb(85, 170, 0);\n"
+"color: rgb(0, 0, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(720, 210, 421, 191))
+        self.pushButton_5.setGeometry(QtCore.QRect(730, 280, 461, 131))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(22)
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(35)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_5.setFont(font)
+        self.pushButton_5.setStyleSheet("background-color: rgb(85, 170, 0);\n"
+"color: rgb(0, 0, 0);")
         self.pushButton_5.setObjectName("pushButton_5")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(480, 70, 291, 71))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(22)
-        self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 0, 127);")
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(1050, 20, 141, 31))
+        self.label_2.setGeometry(QtCore.QRect(940, 40, 271, 41))
         font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
-        self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(570, 500, 75, 31))
-        self.pushButton_3.setObjectName("pushButton_3")
-        
-        self.label_21 = QtWidgets.QLabel(self.frame)
-        self.label_21.setGeometry(QtCore.QRect(940, 50, 241, 41))
+        self.label_3 = QtWidgets.QLabel(self.frame)
+        self.label_3.setGeometry(QtCore.QRect(450, 120, 381, 71))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_21.setFont(font)
-        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
-        self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_21.setObjectName("label_21")
-        
-        
-        
-        
+        font.setFamily("Arial")
+        font.setPointSize(24)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_3.setFont(font)
+        self.label_3.setStyleSheet("color: rgb(244, 244, 0);\n"
+"background-color: rgb(170, 0, 0);")
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.pushButton_6 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_6.setGeometry(QtCore.QRect(550, 530, 151, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_6.setFont(font)
+        self.pushButton_6.setStyleSheet("background-color: rgb(170, 0, 0);")
+        self.pushButton_6.setObjectName("pushButton_6")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
         self.menubar.setObjectName("menubar")
-        
-        
-        
-        
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
         
+        
+        
+        self.label_21 = QtWidgets.QLabel(self.frame)
+        self.label_21.setGeometry(QtCore.QRect(80, 50, 441, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_21.setFont(font)
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0); color: rgb(255, 255, 255);")
+        self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_21.setObjectName("label_21")
+        
+        MainWindow.setStatusBar(self.statusbar)
         self.login_user_id=""
         self.login_user_role=""
         self.login_user_name=""
@@ -105,12 +119,12 @@ class fci_13_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_4.setText(_translate("MainWindow", "Business User"))
-        self.pushButton_5.setText(_translate("MainWindow", "System User"))
-        self.label.setText(_translate("MainWindow", "Administration"))
+        self.pushButton_4.setText(_translate("MainWindow", "BUSINESS USER"))
+        self.pushButton_5.setText(_translate("MainWindow", "SERVICE USER"))
         self.label_2.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
-        self.pushButton_3.setText(_translate("MainWindow", "Return"))
-        self.pushButton_3.clicked.connect(MainWindow.close)
+        self.label_3.setText(_translate("MainWindow", "CONFIGURATION"))
+        self.pushButton_6.setText(_translate("MainWindow", "RETURN"))
+        self.pushButton_6.clicked.connect(MainWindow.close)
         self.startx()
 
     def startx(self):
@@ -127,6 +141,13 @@ class fci_13_Ui_MainWindow(object):
         
         self.load_login_dtls()
         self.label_21.setText("Login By : "+str(self.login_user_name))
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+     
+    def device_date(self):     
+        self.label_2.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     def load_login_dtls(self):
         connection = sqlite3.connect("fci.db")

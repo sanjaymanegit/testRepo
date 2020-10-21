@@ -30,7 +30,7 @@ class fci_15_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1311, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1311, 711))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -106,7 +106,7 @@ class fci_15_Ui_MainWindow(object):
         self.label_2.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(1080, 0, 221, 31))
+        self.label_3.setGeometry(QtCore.QRect(1050, 10, 221, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -132,7 +132,7 @@ class fci_15_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", " System User :"))
+        self.label.setText(_translate("MainWindow", " Service User :"))
         self.groupBox.setTitle(_translate("MainWindow", "Password"))
         self.pushButton.setText(_translate("MainWindow", "Show Page"))
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))

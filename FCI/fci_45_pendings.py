@@ -32,8 +32,11 @@ class fci_45_Ui_MainWindow(object):
         self.frame.setFont(font)
         self.frame.setStyleSheet("color: rgb(255, 255, 255);\n"
 "")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        
+        
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
         self.label_20.setGeometry(QtCore.QRect(1030, 10, 260, 51))
@@ -81,7 +84,8 @@ class fci_45_Ui_MainWindow(object):
         self.line.setStyleSheet("color: rgb(255, 255, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line.setLineWidth(3)
         self.line.setObjectName("line")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         self.lineEdit.setGeometry(QtCore.QRect(150, 110, 141, 41))
@@ -281,7 +285,8 @@ class fci_45_Ui_MainWindow(object):
         self.line_2.setGeometry(QtCore.QRect(0, 390, 661, 20))
         self.line_2.setStyleSheet("color: rgb(255, 255, 255);")
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_2.setLineWidth(3)
         self.line_2.setObjectName("line_2")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
         self.pushButton_13.setGeometry(QtCore.QRect(40, 600, 111, 41))
@@ -298,27 +303,32 @@ class fci_45_Ui_MainWindow(object):
         self.line_4.setGeometry(QtCore.QRect(0, 560, 661, 20))
         self.line_4.setStyleSheet("color: rgb(255, 255, 255);")
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_4.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_4.setLineWidth(3)
         self.line_4.setObjectName("line_4")
         self.line_3 = QtWidgets.QFrame(self.frame)
         self.line_3.setGeometry(QtCore.QRect(-7, 400, 20, 291))
         self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_3.setLineWidth(3)
         self.line_3.setObjectName("line_3")
         self.line_5 = QtWidgets.QFrame(self.frame)
         self.line_5.setGeometry(QtCore.QRect(180, 400, 20, 301))
         self.line_5.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_5.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_5.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_5.setLineWidth(3)
         self.line_5.setObjectName("line_5")
         self.line_6 = QtWidgets.QFrame(self.frame)
         self.line_6.setGeometry(QtCore.QRect(330, 400, 20, 301))
         self.line_6.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_6.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_6.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_6.setLineWidth(3)
         self.line_6.setObjectName("line_6")
         self.line_7 = QtWidgets.QFrame(self.frame)
         self.line_7.setGeometry(QtCore.QRect(480, 400, 20, 301))
         self.line_7.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_7.setLineWidth(3)
         self.line_7.setObjectName("line_7")
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(50, 490, 71, 51))
@@ -368,7 +378,8 @@ class fci_45_Ui_MainWindow(object):
         self.line_8.setGeometry(QtCore.QRect(0, 450, 661, 20))
         self.line_8.setStyleSheet("color: rgb(255, 255, 255);")
         self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_8.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_8.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_8.setLineWidth(3)
         self.line_8.setObjectName("line_8")
         self.label_25 = QtWidgets.QLabel(self.frame)
         self.label_25.setGeometry(QtCore.QRect(40, 420, 121, 21))
@@ -602,7 +613,8 @@ class fci_45_Ui_MainWindow(object):
         self.line_9 = QtWidgets.QFrame(self.frame)
         self.line_9.setGeometry(QtCore.QRect(1137, 400, 20, 301))
         self.line_9.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_9.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_9.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_9.setLineWidth(3)
         self.line_9.setObjectName("line_9")
         self.label_29 = QtWidgets.QLabel(self.frame)
         self.label_29.setGeometry(QtCore.QRect(1007, 420, 121, 21))
@@ -641,7 +653,8 @@ class fci_45_Ui_MainWindow(object):
         self.line_10.setGeometry(QtCore.QRect(657, 450, 661, 20))
         self.line_10.setStyleSheet("color: rgb(255, 255, 255);")
         self.line_10.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_10.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_10.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_10.setLineWidth(3)
         self.line_10.setObjectName("line_10")
         self.label_32 = QtWidgets.QLabel(self.frame)
         self.label_32.setGeometry(QtCore.QRect(697, 420, 121, 21))
@@ -658,22 +671,26 @@ class fci_45_Ui_MainWindow(object):
         self.line_11.setGeometry(QtCore.QRect(657, 390, 661, 20))
         self.line_11.setStyleSheet("color: rgb(255, 255, 255);")
         self.line_11.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_11.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_11.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_11.setLineWidth(3)
         self.line_11.setObjectName("line_11")
         self.line_12 = QtWidgets.QFrame(self.frame)
         self.line_12.setGeometry(QtCore.QRect(987, 400, 20, 301))
         self.line_12.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_12.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_12.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_12.setLineWidth(3)
         self.line_12.setObjectName("line_12")
         self.line_13 = QtWidgets.QFrame(self.frame)
         self.line_13.setGeometry(QtCore.QRect(650, 400, 20, 301))
         self.line_13.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_13.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_13.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_13.setLineWidth(3)
         self.line_13.setObjectName("line_13")
         self.line_14 = QtWidgets.QFrame(self.frame)
         self.line_14.setGeometry(QtCore.QRect(810, 400, 20, 291))
         self.line_14.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_14.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_14.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_14.setLineWidth(3)
         self.line_14.setObjectName("line_14")
         self.label_53 = QtWidgets.QLabel(self.frame)
         self.label_53.setGeometry(QtCore.QRect(890, 490, 71, 51))
@@ -909,6 +926,10 @@ class fci_45_Ui_MainWindow(object):
         
         self.lineEdit.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.lineEdit_2.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        
+        self.lineEdit_3.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        self.lineEdit_4.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
+        
         self.pushButton_8_1.clicked.connect(MainWindow.close)
         self.calendarWidget.hide()
         self.calendarWidget_2.hide()
@@ -1003,11 +1024,11 @@ class fci_45_Ui_MainWindow(object):
         
     def load_data(self):        
         
-        self.from_dt=self.lineEdit.text()+" "+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
-        self.to_dt=self.lineEdit_2.text()+" "+" "+str(self.comboBox_8.currentText())+":"+str(self.comboBox_7.currentText())+":00"
+        self.from_dt=self.lineEdit.text()+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
+        self.to_dt=self.lineEdit_2.text()+" "+str(self.comboBox_8.currentText())+":"+str(self.comboBox_7.currentText())+":00"
         
-        self.from_dt2=self.lineEdit_3.text()+" "+" "+str(self.comboBox_3.currentText())+":"+str(self.comboBox_4.currentText())+":00"
-        self.to_dt2=self.lineEdit_4.text()+" "+" "+str(self.comboBox_10.currentText())+":"+str(self.comboBox_9.currentText())+":00"
+        self.from_dt2=self.lineEdit_3.text()+" "+str(self.comboBox_3.currentText())+":"+str(self.comboBox_4.currentText())+":00"
+        self.to_dt2=self.lineEdit_4.text()+" "+str(self.comboBox_10.currentText())+":"+str(self.comboBox_9.currentText())+":00"
         
         
  
@@ -1038,19 +1059,19 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ID IS NOT NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='BATCH'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_recipt_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='ISSUE'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_issue_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND  BATCH_ID IS  NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND  BATCH_ISSUE_FLG='OTHER'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_other_cnt=str(x[0])
         connection.close()
@@ -1086,19 +1107,19 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ID IS NOT NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ISSUE_FLG='BATCH' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_recipt_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ID IS  NULL AND ISSUE_ID IS NOT NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='ISSUE' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_issue_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ID IS  NULL AND ISSUE_ID IS NULL AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='OTHER'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_other_cnt=str(x[0])
         connection.close()

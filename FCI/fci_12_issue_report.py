@@ -321,8 +321,8 @@ class fci_12_Ui_MainWindow(object):
                  if(self.label_2.text() == 'DATE_RANGE'):
                      self.label_36.setText("Report selected for date range <font color=blue> [ "+str(x[2])+" ] </font> to <font color=blue>[ "+str(x[3])+" ]</font>.")
                      
-                     self.whr_sql=" WHERE  ISSUE_ID IS NOT NULL AND strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE ISSUE_ID IS NOT NULL AND strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by ISSUE_ID,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql=" WHERE  strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
+                     self.whr_sql2=" WHERE BATCH_ISSUE_FLG='ISSUE'  AND IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by ISSUE_ID,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_ISSUE_ID'):
                      self.label_36.setText("Report selected for Issue id:"+str(x[4])+".")
                      
@@ -340,6 +340,14 @@ class fci_12_Ui_MainWindow(object):
                      self.label_9.setText(str(x[0]))
                      self.label_11.setText(str(x[1]))
                      self.label_8.setText(str(x[2]))
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")        
+        results=connection.execute("SELECT count(*),printf(\"%.3f\",  sum(net_weight_val)),count(distinct issue_id) FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
+        for x in results:
+                self.label_11.setText(str(x[0]))
+                self.label_8.setText(str(x[1]))
+                self.label_9.setText(str(x[2]))
         connection.close()
         
         self.select_all_data()

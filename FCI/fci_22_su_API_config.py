@@ -10,6 +10,8 @@
 import urllib.request
 from PyQt5 import QtCore, QtGui, QtNetwork,QtWidgets
 from PyQt5.Qt import QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
 import sqlite3
 import datetime
 import sys
@@ -442,19 +444,27 @@ class fci_22_Ui_MainWindow(object):
      
       
     def c_delete_data(self):
-        if(self.lineEdit_21.text() != ""):
-            connection = sqlite3.connect("fci.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("DELETE FROM API_MST WHERE API_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()
-            
-            self.label_2.setText("Record Deleted Successfully.")
-            self.log_audit("API Config","Deleted API ID:"+str(self.lineEdit_21.text()))
-            self.label_2.show()
-            
-            self.c_select_all_data()
+        close = QMessageBox()
+        close.setText("This would remove important data from system.Are You Sure Want to Delete ? ")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:
+            if(self.lineEdit_21.text() != ""):
+                connection = sqlite3.connect("fci.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("DELETE FROM API_MST WHERE API_ID ='"+str(self.dr_id)+"'")                    
+                connection.commit();                    
+                connection.close()
+                
+                self.label_2.setText("Record Deleted Successfully.")
+                self.log_audit("API Config","Deleted API ID:"+str(self.lineEdit_21.text()))
+                self.label_2.show()
+                
+                self.c_select_all_data()
+        else:
+            self.label_2.setText("Cancled Delete API.")
+            self.label_2.show()   
             
          
     def c_select_all_data(self):     

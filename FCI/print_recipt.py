@@ -33,6 +33,8 @@ def dot_matrix_print():
     recipt_id=""
     truck_num=""
     
+    duplicate_flg=""
+    duplicate_str=""  
     
     connection = sqlite3.connect("fci.db")       
     results=connection.execute("SELECT  PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER FROM GLOBAL_VAR")         
@@ -41,6 +43,18 @@ def dot_matrix_print():
          printer_title=str(x[0]) 
          printer_footer=str(x[2]) 
     connection.close()
+    
+    connection = sqlite3.connect("fci.db")       
+    results=connection.execute("SELECT DUPLICATE_FLG FROM PRINTER_DATA")         
+    for x in results:
+         duplicate_flg=str(x[0])
+         if(str(duplicate_flg) == "Yes"):
+             duplicate_str="DUPLICATE"
+         else:
+             duplicate_str="" 
+    connection.close()
+    
+    
     
     connection = sqlite3.connect("fci.db")       
     results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL,ACCPTED_BAGS,DRIVER_IN_OUT,CONTRACTOR_NAME,TARGET_STORAGE,MATERIAL_NAME,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) AS RECIPT_ID ,(CURR_TRUCK_CNT||'/'||TOTAL_TRUCKS_CNT) as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
@@ -88,7 +102,7 @@ def dot_matrix_print():
         printer.bold(False)
         printer.align("left")
         printer.text("======================================================\n\r")        
-        printer.text("Serial No    : "+str(serial_id).zfill(6)+"                  Vehical No: "+str(vehical_no)+" \n\r")
+        printer.text("Serial No    : "+str(serial_id).zfill(6)+" "+str(duplicate_str)+"                Vehical No: "+str(vehical_no)+" \n\r")
         printer.text("Recipt ID    : "+str(recipt_id)+"                Truck.Sr.No: "+str(truck_num)+" \n\r")
         printer.text("Total Bags   : "+str(accpted_bags).zfill(6)+"                  Batch.Id: "+str(batch_id).zfill(4)+" \n\r")
         printer.text("Material     : "+str(material)+"                         \n\r")

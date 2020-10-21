@@ -271,12 +271,12 @@ class fci_51_Ui_MainWindow(object):
                      self.label_36.setText("Report selected for date range <font color=blue> [ "+str(x[2])+"</font> ] to <font color=blue> [ "+str(x[3])+" ] </font>.")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE  ISSUE_ID IS NULL AND BATCH_ID IS NULL AND strftime('%Y-%m-%d',IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON))  between '"+str(x[2])+"' and '"+str(x[3])+"' order by serial_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='OTHER'  AND IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by serial_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
                      self.whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
-                     self.whr_sql2="WHERE ISSUE_ID IS NULL AND BATCH_ID IS NULL AND  order by serial_id,CURR_TRUCK_CNT "
+                     self.whr_sql2="WHERE BATCH_ISSUE_FLG='OTHER'  AND  order by serial_id,CURR_TRUCK_CNT "
                      
                  else:
                      self.label_36.setText("Report selected for unknow.")

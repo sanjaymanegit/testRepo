@@ -34,9 +34,10 @@ class fci_03b_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(25, 25, 1321, 718))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setGeometry(QtCore.QRect(25, 25, 1321, 714))
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setStyleSheet("background-color: rgb(244, 186, 255 );")
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
@@ -193,7 +194,7 @@ class fci_03b_Ui_MainWindow(object):
         input_validator = QRegExpValidator(reg_ex, self.label_24)
         self.label_24.setValidator(input_validator)
         
-        self.label_24.setGeometry(QtCore.QRect(920, 280, 61, 31))
+        self.label_24.setGeometry(QtCore.QRect(910, 280, 61, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -405,11 +406,16 @@ class fci_03b_Ui_MainWindow(object):
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
         self.lcdNumber.setGeometry(QtCore.QRect(30, 50, 361, 121))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
+        self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.lcdNumber.setLineWidth(4)
+        self.lcdNumber.setDigitCount(7)
+        self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 0, 0);")
         self.lcdNumber.setProperty("value", 0.0)
-        self.lcdNumber.setDigitCount(7)
+       
         self.lcdNumber.setObjectName("lcdNumber")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(30, 190, 91, 41))
@@ -465,7 +471,7 @@ class fci_03b_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(50)
         self.label_45.setFont(font)
-        self.label_45.setStyleSheet("background-color: rgb(189, 255, 255); color: rgb(0, 170, 0);")
+        self.label_45.setStyleSheet("background-color: rgb(189, 255, 255); color: rgb(47, 141, 255);")
         self.label_45.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_45.setObjectName("label_45")
         self.label_21 = QtWidgets.QLabel(self.frame)
@@ -901,13 +907,13 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_13.setFont(font)
         self.pushButton_13.setObjectName("pushButton_13")
         self.label_57 = QtWidgets.QLabel(self.frame)
-        self.label_57.setGeometry(QtCore.QRect(400, 150, 31, 21))
+        self.label_57.setGeometry(QtCore.QRect(400, 150, 41, 21))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
-        font.setBold(False)
+        font.setBold(True)
         font.setUnderline(False)
-        font.setWeight(50)
+        font.setWeight(75)
         self.label_57.setFont(font)
         self.label_57.setStyleSheet("")
         self.label_57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
@@ -996,6 +1002,7 @@ class fci_03b_Ui_MainWindow(object):
         self.slot_1_wt=0
         self.slot_2_wt=0        
         self.save_diable=0
+        self.slip_type=""
         ##########
             
 
@@ -1008,6 +1015,7 @@ class fci_03b_Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Serial. No."))
         self.pushButton_5.setText(_translate("MainWindow", "SAVE"))
         self.pushButton_7_1.setText(_translate("MainWindow", "VIEW PRINT"))
+        
         self.label_57_1.setText(_translate("MainWindow", "Copies :"))
         self.comboBox_2_1.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox_2_1.setItemText(1, _translate("MainWindow", "2"))
@@ -1019,7 +1027,7 @@ class fci_03b_Ui_MainWindow(object):
         self.label_19.setText(_translate("MainWindow", "10001"))
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
         self.label_14.setText(_translate("MainWindow", "VEHICLE NO :"))
-        self.pushButton_8.setText(_translate("MainWindow", "Print"))
+        self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
         
         self.radioButton.setText(_translate("MainWindow", "Auto"))
         self.radioButton_2.setText(_translate("MainWindow", "Manual"))
@@ -1092,7 +1100,7 @@ class fci_03b_Ui_MainWindow(object):
         self.label_56.setText(_translate("MainWindow", "Record Successfully saved !!!"))
         self.pushButton_13.setText(_translate("MainWindow", "New Weighing"))
         self.pushButton_13.hide()
-        self.label_57.setText(_translate("MainWindow", ".Kg"))
+        self.label_57.setText(_translate("MainWindow", "Kg."))
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.lineEdit_5.setText("11") #actual Bags
         self.lineEdit_3.setText("SL001")
@@ -1284,28 +1292,41 @@ class fci_03b_Ui_MainWindow(object):
                
     def mannual_onclick(self):
         self.manual_ins_flg="(*)"
-        #print("insidde mannual :"+str(self.radioButton_2.isChecked()))
+        #print("insidde mannual :"+str(self.radioButton_2.isChecked()))        
+        
         if(self.radioButton_2.isChecked()):
-            self.groupBox_3.show()
-            self.groupBox_2.show()            
+            if(self.slip_type=="NEW"):
+                self.groupBox_3.hide()
+                self.groupBox_2.show() 
+            elif(self.slip_type=="OLD"):
+                self.groupBox_3.show()
+                self.groupBox_2.hide()
+            else:
+                self.groupBox_3.show()
+                self.groupBox_2.show()            
         else:            
             self.groupBox_3.hide()
             self.groupBox_2.hide()
     
     def auto_onclick(self):
         self.manual_ins_flg=""
+        self.groupBox_3.hide()
+        self.groupBox_2.hide()
+        '''
         if(self.radioButton.isChecked()):
             self.groupBox_3.hide()
             self.groupBox_2.hide()
         else:
             self.groupBox_3.show()
             self.groupBox_2.show()
+        '''
             
     def load_default(self):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT OLD_NEW_SLIP_FLAG, GROSS_TARE_FLAG ,OLD_SLIP_NO,LCD_WEIGHT FROM GLOBAL_VAR") 
         for x in results:
             if(str(x[0]) == "NEW"):
+                    self.slip_type="NEW"
                     self.current_value=float(x[3])
                     self.lcdNumber.setProperty("value", float(self.current_value))
                     if(str(x[1]) == "GROSS"):
@@ -1316,10 +1337,19 @@ class fci_03b_Ui_MainWindow(object):
                          print("NONE")
                          
             elif(str(x[0]) == "OLD"):
+                    self.slip_type="OLD"
                     self.current_value=float(x[3])
+                    self.lcdNumber.setProperty("value", float(self.current_value))
                     self.lineEdit.setText(str(x[2]))
                     self.fetch_via_search()
-                
+                    if(str(x[1]) == "Gross"):
+                        self.tare_wt_onclick()                
+                    elif(str(x[1]) == "Tare"):
+                        self.gross_wt_onclick() 
+                    else:
+                        print("NONE")
+            else:
+                 self.slip_type=""
         connection.close()
             
     def reset_fun(self):
@@ -1443,6 +1473,8 @@ class fci_03b_Ui_MainWindow(object):
         self.pushButton_5.setEnabled(True)
         self.status="FIRST"
         self.pushButton_8.setDisabled(True)
+        self.pushButton_7_1.setDisabled(True)
+        self.comboBox_2_1.setDisabled(True)
         self.lineEdit_6.setDisabled(True)
         self.lineEdit_3.setDisabled(True)
         self.lineEdit_5.setDisabled(True)
@@ -1627,11 +1659,11 @@ class fci_03b_Ui_MainWindow(object):
     def print_recipt(self):
         self.serial_id=int(self.label_19.text())
         #print("Slip Id : "+str(str(self.serial_id)))
-        self.pushButton_8.setDisabled(True)
+        #self.pushButton_8.setDisabled(True)
         connection = sqlite3.connect("fci.db")          
         with connection:        
              cursor = connection.cursor()                    
-             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"'") 
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"',DUPLICATE_FLG='No'") 
         connection.commit();
         connection.close()  
         
@@ -1716,6 +1748,10 @@ class fci_03b_Ui_MainWindow(object):
             #remark
             #self.textEdit.setText(str(x[10])) 
             self.pushButton_8.setEnabled(True)
+            self.pushButton_7_1.setEnabled(True)
+            self.comboBox_2_1.setEnabled(True)
+            self.pushButton_7_1.setEnabled(True)
+            self.comboBox_2_1.setEnabled(True)
             if(str(x[11]) == "OUT"):
                 self.radioButton_4.setChecked(True)
                 self.radioButton_3.setChecked(False)
@@ -1910,7 +1946,7 @@ class fci_03b_Ui_MainWindow(object):
                                                                        +"','"+str( self.contractor_name)+"','"+str(self.device_location_type)+"','"+self.accepted_bags+"','"+str(self.device_id)+"','"+str(self.login_user_id)+"','"+str(self.manual_ins_flg)+"')")
                                                                       
                                              #self.reset_fun()
-                                             self.label_56.setText("Successfully Loaded First Weight.")
+                                             self.label_56.setText("Successfully Saved First Weight.")
                                              self.log_audit("Weighing"," Loaded First Weight. slip No:"+str(int(self.label_19.text())))
                                              self.label_56.show()  
                                              connection.commit();
@@ -1920,6 +1956,8 @@ class fci_03b_Ui_MainWindow(object):
                                              self.load_2nd_wt_vehicles()
                                              self.pushButton_5.setDisabled(True)
                                              self.pushButton_8.setEnabled(True)
+                                             self.pushButton_7_1.setEnabled(True)
+                                             self.comboBox_2_1.setEnabled(True)
                                  else:
                                              self.label_56.setText("First Weight. should not be zero")
                                              self.label_56.show() 
@@ -1979,13 +2017,16 @@ class fci_03b_Ui_MainWindow(object):
                                                  
                                                      
                                                      
-                                                 self.label_56.setText("Successfully Loaded Second Weight.")
+                                                 self.label_56.setText("Successfully Saved Second Weight.")
                                                  self.log_audit("Weighing","Loaded Second Weight. slip No:"+str(int(self.label_19.text())))
                                                  self.label_56.show()
                                                  self.load_1st_wt_vehicles()
                                                  self.load_2nd_wt_vehicles()
                                                  self.pushButton_5.setDisabled(True)
                                                  self.pushButton_8.setEnabled(True)
+                                                 self.pushButton_7_1.setEnabled(True)
+                                                 self.comboBox_2_1.setEnabled(True)
+                                                 
                                          
                                          
                                      else:
@@ -2115,7 +2156,7 @@ class fci_03b_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")          
         with connection:        
              cursor = connection.cursor()                    
-             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"'") 
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.current_slip_no)+"',DUPLICATE_FLG='No'") 
         connection.commit();
         connection.close()   
         
