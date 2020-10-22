@@ -675,15 +675,17 @@ class fci_35_Ui_MainWindow(object):
                                     stopbits=serial.STOPBITS_ONE,
                                     xonxoff=False,
                                     timeout = 0.05
-                                )
+                              )
+                '''
                 #=============
                 self.command_str="T"
                 print("Tare Command : "+str(self.command_str))
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
                 #=============
-                self.label_44.setText("Tare Done. Please Callibrate now" )  
-                self.label_44.show()
+                '''
+                #self.label_44.setText("Tare Done. Please Callibrate now" )  
+                #self.label_44.show()
         except IOError:
                 print("IO Errors")
                 self.label_44.setText("IO Errors" )  

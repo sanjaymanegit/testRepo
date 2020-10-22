@@ -781,6 +781,18 @@ class fci_45_Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
         self.menubar.setObjectName("menubar")
+        
+        self.line_1_1 = QtWidgets.QFrame(self.frame)
+        self.line_1_1.setGeometry(QtCore.QRect(648, 30, 20, 60))
+        self.line_1_1.setStyleSheet("color: rgb(255, 255, 255);\n"
+"border-color: rgb(255, 255, 255);")
+        self.line_1_1.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_1_1.setLineWidth(3)
+        self.line_1_1.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_1_1.setObjectName("line")
+        
+        
+        
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")

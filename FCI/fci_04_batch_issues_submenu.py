@@ -90,7 +90,7 @@ class fci_04_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+"background-color: rgb(0, 120, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(410, 620, 111, 51))
@@ -99,14 +99,12 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_5.setFont(font)
-        self.pushButton_5.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 0, 255);")
+        self.pushButton_5.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(0, 0, 130);")
         self.pushButton_5.setObjectName("pushButton_5")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
         self.lcdNumber.setGeometry(QtCore.QRect(50, 90, 1141, 321))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.lcdNumber.setStyleSheet("color: rgb(255, 0, 0);\n"
-"background-color: rgb(0, 0, 0);")
+        self.lcdNumber.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
         self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
         self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
         self.lcdNumber.setLineWidth(4)
@@ -202,7 +200,7 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
-        self.pushButton_9.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.pushButton_9.setStyleSheet("background-color: rgb(0, 120, 0);")
         self.pushButton_9.setObjectName("pushButton_9")
         self.pushButton_10 = QtWidgets.QPushButton(self.frame)
         self.pushButton_10.setGeometry(QtCore.QRect(950, 440, 171, 51))
@@ -212,7 +210,7 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_10.setFont(font)
-        self.pushButton_10.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.pushButton_10.setStyleSheet("background-color: rgb(0, 120, 0);")
         self.pushButton_10.setObjectName("pushButton_10")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(970, 530, 111, 51))
@@ -231,9 +229,7 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7.setFont(font)
-        self.pushButton_7.setStyleSheet("color: rgb(255, 255, 255);\n"
-"\n"
-"background-color: rgb(0, 0, 255);")
+        self.pushButton_7.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(0, 0, 130);")
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(1120, 530, 161, 51))
@@ -243,7 +239,7 @@ class fci_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_11.setFont(font)
-        self.pushButton_11.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.pushButton_11.setStyleSheet("background-color: rgb(0, 120, 0);")
         self.pushButton_11.setObjectName("pushButton_11")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(760, 620, 391, 51))
@@ -304,6 +300,9 @@ class fci_04_Ui_MainWindow(object):
         self.weighing_crosses_min_wt_lim="No"
         self.wt_min_limit=0
         self.wt_max_limit=0
+        
+        self.green_counter=0
+       
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -416,12 +415,12 @@ class fci_04_Ui_MainWindow(object):
             self.ser.flush()       
            
             
-            self.line = self.ser.readline(15)
+            self.line = self.ser.readline(30)
             print("o/p:"+str(self.line))
              
             self.timer2.setInterval(5000)        
             self.timer2.timeout.connect(self.display_lcd_val)
-            self.timer2.start(1)
+            self.timer2.start(10)
             
             
         except IOError:
@@ -431,6 +430,12 @@ class fci_04_Ui_MainWindow(object):
             
     def display_lcd_val(self):               
         #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        if(self.green_counter > 0):
+                self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
+                self.green_counter=self.green_counter-1
+        else:
+                self.pushButton.setStyleSheet("background-color: rgb(170, 0, 0);")
+        
         if(self.IO_error_flg==0):
             try:
                 self.line = self.ser.readline()
@@ -458,14 +463,20 @@ class fci_04_Ui_MainWindow(object):
                                     self.current_value=0
                                 '''
                                 if(self.weighing_crosses_min_wt_lim=="Yes" and self.weighing_crosses_max_wt_lim=="No"):    
-                                    self.lcdNumber.setProperty("value", str(self.xstr4))
+                                    self.lcdNumber.setProperty("value", str(self.xstr4))                                    
                                 else:
                                     self.lcdNumber.setProperty("value", 0)
-                                '''   
-                                if(float(self.xstr4) > 500):
+                                '''
+                                if(self.enable_buttons_flag=="Yes"):
+                                       self.lcdNumber.setStyleSheet("color: rgb(0, 170, 0);\n background-color: rgb(0, 0, 0);")
+                                else:
+                                       self.lcdNumber.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
+                                
+                                if(float(self.xstr4) > 1100):
                                     self.pushButton.hide()
                                 else:
                                     self.pushButton.show()
+                                
                                 if(self.last_value==self.current_value):
                                         self.enable_counter=self.enable_counter+1
                                         if(self.enable_counter > 15):
@@ -492,6 +503,7 @@ class fci_04_Ui_MainWindow(object):
     def stop_timer(self):
        if(self.timer2.isActive()):
            self.timer2.stop()
+           print("Stoped")
        else:
            print("Already stoped")
            #self.start_wt()
@@ -501,7 +513,7 @@ class fci_04_Ui_MainWindow(object):
         if(self.timer2.isActive()):
            print("Already Started ")
         else:
-           print("started again")
+           print("Started again")
            self.start_wt()
                     
            
@@ -576,6 +588,8 @@ class fci_04_Ui_MainWindow(object):
     #####################        
         
     def set_zero_fun(self):
+        #self.pushButton.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.green_counter=15
         try:
             self.ser = serial.Serial(
                                 port='/dev/ttyAMA0',
@@ -585,18 +599,22 @@ class fci_04_Ui_MainWindow(object):
                                 stopbits=serial.STOPBITS_ONE,
                                 xonxoff=False,
                                 timeout = 0.05
-                            )        
-            self.ser.flush()
-            #=======
+                            )
+        
+            self.ser.flush() 
+       
             self.command_str="T"
             print("Tare Command : "+str(self.command_str))
             b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)          
-           
-            time.sleep(1)
+            self.ser.write(b)
         except IOError:
-            print("IO Errors")
-            
+                print("IO Errors : Data Read Error") 
+                self.IO_error_flg=1  
+        #time.sleep(2)       
+        #self.pushButton.setStyleSheet("background-color: rgb(170, 0, 0);")
+        
+        
+           
     def check_onclick(self):        
         ###Check if serial number exist
         self.save_data()

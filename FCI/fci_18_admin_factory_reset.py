@@ -250,7 +250,7 @@ class fci_18_Ui_MainWindow(object):
         
     def clean_data(self):
         close = QMessageBox()
-        close.setText("This would remove important data from system.Are You Sure Want to Delete ? ")
+        close.setText(" <font color=blue>           !!!    WARNING     !!! </font> <br> <br>  <font color=red> YOUR ALL DATA WILL BE PERMANANTALY LOST </font> ")
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
         close = close.exec()
         if close == QMessageBox.Yes:

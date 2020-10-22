@@ -182,8 +182,14 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_9.setObjectName("pushButton_9")
         self.toolButton = QtWidgets.QToolButton(self.frame)
         self.toolButton.setGeometry(QtCore.QRect(20, 20, 51, 41))
-        self.toolButton.setStyleSheet("background-color: rgb(0, 170, 0);")
+        self.toolButton.setStyleSheet("background-color: rgb(0, 120, 0);")
         self.toolButton.setText("")
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.toolButton.setFont(font)
         self.toolButton.setObjectName("toolButton")
         self.label_22 = QtWidgets.QLabel(self.frame)
         self.label_22.setGeometry(QtCore.QRect(80, 20, 81, 41))
@@ -232,7 +238,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "STACKS"))
         
         self.label_22.setText(_translate("MainWindow", "Internet"))
-        self.toolButton.setText(_translate("MainWindow", "On"))        
+        self.toolButton.setText(_translate("MainWindow", "ON"))        
         self.pushButton_5_1.clicked.connect(MainWindow.close)
         self.startx()
 
@@ -285,12 +291,12 @@ class fci_01_Ui_MainWindow(object):
     
     def check_internet_connection(self):  
         if (self.connect()):
-              self.toolButton.setText("On")
+              self.toolButton.setText("ON")
               #self.label_22.show()
               self.toolButton.setStyleSheet("background-color: rgb(0, 170, 0);")
     
         else:
-              self.toolButton.setText("Off")              
+              self.toolButton.setText("OFF")              
               #self.label_22.show()
               self.toolButton.setStyleSheet("background-color: rgb(170, 0, 0);")
     

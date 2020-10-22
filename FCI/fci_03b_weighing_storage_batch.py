@@ -413,7 +413,7 @@ class fci_03b_Ui_MainWindow(object):
         self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
-"color: rgb(255, 0, 0);")
+"color: rgb(0, 200, 0);")
         self.lcdNumber.setProperty("value", 0.0)
        
         self.lcdNumber.setObjectName("lcdNumber")

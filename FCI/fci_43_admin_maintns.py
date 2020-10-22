@@ -431,7 +431,7 @@ class fci_43_Ui_MainWindow(object):
                                     timeout = 0.05
                                 )
                 #=============
-                self.command_str="T"
+                self.command_str="Z"
                 print("Tare Command : "+str(self.command_str))
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
