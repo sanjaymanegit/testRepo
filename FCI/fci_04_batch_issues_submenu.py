@@ -302,6 +302,8 @@ class fci_04_Ui_MainWindow(object):
         self.wt_max_limit=0
         
         self.green_counter=0
+        self.ld_set=0
+        self.last_display_val=""
        
 
         self.retranslateUi(MainWindow)
@@ -338,11 +340,12 @@ class fci_04_Ui_MainWindow(object):
         self.timer1.start(1)
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT DEVICE_LOCATION_TYPE,IFNULL(OFF_POSITION_SET,0),(IFNULL(CAPACITY_SET,0)*1000) FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT DEVICE_LOCATION_TYPE,IFNULL(OFF_POSITION_SET,0),(IFNULL(CAPACITY_SET,0)*1000),LD_SET FROM GLOBAL_VAR") 
         for x in results:            
             self.device_location_type=str(x[0])
             self.wt_min_limit=int(x[1])
             self.wt_max_limit=int(x[2])
+            self.ld_set=int(x[3])
         connection.close()
         
         if(self.device_location_type == "SITE"):
@@ -455,8 +458,14 @@ class fci_04_Ui_MainWindow(object):
                                     print("Value Error"+str(self.xstr2))
                                     self.xstr4=0                    
                                 try:
-                                    self.current_value=float(int(self.xstr4)/1000)
-                                    self.lcdNumber.setProperty("value", str(self.xstr4))
+                                    if(int(self.ld_set) > 0):
+                                        self.mod_val=0
+                                        self.mod_val=(int(self.xstr4) % int(self.ld_set))
+                                        self.mod_val=int(self.xstr4)-self.mod_val
+                                        self.lcdNumber.setProperty("value", str(self.mod_val))
+                                        self.current_value=int(self.mod_val)
+                                    else:
+                                        self.lcdNumber.setProperty("value", str(self.xstr4))
                                 except ValueError:
                                     print("Value Error :"+str(self.xstr4))
                                     self.xstr4=0

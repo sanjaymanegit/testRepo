@@ -227,7 +227,7 @@ class fci_23_Ui_MainWindow(object):
          
     def login_page(self):
         connection = sqlite3.connect("services.db")
-        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'WEIGHING_MODE' AND STATUS = 'ACTIVE'") 
+        results=connection.execute("SELECT PWD FROM SERVICES_MST WHERE SERVICE_NAME = 'DATE_SETTING' AND STATUS = 'ACTIVE'") 
         for x in results:  
             if(str(self.lineEdit_2.text()) == str(x[0])):          
                 self.go_ahead_flg="No"

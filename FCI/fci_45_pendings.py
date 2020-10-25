@@ -810,6 +810,7 @@ class fci_45_Ui_MainWindow(object):
         self.completed_recipt_cnt=0
         self.completed_issue_cnt=0
         self.completed_other_cnt=0
+        self.device_location_type=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -982,7 +983,20 @@ class fci_45_Ui_MainWindow(object):
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
-        self.timer1.start(1) 
+        self.timer1.start(1)
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_LOCATION_TYPE FROM GLOBAL_VAR") 
+        for x in results:            
+            self.device_location_type=str(x[0])           
+        connection.close()
+        
+        if(self.device_location_type=="SITE"):
+                    self.pushButton_4.setDisabled(True)
+                    self.pushButton_23.setDisabled(True)
+                    
+            
+            
     
     
     def device_date(self):     

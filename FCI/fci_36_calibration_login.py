@@ -17,7 +17,7 @@ import sqlite3
 class fci_36_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(870, 395)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)

@@ -23,7 +23,6 @@ from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 #from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
 from fci_45_pendings import fci_45_Ui_MainWindow
-
 from fci_29_stacks import fci_29_Ui_MainWindow
 
 
@@ -231,7 +230,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Reboot"))
         self.pushButton_5.hide()
         self.pushButton_5_1.setText(_translate("MainWindow", "RETURN"))
-        self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
+        #self.label_21.setText(_translate("MainWindow", "AnyDesk Id: 456533323"))
         self.pushButton_6.setText(_translate("MainWindow", "REPORTS"))
         self.pushButton_7.setText(_translate("MainWindow", "ISSUES"))
         
@@ -245,7 +244,7 @@ class fci_01_Ui_MainWindow(object):
 
 
     def startx(self): 
-        self.anydesk_open()
+        #self.anydesk_open()
         #self.pushButton.clicked.connect(self.open_new_window)
         self.pushButton_4.clicked.connect(self.open_new_window)
         self.pushButton_7.clicked.connect(self.open_new_window4)
@@ -253,8 +252,8 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.open_new_window6)
         self.pushButton_9.clicked.connect(self.open_new_window7)
         self.pushButton.clicked.connect(self.open_new_window9)
-        self.pushButton_2.clicked.connect(self.shutdown_system)
-        self.pushButton_5.clicked.connect(self.reboot_system)
+        #self.pushButton_2.clicked.connect(self.shutdown_system)
+        #self.pushButton_5.clicked.connect(self.reboot_system)
         
         self.toolButton.clicked.connect(self.check_internet_connection)
         self.check_internet_connection()
@@ -300,78 +299,18 @@ class fci_01_Ui_MainWindow(object):
               #self.label_22.show()
               self.toolButton.setStyleSheet("background-color: rgb(170, 0, 0);")
     
-    
-    def shutdown_system(self):
-        self.log_audit("Login","SignOut From System.")
-        os.system("sudo shutdown -P 0")
-        
-    def reboot_system(self):
-        self.log_audit("Login","SignOut From System.")
-        os.system("sudo reboot")
-    
-    
-    
-    
-    
-    def anydesk_open(self):
-        self.anydesk_id =0
-        os.system("rm -rf anydes_id_f.txt")
-        os.system("anydesk --get-id >> anydes_id_f.txt")
-        f = open('anydes_id_f.txt','r')
-        for line in f:                 
-                    self.anydesk_id = line[0:9]
-        print("self.anydesk_id:"+str(self.anydesk_id))
-        self.label_21.setText("AnyDesk ID:"+str(self.anydesk_id))
-        f.close()
-        
+      
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
-
-    def open_new_window(self):                
-        f = open("/var/local/devid", "r")
-        dev_id=f.read()
-        f.close()
-        serial_no=self.getserial()
-        #print("current serial No : "+str(serial_no))
-        connection = sqlite3.connect("services.db")
-        results=connection.execute("select DEVICE_SERIAL_NO from DAT_MST") 
-        for x in results:
-           #print("Device Serial No :"+str(x[0]))
-           if(serial_no == str(x[0])):
-               self.go_ahead="Yes"
-           else:
-               self.go_ahead="No"
-        connection.close()
+       
+    
+    
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_02_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
-        if(self.go_ahead=="Yes"):       
-            if(dev_id=='201910:0003'):            
-                connection = sqlite3.connect("services.db")
-                results=connection.execute("select DAT_STR from DAT_MST") 
-                for x in results:
-                    #print("DATE Str :"+str(x[0]))
-                    DAT_DT=datetime.datetime.strptime(str(x[0]),"%Y-%m-%d").date()
-                    CURR_DT=datetime.date.today()               
-                    
-                    #print("date dt :"+str(DAT_DT))
-                    #print("curr dt :"+str(CURR_DT))                
-                    if(DAT_DT > CURR_DT):                         
-                             
-                             self.window = QtWidgets.QMainWindow()
-                             self.ui=fci_02_Ui_MainWindow()
-                             self.ui.setupUi(self.window)           
-                             self.window.show()
-                             
-                             #print("DAT date problem")
-                             
-                    else:
-                        print("DAT date problem.")
-                connection.close()         
-            else:
-                print("dev id :"+str(dev_id))
-        else:
-           print("Device Invalid :"+str(serial_no))
-     
-            
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_02_Ui_MainWindow()
@@ -415,29 +354,8 @@ class fci_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
-    def getserial(self):
-        # Extract serial from cpuinfo file
-        cpuserial = "0000000000000000"
-        try:
-           f = open('/proc/cpuinfo','r')
-           for line in f:
-                if line[0:6]=='Serial':
-                   cpuserial = line[10:26]
-           f.close()
-        except:
-           cpuserial = "ERROR000000000"
-        return cpuserial
+   
     
-    def log_audit(self,event_name,desc_str):        
-        connection = sqlite3.connect("fci.db")
-        with connection:        
-            cursor = connection.cursor()       
-            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
-            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
-            
-        connection.commit();
-        connection.close()
-
 
 if __name__ == "__main__":
     import sys

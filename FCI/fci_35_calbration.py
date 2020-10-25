@@ -499,6 +499,21 @@ class fci_35_Ui_MainWindow(object):
         self.count_before=0
         self.count_after=0
         self.k_factor=0
+        
+        self.green_counter=0
+        
+        self.last_value=0
+        self.current_value=0
+        self.enable_buttons_flag="No"
+        self.enable_counter=0
+        self.weighing_crosses_min_wt_lim="No"
+        self.wt_min_limit=0
+        self.wt_max_limit=0      
+       
+        
+        self.last_display_val=""
+        self.ld_set=0
+       
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -532,13 +547,14 @@ class fci_35_Ui_MainWindow(object):
         self.comboBox_2.setItemText(6, _translate("MainWindow", "50"))
         self.pushButton_10.setText(_translate("MainWindow", "SET 1"))
         self.groupBox_3.setTitle(_translate("MainWindow", "  OFF POSITION"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "1"))
-        self.comboBox_3.setItemText(1, _translate("MainWindow", "2"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "5"))
-        self.comboBox_3.setItemText(3, _translate("MainWindow", "10"))
-        self.comboBox_3.setItemText(4, _translate("MainWindow", "15"))
-        self.comboBox_3.setItemText(5, _translate("MainWindow", "20"))
-        self.comboBox_3.setItemText(6, _translate("MainWindow", "50"))
+        self.comboBox_3.setItemText(0, _translate("MainWindow", "0"))
+        self.comboBox_3.setItemText(1, _translate("MainWindow", "1"))
+        self.comboBox_3.setItemText(2, _translate("MainWindow", "2"))
+        self.comboBox_3.setItemText(3, _translate("MainWindow", "5"))
+        self.comboBox_3.setItemText(4, _translate("MainWindow", "10"))
+        self.comboBox_3.setItemText(5, _translate("MainWindow", "15"))
+        self.comboBox_3.setItemText(6, _translate("MainWindow", "20"))
+        self.comboBox_3.setItemText(7, _translate("MainWindow", "50"))
         self.pushButton_11.setText(_translate("MainWindow", "SET 3"))
         self.label_7.setText(_translate("MainWindow", "Kg."))
         self.groupBox_6.setTitle(_translate("MainWindow", " LOAD CELL SIGNAL"))
@@ -570,7 +586,7 @@ class fci_35_Ui_MainWindow(object):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1) 
-        self.pushButton_10.clicked.connect(self.ld_set)
+        self.pushButton_10.clicked.connect(self.ld_set_fun)
         self.pushButton_12.clicked.connect(self.capacity_set)
         self.pushButton_11.clicked.connect(self.off_position_set)
         self.pushButton_14.clicked.connect(self.pre_calibration_steps)
@@ -591,7 +607,8 @@ class fci_35_Ui_MainWindow(object):
     def load_data(self):       
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT LD_SET,CAPACITY_SET,OFF_POSITION_SET,FLAG_SET,K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
-        for x in results:            
+        for x in results:
+               self.ld_set=int(x[0])
                self.comboBox_2.setCurrentText(str(x[0]))
                self.comboBox.setCurrentText(str(x[1]))
                self.comboBox_3.setCurrentText(str(x[2]))
@@ -609,7 +626,7 @@ class fci_35_Ui_MainWindow(object):
         
        
     
-    def ld_set(self):
+    def ld_set_fun(self):
         connection = sqlite3.connect("fci.db")
         with connection:        
                     cursor = connection.cursor()
@@ -728,7 +745,7 @@ class fci_35_Ui_MainWindow(object):
                     b = bytes(self.command_str, 'utf-8')
                     self.ser.write(b)
                     
-                    self.label_44.setText("Calibration is Done succefully, Please verify." )  
+                    self.label_44.setText("Calibration is Done succefully." )  
                     self.label_44.show()
                     
                     self.count_after=self.count_value
@@ -737,14 +754,22 @@ class fci_35_Ui_MainWindow(object):
                     else:
                             self.k_factor=float(int(self.count_before)-int(self.count_after)/int(self.c_wt))
                     
-                    self.label_8.setText(str(self.k_factor))
-                    self.label_10.setText(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+                    
                     connection = sqlite3.connect("fci.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR='"+str(self.k_factor)+"',LAST_CALIBRATION_DT='"+str(self.label_10.text())+"'")                    
+                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR='"+str(self.k_factor)+"',LAST_CALIBRATION_DT='"+str(self.label_10.text())+"',C2_COUNT='"+str(self.count_value)+"'")                    
+                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR=((C2_COUNT-C1_COUNT)/CALIBRATION_LOAD_SET)")                    
+                    
                     connection.commit();                    
                     connection.close()
+                    connection = sqlite3.connect("fci.db")
+                    results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
+                    for x in results:
+                            self.label_8.setText(str(x[0]))
+                            self.label_10.setText(str(x[1]))
+                    connection.close()
+                    
                 else:
                     self.label_44.setText("Calibration Error." )  
                     self.label_44.show()
@@ -843,7 +868,8 @@ class fci_35_Ui_MainWindow(object):
                 self.xstr0=str(self.line,'utf-8')
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
-                self.buff=self.xstr2.split("_")                
+                self.buff=self.xstr2.split("_")
+                self.last_value=self.current_value 
                 if(len(self.buff)> 1):
                         #if(str(self.buff[3]) == 'R'): 
                                 self.xstr2=str(self.buff[0])
@@ -853,15 +879,51 @@ class fci_35_Ui_MainWindow(object):
                                     print("Value Error"+str(self.xstr2))
                                     self.xstr4=0                    
                                 try:
-                                    self.current_value=float(int(self.xstr4)/1000)
+                                    #self.current_value=float(int(self.xstr4)/1000)
                                     self.count_value=float(int(self.buff[1]))
+                                    
+                                    if(int(self.ld_set) > 0):
+                                        self.mod_val=0
+                                        self.mod_val=(int(self.xstr4) % int(self.ld_set))
+                                        self.mod_val=int(self.xstr4)-self.mod_val
+                                        self.lcdNumber_2.setProperty("value", str(self.mod_val))
+                                        self.current_value=int(self.mod_val)
+                                    else:
+                                        self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                    
+                                    
                                    
                                 except ValueError:
                                     print("Value Error :"+str(self.xstr4))
                                     self.xstr4=0
                                     self.current_value=0                    
-                                self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                #self.lcdNumber_2.setProperty("value", str(self.xstr4))
                                 self.lcdNumber.setProperty("value", str(self.count_value))
+                                
+                                if(self.enable_buttons_flag=="Yes"):
+                                       self.lcdNumber_2.setStyleSheet("color: rgb(0, 170, 0);\n background-color: rgb(0, 0, 0);")
+                                else:
+                                       self.lcdNumber_2.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
+                                
+                                                                
+                                if(self.last_value==self.current_value):
+                                        self.enable_counter=self.enable_counter+1
+                                        if(self.enable_counter > 15):
+                                             self.enable_buttons_flag="Yes"
+                                             if(int(self.current_value) > int(self.wt_min_limit)):                                                     
+                                                      self.weighing_crosses_min_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_min_wt_lim="No"
+                                             if(int(self.current_value) > int(self.wt_max_limit)):                                                     
+                                                      self.weighing_crosses_max_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_max_wt_lim="No"
+                                        else:
+                                             
+                                             self.enable_buttons_flag="No"                                            
+                                else:            
+                                        self.enable_buttons_flag="No"
+                                        self.enable_counter=0
                                 
                     
             except IOError:

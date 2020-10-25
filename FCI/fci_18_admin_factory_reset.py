@@ -19,7 +19,7 @@ import sqlite3
 class fci_18_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1222, 701)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -266,6 +266,10 @@ class fci_18_Ui_MainWindow(object):
                                 cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
                                 cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
                                 cursor.execute(" DELETE FROM ISSUE_MST")
+                                
+                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('WEIGHT_MST','BATCH_MST','AUDIT_MST','API_LOGS','SLOTS_MST','BATCH_STORAGE_LOSS','ISSUE_QUANTITY_DTLS','ISSUE_MST')")
+                                
+                                
                               
                                 
                     connection.commit();
@@ -293,7 +297,9 @@ class fci_18_Ui_MainWindow(object):
                                 cursor.execute("DELETE FROM CONTRACTOR_MST")
                                 cursor.execute("DELETE FROM STORAGE_DETAILS")
                                 cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")
-                                cursor.execute("DELETE FROM CALIBRATION_LOG") 
+                                cursor.execute("DELETE FROM CALIBRATION_LOG")
+                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('MATERIAL_TYPES','CONTRACTOR_MST','STORAGE_DETAILS','CALIBRATION_LOG','SLOTS_MST','BATCH_STORAGE_LOSS','ISSUE_QUANTITY_DTLS','ISSUE_MST')")
+                                
                     connection.commit();
                     connection.close()
                     self.label_3.setText("Factory-reset completed successfully.") 

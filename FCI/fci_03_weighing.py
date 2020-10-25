@@ -445,7 +445,7 @@ class fci_03_Ui_MainWindow(object):
         self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
-"color: rgb(255, 0, 0);")
+"color: rgb(0, 200, 0);")
         self.lcdNumber.setProperty("value", 20000.0)
         self.lcdNumber.setObjectName("lcdNumber")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
@@ -595,6 +595,7 @@ class fci_03_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox.setFont(font)
+        self.comboBox.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         #self.comboBox.addItem("")
         self.label_41 = QtWidgets.QLabel(self.frame)
@@ -722,6 +723,7 @@ class fci_03_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
+        self.comboBox_2.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
         #self.comboBox_2.addItem("")
         #self.comboBox_2.addItem("")
@@ -964,7 +966,7 @@ class fci_03_Ui_MainWindow(object):
         self.pushButton_7_1.setText(_translate("MainWindow", "VIEW PRINT"))
         self.label_57_1.setText(_translate("MainWindow", "Copies :"))
         self.label_20.setText(_translate("MainWindow", "Serial.No:"))
-        self.label_19.setText(_translate("MainWindow", "10001"))
+        self.label_19.setText(_translate("MainWindow", "00001"))
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
         self.label_14.setText(_translate("MainWindow", "Vehical.No :"))
         self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
@@ -1146,7 +1148,7 @@ class fci_03_Ui_MainWindow(object):
                     self.label_29.setText(str(mode))
                     m_str=float(float(self.lineEdit.text())/1000)                
                     self.label_32.setText('{:06.3f}'.format(m_str))
-                    self.lcdNumber.setProperty("value", str(m_str)) 
+                    self.lcdNumber.setProperty("value", str(m_str*1000)) 
                     self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                     self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
                     self.status="FIRST"
@@ -1163,7 +1165,7 @@ class fci_03_Ui_MainWindow(object):
                 self.label_37.setText(str(mode))
                 m_str=float(float(self.lineEdit_4.text())/1000) 
                 self.label_40.setText('{:06.3f}'.format(m_str))
-                self.lcdNumber.setProperty("value", str(m_str)) 
+                self.lcdNumber.setProperty("value", str(m_str*1000)) 
                 self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                 self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
                 self.net_wt_calc()
@@ -1192,13 +1194,16 @@ class fci_03_Ui_MainWindow(object):
     def mannual_onclick(self):
         self.manual_ins_flg="(*)"
         #print("insidde mannual :"+str(self.radioButton_2.isChecked()))
+        print("self.slip_type: "+str(self.slip_type))
         if(self.radioButton_2.isChecked()):
             if(self.slip_type=="NEW"):
                 self.groupBox_2.hide()
                 self.groupBox.show() 
             elif(self.slip_type=="OLD"):
                 self.groupBox_2.show()
-                self.groupBox.hide()            
+                self.groupBox.hide()
+            else:
+                print("ERRO")
         else:            
             self.groupBox.hide()
             self.groupBox_2.hide()
@@ -1221,6 +1226,7 @@ class fci_03_Ui_MainWindow(object):
         results=connection.execute("SELECT OLD_NEW_SLIP_FLAG, GROSS_TARE_FLAG ,OLD_SLIP_NO,LCD_WEIGHT FROM GLOBAL_VAR") 
         for x in results:
             if(str(x[0]) == "NEW"):
+                    self.slip_type="NEW"
                     self.current_value=float(x[3])
                     self.lcdNumber.setProperty("value", float(self.current_value))
                     if(str(x[1]) == "GROSS"):
@@ -1234,7 +1240,7 @@ class fci_03_Ui_MainWindow(object):
                     self.slip_type="OLD"
                     self.current_value=float(x[3])
                     self.lcdNumber.setProperty("value", float(self.current_value))
-                    self.lineEdit.setText(str(x[2]))
+                    self.lineEdit_5.setText(str(x[2]))
                     self.fetch_via_search()
                     if(str(x[1]) == "Gross"):
                         self.tare_wt_onclick()                
@@ -1805,10 +1811,10 @@ class fci_03_Ui_MainWindow(object):
     def validation(self):
         self.goAhead="No"
         if(self.avg_bag_wt > "51.5"):
-                 self.label_56.setText("Please Check the Bags Count (Upper Limit Crossed).")
+                 self.label_56.setText("Please Check the Bags Count.")
                  self.label_56.show()
         elif(self.avg_bag_wt < "45"):
-                  self.label_56.setText("Please Check the Bags Count (Lower Limit Crossed).")
+                  self.label_56.setText("Please Check the Bags Count.")
                   self.label_56.show()
         else:
                 

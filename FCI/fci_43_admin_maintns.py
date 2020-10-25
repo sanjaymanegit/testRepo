@@ -19,14 +19,14 @@ import serial
 class fci_43_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1291, 753)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(0, 170, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 10, 1221, 691))
+        self.frame.setGeometry(QtCore.QRect(40, 30, 1261, 670))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.frame.setFont(font)
@@ -310,6 +310,20 @@ class fci_43_Ui_MainWindow(object):
         self.xstr2=""
         self.xstr4=""
         self.current_value=0
+        self.green_counter=0
+        
+        self.last_value=0
+        self.current_value=0
+        self.enable_buttons_flag="No"
+        self.enable_counter=0
+        self.weighing_crosses_min_wt_lim="No"
+        self.wt_min_limit=0
+        self.wt_max_limit=0      
+        self.c1_count=0
+        
+        self.ld_set=0
+        
+        self.last_display_val=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -349,10 +363,11 @@ class fci_43_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
+        results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT,LD_SET FROM GLOBAL_VAR  ") 
         for x in results:
                self.label_5.setText(str(x[0]))
                self.label_8.setText(str(x[1]))
+               self.ld_set=int(x[2])
         connection.close()
         
         
@@ -419,7 +434,8 @@ class fci_43_Ui_MainWindow(object):
         self.pushButton_12.hide()
         self.pushButton_13.hide()
     
-    def set_zero(self):           
+    def set_zero(self):
+        self.green_counter=15
         try:
                 self.ser = serial.Serial(
                                     port='/dev/ttyAMA0',
@@ -438,6 +454,14 @@ class fci_43_Ui_MainWindow(object):
                 #=============
                 self.label_44.setText("Set Zero Done." )  
                 self.label_44.show()
+                
+                connection = sqlite3.connect("fci.db")
+                with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET C1_COUNT='"+str(self.c1_count)+"'")                    
+                connection.commit();                    
+                connection.close()
+                
         except IOError:
                 print("IO Errors")
                 self.label_44.setText("IO Errors" )  
@@ -477,6 +501,11 @@ class fci_43_Ui_MainWindow(object):
             
     def display_lcd_val(self):               
         #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        if(self.green_counter > 0):
+                self.pushButton_12.setStyleSheet("background-color: rgb(0, 170, 0);")
+                self.green_counter=self.green_counter-1
+        else:
+                self.pushButton_12.setStyleSheet("background-color: rgb(170, 0, 0);")
         if(self.IO_error_flg==0):
             try:
                 self.line = self.ser.readline()
@@ -485,7 +514,8 @@ class fci_43_Ui_MainWindow(object):
                 self.xstr0=str(self.line,'utf-8')
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
-                self.buff=self.xstr2.split("_")                
+                self.buff=self.xstr2.split("_")
+                self.last_value=self.current_value 
                 if(len(self.buff)> 1):
                        # if(str(self.buff[3]) == 'R'): 
                                 self.xstr2=str(self.buff[0])
@@ -495,13 +525,48 @@ class fci_43_Ui_MainWindow(object):
                                     print("Value Error"+str(self.xstr2))
                                     self.xstr4=0                    
                                 try:
-                                    self.current_value=float(int(self.xstr4)/1000)
+                                    #self.current_value=float(int(self.xstr4)/1000)
+                                    if(int(self.ld_set) > 0):
+                                        self.mod_val=0
+                                        self.mod_val=(int(self.xstr4) % int(self.ld_set))
+                                        self.mod_val=int(self.xstr4)-self.mod_val
+                                        self.lcdNumber_2.setProperty("value", str(self.mod_val))
+                                        self.current_value=int(self.mod_val)
+                                    else:
+                                        self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                    
                                 except ValueError:
                                     print("Value Error :"+str(self.xstr4))
                                     self.xstr4=0
                                     self.current_value=0                    
                                 self.lcdNumber.setProperty("value", str(self.buff[1]))
-                                self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                self.c1_count=str(self.buff[1])
+                               # self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                
+                                if(self.enable_buttons_flag=="Yes"):
+                                       self.lcdNumber_2.setStyleSheet("color: rgb(0, 170, 0);\n background-color: rgb(0, 0, 0);")
+                                else:
+                                       self.lcdNumber_2.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
+                                
+                                                                
+                                if(self.last_value==self.current_value):
+                                        self.enable_counter=self.enable_counter+1
+                                        if(self.enable_counter > 15):
+                                             self.enable_buttons_flag="Yes"
+                                             if(int(self.current_value) > int(self.wt_min_limit)):                                                     
+                                                      self.weighing_crosses_min_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_min_wt_lim="No"
+                                             if(int(self.current_value) > int(self.wt_max_limit)):                                                     
+                                                      self.weighing_crosses_max_wt_lim="Yes"
+                                             else:
+                                                      self.weighing_crosses_max_wt_lim="No"
+                                        else:
+                                             
+                                             self.enable_buttons_flag="No"                                            
+                                else:            
+                                        self.enable_buttons_flag="No"
+                                        self.enable_counter=0
                                 
                     
             except IOError:

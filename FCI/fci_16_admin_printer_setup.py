@@ -19,7 +19,7 @@ from cryptography.fernet import Fernet
 class fci_16_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1222, 701)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -111,6 +111,7 @@ class fci_16_Ui_MainWindow(object):
         self.label_8.setObjectName("label_8")
         self.comboBox = QtWidgets.QComboBox(self.groupBox_2)
         self.comboBox.setGeometry(QtCore.QRect(160, 40, 211, 41))
+        self.comboBox.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
