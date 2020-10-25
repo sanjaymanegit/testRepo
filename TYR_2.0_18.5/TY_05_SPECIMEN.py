@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.Qt import QTableWidgetItem
 import sqlite3
 import datetime
@@ -860,18 +861,27 @@ class TY_05_Ui_MainWindow(object):
       
     def c_delete_data(self):
         if(self.label_2.text() != ""):
-            connection = sqlite3.connect("tyr.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("DELETE FROM SPECIMEN_MST WHERE SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()
-            
-            self.label_21.setText("Record Deleted Successfully.")
-           
-            self.label_21.show()
-            
-            self.c_select_all_data()
+            close = QMessageBox()
+            close.setText("Confirm Deleteing Specimen ID : "+str(self.dr_id))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
+            if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM SPECIMEN_MST WHERE SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    
+                    self.label_21.setText("Record Deleted Successfully.")
+                   
+                    self.label_21.show()
+                    
+                    self.c_select_all_data()
+            else:
+                    self.label_21.setText("Canceled Delete..")
+                   
+                    self.label_21.show()
             
          
     def c_select_all_data(self):     

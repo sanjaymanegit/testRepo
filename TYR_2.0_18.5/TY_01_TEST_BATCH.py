@@ -619,6 +619,12 @@ class TY_01_Ui_MainWindow(object):
                     self.label_23.show()
                 elif(int(self.lineEdit_2_1.text() ) > int(self.guage_mm)):
                     self.label_23.setText(" Compressive Length Should not be less than Guage Length ")    
+                    self.label_23.show()                
+                elif(self.lineEdit_1_1.text() == ""):
+                    self.label_23.setText(" Max Load Should not Emplty ")    
+                    self.label_23.show()
+                elif(int(self.lineEdit_1_1.text() ) <=  0):
+                    self.label_23.setText(" Max Load Should not be 0 ")    
                     self.label_23.show()
                 else:
                     self.goAhead="Yes"
