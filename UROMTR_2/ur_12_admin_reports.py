@@ -42,9 +42,14 @@ class ur_12_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1331, 711))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 1331, 725))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(30, 50, 171, 81))
@@ -1105,26 +1110,26 @@ class ur_12_Ui_MainWindow(object):
         d.add(linea_firma)
        
         
-          
-        f3=Table(summary_data)
-        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
-        
-        f4=Table(test_data)
-        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
-        
-        report_gr_img="last_graph.png"        
-        pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
-        
-        
-        Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12)]
-        
-        
-        
-        doc = SimpleDocTemplate('./reports/ur_admin_reports.pdf', rightMargin=10,
-                                leftMargin=30,
-                                topMargin=30,
-                                bottomMargin=20)
-        doc.build(Elements)
+        if(len(summary_data) > 0):
+            f3=Table(summary_data)
+            f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
+            
+            f4=Table(test_data)
+            f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+            
+            report_gr_img="last_graph.png"        
+            pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
+            
+            
+            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12)]
+            
+            
+            
+            doc = SimpleDocTemplate('./reports/ur_admin_reports.pdf', rightMargin=10,
+                                    leftMargin=30,
+                                    topMargin=30,
+                                    bottomMargin=20)
+            doc.build(Elements)
         #print("Done")
 
     def print_file(self):

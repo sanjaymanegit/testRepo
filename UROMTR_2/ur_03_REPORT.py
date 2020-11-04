@@ -44,13 +44,18 @@ class ur_03_Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setEnabled(True)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1341, 711))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 1323, 726))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.frame.setFont(font)
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.graph_id=""
         self.graph_id2=""

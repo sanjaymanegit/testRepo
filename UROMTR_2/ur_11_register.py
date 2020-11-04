@@ -211,7 +211,8 @@ class ur_11_Ui_MainWindow(object):
                self.label_5.show() 
         else:
                self.label_5.setText('Registration is incomplete.')
-               self.label_5.show() 
+               self.label_5.show()
+        connection.close()    
         
     def getserial(self):
         # Extract serial from cpuinfo file

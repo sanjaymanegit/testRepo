@@ -25,9 +25,14 @@ class ur_05_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 0, 1341, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.operation_flg=""
         self.gender=""
@@ -443,6 +448,7 @@ class ur_05_Ui_MainWindow(object):
         self.pushButton_8.setDisabled(True)
         self.pushButton_9.setDisabled(True)
         self.label_3.hide()
+        connection.close() 
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
