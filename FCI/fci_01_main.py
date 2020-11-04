@@ -22,7 +22,8 @@ from fci_05_Issues import fci_05_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_13_admin_submenu import fci_13_Ui_MainWindow
 #from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
-from fci_45_pendings import fci_45_Ui_MainWindow
+from fci_52_shortage import fci_52_Ui_MainWindow
+
 from fci_29_stacks import fci_29_Ui_MainWindow
 
 
@@ -127,7 +128,7 @@ class fci_01_Ui_MainWindow(object):
         self.pushButton_5.setObjectName("pushButton_5")
         
         self.pushButton_5_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5_1.setGeometry(QtCore.QRect(490, 600, 191, 41))
+        self.pushButton_5_1.setGeometry(QtCore.QRect(490, 600, 211, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(14)
@@ -219,7 +220,7 @@ class fci_01_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", " STATUS"))
+        self.pushButton.setText(_translate("MainWindow", " SHORTAGE"))
         self.pushButton_3.setText(_translate("MainWindow", "ADMIN"))
         self.pushButton_4.setText(_translate("MainWindow", "RECIPTS "))
         self.label.setText(_translate("MainWindow", "HI-TECH EQUIPMENT"))
@@ -305,11 +306,26 @@ class fci_01_Ui_MainWindow(object):
        
     
     
-    def open_new_window(self):       
-        self.window = QtWidgets.QMainWindow()
-        self.ui=fci_02_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
+    def open_new_window(self):      
+        
+        serial_no=self.getserial()
+        #print("current serial No : "+str(serial_no))
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("select DEVICE_SERIAL_NO from DAT_MST") 
+        for x in results:
+           #print("Device Serial No :"+str(x[0]))
+           if(serial_no == str(x[0])):
+               self.go_ahead="Yes"
+           else:
+               self.go_ahead="No"
+        connection.close()
+        if(self.go_ahead=="Yes"):
+                self.window = QtWidgets.QMainWindow()
+                self.ui=fci_02_Ui_MainWindow()
+                self.ui.setupUi(self.window)           
+                self.window.show()
+        else:
+           print("Device Invalid :"+str(serial_no))
         
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
@@ -350,11 +366,23 @@ class fci_01_Ui_MainWindow(object):
         
     def open_new_window9(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=fci_45_Ui_MainWindow()
+        self.ui=fci_52_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
-   
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+            
     
 
 if __name__ == "__main__":

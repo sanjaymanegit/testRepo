@@ -26,9 +26,14 @@ class fci_02_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1311, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(10, 30, 251, 51))
@@ -773,7 +778,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_38.setText(_translate("MainWindow", "Required Trucks :"))
         self.lineEdit_11.setText(_translate("MainWindow", "240"))
         self.pushButton_9.setText(_translate("MainWindow", "Return"))
-        self.lineEdit_12.setText(_translate("MainWindow", "B_20200812_01"))
+        self.lineEdit_12.setText(_translate("MainWindow", "00001"))
         '''
         self.comboBox.setItemText(0, _translate("MainWindow", "Contractor -01"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Contractor-02"))

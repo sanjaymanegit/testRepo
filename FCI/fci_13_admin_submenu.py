@@ -24,7 +24,7 @@ class fci_13_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(50, 40, 1261, 651))
+        self.frame.setGeometry(QtCore.QRect(50, 40, 1261, 698))
         self.frame.setStyleSheet("color: rgb(255, 255, 255);")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)

@@ -25,10 +25,15 @@ class fci_18_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1121, 611))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         self.frame.setLayoutDirection(QtCore.Qt.LeftToRight)
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_19 = QtWidgets.QLabel(self.frame)
         self.label_19.setGeometry(QtCore.QRect(40, 40, 451, 51))
@@ -265,12 +270,8 @@ class fci_18_Ui_MainWindow(object):
                                 cursor.execute(" DELETE FROM SLOTS_MST")                        
                                 cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
                                 cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
-                                cursor.execute(" DELETE FROM ISSUE_MST")
-                                
+                                cursor.execute(" DELETE FROM ISSUE_MST")                                
                                 cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('WEIGHT_MST','BATCH_MST','AUDIT_MST','API_LOGS','SLOTS_MST','BATCH_STORAGE_LOSS','ISSUE_QUANTITY_DTLS','ISSUE_MST')")
-                                
-                                
-                              
                                 
                     connection.commit();
                     connection.close()
@@ -281,9 +282,9 @@ class fci_18_Ui_MainWindow(object):
                     connection = sqlite3.connect("services.db")          
                     with connection:        
                                 cursor = connection.cursor()                    
-                                cursor.execute("UPDATE DAT_MST SET BU_PWD='12345' ")
-                                cursor.execute("UPDATE DAT_MST SET SU_PWD='ss12345'")                               
-                                
+                                cursor.execute("UPDATE SERVICES_MST SET PWD='ss12345' WHERE SERVICE_NAME='SERVICE_USER_PWD' ")
+                                cursor.execute("UPDATE SERVICES_MST SET PWD='12345' WHERE SERVICE_NAME='BUSINESS_USER_PWD'")
+                                cursor.execute("UPDATE SERVICES_MST SET PWD='1000' WHERE SERVICE_NAME='CHANGE_PASSWORDS'")                                
                     connection.commit();
                     connection.close()
                     self.label_3.setText("Factory-reset completed successfully.") 
@@ -298,8 +299,8 @@ class fci_18_Ui_MainWindow(object):
                                 cursor.execute("DELETE FROM STORAGE_DETAILS")
                                 cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")
                                 cursor.execute("DELETE FROM CALIBRATION_LOG")
-                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('MATERIAL_TYPES','CONTRACTOR_MST','STORAGE_DETAILS','CALIBRATION_LOG','SLOTS_MST','BATCH_STORAGE_LOSS','ISSUE_QUANTITY_DTLS','ISSUE_MST')")
-                                
+                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('MATERIAL_TYPES','CONTRACTOR_MST','STORAGE_DETAILS','CALIBRATION_LOG')")
+                                cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=2 WHERE name in ('USERS_MST')")
                     connection.commit();
                     connection.close()
                     self.label_3.setText("Factory-reset completed successfully.") 

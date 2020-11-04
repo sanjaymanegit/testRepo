@@ -23,9 +23,14 @@ class fci_23_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1191, 611))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 1191, 639))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(50, 210, 1101, 371))

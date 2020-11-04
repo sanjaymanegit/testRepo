@@ -723,7 +723,7 @@ class fci_41_Ui_MainWindow(object):
             self.label_29.setText(str(x[2]))         
             self.label_30.setText(str(x[4])[0:11])
             self.label_31.setText(str(x[4])[11:16])
-            self.label_32.setText('{:06.3f}'.format(x[3]))
+            self.label_32.setText(str(x[3]))
          
             # Vehical No
             self.lineEdit_2.setText(str(x[5]))
@@ -732,10 +732,10 @@ class fci_41_Ui_MainWindow(object):
             self.label_67.setText(str(x[6]))           
             self.label_66.setText(str(x[8])[0:11])            
             self.label_68.setText(str(x[8])[11:16])
-            self.label_65.setText('{:06.3f}'.format(x[7]))
+            self.label_65.setText(str(x[7]))
            
             #Net Wt
-            self.label_74.setText('{:06.3f}'.format(x[9]))
+            self.label_74.setText(str(x[9]))
             #Driver
             self.label_69.setText(str(x[12]))
             #Truck current count            
@@ -804,13 +804,13 @@ class fci_41_Ui_MainWindow(object):
         connection.commit();
         connection.close()   
         
-        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        data= [['           Weight Type         ','          Date           ','        Weight (Kg)          ']]
         
         connection = sqlite3.connect("fci.db")       
         print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         
-        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT printf(\"%6d\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%6d\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         for x in results:
             self.tare_wt=str(x[0])

@@ -25,10 +25,15 @@ class fci_16_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1121, 621))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         self.frame.setLayoutDirection(QtCore.Qt.LeftToRight)
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_19 = QtWidgets.QLabel(self.frame)
         self.label_19.setGeometry(QtCore.QRect(20, 10, 221, 51))

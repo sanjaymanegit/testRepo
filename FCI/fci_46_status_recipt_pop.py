@@ -159,9 +159,9 @@ class fci_46_Ui_MainWindow(object):
            
         connection = sqlite3.connect("fci.db")
         if(self.status == "PENDING"):
-                results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%03d\", IFNULL(PROPOSED_BAGS,0)),printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='BATCH'  and status='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+                results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%03d\", IFNULL(PROPOSED_BAGS,0)),printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='BATCH'  and status='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         else:
-                results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%03d\", IFNULL(PROPOSED_BAGS,0)),printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='BATCH'  and STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
+                results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%03d\", IFNULL(PROPOSED_BAGS,0)),printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='BATCH'  and STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

@@ -274,7 +274,7 @@ class fci_43_Ui_MainWindow(object):
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_13.setGeometry(QtCore.QRect(890, 590, 171, 51))
+        self.pushButton_13.setGeometry(QtCore.QRect(890, 550, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -317,11 +317,13 @@ class fci_43_Ui_MainWindow(object):
         self.enable_buttons_flag="No"
         self.enable_counter=0
         self.weighing_crosses_min_wt_lim="No"
+        self.weighing_crosses_max_wt_lim="No"
         self.wt_min_limit=0
         self.wt_max_limit=0      
         self.c1_count=0
         
         self.ld_set=0
+        self.mod_val=0
         
         self.last_display_val=""
 
@@ -363,11 +365,13 @@ class fci_43_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT,LD_SET FROM GLOBAL_VAR  ") 
+        results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT,LD_SET,IFNULL(OFF_POSITION_SET,0),(IFNULL(CAPACITY_SET,0)*1000) FROM GLOBAL_VAR  ") 
         for x in results:
                self.label_5.setText(str(x[0]))
-               self.label_8.setText(str(x[1]))
+               self.label_8.setText(str(x[1][0:17]))
                self.ld_set=int(x[2])
+               self.wt_min_limit=int(x[3])
+               self.wt_max_limit=int(x[4])
         connection.close()
         
         
@@ -452,6 +456,7 @@ class fci_43_Ui_MainWindow(object):
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
                 #=============
+                self.groupBox_7.show()
                 self.label_44.setText("Set Zero Done." )  
                 self.label_44.show()
                 
@@ -461,6 +466,7 @@ class fci_43_Ui_MainWindow(object):
                     cursor.execute("UPDATE GLOBAL_VAR SET C1_COUNT='"+str(self.c1_count)+"'")                    
                 connection.commit();                    
                 connection.close()
+                self.log_audit("Maintaince"," Set Zero Done By Service Engineer.")
                 
         except IOError:
                 print("IO Errors")
@@ -503,6 +509,7 @@ class fci_43_Ui_MainWindow(object):
         #print(" inside display_lcd_val:"+str(self.IO_error_flg))
         if(self.green_counter > 0):
                 self.pushButton_12.setStyleSheet("background-color: rgb(0, 170, 0);")
+                self.lcdNumber_2.setStyleSheet("color: rgb(255, 255, 0);\n background-color: rgb(0, 0, 0);")               
                 self.green_counter=self.green_counter-1
         else:
                 self.pushButton_12.setStyleSheet("background-color: rgb(170, 0, 0);")
@@ -530,8 +537,22 @@ class fci_43_Ui_MainWindow(object):
                                         self.mod_val=0
                                         self.mod_val=(int(self.xstr4) % int(self.ld_set))
                                         self.mod_val=int(self.xstr4)-self.mod_val
-                                        self.lcdNumber_2.setProperty("value", str(self.mod_val))
-                                        self.current_value=int(self.mod_val)
+                                        #print("min :"+str(self.weighing_crosses_min_wt_lim)+" current val :"+str(self.current_value)+" min_wt_lim:"+str(self.wt_min_limit))
+                                        #print("max :"+str(self.weighing_crosses_max_wt_lim))                                
+                                        if(self.weighing_crosses_min_wt_lim=="No"):
+                                                self.lcdNumber_2.setProperty("value", "0")
+                                                #self.lcdNumber.display("0")
+                                                self.current_value=int(self.mod_val)
+                                        elif(self.weighing_crosses_max_wt_lim=="Yes"):    
+                                                self.lcdNumber_2.setProperty("value", "-1")
+                                                self.lcdNumber_2.display("SORRY")
+                                                self.current_value=int(self.mod_val)
+                                        else:
+                                                self.lcdNumber_2.setProperty("value", str(self.mod_val))                                                
+                                                self.current_value=int(self.mod_val)
+                                        
+                                        #self.lcdNumber_2.setProperty("value", str(self.mod_val))
+                                        #self.current_value=int(self.mod_val)
                                     else:
                                         self.lcdNumber_2.setProperty("value", str(self.xstr4))
                                     
@@ -539,6 +560,7 @@ class fci_43_Ui_MainWindow(object):
                                     print("Value Error :"+str(self.xstr4))
                                     self.xstr4=0
                                     self.current_value=0                    
+                                
                                 self.lcdNumber.setProperty("value", str(self.buff[1]))
                                 self.c1_count=str(self.buff[1])
                                # self.lcdNumber_2.setProperty("value", str(self.xstr4))
@@ -548,21 +570,23 @@ class fci_43_Ui_MainWindow(object):
                                 else:
                                        self.lcdNumber_2.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
                                 
+                                if(int(self.current_value) > int(self.wt_min_limit)):                                                     
+                                          self.weighing_crosses_min_wt_lim="Yes"
+                                else:
+                                          self.weighing_crosses_min_wt_lim="No"
+                                
+                                if(int(self.current_value) > int(self.wt_max_limit)):                                                     
+                                          self.weighing_crosses_max_wt_lim="Yes"
+                                else:
+                                          self.weighing_crosses_max_wt_lim="No"
+                                
+                                #print("enable_buttons_flag :"+str(self.enable_buttons_flag)+" self.last_value :"+str(self.last_value)+" self.current_value :"+str(self.current_value))
                                                                 
                                 if(self.last_value==self.current_value):
                                         self.enable_counter=self.enable_counter+1
                                         if(self.enable_counter > 15):
-                                             self.enable_buttons_flag="Yes"
-                                             if(int(self.current_value) > int(self.wt_min_limit)):                                                     
-                                                      self.weighing_crosses_min_wt_lim="Yes"
-                                             else:
-                                                      self.weighing_crosses_min_wt_lim="No"
-                                             if(int(self.current_value) > int(self.wt_max_limit)):                                                     
-                                                      self.weighing_crosses_max_wt_lim="Yes"
-                                             else:
-                                                      self.weighing_crosses_max_wt_lim="No"
-                                        else:
-                                             
+                                             self.enable_buttons_flag="Yes"                                             
+                                        else:                                             
                                              self.enable_buttons_flag="No"                                            
                                 else:            
                                         self.enable_buttons_flag="No"
@@ -586,6 +610,15 @@ class fci_43_Ui_MainWindow(object):
         self.ui=fci_37_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
 
 
 if __name__ == "__main__":

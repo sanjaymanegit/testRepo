@@ -23,9 +23,14 @@ class fci_30_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 731, 321))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 721, 321))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
         self.pushButton_9.setGeometry(QtCore.QRect(570, 20, 91, 41))
@@ -131,10 +136,10 @@ class fci_30_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 150) 
     
-        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Recipt Id','Vehicle No.','Material','No.Of.Bags','Net.Wt.Ton','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Slip No.','Recipt Id','Vehicle No.','Material','No.Of.Bags','Net.Wt.','Created On'])        
            
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,round(PROPOSED_BAGS),round(NET_WEIGHT_VAL,3),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
+        results=connection.execute("select SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,IFNULL(PROPOSED_BAGS,0),IFNULL(NET_WEIGHT_VAL,0),CREATED_ON FROM WEIGHT_MST WHERE ISSUE_ID IS NULL AND SLOT_1 IN (SELECT SLOT_POP_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

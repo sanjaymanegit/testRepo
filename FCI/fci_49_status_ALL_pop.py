@@ -170,9 +170,9 @@ class fci_49_Ui_MainWindow(object):
          
         connection = sqlite3.connect("fci.db")
         if(self.status == "PENDING"):
-                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG  ,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG  ,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         else:
-                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%.3f\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+                results=connection.execute("select SERIAL_ID,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,BATCH_ID,ISSUE_ID,PARTY_NAME,VEHICLE_NO,FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST WHERE  STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

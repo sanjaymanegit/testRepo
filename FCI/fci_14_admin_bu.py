@@ -24,9 +24,14 @@ class fci_14_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1311, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(40, 60, 201, 61))
@@ -163,7 +168,7 @@ class fci_14_Ui_MainWindow(object):
     
     def show_page(self):
         connection = sqlite3.connect("services.db")
-        results=connection.execute("select BU_PWD FROM DAT_MST")       
+        results=connection.execute("select PWD FROM SERVICES_MST WHERE SERVICE_NAME='BUSINESS_USER_PWD'")       
         for x in results:        
               self.password_str=str(x[0])
         connection.close()

@@ -21,9 +21,14 @@ class fci_21_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 10, 1341, 711))
+        self.frame.setGeometry(QtCore.QRect(20, 30, 1341, 711))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(20, 30, 851, 271))
@@ -500,6 +505,7 @@ class fci_21_Ui_MainWindow(object):
         self.tableWidget_4.setSortingEnabled(__sortingEnabled)
         
         self.pushButton_9.clicked.connect(MainWindow.close)
+        
         self.startx()
         
     def startx(self):
@@ -560,7 +566,8 @@ class fci_21_Ui_MainWindow(object):
         self.pushButton_3.setDisabled(True) #delete           
         self.pushButton_4.setEnabled(True) #reset
         self.label_2.hide()
-        self.m_select_all_data()        
+        self.m_select_all_data()
+        self.lineEdit_12.setText("00001")
   
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'MATERIAL_TYPES'")       
@@ -712,7 +719,8 @@ class fci_21_Ui_MainWindow(object):
         self.pushButton_7.setDisabled(True) #delete           
         self.pushButton_8.setEnabled(True) #reset
         self.label_2.hide()
-        self.c_select_all_data()        
+        self.c_select_all_data()
+        self.lineEdit_15.setText("00001")
   
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'CONTRACTOR_MST'")       
@@ -862,8 +870,8 @@ class fci_21_Ui_MainWindow(object):
         self.pushButton_16.setDisabled(True) #delete           
         self.pushButton_17.setEnabled(True) #reset
         self.label_2.hide()
-        self.s_select_all_data()        
-  
+        self.s_select_all_data()
+        self.lineEdit_21.setText("00001")  
         connection = sqlite3.connect("fci.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'STORAGE_DETAILS'")       
         for x in results:           

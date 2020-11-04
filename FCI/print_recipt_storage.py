@@ -108,7 +108,7 @@ def dot_matrix_print():
         printer.text("Material     : "+str(material)+"                         \n\r")        
            
         printer.text("|------------------------------------------------------------- \n\r")
-        printer.text("| Weight Type     |    Weight (t)  |     Date \n\r")
+        printer.text("| Weight Type     |    Weight (Kg)  |     Date \n\r")
         printer.text("|-------------------------------------------------------------\n\r")
         printer.text("| Tare Wt.        |     "+str(tare_wt).zfill(6)+"      |  "+str(tare_wt_dt)+"  \n\r")
         printer.text("|------------------------------------------------------------\n\r")

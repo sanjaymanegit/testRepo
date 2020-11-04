@@ -436,7 +436,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_40.setObjectName("label_40")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber.setGeometry(QtCore.QRect(30, 50, 361, 121))
+        self.lcdNumber.setGeometry(QtCore.QRect(17, 50, 361, 121))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
         self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -968,6 +968,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "Serial.No:"))
         self.label_19.setText(_translate("MainWindow", "00001"))
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
+        self.pushButton_9.setDisabled(True)
         self.label_14.setText(_translate("MainWindow", "Vehical.No :"))
         self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
         
@@ -984,7 +985,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "First Wt. Type :"))
         self.label_26.setText(_translate("MainWindow", "First Wt. Date :"))
         self.label_27.setText(_translate("MainWindow", "First Wt. Time :"))
-        self.label_28.setText(_translate("MainWindow", "First Weight(t)  :"))
+        self.label_28.setText(_translate("MainWindow", "First Weight   :"))
         self.label_29.setText(_translate("MainWindow", "Gross"))
         self.label_30.setText(_translate("MainWindow", "05 Aug 2020"))
         self.label_31.setText(_translate("MainWindow", "09:45"))
@@ -992,7 +993,7 @@ class fci_03_Ui_MainWindow(object):
         self.label_33.setText(_translate("MainWindow", "Second Wt. Type :"))
         self.label_34.setText(_translate("MainWindow", "Second Wt. Date :"))
         self.label_35.setText(_translate("MainWindow", "Second Wt. Time :"))
-        self.label_36.setText(_translate("MainWindow", "Second Weight(t)  :"))
+        self.label_36.setText(_translate("MainWindow", "Second Weight   :"))
         self.label_37.setText(_translate("MainWindow", "Tare"))
         self.label_38.setText(_translate("MainWindow", "05 Aug 2020"))
         self.label_39.setText(_translate("MainWindow", "14:30"))
@@ -1030,9 +1031,11 @@ class fci_03_Ui_MainWindow(object):
         self.radioButton_5.setText(_translate("MainWindow", "Gross"))
         self.radioButton_5.setChecked(True)
         self.radioButton_6.setText(_translate("MainWindow", "Tare"))
+        self.radioButton_6.hide()
         self.pushButton_10.setText(_translate("MainWindow", "Update"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Second Wt - Manual"))
         self.radioButton_7.setText(_translate("MainWindow", "Gross"))
+        self.radioButton_7.hide()
         self.radioButton_8.setText(_translate("MainWindow", "Tare"))
         self.radioButton_8.setChecked(True)
         self.pushButton_12.setText(_translate("MainWindow", "Update"))
@@ -1126,7 +1129,7 @@ class fci_03_Ui_MainWindow(object):
             if(int(self.lineEdit_3.text()) > 0):
                     if(float(self.label_45.text()) > 0.0 ):
                              bags=int(self.lineEdit_3.text())
-                             net_wt=float(self.label_45.text())*1000
+                             net_wt=float(self.label_45.text())
                              avg_bag_wt=float(net_wt/bags)
                              self.label_53.setText(str(round(avg_bag_wt)))
                              self.label_50.setText(str(bags))
@@ -1146,9 +1149,9 @@ class fci_03_Ui_MainWindow(object):
         if(mode != self.label_37.text()):
             if(self.lineEdit.text() != ""):
                     self.label_29.setText(str(mode))
-                    m_str=float(float(self.lineEdit.text())/1000)                
-                    self.label_32.setText('{:06.3f}'.format(m_str))
-                    self.lcdNumber.setProperty("value", str(m_str*1000)) 
+                    m_str=self.lineEdit.text()               
+                    self.label_32.setText(str(m_str))
+                    self.lcdNumber.setProperty("value", str(m_str)) 
                     self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                     self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
                     self.status="FIRST"
@@ -1163,9 +1166,9 @@ class fci_03_Ui_MainWindow(object):
         if(mode != self.label_29.text()):
             if(self.lineEdit_4.text() != ""):
                 self.label_37.setText(str(mode))
-                m_str=float(float(self.lineEdit_4.text())/1000) 
-                self.label_40.setText('{:06.3f}'.format(m_str))
-                self.lcdNumber.setProperty("value", str(m_str*1000)) 
+                m_str=self.lineEdit_4.text()
+                self.label_40.setText(str(m_str))
+                self.lcdNumber.setProperty("value", str(m_str)) 
                 self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                 self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
                 self.net_wt_calc()
@@ -1227,8 +1230,8 @@ class fci_03_Ui_MainWindow(object):
         for x in results:
             if(str(x[0]) == "NEW"):
                     self.slip_type="NEW"
-                    self.current_value=float(x[3])
-                    self.lcdNumber.setProperty("value", float(self.current_value))
+                    self.current_value=str(x[3])
+                    self.lcdNumber.setProperty("value", str(self.current_value))
                     if(str(x[1]) == "GROSS"):
                         self.gross_wt_onclick()                
                     elif(str(x[1]) == "TARE"):
@@ -1238,8 +1241,8 @@ class fci_03_Ui_MainWindow(object):
                          
             elif(str(x[0]) == "OLD"):
                     self.slip_type="OLD"
-                    self.current_value=float(x[3])
-                    self.lcdNumber.setProperty("value", float(self.current_value))
+                    self.current_value=str(x[3])
+                    self.lcdNumber.setProperty("value", str(self.current_value))
                     self.lineEdit_5.setText(str(x[2]))
                     self.fetch_via_search()
                     if(str(x[1]) == "Gross"):
@@ -1429,14 +1432,14 @@ class fci_03_Ui_MainWindow(object):
                self.label_29.setText("Gross")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText('{:06.3f}'.format(self.current_value))
+               self.label_32.setText(str(self.current_value))
                #self.label_32.setText(str("200"))
                
         else:     
                self.label_37.setText("Gross")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText('{:06.3f}'.format(self.current_value))
+               self.label_40.setText(str(self.current_value))
                #self.label_40.setText(str("200"))
                        
         self.net_wt_calc()
@@ -1450,14 +1453,14 @@ class fci_03_Ui_MainWindow(object):
                self.label_29.setText("Tare")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText('{:06.3f}'.format(self.current_value))
+               self.label_32.setText(str(self.current_value))
                #self.label_32.setText(str("80"))
                
         else:     
                self.label_37.setText("Tare")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText('{:06.3f}'.format(self.current_value))
+               self.label_40.setText(str(self.current_value))
                #self.label_40.setText(str("80"))
                        
         self.net_wt_calc()
@@ -1469,12 +1472,12 @@ class fci_03_Ui_MainWindow(object):
         self.second_wt=str(self.label_40.text())
         if(float(self.first_wt) > 0 and float(self.second_wt) > 0):            
                 if(float(self.first_wt) >= float(self.second_wt)):            
-                      self.net_wt=(float(self.first_wt)-float(self.second_wt))             
-                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
+                      self.net_wt=int(float(self.first_wt)-float(self.second_wt))             
+                      self.label_45.setText(str(self.net_wt))
                 else:
-                      self.net_wt=(float(self.second_wt)-float(self.first_wt))             
-                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
-                accepted_bags=float(self.net_wt)*1000/50
+                      self.net_wt=int(float(self.second_wt)-float(self.first_wt))             
+                      self.label_45.setText(str(self.net_wt))
+                accepted_bags=float(self.net_wt)/50
                 self.label_50.setText(str(accepted_bags))
                 self.lineEdit_3.setEnabled(True)
                 self.avg_bags_wt_calc()
@@ -1482,21 +1485,27 @@ class fci_03_Ui_MainWindow(object):
     def load_1st_wt_vehicles(self):
         self.listWidget_3.clear()
         connection = sqlite3.connect("fci.db")
-        print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+str(self.batch_id)+"'")       
+        #Print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+str(self.batch_id)+"'")       
         
         results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and batch_id='"+str(self.batch_id)+"'")       
-        for x in results:        
-               self.listWidget_3.addItem(str(x[0]))
+        for x in results:
+               item= QtWidgets.QListWidgetItem(str(x[0]))
+               item.setBackground(QtGui.QColor("light blue"))
+               self.listWidget_3.addItem(item)
+               #self.listWidget_3.addItem(str(x[0]))
         connection.close() 
     
     def load_2nd_wt_vehicles(self):
         self.listWidget_2.clear()
         connection = sqlite3.connect("fci.db")
-        print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+str(self.batch_id)+"'")       
+        #print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+str(self.batch_id)+"'")       
         
         results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='SECOND' and batch_id='"+str(self.batch_id)+"'")       
-        for x in results:        
-               self.listWidget_2.addItem(str(x[0]))
+        for x in results:
+               item= QtWidgets.QListWidgetItem(str(x[0]))
+               item.setBackground(QtGui.QColor("light blue"))
+               self.listWidget_2.addItem(item)
+               #self.listWidget_2.addItem(str(x[0]))
         connection.close()
         
     def print_recipt(self):
@@ -1567,7 +1576,7 @@ class fci_03_Ui_MainWindow(object):
             self.label_29.setText(str(x[2]))         
             self.label_30.setText(str(x[4])[0:11])
             self.label_31.setText(str(x[4])[11:16])
-            self.label_32.setText('{:06.3f}'.format(x[3]))
+            self.label_32.setText(str(x[3]))
          
             # Vehical No
             self.lineEdit_2.setText(str(x[5]))
@@ -1579,7 +1588,7 @@ class fci_03_Ui_MainWindow(object):
                    self.label_39.setText("--:--")
             else:
                    self.label_39.setText(str(x[8])[11:16])
-            self.label_40.setText('{:06.3f}'.format(x[7]))
+            self.label_40.setText(str(x[7]))
             
             #Net Wt
             self.label_45.setText("0")
@@ -1796,7 +1805,7 @@ class fci_03_Ui_MainWindow(object):
                                  self.label_56.setText("Weight FIRST /SECOND ?.")
                                  self.label_56.show()
                       else:
-                             self.label_56.setText("Batch Id Should Not Empty.")
+                             self.label_56.setText("Recipt Id Should Not Empty.")
                              self.label_56.show()
                      
                  #else:
@@ -1845,13 +1854,13 @@ class fci_03_Ui_MainWindow(object):
         connection.commit();
         connection.close()   
         
-        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        data= [['           Weight Type         ','          Date           ','        Weight (Kg)          ']]
         
         connection = sqlite3.connect("fci.db")       
         print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         
-        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT printf(\"%6d\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%6d\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         for x in results:
             self.tare_wt=str(x[0])
@@ -1897,7 +1906,7 @@ class fci_03_Ui_MainWindow(object):
                 
         for x in results:
                 c.setFont('Helvetica',10)
-                c.drawString(50,740,"Serial ID        : "+str(x[0]))
+                c.drawString(50,740,"Serial No        : "+str(x[0]))
                 c.drawString(250,740,"Vehicle No      : "+str(x[1]))
                 
                 c.drawString(50,710,"Recipt.Id.       : "+str(x[5]))
@@ -1933,12 +1942,7 @@ class fci_03_Ui_MainWindow(object):
         c.showPage()
         c.save()  
         
-                        
-    
-    
-         
-    
-     
+   
      
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")

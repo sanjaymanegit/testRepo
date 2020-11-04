@@ -507,13 +507,14 @@ class fci_35_Ui_MainWindow(object):
         self.enable_buttons_flag="No"
         self.enable_counter=0
         self.weighing_crosses_min_wt_lim="No"
+        self.weighing_crosses_max_wt_lim="No"
         self.wt_min_limit=0
         self.wt_max_limit=0      
        
         
         self.last_display_val=""
         self.ld_set=0
-       
+        self.mod_val=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -606,14 +607,16 @@ class fci_35_Ui_MainWindow(object):
     
     def load_data(self):       
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT LD_SET,CAPACITY_SET,OFF_POSITION_SET,FLAG_SET,K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
+        results=connection.execute("SELECT LD_SET,(CAPACITY_SET*1000),OFF_POSITION_SET,FLAG_SET,K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
         for x in results:
                self.ld_set=int(x[0])
+               self.wt_min_limit=int(x[2])
+               self.wt_max_limit=int(x[1])               
                self.comboBox_2.setCurrentText(str(x[0]))
                self.comboBox.setCurrentText(str(x[1]))
                self.comboBox_3.setCurrentText(str(x[2]))
                self.label_8.setText(str(x[4]))
-               self.label_10.setText(str(x[5]))               
+               self.label_10.setText(str(x[5][0:17]))               
                if(str(x[3]) == "Yes"):
                    self.radioButton.setEnabled(True)
                    self.radioButton_2.setDisabled(True)                   
@@ -758,8 +761,9 @@ class fci_35_Ui_MainWindow(object):
                     connection = sqlite3.connect("fci.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR='"+str(self.k_factor)+"',LAST_CALIBRATION_DT='"+str(self.label_10.text())+"',C2_COUNT='"+str(self.count_value)+"'")                    
-                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR=((C2_COUNT-C1_COUNT)/CALIBRATION_LOAD_SET)")                    
+                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR='"+str(self.k_factor)+"',LAST_CALIBRATION_DT='"+str(self.label_20.text())+"',C2_COUNT='"+str(self.count_value)+"'")                    
+                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR=((C2_COUNT-C1_COUNT)/CALIBRATION_LOAD_SET)")
+                            cursor.execute("UPDATE GLOBAL_VAR SET K_FACTOR=(K_FACTOR*(-1)) WHERE K_FACTOR < 0")  
                     
                     connection.commit();                    
                     connection.close()
@@ -767,7 +771,7 @@ class fci_35_Ui_MainWindow(object):
                     results=connection.execute("SELECT K_FACTOR,LAST_CALIBRATION_DT FROM GLOBAL_VAR  ") 
                     for x in results:
                             self.label_8.setText(str(x[0]))
-                            self.label_10.setText(str(x[1]))
+                            self.label_10.setText(str(x[1][0:17]))
                     connection.close()
                     
                 else:
@@ -886,8 +890,22 @@ class fci_35_Ui_MainWindow(object):
                                         self.mod_val=0
                                         self.mod_val=(int(self.xstr4) % int(self.ld_set))
                                         self.mod_val=int(self.xstr4)-self.mod_val
-                                        self.lcdNumber_2.setProperty("value", str(self.mod_val))
-                                        self.current_value=int(self.mod_val)
+                                        print("min :"+str(self.weighing_crosses_min_wt_lim)+" current val :"+str(self.current_value)+" min_wt_lim:"+str(self.wt_min_limit))
+                                        print("max :"+str(self.weighing_crosses_max_wt_lim))                                
+                                        if(self.weighing_crosses_min_wt_lim=="No"):
+                                                self.lcdNumber_2.setProperty("value", "0")
+                                                #self.lcdNumber.display("0")
+                                                self.current_value=int(self.mod_val)
+                                        elif(self.weighing_crosses_max_wt_lim=="Yes"):    
+                                                self.lcdNumber_2.setProperty("value", "-1")
+                                                self.lcdNumber_2.display("SORRY")
+                                                self.current_value=int(self.mod_val)
+                                        else:
+                                                self.lcdNumber_2.setProperty("value", str(self.mod_val))                                                
+                                                self.current_value=int(self.mod_val)
+                                        
+                                        #self.lcdNumber_2.setProperty("value", str(self.mod_val))
+                                        #self.current_value=int(self.mod_val)
                                     else:
                                         self.lcdNumber_2.setProperty("value", str(self.xstr4))
                                     
@@ -905,21 +923,24 @@ class fci_35_Ui_MainWindow(object):
                                 else:
                                        self.lcdNumber_2.setStyleSheet("color: rgb(255, 0, 0);\n background-color: rgb(0, 0, 0);")
                                 
-                                                                
+                                if(int(self.current_value) > int(self.wt_min_limit)):                                                     
+                                          self.weighing_crosses_min_wt_lim="Yes"
+                                else:
+                                          self.weighing_crosses_min_wt_lim="No"
+                                
+                                if(int(self.current_value) > int(self.wt_max_limit)):                                                     
+                                          self.weighing_crosses_max_wt_lim="Yes"
+                                else:
+                                          self.weighing_crosses_max_wt_lim="No"
+                                
+                                #print("enable_buttons_flag :"+str(self.enable_buttons_flag)+" self.last_value :"+str(self.last_value)+" self.current_value :"+str(self.current_value))
+                                                      
+                                                      
                                 if(self.last_value==self.current_value):
                                         self.enable_counter=self.enable_counter+1
                                         if(self.enable_counter > 15):
-                                             self.enable_buttons_flag="Yes"
-                                             if(int(self.current_value) > int(self.wt_min_limit)):                                                     
-                                                      self.weighing_crosses_min_wt_lim="Yes"
-                                             else:
-                                                      self.weighing_crosses_min_wt_lim="No"
-                                             if(int(self.current_value) > int(self.wt_max_limit)):                                                     
-                                                      self.weighing_crosses_max_wt_lim="Yes"
-                                             else:
-                                                      self.weighing_crosses_max_wt_lim="No"
-                                        else:
-                                             
+                                             self.enable_buttons_flag="Yes"                                             
+                                        else:                                             
                                              self.enable_buttons_flag="No"                                            
                                 else:            
                                         self.enable_buttons_flag="No"

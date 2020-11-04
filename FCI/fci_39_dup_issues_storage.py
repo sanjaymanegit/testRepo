@@ -28,7 +28,7 @@ class fci_39_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1038, 717)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
-        MainWindow.setStyleSheet("background-color: rgb(110,221,17);")
+        MainWindow.setStyleSheet("background-color: rgb(110,221,170);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -799,7 +799,7 @@ class fci_39_Ui_MainWindow(object):
             self.label_29.setText(str(x[2]))         
             self.label_30.setText(str(x[4])[0:11])
             self.label_31.setText(str(x[4])[11:16])
-            self.label_32.setText('{:06.3f}'.format(x[3]))
+            self.label_32.setText(str(x[3]))
          
             # Vehical No
             self.lineEdit_2.setText(str(x[5]))
@@ -808,10 +808,10 @@ class fci_39_Ui_MainWindow(object):
             self.label_67.setText(str(x[6]))           
             self.label_66.setText(str(x[8])[0:11])            
             self.label_68.setText(str(x[8])[11:16])
-            self.label_65.setText('{:06.3f}'.format(x[7]))
+            self.label_65.setText(str(x[7]))
            
             #Net Wt
-            self.label_74.setText('{:06.3f}'.format(x[9]))
+            self.label_74.setText(str(x[9]))
             #Driver
             self.label_69.setText(str(x[12]))
             #Truck current count            
@@ -888,13 +888,13 @@ class fci_39_Ui_MainWindow(object):
         connection.commit();
         connection.close()   
         
-        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        data= [['           Weight Type         ','          Date           ','        Weight (Kg)          ']]
         
         connection = sqlite3.connect("fci.db")       
         print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         
-        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT printf(\"%6d\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%6d\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         for x in results:
             self.tare_wt=str(x[0])
@@ -936,7 +936,7 @@ class fci_39_Ui_MainWindow(object):
         c.line( 0.5*inch, PAGE_HEIGHT-( 0.45*inch ), PAGE_WIDTH-( 0.5*inch ), PAGE_HEIGHT-( 0.45*inch ) )
         ###################################################
         connection = sqlite3.connect("fci.db")       
-        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,ACCPTED_BAGS,MATERIAL_NAME,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) AS ORDER_ID ,(CURR_TRUCK_CNT||'/'||TOTAL_TRUCKS_CNT) as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,ACCPTED_BAGS,MATERIAL_NAME,(SELECT A.ORDER_ID FROM ISSUE_MST A WHERE A.ISSUE_ID=ISSUE_ID) AS ORDER_ID ,CURR_TRUCK_CNT as TRUCK_NUM FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                 
         for x in results:
                 c.setFont('Helvetica',10)
@@ -944,7 +944,7 @@ class fci_39_Ui_MainWindow(object):
                 c.drawString(250,740,"Vehicle No      : "+str(x[1]))
                 
                 c.drawString(50,710,"Order.Id.       : "+str(x[5]))
-                c.drawString(250,710,"Truck.Sr.No.       : "+str(x[6]))
+                c.drawString(250,710,"Site.Serial.No.       : "+str(x[6]))
                 
                 c.drawString(50,680,"Total Bags    : "+str(x[3]))
                 c.drawString(250,680,"Batch.Id    : "+str(x[2]).zfill(4))

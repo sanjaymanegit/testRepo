@@ -25,9 +25,14 @@ class fci_25_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1311, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1311, 711))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
         self.label_20.setGeometry(QtCore.QRect(1130, 10, 161, 31))
@@ -611,11 +616,11 @@ class fci_25_Ui_MainWindow(object):
         self.label_29.setText(_translate("MainWindow", "Accpted Bags:"))
         self.label_30.setText(_translate("MainWindow", "Contractor Name:"))
         self.label_31.setText(_translate("MainWindow", "Target Location :"))
-        self.label_32.setText(_translate("MainWindow", "00045"))
+        self.label_32.setText(_translate("MainWindow", "00001"))
         self.label_41.setText(_translate("MainWindow", "Net.Wt.Ton.:"))
         self.label_42.setText(_translate("MainWindow", "0"))
         self.label_43.setText(_translate("MainWindow", "Truck Sr.No:"))
-        self.label_44.setText(_translate("MainWindow", "0005"))
+        self.label_44.setText(_translate("MainWindow", "0000"))
         self.label_45.setText(_translate("MainWindow", "Total Trucks :"))
         self.label_46.setText(_translate("MainWindow", "0"))
         self.pushButton_10.setText(_translate("MainWindow", "Delete"))
@@ -675,12 +680,12 @@ class fci_25_Ui_MainWindow(object):
     def net_wt_calc(self):
         #print("xxx :"+str(float(self.lineEdit_11.text())))
         if(float(self.lineEdit_11.text()) > 0 ):        
-               self.net_wt=float(self.lineEdit_11.text()) - float(self.lineEdit_9.text())
+               self.net_wt=int(self.lineEdit_11.text()) - int(self.lineEdit_9.text())
                if(float(self.net_wt) < 0 ):
-                       self.net_wt=float(self.net_wt)*(-1)
+                       self.net_wt=int(self.net_wt)*(-1)
                self.label_42.setText(str(round(self.net_wt,3)))
-               self.net_wt=float(float(self.net_wt)*1000/50)
-               self.lineEdit_6.setText(str(round(self.net_wt,3)))
+               self.net_wt=int(float(self.net_wt/50))
+               self.lineEdit_6.setText(str(self.net_wt))
         
                
                
@@ -879,7 +884,7 @@ class fci_25_Ui_MainWindow(object):
                          cursor = connection.cursor()                    
                          cursor.execute("UPDATE WEIGHT_MST SET MATERIAL_NAME='"+self.comboBox_3.currentText()+"',BATCH_ID='"+self.comboBox_2.currentText()+"',CONTRACTOR_NAME='"+self.comboBox_4.currentText()+"',CURR_TRUCK_CNT='"+self.label_44.text()+"',TOTAL_TRUCKS_CNT='"+self.label_46.text()+"',ACCPTED_BAGS='"+self.lineEdit_6.text()+"',TARGET_STORAGE='"+self.comboBox_5.currentText()+"',NET_WEIGHT_VAL='"+self.label_42.text()+"',VEHICLE_NO='"+str(self.lineEdit_5.text())+"',FIRST_WEIGHT_MODE='"+self.comboBox_6.currentText()
                                         +"',FIRST_WEIGHT_VAL='"+str(self.lineEdit_9.text())+"',SECOND_WT_MODE='"+self.comboBox_7.currentText()+"',SECOND_WT_VAL='"
-                                        +str(self.lineEdit_11.text())+"' ,UPDATED_BY='"+str(self.login_user_id)+"', UPDATED_ON=current_timestamp WHERE SERIAL_ID='"
+                                        +str(self.lineEdit_11.text())+"' ,UPDATED_BY='"+str(self.login_user_id)+"', UPDATED_ON=current_timestamp ,EDITED_FLG='Yes' WHERE SERIAL_ID='"
                                         +str(int(self.label_32.text()))+"'") 
             connection.commit();
             connection.close()

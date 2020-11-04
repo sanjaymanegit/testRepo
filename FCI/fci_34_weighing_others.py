@@ -362,7 +362,7 @@ class fci_34_Ui_MainWindow(object):
         self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_40.setObjectName("label_40")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber.setGeometry(QtCore.QRect(30, 50, 361, 121))
+        self.lcdNumber.setGeometry(QtCore.QRect(17, 50, 361, 121))
         self.lcdNumber.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
         self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -510,6 +510,11 @@ class fci_34_Ui_MainWindow(object):
         self.pushButton_14.setFont(font)
         self.pushButton_14.setObjectName("pushButton_14")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.groupBox_2)
+        
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
+        
         self.lineEdit_8.setGeometry(QtCore.QRect(20, 70, 91, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -544,7 +549,12 @@ class fci_34_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_15.setFont(font)
         self.pushButton_15.setObjectName("pushButton_15")
+        
         self.lineEdit_9 = QtWidgets.QLineEdit(self.groupBox_3)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
+        
         self.lineEdit_9.setGeometry(QtCore.QRect(20, 60, 91, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -640,7 +650,7 @@ class fci_34_Ui_MainWindow(object):
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_12)
         self.lineEdit_12.setValidator(input_validator)
-        self.lineEdit_12.setGeometry(QtCore.QRect(520, 540, 321, 41))
+        self.lineEdit_12.setGeometry(QtCore.QRect(520, 540, 101, 41))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -739,6 +749,8 @@ class fci_34_Ui_MainWindow(object):
         self.slot_2_wt=0
         self.save_diable=0
         self.slip_type=""
+        self.gross_tare_flag=""
+        
         ##########
 
         self.retranslateUi(MainWindow)
@@ -762,6 +774,7 @@ class fci_34_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "Serial.No:"))
         self.label_19.setText(_translate("MainWindow", "00001"))
         self.pushButton_9.setText(_translate("MainWindow", "Search"))
+        self.pushButton_9.setDisabled(True)
         self.label_14.setText(_translate("MainWindow", "VEHICLE NO :"))
         self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
         self.radioButton.setText(_translate("MainWindow", "Auto"))
@@ -923,9 +936,9 @@ class fci_34_Ui_MainWindow(object):
         if(mode != self.label_37.text()):
             if(self.lineEdit_8.text() != ""):
                     self.label_29.setText(str(mode))
-                    m_str=float(float(self.lineEdit_8.text())/1000)                
-                    self.label_32.setText('{:06.3f}'.format(m_str))
-                    self.lcdNumber.setProperty("value", str(m_str*1000))
+                    m_str=self.lineEdit_8.text()               
+                    self.label_32.setText(str(m_str))
+                    self.lcdNumber.setProperty("value", str(m_str))
                     self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                     self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
                     self.status="FIRST"
@@ -941,9 +954,9 @@ class fci_34_Ui_MainWindow(object):
         if(mode != self.label_29.text()):
             if(self.lineEdit_9.text() != ""):
                     self.label_37.setText(str(mode))
-                    m_str=float(float(self.lineEdit_9.text())/1000) 
-                    self.label_40.setText('{:06.3f}'.format(m_str))
-                    self.lcdNumber.setProperty("value", str(m_str*1000))
+                    m_str=self.lineEdit_9.text()
+                    self.label_40.setText(str(m_str))
+                    self.lcdNumber.setProperty("value", str(m_str))
                     self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                     self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
                     self.net_wt_calc()
@@ -975,10 +988,26 @@ class fci_34_Ui_MainWindow(object):
         if(self.radioButton_2.isChecked()):
             if(self.slip_type=="NEW"):
                 self.groupBox_3.hide()
-                self.groupBox_2.show() 
+                self.groupBox_2.show()
+                if(self.gross_tare_flag == "GROSS"):
+                    self.radioButton_5.setChecked(True)
+                    self.radioButton_6.hide()
+                else:
+                    self.radioButton_6.setChecked(True)
+                    self.radioButton_5.hide()
+                
             elif(self.slip_type=="OLD"):
                 self.groupBox_3.show()
                 self.groupBox_2.hide()
+                if(self.gross_tare_flag == "Gross"):
+                    self.radioButton_8.setChecked(True)
+                    self.radioButton_7.hide()                    
+                else:
+                    self.radioButton_7.setChecked(True)
+                    self.radioButton_8.hide()
+                    
+                
+                
             else:
                 self.groupBox_3.show()
                 self.groupBox_2.show()           
@@ -1004,8 +1033,9 @@ class fci_34_Ui_MainWindow(object):
         for x in results:
              if(str(x[0]) == "NEW"):
                     self.slip_type="NEW"
-                    self.current_value=float(x[3])
-                    self.lcdNumber.setProperty("value", float(self.current_value))
+                    self.gross_tare_flag=str(x[1])
+                    self.current_value=str(x[3])
+                    self.lcdNumber.setProperty("value", str(self.current_value))
                     if(str(x[1]) == "GROSS"):
                         self.gross_wt_onclick()                
                     elif(str(x[1]) == "TARE"):
@@ -1014,8 +1044,9 @@ class fci_34_Ui_MainWindow(object):
                          print("NONE")                         
              elif(str(x[0]) == "OLD"):
                     self.slip_type="OLD"
-                    self.current_value=float(x[3])
-                    self.lcdNumber.setProperty("value", float(self.current_value))
+                    self.gross_tare_flag=str(x[1])
+                    self.current_value=str(x[3])
+                    self.lcdNumber.setProperty("value", str(self.current_value))
                     self.lineEdit.setText(str(x[2]))
                     self.fetch_via_search()
                     print("SLip Flag :"+str(x[1]))
@@ -1195,14 +1226,14 @@ class fci_34_Ui_MainWindow(object):
                self.label_29.setText("Gross")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText('{:06.3f}'.format(self.current_value))
+               self.label_32.setText(str(self.current_value))
                #self.label_32.setText(str("200"))
                
         else:     
                self.label_37.setText("Gross")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText('{:06.3f}'.format(self.current_value))
+               self.label_40.setText(str(self.current_value))
                #self.label_40.setText(str("200"))
                        
         self.net_wt_calc()
@@ -1216,14 +1247,14 @@ class fci_34_Ui_MainWindow(object):
                self.label_29.setText("Tare")         
                self.label_30.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
                self.label_31.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_32.setText('{:06.3f}'.format(self.current_value))
+               self.label_32.setText(str(self.current_value))
                #self.label_32.setText(str("80"))
                
         else:     
                self.label_37.setText("Tare")
                self.label_38.setText(datetime.datetime.now().strftime("%Y-%m-%d"))               
                self.label_39.setText(datetime.datetime.now().strftime("%H:%M"))
-               self.label_40.setText('{:06.3f}'.format(self.current_value))
+               self.label_40.setText(str(self.current_value))
                #self.label_40.setText(str("80"))
                        
         self.net_wt_calc()
@@ -1235,12 +1266,12 @@ class fci_34_Ui_MainWindow(object):
         self.second_wt=str(self.label_40.text())
         if(float(self.first_wt) > 0 and float(self.second_wt) > 0):            
                 if(float(self.first_wt) >= float(self.second_wt)):            
-                      self.net_wt=(float(self.first_wt)-float(self.second_wt))             
-                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
+                      self.net_wt=int(float(self.first_wt)-float(self.second_wt))             
+                      self.label_45.setText(str(self.net_wt))
                 else:
-                      self.net_wt=(float(self.second_wt)-float(self.first_wt))             
-                      self.label_45.setText('{:06.3f}'.format(self.net_wt))
-                accepted_bags=float(self.net_wt)*1000/50
+                      self.net_wt=int(float(self.second_wt)-float(self.first_wt))             
+                      self.label_45.setText(str(self.net_wt))
+                accepted_bags=float(self.net_wt)/50
                 #self.lineEdit_4.setText(str(round(accepted_bags)))
                 #self.lineEdit_5.setText('{:06.3f}'.format(self.net_wt))
                 #self.lineEdit_13.setText("")
@@ -1253,8 +1284,11 @@ class fci_34_Ui_MainWindow(object):
         print("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and issue_id='"+str(self.issue_id)+"'")       
         
         results=connection.execute("SELECT VEHICLE_NO||' - ('||printf(\"%04d\", SERIAL_ID)||')' AS SERIAL_ID FROM WEIGHT_MST WHERE STATUS='FIRST' and issue_id='"+str(self.issue_id)+"'")       
-        for x in results:        
-               self.listWidget_3.addItem(str(x[0]))
+        for x in results:
+               item= QtWidgets.QListWidgetItem(str(x[0]))
+               item.setBackground(QtGui.QColor("light blue"))
+               self.listWidget_3.addItem(item)
+               #self.listWidget_3.addItem(str(x[0]))
         connection.close()
         
    
@@ -1323,7 +1357,7 @@ class fci_34_Ui_MainWindow(object):
             self.label_29.setText(str(x[2]))         
             self.label_30.setText(str(x[4])[0:11])
             self.label_31.setText(str(x[4])[11:16])
-            self.label_32.setText('{:06.3f}'.format(x[3]))
+            self.label_32.setText(str(x[3]))
          
             # Vehical No
             self.lineEdit_2.setText(str(x[5]))
@@ -1335,7 +1369,7 @@ class fci_34_Ui_MainWindow(object):
                    self.label_39.setText("--:--")
             else:
                    self.label_39.setText(str(x[8])[11:16])
-            self.label_40.setText('{:06.3f}'.format(x[7]))
+            self.label_40.setText(str(x[7]))
             
             #Net Wt
             self.label_45.setText("0")
@@ -1638,13 +1672,13 @@ class fci_34_Ui_MainWindow(object):
         connection.commit();
         connection.close()   
         
-        data= [['           Weight Type         ','          Date           ','        Weight (Ton)          ']]
+        data= [['           Weight Type         ','          Date           ','        Weight (Kg)          ']]
         
         connection = sqlite3.connect("fci.db")       
         print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         
-        results=connection.execute("SELECT printf(\"%.3f\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%.3f\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%.3f\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT printf(\"%6d\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%6d\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                
         for x in results:
             self.tare_wt=str(x[0])
@@ -1690,7 +1724,7 @@ class fci_34_Ui_MainWindow(object):
                 
         for x in results:
                 c.setFont('Helvetica',10)
-                c.drawString(50,740,"Serial ID        : "+str(x[0]))
+                c.drawString(50,740,"Serial No        : "+str(x[0]))
                 c.drawString(250,740,"Vehicle No      : "+str(x[1]))
                 
                 c.drawString(50,710,"Party Name.       : "+str(x[5]))

@@ -25,9 +25,15 @@ class fci_06_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1311, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
+        
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(10, 10, 231, 51))
@@ -472,7 +478,7 @@ class fci_06_Ui_MainWindow(object):
         
         
       
-        self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.Ton','Tare Wt. Ton','Gross Wt. Ton','Target Location'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Slip.No', ' Truck Sr. No ', 'Vehical No.','No. Bags','Material','Release Date','Release Time' ,'Net. Wt.','Tare Wt.','Gross Wt.','Target Location'])        
         '''
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -483,7 +489,7 @@ class fci_06_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         '''
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,round(ACCPTED_BAGS),MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,round(NET_WEIGHT_VAL,3),round(TARE_WT_VAL,3),round(GROSS_WT_VAL,3),TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
+        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID) as SERIAL_ID,CURR_TRUCK_CNT,VEHICLE_NO,ACCPTED_BAGS,MATERIAL_NAME,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,IFNULL(NET_WEIGHT_VAL,0),IFNULL(TARE_WT_VAL,0),IFNULL(GROSS_WT_VAL,0),TARGET_STORAGE FROM WEIGHT_MST_FCI_VW WHERE BATCH_ID in (SELECT BATCH_ID FROM GLOBAL_VAR)")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
