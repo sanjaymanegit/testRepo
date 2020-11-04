@@ -19,10 +19,15 @@ class TY_06_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 30, 1331, 651))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1331, 705))
         self.frame.setStyleSheet("")
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
         
@@ -246,9 +251,10 @@ class TY_06_Ui_MainWindow(object):
             results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%3d\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%3d\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200),printf(\"%3d\", MODULUS_300),printf(\"%3d\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
             results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%3d\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%3d\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200),printf(\"%3d\", MODULUS_300),printf(\"%3d\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")           
         else:
-            results=connection.execute("SELECT TYPE_STR as specimen_no,round(THICKNESS,2),round(WIDTH,2),printf(\"%.4f\", CS_AREA),round(PEAK_LOAD,2),E_PAEK_LOAD,PERCENTG_E_PEAK_LOAD_MM,PERCENTG_E_PEAK_LOAD,round(PREC_E_AT_PEAK,2),round(BREAK_LOAD,2),round(E_BREAK_LOAD,2),round(PREC_E_AT_BREAK,2),round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(MOD_AT_ANY,2) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
-            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,round(A.THICKNESS),round(A.WIDTH,2),printf(\"%.4f\", A.CS_AREA),round(A.PEAK_LOAD,2),A.E_PAEK_LOAD,A.PERCENTG_E_PEAK_LOAD_MM,A.PERCENTG_E_PEAK_LOAD,round(PREC_E_AT_PEAK,2),round(BREAK_LOAD,2),round(E_BREAK_LOAD,2),round(PREC_E_AT_BREAK,2),round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(MOD_AT_ANY,2) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")
-                
+            print("NO Val")
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%3d\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%3d\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200),printf(\"%3d\", MODULUS_300),printf(\"%3d\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%3d\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%3d\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%3d\", MODULUS_100),printf(\"%3d\", MODULUS_200),printf(\"%3d\", MODULUS_300),printf(\"%3d\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")           
+            
         for row_number, row_data in enumerate(results):                        
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

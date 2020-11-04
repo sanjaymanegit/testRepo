@@ -18,13 +18,19 @@ class TY_07_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
         MainWindow.setBaseSize(QtCore.QSize(15, 11))
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(40, 60, 1201, 601))
+        self.frame.setGeometry(QtCore.QRect(60, 60, 1230, 661))
         self.frame.setStyleSheet("")
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
         self.speed_val=""

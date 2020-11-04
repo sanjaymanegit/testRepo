@@ -25,9 +25,14 @@ class TY_05_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1291, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1291, 709))
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(40, 30, 391, 41))
@@ -762,7 +767,8 @@ class TY_05_Ui_MainWindow(object):
         self.pushButton_5.setEnabled(True) #reset
         
         self.label_21.hide()
-        self.c_select_all_data()        
+        self.c_select_all_data()
+        self.label_2.setText("01")
   
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'SPECIMEN_MST'")       

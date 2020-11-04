@@ -111,6 +111,11 @@ class factory_reset_Ui_MainWindow(object):
             with connection:        
                     cursor = connection.cursor()       
                     cursor.execute("DELETE FROM TEST_MST")
+                    cursor.execute("DELETE FROM CYCLES_MST")
+                    cursor.execute("DELETE FROM GRAPH_MST")
+                    cursor.execute("DELETE FROM STG_GRAPH_MST")
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST')")
+                    
             connection.commit();
             connection.close()
             print("ok - Deleted Test Data  ")
@@ -121,6 +126,8 @@ class factory_reset_Ui_MainWindow(object):
             with connection:        
                     cursor = connection.cursor()       
                     cursor.execute("DELETE FROM SPECIMEN_MST")
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('SPECIMEN_MST')")
+                    
             connection.commit();
             connection.close()
             print("ok - Deleted Specimen Data  ")

@@ -18,13 +18,19 @@ class TY_01_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
         MainWindow.setBaseSize(QtCore.QSize(15, 11))
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1301, 670))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1301, 709))
         self.frame.setStyleSheet("")
+        '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        '''
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame.setLineWidth(3)
         self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
         
@@ -607,6 +613,9 @@ class TY_01_Ui_MainWindow(object):
         if (self.lineEdit.text() == ""):
             self.label_23.setText(" Job Name Should not Emplty ")    
             self.label_23.show()
+        elif(self.comboBox.currentText() == ""):
+            self.label_23.setText(" Specimen Name Should not Emplty ")    
+            self.label_23.show()
         elif(self.lineEdit_2.text() == ""):
             self.label_23.setText(" Batch Id Should not Emplty ")    
             self.label_23.show()           
@@ -662,7 +671,8 @@ class TY_01_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         with connection:        
               cursor = connection.cursor()                                        
-              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT IFNULL(MAX(TEST_ID),1) FROM TEST_MST)")                                
+              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT IFNULL(MAX(TEST_ID),1) FROM TEST_MST)")
+              cursor.execute("DELETE FROM STG_GRAPH_MST")
         connection.commit();
         connection.close()     
         
