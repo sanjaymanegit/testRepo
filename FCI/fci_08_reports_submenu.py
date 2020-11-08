@@ -529,6 +529,8 @@ class fci_08_Ui_MainWindow(object):
         if(self.device_location_type=="SITE"):
                     self.pushButton_11.setDisabled(True)
                     self.pushButton_4.setDisabled(True)
+                    self.pushButton_4.setText("")
+                    self.pushButton_11.setText("")
         
            
     def device_date(self):     

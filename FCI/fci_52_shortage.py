@@ -517,7 +517,7 @@ class fci_52_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Serial Id ','Vehical No.','Lost.Bags','Carried. Bags','Received. Bags','Net. Wt.'])        
            
         connection = sqlite3.connect("fci.db")  
-        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID),VEHICLE_NO,printf(\"%3d\",(CARRIED_BAGS-ACCPTED_BAGS)),printf(\"%3d\", CARRIED_BAGS),printf(\"%3d\", ACCPTED_BAGS) ,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW WHERE ACCPTED_BAGS != CARRIED_BAGS AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
+        results=connection.execute("SELECT printf(\"%06d\", SERIAL_ID),VEHICLE_NO,printf(\"%3d\",(CARRIED_BAGS-ACCPTED_BAGS)),printf(\"%3d\", CARRIED_BAGS),printf(\"%3d\", ACCPTED_BAGS) ,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW WHERE ACCPTED_BAGS != CARRIED_BAGS AND IFNULL(NET_WEIGHT_VAL,0) > 0 AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

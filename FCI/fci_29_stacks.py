@@ -574,7 +574,7 @@ class fci_29_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Slot No.:"))
         self.label_12.setText(_translate("MainWindow", "Status:"))
         self.label_13.setText(_translate("MainWindow", "Material:"))
-        self.label_15.setText(_translate("MainWindow", "Capacity (In Bags)"))
+        self.label_15.setText(_translate("MainWindow", "Capacity(Bags):"))
         #self.label_35.setText(_translate("MainWindow", "Recipted"))
         #self.label_36.setText(_translate("MainWindow", "Wheat"))
         #self.label_37.setText(_translate("MainWindow", "3500"))

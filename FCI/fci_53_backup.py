@@ -9,19 +9,24 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import datetime
+import time
+from PyQt5.QtCore import QDate
+import sys,os
+import sqlite3
+from PyQt5.Qt import QTableWidgetItem
 
-
-class Ui_MainWindow(object):
+class fci_53_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1396, 768)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(0, 170, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 1331, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.frame.setFont(font)
@@ -79,12 +84,13 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(300, 90, 271, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(24)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.lineEdit.setText("")
+        self.lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);color: rgb(0, 0, 0);")
+        #self.lineEdit.setText("")
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(70, 90, 191, 61))
@@ -204,12 +210,7 @@ class Ui_MainWindow(object):
         self.comboBox.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        
         self.label_6 = QtWidgets.QLabel(self.frame_3)
         self.label_6.setGeometry(QtCore.QRect(230, 20, 41, 41))
         font = QtGui.QFont()
@@ -231,13 +232,7 @@ class Ui_MainWindow(object):
         self.comboBox_2.setFont(font)
         self.comboBox_2.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
-        self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        self.comboBox_2.setObjectName("comboBox_2")       
         self.label_5 = QtWidgets.QLabel(self.frame_3)
         self.label_5.setGeometry(QtCore.QRect(40, 20, 41, 41))
         font = QtGui.QFont()
@@ -296,8 +291,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(1)
+        '''
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
+        '''
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -305,7 +302,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(255, 255, 255))
+        #item.setBackground(QtGui.QColor(255, 255, 255))
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -358,6 +355,7 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.backup_job_status=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -377,26 +375,32 @@ class Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "LOG"))
         self.radioButton_3.setText(_translate("MainWindow", "ACTIVE"))
         self.radioButton_4.setText(_translate("MainWindow", "INACTIVE"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "06"))
+        self.i=0        
+        for x in range(24):            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
         self.label_6.setText(_translate("MainWindow", "MI:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "01"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "02"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "03"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "04"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "05"))
-        self.comboBox_2.setItemText(5, _translate("MainWindow", "06"))
+        self.i=0        
+        for x in range(60):            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str("%02d"%x))
+            #print("i :"+str(x))
+            self.i=self.i+1
+        self.comboBox.setCurrentText("18")
+        self.comboBox_2.setCurrentText("00")
+        self.comboBox.setDisabled(True)
+        self.comboBox_2.setDisabled(True)
         self.label_5.setText(_translate("MainWindow", "HH:"))
         self.label_8.setText(_translate("MainWindow", "STATUS"))
         self.label_7.setText(_translate("MainWindow", "TIME"))
         self.pushButton_14.setText(_translate("MainWindow", "TAKE BACKUP"))
         self.tableWidget.setSortingEnabled(True)
+        '''
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
+        '''
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "BACKUP DATE"))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -409,13 +413,200 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "1212"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_10.setText(_translate("MainWindow", "BACKUP HISTORY"))
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        self.pushButton_11.clicked.connect(self.reset_loging)
+        self.pushButton_10.clicked.connect(self.login_page)
+        self.pushButton_13.clicked.connect(self.list_report_data)
+        self.pushButton_14.clicked.connect(self.backup_process)
+        self.pushButton_12.clicked.connect(self.save_data)
+        self.reset_loging()
+        
+        #self.list_report_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)      
+        
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    
+    def login_page(self):        
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("SELECT PWD,xxx FROM SERVICES_MST WHERE SERVICE_NAME = 'BACKUP' AND STATUS = 'ACTIVE'") 
+        for x in results:
+            val=str(x[0])           
+        connection.close()
+        print("pwd:"+self.lineEdit.text()+" db val:"+str(val))
+        if(str(self.lineEdit.text()) == str(val)):
+                self.show_all()
+                self.list_report_data()
+                self.groupBox_7.hide()
+        else:
+                self.groupBox_7.show()
+                self.label_44.show()
+                self.label_44.setText("INCORRECT PASSWORD.")
+                #self.reset_loging()
+               
+    
+    def reset_loging(self):
+        self.lineEdit.setText("")
+        self.frame_3.hide()
+        self.frame_5.hide()
+        self.tableWidget.hide()
+        self.groupBox_7.hide()
+        self.label_5.hide()
+        self.label_8.hide()
+        self.label_7.hide()
+        self.pushButton_14.hide()
+        self.pushButton_12.hide()
+        self.pushButton_13.hide()
+        self.label_10.hide()
+        
+    def show_all(self):        
+        self.frame_3.show()
+        self.frame_5.show()
+        self.tableWidget.show()
+        self.groupBox_7.show()
+        self.label_5.show()
+        self.label_8.show()
+        self.label_7.show()
+        self.pushButton_14.show()
+        self.pushButton_12.show()
+        self.pushButton_13.show()
+        self.label_10.show()
+        #self.list_report_data()
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT BACKUP_JOB_STATUS ,BACKUP_JOB_HH,BACKUP_JOB_MI FROM GLOBAL_VAR") 
+        for x in results:            
+            self.backup_job_status=str(x[0])
+            if(self.backup_job_status=="ACTIVE"):
+                self.radioButton_3.setChecked(True)
+                self.radioButton_4.setChecked(False)
+            else:
+                self.radioButton_3.setChecked(False)
+                self.radioButton_4.setChecked(True)
+            self.comboBox.setCurrentText(str(x[1]))
+            self.comboBox_2.setCurrentText(str(x[2]))
+        connection.close()
+        
+    def save_data(self):
+        if(self.radioButton_3.isChecked()):
+            self.backup_job_status="ACTIVE"
+        else:
+            self.backup_job_status="INACTIVE"
+        
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+                    cursor = connection.cursor()                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET BACKUP_JOB_STATUS='"+str(self.backup_job_status)+"',BACKUP_JOB_HH='"+self.comboBox.currentText()+"',BACKUP_JOB_MI='"+self.comboBox_2.currentText()+"'")                    
+        connection.commit();
+        connection.close()
+        self.groupBox_7.show()
+        self.label_44.show()
+        self.label_44.setText("SAVED SUCCESSFULLY.")
+    
+    def backup_process(self):
+        self.groupBox_7.show()       
+        self.label_44.setText("STARTED BACKUP")
+        self.label_44.show()
+        time.sleep(1)
+        self.bkp_f()
+        
+       
+    def bkp_f(self):        
+        #print("inside backup ")
+        date_str=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                try:
+                    os.system("cp fci.db fci_bkp"+str(date_str)+".db")
+                    os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                    os.system("mv fci_bkp"+str(date_str)+".db /media/usb")
+                    os.system("sudo umount /media/usb")
+                    connection = sqlite3.connect("services.db")          
+                    with connection:        
+                        cursor = connection.cursor()                    
+                        cursor.execute("INSERT INTO ZBACKUP_HIST(BACKUP_TYPE,FILE_NAME,PATH,STATUS,BACKUP_ON) VALUES ('Manual','fci_bkp"+str(date_str)+".db','/media/usb','Completed',CURRENT_TIMESTAMP)")                    
+                    connection.commit();
+                    connection.close()
+                    self.list_report_data()
+                    self.groupBox_7.show()       
+                    self.label_44.show()
+                    self.label_44.setText("BACKUP COMPLETED.")
+                   
+                   
+                #self.label_9.setText("fci_bkp"+str(date_str)+".db")
+                #self.label_44.show()
+                #self.label_44.setText("wt_bkp"+str(date_str)+".db")
+                except:
+                    self.label_44.show()
+                    self.label_44.setText("OS ERROR.")
+               
+        else:
+             #print("Please connect usb storage device")
+             self.groupBox_7.show()       
+             self.label_44.show()
+             self.label_44.setText("PLEASE CONNECT USB DEVICE.")
+             
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data_db_bkp.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data_db_bkp.txt")
+        try:
+           f = open('lsusb_data_db_bkp.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+           self.label_44.show()
+           self.label_44.setText("USB ERROR.")             
+        return product_id
+    
+    
+    def list_report_data(self):
+        self.groupBox_7.hide()
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnWidth(0, 200)
+        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(2, 300)
+        self.tableWidget.setHorizontalHeaderLabels(['BACKUP DATE', 'MODE', 'FILE NAME'])               
+        connection = sqlite3.connect("services.db")  
+        results=connection.execute("select BACKUP_ON,BACKUP_TYPE, FILE_NAME  FROM ZBACKUP_HIST order by BACKUP_ON desc ")            
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close() 
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)      
+
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_53_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

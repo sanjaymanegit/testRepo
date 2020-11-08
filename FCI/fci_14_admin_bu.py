@@ -83,6 +83,13 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton_5_1.setFont(font)
         self.pushButton_5_1.setObjectName("pushButton_5_1")
         
+        self.pushButton_5_2 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_5_2.setGeometry(QtCore.QRect(450, 190, 301, 61))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_5_2.setFont(font)
+        self.pushButton_5_2.setObjectName("pushButton_5_2")
+        
         self.pushButton_9 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_9.setGeometry(QtCore.QRect(30, 70, 311, 61))
         font = QtGui.QFont()
@@ -149,6 +156,8 @@ class fci_14_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "MASTER DATA"))
         self.pushButton_10.setText(_translate("MainWindow", "UPDATE/DELETE RECORD"))
         self.pushButton_11.setText(_translate("MainWindow", "AUDIT LOGS"))
+        
+        self.pushButton_5_2.setText(_translate("MainWindow", "GODOWN  DETAILS"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
         

@@ -2109,7 +2109,7 @@ class fci_03b_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:                            
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT,DEVICVE_ID,storage_name) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"','"+str(self.device_id)+"','"+str(self.stroagecombo.currentText())+"')")
+                    cursor.execute("INSERT INTO  SLOTS_MST(SLOT_NO,BATCH_ID,MATERIAL,R_BAGS,R_NET_WT,R_DATE,R_AVG_BAG_WT,BAL_BAGS,BAL_NET_WT,BAL_AVG_BAG_WT,DEVICVE_ID,storage_name,CAPACITY_IN_BAGS) VALUES('"+str(slot_id)+"','"+str(batch_id)+"','"+str(material_name)+"','"+str(no_of_bags)+"','"+str(net_wt)+"',current_timestamp,'"+str(avg_bag_wt)+"','"+str(no_of_bags)+"','"+str(net_wt)+"','"+str(avg_bag_wt)+"','"+str(self.device_id)+"','"+str(self.stroagecombo.currentText())+"','3500')")
                        
             connection.commit();
             connection.close()

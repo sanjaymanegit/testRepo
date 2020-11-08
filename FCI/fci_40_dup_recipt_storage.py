@@ -755,9 +755,9 @@ class fci_40_Ui_MainWindow(object):
         self.label_68.setText(_translate("MainWindow", "14:30"))
         self.label_69.setText(_translate("MainWindow", "OUT"))
         self.label_70.setText(_translate("MainWindow", "Contractor -100"))
-        self.label_22.setText(_translate("MainWindow", "Current Truck Count:"))
+        self.label_22.setText(_translate("MainWindow", "Site.Serial.No:"))
         self.label_71.setText(_translate("MainWindow", "144"))
-        self.label_72.setText(_translate("MainWindow", "Total Truck Count:"))
+        self.label_72.setText(_translate("MainWindow", "Carried Bags:"))
         self.label_37.setText(_translate("MainWindow", "006"))
         self.label_73.setText(_translate("MainWindow", "Driver:"))
         self.label_18.setText(_translate("MainWindow", "Contractor Name :"))
@@ -861,7 +861,7 @@ class fci_40_Ui_MainWindow(object):
         print("y:"+str(y))
         for x in range(y):
                          print("print count :"+str(x))
-                         os.system("./job_print_recipt_storage.sh")
+                         os.system("./scripts/job_print_recipt_storage.sh")
         connection.close()
         
     

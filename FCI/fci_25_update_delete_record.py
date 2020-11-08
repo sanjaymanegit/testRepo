@@ -619,9 +619,9 @@ class fci_25_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "00001"))
         self.label_41.setText(_translate("MainWindow", "Net.Wt.Ton.:"))
         self.label_42.setText(_translate("MainWindow", "0"))
-        self.label_43.setText(_translate("MainWindow", "Truck Sr.No:"))
+        self.label_43.setText(_translate("MainWindow", "Site. Sr.No:"))
         self.label_44.setText(_translate("MainWindow", "0000"))
-        self.label_45.setText(_translate("MainWindow", "Total Trucks :"))
+        self.label_45.setText(_translate("MainWindow", "Carried Bags:"))
         self.label_46.setText(_translate("MainWindow", "0"))
         self.pushButton_10.setText(_translate("MainWindow", "Delete"))
         self.label_21.setText(_translate("MainWindow", "Vehicles List"))
@@ -685,7 +685,7 @@ class fci_25_Ui_MainWindow(object):
                        self.net_wt=int(self.net_wt)*(-1)
                self.label_42.setText(str(round(self.net_wt,3)))
                self.net_wt=int(float(self.net_wt/50))
-               self.lineEdit_6.setText(str(self.net_wt))
+               #self.lineEdit_6.setText(str(self.net_wt))
         
                
                

@@ -756,7 +756,7 @@ class fci_02_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Accepted. Bags Count :"))
         self.lineEdit_9.setText(_translate("MainWindow", "96000"))
         self.label_32.setText(_translate("MainWindow", "Rack.Ref.No. :"))
-        self.label_5.setText(_translate("MainWindow", "000012"))
+        self.label_5.setText(_translate("MainWindow", "000001"))
         self.pushButton_7.setText(_translate("MainWindow", "Recipt Quantity Details"))
         self.label_33.setText(_translate("MainWindow", "Recipt Date :"))
         self.label_6.setText(_translate("MainWindow", "08 Aug 2020"))

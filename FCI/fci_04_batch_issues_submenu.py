@@ -361,6 +361,7 @@ class fci_04_Ui_MainWindow(object):
         if(self.device_location_type == "SITE"):
             self.pushButton_3.clicked.connect(self.open_new_window6)
             self.pushButton_4.setDisabled(True)
+            self.pushButton_4.setText("")
         else:
             
             self.pushButton_3.clicked.connect(self.open_new_window4)

@@ -9,19 +9,25 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import datetime
+import time
+from PyQt5.QtCore import QDate
+import sys,os
+import sqlite3
+from PyQt5.Qt import QTableWidgetItem
 
 
-class Ui_MainWindow(object):
+class fci_54_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1396, 768)
+        MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(0, 170, 255);\n"
 "border-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 10, 1331, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.frame.setFont(font)
@@ -79,12 +85,13 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(300, 90, 271, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(24)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.lineEdit.setStyleSheet("background-color: rgb(255, 255, 255); color:rgb(0, 0, 0);")
         self.lineEdit.setText("")
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(70, 90, 191, 61))
@@ -167,9 +174,9 @@ class Ui_MainWindow(object):
         self.frame_5.setLineWidth(3)
         self.frame_5.setObjectName("frame_5")
         self.label_45 = QtWidgets.QLabel(self.frame_5)
-        self.label_45.setGeometry(QtCore.QRect(30, 10, 341, 51))
+        self.label_45.setGeometry(QtCore.QRect(30, 25, 341, 41))
         font = QtGui.QFont()
-        font.setPointSize(16)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_45.setFont(font)
@@ -199,7 +206,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(255, 255, 255))
+        #item.setBackground(QtGui.QColor(255, 255, 255))
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -244,24 +251,14 @@ class Ui_MainWindow(object):
         self.label_11.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_11.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
+        
         self.listWidget = QtWidgets.QListWidget(self.frame)
         self.listWidget.setGeometry(QtCore.QRect(20, 290, 421, 151))
         self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Plain)
         self.listWidget.setLineWidth(3)
         self.listWidget.setObjectName("listWidget")
-        item = QtWidgets.QListWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(16)
-        item.setFont(font)
-        self.listWidget.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(16)
-        item.setFont(font)
-        self.listWidget.addItem(item)
+       
         self.pushButton_15 = QtWidgets.QPushButton(self.frame)
         self.pushButton_15.setGeometry(QtCore.QRect(30, 210, 201, 51))
         font = QtGui.QFont()
@@ -309,7 +306,7 @@ class Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "START RECOVERY"))
         self.label_9.setText(_translate("MainWindow", "RECOVERY"))
         self.pushButton_13.setText(_translate("MainWindow", "RECOVERY HISTORY"))
-        self.label_45.setText(_translate("MainWindow", "tyr_20201103141214.db"))
+        self.label_45.setText(_translate("MainWindow", ""))
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -325,22 +322,202 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "1212"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_11.setText(_translate("MainWindow", "FILE NAME"))
-        __sortingEnabled = self.listWidget.isSortingEnabled()
-        self.listWidget.setSortingEnabled(False)
-        item = self.listWidget.item(0)
-        item.setText(_translate("MainWindow", "tyr_20201104213522.db"))
-        item = self.listWidget.item(1)
-        item.setText(_translate("MainWindow", "tyr_20201105213622.db"))
-        self.listWidget.setSortingEnabled(__sortingEnabled)
+       
         self.pushButton_15.setText(_translate("MainWindow", "BROWSE FILES"))
         self.pushButton_14.setText(_translate("MainWindow", "REBOOT SYSTEM"))
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        self.pushButton_11.clicked.connect(self.reset_loging)
+        self.pushButton_10.clicked.connect(self.login_page)
+        self.pushButton_15.clicked.connect(self.browse_file_onclick)
+        self.listWidget.doubleClicked.connect(self.fetch_via_file_list)
+        self.pushButton_12.clicked.connect(self.recover_data)
+        self.pushButton_13.clicked.connect(self.list_report_data)
+        self.pushButton_14.clicked.connect(self.reboot_system)
+        self.list_report_data()
+        
+         #self.list_report_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        self.reset_loging()
+        
+        
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    
+    
+    def recover_data(self):
+        date_str=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        old_file_name="fci_old_"+str(date_str)+".db"
+        if(self.label_45.text() != ""):
+             os.system("cp fci.db "+str(old_file_name))
+             os.system("cp "+str(self.label_45.text())+" fci.db")
+             os.system("chmod 777 fci.db")
+             print("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(self.label_45.text())+"','"+str(old_file_name)+"')")
+             connection = sqlite3.connect("services.db")          
+             with connection:        
+                        cursor = connection.cursor()                    
+                        cursor.execute("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(self.label_45.text())+"','"+str(old_file_name)+"')")                   
+             connection.commit();
+             connection.close()
+             self.list_report_data()
+             self.groupBox_7.show()
+             self.label_44.show()
+             self.label_44.setText("RECOERY SUCCESSFULLY DONE.")             
+        else:
+             self.groupBox_7.show()
+             self.label_44.show()
+             self.label_44.setText("FILE NAME EMPTY.") 
+    
+    def browse_file_onclick(self):
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                try:
+                    os.system("rm -rf backupfiles_list.txt")  
+                    os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")                    
+                    os.system("ls /media/usb/fci*.db >> backupfiles_list.txt")
+                    os.system("sudo umount /media/usb")
+                    try:
+                       self.listWidget.clear() 
+                       f = open('backupfiles_list.txt','r')
+                       for line in f:
+                               item= QtWidgets.QListWidgetItem(str(line))
+                               item.setBackground(QtGui.QColor("black"))
+                               self.listWidget.addItem(item)
+                       f.close()
+                       self.groupBox_7.show()       
+                       self.label_44.show()
+                       self.label_44.setText("BROWSE FILE DONE.")
+                    except:
+                       self.groupBox_7.show()
+                       self.label_44.show()
+                       self.label_44.setText("USB ERROR.") 
+                   
+                except:
+                    self.groupBox_7.show()
+                    self.label_44.show()
+                    self.label_44.setText("OS ERROR.")
+               
+        else:
+             #print("Please connect usb storage device")
+             self.groupBox_7.show()       
+             self.label_44.show()
+             self.label_44.setText("PLEASE CONNECT USB DEVICE.")
+        
+        
+    def fetch_via_file_list(self):
+        v_str=str(self.listWidget.currentItem().text())
+        #self.re_str = str(v_str)                
+        self.label_45.setText(str(v_str)) 
+    
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data_db_bkp.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data_db_bkp.txt")
+        try:
+           f = open('lsusb_data_db_bkp.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+           self.label_44.show()
+           self.label_44.setText("USB ERROR.")             
+        return product_id   
+        
+    def reboot_system(self):
+        os.system("sudo reboot")
+        
+    def login_page(self):        
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("SELECT PWD,xxx FROM SERVICES_MST WHERE SERVICE_NAME = 'RECOVERY' AND STATUS = 'ACTIVE'") 
+        for x in results:
+            val=str(x[0])           
+        connection.close()
+        print("pwd:"+self.lineEdit.text()+" db val:"+str(val))
+        if(str(self.lineEdit.text()) == str(val)):
+                self.show_all()
+                self.list_report_data()
+                self.groupBox_7.hide()
+        else:
+                self.groupBox_7.show()
+                self.label_44.show()
+                self.label_44.setText("INCORRECT PASSWORD.")
+                #self.reset_loging()
+               
+    
+    def reset_loging(self):
+        self.lineEdit.setText("")       
+        self.tableWidget.hide()
+        self.groupBox_7.hide()
+        self.pushButton_12.hide()
+        self.label_9.hide()
+        self.pushButton_13.hide()
+        self.listWidget.hide()
+        self.pushButton_15.hide()
+        self.pushButton_14.hide()
+        self.label_11.hide()
+        self.frame_5.hide()
+        self.listWidget.clear()
+        self.label_45.setText("")  
+    
+    def show_all(self):           
+        self.tableWidget.show()
+        self.groupBox_7.show()
+        self.pushButton_12.show()
+        self.label_9.show()
+        self.pushButton_13.show()
+        self.listWidget.show()
+        self.pushButton_15.show()
+        self.pushButton_14.show()
+        self.label_11.show()
+        self.frame_5.show()
+        
+   
 
+    def list_report_data(self):
+        self.groupBox_7.hide()
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnWidth(0, 200)
+        self.tableWidget.setColumnWidth(1, 200)
+        self.tableWidget.setColumnWidth(2, 300)
+        self.tableWidget.setHorizontalHeaderLabels(['RECOVERY DATE', 'USED FILE NAME', 'OLD FILE NAME'])               
+        connection = sqlite3.connect("services.db")  
+        results=connection.execute("select RECOVERY_DATE,USED_FILE_NAME, OLD_FILE_NAME  FROM ZRECOVERY_HISTROY order by RECOVERY_DATE desc ")            
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close() 
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)  
+
+    
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = fci_54_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

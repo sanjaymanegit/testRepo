@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+from cryptography.fernet import Fernet
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
 import time
@@ -123,6 +123,15 @@ class fci_24_Ui_MainWindow(object):
         self.label_5.setStyleSheet("color: rgb(170, 85, 255);")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
+        
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox_2)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)        
+        self.lineEdit_2.setFont(font)
+        self.lineEdit_2.setGeometry(QtCore.QRect(700, 46, 125, 31))               
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -131,7 +140,15 @@ class fci_24_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.device_id=""
+        self.device_id_1=""
+        self.device_id_2=""
+        self.hh=""
+        self.dd=""
+        self.yy=""
+        self.mm=""
+        self.otp="97735"
+        self.buff=[]
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -140,7 +157,7 @@ class fci_24_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_19.setText(_translate("MainWindow", "Register Device"))
         self.label_3.setText(_translate("MainWindow", "Incorrect Password."))
-        self.groupBox.setTitle(_translate("MainWindow", "Password"))
+        self.groupBox.setTitle(_translate("MainWindow", "OTP"))
         self.pushButton.setText(_translate("MainWindow", "Show Page"))
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
@@ -164,6 +181,11 @@ class fci_24_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.load_data)
         self.pushButton_6.clicked.connect(self.save_data)
         
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR") 
+        for x in results:
+                self.groupBox.setTitle("OTP For Device ID:"+str(x[0])) 
+        connection.close()
         
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -175,10 +197,11 @@ class fci_24_Ui_MainWindow(object):
         
         
     def login_page(self):
+        otpx=self.getotp()
         connection = sqlite3.connect("services.db")
         results=connection.execute("SELECT 'sm507171903'  FROM DAT_MST") 
         for x in results:  
-            if(str(self.lineEdit.text()) == str(x[0])):          
+            if(str(self.lineEdit.text()) == str(otpx)):          
                 self.go_ahead_flg="No"
                 self.groupBox_2.show()
                 self.load_data()
@@ -188,7 +211,39 @@ class fci_24_Ui_MainWindow(object):
                 self.groupBox_2.hide()
                  
         connection.close()    
+    
+    def getotp(self):
+        self.otp=""
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR") 
+        for x in results:
+                self.device_id=str(x[0])                
+        connection.close()
+        if(self.device_id != ""):
+                self.buff=self.device_id.split("/")
+                if(len(self.buff) > 0):
+                    self.device_id_1=str(self.buff[0])
+                    self.device_id_2=str(self.buff[1])
+                    self.hh=datetime.datetime.now().strftime("%H")
+                    self.dd=datetime.datetime.now().strftime("%d")
+                    self.yy=datetime.datetime.now().strftime("%Y")
+                    self.mm=datetime.datetime.now().strftime("%m")
+                    self.part_1=int(str(self.hh)+str(self.dd)+str(self.mm))
+                    #print("1 :"+str(self.device_id_1)+" 2:"+str(self.device_id_2)+" self.hh:"+str(self.hh)+" self.dd:"+str(self.dd)+" self.yy:"+str(self.yy)+" self.mm:"+str(self.mm))
+                    #print("self.part_1 :"+str(self.part_1))
+                    self.otp=int(self.device_id_1)+int(self.device_id_2)+int(self.part_1)+360
+                    self.otp=int(int(self.otp)/2)
+                    #print(" OTP:"+str(self.otp))                    
+                else:
+                     self.otp="973540"
+        else:
+            self.otp="973540"
         
+        print(" OTP:"+str(self.otp))  
+        
+        return self.otp
+    
+    
     def reset_loging(self):
         self.lineEdit.setText("")         
         self.label_3.hide()
@@ -198,10 +253,15 @@ class fci_24_Ui_MainWindow(object):
         serial_no=self.getserial()
         #print("current serial No : "+str(serial_no))
         connection = sqlite3.connect("services.db")
-        results=connection.execute("select DEVICE_SERIAL_NO from DAT_MST") 
+        results=connection.execute("select DEVICE_SERIAL_NO,PRINTER_MAC_ADDR,RANDOM_NUM from DAT_MST") 
         for x in results:
            #print("Device Serial No :"+str(x[0]))
-           if(serial_no == str(x[0])):
+           if(str(x[1]) != ""):
+               d_cipher_suite = Fernet(str(x[1]))           
+               plain_text = d_cipher_suite.decrypt(str.encode(x[2]))
+               #print("Serial Id :"+str(serial_no)+"  Decripted serial No :"+str(plain_text,'utf-8'))            
+           
+           if(serial_no == str(plain_text,'utf-8')):
                self.go_ahead="Yes"
            else:
                self.go_ahead="No"
@@ -212,6 +272,12 @@ class fci_24_Ui_MainWindow(object):
         else:
                self.label_5.setText('Registration is incomplete.')
                self.label_5.show()
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")
+        results=connection.execute("SELECT DEVICE_ID FROM GLOBAL_VAR") 
+        for x in results:
+                self.lineEdit_2.setText(str(x[0])) 
         connection.close()
         
     def getserial(self):
@@ -229,11 +295,25 @@ class fci_24_Ui_MainWindow(object):
             
     def save_data(self):
         serial_no=self.getserial()
+        key = Fernet.generate_key()
+        cipher_suite = Fernet(key)
+        b = bytes(str(serial_no), 'utf-8')
+        cipher_text = cipher_suite.encrypt(b)
+        plain_text = cipher_suite.decrypt(cipher_text)
+        #print("Plain text :"+str(plain_text))
+        #print("cipher_text :"+str(cipher_text))
         #print("current serial No : "+str(serial_no))
         connection = sqlite3.connect("services.db")          
         with connection:        
-                cursor = connection.cursor()                    
-                cursor.execute("UPDATE DAT_MST SET DEVICE_SERIAL_NO = '"+str(serial_no)+"'") 
+                cursor = connection.cursor()                
+                cursor.execute("UPDATE DAT_MST SET DEVICE_SERIAL_NO = '0009876555KMNJI766',RANDOM_NUM='"+str(cipher_text,'utf-8')+"',PRINTER_MAC_ADDR='"+str(key,'utf-8')+"'") 
+        connection.commit();
+        connection.close()
+        
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+                cursor = connection.cursor()
+                cursor.execute("UPDATE GLOBAL_VAR SET DEVICE_ID='"+self.lineEdit_2.text()+"' ")               
         connection.commit();
         connection.close()
         self.label_5.setText("Registraion is successfully Done.") 

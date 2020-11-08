@@ -27,7 +27,7 @@ class fci_35_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 10, 1331, 711))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.frame.setFont(font)

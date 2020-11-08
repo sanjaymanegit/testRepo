@@ -15,9 +15,12 @@ from fci_16_admin_printer_setup import fci_16_Ui_MainWindow
 from fci_36_calibration_login import fci_36_Ui_MainWindow
 from fci_43_admin_maintns import fci_43_Ui_MainWindow
 from fci_19_admin_change_password import fci_19_Ui_MainWindow
+from fci_53_backup import fci_53_Ui_MainWindow
+from fci_54_recovery import fci_54_Ui_MainWindow
+from cryptography.fernet import Fernet
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import datetime
 import sqlite3
 
 
@@ -69,40 +72,92 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_3.setGeometry(QtCore.QRect(480, 50, 75, 31))
         self.pushButton_3.setObjectName("pushButton_3")
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
-        self.groupBox_2.setGeometry(QtCore.QRect(40, 180, 1231, 471))
+        self.groupBox_2.setGeometry(QtCore.QRect(40, 155, 1231, 528))
+        '''
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(15)
         self.groupBox_2.setFont(font)
+        '''
         self.groupBox_2.setTitle("")
         self.groupBox_2.setObjectName("groupBox_2")
         self.pushButton_11 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_11.setGeometry(QtCore.QRect(110, 80, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_11.setFont(font)
         self.pushButton_11.setObjectName("pushButton_11")
         self.pushButton_12 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_12.setGeometry(QtCore.QRect(460, 190, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_12.setFont(font)
         self.pushButton_12.setObjectName("pushButton_12")
         self.pushButton_13 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_13.setGeometry(QtCore.QRect(790, 80, 281, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_13.setFont(font)
         self.pushButton_13.setObjectName("pushButton_13")
         self.pushButton_14 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_14.setGeometry(QtCore.QRect(450, 80, 231, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_14.setFont(font)
         self.pushButton_14.setObjectName("pushButton_14")
         self.pushButton_15 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_15.setGeometry(QtCore.QRect(790, 190, 281, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_15.setFont(font)
         self.pushButton_15.setObjectName("pushButton_15")
         self.pushButton_16 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_16.setGeometry(QtCore.QRect(110, 190, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_16.setFont(font)
         self.pushButton_16.setObjectName("pushButton_16")
         self.pushButton_17 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_17.setGeometry(QtCore.QRect(110, 310, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_17.setFont(font)
         self.pushButton_17.setObjectName("pushButton_17")
         self.pushButton_18 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_18.setGeometry(QtCore.QRect(460, 310, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_18.setFont(font)
         self.pushButton_18.setObjectName("pushButton_18")
         self.pushButton_19 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_19.setGeometry(QtCore.QRect(790, 300, 281, 61))
+        self.pushButton_19.setGeometry(QtCore.QRect(790, 310, 281, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_19.setFont(font)
         self.pushButton_19.setObjectName("pushButton_19")
+        self.pushButton_20 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_20.setGeometry(QtCore.QRect(110, 420, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_20.setFont(font)
+        self.pushButton_20.setObjectName("pushButton_20")
+        self.pushButton_21 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_21.setGeometry(QtCore.QRect(460, 420, 221, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_21.setFont(font)
+        self.pushButton_21.setObjectName("pushButton_21")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(940, 80, 181, 41))
         font = QtGui.QFont()
@@ -157,9 +212,10 @@ class fci_15_Ui_MainWindow(object):
         #self.pushButton_18.setDisabled(True)
         self.pushButton_19.setText(_translate("MainWindow", "Register"))
         self.pushButton_19.hide()
+        self.pushButton_20.setText(_translate("MainWindow", "Backup"))
+        self.pushButton_21.setText(_translate("MainWindow", "Recovery"))
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
-        self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))
-        
+        self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))        
         self.pushButton_3.clicked.connect(MainWindow.close)
         self.startx()
 
@@ -176,13 +232,22 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_18.clicked.connect(self.open_new_window8)
         self.pushButton_13.clicked.connect(self.open_new_window9)
         self.pushButton_15.clicked.connect(self.open_new_window10)
+        self.pushButton_20.clicked.connect(self.open_new_window11)
+        self.pushButton_21.clicked.connect(self.open_new_window12)
         self.pushButton_2.clicked.connect(self.reset_fun)
         
         
         self.label_2.hide()
         self.groupBox_2.hide()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
     
-    
+        
+    def device_date(self):     
+        self.label_3.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
     def show_page(self):
         connection = sqlite3.connect("services.db")
         results=connection.execute("select PWD FROM SERVICES_MST WHERE SERVICE_NAME='SERVICE_USER_PWD'")       
@@ -202,10 +267,13 @@ class fci_15_Ui_MainWindow(object):
         serial_no=self.getserial()
         #print("current serial No : "+str(serial_no))
         connection = sqlite3.connect("services.db")
-        results=connection.execute("select DEVICE_SERIAL_NO from DAT_MST") 
+        results=connection.execute("select DEVICE_SERIAL_NO,PRINTER_MAC_ADDR,RANDOM_NUM from DAT_MST") 
         for x in results:
-           #print("Device Serial No :"+str(x[0]))
-           if(serial_no == str(x[0])):               
+           if(str(x[1]) != ""):
+               d_cipher_suite = Fernet(str(x[1]))           
+               plain_text = d_cipher_suite.decrypt(str.encode(x[2]))
+               #print("Serial Id :"+str(serial_no)+"  Decripted serial No :"+str(plain_text,'utf-8'))  
+           if(serial_no == str(plain_text,'utf-8')):               
                self.pushButton_19.hide()
            else:               
                self.pushButton_19.show()
@@ -279,6 +347,18 @@ class fci_15_Ui_MainWindow(object):
     def open_new_window10(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_19_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window11(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_53_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window12(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_54_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

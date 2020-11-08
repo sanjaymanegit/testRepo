@@ -198,7 +198,7 @@ class fci_18_Ui_MainWindow(object):
         self.checkBox.setText(_translate("MainWindow", "Weighing Data"))
         self.checkBox_2.setText(_translate("MainWindow", "Set Default Data"))
         self.checkBox_3.setText(_translate("MainWindow", "Master Data Only"))
-        
+        self.lineEdit_2.setReadOnly(True)
         self.radioButton.setText("Site")
         self.radioButton.setChecked(True)
         self.radioButton_2.setText("Storage")
