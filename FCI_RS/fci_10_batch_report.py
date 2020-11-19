@@ -218,7 +218,7 @@ class fci_10_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Recipt Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
+        self.label.setText(_translate("MainWindow", "Buy Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 :00"))
         
         self.label_22.setText(_translate("MainWindow", "Report Type: "))
@@ -265,7 +265,7 @@ class fci_10_Ui_MainWindow(object):
                      self.label_36.setText("Report selected for date range  <font color=blue> [ "+str(x[2])+" ] </font>  to  <font color=blue> [ "+str(x[3])+" ] </font>.")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='BATCH'  AND  IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='BUY'  AND  IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
@@ -327,14 +327,14 @@ class fci_10_Ui_MainWindow(object):
         
         
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Serial Id ','Recipt ID.', ' Truck Sr. No ', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.','Tare Wt.','Gross Wt.','Storage Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Serial Id ','Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.','Tare Wt.','Gross Wt.','Storage Name'])        
            
         connection = sqlite3.connect("fci.db")
         if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):                
-                results=connection.execute("SELECT SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT||MANNUAL_INS_FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
+                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
       
         else:
-                results=connection.execute("SELECT SERIAL_ID,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,CURR_TRUCK_CNT,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

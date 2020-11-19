@@ -9,10 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from fci_03b_weighing_storage_batch import fci_03b_Ui_MainWindow
-from fci_03i_weighing_storage_issues import fci_03i_Ui_MainWindow
+from fci_03b_weighing_buy import fci_03b_Ui_MainWindow
+from fci_03i_weighing_sell import fci_03i_Ui_MainWindow
 from fci_03_weighing import fci_03_Ui_MainWindow
-from fci_34_weighing_others import fci_34_Ui_MainWindow
+from fci_34_weighing_other import fci_34_Ui_MainWindow
 from fci_01_main import fci_01_Ui_MainWindow
 
 from fci_39_dup_issues_storage import fci_39_Ui_MainWindow
@@ -314,6 +314,7 @@ class fci_04_Ui_MainWindow(object):
         self.last_display_val=""
         self.other_flag="No"
         self.click_type="BUY"
+        self.buy_sell_flag=""
        
 
         self.retranslateUi(MainWindow)
@@ -672,22 +673,20 @@ class fci_04_Ui_MainWindow(object):
     def check_onclick(self):        
         ###Check if serial number exist
         self.save_data()
-        self.serial_no = ""
-        self.batch_id=""
-        self.issue_id=""
+        self.serial_no = ""       
         self.dev_loc_type=""
         self.status=""
         self.first_wt_type=""
+        self.buy_sell_flag=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")            
-            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS,FIRST_WEIGHT_MODE FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
+            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,STATUS,FIRST_WEIGHT_MODE,BATCH_ISSUE_FLG FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
             for x in results:            
-                self.serial_no=str(x[0])
-                self.batch_id=str(x[2])
-                self.issue_id=str(x[3])
+                self.serial_no=str(x[0])               
                 self.dev_loc_type=str(x[1])
-                self.status=str(x[4])
-                self.first_wt_type=str(x[5])
+                self.status=str(x[2])
+                self.first_wt_type=str(x[3])
+                self.buy_sell_flag=str(x[4])
             connection.close()
             print("first wt mode :"+str(self.first_wt_type))
             connection = sqlite3.connect("fci.db")
@@ -702,28 +701,24 @@ class fci_04_Ui_MainWindow(object):
                     if(self.status=="SECOND"):
                         self.label_2.setText("Completed Serial.No :"+str(self.serial_no))
                     else:
-                        print("batch_id:"+str(self.batch_id)+" issue_id:"+str(self.issue_id))
-                        if(self.batch_id == "" and  self.issue_id==""):
+                        if(self.buy_sell_flag == "BUY"):
+                             self.stop_timer()
+                             self.window = QtWidgets.QMainWindow()
+                             self.ui=fci_03b_Ui_MainWindow()
+                             self.ui.setupUi(self.window)           
+                             self.window.show() 
+                        elif(self.buy_sell_flag == "SELL"):
+                             self.stop_timer()
+                             self.window = QtWidgets.QMainWindow()
+                             self.ui=fci_03i_Ui_MainWindow()
+                             self.ui.setupUi(self.window)           
+                             self.window.show()
+                        elif(self.buy_sell_flag == "OTHER"):
                              self.open_new_window7()
                         else:
-                            if(self.batch_id  != ""):
-                                 if(int(self.batch_id) > 0):
-                                    if(self.dev_loc_type == "STORAGE"):
-                                        self.label_2.setText("")
-                                        #call recipt of storage
-                                        self.open_new_window4()
-                                    else:
-                                        self.label_2.setText("")
-                                        #call recipt of site
-                                        self.open_new_window6()
-                            elif(self.issue_id  != ""):
-                                    if(int(self.issue_id) > 0):
-                                            self.label_2.setText("")
-                                            #call issue of storage
-                                            self.open_new_window5()
-                            else:
-                                self.label_2.setText("ERROR.")
-                                self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
+                             self.label_2.setText("INVALID CLICK.")
+                            
+                        
             else:
                     self.label_2.setText("SERIAL NO. DOES NOT EXIST.")
         else:
@@ -739,15 +734,15 @@ class fci_04_Ui_MainWindow(object):
         self.dev_loc_type=""
         self.status=""
         self.first_wt_type=""
+        self.buy_sell_flag=""
         if(self.lineEdit.text() != ""):
             connection = sqlite3.connect("fci.db")
-            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,IFNULL(BATCH_ID,0),IFNULL(ISSUE_ID,0),STATUS FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
+            results=connection.execute("SELECT SERIAL_ID ,DEVICE_LOCATION_TYPE,STATUS,BATCH_ISSUE_FLG FROM WEIGHT_MST WHERE SERIAL_ID='"+str(int(self.lineEdit.text()))+"'") 
             for x in results:            
-                self.serial_no=str(x[0])
-                self.batch_id=str(x[2])
-                self.issue_id=str(x[3])
+                self.serial_no=str(x[0])               
                 self.dev_loc_type=str(x[1])
-                self.status=str(x[4])
+                self.status=str(x[2])
+                self.buy_sell_flag=str(x[3])
             connection.close()
             
             connection = sqlite3.connect("fci.db")
@@ -757,30 +752,20 @@ class fci_04_Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
-            
             if(self.serial_no != ""):
-                   print("batch_id:"+str(self.batch_id)+" issue_id:"+str(self.issue_id))
-                   if(self.batch_id == "" and  self.issue_id==""):
-                             self.open_new_window12()
-                   else:                       
-                       if(self.batch_id  != ""):
-                             if(int(self.batch_id) > 0):
-                                if(self.dev_loc_type == "STORAGE"):
-                                    self.label_2.setText("")
-                                    #call recipt of storage
-                                    self.open_new_window10()
-                                else:
-                                    self.label_2.setText("")
-                                    #call recipt of site
-                                    self.open_new_window11()
-                       elif(self.issue_id  != ""):      
-                             if(int(self.issue_id) > 0):
-                                    self.label_2.setText("")
-                                    #call issue of storage
-                                    self.open_new_window9()
-                             else:
-                                self.label_2.setText("ERROR.")
-                                self.label_2.setText("b:"+str(self.batch_id)+" i:"+str(self.issue_id))
+                   if(self.buy_sell_flag=="BUY"):
+                        self.label_2.setText("")
+                        #call recipt of storage
+                        self.open_new_window10()
+                   elif(self.buy_sell_flag=="SELL"):
+                        self.label_2.setText("")
+                        #call issue of storage
+                        self.open_new_window9()
+                   elif(self.buy_sell_flag=="OTHER"):
+                        self.label_2.setText("")
+                        self.open_new_window12()
+                   else:
+                        self.label_2.setText("ERROR.")
             else:
                     self.label_2.setText("SERIAL.NO. DOES NOT EXIST.")
         else:
@@ -808,40 +793,52 @@ class fci_04_Ui_MainWindow(object):
     
     
     def gross_onclick(self):        
-        self.gross_tare_flag="GROSS"
+        self.gross_tare_flag="GROSS"        
         if(self.click_type=="BUY"):
-             self.stop_timer()
+             self.save_data()
+             #self.stop_timer()
              self.window = QtWidgets.QMainWindow()
              self.ui=fci_03b_Ui_MainWindow()
              self.ui.setupUi(self.window)           
              self.window.show()            
         elif(self.click_type=="SELL"):
-             self.stop_timer()
+             self.save_data()
+             #self.stop_timer()
              self.window = QtWidgets.QMainWindow()
              self.ui=fci_03i_Ui_MainWindow()
              self.ui.setupUi(self.window)           
              self.window.show()
-        elif(self.click_type=="OTHER"):        
-             self.open_new_window7()
+        elif(self.click_type=="OTHER"):
+             self.save_data()
+             self.window = QtWidgets.QMainWindow()
+             self.ui=fci_34_Ui_MainWindow()
+             self.ui.setupUi(self.window)           
+             self.window.show()
         else:
             print("CLICK ON ANY BUTTON")
     
     def tare_onclick(self):
         self.gross_tare_flag="TARE"
         if(self.click_type=="BUY"):
-             self.stop_timer()
+             self.save_data()
+             #self.stop_timer()
              self.window = QtWidgets.QMainWindow()
              self.ui=fci_03b_Ui_MainWindow()
              self.ui.setupUi(self.window)           
              self.window.show()            
         elif(self.click_type=="SELL"):
-             self.stop_timer()
+             self.save_data()
+             #self.stop_timer()
              self.window = QtWidgets.QMainWindow()
              self.ui=fci_03i_Ui_MainWindow()
              self.ui.setupUi(self.window)           
              self.window.show()
-        elif(self.click_type=="OTHER"):        
-             self.open_new_window7()
+        elif(self.click_type=="OTHER"):
+             self.save_data()
+             self.window = QtWidgets.QMainWindow()
+             self.ui=fci_34_Ui_MainWindow()
+             self.ui.setupUi(self.window)           
+             self.window.show()
         else:
             print("CLICK ON ANY BUTTON")
     
@@ -860,7 +857,7 @@ class fci_04_Ui_MainWindow(object):
         if(str(self.slip_status) == "NEW"):
                 self.save_data()
         print("self.slip_status7 :"+str(self.slip_status))
-        self.stop_timer()
+        #self.stop_timer()
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_34_Ui_MainWindow()
         self.ui.setupUi(self.window)           

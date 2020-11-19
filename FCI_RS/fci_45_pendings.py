@@ -874,8 +874,8 @@ class fci_45_Ui_MainWindow(object):
         self.label_23.setText(_translate("MainWindow", "30"))
         self.label_24.setText(_translate("MainWindow", "20"))
         self.label_25.setText(_translate("MainWindow", "ALL"))
-        self.label_26.setText(_translate("MainWindow", "RECIPT"))
-        self.label_27.setText(_translate("MainWindow", "ISSUE"))
+        self.label_26.setText(_translate("MainWindow", "BUY"))
+        self.label_27.setText(_translate("MainWindow", "SELL"))
         self.label_28.setText(_translate("MainWindow", "OTHER"))
         self.label_7.setText(_translate("MainWindow", "FROM:"))
         self.pushButton_11.setText(_translate("MainWindow", "DATE"))
@@ -915,9 +915,9 @@ class fci_45_Ui_MainWindow(object):
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str("%02d"%x))           
             self.i=self.i+1
-        self.label_29.setText(_translate("MainWindow", "ISSUE"))
+        self.label_29.setText(_translate("MainWindow", "SELL"))
         self.label_30.setText(_translate("MainWindow", "OTHER"))
-        self.label_31.setText(_translate("MainWindow", "RECIPT"))
+        self.label_31.setText(_translate("MainWindow", "BUY"))
         self.label_32.setText(_translate("MainWindow", "ALL"))
         self.label_53.setText(_translate("MainWindow", "50"))
         self.label_54.setText(_translate("MainWindow", "100"))
@@ -1085,13 +1085,13 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='BATCH'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='BUY'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_recipt_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='ISSUE'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND BATCH_ISSUE_FLG='SELL'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_issue_cnt=str(x[0])
         connection.close()
@@ -1133,13 +1133,13 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ISSUE_FLG='BATCH' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND BATCH_ISSUE_FLG='BUY' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_recipt_cnt=str(x[0])
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='ISSUE' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='SELL' AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_issue_cnt=str(x[0])
         connection.close()

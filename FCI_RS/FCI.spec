@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['fci_00_login.py'],
-             pathex=['/home/pi/FCI'],
+             pathex=['/home/pi/FCI_RS'],
              binaries=[],
              datas=[('fci.db', '.'), ('services.db', '.')],
              hiddenimports=[],

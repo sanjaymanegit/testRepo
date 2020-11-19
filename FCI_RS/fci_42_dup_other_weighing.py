@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'fci_42_dup_other_weighing.ui'
+# Form implementation generated from reading ui file 'fci_39_dup_issues_storage.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.0
 #
@@ -22,32 +22,30 @@ from reportlab.lib.pagesizes import landscape, letter,inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
 from reportlab.lib import colors
 
+
 class fci_42_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1028, 551)
+        MainWindow.resize(1038, 500)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("background-color: rgb(135, 206, 235);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 981, 491))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 971, 441))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         self.frame.setFont(font)
-        self.frame.setStyleSheet("")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(660, 410, 141, 41))
+        self.pushButton_7.setGeometry(QtCore.QRect(680, 360, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
         self.pushButton_7.setFont(font)
         self.pushButton_7.setObjectName("pushButton_7")
         self.label_20 = QtWidgets.QLabel(self.frame)
@@ -86,12 +84,10 @@ class fci_42_Ui_MainWindow(object):
         self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_14.setObjectName("label_14")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(500, 410, 121, 41))
+        self.pushButton_8.setGeometry(QtCore.QRect(520, 360, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
         self.pushButton_8.setFont(font)
         self.pushButton_8.setObjectName("pushButton_8")
         self.label_25 = QtWidgets.QLabel(self.frame)
@@ -293,7 +289,7 @@ class fci_42_Ui_MainWindow(object):
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.label_58 = QtWidgets.QLabel(self.frame)
-        self.label_58.setGeometry(QtCore.QRect(370, 10, 241, 31))
+        self.label_58.setGeometry(QtCore.QRect(370, 10, 201, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -304,7 +300,7 @@ class fci_42_Ui_MainWindow(object):
         self.label_58.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_58.setObjectName("label_58")
         self.label_15 = QtWidgets.QLabel(self.frame)
-        self.label_15.setGeometry(QtCore.QRect(40, 310, 81, 41))
+        self.label_15.setGeometry(QtCore.QRect(40, 210, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -315,8 +311,20 @@ class fci_42_Ui_MainWindow(object):
         self.label_15.setStyleSheet("")
         self.label_15.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_15.setObjectName("label_15")
+        self.label_55 = QtWidgets.QLabel(self.frame)
+        self.label_55.setGeometry(QtCore.QRect(40, 310, 61, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_55.setFont(font)
+        self.label_55.setStyleSheet("")
+        self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_55.setObjectName("label_55")
         self.label_57 = QtWidgets.QLabel(self.frame)
-        self.label_57.setGeometry(QtCore.QRect(40, 240, 61, 41))
+        self.label_57.setGeometry(QtCore.QRect(40, 260, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -328,7 +336,7 @@ class fci_42_Ui_MainWindow(object):
         self.label_57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_57.setObjectName("label_57")
         self.label_46 = QtWidgets.QLabel(self.frame)
-        self.label_46.setGeometry(QtCore.QRect(140, 240, 171, 41))
+        self.label_46.setGeometry(QtCore.QRect(130, 260, 161, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -339,8 +347,11 @@ class fci_42_Ui_MainWindow(object):
         self.label_46.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_46.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_46.setObjectName("label_46")
+        '''
+       
+        '''
         self.label_49 = QtWidgets.QLabel(self.frame)
-        self.label_49.setGeometry(QtCore.QRect(140, 310, 421, 41))
+        self.label_49.setGeometry(QtCore.QRect(130, 210, 171, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -351,13 +362,26 @@ class fci_42_Ui_MainWindow(object):
         self.label_49.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_49.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_49.setObjectName("label_49")
-        self.pushButton_9 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_9.setGeometry(QtCore.QRect(30, 410, 161, 41))
+        self.label_50 = QtWidgets.QLabel(self.frame)
+        self.label_50.setGeometry(QtCore.QRect(130, 310, 181, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
+        font.setUnderline(False)
         font.setWeight(75)
+        self.label_50.setFont(font)
+        self.label_50.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_50.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_50.setObjectName("label_50")
+        '''
+        
+        '''
+        self.pushButton_9 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_9.setGeometry(QtCore.QRect(40, 360, 101, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
         self.pushButton_9.setFont(font)
         self.pushButton_9.setObjectName("pushButton_9")
         self.label_65 = QtWidgets.QLabel(self.frame)
@@ -420,6 +444,36 @@ class fci_42_Ui_MainWindow(object):
         self.label_69.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_69.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_69.setObjectName("label_69")
+        '''
+       
+        '''
+        self.label_22 = QtWidgets.QLabel(self.frame)
+        self.label_22.setGeometry(QtCore.QRect(340, 310, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.label_22.setFont(font)
+        self.label_22.setStyleSheet("")
+        self.label_22.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_22.setObjectName("label_22")
+        '''
+       
+        '''
+        self.label_37 = QtWidgets.QLabel(self.frame)
+        self.label_37.setGeometry(QtCore.QRect(520, 310, 81, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_37.setFont(font)
+        self.label_37.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_37.setObjectName("label_37")
         self.label_73 = QtWidgets.QLabel(self.frame)
         self.label_73.setGeometry(QtCore.QRect(340, 250, 91, 41))
         font = QtGui.QFont()
@@ -432,6 +486,7 @@ class fci_42_Ui_MainWindow(object):
         self.label_73.setStyleSheet("")
         self.label_73.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_73.setObjectName("label_73")
+        
         self.label_74 = QtWidgets.QLabel(self.frame)
         self.label_74.setGeometry(QtCore.QRect(830, 250, 111, 41))
         font = QtGui.QFont()
@@ -444,8 +499,13 @@ class fci_42_Ui_MainWindow(object):
         self.label_74.setStyleSheet("background-color: rgb(255, 170, 255);")
         self.label_74.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_74.setObjectName("label_74")
+        
+        
+        '''
+        
+        '''
         self.comboBox = QtWidgets.QComboBox(self.frame)
-        self.comboBox.setGeometry(QtCore.QRect(390, 410, 69, 41))
+        self.comboBox.setGeometry(QtCore.QRect(380, 360, 69, 41))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -456,47 +516,26 @@ class fci_42_Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.label_42 = QtWidgets.QLabel(self.frame)
-        self.label_42.setGeometry(QtCore.QRect(240, 410, 111, 41))
+        self.label_42.setGeometry(QtCore.QRect(220, 360, 111, 41))
         font = QtGui.QFont()
-        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_42.setFont(font)
         self.label_42.setStyleSheet("")
         self.label_42.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_42.setObjectName("label_42")
-        self.label_75 = QtWidgets.QLabel(self.frame)
-        self.label_75.setGeometry(QtCore.QRect(830, 310, 111, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
-        self.label_75.setFont(font)
-        self.label_75.setStyleSheet("background-color: rgb(255, 170, 255);")
-        self.label_75.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_75.setObjectName("label_75")
-        self.label_45 = QtWidgets.QLabel(self.frame)
-        self.label_45.setGeometry(QtCore.QRect(640, 310, 151, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.label_45.setFont(font)
-        self.label_45.setStyleSheet("")
-        self.label_45.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_45.setObjectName("label_45")
+        '''
+       
+        '''
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1028, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1038, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.current_slip_no=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -504,11 +543,11 @@ class fci_42_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_7.setText(_translate("MainWindow", "RETURN"))
+        self.pushButton_7.setText(_translate("MainWindow", "Return"))
         self.label_20.setText(_translate("MainWindow", "Serial.No:"))
         self.label_19.setText(_translate("MainWindow", "10001"))
         self.label_14.setText(_translate("MainWindow", "Vehical.No "))
-        self.pushButton_8.setText(_translate("MainWindow", "PRINT"))
+        self.pushButton_8.setText(_translate("MainWindow", "Print"))
         self.label_25.setText(_translate("MainWindow", "First Wt. Type :"))
         self.label_26.setText(_translate("MainWindow", "First Wt. Date :"))
         self.label_27.setText(_translate("MainWindow", "First Wt. Time :"))
@@ -524,29 +563,45 @@ class fci_42_Ui_MainWindow(object):
         self.lineEdit_2.setText(_translate("MainWindow", "MH 43 AW 0302"))
         self.label_44.setText(_translate("MainWindow", "Net. Weight(Kg)  :"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
-        self.label_58.setText(_translate("MainWindow", "DUPLICATE OTHERS"))
-        self.label_15.setText(_translate("MainWindow", "Party :"))
+        self.label_58.setText(_translate("MainWindow", "DUPLICATE  OTHER"))
+        self.label_15.setText(_translate("MainWindow", "Charges:"))
+        self.label_55.setText(_translate("MainWindow", "Party:"))
         self.label_57.setText(_translate("MainWindow", "Material:"))
         self.label_46.setText(_translate("MainWindow", "001-Wheat"))
-        self.label_49.setText(_translate("MainWindow", " PARTY NAME XXXXX YYYYY"))
-        self.pushButton_9.setText(_translate("MainWindow", "VIEW PRINT"))
+        self.label_49.setText(_translate("MainWindow", "450"))
+        self.label_50.setText(_translate("MainWindow", "Reliance LTD"))
+        '''
+       
+        ''' 
+        
+        self.pushButton_9.setText(_translate("MainWindow", "View Print"))
         self.label_65.setText(_translate("MainWindow", "41.000"))
         self.label_66.setText(_translate("MainWindow", "05 Aug 2020"))
         self.label_67.setText(_translate("MainWindow", "Tare"))
         self.label_68.setText(_translate("MainWindow", "14:30"))
         self.label_69.setText(_translate("MainWindow", "OUT"))
+        self.label_22.setText(_translate("MainWindow", "Mobile No.:"))
+        self.label_37.setText(_translate("MainWindow", "9773540255"))
+       
+        '''
+        
+        
+        '''
         self.label_73.setText(_translate("MainWindow", "Driver:"))
-        self.label_74.setText(_translate("MainWindow", "41.000"))
+        '''
+       
+        '''
         self.comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "2"))
         self.comboBox.setItemText(2, _translate("MainWindow", "3"))
         self.comboBox.setItemText(3, _translate("MainWindow", "4"))
         self.label_42.setText(_translate("MainWindow", "Print Copies :"))
-        self.label_75.setText(_translate("MainWindow", "250.00"))
-        self.label_45.setText(_translate("MainWindow", "Charges(Rs.)  :"))
+        #self.label_45.setText(_translate("MainWindow", "Storage Name :"))
+        #self.label_114.setText(_translate("MainWindow", "Godown-1"))
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.pushButton_8.clicked.connect(self.print_recipt)
         self.pushButton_9.clicked.connect(self.open_pdf)
+               
         self.fetch_slip_data()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -559,7 +614,7 @@ class fci_42_Ui_MainWindow(object):
     def fetch_slip_data(self):        
         self.vehicle_no=""
         connection = sqlite3.connect("fci.db")        
-        results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),NET_WEIGHT_VAL,STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0'),PARTY_NAME FROM WEIGHT_MST WHERE SERIAL_ID IN (SELECT OLD_SLIP_NO FROM GLOBAL_VAR)")       
+        results=connection.execute("SELECT SERIAL_ID, MATERIAL_NAME,FIRST_WEIGHT_MODE,FIRST_WEIGHT_VAL,FIRST_WT_CRTEATED_ON ,VEHICLE_NO,IFNULL(SECOND_WT_MODE,'--'),IFNULL(SECOND_WT_VAL,0),IFNULL(SECOND_WT_CREATED_ON,'--'),NET_WEIGHT_VAL,STATUS,REMARK ,DRIVER_IN_OUT,IFNULL(PROPOSED_BAGS,'0'),TARGET_STORAGE,CURR_TRUCK_CNT,TOTAL_TRUCKS_CNT,CONTRACTOR_ID,CONTRACTOR_NAME,IFNULL(ACCPTED_BAGS,'0'),NULL,TARGET_STORAGE,IFNULL(SUBSTR(SLOT_1,0,6),'0'),IFNULL(SLOT_1_QUANTITY,'0'),substr(SLOT_2,0,6),IFNULL(SLOT_2_QUANTITY,'0'),PARTY_NAME,AMOUNT,PHONE_NO FROM WEIGHT_MST WHERE SERIAL_ID IN (SELECT OLD_SLIP_NO FROM GLOBAL_VAR)")       
         for x in results:        
             #self.label_.setText(str(x[0]).zfill(4))
             self.label_19.setText(str(x[0]).zfill(6))
@@ -583,12 +638,15 @@ class fci_42_Ui_MainWindow(object):
             self.label_74.setText(str(x[9]))
             #Driver
             self.label_69.setText(str(x[12]))
-            #Cahrges            
-            self.label_75.setText(str(x[11]))
-            #Party Name            
-            self.label_49.setText(str(x[26]))
+           
            
             
+            #Material
+            self.label_46.setText(str(x[1]))
+           
+            self.label_50.setText(str(x[26]))
+            self.label_49.setText(str(x[27]))
+            self.label_37.setText(str(x[28]))
         connection.close()
     
     def print_recipt(self):
@@ -602,13 +660,12 @@ class fci_42_Ui_MainWindow(object):
         connection.commit();
         connection.close()  
         
-        
         y=0
         y=(int(self.comboBox.currentText()))
         print("y:"+str(y))
         for x in range(y):
                          print("print count :"+str(x))
-                         os.system("./job_print_others.sh")
+                         os.system("./job_print_issue_storage.sh")
         connection.close()
     
     def open_pdf(self):
@@ -684,19 +741,20 @@ class fci_42_Ui_MainWindow(object):
         c.line( 0.5*inch, PAGE_HEIGHT-( 0.45*inch ), PAGE_WIDTH-( 0.5*inch ), PAGE_HEIGHT-( 0.45*inch ) )
         ###################################################
         connection = sqlite3.connect("fci.db")       
-        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,BATCH_ID,ACCPTED_BAGS,MATERIAL_NAME,PARTY_NAME FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,PARTY_NAME,AMOUNT,PHONE_NO FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
                 
         for x in results:
                 c.setFont('Helvetica',10)
                 c.drawString(50,740,"Serial ID        : "+str(x[0]))
                 c.drawString(250,740,"Vehicle No      : "+str(x[1]))
                 
-                c.drawString(50,710,"Party Name.       : "+str(x[5]))
+                c.drawString(50,710,"Party Name.       : "+str(x[3]))
+                c.drawString(250,710,"Charges       : "+str(x[4]))
                 
-                c.drawString(50,650,"Material         : "+str(x[4]))
-                
-                
+                c.drawString(50,680,"Mobile.No   : "+str(x[5]))
                
+                
+                c.drawString(50,650,"Material         : "+str(x[2]))
                 
                 c.drawString(50,440,str(self.note))
                 #c.drawString(250,550,"Net Wt. (Kg)    : "+str(x[11]))
@@ -718,7 +776,7 @@ class fci_42_Ui_MainWindow(object):
         ############################################
         
         c.showPage()
-        c.save()  
+        c.save()
 
 
 if __name__ == "__main__":
@@ -729,3 +787,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

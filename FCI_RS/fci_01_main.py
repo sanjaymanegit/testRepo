@@ -22,7 +22,7 @@ from fci_27_audits import fci_27_Ui_MainWindow
 from fci_08_reports_submenu import fci_08_Ui_MainWindow
 from fci_15_admin_su import fci_15_Ui_MainWindow
 #from fci_04_batch_issues_submenu import fci_04_Ui_MainWindow
-from fci_21_bu_master_data import fci_21_Ui_MainWindow
+from fci_21_master import fci_21_Ui_MainWindow
 
 from fci_26_users import fci_26_Ui_MainWindow
 
@@ -36,7 +36,7 @@ class fci_01_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(25, 25, 1291, 718))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 711))
         #self.frame.setStyleSheet("")
         self.frame.setStyleSheet("color: rgb(255, 255, 255);\n")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
@@ -261,22 +261,20 @@ class fci_01_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE  FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT LOGIN_USER_NAME,DEVICE_LOCATION_TYPE,LOGIN_USER_ROLE  FROM GLOBAL_VAR") 
         for x in results:
             self.label_20_1.setText("Logged In : "+str(x[0]))
             self.device_location_type=str(x[1])
+            if(str(x[2]) in ("ADMIN","SUPER_ADMIN","SUPERVISOR")):
+                self.pushButton_9.setText("USERS")
+                self.pushButton_9.setEnabled(True)                
+            else:
+                self.pushButton_9.setText("")
+                self.pushButton_9.setDisabled(True)
         connection.close()
         
-        if(str(self.device_location_type) == 'SITE'):
-             #self.label.setText("Material Handling and Transport System 1.0 \n @ Site")
-             self.pushButton_7.setDisabled(True)
-             self.pushButton_9.setDisabled(True)
-             self.pushButton_7.setText("")
-             self.pushButton_9.setText("")
-        else:
-            #self.label.setText("Material Handling and Transport System 1.0 \n @ Storage")
-            self.pushButton_7.setEnabled(True)
-            self.pushButton_9.setEnabled(True)
+      
+            
         
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
