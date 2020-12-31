@@ -665,7 +665,7 @@ class fci_40_Ui_MainWindow(object):
         print("y:"+str(y))
         for x in range(y):
                          print("print count :"+str(x))
-                         os.system("./job_print_issue_storage.sh")
+                         os.system("./job_print_slip.sh")
         connection.close()
     
     def open_pdf(self):

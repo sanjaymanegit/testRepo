@@ -196,7 +196,7 @@ class fci_27_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.textEdit = QtWidgets.QTextEdit(self.frame)
-        self.textEdit.setEnabled(False)
+        self.textEdit.setReadOnly(True)
         self.textEdit.setGeometry(QtCore.QRect(770, 490, 481, 171))
         self.textEdit.setObjectName("textEdit")
         self.radioButton = QtWidgets.QRadioButton(self.frame)
@@ -375,15 +375,12 @@ class fci_27_Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Role Name :"))
         self.label_6.setText(_translate("MainWindow", "Created On:"))
         self.label_7.setText(_translate("MainWindow", "Message :"))
-        self.label_11.setText(_translate("MainWindow", "OPERATOR"))
-        self.label_24.setText(_translate("MainWindow", "Sanjaykumar Mane(ADMIN)"))
-        self.label_25.setText(_translate("MainWindow", "05 Aug 2020 12:45:00 "))
-        self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">fghfghfgh gfhfghfghfg fghfghfghfghfgfghfgh ffghfg hfgh </p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ghjkghjkghjkhjk</p></body></html>"))
+        self.label_11.setText(_translate("MainWindow", ""))
+        self.label_24.setText(_translate("MainWindow", ""))
+        self.label_25.setText(_translate("MainWindow", ""))
+        
+         
+        
         self.radioButton.setText(_translate("MainWindow", "All Records"))
         self.pushButton_6.setText(_translate("MainWindow", " Date "))
         self.label_4.setText(_translate("MainWindow", "From Date:"))

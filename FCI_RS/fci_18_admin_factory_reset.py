@@ -266,14 +266,14 @@ class fci_18_Ui_MainWindow(object):
                     with connection:        
                                 cursor = connection.cursor()                    
                                 cursor.execute(" DELETE FROM WEIGHT_MST")
-                                cursor.execute(" DELETE FROM BATCH_MST")
+                                #cursor.execute(" DELETE FROM BATCH_MST")
                                 cursor.execute(" DELETE FROM AUDIT_MST")
                                 cursor.execute(" DELETE FROM API_LOGS")
                                 cursor.execute(" DELETE FROM SLOTS_MST")                        
-                                cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
-                                cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
-                                cursor.execute(" DELETE FROM ISSUE_MST")                                
-                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('WEIGHT_MST','BATCH_MST','AUDIT_MST','API_LOGS','SLOTS_MST','BATCH_STORAGE_LOSS','ISSUE_QUANTITY_DTLS','ISSUE_MST')")
+                                #cursor.execute(" DELETE FROM BATCH_STORAGE_LOSS")
+                                #cursor.execute(" DELETE FROM ISSUE_QUANTITY_DTLS")
+                                #cursor.execute(" DELETE FROM ISSUE_MST")                                
+                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('WEIGHT_MST','AUDIT_MST','API_LOGS')")
                                 
                     connection.commit();
                     connection.close()
@@ -296,12 +296,10 @@ class fci_18_Ui_MainWindow(object):
                     connection = sqlite3.connect("fci.db")          
                     with connection:        
                                 cursor = connection.cursor()
-                                cursor.execute("DELETE FROM MATERIAL_TYPES")
-                                cursor.execute("DELETE FROM CONTRACTOR_MST")
-                                cursor.execute("DELETE FROM STORAGE_DETAILS")
+                                cursor.execute("DELETE FROM RATES_CONF")                                
                                 cursor.execute("DELETE FROM USERS_MST where USER_ID > 1")
                                 cursor.execute("DELETE FROM CALIBRATION_LOG")
-                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('MATERIAL_TYPES','CONTRACTOR_MST','STORAGE_DETAILS','CALIBRATION_LOG')")
+                                cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('RATES_CONF','CALIBRATION_LOG')")
                                 cursor.execute("UPDATE SQLITE_SEQUENCE SET SEQ=2 WHERE name in ('USERS_MST')")
                     connection.commit();
                     connection.close()

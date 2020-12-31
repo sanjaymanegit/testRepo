@@ -418,7 +418,7 @@ class fci_08_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_3.setText(_translate("MainWindow", "BUY"))
         self.pushButton_4.setText(_translate("MainWindow", "SELL"))
-        self.pushButton_5.setText(_translate("MainWindow", "OTHERS"))
+        self.pushButton_5.setText(_translate("MainWindow", "WEIGHING"))
         self.pushButton_5_1.setText("RETURN") 
         self.lineEdit.setText(_translate("MainWindow", "2020-10-14"))
         self.pushButton_9.setText(_translate("MainWindow", "DATE RANGE "))
@@ -667,7 +667,7 @@ class fci_08_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET REPORT_ENTITY='BATCH',REPORT_BY='BY_BATCH_ID',REPORT_FROM_DATE=null,REPORT_TO_DATE=null,REPORT_BATCH_ID='"+self.comboBox.currentText()+"'")
+                    cursor.execute("UPDATE GLOBAL_VAR SET REPORT_ENTITY='BUY',REPORT_BY='BY_BATCH_ID',REPORT_FROM_DATE=null,REPORT_TO_DATE=null,REPORT_BATCH_ID='"+self.comboBox.currentText()+"'")
              
             connection.commit();                    
             connection.close()
@@ -675,7 +675,7 @@ class fci_08_Ui_MainWindow(object):
             connection = sqlite3.connect("fci.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET REPORT_ENTITY='ISSUE',REPORT_BY='BY_ISSUE_ID',REPORT_FROM_DATE=null,REPORT_TO_DATE=null,REPORT_BATCH_ID='"+self.comboBox.currentText()+"'")
+                    cursor.execute("UPDATE GLOBAL_VAR SET REPORT_ENTITY='SELL',REPORT_BY='BY_ISSUE_ID',REPORT_FROM_DATE=null,REPORT_TO_DATE=null,REPORT_BATCH_ID='"+self.comboBox.currentText()+"'")
             
             connection.commit();                    
             connection.close()

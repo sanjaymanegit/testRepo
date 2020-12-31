@@ -124,7 +124,7 @@ class fci_48_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_9.setText(_translate("MainWindow", "Close"))
-        self.label.setText(_translate("MainWindow", "OTHER (PENDING)"))
+        self.label.setText(_translate("MainWindow", "WEIGHING (PENDING)"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Slip No"))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -140,7 +140,7 @@ class fci_48_Ui_MainWindow(object):
         connection = sqlite3.connect("fci.db")
         results=connection.execute("SELECT STATUS,STATUS_FROM,STATUS_TO FROM GLOBAL_VAR") 
         for x in results:            
-            self.label.setText("OTHER - "+str(x[0]))
+            self.label.setText("WEIGHING - "+str(x[0]))
             self.status=str(x[0])
             self.from_dt=str(x[1])
             self.to_dt=str(x[2])
@@ -172,9 +172,9 @@ class fci_48_Ui_MainWindow(object):
            
         connection = sqlite3.connect("fci.db")
         if(self.status == "PENDING"):
-            results=connection.execute("select SERIAL_ID,PARTY_NAME,VEHICLE_NO,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)),FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,printf(\"%6d\", IFNULL(SECOND_WT_VAL,0)) ,SECOND_WT_CREATED_ON FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='OTHER'  and STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+            results=connection.execute("select SERIAL_ID,PARTY_NAME,VEHICLE_NO,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)),FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,printf(\"%6d\", IFNULL(SECOND_WT_VAL,0)) ,SECOND_WT_CREATED_ON FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='WEIGHING'  and STATUS='FIRST' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         else:
-            results=connection.execute("select SERIAL_ID,PARTY_NAME,VEHICLE_NO,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)),FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,printf(\"%6d\", IFNULL(SECOND_WT_VAL,0)) ,SECOND_WT_CREATED_ON FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='OTHER'  and STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+            results=connection.execute("select SERIAL_ID,PARTY_NAME,VEHICLE_NO,MATERIAL_NAME,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)),FIRST_WEIGHT_MODE,printf(\"%6d\", IFNULL(FIRST_WEIGHT_VAL,0)) ,FIRST_WT_CRTEATED_ON,SECOND_WT_MODE,printf(\"%6d\", IFNULL(SECOND_WT_VAL,0)) ,SECOND_WT_CREATED_ON FROM WEIGHT_MST WHERE BATCH_ISSUE_FLG='WEIGHING'  and STATUS='SECOND' and FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

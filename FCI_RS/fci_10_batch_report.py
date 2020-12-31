@@ -14,7 +14,6 @@ from PyQt5.Qt import QTableWidgetItem
 import datetime
 import sqlite3
 from PyQt5.QtCore import QDate
-import os,sys
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import landscape, letter,inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak,Spacer, PageTemplate
@@ -43,7 +42,7 @@ class fci_10_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(20, 10, 231, 51))
+        self.label.setGeometry(QtCore.QRect(10, 10, 331, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
@@ -63,8 +62,15 @@ class fci_10_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(20, 190, 1261, 431))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(10)
+        self.tableWidget.setColumnCount(9)
         self.tableWidget.setRowCount(5)
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.tableWidget.setFont(font)
         '''
        
         '''
@@ -126,6 +132,28 @@ class fci_10_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_8.setFont(font)
         self.pushButton_8.setObjectName("pushButton_8")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(470, 650, 121, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        self.label_30_1 = QtWidgets.QLabel(self.frame)
+        self.label_30_1.setGeometry(QtCore.QRect(620, 650, 201, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_30_1.setFont(font)
+        self.label_30_1.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_30_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_30_1.setObjectName("label_30")
+        
+        
         self.label_30 = QtWidgets.QLabel(self.frame)
         self.label_30.setGeometry(QtCore.QRect(500, 120, 101, 31))
         font = QtGui.QFont()
@@ -159,7 +187,7 @@ class fci_10_Ui_MainWindow(object):
         self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_36.setObjectName("label_36")
         self.label_23 = QtWidgets.QLabel(self.frame)
-        self.label_23.setGeometry(QtCore.QRect(16, 120, 111, 31))
+        self.label_23.setGeometry(QtCore.QRect(20, 120, 111, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -178,27 +206,6 @@ class fci_10_Ui_MainWindow(object):
         #self.label_9.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
-        
-        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8_1.setGeometry(QtCore.QRect(470, 650, 121, 31))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.pushButton_8_1.setFont(font)
-        self.pushButton_8_1.setObjectName("pushButton_8_1")
-        
-        self.label_30_1 = QtWidgets.QLabel(self.frame)
-        self.label_30_1.setGeometry(QtCore.QRect(620, 650, 201, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
-        self.label_30_1.setFont(font)
-        self.label_30_1.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_30_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_30_1.setObjectName("label_30")
-        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -218,26 +225,26 @@ class fci_10_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Buy Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
+        self.label.setText(_translate("MainWindow", "Buy Records Report as on "+datetime.datetime.now().strftime("%d %b %Y")))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45 :00"))
         
-        self.label_22.setText(_translate("MainWindow", "Report Type: "))
+        self.label_22.setText(_translate("MainWindow", "Report Type :"))
         self.label_2.setText(_translate("MainWindow", "Monthly"))
-        self.label_29.setText(_translate("MainWindow", "Net. Weight :"))
+        self.label_29.setText(_translate("MainWindow", "Total Charges:"))
         self.pushButton_5.setText(_translate("MainWindow", "REFRESH"))
         self.pushButton_7.setText(_translate("MainWindow", "PRINT"))
         self.label_8.setText(_translate("MainWindow", "5450"))
         self.pushButton_8.setText(_translate("MainWindow", "RETURN"))
-        
         self.pushButton_8_1.setText(_translate("MainWindow", "VIEW PRINT"))
         self.label_30_1.setText(_translate("MainWindow", "Max. Print Pages : 4"))
-        
+        self.label_30_1.hide()
         self.label_30.setText(_translate("MainWindow", "Total Trucks :"))
         self.label_11.setText(_translate("MainWindow", "150"))
         self.label_36.setText(_translate("MainWindow", "Report selected Month : MAY 2020"))
-        self.label_23.setText(_translate("MainWindow", "No.Of Recipts:"))
+        self.label_23.setText(_translate("MainWindow", "No.Print.Pages :"))
         self.label_9.setText(_translate("MainWindow", "5450"))
         self.pushButton_8.clicked.connect(MainWindow.close)
+        
         self.startx()
     
     def startx(self):
@@ -260,17 +267,16 @@ class fci_10_Ui_MainWindow(object):
                  self.label_2.setText(str(x[1]))
                  self.from_dt=str(x[2])
                  self.to_dt=str(x[3])
-                 
                  if(self.label_2.text() == 'DATE_RANGE'):
-                     self.label_36.setText("Report selected for date range  <font color=blue> [ "+str(x[2])+" ] </font>  to  <font color=blue> [ "+str(x[3])+" ] </font>.")
+                     self.label_36.setText("Report selected for date range <font color=blue>[ "+str(x[2])+" ] </font> to <font color=blue> ["+str(x[3])+" ]</font>.")
                      
                      self.whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
-                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='BUY'  AND  IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by batch_id,CURR_TRUCK_CNT limit 400"
+                     self.whr_sql2=" WHERE  BATCH_ISSUE_FLG='BUY' AND IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)  between '"+str(x[2])+"' and '"+str(x[3])+"' order by serial_id,CURR_TRUCK_CNT limit 400"
                  elif(self.label_2.text() == 'BY_BATCH_ID'):
                      self.label_36.setText("Report selected for batch id:"+str(x[4])+".")
                      
                      self.whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
-                     self.whr_sql2="WHERE  BATCH_ID = '"+str(x[4])+"' order by batch_id,CURR_TRUCK_CNT "
+                     self.whr_sql2="WHERE  BATCH_ID = '"+str(x[4])+"' order by serial_id,CURR_TRUCK_CNT "
                      
                  else:
                      self.label_36.setText("Report selected for unknow.")
@@ -286,11 +292,11 @@ class fci_10_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")        
-        results=connection.execute("SELECT count(*),printf(\"%.3f\",  sum(net_weight_val)),count(distinct batch_id)  FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
+        results=connection.execute("SELECT count(*),printf(\"%6d\",  sum(AMOUNT)) FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
         for x in results:
                 self.label_11.setText(str(x[0]))
                 self.label_8.setText(str(x[1]))
-                self.label_9.setText(str(x[2]))
+                #total_amount=str(x[0])                
         connection.close()
         
         self.select_all_data()
@@ -314,27 +320,26 @@ class fci_10_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
-        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 100)    
         self.tableWidget.setColumnWidth(7, 100)
         self.tableWidget.setColumnWidth(8, 150)
-        self.tableWidget.setColumnWidth(9, 200)    
-        self.tableWidget.setColumnWidth(10, 100)
         
+       
         
         
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Serial Id ','Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.','Tare Wt.','Gross Wt.','Storage Name'])        
-           
+        self.tableWidget.setHorizontalHeaderLabels(['Serial.No','Record Type', 'Vehical No.','Charges','Release DateTime' ,'Net. Wt.','Tare Wt.','Gross Wt.','Party Name' ])        
+          
         connection = sqlite3.connect("fci.db")
-        if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):                
-                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
+        if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
+                results=connection.execute("SELECT serial_id,BATCH_ISSUE_FLG  ,VEHICLE_NO,AMOUNT,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,16) AS RELEASE_DATE,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
       
         else:
-                results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT serial_id,BATCH_ISSUE_FLG  ,VEHICLE_NO,AMOUNT,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,16) AS RELEASE_DATE,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -353,9 +358,10 @@ class fci_10_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)
             
+    
     def open_pdf(self):
         self.create_report_pdf()
-        os.system("xpdf ./reports/dr_other_report.pdf")
+        os.system("xpdf ./reports/dr_all_report.pdf")
     
     def create_report_pdf(self):
         PAGE_HEIGHT=defaultPageSize[1]
@@ -395,10 +401,10 @@ class fci_10_Ui_MainWindow(object):
          
         
         childs_data=[]
-        childs_data=[['Serial ID.','Recipt Id', ' Vehicle.No ','Material Name' ,' Net Wt.',' Tare Wt.',' Gross Wt.','Storage Name']]
+        childs_data=[['Serial ID.','Record Type', ' Vehicle.No ','Charges','Material Name' ,' Net Wt.',' Tare Wt.',' Gross Wt.','Party Name']]
         connection = sqlite3.connect("fci.db")           
            
-        results=connection.execute("SELECT SERIAL_ID_DISPLY,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,VEHICLE_NO,MATERIAL_NAME,printf(\"%3d\",IFNULL(NET_WEIGHT_VAL,0)),printf(\"%3d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))             
+        results=connection.execute("SELECT SERIAL_ID_DISPLY, BATCH_ISSUE_FLG ,VEHICLE_NO,AMOUNT,MATERIAL_NAME,printf(\"%.3f\",IFNULL(NET_WEIGHT_VAL,0)),printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))             
         for k in results:
                 childs_data.append(k)
         connection.close()
@@ -407,11 +413,13 @@ class fci_10_Ui_MainWindow(object):
          
         Elements.append(f)
         
-        doc = SimpleDocTemplate('./reports/dr_other_report.pdf',pagesize=A4)
+        doc = SimpleDocTemplate('./reports/dr_all_report.pdf',pagesize=A4)
         doc.pagesize = landscape(A4)
         doc.build(Elements)
         print("Done")
         self.filter_col_name=""
+         
+    
         
 
 if __name__ == "__main__":
@@ -422,3 +430,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

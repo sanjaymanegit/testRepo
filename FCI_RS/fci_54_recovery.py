@@ -350,22 +350,30 @@ class fci_54_Ui_MainWindow(object):
     
     def recover_data(self):
         date_str=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        source_file_name=str(self.label_45.text()).replace("\n","")
         old_file_name="fci_old_"+str(date_str)+".db"
         if(self.label_45.text() != ""):
-             os.system("cp fci.db "+str(old_file_name))
-             os.system("cp "+str(self.label_45.text())+" fci.db")
-             os.system("chmod 777 fci.db")
-             print("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(self.label_45.text())+"','"+str(old_file_name)+"')")
+             os.system("sudo cp fci.db "+str(old_file_name))
+             os.system("sudo rm -rf fci.db")
+             os.system("sudo umount /media/usb")
+             time.sleep(1)
+             os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")  
+             print("sudo cp "+str(source_file_name)+" fci.db")
+             os.system("sudo cp "+str(source_file_name)+" fci.db")
+             os.system("sudo chmod 777 fci.db")
+             print("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(source_file_name)+"','"+str(old_file_name)+"')")
              connection = sqlite3.connect("services.db")          
              with connection:        
                         cursor = connection.cursor()                    
-                        cursor.execute("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(self.label_45.text())+"','"+str(old_file_name)+"')")                   
+                        cursor.execute("INSERT INTO ZRECOVERY_HISTROY(USED_FILE_NAME,OLD_FILE_NAME) VALUES ('"+str(source_file_name)+"','"+str(old_file_name)+"')")                   
              connection.commit();
              connection.close()
              self.list_report_data()
              self.groupBox_7.show()
              self.label_44.show()
-             self.label_44.setText("RECOERY SUCCESSFULLY DONE.")             
+             self.label_44.setText("RECOERY SUCCESSFULLY DONE.")
+             self.log_audit("RECOVERY"," DATA RECOVERED BY FILE :"+str(source_file_name))
+             
         else:
              self.groupBox_7.show()
              self.label_44.show()
@@ -375,9 +383,9 @@ class fci_54_Ui_MainWindow(object):
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 try:
-                    os.system("rm -rf backupfiles_list.txt")  
+                    os.system("sudo rm -rf backupfiles_list.txt")  
                     os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")                    
-                    os.system("ls /media/usb/fci*.db >> backupfiles_list.txt")
+                    os.system("sudo ls /media/usb/fci*.db >> backupfiles_list.txt")
                     os.system("sudo umount /media/usb")
                     try:
                        self.listWidget.clear() 
@@ -457,7 +465,7 @@ class fci_54_Ui_MainWindow(object):
         self.tableWidget.hide()
         self.groupBox_7.hide()
         self.pushButton_12.hide()
-        self.label_9.hide()
+        #self.label_9.hide()
         self.pushButton_13.hide()
         self.listWidget.hide()
         self.pushButton_15.hide()
@@ -511,7 +519,15 @@ class fci_54_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)  
 
-    
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
+
 
 if __name__ == "__main__":
     import sys

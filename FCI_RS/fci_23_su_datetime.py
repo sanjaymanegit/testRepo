@@ -267,6 +267,7 @@ class fci_23_Ui_MainWindow(object):
         os.system("sudo hwclock -w")
         os.system("sudo hwclock -r")
         os.system("sudo date")
+        self.log_audit("DateTime Setup"," DateTimeset done")
         
     def dt_onclick(self):
         self.calendarWidget.show()
@@ -277,6 +278,15 @@ class fci_23_Ui_MainWindow(object):
         self.from_date=str(var_name)
         self.lineEdit.setText(str(self.calendarWidget.selectedDate().toString()))        
         self.calendarWidget.hide()
+    
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
     
     
 

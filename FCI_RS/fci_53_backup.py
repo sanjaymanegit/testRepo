@@ -535,6 +535,7 @@ class fci_53_Ui_MainWindow(object):
                     self.groupBox_7.show()       
                     self.label_44.show()
                     self.label_44.setText("BACKUP COMPLETED.")
+                    self.log_audit("BACKUP"," BACKUP FILE CREATED AS :"+str(date_str)+".db")
                    
                    
                 #self.label_9.setText("fci_bkp"+str(date_str)+".db")
@@ -600,7 +601,14 @@ class fci_53_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)      
 
-
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
 
 if __name__ == "__main__":
     import sys

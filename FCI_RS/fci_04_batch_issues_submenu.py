@@ -14,10 +14,10 @@ from fci_03i_weighing_sell import fci_03i_Ui_MainWindow
 from fci_03_weighing import fci_03_Ui_MainWindow
 from fci_34_weighing_other import fci_34_Ui_MainWindow
 from fci_01_main import fci_01_Ui_MainWindow
-
+from cryptography.fernet import Fernet
 from fci_39_dup_issues_storage import fci_39_Ui_MainWindow
 from fci_40_dup_recipt_storage import fci_40_Ui_MainWindow
-from fci_41_dup_recipt_site import fci_41_Ui_MainWindow
+#from fci_41_dup_recipt_site import fci_41_Ui_MainWindow
 from fci_42_dup_other_weighing import fci_42_Ui_MainWindow
 from fci_45_pendings import fci_45_Ui_MainWindow
 
@@ -315,6 +315,7 @@ class fci_04_Ui_MainWindow(object):
         self.other_flag="No"
         self.click_type="BUY"
         self.buy_sell_flag=""
+        self.go_ahead="No"
        
 
         self.retranslateUi(MainWindow)
@@ -325,9 +326,9 @@ class fci_04_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "ZERO"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
-        self.pushButton_3.setText(_translate("MainWindow", "BUY"))
+        self.pushButton_3.setText(_translate("MainWindow", "WEIGHING"))
         self.pushButton_4.setText(_translate("MainWindow", "SELL"))
-        self.pushButton_5.setText(_translate("MainWindow", "OTHER"))
+        self.pushButton_5.setText(_translate("MainWindow", "BUY"))
         self.label_53.setText(_translate("MainWindow", "Kg."))
         self.pushButton_2.setText(_translate("MainWindow", "MENU"))
         self.label.setText(_translate("MainWindow", "HI-TECH WEIGHING"))
@@ -361,14 +362,14 @@ class fci_04_Ui_MainWindow(object):
         
         
             
-        self.pushButton_3.clicked.connect(self.open_new_window3)
-        self.pushButton_4.clicked.connect(self.open_new_window4)
-        self.pushButton_5.clicked.connect(self.open_new_window5)
+        self.pushButton_3.clicked.connect(self.other_onclick)
+        self.pushButton_4.clicked.connect(self.sell_onclick)
+        self.pushButton_5.clicked.connect(self.buy_onclick)
         self.pushButton_12.clicked.connect(self.tare_onclick)
         self.pushButton_13.clicked.connect(self.gross_onclick)
         
         self.pushButton_6.clicked.connect(self.check_onclick)   
-        self.pushButton_5.clicked.connect(self.other_onclick)
+        #self.pushButton_5.clicked.connect(self.other_onclick)
         self.pushButton_2.clicked.connect(self.open_new_window8)
         self.pushButton_9.clicked.connect(self.new_field_onlcick)
         self.pushButton_10.clicked.connect(self.old_field_onlcick)
@@ -389,21 +390,6 @@ class fci_04_Ui_MainWindow(object):
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
    
    
-    def other_onclick(self):
-        #self.pushButton_12.show()
-        #self.pushButton_13.show()
-        if(self.other_flag=="Yes"):
-            #self.pushButton_13.setText("")
-            #self.pushButton_12.setText("")
-            self.pushButton_13.setDisabled(True)
-            self.pushButton_12.setDisabled(True)
-            self.other_flag="No"
-        else:
-            self.pushButton_13.setText("GROSS")
-            self.pushButton_12.setText("TARE")
-            self.pushButton_13.setEnabled(True)
-            self.pushButton_12.setEnabled(True)
-            self.other_flag="Yes"
    
    
         
@@ -568,6 +554,7 @@ class fci_04_Ui_MainWindow(object):
            
     
     def new_slip_hide(self):
+        
         self.pushButton_3.hide()
         self.pushButton_4.hide()
         self.pushButton_5.hide()
@@ -600,6 +587,7 @@ class fci_04_Ui_MainWindow(object):
     
     def new_field_onlcick(self):
         self.start_timer()
+        self.other_onclick()
         self.old_slip_hide()
         self.new_slip_flag="SHOW"
         self.display_new_slip_fields()
@@ -713,7 +701,7 @@ class fci_04_Ui_MainWindow(object):
                              self.ui=fci_03i_Ui_MainWindow()
                              self.ui.setupUi(self.window)           
                              self.window.show()
-                        elif(self.buy_sell_flag == "OTHER"):
+                        elif(self.buy_sell_flag == "WEIGHING"):
                              self.open_new_window7()
                         else:
                              self.label_2.setText("INVALID CLICK.")
@@ -761,7 +749,7 @@ class fci_04_Ui_MainWindow(object):
                         self.label_2.setText("")
                         #call issue of storage
                         self.open_new_window9()
-                   elif(self.buy_sell_flag=="OTHER"):
+                   elif(self.buy_sell_flag=="WEIGHING"):
                         self.label_2.setText("")
                         self.open_new_window12()
                    else:
@@ -772,75 +760,117 @@ class fci_04_Ui_MainWindow(object):
             self.label_2.setText("ENTER SERIAL NO.")
     
     
-    def open_new_window3(self):
+    def buy_onclick(self):
         self.click_type="BUY"
-        self.pushButton_3.setStyleSheet("background-color: rgb(12, 4, 120);")
+        self.pushButton_5.setStyleSheet("background-color: rgb(12, 4, 120);")
         self.pushButton_4.setStyleSheet("background-color: rgb(0, 130, 0);")
-        self.pushButton_5.setStyleSheet("background-color: rgb(0, 130, 0);")
+        self.pushButton_3.setStyleSheet("background-color: rgb(0, 130, 0);")
     
-    def open_new_window4(self):
+    def sell_onclick(self):
         self.click_type="SELL"
         self.pushButton_4.setStyleSheet("background-color: rgb(12, 4, 120);")
         self.pushButton_3.setStyleSheet("background-color: rgb(0, 130, 0);")
         self.pushButton_5.setStyleSheet("background-color: rgb(0, 130, 0);")
     
-    def open_new_window5(self):
-        self.click_type="OTHER"
-        self.pushButton_5.setStyleSheet("background-color: rgb(12, 4, 120);")
+    def other_onclick(self):
+        self.click_type="WEIGHING"
+        self.pushButton_3.setStyleSheet("background-color: rgb(12, 4, 120);")
         self.pushButton_4.setStyleSheet("background-color: rgb(0, 130, 0);")
-        self.pushButton_3.setStyleSheet("background-color: rgb(0, 130, 0);")
+        self.pushButton_5.setStyleSheet("background-color: rgb(0, 130, 0);")
         
     
     
     def gross_onclick(self):        
-        self.gross_tare_flag="GROSS"        
-        if(self.click_type=="BUY"):
-             self.save_data()
-             #self.stop_timer()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_03b_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()            
-        elif(self.click_type=="SELL"):
-             self.save_data()
-             #self.stop_timer()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_03i_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()
-        elif(self.click_type=="OTHER"):
-             self.save_data()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_34_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()
+        self.gross_tare_flag="GROSS"
+        self.validation()
+        if(self.go_ahead=="Yes"):
+            if(self.click_type=="BUY"):
+                 self.save_data()
+                 #self.stop_timer()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_03b_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()            
+            elif(self.click_type=="SELL"):
+                 self.save_data()
+                 #self.stop_timer()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_03i_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()
+            elif(self.click_type=="WEIGHING"):
+                 self.save_data()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_34_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()
+            else:
+                print("CLICK ON ANY BUTTON")
         else:
-            print("CLICK ON ANY BUTTON")
+            self.label_2.setText("DEVICE RAM ISSUE.")
+            self.label_2.show()
     
     def tare_onclick(self):
         self.gross_tare_flag="TARE"
-        if(self.click_type=="BUY"):
-             self.save_data()
-             #self.stop_timer()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_03b_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()            
-        elif(self.click_type=="SELL"):
-             self.save_data()
-             #self.stop_timer()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_03i_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()
-        elif(self.click_type=="OTHER"):
-             self.save_data()
-             self.window = QtWidgets.QMainWindow()
-             self.ui=fci_34_Ui_MainWindow()
-             self.ui.setupUi(self.window)           
-             self.window.show()
+        self.validation()
+        if(self.go_ahead=="Yes"):
+            if(self.click_type=="BUY"):
+                 self.save_data()
+                 #self.stop_timer()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_03b_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()            
+            elif(self.click_type=="SELL"):
+                 self.save_data()
+                 #self.stop_timer()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_03i_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()
+            elif(self.click_type=="WEIGHING"):
+                 self.save_data()
+                 self.window = QtWidgets.QMainWindow()
+                 self.ui=fci_34_Ui_MainWindow()
+                 self.ui.setupUi(self.window)           
+                 self.window.show()
+            else:
+                print("CLICK ON ANY BUTTON")
         else:
-            print("CLICK ON ANY BUTTON")
+            self.label_2.setText("DEVICE RAM ISSUE.")
+            self.label_2.show()
+            
+            
+    def validation(self):
+        self.go_ahead="No"
+        serial_no=self.getserial()
+        #print("current serial No : "+str(serial_no))
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("select DEVICE_SERIAL_NO,PRINTER_MAC_ADDR,RANDOM_NUM from DAT_MST") 
+        for x in results:
+           if(str(x[1]) != ""):
+               d_cipher_suite = Fernet(str(x[1]))           
+               plain_text = d_cipher_suite.decrypt(str.encode(x[2]))
+               #print("Serial Id :"+str(serial_no)+"  Decripted serial No :"+str(plain_text,'utf-8')) 
+               if(serial_no == str(plain_text,'utf-8')):
+                   self.go_ahead="Yes"
+               else:
+                   self.go_ahead="No"
+        connection.close()
+    
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+       
     
     def open_new_window6(self):
         if(str(self.slip_status) == "NEW"):

@@ -785,6 +785,7 @@ class fci_35_Ui_MainWindow(object):
                     cursor.execute("INSERT INTO CALIBRATION_LOG(USER_NAME,USER_ID,LD_SET,CAPACITY_SET ,OFF_POSITON_SET ,FLAG_SET ,CALI_WT,K_FACTOR)  select LOGIN_USER_NAME,LOGIN_USER_ID,LD_SET,CAPACITY_SET,OFF_POSITION_SET,FLAG_SET,CALIBRATION_LOAD_SET,K_FACTOR from global_var")                    
                 connection.commit();                    
                 connection.close()
+                self.log_audit("Callibration"," Callibration done")
             except IOError:
                 print("IO Errors")
                 self.label_44.setText("IO Errors" )  
@@ -966,6 +967,15 @@ class fci_35_Ui_MainWindow(object):
         self.ui=fci_37_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+        
+    def log_audit(self,event_name,desc_str):        
+        connection = sqlite3.connect("fci.db")
+        with connection:        
+            cursor = connection.cursor()       
+            cursor.execute("INSERT INTO AUDIT_MST(AUDIT_TYPE,MESSAGE) VALUES(?,?)",(event_name,desc_str))
+            cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")            
+        connection.commit();
+        connection.close()
 
 
 if __name__ == "__main__":

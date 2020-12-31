@@ -62,7 +62,7 @@ class fci_50_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(20, 190, 1261, 431))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(13)
+        self.tableWidget.setColumnCount(9)
         self.tableWidget.setRowCount(5)
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -230,7 +230,7 @@ class fci_50_Ui_MainWindow(object):
         
         self.label_22.setText(_translate("MainWindow", "Report Type :"))
         self.label_2.setText(_translate("MainWindow", "Monthly"))
-        self.label_29.setText(_translate("MainWindow", "Net. Weight:"))
+        self.label_29.setText(_translate("MainWindow", "Total Charges:"))
         self.pushButton_5.setText(_translate("MainWindow", "REFRESH"))
         self.pushButton_7.setText(_translate("MainWindow", "PRINT"))
         self.label_8.setText(_translate("MainWindow", "5450"))
@@ -292,7 +292,7 @@ class fci_50_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")        
-        results=connection.execute("SELECT count(*),printf(\"%.3f\",  sum(net_weight_val)) FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
+        results=connection.execute("SELECT count(*),printf(\"%6d\",  sum(amount)) FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))        
         for x in results:
                 self.label_11.setText(str(x[0]))
                 self.label_8.setText(str(x[1]))
@@ -327,23 +327,19 @@ class fci_50_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 100)    
         self.tableWidget.setColumnWidth(7, 100)
         self.tableWidget.setColumnWidth(8, 150)
-        self.tableWidget.setColumnWidth(9, 200)    
-        self.tableWidget.setColumnWidth(10, 100)
-        self.tableWidget.setColumnWidth(11, 150)
-        self.tableWidget.setColumnWidth(12, 200)    
+        
        
         
         
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Serial.No','Record Type', 'Vehical No.','No. Bags','Release Date','Release Time' ,'Net. Wt.','Tare Wt.','Gross Wt.','Target Location','Recipt ID.','Issue ID.','Party Name', ' Truck Sr. No '])        
-        print("SELECT serial_id,NULL,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%3d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%3d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%3d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE, (SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,ISSUE_ID,PARTY_NAME,CURR_TRUCK_CNT||MANNUAL_INS_FLG FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
-         
+        self.tableWidget.setHorizontalHeaderLabels(['Serial.No','Record Type', 'Vehical No.','Charges','Release Date','Net. Wt.','Tare Wt.','Gross Wt.','Party Name' ])        
+          
         connection = sqlite3.connect("fci.db")
         if(self.login_user_role in ['SUPER_ADMIN','ADMIN','SUPERVISOR']):
-                results=connection.execute("SELECT serial_id,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE, (SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,ISSUE_ID,PARTY_NAME,CURR_TRUCK_CNT||MANNUAL_INS_FLG FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
+                results=connection.execute("SELECT serial_id,BATCH_ISSUE_FLG  ,VEHICLE_NO,AMOUNT,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,16) AS RELEASE_DATE,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                       
       
         else:
-                results=connection.execute("SELECT serial_id,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,VEHICLE_NO,printf(\"%3d\", ACCPTED_BAGS) ,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,11) AS RELEASE_DATE,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),11,6) AS RELEASE_TIME,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as BATCH_ID,ISSUE_ID,PARTY_NAME,CURR_TRUCK_CNT FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
+                results=connection.execute("SELECT serial_id,BATCH_ISSUE_FLG  ,VEHICLE_NO,AMOUNT,SUBSTR(IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON),1,16) AS RELEASE_DATE,printf(\"%6d\", NET_WEIGHT_VAL) as NET_WEIGHT_VAL,printf(\"%6d\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%6d\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -405,10 +401,10 @@ class fci_50_Ui_MainWindow(object):
          
         
         childs_data=[]
-        childs_data=[['Serial ID.','Record Type', ' Vehicle.No ','Material Name' ,' Net Wt.',' Tare Wt.',' Gross Wt.','Storage Name']]
+        childs_data=[['Serial ID.','Record Type', ' Vehicle.No ','Charges','Material Name' ,' Net Wt.',' Tare Wt.',' Gross Wt.','Party Name']]
         connection = sqlite3.connect("fci.db")           
            
-        results=connection.execute("SELECT SERIAL_ID_DISPLY,CASE WHEN BATCH_ISSUE_FLG='BATCH' THEN 'RECIPT' ELSE BATCH_ISSUE_FLG END AS FLG,VEHICLE_NO,MATERIAL_NAME,printf(\"%.3f\",IFNULL(NET_WEIGHT_VAL,0)),printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,TARGET_STORAGE FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))             
+        results=connection.execute("SELECT SERIAL_ID_DISPLY,BATCH_ISSUE_FLG ,VEHICLE_NO,AMOUNT,MATERIAL_NAME,printf(\"%.3f\",IFNULL(NET_WEIGHT_VAL,0)),printf(\"%.3f\", TARE_WT_VAL) as TARE_WT_VAL,printf(\"%.3f\", GROSS_WT_VAL) as GROSS_WT_VAL,PARTY_NAME FROM WEIGHT_MST_FCI_VW "+str(self.whr_sql2))             
         for k in results:
                 childs_data.append(k)
         connection.close()

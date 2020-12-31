@@ -17,6 +17,7 @@ from fci_43_admin_maintns import fci_43_Ui_MainWindow
 from fci_19_admin_change_password import fci_19_Ui_MainWindow
 from fci_53_backup import fci_53_Ui_MainWindow
 from fci_54_recovery import fci_54_Ui_MainWindow
+from fci_56_sms_conf import fci_56_Ui_MainWindow
 from cryptography.fernet import Fernet
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -138,7 +139,7 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_18.setFont(font)
         self.pushButton_18.setObjectName("pushButton_18")
         self.pushButton_19 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_19.setGeometry(QtCore.QRect(790, 310, 281, 61))
+        self.pushButton_19.setGeometry(QtCore.QRect(790, 420, 221, 61))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(15)
@@ -158,6 +159,16 @@ class fci_15_Ui_MainWindow(object):
         font.setPointSize(15)
         self.pushButton_21.setFont(font)
         self.pushButton_21.setObjectName("pushButton_21")
+        
+        self.pushButton_22 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_22.setGeometry(QtCore.QRect(790, 310, 281, 61))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(15)
+        self.pushButton_22.setFont(font)
+        self.pushButton_22.setObjectName("pushButton_22")       
+        
+        
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(940, 80, 181, 41))
         font = QtGui.QFont()
@@ -214,6 +225,8 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_19.hide()
         self.pushButton_20.setText(_translate("MainWindow", "Backup"))
         self.pushButton_21.setText(_translate("MainWindow", "Recovery"))
+        self.pushButton_22.setText(_translate("MainWindow", "SMS"))
+        
         self.label_2.setText(_translate("MainWindow", "Incorrect Password !!!!"))
         self.label_3.setText(_translate("MainWindow", "24 Nov 2019 12:23:11"))        
         self.pushButton_3.clicked.connect(MainWindow.close)
@@ -234,6 +247,7 @@ class fci_15_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_new_window10)
         self.pushButton_20.clicked.connect(self.open_new_window11)
         self.pushButton_21.clicked.connect(self.open_new_window12)
+        self.pushButton_22.clicked.connect(self.open_new_window13)
         self.pushButton_2.clicked.connect(self.reset_fun)
         
         
@@ -359,6 +373,12 @@ class fci_15_Ui_MainWindow(object):
     def open_new_window12(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=fci_54_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window13(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=fci_56_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

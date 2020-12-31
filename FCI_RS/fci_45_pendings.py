@@ -876,7 +876,7 @@ class fci_45_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "ALL"))
         self.label_26.setText(_translate("MainWindow", "BUY"))
         self.label_27.setText(_translate("MainWindow", "SELL"))
-        self.label_28.setText(_translate("MainWindow", "OTHER"))
+        self.label_28.setText(_translate("MainWindow", "WEIGHING"))
         self.label_7.setText(_translate("MainWindow", "FROM:"))
         self.pushButton_11.setText(_translate("MainWindow", "DATE"))
         self.lineEdit_3.setText(_translate("MainWindow", "2020-10-14"))
@@ -916,7 +916,7 @@ class fci_45_Ui_MainWindow(object):
             self.comboBox_4.setItemText(self.i,str("%02d"%x))           
             self.i=self.i+1
         self.label_29.setText(_translate("MainWindow", "SELL"))
-        self.label_30.setText(_translate("MainWindow", "OTHER"))
+        self.label_30.setText(_translate("MainWindow", "WEIGHING"))
         self.label_31.setText(_translate("MainWindow", "BUY"))
         self.label_32.setText(_translate("MainWindow", "ALL"))
         self.label_53.setText(_translate("MainWindow", "50"))
@@ -1097,7 +1097,7 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND  BATCH_ISSUE_FLG='OTHER'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='FIRST' AND  BATCH_ISSUE_FLG='WEIGHING'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ") 
         for x in results:
             self.pending_other_cnt=str(x[0])
         connection.close()
@@ -1145,7 +1145,7 @@ class fci_45_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("fci.db")
-        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='OTHER'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
+        results=connection.execute("SELECT COUNT(*) FROM WEIGHT_MST WHERE STATUS='SECOND' AND  BATCH_ISSUE_FLG='WEIGHING'  AND FIRST_WT_CRTEATED_ON between '"+str(self.from_dt2)+"' and '"+str(self.to_dt2)+"' ") 
         for x in results:
             self.completed_other_cnt=str(x[0])
         connection.close()

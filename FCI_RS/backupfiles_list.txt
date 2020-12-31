@@ -9,3 +9,8 @@
 /media/usb/fci_bkp20201105141447.db
 /media/usb/fci_bkp20201105171808.db
 /media/usb/fci_bkp20201113144917.db
+/media/usb/fci_bkp20201120133757.db
+/media/usb/fci_bkp20201121153353.db
+/media/usb/fci_bkp20201124160856.db
+/media/usb/fci_bkp20201125172548.db
+/media/usb/fci_bkp20201205152402.db

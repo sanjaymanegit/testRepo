@@ -16,6 +16,14 @@ import re
 import datetime
 import time
 
+import os,sys
+
+#### pdf library
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import landscape, letter,inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
+from reportlab.lib import colors
+
 
 
 class fci_25_Ui_MainWindow(object):
@@ -558,6 +566,8 @@ class fci_25_Ui_MainWindow(object):
         self.login_user_id=""
         self.login_user_role=""
         self.net_wt=0
+        self.current_slip_no=""
+        self.serial_id=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -608,6 +618,8 @@ class fci_25_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "PRINT VIEW"))
         self.label_43.setText(_translate("MainWindow", "Charges:"))
         self.pushButton_8.clicked.connect(MainWindow.close)
+        self.pushButton_11.clicked.connect(self.print_recipt)
+        self.pushButton_12.clicked.connect(self.open_pdf)
         self.load_data()
         self.list_vehicles()
         self.lineEdit_11.setText("0")
@@ -837,7 +849,7 @@ class fci_25_Ui_MainWindow(object):
             connection.close()
             print("Record updated"+str(int(self.label_32.text())))
             self.label_24.setText("Saved Successfully.")
-            self.log_audit("Update/Delete Weighing","Updated Slip No :" +str(self.label_32.text()))
+            self.log_audit("EDITED RECRODS","Updated Slip No :" +str(self.label_32.text()))
             
   
     
@@ -856,11 +868,143 @@ class fci_25_Ui_MainWindow(object):
                    connection.close()
                    self.list_vehicles()
                    self.label_24.setText("Deleted  Successfully.")
-                   self.log_audit("Update/Delete Weighing","Deleted Slip No :" +str(self.label_32.text()))
+                   self.log_audit("EDITED RECRODS","Deleted Slip No :" +str(self.label_32.text()))
            else:
                   self.label_24.setText("Cancled Delete")
            
         
+    
+        
+
+    def print_recipt(self):
+        self.serial_id=int(self.label_32.text())
+        print("Slip Id : "+str(str(self.serial_id)))
+        self.pushButton_11.setDisabled(True)
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+             cursor = connection.cursor()                    
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"',DUPLICATE_FLG='Yes'") 
+        connection.commit();
+        connection.close()  
+        
+        y=0
+        y=(int(self.comboBox_2.currentText()))
+        print("y:"+str(y))
+        for x in range(y):
+                         print("print count :"+str(x))
+                         os.system("./job_print_slip.sh")
+        connection.close()
+    
+    def open_pdf(self):
+        self.create_pdf()
+        os.system("xpdf ./reports/recipt_site.pdf")
+        
+    def create_pdf(self):
+        self.tare_wt=""
+        self.tare_wt_date=""
+        self.gross_wt=""
+        self.gross_wt_date=""
+        self.net_wt=""        
+        self.title=""
+        self.address=""
+        self.company_name_font=16
+        self.company_address_font=12
+        self.note=""
+       
+        
+        
+        connection = sqlite3.connect("fci.db")          
+        with connection:        
+             cursor = connection.cursor()                    
+             cursor.execute("UPDATE PRINTER_DATA SET SERIAL_ID='"+str(self.serial_id)+"',DUPLICATE_FLG='Yes'") 
+        connection.commit();
+        connection.close()   
+        
+        data= [['           Weight Type         ','          Date           ','        Weight (Kg)          ']]
+        
+        connection = sqlite3.connect("fci.db")       
+        print("SELECT IFNULL(TARE_WT_VAL,0),TARE_WT_DATE,IFNULL(GROSS_WT_VAL,0),GROSS_WT_DATE,NET_WEIGHT_VAL FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        
+        results=connection.execute("SELECT printf(\"%6d\", IFNULL(TARE_WT_VAL,0)) ,TARE_WT_DATE,printf(\"%6d\", IFNULL(GROSS_WT_VAL,0)) ,GROSS_WT_DATE,printf(\"%6d\", IFNULL(NET_WEIGHT_VAL,0)) FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+               
+        for x in results:
+            self.tare_wt=str(x[0])
+            self.tare_wt_date=str(x[1])
+            self.gross_wt=str(x[2])
+            self.gross_wt_date=str(x[3])
+            self.net_wt=str(x[4])
+        connection.close()
+        
+        data.append(["Tare Weight",str(self.tare_wt_date),"     "+str(self.tare_wt)])
+        data.append(["Gross Weight",str(self.gross_wt_date),"     "+str(self.gross_wt)]) 
+        data.append(["Net Weight","","     "+str(self.net_wt)])
+        
+        
+        
+        c = Canvas("./reports/recipt_site.pdf")
+        #c.setPageSize( landscape(letter) )
+        #############################
+        c.setFont('Helvetica-Bold', int(self.company_name_font) )
+        PAGE_HEIGHT = letter[1]
+        PAGE_WIDTH = letter[0]
+        
+        
+            
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT  PRINTER_HEATER_TITLE,PRINTER_HEADER,PRINTER_FOOTER FROM GLOBAL_VAR") 
+        for x in results:
+                   c.drawString(170,790,str(x[0]))             
+                   self.address=str(x[1])
+                   self.note=str(x[2])
+        connection.close()
+        
+        
+        
+        c.setFont('Helvetica-Bold', int(self.company_address_font) )
+        c.drawString(100,770,str(self.address))
+        #c.drawString(150,770,str(self.address[76:200]))
+        
+        c.line( 0.5*inch, PAGE_HEIGHT-( 0.45*inch ), PAGE_WIDTH-( 0.5*inch ), PAGE_HEIGHT-( 0.45*inch ) )
+        ###################################################
+        connection = sqlite3.connect("fci.db")       
+        results=connection.execute("SELECT SERIAL_ID,VEHICLE_NO,MATERIAL_NAME,PARTY_NAME,AMOUNT,PHONE_NO FROM WEIGHT_MST_FCI_VW  WHERE SERIAL_ID in (SELECT SERIAL_ID from PRINTER_DATA)") 
+                
+        for x in results:
+                c.setFont('Helvetica',10)
+                c.drawString(50,740,"Serial ID        : "+str(x[0]))
+                c.drawString(250,740,"Vehicle No      : "+str(x[1]))
+                
+                c.drawString(50,710,"Party Name.       : "+str(x[3]))
+                c.drawString(250,710,"Charges       : "+str(x[4]))
+                
+                c.drawString(50,680,"Mobile.No   : "+str(x[5]))
+               
+                
+                c.drawString(50,650,"Material         : "+str(x[2]))
+                
+                c.drawString(50,440,str(self.note))
+                #c.drawString(250,550,"Net Wt. (Kg)    : "+str(x[11]))
+                #c.drawString(250,530,"Total Amount(Rs): "+str(x[8]))
+                c.line(0.5*inch,420,580,420)
+        
+        connection.close()
+  
+        ##############################################
+        c.setFont('Helvetica',10)        
+        f = Table(data)        
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black), ('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))
+        width = 200
+        height_1 = 400
+        f.wrapOn(c, width, height_1)
+        x = 40
+        y = 560
+        f.drawOn(c, x, y)        
+        ############################################
+        
+        c.showPage()
+        c.save()
+    
     def log_audit(self,event_name,desc_str):        
         connection = sqlite3.connect("fci.db")
         with connection:        
@@ -869,7 +1013,7 @@ class fci_25_Ui_MainWindow(object):
             cursor.execute("UPDATE AUDIT_MST SET USER_ID = (SELECT LOGIN_USER_ID FROM GLOBAL_VAR) WHERE USER_ID IS NULL")
             
         connection.commit();
-        connection.close() 
+        connection.close()
 
 
 if __name__ == "__main__":

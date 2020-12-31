@@ -289,7 +289,7 @@ class fci_42_Ui_MainWindow(object):
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.label_58 = QtWidgets.QLabel(self.frame)
-        self.label_58.setGeometry(QtCore.QRect(370, 10, 201, 31))
+        self.label_58.setGeometry(QtCore.QRect(370, 10, 231, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -563,7 +563,7 @@ class fci_42_Ui_MainWindow(object):
         self.lineEdit_2.setText(_translate("MainWindow", "MH 43 AW 0302"))
         self.label_44.setText(_translate("MainWindow", "Net. Weight(Kg)  :"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
-        self.label_58.setText(_translate("MainWindow", "DUPLICATE  OTHER"))
+        self.label_58.setText(_translate("MainWindow", "DUPLICATE  WEIGHING"))
         self.label_15.setText(_translate("MainWindow", "Charges:"))
         self.label_55.setText(_translate("MainWindow", "Party:"))
         self.label_57.setText(_translate("MainWindow", "Material:"))
@@ -665,7 +665,7 @@ class fci_42_Ui_MainWindow(object):
         print("y:"+str(y))
         for x in range(y):
                          print("print count :"+str(x))
-                         os.system("./job_print_issue_storage.sh")
+                         os.system("./job_print_slip.sh")
         connection.close()
     
     def open_pdf(self):

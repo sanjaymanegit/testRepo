@@ -35,7 +35,7 @@ def report_print():
     results=connection.execute("SELECT REPORT_ENTITY,REPORT_BY,REPORT_FROM_DATE,REPORT_TO_DATE,REPORT_BATCH_ID,PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER  FROM GLOBAL_VAR") 
     for x in results:
             if(str(x[1]) == 'DATE_RANGE'):
-                whr_sql=" WHERE strftime('%Y-%m-%d',START_DATE)  between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
+                whr_sql=" WHERE IFNULL(SECOND_WT_CREATED_ON,FIRST_WT_CRTEATED_ON)   between '"+str(x[2])+"' and '"+str(x[3])+"' limit 400"
             elif(str(x[1]) == 'BY_BATCH_ID'):
                 whr_sql="WHERE BATCH_ID = '"+str(x[4])+"'"
             
@@ -46,13 +46,11 @@ def report_print():
     connection.close()
     
     connection = sqlite3.connect("fci.db")        
-    results=connection.execute("select BATCH_ID ,TOTAL_TRUCKS, TOTAL_NET_WT, TOTAL_ACCEPTED_BAGS,(SELECT A.BATCH_ID_DISPLAY FROM BATCH_MST A WHERE A.BATCH_ID=BATCH_ID) as RECIPT_ID from BATCH_LIST_VW "+str(whr_sql)) 
+    results=connection.execute("select SERIAL_ID from WEIGHT_MST_FCI_VW "+str(whr_sql)) 
     for x in results:            
                 BATCH_IDS.append(str(x[0]))
-                TOTAL_TRUCKS.append(str(x[1]))
-                TOTAL_NET_WT.append(str(x[2]))
-                TOTAL_ACCEPTED_BAGS.append(str(x[3]))
-                RECIPT_IDS.append(str(x[4]))
+                print(str(x[0]))
+                print(str(whr_sql))
     connection.close()
         
         
@@ -83,20 +81,17 @@ def report_print():
         printer.text("     \n\r")
         printer.text("========================================================================\n\r")
         printer.text("     \n\r")
-        for i in range(len(BATCH_IDS)):
-                    printer.text("Recipt Id        : "+str(RECIPT_IDS[i]).zfill(6)+"                     Total Trucks    : "+str(TOTAL_TRUCKS[i]).zfill(4)+" \n\r")
-                    printer.text("Total Net Wt(Kg): "+str(TOTAL_NET_WT[i]).zfill(6)+"                Total Accepted Bags  : "+str(TOTAL_ACCEPTED_BAGS[i]).zfill(4)+" \n\r")
+        printer.text("|------------------------------------------------------------------------\n\r")
+        printer.text("| Slip.No. |  Vehical No  | Charges|  Net Wt | Party Name | Charges | Phone No    |\n\r")
+        printer.text("|------------------------------------------------------------------------\n\r")        
                     
-                    printer.text("     \n\r")
-                    printer.text("|------------------------------------------------------------------------\n\r")
-                    printer.text("| Slip.No. |  Vehical No  | No.Of.Bags. | Net Wt | Storage Name    |\n\r")
-                    printer.text("|------------------------------------------------------------------------\n\r")        
-                    
-                    
+        for i in range(len(BATCH_IDS)):                    
+                    printer.text("     \n\r")               
+                    #print("select SERIAL_ID,VEHICLE_NO,AMOUNT,NET_WEIGHT_VAL,PARTY_NAME,IFNULL(AMOUNT,0),PHONE_NO from WEIGHT_MST_FCI_VW WHERE BATCH_ID='"+str(BATCH_IDS[i])+"'") 
                     connection = sqlite3.connect("fci.db")        
-                    results=connection.execute("select SERIAL_ID,VEHICLE_NO,ACCPTED_BAGS,NET_WEIGHT_VAL,TARGET_STORAGE from WEIGHT_MST_FCI_VW WHERE BATCH_ID='"+str(BATCH_IDS[i])+"'") 
+                    results=connection.execute("select SERIAL_ID,VEHICLE_NO,AMOUNT,NET_WEIGHT_VAL,PARTY_NAME,IFNULL(AMOUNT,0),PHONE_NO from WEIGHT_MST_FCI_VW WHERE SERIAL_ID='"+str(BATCH_IDS[i])+"'") 
                     for x in results: 
-                            printer.text("|  "+str(x[0]).zfill(6)+"  | "+str(x[1])+"  |     "+str(x[2]).zfill(4)+"    |  "+str(x[3]).zfill(6)+" | "+str(x[4])+" \n\r")
+                            printer.text("|  "+str(x[0]).zfill(6)+"  | "+str(x[1])+"  |   "+str(x[2]).zfill(4)+"    |  "+str(x[3])+" | "+str(x[4])+" | "+str(x[5])+" \n\r")
                             printer.text("|                                                                  \n\r") 
                     
                     printer.text("|------------------------------------------------------------------------\n\r") 
@@ -112,10 +107,10 @@ def report_print():
 def get_vendor_id():
         os.system("rm -rf lsusb_data.txt") 
         # Extract serial from cpuinfo file
-        os.system("lsusb >> /home/pi/Products/WT/lsusb_data.txt")
+        os.system("lsusb >> /home/pi/Products/FCI_RS/lsusb_data.txt")
         v_id = "0000000000000000"
         try:
-           f = open('/home/pi/Products/WT/lsusb_data.txt','r')
+           f = open('/home/pi/Products/FCI_RS/lsusb_data.txt','r')
            for line in f:
                 cnt=0
                 #print("line ==>"+str(line))
