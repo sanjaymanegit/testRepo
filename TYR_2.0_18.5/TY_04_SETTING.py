@@ -401,6 +401,7 @@ class TY_04_Ui_MainWindow(object):
         self.label_9_2.setText(_translate("MainWindow", "201909:0002"))
         self.label_10.setText(_translate("MainWindow", "Length (X-Axis):"))
         self.radioButton.setText(_translate("MainWindow", "Auto Scale"))
+        self.radioButton.setDisabled(True)
         self.radioButton_2.setText(_translate("MainWindow", "Mannual"))
         self.pushButton_6.setText(_translate("MainWindow", "Configure Tests"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Date Setting"))

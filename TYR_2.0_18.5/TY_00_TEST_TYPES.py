@@ -9,6 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
+from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 import sqlite3
 
 class TY_00_T_Ui_MainWindow(object):
@@ -66,12 +67,31 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton_4.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(530, 550, 141, 51))
+        self.pushButton_5.setGeometry(QtCore.QRect(530, 600, 141, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
+        
+        
+        self.pushButton_6 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_6.setGeometry(QtCore.QRect(500, 350, 191, 181))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_6.sizePolicy().hasHeightForWidth())
+        self.pushButton_6.setSizePolicy(sizePolicy)
+        self.pushButton_6.setText("Shear \n QLSS")
+        self.pushButton_6.setStyleSheet("background-color: rgb(70,130,180);")
+        '''
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("images/shear_qlss.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_6.setIcon(icon1)
+        self.pushButton_6.setIconSize(QtCore.QSize(200, 160))
+        '''
+        self.pushButton_6.setObjectName("pushButton_6")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1367, 21))
@@ -95,7 +115,8 @@ class TY_00_T_Ui_MainWindow(object):
         #self.pushButton_2.setDisabled(True)        
         self.pushButton_3.clicked.connect(self.save_test_tear)
         #self.pushButton_3.setDisabled(True)
-        self.pushButton_4.clicked.connect(self.save_test_flexural)    
+        self.pushButton_4.clicked.connect(self.save_test_flexural)
+        self.pushButton_6.clicked.connect(self.save_test_qlss) 
         self.pushButton_4.setDisabled(True)
         self.load_data()
    
@@ -166,7 +187,16 @@ class TY_00_T_Ui_MainWindow(object):
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Flexural'")            
         connection.commit();
         connection.close()    
-        self.open_new_window()            
+        self.open_new_window()
+        
+    def save_test_qlss(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='QLSS'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_qlss()
         
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
@@ -174,6 +204,11 @@ class TY_00_T_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()       
 
+    def open_new_window_qlss(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_01_qlss_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()       
 
 
 if __name__ == "__main__":

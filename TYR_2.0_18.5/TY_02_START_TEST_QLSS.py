@@ -30,8 +30,8 @@ from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 import datetime
 
-
-class TY_02_Ui_MainWindow(object):
+            
+class TY_02_qlss_Ui_MainWindow(object):            
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 769)
@@ -61,7 +61,8 @@ class TY_02_Ui_MainWindow(object):
         self.guage_length_mm=0
         self.goAhead="No"
         self.test_type=""
-        
+        self.column_name_shear_stress=""
+        self.test_max_load=""
         
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(790, 220, 491, 131))
@@ -603,6 +604,33 @@ class TY_02_Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3.setObjectName("label_3")
+        
+        self.label_3_1= QtWidgets.QLabel(self.frame)
+        self.label_3_1.setGeometry(QtCore.QRect(1050, 170, 201, 41))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.label_3_1.setFont(font)
+        self.label_3_1.setText("Test Max Force (Kgf):")
+        self.label_3_1.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_1.setObjectName("label_3_1")
+        
+        self.lineEdit_3_2 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_2.setGeometry(QtCore.QRect(1200, 170, 81, 41))
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3_2)
+        self.lineEdit_3_2.setValidator(input_validator)        
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_3_2.setFont(font)
+        self.lineEdit_3_2.setText("")
+        self.lineEdit_3_2.setObjectName("lineEdit_3_2")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1367, 21))
@@ -693,16 +721,12 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.show_all_specimens)
        
         self.pushButton.clicked.connect(self.show_real_time) 
-        #self.radioButton_3.clicked.connect(self.save_graph_data)
-        #self.load_data()
-        #self.radioButton_4.setDisabled(True)  ### reset
-        #self.radioButton_3.setDisabled(True) ### Save
+        
         self.lineEdit_3.textChanged.connect(self.cal_cs_area)
         self.lineEdit_4.textChanged.connect(self.cal_cs_area)
         self.pushButton_4.clicked.connect(MainWindow.close)
-        #self.lineEdit_2.setText("2")
-        #self.lineEdit_3.setText("3")
-        #self.lineEdit_4.setText("4")  
+        
+       
         self.load_data()
         self.load_cell_hi=0
         self.load_cell_lo=0
@@ -731,7 +755,7 @@ class TY_02_Ui_MainWindow(object):
            self.timer3.stop()
         else:
            pass
-           
+        
            
     def loadcell_encoder_status(self):         
         try:                
@@ -958,6 +982,38 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
+     
+    def show_grid_data_qlss(self):
+        #print("inside tear list.....")
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(10)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setHorizontalHeaderLabels(['Width(mm)','Thickness(mm)','CS Area(Mm2)','Max. Force \n (Kgf)',' Max. \n Displacement(mm) ','Ultimate Shear\n Strength','Ultimate Shear \n Strain','Shear Strain \n @3.5 kse Shear Stress','Shear Modulus \n@3.5 kse Shear Stress','Created On'])        
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 140)
+        self.tableWidget.setColumnWidth(6, 140)
+        self.tableWidget.setColumnWidth(7, 190)
+        self.tableWidget.setColumnWidth(8, 190)
+        self.tableWidget.setColumnWidth(9, 200)
+        self.tableWidget.setColumnWidth(10, 50)
+       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()
         
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -973,13 +1029,24 @@ class TY_02_Ui_MainWindow(object):
         self.label_3.hide()
         #print("shape:"+str(self.shape))
         #self.sc_new =PlotCanvas_new1(self,width=5, height=4, dpi=80)
-          
+        self.test_max_load=""
+        self.test_max_load=str(self.lineEdit_3_2.text())
+        print("self.test_max_load:"+str(self.test_max_load))
+        connection = sqlite3.connect("tyr.db")             
+        with connection:        
+                      cursor = connection.cursor()            
+                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.test_max_load)+"'")                                              
+               
+        connection.commit();
+        connection.close()
+        
         if(self.shape=="Rectangle"):
             if(self.test_type !="Tear"):
                     self.lineEdit_3.show()
             self.thickness=str(self.lineEdit_4.text())
             self.width=str(self.lineEdit_3.text())
             self.cs_area=str(self.lineEdit_2.text())
+            
         elif(self.shape=="Pipe"):
             if(self.test_type !="Tear"):
                     self.lineEdit_3.show()
@@ -1001,7 +1068,7 @@ class TY_02_Ui_MainWindow(object):
                 connection = sqlite3.connect("tyr.db")             
                 with connection:        
                       cursor = connection.cursor()            
-                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.thickness)+"',NEW_TEST_WIDTH="+str(self.width)+",NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.diameter)+"', NEW_TEST_INN_DIAMETER='"+str(self.inn_dia)+"', NEW_TEST_OUTER_DIAMETER='"+str(self.out_dia)+"'")                                              
+                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.thickness)+"',NEW_TEST_WIDTH="+str(self.width)+",NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.diameter)+"', NEW_TEST_INN_DIAMETER='"+str(self.inn_dia)+"', NEW_TEST_OUTER_DIAMETER='"+str(self.out_dia)+"', NEW_TEST_MAX_LOAD='"+str(self.test_max_load)+"'")                                              
                
                 connection.commit();
                 connection.close()
@@ -1159,7 +1226,7 @@ class TY_02_Ui_MainWindow(object):
             with connection:        
                   cursor = connection.cursor()              
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"',NEW_TEST_MAX_LOAD='"+str(self.lineEdit_3_2.text())+"'")
                   #print("ok2")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
                   #print("ok3") 
@@ -1232,9 +1299,30 @@ class TY_02_Ui_MainWindow(object):
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_MPA=round((STG_TENSILE_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
                 
+                  #==== QLSS CHANGES ====================
+                  #THINCKNESS,WIDTH,CS_AREA,PEAK_LOAD_KG
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_KG_CM=((cast(PEAK_LOAD_KG as real)/(2*IFNULL(cast(CS_AREA as real),1)))*100) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  print("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=((cast(PEAK_LOAD_KG as real)*2.20462)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=((cast(PEAK_LOAD_KG as real)*2.20462)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701)) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_N_MM=(cast(PEAK_LOAD_KG as real)*9.81/(2*IFNULL(cast(CS_AREA as real),1))) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_MPA=round((ULT_SHEAR_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   
                   
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_KG_CM=(cast(E_AT_PEAK_LOAD_MM as real)*0.1)/(2*IFNULL(cast(CS_AREA as real),1)*100) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_LB_INCH=(cast(E_AT_PEAK_LOAD_MM as real)*0.0393701)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_N_MM=(cast(E_AT_PEAK_LOAD_MM as real)*0.1)/(2*IFNULL(cast(CS_AREA as real),1)*100)  WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_MPA=round((ULT_SHEAR_STRAIN_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #Max length/2*CS_ARE
                   
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME=ULT_SHEAR_STRENGTH_KG_CM WHERE GRAPH_ID IS NULL")  
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_KG_CM=((E_AT_PEAK_LOAD_MM*0.1)/(2*THINCKNESS))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_KG_CM=(ULT_SHEAR_STRENGTH_KG_CM/SHEAR_STRAIN_COLUMN_VALUE_KG_CM)    WHERE GRAPH_ID IS NULL")                  
+                 
+                  
+                  #===================================
                   
                   cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                   
@@ -1268,7 +1356,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_26.setText(str(rows[0][0]))
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0) FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
@@ -1276,6 +1364,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_22.setText(str(rows[0][7])) ##test id
         self.label_32.setText(str(rows[0][12])) ##Job name
         self.label_24.setText(str(rows[0][13])) ##batch id
+        self.lineEdit_3_2.setText(str(rows[0][15])) ##new test max load
         
         
         if (int(self.label_26.text()) > 0):
@@ -1338,6 +1427,8 @@ class TY_02_Ui_MainWindow(object):
             
         elif(str(rows[0][14])=="Flexural"):
             self.show_grid_data_flexure()
+        elif(str(rows[0][14])=="QLSS"):
+            self.show_grid_data_qlss()
         else:
             self.show_grid_data()
             self.label_28.show()
@@ -1529,11 +1620,19 @@ class PlotCanvas_Auto(FigureCanvas):
             else:
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
+                        self.command_str="*S2T%.1f"%self.max_load+" 000.0\r"
+                        print("self.command_str:"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        #self.ser.write(b'*S2T000.0 000.0\r')
+                        #print("Start Command :*S2T000.0 000.0\r")
                     else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
+                        self.command_str="*S1T%.1f"%self.max_load+" 000.0\r"
+                        print("self.command_str:"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        #self.ser.write(b'*S1T000.0 000.0\r')
+                        #print("Start Command:*S1T000.0 000.0\r")
                 else:
                     print("Error :Serial O/P is not getting ")
             
@@ -1652,12 +1751,19 @@ class PlotCanvas_Auto(FigureCanvas):
                    self.xlim_update='YES'                   
                 #time.sleep(1) 
             else:
-                
-                if(self.test_type=="Compress" or self.test_type=="Flexural" ):
+                if(self.test_type=="Compress" or self.test_type=="Flexural"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
                     self.p=int(self.test_guage_mm)-self.p
-                    print("final P :::"+str(self.p))
+                    print("final q :::"+str(self.q))
+                    self.arr_p.append(self.p)
+                    self.arr_q.append(self.q)
+                    self.save_data_flg="Yes"
+                    #self.on_ani_stop()
+                elif(self.test_type=="QLSS"):
+                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)                    
+                    print("final QLSS-q :::"+str(self.q))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
                     self.save_data_flg="Yes"
@@ -1910,7 +2016,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_02_Ui_MainWindow()
+    ui = TY_02_qlss_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

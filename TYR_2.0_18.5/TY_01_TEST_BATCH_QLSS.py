@@ -8,12 +8,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_02_START_TEST import TY_02_Ui_MainWindow
+#from TY_02_START_TEST import TY_02_Ui_MainWindow
+from TY_02_START_TEST_QLSS import TY_02_qlss_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
-class TY_01_Ui_MainWindow(object):
+class TY_01_qlss_Ui_MainWindow(object):
+   
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
@@ -535,6 +537,10 @@ class TY_01_Ui_MainWindow(object):
             self.label_1_1.setText("Span (mm) :")
             self.label_1_1.show()
             self.lineEdit_1_1.show()
+        elif(str(rows[0][0])=="QLSS"):
+            self.label_1_1.setText("Test Max Force(Kgf) :")
+            self.label_1_1.show()
+            self.lineEdit_1_1.show()
         else:
              self.label_1_1.hide()
              self.lineEdit_1_1.hide()
@@ -544,7 +550,7 @@ class TY_01_Ui_MainWindow(object):
         connection.close()
         self.i=0
         connection = sqlite3.connect("tyr.db")
-        if(self.test_type=="Tear" or self.test_type=="Flexural"):
+        if(self.test_type=="Tear" or self.test_type=="Flexural" or  self.test_type=="QLSS"  ):
             results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST where  SHAPE='Rectangle'") 
         else:   
             results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
@@ -729,8 +735,7 @@ class TY_01_Ui_MainWindow(object):
                     self.label_23.setText(" Max Load Should not be 0 ")    
                     self.label_23.show()
                 else:
-                    self.goAhead="Yes"
-        
+                    self.goAhead="Yes"        
         elif(self.test_type=='Flexural'):
             if(self.lineEdit_1_1.text() == ""):
                     self.label_23.setText(" Span Should not Emplty ")                    
@@ -740,6 +745,17 @@ class TY_01_Ui_MainWindow(object):
                     self.label_23.show()
             else:
                     self.goAhead="Yes"
+        elif(self.test_type=='QLSS'):
+            if(self.lineEdit_1_1.text() == ""):
+                    self.label_23.setText(" Max Load Should not Emplty ")                    
+                    self.label_23.show()
+            elif(int(self.lineEdit_1_1.text() ) <=  0):
+                    self.label_23.setText(" Max Load Should not be 0")    
+                    self.label_23.show()
+            else:
+                    self.goAhead="Yes"
+                    
+                    
         else:
              self.goAhead="Yes" 
             
@@ -757,7 +773,7 @@ class TY_01_Ui_MainWindow(object):
             connection.close()   
             self.load_test_data()
             self.window = QtWidgets.QMainWindow()
-            self.ui=TY_02_Ui_MainWindow()
+            self.ui=TY_02_qlss_Ui_MainWindow()
             self.ui.setupUi(self.window)           
             self.window.show()       
          
@@ -787,7 +803,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_01_Ui_MainWindow()
+    ui = TY_01_qlss_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
