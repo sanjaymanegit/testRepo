@@ -324,9 +324,15 @@ class ur_02_Ui_MainWindow(object):
     def load_data(self):
         connection = sqlite3.connect("ur.db")
         results=connection.execute("select seq+1 from sqlite_sequence where name = 'PATIENT_MST'")
+        for x in results:           
+                 self.label_34.setText(str(x[0]).zfill(7))
+                 self.p_id=str(x[0])
+                 
+        '''
         rows=results.fetchall() 
         self.label_34.setText(str(rows[0][0]).zfill(7))
         self.p_id=str(rows[0][0])
+        '''
         connection.close()
         self.i=1
         self.dr_id_arr=["None"]

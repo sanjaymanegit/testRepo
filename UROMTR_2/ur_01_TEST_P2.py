@@ -521,7 +521,7 @@ class ur_01_Ui_MainWindow(object):
         try:
             self.ser = serial.Serial(
                                 port='/dev/ttyUSB0',
-                                baudrate=9600,
+                                baudrate=115200,
                                 bytesize=serial.EIGHTBITS,
                                 parity=serial.PARITY_NONE,
                                 stopbits=serial.STOPBITS_ONE,
@@ -633,12 +633,15 @@ class ur_01_Ui_MainWindow(object):
             print("Arrays are not yet populated.")
             
     def test_calcs(self):
-        self.test_id=""
+        self.test_id="1"
         connection = sqlite3.connect("ur.db")
         results=connection.execute("select seq+1 from sqlite_sequence where name = 'TEST_MST'")
-        rows=results.fetchall() 
-        self.test_id=str(rows[0][0]).zfill(7)
+        for x in results:           
+                 #self.label_2.setText(str(x[0]).zfill(3))
+                 self.test_id=str(x[0]).zfill(7)
         connection.close()
+        
+         
         
         self.start_flow_idx=0
         self.stop_flow_idx=0
