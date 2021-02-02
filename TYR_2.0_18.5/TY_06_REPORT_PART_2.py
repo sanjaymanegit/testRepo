@@ -113,6 +113,8 @@ class TY_06_Ui_MainWindow(object):
             self.select_all_rows_tear()
         elif(self.test_type=="Flexural"):
             self.select_all_rows_flexural()
+        elif(self.test_type=="QLSS"):
+            self.select_all_rows_qlss()
         else:
             self.select_all_rows()
     
@@ -475,6 +477,75 @@ class TY_06_Ui_MainWindow(object):
         
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)  
    
+    def select_all_rows_qlss(self):
+        self.delete_all_records()    
+        self.tableWidget.setMidLineWidth(-4)
+        self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(10)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        self.tableWidget.verticalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 80)
+        self.tableWidget.setColumnWidth(1, 80)
+        self.tableWidget.setColumnWidth(2, 80)
+        self.tableWidget.setColumnWidth(3, 80)
+        self.tableWidget.setColumnWidth(4, 80)
+        self.tableWidget.setColumnWidth(5, 80)
+        self.tableWidget.setColumnWidth(6, 100)
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 250)
+        self.tableWidget.setColumnWidth(9, 150)
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:           
+            self.unit_typex=x[1]
+        connection.close()
+        
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+           
+        if(self.unit_typex == "Kg/Cm"):
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Cm)','Thickness \n (Cm)','CS Area \n (Cm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Cm) ','Ult. Shear\n Strength \n (Kgf/Cm2)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress \n (Kg/Cm2)','Created On'])        
+        elif(self.unit_typex == "Lb/Inch"):
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Inch)','Thickness \n (Inch)','CS Area \n (Inch2)','Max. Force \n (Lb)',' Max. \n Disp.(Inch) ','Ult. Shear\n Strength \n (Lb\Inch2)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress \n (Lb/Inch2)','Created On'])        
+        elif(self.unit_typex == "Newton/Mm"):
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (N/Mm2)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress \n (N/Mm2)','Created On'])        
+        elif(self.unit_typex == "MPA"):
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (MPA)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress','Created On'])        
+        else:
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress','Created On'])        
+        
+        connection = sqlite3.connect("tyr.db")
+        results1=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM)  FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+          
+        #results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD,A.E_PAEK_LOAD,A.PERCENTG_E_PEAK_LOAD_MM,A.PERCENTG_E_PEAK_LOAD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")                        
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))
+                
+        connection.close()                                    
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM),printf(\"%.2f\", A.SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM)    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for row_number, row_data in enumerate(results):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))
+        
+        connection.close()
+        
+        
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)  
    
    
    

@@ -880,7 +880,7 @@ class TY_03_Ui_MainWindow(object):
                     cursor.execute("UPDATE REPORT_MST SET TEST_NAME = (SELECT TEST_TYPE FROM TEST_MST WHERE TEST_ID  = '"+str(self.test_id)+"')")
                    
                     if (self.unit_type == "Kg/Cm"):                       
-                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH, TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS*0.1,A.WIDTH*0.1,A.CS_AREA*0.01,A.PEAK_LOAD_KG,A.E_AT_PEAK_LOAD_MM*0.1,A.PRC_E_AT_PEAK,A.DIAMETER*0.1,A.INNER_DIAMETER*0.1,A.OUTER_DIAMETER*0.1,A.BREAK_LOAD_KG,A.E_AT_BREAK_MM*0.1,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_KG_CM,((A.PEAK_LOAD_KG/round(A.THINCKNESS,2))*10),A.FLEXURAL_STRENGTH_KG_CM,A.SPAN*0.1  FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
+                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH, TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_NAME_KG_CM) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS*0.1,A.WIDTH*0.1,A.CS_AREA*0.01,A.PEAK_LOAD_KG,A.E_AT_PEAK_LOAD_MM*0.1,A.PRC_E_AT_PEAK,A.DIAMETER*0.1,A.INNER_DIAMETER*0.1,A.OUTER_DIAMETER*0.1,A.BREAK_LOAD_KG,A.E_AT_BREAK_MM*0.1,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_KG_CM,((A.PEAK_LOAD_KG/round(A.THINCKNESS,2))*10),A.FLEXURAL_STRENGTH_KG_CM,A.SPAN*0.1,A.ULT_SHEAR_STRENGTH_KG_CM,A.ULT_SHEAR_STRAIN_KG_CM,A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM,A.SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_NAME_KG_CM  FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
                             cursor.execute("INSERT INTO REPORT_MST_III(REPORT_ID,CYCLE_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,CS_AREA,GUAGE_MM,GRAPH_ID,MOD_AT_ANY) SELECT B.REPORT_ID,A.CYCLE_ID,A.TENSILE_STRENGTH,A.MODULUS_100,A.MODULUS_200,A.MODULUS_300,B.MOD_AT_ANY,A.CS_AREA,B.GUAGE_MM,A.GRAPH_ID,IFNULL(A.MODULUS_ANY,0) FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                                
                             ### update load At Any 
                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_REPORT_ID = (SELECT REPORT_ID FROM REPORT_MST WHERE STATUS='PENDING_GRAPH' AND TEST_ID='"+str(self.test_id)+"')")                                
@@ -888,20 +888,20 @@ class TY_03_Ui_MainWindow(object):
                     elif(self.unit_type == "Lb/Inch"):    
                             self.kg_to_lb=float(2.20462)
                             self.mm_to_inch=float(0.0393701)                                                        
-                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT B.REPORT_ID,A.CYCLE_ID,(A.THINCKNESS*'"+str(self.mm_to_inch)+"'),(A.WIDTH*'"+str(self.mm_to_inch)+"'),(A.CS_AREA*'"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"'),(A.PEAK_LOAD_KG*'"+str(self.kg_to_lb)+"'),A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER*'"+str(self.mm_to_inch)+"',A.INNER_DIAMETER*'"+str(self.mm_to_inch)+"',A.OUTER_DIAMETER*'"+str(self.mm_to_inch)+"',A.BREAK_LOAD_KG,A.E_AT_BREAK_MM*'"+str(self.mm_to_inch)+"',A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_LB_INCH,(A.PEAK_LOAD_KG*('"+str(self.kg_to_lb)+"')/(A.THINCKNESS *'"+str(self.mm_to_inch)+"')),A.FLEXURAL_STRENGTH_LB_INCH,A.SPAN*'"+str(self.mm_to_inch)+"' FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
+                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_NAME_KG_CM) SELECT B.REPORT_ID,A.CYCLE_ID,(A.THINCKNESS*'"+str(self.mm_to_inch)+"'),(A.WIDTH*'"+str(self.mm_to_inch)+"'),(A.CS_AREA*'"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"'),(A.PEAK_LOAD_KG*'"+str(self.kg_to_lb)+"'),A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER*'"+str(self.mm_to_inch)+"',A.INNER_DIAMETER*'"+str(self.mm_to_inch)+"',A.OUTER_DIAMETER*'"+str(self.mm_to_inch)+"',A.BREAK_LOAD_KG,A.E_AT_BREAK_MM*'"+str(self.mm_to_inch)+"',A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_LB_INCH,(A.PEAK_LOAD_KG*('"+str(self.kg_to_lb)+"')/(A.THINCKNESS *'"+str(self.mm_to_inch)+"')),A.FLEXURAL_STRENGTH_LB_INCH,A.SPAN*'"+str(self.mm_to_inch)+"',A.ULT_SHEAR_STRENGTH_LB_INCH,A.ULT_SHEAR_STRAIN_LB_INCH,A.SHEAR_STRAIN_COLUMN_VALUE_LB_INCH,A.SHEAR_MOD_COLUMN_VALUE_LB_INCH,A.SHEAR_MOD_COLUMN_NAME_LB_INCH FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
                             cursor.execute("INSERT INTO REPORT_MST_III(REPORT_ID,CYCLE_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,CS_AREA,GUAGE_MM,GRAPH_ID,MOD_AT_ANY) SELECT B.REPORT_ID,A.CYCLE_ID,(A.peak_load_kg*'"+str(self.kg_to_lb)+"')/(A.cs_area*('"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"')),(A.Load100_guage*'"+str(self.kg_to_lb)+"')/(A.cs_area*('"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"')),(A.Load200_guage*'"+str(self.kg_to_lb)+"')/(A.cs_area*('"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"')),(A.Load300_guage*'"+str(self.kg_to_lb)+"')/(A.cs_area*('"+str(self.mm_to_inch)+"'*'"+str(self.mm_to_inch)+"')),B.MOD_AT_ANY,A.CS_AREA,B.GUAGE_MM,A.GRAPH_ID,IFNULL(A.MODULUS_ANY,0) FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                                
                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_REPORT_ID = (SELECT REPORT_ID FROM REPORT_MST WHERE STATUS='PENDING_GRAPH' AND TEST_ID='"+str(self.test_id)+"')")                                
                             cursor.execute("UPDATE REPORT_MST_III  SET SET_LOW = (SELECT BREAKING_SENCE FROM SETTING_MST ) WHERE report_id IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")               
                     
                     elif(self.unit_type == "Newton/Mm"):
                             self.kg_to_Newton=float(9.81)
-                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD_KG*'"+str(self.kg_to_Newton)+"',A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER,A.INNER_DIAMETER,A.OUTER_DIAMETER,A.BREAK_LOAD_KG*'"+str(self.kg_to_Newton)+"',A.E_AT_BREAK_MM,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_N_MM,((A.PEAK_LOAD_KG*'"+str(self.kg_to_Newton)+"')/A.THINCKNESS),A.FLEXURAL_STRENGTH_N_MM,A.SPAN FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
+                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_NAME_KG_CM) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD_KG*'"+str(self.kg_to_Newton)+"',A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER,A.INNER_DIAMETER,A.OUTER_DIAMETER,A.BREAK_LOAD_KG*'"+str(self.kg_to_Newton)+"',A.E_AT_BREAK_MM,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_N_MM,((A.PEAK_LOAD_KG*'"+str(self.kg_to_Newton)+"')/A.THINCKNESS),A.FLEXURAL_STRENGTH_N_MM,A.SPAN ,A.ULT_SHEAR_STRENGTH_N_MM,A.ULT_SHEAR_STRAIN_N_MM,A.SHEAR_STRAIN_COLUMN_VALUE_N_MM,A.SHEAR_MOD_COLUMN_VALUE_N_MM,A.SHEAR_MOD_COLUMN_NAME_N_MM FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
                             cursor.execute("INSERT INTO REPORT_MST_III(REPORT_ID,CYCLE_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,CS_AREA,GUAGE_MM,GRAPH_ID,MOD_AT_ANY) SELECT B.REPORT_ID,A.CYCLE_ID,(A.peak_load_kg*'"+str(self.kg_to_Newton)+"')/(A.cs_area),(A.Load100_guage*'"+str(self.kg_to_Newton)+"')/(A.cs_area),(A.Load200_guage*'"+str(self.kg_to_Newton)+"')/(A.cs_area),(A.Load300_guage*'"+str(self.kg_to_Newton)+"')/(A.cs_area),B.MOD_AT_ANY,A.CS_AREA,B.GUAGE_MM,A.GRAPH_ID,IFNULL(A.MODULUS_ANY,0) FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                                
                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_REPORT_ID = (SELECT REPORT_ID FROM REPORT_MST WHERE STATUS='PENDING_GRAPH' AND TEST_ID='"+str(self.test_id)+"')")                                
                             cursor.execute("UPDATE REPORT_MST_III  SET SET_LOW = (SELECT BREAKING_SENCE FROM SETTING_MST ) WHERE report_id IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
                     elif(self.unit_type == "MPA"):
                             self.kgCm2_toMPA=float(0.0980665) 
-                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD_KG,A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER,A.INNER_DIAMETER,A.OUTER_DIAMETER,A.BREAK_LOAD_KG,A.E_AT_BREAK_MM,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_MPA,(((A.PEAK_LOAD_KG/A.THINCKNESS)*10)*0.0980665),A.FLEXURAL_STRENGTH_MPA,A.SPAN FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
+                            cursor.execute("INSERT INTO REPORT_MST_II(REPORT_ID,CYCLE_ID,THICKNESS,WIDTH,CS_AREA,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,DIAMETER,INN_DIAMETER,OUT_DIAMTER,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_NAME_KG_CM) SELECT B.REPORT_ID,A.CYCLE_ID,A.THINCKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD_KG,A.E_AT_PEAK_LOAD_MM,A.PRC_E_AT_PEAK,A.DIAMETER,A.INNER_DIAMETER,A.OUTER_DIAMETER,A.BREAK_LOAD_KG,A.E_AT_BREAK_MM,A.PRC_E_AT_BREAK,A.STG_TENSILE_STRENGTH_MPA,(((A.PEAK_LOAD_KG/A.THINCKNESS)*10)*0.0980665),A.FLEXURAL_STRENGTH_MPA,A.SPAN,A.ULT_SHEAR_STRENGTH_MPA,A.ULT_SHEAR_STRAIN_MPA,A.SHEAR_STRAIN_COLUMN_VALUE_MPA,A.SHEAR_MOD_COLUMN_VALUE_MPA,A.SHEAR_MOD_COLUMN_NAME_MPA FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                
                             #print("INSERT INTO REPORT_MST_III(REPORT_ID,CYCLE_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,CS_AREA,GUAGE_MM,GRAPH_ID,MOD_AT_ANY) SELECT B.REPORT_ID,A.CYCLE_ID,(A.TENSILE_STRENGTH*'"+str(self.kgCm2_toMPA)+"'),(A.MODULUS_100*'"+str(self.kgCm2_toMPA)+"'),(A.MODULUS_200*'"+str(self.kgCm2_toMPA)+"',(A.MODULUS_300*'"+str(self.kgCm2_toMPA)+"'),(B.MOD_AT_ANY*'"+str(self.kgCm2_toMPA)+"'),A.CS_AREA,B.GUAGE_MM,A.GRAPH_ID,IFNULL(A.MODULUS_ANY,0) FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH'")
                             cursor.execute("INSERT INTO REPORT_MST_III(REPORT_ID,CYCLE_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,CS_AREA,GUAGE_MM,GRAPH_ID,MOD_AT_ANY) SELECT B.REPORT_ID,A.CYCLE_ID,(A.TENSILE_STRENGTH*'"+str(self.kgCm2_toMPA)+"'),(A.MODULUS_100*'"+str(self.kgCm2_toMPA)+"'),(A.MODULUS_200*'"+str(self.kgCm2_toMPA)+"'),(A.MODULUS_300*'"+str(self.kgCm2_toMPA)+"'),(B.MOD_AT_ANY*'"+str(self.kgCm2_toMPA)+"'),A.CS_AREA,B.GUAGE_MM,A.GRAPH_ID,IFNULL(A.MODULUS_ANY,0) FROM CYCLES_MST A, REPORT_MST B WHERE B.TEST_ID='"+str(self.test_id)+"' AND A.TEST_ID=B.TEST_ID AND B.STATUS='PENDING_GRAPH' order by A.GRAPH_ID")                                
                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_REPORT_ID = (SELECT REPORT_ID FROM REPORT_MST WHERE STATUS='PENDING_GRAPH' AND TEST_ID='"+str(self.test_id)+"')")                                
@@ -910,9 +910,9 @@ class TY_03_Ui_MainWindow(object):
                     else:
                             print("Invalid Unit Found.")
                              
-                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT 'AVG',REPORT_ID,avg(THICKNESS),avg(WIDTH),avg(CS_AREA),avg(DIAMETER),AVG(INN_DIAMETER),avg(OUT_DIAMTER),avg(PEAK_LOAD),avg(E_PAEK_LOAD),avg(PREC_E_AT_PEAK),avg(BREAK_LOAD),avg(E_BREAK_LOAD),avg(PREC_E_AT_BREAK),avg(COMPRESSIVE_STRENGTH),avg(TEAR_STRENGTH),avg(FLEXURAL_STRENGTH),avg(SPAN) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")               
-                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT 'MAX',REPORT_ID, max(THICKNESS),max(WIDTH),max(CS_AREA),max(DIAMETER),max(INN_DIAMETER),max(OUT_DIAMTER),max(PEAK_LOAD),max(E_PAEK_LOAD),max(PREC_E_AT_PEAK),max(BREAK_LOAD),max(E_BREAK_LOAD),max(PREC_E_AT_BREAK),max(COMPRESSIVE_STRENGTH),max(TEAR_STRENGTH),max(FLEXURAL_STRENGTH),max(SPAN) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                
-                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN) SELECT 'MIN',REPORT_ID, min(THICKNESS),min(WIDTH),min(CS_AREA),min(DIAMETER),min(INN_DIAMETER),min(OUT_DIAMTER),min(PEAK_LOAD),min(E_PAEK_LOAD),min(PREC_E_AT_PEAK),min(BREAK_LOAD),min(E_BREAK_LOAD),min(PREC_E_AT_BREAK),min(COMPRESSIVE_STRENGTH),min(TEAR_STRENGTH),min(FLEXURAL_STRENGTH),min(SPAN) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM) SELECT 'AVG',REPORT_ID,avg(THICKNESS),avg(WIDTH),avg(CS_AREA),avg(DIAMETER),AVG(INN_DIAMETER),avg(OUT_DIAMTER),avg(PEAK_LOAD),avg(E_PAEK_LOAD),avg(PREC_E_AT_PEAK),avg(BREAK_LOAD),avg(E_BREAK_LOAD),avg(PREC_E_AT_BREAK),avg(COMPRESSIVE_STRENGTH),avg(TEAR_STRENGTH),avg(FLEXURAL_STRENGTH),avg(SPAN),avg(ULT_SHEAR_STRENGTH_KG_CM),avg(ULT_SHEAR_STRAIN_KG_CM),avg(SHEAR_STRAIN_COLUMN_VALUE_KG_CM),avg(SHEAR_MOD_COLUMN_VALUE_KG_CM) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")               
+                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM) SELECT 'MAX',REPORT_ID, max(THICKNESS),max(WIDTH),max(CS_AREA),max(DIAMETER),max(INN_DIAMETER),max(OUT_DIAMTER),max(PEAK_LOAD),max(E_PAEK_LOAD),max(PREC_E_AT_PEAK),max(BREAK_LOAD),max(E_BREAK_LOAD),max(PREC_E_AT_BREAK),max(COMPRESSIVE_STRENGTH),max(TEAR_STRENGTH),max(FLEXURAL_STRENGTH),max(SPAN),max(ULT_SHEAR_STRENGTH_KG_CM),max(ULT_SHEAR_STRAIN_KG_CM),max(SHEAR_STRAIN_COLUMN_VALUE_KG_CM),max(SHEAR_MOD_COLUMN_VALUE_KG_CM) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                
+                    cursor.execute("INSERT INTO REPORT_II_AGGR(TYPE_STR,REPORT_ID,THICKNESS,WIDTH,CS_AREA,DIAMETER,INN_DIAMETER,OUT_DIAMTER,PEAK_LOAD,E_PAEK_LOAD,PREC_E_AT_PEAK,BREAK_LOAD,E_BREAK_LOAD,PREC_E_AT_BREAK,COMPRESSIVE_STRENGTH,TEAR_STRENGTH,FLEXURAL_STRENGTH,SPAN,ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRAIN_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_KG_CM) SELECT 'MIN',REPORT_ID, min(THICKNESS),min(WIDTH),min(CS_AREA),min(DIAMETER),min(INN_DIAMETER),min(OUT_DIAMTER),min(PEAK_LOAD),min(E_PAEK_LOAD),min(PREC_E_AT_PEAK),min(BREAK_LOAD),min(E_BREAK_LOAD),min(PREC_E_AT_BREAK),min(COMPRESSIVE_STRENGTH),min(TEAR_STRENGTH),min(FLEXURAL_STRENGTH),min(SPAN),min(ULT_SHEAR_STRENGTH_KG_CM),min(ULT_SHEAR_STRAIN_KG_CM),min(SHEAR_STRAIN_COLUMN_VALUE_KG_CM),min(SHEAR_MOD_COLUMN_VALUE_KG_CM) FROM REPORT_MST_II WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
                     cursor.execute("INSERT INTO REPORT_III_AGGR(TYPE_STR,REPORT_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,PECENTG_MODULUS,MOD_AT_ANY) SELECT 'AVG',REPORT_ID,avg(TENSILE_STRENGTH),avg(MODULUS_100),avg(MODULUS_200),avg(MODULUS_300),avg(MODULUS_400),avg(PECENTG_MODULUS),avg(MOD_AT_ANY) FROM REPORT_MST_III WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
                     cursor.execute("INSERT INTO REPORT_III_AGGR(TYPE_STR,REPORT_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,PECENTG_MODULUS,MOD_AT_ANY) SELECT 'MAX',REPORT_ID,max(TENSILE_STRENGTH),max(MODULUS_100),max(MODULUS_200),max(MODULUS_300),max(MODULUS_400),max(PECENTG_MODULUS),max(MOD_AT_ANY) FROM REPORT_MST_III WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
                     cursor.execute("INSERT INTO REPORT_III_AGGR(TYPE_STR,REPORT_ID,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_400,PECENTG_MODULUS,MOD_AT_ANY) SELECT 'MIN',REPORT_ID,min(TENSILE_STRENGTH),min(MODULUS_100),min(MODULUS_200),min(MODULUS_300),min(MODULUS_400),min(PECENTG_MODULUS),min(MOD_AT_ANY) FROM REPORT_MST_III WHERE REPORT_ID in (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                
@@ -1044,6 +1044,8 @@ class TY_03_Ui_MainWindow(object):
                self.create_pdf_tear()
            elif(str(self.label_31.text())=="Flexural"):    
                self.create_pdf_flexural()
+           elif(str(self.label_31.text())=="QLSS"):    
+               self.create_pdf_qlss()
            else:
                self.create_pdf_new()
            
@@ -1210,6 +1212,105 @@ class TY_03_Ui_MainWindow(object):
         while (i>0):             
             i=i-1
             self.tableWidget.removeRow(i)      
+    
+    def create_pdf_qlss(self):        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:
+            self.graph_typex=x[0]
+            self.unit_typex=x[1]
+        connection.close()
+        
+        if(self.unit_typex == "Kg/Cm"):
+            #data2= [ ['Spec. \n No', 'Thickness  \n (cm)','Width  \n (cm)','Span  \n (cm)','Length at Peak \n (cm)', 'Force at Peak\n (Kgf)', 'Flexural Strength \n (Kgf/cm2)']]
+            data2= [['Spec. \n No','Width \n (Cm)','Thickness \n (Cm)','CS Area \n (Cm2)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Ultimate Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)']]        
+  
+        elif(self.unit_typex == "Lb/Inch"):
+            data2= [ ['Spec. \n No','Width \n (Inch)','Thickness \n (Inch)','CS Area \n (Inch2)','Max. Force \n (Lb)',' Max. \n Disp.  \n (Inch) ','Utl. Shear\n Strength \n (Lb/Inch2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. Shear Stress','Shear Modulus \n @ Utl. \n Shear Stress \n (Lb/Inch2)']]        
+       
+            #data2= [ ['Spec. \n No', 'Thickness  \n (Inch)','Width  \n (Inch)','Span  \n (Inch)','Length at Peak \n (Inch)', 'Force at Peak\n (Lb)', 'Flexural Strength \n (Lb/Inch2)']]           
+        elif(self.unit_typex == "Newton/Mm"):
+            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (N/Mm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress  \n (N/Mm2)']]        
+        
+            #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (N)', 'Flexural Strength \n (N/mm2)']]            
+        elif(self.unit_typex == "MPA"):
+            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (MPA)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (MPA)']]        
+        
+            #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (Kg)', 'Flexural Strength \n (MPA)']]           
+        else:
+            data2= [['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)']]        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.THICKNESS),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.4f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM) ,printf(\"%.2f\", A.SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close() 
+        
+        y=300
+        Elements=[]
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,CURRENT_TIMESTAMP  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+      
+        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', rightMargin=10,
+                                leftMargin=30,
+                                topMargin=20,
+                                bottomMargin=20,)
+        doc.build(Elements)
+        #print("Done")
     
     def create_pdf_flexural(self):        
         connection = sqlite3.connect("tyr.db")
@@ -1735,6 +1836,7 @@ class PlotCanvas(FigureCanvas):
         self.unit_type=""
         self.cs_area=0
         self.guage=0
+        self.thickness=0
         self.test_type=""
         self.plot()        
         
@@ -1757,12 +1859,13 @@ class PlotCanvas(FigureCanvas):
         self.color=['b','r','g','y','k','c','m','b']
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE,CS_AREA,IFNULL(GUAGE100,0) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE,CS_AREA,IFNULL(GUAGE100,0),THINCKNESS FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
                 self.graph_ids.append(x[0])             
                 ax.set_title("Test Id="+str(x[1]))
                 self.cs_area=(x[3])
                 self.guage=(x[4])
+                self.thickness=str(x[5])
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -1831,17 +1934,29 @@ class PlotCanvas(FigureCanvas):
             #print("Graph Type :"+str(self.graph_type)) 
             for g in range(len(self.graph_ids)):
                 #print("graph id :"+str(self.graph_ids[g]))
-                self.x_num=[0]
+                self.x_num=[0]                
                 self.y_num=[0]
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                for k in results:                    
-                    self.x_num.append((k[0]/float(self.guage))*100)
-                    self.y_num.append((k[1]/float(self.cs_area)*100))
-                connection.close() 
-                print("self.cs_area:"+str(self.cs_area))
-                if (g < 8):
-                    ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                if(self.test_type !="QLSS"):
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    for k in results:                    
+                        self.x_num.append((k[0]/float(self.guage))*100)
+                        self.y_num.append((k[1]/float(self.cs_area)*100))
+                    connection.close() 
+                    print("self.cs_area:"+str(self.cs_area))
+                    if (g < 8):
+                        ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                else:
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    for k in results:                    
+                        self.x_num.append(((k[0]/(2*float(self.thickness))))*100)
+                        self.y_num.append((k[1]/float(self.cs_area)*100))
+                    connection.close() 
+                    print("self.cs_area:"+str(self.cs_area))
+                    if (g < 8):
+                        ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                
                 
                 ax.set_xlabel('Strain(%)')
                 ax.set_ylabel('Stress')    

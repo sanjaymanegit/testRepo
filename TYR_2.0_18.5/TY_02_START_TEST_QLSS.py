@@ -838,7 +838,7 @@ class TY_02_qlss_Ui_MainWindow(object):
                    self.thickness=float(self.lineEdit_4.text())
                    self.width=float(self.lineEdit_3.text())
                    self.cs_area=self.thickness * self.width  
-                   self.lineEdit_2.setText(str(self.cs_area))
+                   self.lineEdit_2.setText(str(self.cs_area*2))
                else:
                    self.lineEdit_2.setText("0")
            else:
@@ -991,21 +991,21 @@ class TY_02_qlss_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(10)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Width(mm)','Thickness(mm)','CS Area(Mm2)','Max. Force \n (Kgf)',' Max. \n Displacement(mm) ','Ultimate Shear\n Strength','Ultimate Shear \n Strain','Shear Strain \n @3.5 kse Shear Stress','Shear Modulus \n@3.5 kse Shear Stress','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (Kgf/Cm2)','Shear Strain \n @Ult. Shear Stress','Ult. Shear \n Strain %','Shear Modulus \n@Ult Shear Stress \n (Kgf/Cm2)','Created On'])        
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
-        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(4, 100)
         self.tableWidget.setColumnWidth(5, 140)
         self.tableWidget.setColumnWidth(6, 140)
-        self.tableWidget.setColumnWidth(7, 190)
-        self.tableWidget.setColumnWidth(8, 190)
-        self.tableWidget.setColumnWidth(9, 200)
+        self.tableWidget.setColumnWidth(7, 150)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 160)
         self.tableWidget.setColumnWidth(10, 50)
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1191,9 +1191,9 @@ class TY_02_qlss_Ui_MainWindow(object):
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                   if(self.test_type=="Compress" or self.test_type=="Flexural"):
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
                   else:   
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1301,25 +1301,45 @@ class TY_02_qlss_Ui_MainWindow(object):
                 
                   #==== QLSS CHANGES ====================
                   #THINCKNESS,WIDTH,CS_AREA,PEAK_LOAD_KG
+                  # SELECT ULT_SHEAR_STRENGTH_KG_CM,ULT_SHEAR_STRENGTH_LB_INCH,ULT_SHEAR_STRENGTH_N_MM,ULT_SHEAR_STRENGTH_MPA FROM CYCLES_MST ORDER BY CYCLE_ID DESC LIMIT 1
                   
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_KG_CM=((cast(PEAK_LOAD_KG as real)/(2*IFNULL(cast(CS_AREA as real),1)))*100) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
-                  print("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=((cast(PEAK_LOAD_KG as real)*2.20462)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=((cast(PEAK_LOAD_KG as real)*2.20462)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701)) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_N_MM=(cast(PEAK_LOAD_KG as real)*9.81/(2*IFNULL(cast(CS_AREA as real),1))) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("INSERT INTO T1(c1,c2,c3,c4) select PEAK_LOAD_KG, CS_AREA,E_AT_BREAK_MM,E_AT_PEAK_LOAD_MM from CYCLES_MST WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_KG_CM=cast(PEAK_LOAD_KG as real)/(IFNULL(cast(CS_AREA as real),1)*0.01) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=cast(PEAK_LOAD_KG as real)*2.20462/(IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_N_MM=cast(PEAK_LOAD_KG as real)*9.81/(IFNULL(cast(CS_AREA as real),1)) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_MPA=round((ULT_SHEAR_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   
+                  # SELECT ULT_SHEAR_STRAIN_KG_CM,ULT_SHEAR_STRAIN_LB_INCH,ULT_SHEAR_STRAIN_N_MM,ULT_SHEAR_STRAIN_MPA FROM CYCLES_MST ORDER BY CYCLE_ID DESC LIMIT 1
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_KG_CM=(((cast(E_AT_BREAK_MM as real)*0.1)/(2*IFNULL(cast(THINCKNESS as real),1)*0.1))*100) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_LB_INCH=(((cast(E_AT_BREAK_MM as real)*0.0393701)/(2*IFNULL(cast(THINCKNESS as real),1)*0.0393701))*100) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_N_MM=(((cast(E_AT_BREAK_MM as real)*9.81)/(2*IFNULL(cast(THINCKNESS as real),1)))*100)  WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
+                  #cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_N_MM=((()/())*100)  WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
+                 
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_MPA=ULT_SHEAR_STRAIN_KG_CM*0.0980665 WHERE GRAPH_ID IS NULL") #Max length/2*CS_ARE
+                  '''
+                  #SELECT SHEAR_MOD_COLUMN_NAME_KG_CM,SHEAR_MOD_COLUMN_NAME_LB_INCH,SHEAR_MOD_COLUMN_NAME_N_MM,SHEAR_MOD_COLUMN_NAME_MPA FROM CYCLES_MST ORDER BY CYCLE_ID DESC LIMIT 1
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME_KG_CM=(cast(PEAK_LOAD_KG as real)/(cast(E_AT_BREAK_MM as real)*0.1)) WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME_LB_INCH=(cast(PEAK_LOAD_KG as real)*2.20462/(cast(E_AT_BREAK_MM as real)*0.0393701)) WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME_N_MM=(cast(PEAK_LOAD_KG as real)*9.81/(cast(E_AT_BREAK_MM as real))) WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME_MPA=ULT_SHEAR_STRENGTH_MPA WHERE GRAPH_ID IS NULL")
+                  '''
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME_KG_CM=ULT_SHEAR_STRENGTH_KG_CM, SHEAR_MOD_COLUMN_NAME_LB_INCH=ULT_SHEAR_STRENGTH_LB_INCH,SHEAR_MOD_COLUMN_NAME_N_MM=ULT_SHEAR_STRENGTH_N_MM,SHEAR_MOD_COLUMN_NAME_MPA=ULT_SHEAR_STRENGTH_MPA WHERE GRAPH_ID IS NULL")
+                 
                   
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_KG_CM=(cast(E_AT_PEAK_LOAD_MM as real)*0.1)/(2*IFNULL(cast(CS_AREA as real),1)*100) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_LB_INCH=(cast(E_AT_PEAK_LOAD_MM as real)*0.0393701)/(2*IFNULL(cast(CS_AREA as real),1)*0.0393701*0.0393701) WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_N_MM=(cast(E_AT_PEAK_LOAD_MM as real)*0.1)/(2*IFNULL(cast(CS_AREA as real),1)*100)  WHERE GRAPH_ID IS NULL") #Max length/2*CS_AREA")                  
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRAIN_MPA=round((ULT_SHEAR_STRAIN_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #Max length/2*CS_ARE
+                  #SELECT SHEAR_STRAIN_COLUMN_VALUE_KG_CM,SHEAR_STRAIN_COLUMN_VALUE_LB_INCH,SHEAR_STRAIN_COLUMN_VALUE_N_MM,SHEAR_STRAIN_COLUMN_VALUE_MPA FROM CYCLES_MST ORDER BY CYCLE_ID DESC LIMIT 1            
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_KG_CM=((E_AT_BREAK_MM*0.1)/(2*THINCKNESS*0.1))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_LB_INCH=((E_AT_BREAK_MM*0.0393701)/(2*THINCKNESS*0.0393701))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_N_MM=((E_AT_BREAK_MM)/(2*THINCKNESS))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_MPA=SHEAR_STRAIN_COLUMN_VALUE_KG_CM  WHERE GRAPH_ID IS NULL")
                   
-                  
-                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_NAME=ULT_SHEAR_STRENGTH_KG_CM WHERE GRAPH_ID IS NULL")  
-                  
-                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_STRAIN_COLUMN_VALUE_KG_CM=((E_AT_PEAK_LOAD_MM*0.1)/(2*THINCKNESS))  WHERE GRAPH_ID IS NULL")
-                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_KG_CM=(ULT_SHEAR_STRENGTH_KG_CM/SHEAR_STRAIN_COLUMN_VALUE_KG_CM)    WHERE GRAPH_ID IS NULL")                  
+                  #SELECT SHEAR_MOD_COLUMN_VALUE_KG_CM,SHEAR_MOD_COLUMN_VALUE_LB_INCH,SHEAR_MOD_COLUMN_VALUE_N_MM,SHEAR_MOD_COLUMN_VALUE_MPA FROM CYCLES_MST ORDER BY CYCLE_ID DESC LIMIT 1;
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_KG_CM=(SHEAR_MOD_COLUMN_NAME_KG_CM/SHEAR_STRAIN_COLUMN_VALUE_KG_CM)    WHERE GRAPH_ID IS NULL")                  
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_LB_INCH=(ULT_SHEAR_STRENGTH_LB_INCH/SHEAR_STRAIN_COLUMN_VALUE_LB_INCH)    WHERE GRAPH_ID IS NULL")                  
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_N_MM=(ULT_SHEAR_STRENGTH_N_MM/SHEAR_STRAIN_COLUMN_VALUE_N_MM)    WHERE GRAPH_ID IS NULL")                  
+                  cursor.execute("UPDATE CYCLES_MST SET SHEAR_MOD_COLUMN_VALUE_MPA=(ULT_SHEAR_STRENGTH_MPA/SHEAR_STRAIN_COLUMN_VALUE_MPA)    WHERE GRAPH_ID IS NULL")                  
                  
                   
                   #===================================
@@ -1356,7 +1376,7 @@ class TY_02_qlss_Ui_MainWindow(object):
         self.label_26.setText(str(rows[0][0]))
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0) FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,round(STG_PEAK_LOAD_KG,2),round(STG_E_AT_PEAK_LOAD_MM,2),STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0) FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
@@ -1467,8 +1487,8 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.setParent(parent)        
         ###
         self.playing = False
-        self.p =0
-        self.q =0
+        self.p =0.0
+        self.q =0.0
         self.arr_p=[0.0]
         self.arr_q=[0.0]
         self.arr_p1=[0.0]
@@ -1722,10 +1742,10 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress" or self.test_type=="Flexural" ):
-                    self.p=int(self.test_guage_mm)-self.p
+                    self.p=float(self.test_guage_mm)-float(self.p)
                     #print("self.p :"+str(self.p))
                 else:
-                    self.p=self.p-int(self.test_guage_mm)
+                    self.p=float(self.p)-float(self.test_guage_mm)
                     #self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
                 
@@ -1754,7 +1774,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.test_type=="Compress" or self.test_type=="Flexural"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    self.p=int(self.test_guage_mm)-self.p
+                    self.p=float(self.test_guage_mm)-float(self.p)
                     print("final q :::"+str(self.q))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
@@ -1762,7 +1782,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     #self.on_ani_stop()
                 elif(self.test_type=="QLSS"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)                    
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                    self.p=float(self.p)-float(self.test_guage_mm)
                     print("final QLSS-q :::"+str(self.q))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
