@@ -197,7 +197,7 @@ class urmini_05_Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; vertical-align:sub;\">Put Empty Bicker/Pot on Base and Click on OK button.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; vertical-align:sub;\">Put Empty Beaker/Pot on Base and Click on OK button.</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; vertical-align:sub;\">And Procced for Next Step.</span></p></body></html>"))
         self.pushButton_9.setText(_translate("MainWindow", "OK"))
         self.pushButton_12.setText(_translate("MainWindow", "VERIFY"))
@@ -205,7 +205,7 @@ class urmini_05_Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; vertical-align:sub;\">Fill Bicker with 1 Liter Water and Then Click on OK Button.</span></p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; vertical-align:sub;\">Fill Beaker with 1 Liter Water and Then Click on OK Button.</span></p></body></html>"))
         self.label_5.setText(_translate("MainWindow", ""))
         self.pushButton_10.setText(_translate("MainWindow", "RETURN"))
         

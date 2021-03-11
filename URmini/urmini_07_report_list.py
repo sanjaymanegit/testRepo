@@ -425,11 +425,20 @@ class urmini_07_MainWindow(object):
         elif(self.radioButton_2.isChecked()): # Name
             print("name :"+str(self.lineEdit.text()))
             if(self.lineEdit.text() != ""):
-                  self.whr_sql=" WHERE F_NAME like '%"+str(self.lineEdit.text())+"%' order by test_id desc"
-            else:    
-                  self.whr_sql=" order by test_id desc"
+                  if(self.lineEdit_2.text()==""):
+                          self.whr_sql=" WHERE F_NAME like '%"+str(self.lineEdit.text())+"%' order by test_id desc"
+                  else:
+                          self.whr_sql=" WHERE F_NAME like '%"+str(self.lineEdit.text())+"%' and L_NAME like '%"+str(self.lineEdit_2.text())+"%' order by test_id desc"
+            else:
+                  if(self.lineEdit_2.text()!=""):
+                      self.whr_sql=" WHERE L_NAME like '%"+str(self.lineEdit_2.text())+"%' order by test_id desc"                      
+                  else:                      
+                      self.whr_sql=" order by test_id desc"
+            
+            
             
             print("sql  :"+str(self.whr_sql))
+            
             results=connection.execute("SELECT List_name FROM PATIENT_TEST_VW  "+str(self.whr_sql))           
         
         else:
@@ -565,7 +574,7 @@ class urmini_07_MainWindow(object):
             self.report_date=str(x[3])[0:16]
         
         connection.close()
-        test_data=[["  Parameter      ","        Value      ","          Deviation %                   "]]
+        test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
@@ -599,7 +608,7 @@ class urmini_07_MainWindow(object):
             Title = Paragraph(str(ptext), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
-            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.report_date)+" </b></font>"            
+            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.label.text())+" </b></font>"            
             Title3 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         
@@ -628,7 +637,7 @@ class urmini_07_MainWindow(object):
             pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
             
             
-            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),comments,blank,footer_2,Spacer(1,12)]
+            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),comments,blank,footer_2,Spacer(1,12)]
             
             
             
@@ -748,7 +757,7 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()  
         
         
-        ax.set_title('Urometry Report of '+str(self.p_name)+" (Id: "+str(self.p_id)+")")
+        ax.set_title('Uroflowmetry Report of '+str(self.p_name)+" (Id: "+str(self.p_id)+")")
         #ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.2', color='red')

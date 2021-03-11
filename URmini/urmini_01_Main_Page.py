@@ -540,6 +540,9 @@ class Urmini_01_MainWindow(object):
               
                self.voiding_time=float(self.start_plot.arr_p2[self.stop_flow_idx]) - float(self.start_plot.arr_p2[self.start_flow_idx])               
                self.time_to_max_flow=float(self.start_plot.arr_p2[self.max_flow_idx])- float(self.start_plot.arr_p2[self.start_flow_idx])
+               if(float(self.time_to_max_flow) < 0):
+                   self.time_to_max_flow=self.time_to_max_flow*(-1)
+                
                self.total_vol=float(self.voided_vol)
                #self.flow_time=float(self.voiding_time)
                
@@ -589,6 +592,14 @@ class Urmini_01_MainWindow(object):
                       print(" Max Flow :"+str(x[0])+"   Avg Flow :"+str(x[1]))
                       self.max_flow=float(x[0])     
                       self.avg_flow=float(x[1]) 
+               connection.close()
+               
+               
+               connection = sqlite3.connect("ur.db")        
+               results=connection.execute("SELECT IFNULL(X_NUM,0),Y_NUM FROM GRAPH_MST_TMP2 where Y_NUM ='"+str(self.max_flow)+"'")
+               for x in results:
+                      print(" Max Flow xxx :"+str(x[1])+"   Time To Max Flow xxx:"+str(x[0]))
+                      self.time_to_max_flow=float(x[0])
                connection.close()
         else:
                print("Data is not populated") 

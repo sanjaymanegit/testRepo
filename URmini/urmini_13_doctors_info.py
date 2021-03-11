@@ -516,23 +516,35 @@ class urmini_13_Ui_MainWindow(object):
             self.label_7.show() 
     
     def edit_data(self):
-        if(self.lineEdit_2.text() != ""):
-            if(self.radioButton.isChecked()):
-                        self.gender="Male"
-            else:           
-                        self.gender="Female"
-            connection = sqlite3.connect("ur.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE DOCTORS_INFO SET fname='"+self.lineEdit_4.text()+"',mname='"+self.lineEdit.text()+
-                                   "',lname='"+self.lineEdit_5.text()+"',DR_QUAL='"+self.lineEdit_2.text()+"',DR_CONTACT='"+self.lineEdit_6.text()+
-                                   "',DR_EMAIL_ID='"+self.lineEdit_3.text()+"',DR_GENDER='"+self.gender+"' WHERE  DR_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()   
+        if(self.lineEdit_4.text() != ""):
+             if(self.lineEdit.text() != ""):
+                  if(self.lineEdit_5.text() != ""):
+                        if(self.radioButton.isChecked()):
+                                    self.gender="Male"
+                        else:           
+                                    self.gender="Female"
+                        connection = sqlite3.connect("ur.db")
+                        with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("UPDATE DOCTORS_INFO SET fname='"+self.lineEdit_4.text()+"',mname='"+self.lineEdit.text()+
+                                               "',lname='"+self.lineEdit_5.text()+"',DR_QUAL='"+self.lineEdit_2.text()+"',DR_CONTACT='"+self.lineEdit_6.text()+
+                                               "',DR_EMAIL_ID='"+self.lineEdit_3.text()+"',DR_GENDER='"+self.gender+"' WHERE  DR_ID ='"+str(self.dr_id)+"'")                    
+                        connection.commit();                    
+                        connection.close()
+                        self.label_7.setText("Saved Successfully.")
+                        self.label_7.show()
+                        self.select_all_data()
+                  else:
+                    self.label_7.setText("Last Name Empty.")
+                    self.label_7.show()
+             else:
+                    self.label_7.setText("Middle Name Empty.")
+                    self.label_7.show()
+        else:
+            self.label_7.setText("First Name Empty.")
+            self.label_7.show()
        
-        self.label_7.setText("Saved Successfully.")
-        self.label_7.show()
-        self.select_all_data()
+        
     
     def delete_click(self):
         row = self.tableWidget.currentRow()     
