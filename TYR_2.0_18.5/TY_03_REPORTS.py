@@ -636,7 +636,8 @@ class TY_03_Ui_MainWindow(object):
         #self.comboBox_3.setItemText(0, _translate("MainWindow", "MRF India Pvt Ltd"))
         #self.comboBox_3.setItemText(1, _translate("MainWindow", "Hero Cycles"))
         #self.comboBox_3.setItemText(2, _translate("MainWindow", "Tata Motors"))
-        self.label_28.setText(_translate("MainWindow", "Modulus (%):"))
+        #self.label_28.setText(_translate("MainWindow", "Modulus (%):"))
+        self.label_28.setText(_translate("MainWindow", "Shear Modulus@Kg/Cm2:"))
         self.lineEdit_4.setText(_translate("MainWindow", "100"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.pushButton_8_1.setText(_translate("MainWindow", "Reset"))
@@ -1221,37 +1222,65 @@ class TY_03_Ui_MainWindow(object):
             self.unit_typex=x[1]
         connection.close()
         
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT MOD_AT_ANY FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
+        for x in results:            
+                self.shear_mod_ip=str(x[0]) 
+        connection.close()    
+         
+        if(self.shear_mod_ip == ""):
+            self.shear_mod_ip=100
+        else:
+            pass
+        
         if(self.unit_typex == "Kg/Cm"):
             #data2= [ ['Spec. \n No', 'Thickness  \n (cm)','Width  \n (cm)','Span  \n (cm)','Length at Peak \n (cm)', 'Force at Peak\n (Kgf)', 'Flexural Strength \n (Kgf/cm2)']]
-            data2= [['Spec. \n No','Width \n (Cm)','Thickness \n (Cm)','CS Area \n (Cm2)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Ultimate Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)']]        
-  
+            data2= [['Spec. \n No','Width \n (Cm)','Thickness \n (Cm)','CS Area \n (Cm2)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Ultimate Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress']]        
+            data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Kg/Cm2) Shear Stress']]
+              
         elif(self.unit_typex == "Lb/Inch"):
-            data2= [ ['Spec. \n No','Width \n (Inch)','Thickness \n (Inch)','CS Area \n (Inch2)','Max. Force \n (Lb)',' Max. \n Disp.  \n (Inch) ','Utl. Shear\n Strength \n (Lb/Inch2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. Shear Stress','Shear Modulus \n @ Utl. \n Shear Stress \n (Lb/Inch2)']]        
-       
+            data2= [ ['Spec. \n No','Width \n (Inch)','Thickness \n (Inch)','CS Area \n (Inch2)','Max. Force \n (Lb)',' Max. \n Disp.  \n (Inch) ','Utl. Shear\n Strength \n (Lb/Inch2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. Shear Stress']]        
+            data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Lb/Inch2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Lb/Inch2) Shear Stress']]
             #data2= [ ['Spec. \n No', 'Thickness  \n (Inch)','Width  \n (Inch)','Span  \n (Inch)','Length at Peak \n (Inch)', 'Force at Peak\n (Lb)', 'Flexural Strength \n (Lb/Inch2)']]           
         elif(self.unit_typex == "Newton/Mm"):
-            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (N/Mm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress  \n (N/Mm2)']]        
-        
+            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (N/Mm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress']]        
+            data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Newton/Mm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Newton/Mm2) Shear Stress']] 
             #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (N)', 'Flexural Strength \n (N/mm2)']]            
         elif(self.unit_typex == "MPA"):
-            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (MPA)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (MPA)']]        
-        
+            data2= [ ['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (MPA)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress']]        
+            data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (MPA)','Shear Modulus \n@ '+str(self.shear_mod_ip)+'\n (MPA) Shear Stress']]
             #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (Kg)', 'Flexural Strength \n (MPA)']]           
         else:
-            data2= [['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)']]        
+            data2= [['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Utl. Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress']]        
+            data3= [['Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Kg/Cm2) Shear Stress']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.THICKNESS),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.4f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.THICKNESS),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.4f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM) ,printf(\"%.2f\", A.SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@ '||printf(\"%.2f\", A.SHEAR_MOD_COLUMN_NAME_KG_CM),printf(\"%.2f\",(("+str(self.shear_mod_ip)+")/(A.SHEAR_STRAIN_COLUMN_VALUE_KG_CM)))  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
         for x in results:
-                data2.append(x)
-        connection.close() 
+                data3.append(x)
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM),printf(\"%.2f\",(("+str(self.shear_mod_ip)+")/(SHEAR_STRAIN_COLUMN_VALUE_KG_CM))) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data3.append(x)
+        connection.close()
         
         y=300
         Elements=[]
@@ -1295,12 +1324,14 @@ class TY_03_Ui_MainWindow(object):
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
-         
+        f4=Table(data3)
+        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+      
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),comments,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
