@@ -1055,10 +1055,10 @@ class ur_12_Ui_MainWindow(object):
             self.p_name=str(x[0])
             summary_data.append(["Doctors Name:",str(self.dr_name),"Gender:",str(x[1])])
             #summary_data.append(["Report Date: ",str(x[3])[0:10],"",""])
-            self.report_date=str(x[3])[0:16]
+            #self.report_date=str(x[3])[0:16]
         
         connection.close()
-        test_data=[["  Parameter      ","        Value      ","          Deviation %                   "]]
+        test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
@@ -1092,18 +1092,18 @@ class ur_12_Ui_MainWindow(object):
             Title = Paragraph(str(ptext), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
-            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.report_date)+" </b></font>"            
+            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.label_33.text())+" </b></font>"            
             Title3 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         
         line=Paragraph("           ___________________________________________________________________________________________", styles["Normal"])
         spaceline=Paragraph("  \n", styles["Normal"])
-        blank=Paragraph(" --------------------------------------------------------------------------------------------------------------------------------------------------     \n", styles["Normal"])
+        blank=Paragraph(" -----------------------------------------------------------------------------------     \n", styles["Normal"])
         ptext = "<font name=Helvetica size=10>         Remark : </font>"           
            
-        comments = Paragraph(str(ptext)+" ------------------------------------------------------------------------------------------------------------------------------- -\n", styles["Normal"])
+        comments = Paragraph(str(ptext)+" ---------------------------------------------------------------------- -\n", styles["Normal"])
         
-        footer_2= Paragraph("Signed By : _________________.", styles["Normal"])
+        footer_2= Paragraph("\n Ark medico software division", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -1121,11 +1121,11 @@ class ur_12_Ui_MainWindow(object):
             pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
             
             
-            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12)]
+            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),comments,blank,footer_2,Spacer(1,12)]
             
             
             
-            doc = SimpleDocTemplate('./reports/ur_admin_reports.pdf', rightMargin=10,
+            doc = SimpleDocTemplate('./reports/ur_reports.pdf', rightMargin=10,
                                     leftMargin=30,
                                     topMargin=30,
                                     bottomMargin=20)
@@ -1142,11 +1142,11 @@ class ur_12_Ui_MainWindow(object):
         
     def open_pdf(self):
         self.create_pdf()
-        os.system("xpdf ./reports/ur_admin_reports.pdf") 
+        os.system("xpdf ./reports/ur_reports.pdf") 
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
-                os.system("cp ./reports/ur_reports.pdf /media/usb/ur_admin_reports_"+str(self.test_id)+".pdf")
+                os.system("cp ./reports/ur_reports.pdf /media/usb/ur_reports"+str(self.test_id)+".pdf")
                 os.system("sudo umount /media/usb")
         else:
              print("Please connect usb storage device")
@@ -1241,7 +1241,7 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()  
         
         
-        ax.set_title('Urometry Report of '+str(self.p_name)+" (Id: "+str(self.p_id)+")")
+        ax.set_title('Uroflowmetry Report of '+str(self.p_name)+" (Id: "+str(self.p_id)+")")
         #ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.2', color='red')

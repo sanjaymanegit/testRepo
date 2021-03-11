@@ -236,7 +236,7 @@ class ur_01_Ui_MainWindow(object):
         self.radioButton_6.setChecked(True)
         self.radioButton_6.setObjectName("radioButton_6")
         self.label_30 = QtWidgets.QLabel(self.frame)
-        self.label_30.setGeometry(QtCore.QRect(1020, 0, 211, 41))
+        self.label_30.setGeometry(QtCore.QRect(760, 90, 211, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -245,7 +245,7 @@ class ur_01_Ui_MainWindow(object):
         self.label_30.setAlignment(QtCore.Qt.AlignCenter)
         self.label_30.setObjectName("label_30")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1240, 10, 91, 31))
+        self.pushButton_6.setGeometry(QtCore.QRect(1200, 10, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -267,7 +267,7 @@ class ur_01_Ui_MainWindow(object):
         self.pushButton_6_1.setObjectName("pushButton_6_1")
         
         self.pushButton_6_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6_2.setGeometry(QtCore.QRect(1100, 50, 80, 31))
+        self.pushButton_6_2.setGeometry(QtCore.QRect(1200, 90, 131, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -276,6 +276,16 @@ class ur_01_Ui_MainWindow(object):
         self.pushButton_6_2.setFont(font)
         self.pushButton_6_2.setStyleSheet("background-color: rgb(255, 220, 212);")
         self.pushButton_6_2.setObjectName("pushButton_6_2")
+       
+        self.pushButton_6_3 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_6_3.setGeometry(QtCore.QRect(980, 15, 200, 100))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("images/ARK LOGO.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_6_3.setIcon(icon)
+        self.pushButton_6_3.setIconSize(QtCore.QSize(230, 210))
+        self.pushButton_6_3.setFont(font)        
+        self.pushButton_6_3.setStyleSheet("background-color: rgb(255, 220, 212);")
+        self.pushButton_6_3.setObjectName("pushButton_6_3")
        
         
         
@@ -315,7 +325,7 @@ class ur_01_Ui_MainWindow(object):
         self.progressBar.setObjectName("progressBar")
         self.verticalLayout.addWidget(self.progressBar)
         self.widget1 = QtWidgets.QWidget(self.frame)
-        self.widget1.setGeometry(QtCore.QRect(150, 120, 1181, 571))
+        self.widget1.setGeometry(QtCore.QRect(150, 130, 1181, 571))
         self.widget1.setObjectName("widget1")
         self.gridLayout = QtWidgets.QGridLayout(self.widget1)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -397,7 +407,7 @@ class ur_01_Ui_MainWindow(object):
         self.label_33.setText(_translate("MainWindow", "Elapsed Time (Sec.):"))
         self.label_34.setText(_translate("MainWindow", "00.0000"))
         self.pushButton_6_2.setText("Reports")
-        self.pushButton_3_1.setText("Set Low")
+        self.pushButton_3_1.setText("Zero")
        
         self.pushButton_3.clicked.connect(self.blank_graph)
         self.pushButton_4.clicked.connect(self.start_test)
@@ -450,6 +460,10 @@ class ur_01_Ui_MainWindow(object):
             print("Start Command : "+str(self.command_str))
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
+            self.progressBar.setValue(0)
+            self.lcdNumber.setProperty("value", 0)
+            self.lcdNumber_2.setProperty("value",0) 
+            
         except IOError:
             print("IO Errors")
             
@@ -681,12 +695,15 @@ class ur_01_Ui_MainWindow(object):
                for y in range(len(self.start_plot.arr_q2)):                   
                     if(float(self.start_plot.arr_q2[y]) == float(self.max_flow) and  int(self.max_flow_idx) == 0):
                                      self.max_flow_idx=int(y)
-                                     print("MAx flow indx :"+str(self.max_flow_idx)+" Max Flow :"+str(self.start_plot.arr_q2[self.max_flow_idx]))
+                                     print("Max flow indx :"+str(self.max_flow_idx)+" Max Flow :"+str(self.start_plot.arr_q2[self.max_flow_idx])+" Max flow time :"+str(self.start_plot.arr_p2[self.max_flow_idx]))
                                      
                                      
               
                self.voiding_time=float(self.start_plot.arr_p2[self.stop_flow_idx]) - float(self.start_plot.arr_p2[self.start_flow_idx])               
-               self.time_to_max_flow=float(self.start_plot.arr_p2[self.max_flow_idx])- float(self.start_plot.arr_p2[self.start_flow_idx])
+               self.time_to_max_flow=float(self.start_plot.arr_p2[self.max_flow_idx])
+               #print(" max flow :")
+               if(float(self.time_to_max_flow) < 0):
+                   self.time_to_max_flow=self.time_to_max_flow*(-1)
                self.total_vol=float(self.voided_vol)
                #self.flow_time=float(self.voiding_time)
                
@@ -736,6 +753,13 @@ class ur_01_Ui_MainWindow(object):
                       print(" Max Flow :"+str(x[0])+"   Avg Flow :"+str(x[1]))
                       self.max_flow=float(x[0])     
                       self.avg_flow=float(x[1]) 
+               connection.close()
+               
+               connection = sqlite3.connect("ur.db")        
+               results=connection.execute("SELECT IFNULL(X_NUM,0),Y_NUM FROM GRAPH_MST_TMP2 where Y_NUM ='"+str(self.max_flow)+"'")
+               for x in results:
+                      print(" Max Flow xxx :"+str(x[1])+"   Time To Max Flow xxx:"+str(x[0]))
+                      self.time_to_max_flow=float(x[0])
                connection.close()
         else:
                print("Data is not populated") 
@@ -868,7 +892,7 @@ class ur_01_Ui_MainWindow(object):
            else:
                self.go_ahead="No"
         connection.close()       
-        if(self.go_ahead=="Yes"):
+        if(self.go_ahead =="Yes"):
                  if(self.radioButton_5.isChecked()):
                     
                     self.radioButton_5.setChecked(True) #on

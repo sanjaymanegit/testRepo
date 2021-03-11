@@ -225,7 +225,7 @@ class ur_10_Ui_MainWindow(object):
         self.timer1.start(1)
         
     def device_date(self):     
-        self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S")) 
          
     def login_page(self):
         connection = sqlite3.connect("services.db")
@@ -256,13 +256,17 @@ class ur_10_Ui_MainWindow(object):
      
     def set_date(self):
         print("ok....")
-        self.label_4.show()
-        #self.label_4.setText(str(self.calendarWidget.selectedDate().toString("dd MMM yyyy"))+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00")
-        self.new_date=str(self.calendarWidget.selectedDate().toString("dd MMM yyyy"))+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
-        #print("new_date:"+str(self.new_date))
-        os.system(" sudo date -s \""+str(self.new_date)+"\"")
-        os.system("sudo hwclock -w")
-        os.system("sudo hwclock -r")
+        if(self.lineEdit.text() != ""):
+            self.label_4.show()
+            #self.label_4.setText(str(self.calendarWidget.selectedDate().toString("dd MMM yyyy"))+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00")
+            self.new_date=str(self.calendarWidget.selectedDate().toString("dd MMM yyyy"))+" "+str(self.comboBox.currentText())+":"+str(self.comboBox_2.currentText())+":00"
+            #print("new_date:"+str(self.new_date))
+            os.system(" sudo date -s \""+str(self.new_date)+"\"")
+            os.system("sudo hwclock -w")
+            os.system("sudo hwclock -r")
+        else:
+            self.label_4.setText("Select Date Please.") 
+            self.label_4.show() 
         
         
     def dt_onclick(self):

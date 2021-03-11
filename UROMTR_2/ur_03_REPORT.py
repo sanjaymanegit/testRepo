@@ -526,8 +526,10 @@ class ur_03_Ui_MainWindow(object):
         self.label_46.setText(_translate("MainWindow", "%accel"))
         self.label_47.setText(_translate("MainWindow", "%fl2sec"))
         self.label_49.setText(_translate("MainWindow", "16-10-2020 12:14"))
+        
         self.label_50.setText(_translate("MainWindow", " 00099"))
-        self.label_30.setText(_translate("MainWindow", "16 Jan 2020 12:14:15"))
+        #self.label_30.setText(_translate("MainWindow", "16 Jan 2020 12:14:15"))
+        self.label_30.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         self.pushButton_2.setText(_translate("MainWindow", "View Patients Details"))
         self.label_2.setText(_translate("MainWindow", " Comment Saved Successfully ...."))
         self.toolButton_2.hide()
@@ -555,7 +557,7 @@ class ur_03_Ui_MainWindow(object):
         connection = sqlite3.connect("ur.db")
         results=connection.execute("SELECT TEST_ID,TEST_START_ON,ELAPSED_TIME,round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
-                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)") 
+                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST order by TEST_ID desc limit 1") 
         for x in results:
             self.label_50.setText(str(x[0]).zfill(5))  #TEST_ID
             self.label_49.setText(str(x[1])[0:10]) #TEST_START_ON
@@ -617,7 +619,7 @@ class ur_03_Ui_MainWindow(object):
         summary_data=[]
         test_data=[]
         connection = sqlite3.connect("ur.db")        
-        results=connection.execute("SELECT TEST_ID,TEST_START_ON,DR_NAME FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
+        results=connection.execute("SELECT TEST_ID,TEST_START_ON,DR_NAME FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1")
         for x in results:
             summary_data=[["Test No:        ",str(x[0]).zfill(6),"Tested Date:        ",str(x[1])[0:10]]]
             self.test_id=str(x[0])
@@ -635,11 +637,11 @@ class ur_03_Ui_MainWindow(object):
             self.report_date=str(x[3])[0:16]
         
         connection.close()
-        test_data=[["  Parameter      ","        Value      ","          Deviation %                   "]]
+        test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
-                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
+                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1 ")
         for x in results:
                   test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),str(x[1])   ])
                   test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),str(x[3])   ])
@@ -652,13 +654,6 @@ class ur_03_Ui_MainWindow(object):
                   self.remark="xxxx"
         connection.close()
         
-        
-        
-        
-        
-        
-        
-        
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
@@ -669,18 +664,18 @@ class ur_03_Ui_MainWindow(object):
             Title = Paragraph(str(ptext), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
-            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.report_date)+" </b></font>"            
+            ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.label_30.text())+" </b></font>"            
             Title3 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         
-        line=Paragraph("           ___________________________________________________________________________________________", styles["Normal"])
+        line=Paragraph("           _________________________________________________________________________________", styles["Normal"])
         spaceline=Paragraph("  \n", styles["Normal"])
-        blank=Paragraph(" --------------------------------------------------------------------------------------------------------------------------------------------------     \n", styles["Normal"])
+        blank=Paragraph(" -----------------------------------------------------------------------     \n", styles["Normal"])
         ptext = "<font name=Helvetica size=10>         Remark : </font>"           
            
-        comments = Paragraph(str(ptext)+" ------------------------------------------------------------------------------------------------------------------------------- -\n", styles["Normal"])
+        comments = Paragraph(str(ptext)+" -------------------------------------------------------------------------------------- -\n", styles["Normal"])
         
-        footer_2= Paragraph("Signed By : _________________.", styles["Normal"])
+        footer_2= Paragraph("\n Ark medico software division", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -698,7 +693,7 @@ class ur_03_Ui_MainWindow(object):
         pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
         
         
-        Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12)]
+        Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),comments,blank,footer_2,Spacer(1,12)]
         
         
         
@@ -816,7 +811,7 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()  
         
         
-        ax.set_title('Urometry Report of '+str(self.p_name))
+        ax.set_title('Uroflowmetry Report of '+str(self.p_name))
         #ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.2', color='red')

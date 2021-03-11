@@ -186,7 +186,7 @@ class ur_09_Ui_MainWindow(object):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
-        self.timer1.stop()
+        #self.timer1.stop()
         
     def device_date(self):     
         self.label_4.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))

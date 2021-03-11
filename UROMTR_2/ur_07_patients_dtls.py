@@ -183,6 +183,8 @@ class ur_07_Ui_Form(object):
         self.label_13.setText(_translate("Form", ""))
         self.label_14.setText(_translate("Form", ""))
         self.label_15.setText(_translate("Form", "Test Id:"))
+        self.label_15.hide()
+        self.label_16.hide()
         self.label_16.setText(_translate("Form", ""))
         self.pushButton_4.setText(_translate("Form", "Close"))
         self.label_17.setText(_translate("Form", "DOB (YYYY-MM-DD) :"))
@@ -204,7 +206,7 @@ class ur_07_Ui_Form(object):
         connection = sqlite3.connect("ur.db")
         results=connection.execute("SELECT TEST_ID, DR_NAME FROM GLOBAL_VAR_TEST") 
         for x in results:
-            self.label_16.setText(str(x[0]).zfill(5))
+            #self.label_16.setText(str(x[0]).zfill(5))
             self.label_10.setText(str(x[1]))
             
         connection.close()

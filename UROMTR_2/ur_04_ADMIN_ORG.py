@@ -217,7 +217,7 @@ class ur_04_Ui_MainWindow(object):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
-        self.timer1.stop()
+        #self.timer1.stop()
         self.hide_objects()
     
     def device_date(self):     

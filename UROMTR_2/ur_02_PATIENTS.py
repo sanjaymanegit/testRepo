@@ -275,7 +275,7 @@ class ur_02_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "Patients Id:"))
         self.pushButton_4.setText(_translate("MainWindow", "Search"))
         self.label_33.setText(_translate("MainWindow", "Patients Id:"))
-        self.label_34.setText(_translate("MainWindow", "0002033"))
+        self.label_34.setText(_translate("MainWindow", "000001"))
         self.label_35.setText(_translate("MainWindow", "Name :"))
         self.label_36.setText(_translate("MainWindow", "Gender  :"))
         self.radioButton.setText(_translate("MainWindow", "Male"))

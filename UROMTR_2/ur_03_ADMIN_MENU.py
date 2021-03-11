@@ -278,6 +278,7 @@ class ur_03_A_Ui_MainWindow(object):
         
     def anydesk_open(self):
         self.anydesk_id =0
+        os.system("rm -rf anydes_id_f.txt")
         os.system("anydesk --get-id >> anydes_id_f.txt")
         f = open('anydes_id_f.txt','r')
         for line in f:                 
