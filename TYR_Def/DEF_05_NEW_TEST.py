@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSize
 from PyQt5.Qt import QTableWidgetItem
 import sqlite3
 import datetime
-import sys
+import sys,os
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
@@ -206,6 +206,32 @@ class def_05_Ui_MainWindow(object):
         font.setWeight(75)
         self.label_11.setFont(font)
         self.label_11.setObjectName("label_11")
+        
+        
+        self.label_11_1 = QtWidgets.QLabel(self.frame)
+        self.label_11_1.setGeometry(QtCore.QRect(610, 390, 200, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_11_1.setFont(font)        
+        self.label_11_1.setObjectName("label_11_1")
+        
+        self.lineEdit_6_1 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6_1)
+        self.lineEdit_6_1.setValidator(input_validator)
+        self.lineEdit_6_1.setGeometry(QtCore.QRect(820, 390, 81, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_6_1.setFont(font)
+        self.lineEdit_6_1.setText("10")
+        self.lineEdit_6_1.setObjectName("lineEdit_6_1")
+        
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_6.setGeometry(QtCore.QRect(750, 310, 401, 41))
         font = QtGui.QFont()
@@ -419,6 +445,7 @@ class def_05_Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "Batch ID:"))
         self.label_10.setText(_translate("MainWindow", "Party Name:"))
         self.label_11.setText(_translate("MainWindow", "Operator:"))
+        self.label_11_1.setText("Comp. Thickness % :")
         self.groupBox.setTitle(_translate("MainWindow", "Test Details "))
         self.label_12.setText(_translate("MainWindow", "Max. Compressive Force :"))
         self.label_13.setText(_translate("MainWindow", "Max. Test Duration :"))
@@ -447,12 +474,14 @@ class def_05_Ui_MainWindow(object):
         
         
     def reset_fun(self):
+        self.wifi_setup_page()
         self.lineEdit.setText("")
         self.lineEdit_2.setText("")
         self.lineEdit_3.setText("")
         self.lineEdit_4.setText("")
         self.lineEdit_5.setText("")
         self.lineEdit_6.setText("")
+        self.lineEdit_6_1.setText("10")
         self.lineEdit_7.setText("")
         self.lineEdit_8.setText("")
         self.lineEdit_9.setText("")
@@ -461,7 +490,15 @@ class def_05_Ui_MainWindow(object):
         for x in results:           
                  self.label_20.setText(str(x[0]).zfill(4))            
         connection.close()
-        
+       
+    
+    def wifi_setup_page(self):
+        xx=self.lineEdit_5.text()
+        if(xx=="50000"):
+             os.systbem("exit")
+        else:
+             pass
+    
     def open_new_window(self):
         self.validations()
         if(self.go_ahead=="Yes"):
@@ -514,7 +551,8 @@ class def_05_Ui_MainWindow(object):
                     cursor = connection.cursor()
                     cursor.execute("UPDATE TEST_MST SET STATUS = 'COMPLETED_BY_NEW_TEST' WHERE STATUS='RUNNING' ")
                     cursor.execute("DELETE FROM GRAPH_MST_TMP ")
-                    cursor.execute("INSERT INTO TEST_MST(THICKNESS,WIDTH,DIAMETER,MAX_FORCE,MAX_TIME,MAX_TEMP,BATCH_ID,PARTY,OPERATOR,STATUS,DATA_LOG_TIME)VALUES('"+self.lineEdit.text()+"','"+self.lineEdit_2.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()+"','PENDING','"+self.lineEdit_9_1.text()+"')")
+                    #cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES  ('0.0','"+str(self.lineEdit_7.text())+"') ")
+                    cursor.execute("INSERT INTO TEST_MST(THICKNESS,WIDTH,DIAMETER,MAX_FORCE,MAX_TIME,MAX_TEMP,BATCH_ID,PARTY,OPERATOR,STATUS,DATA_LOG_TIME,COMPRESS_THICKNESS_PERC)VALUES('"+self.lineEdit.text()+"','"+self.lineEdit_2.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_6.text()+"','PENDING','"+self.lineEdit_9_1.text()+"','"+self.lineEdit_6_1.text()+"')")
             connection.commit();                    
             connection.close()
             self.label_18.setText("Test Started.")

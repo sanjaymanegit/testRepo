@@ -94,7 +94,7 @@ class P_POPUi_MainWindow(object):
            
     def print_pdf(self):                
         conn = cups.Connection() 
-        file="./reports/ur_reports.pdf"        
+        file="./reports/stech_reports.pdf"        
         print("length of printers :"+str(len(self.printers)))
         if(len(self.printers) > 0):
             printer=self.radioButton.text()

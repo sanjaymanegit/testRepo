@@ -95,6 +95,18 @@ class Ui_MainWindow(object):
         self.pushButton_2.setIconSize(QtCore.QSize(200, 200))
         self.pushButton_2.setFlat(True)
         self.pushButton_2.setObjectName("pushButton_2")
+        
+        
+        self.label_39 = QtWidgets.QLabel(self.frame)
+        self.label_39.setGeometry(QtCore.QRect(800, 80, 211, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        self.label_39.setFont(font)
+        self.label_39.setObjectName("label_39")
+        
+        
+        
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(1030, 80, 111, 31))
         font = QtGui.QFont()
@@ -132,7 +144,7 @@ class Ui_MainWindow(object):
         self.xstr1=""
         self.xstr2=""
         self.xstr3=""
-        self.xstr4=""
+        self.xstr4=0
         self.buff=[]
         self.i1=0
         self.j1=0
@@ -142,6 +154,8 @@ class Ui_MainWindow(object):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.data_log_time=0
+        self.first_record_add=0
+        self.max_time="0.0"
         
 
         self.retranslateUi(MainWindow)
@@ -161,6 +175,9 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.open_new_window2)
         self.pushButton_5.clicked.connect(self.open_new_window3)
         self.pushButton_8.clicked.connect(self.open_new_window4)
+        self.pushButton_6.clicked.connect(self.shutdown_system)
+        self.pushButton_7.clicked.connect(self.reboot_system)
+        self.anydesk_open()
         
         self.timer6=QtCore.QTimer()
         self.timer7=QtCore.QTimer()
@@ -178,14 +195,31 @@ class Ui_MainWindow(object):
     def device_date(self):     
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
-    
+    def shutdown_system(self):
+        os.system("sudo shutdown -P 0")
+        
+    def reboot_system(self):
+        os.system("sudo reboot")
+        
+    def anydesk_open(self):
+        self.anydesk_id =0
+        os.system("rm -rf anydes_id_f.txt")
+        os.system("anydesk --get-id >> anydes_id_f.txt")
+        f = open('anydes_id_f.txt','r')
+        for line in f:                 
+                    self.anydesk_id = line[0:9]
+        print("self.anydesk_id:"+str(self.anydesk_id))
+        self.label_39.setText("AnyDesk ID:"+str(self.anydesk_id))    
+        f.close()
+        
     def check_test_status(self):
         self.test_cnt=0
         connection = sqlite3.connect("def.db")
-        results=connection.execute("SELECT COUNT(TEST_ID),TEST_START_ON,(IFNULL(DATA_LOG_TIME,5)*60*60) FROM TEST_MST WHERE STATUS='RUNNING'") 
+        results=connection.execute("SELECT COUNT(TEST_ID),TEST_START_ON,(IFNULL(DATA_LOG_TIME,5)*60),IFNULL(MAX_TIME,'0.0') FROM TEST_MST WHERE STATUS='RUNNING'") 
         for x in results:
             self.test_cnt=str(x[0])
             self.data_log_time=int(x[2])
+            self.max_time=str(x[3])
             if(int(self.test_cnt) > 0):
                 self.start_time = datetime.datetime.strptime(str(x[1]), '%Y-%m-%d %H:%M:%S')
             else:
@@ -203,6 +237,19 @@ class Ui_MainWindow(object):
                 self.on_restart()
             else:
                 self.intiate_job()
+                
+            if(float(self.elapsed_time) > float(self.max_time)):
+                connection = sqlite3.connect("def.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE TEST_MST SET STATUS = 'AUTO-STOPPED'  WHERE STATUS='RUNNING' ")
+                        cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM GRAPH_MST_TMP")
+                        cursor.execute("UPDATE GRAPH_MST SET GRAPHI_ID=(SELECT MAX(IFNULL(GRAPHI_ID,0))+1 FROM GRAPH_MST) WHERE GRAPHI_ID IS NULL")
+                        cursor.execute("UPDATE TEST_MST SET GRAPHI_ID=(SELECT MAX(IFNULL(GRAPHI_ID,0)) FROM GRAPH_MST) WHERE GRAPHI_ID IS NULL")                        
+                connection.commit();                    
+                connection.close()                
+            else:
+                pass
         #print("running test count :"+str(self.test_cnt))
     
     def intiate_job(self):        
@@ -212,13 +259,6 @@ class Ui_MainWindow(object):
         
         self.arr_p1=[]
         self.arr_q1=[]
-        
-        
-        
-        
-        
-        
-        
         
         try:
             self.ser = serial.Serial(
@@ -237,7 +277,7 @@ class Ui_MainWindow(object):
             #print("o/p:"+str(self.line))
             self.timer6.setInterval(5000)        
             self.timer6.timeout.connect(self.load_arr)
-            self.timer6.start(1)
+            self.timer6.start(1000)
             self.job_initialted=1
             '''
             self.timer7.setInterval(15000)        
@@ -280,45 +320,67 @@ class Ui_MainWindow(object):
                 if(len(self.buff)> 1):                        
                             self.xstr2=str(self.buff[0])
                             try:
-                                    self.xstr4=int(self.xstr2)                                    
+                                    self.xstr4=float(self.xstr2)                                    
                             except ValueError:                        
                                     print("Value Error"+str(self.xstr2))
                                     self.xstr4=0
                             try:
                                     self.end_time = datetime.datetime.now()
                                     self.elapsed_time=self.end_time-self.start_time
-                                    self.elapsed_time =self.elapsed_time.days * 24 * 3600 + self.elapsed_time.seconds
-                                    
-                                    self.mod=int(self.elapsed_time) % 10
-                                    #self.mod=int(self.elapsed_time) % int(self.data_log_time)
-                                    #self.elapsed_time=int((int(self.elapsed_time)/60)/60)
+                                    self.elapsed_time =self.elapsed_time.days * 24 * 3600 + self.elapsed_time.seconds                                    
+                                    #self.mod=int(self.elapsed_time) % 10
+                                    if(int(self.data_log_time) > 0):
+                                        self.mod=int(self.elapsed_time) % int(self.data_log_time)
+                                    else:
+                                        self.mod=0
+                                    print("Mod::"+str(int(self.mod))+" self.elapsed_time: "+str(self.elapsed_time)+" self.data_log_time : "+str(self.data_log_time)+" Weight :"+str(self.xstr4))
+                                    self.elapsed_time=float((int(self.elapsed_time)/60)/60)
                                     
                             except ValueError:                        
                                     print("Elapsed Time")        
                             
-                            '''
-                            self.arr_p.append(int(self.elapsed_time))
-                            self.arr_q.append(int(self.xstr4))                            
-                            '''
-                            if(int(self.mod)==0):
+                            if(int(self.mod)==0 and float(self.elapsed_time) > 0 ):
                                     connection = sqlite3.connect("def.db")              
                                     with connection:        
                                         cursor = connection.cursor()                                
-                                        cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES('"+str(self.elapsed_time)+"','"+str(self.xstr4)+"')")                         
+                                        cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES('"+str(float(self.elapsed_time))+"','"+str(self.xstr4)+"')")                         
                                     connection.commit();
                                     connection.close()
+                                    print("Inserted Record :self.elapsed_time :"+str(self.elapsed_time)+" Weight :"+str(self.xstr4))
                                     '''
-                                    print("Inserted Record ")
+                                    
                                     print("self.start time:"+str(self.start_time))
                                     print("self.End_time:"+str(self.end_time))
                                     print("self.elapsed_time:"+str(int(self.elapsed_time)))
                                     print("Mod::"+str(int(self.mod)))
                                     print("Weight :"+str(int(self.xstr4)))
                                     '''
+                            else:
+                                #print("self.job_initialted:"+str(self.job_initialted)+"self.first_record_add :"+str(self.first_record_add)+"Weight :"+str(int(self.xstr4)))
+                                if(int(self.job_initialted)==1):
+                                    if(int(self.first_record_add)==0):
+                                        if(float(self.xstr4) > 0):
+                                                '''
+                                                connection = sqlite3.connect("def.db")              
+                                                with connection:        
+                                                    cursor = connection.cursor()                                
+                                                    cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES('0','"+str(self.xstr4)+"')")                         
+                                                connection.commit();
+                                                connection.close()
+                                                self.first_record_add=1
+                                                print("FIRST RECORD ADDED !!!!")
+                                                print("self.data_log_time :"+str(self.data_log_time))
+                                                '''
+                                                pass
+                                        else:
+                                             print("Weight :"+str(float(self.xstr4)))
+                                
+                                    
                             
                             
                 else:
-                    print("Now Weight Data Evaluated :"+str(len(self.buff)))
+                    #print("Now Weight Data Evaluated :"+str(len(self.buff)))
+                    pass
                 
             except IOError:
                 print("IO Errors : Data Read Error") 

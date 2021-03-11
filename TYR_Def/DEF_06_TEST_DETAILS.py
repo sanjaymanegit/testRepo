@@ -332,12 +332,24 @@ class def_06_Ui_MainWindow(object):
         #self.label_21_1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21_1.setObjectName("label_21_1")
         
+        self.label_21_2 = QtWidgets.QLabel(self.frame)
+        self.label_21_2.setGeometry(QtCore.QRect(630, 340, 291, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_21_2.setFont(font)
+        self.label_21_2.setText("Comp. Thickness % :")
+        #self.label_21_1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_21_2.setObjectName("label_21_2")
+        
         
         self.lineEdit_9_2 = QtWidgets.QLineEdit(self.frame)
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_9_2)
         self.lineEdit_9_2.setValidator(input_validator)
-        self.lineEdit_9_2.setGeometry(QtCore.QRect(840, 300, 91, 41))
+        self.lineEdit_9_2.setGeometry(QtCore.QRect(840, 310, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -345,6 +357,20 @@ class def_06_Ui_MainWindow(object):
         font.setWeight(75)
         self.lineEdit_9_2.setFont(font)
         self.lineEdit_9_2.setObjectName("lineEdit_9_2")
+        
+        
+        self.lineEdit_9_3 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9_3)
+        self.lineEdit_9_3.setValidator(input_validator)
+        self.lineEdit_9_3.setGeometry(QtCore.QRect(840, 350, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_9_3.setFont(font)
+        self.lineEdit_9_3.setObjectName("lineEdit_9_3")
         
         
         self.label_22 = QtWidgets.QLabel(self.frame)
@@ -410,7 +436,7 @@ class def_06_Ui_MainWindow(object):
     
     def load_data(self):
         connection = sqlite3.connect("def.db")
-        results=connection.execute("SELECT THICKNESS,WIDTH,DIAMETER,BATCH_ID,PARTY,OPERATOR,MAX_FORCE,MAX_TIME,MAX_TEMP,TEST_START_ON,TEST_ID,DATA_LOG_TIME FROM TEST_MST WHERE STATUS = 'RUNNING' LIMIT 1")
+        results=connection.execute("SELECT THICKNESS,WIDTH,DIAMETER,BATCH_ID,PARTY,OPERATOR,MAX_FORCE,MAX_TIME,MAX_TEMP,TEST_START_ON,TEST_ID,DATA_LOG_TIME,IFNULL(COMPRESS_THICKNESS_PERC,0) FROM TEST_MST WHERE STATUS = 'RUNNING' LIMIT 1")
         for x in results:        
                 self.lineEdit.setText(str(x[0]))
                 self.lineEdit_2.setText(str(x[1]))
@@ -424,6 +450,7 @@ class def_06_Ui_MainWindow(object):
                 self.label_22.setText(str(x[9]))
                 self.label_20.setText(str(x[10]))
                 self.lineEdit_9_2.setText(str(str(x[11])))
+                self.lineEdit_9_3.setText(str(str(x[12])))
         connection.close()
 
     def save_data(self):
@@ -432,7 +459,7 @@ class def_06_Ui_MainWindow(object):
                     connection = sqlite3.connect("def.db")
                     with connection:        
                         cursor = connection.cursor()
-                        cursor.execute("UPDATE TEST_MST SET MAX_FORCE='"+self.lineEdit_7.text()+"',MAX_TIME='"+self.lineEdit_8.text()+"',DATA_LOG_TIME='"+self.lineEdit_9_2.text()+"' WHERE TEST_ID='"+str(self.label_20.text())+"' ")            
+                        cursor.execute("UPDATE TEST_MST SET MAX_FORCE='"+self.lineEdit_7.text()+"',MAX_TIME='"+self.lineEdit_8.text()+"',DATA_LOG_TIME='"+self.lineEdit_9_2.text()+"',COMPRESS_THICKNESS_PERC='"+self.lineEdit_9_3.text()+"' WHERE TEST_ID='"+str(self.label_20.text())+"' ")            
                     connection.commit();
                     connection.close()
             else:

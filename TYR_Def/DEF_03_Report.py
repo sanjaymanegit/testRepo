@@ -435,7 +435,7 @@ class def_03_Ui_MainWindow(object):
         self.comboBox_2.clear()
         self.i=0
         connection = sqlite3.connect("def.db")
-        results=connection.execute("select TEST_ID FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 50 ") 
+        results=connection.execute("select TEST_ID FROM TEST_MST WHERE STATUS != 'RUNNING' ORDER BY TEST_ID DESC") 
         for x in results:
             self.comboBox_2.addItem(str(x[0]),self.i)
             self.comboBox_2.setItemText(self.i,str(x[0]))            
@@ -445,7 +445,7 @@ class def_03_Ui_MainWindow(object):
         self.comboBox_3.clear()
         self.i=0
         connection = sqlite3.connect("def.db")
-        results=connection.execute("select BATCH_ID FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 50 ") 
+        results=connection.execute("select BATCH_ID FROM TEST_MST WHERE STATUS != 'RUNNING' ORDER BY TEST_ID DESC") 
         for x in results:
             self.comboBox_3.addItem(str(x[0]),self.i)
             self.comboBox_3.setItemText(self.i,str(x[0]))            
@@ -502,9 +502,11 @@ class def_03_Ui_MainWindow(object):
         self.lineEdit_12.setText("") #batch id
         self.lineEdit_7.setText("") #diameter 
         self.lineEdit_8.setText("")  #width
+        #self.wifi_setup_page()
         
         
-        
+    
+                    
         
         
         
@@ -606,34 +608,106 @@ class def_03_Ui_MainWindow(object):
         self.p_name=""
         self.test_date=""
         summary_data=[]
-        test_data=[]
+        self.test_data=[]
+        self.test_data.append(["Duration(Hrs)","Load Retention(%)"])
+        
+        self.test_count=0
+        self.max_load=0
+        self.per_load=0
+        self.per_10=0
+        self.mod=1
+        
+        
+        self.ptext1 = ""
+           
+        self.ptext2 = ""
+            
+        self.ptext3 = ""            
+            
+        self.footer_2_str= ""
+        
         connection = sqlite3.connect("def.db")        
-        results=connection.execute("SELECT TEST_ID,TEST_START_ON,BATCH_ID,THICKNESS,WIDTH,DIAMETER,PARTY,OPERATOR FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
+        results=connection.execute("SELECT TEST_ID,TEST_START_ON,BATCH_ID,THICKNESS,WIDTH,DIAMETER,PARTY,OPERATOR,MAX_TEMP,CURRENT_TIMESTAMP,COMPRESS_THICKNESS_PERC FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
         for x in results:
             summary_data=[["Test No:        ",str(x[0]).zfill(6),"Tested Date:        ",str(x[1])[0:10]]]
-            summary_data.append(["Batch Id : ",str(x[2]),"Thickness: ",str(x[3])])
-            summary_data.append(["Width: ",str(x[4]),"Diameter: ",str(x[5])])
+            summary_data.append(["Batch Id : ",str(x[2]),"Thickness(Mm): ",str(x[3])])
+            summary_data.append(["Width(Mm): ",str(x[4]),"Diameter(Mm): ",str(x[5])])
             summary_data.append(["Party: ",str(x[6]),"Operator: ",str(x[7])])
+            summary_data.append(["Temparature(C): ",str(x[8]),"Report Date: ",str(x[9])[0:10]])
+            summary_data.append(["Comp.Thickness(%): ",str(x[10])])
             self.test_id=str(x[0])
             self.test_date=str(x[1])            
         connection.close()
+        
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT GRAPHI_ID  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)") 
+        for x in results:
+            self.graph_id=str(x[0])            
+        connection.close()
+        
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT count(REC_ID),max(Y_NUM) FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
+        for x in results:
+                self.test_count=int(x[0])
+                self.per_10=int(int(self.test_count)/10)
+                print("record count:"+str(self.test_count)+" self.per_10:"+str(self.per_10))
+                self.max_load=str(x[1])                         
+        connection.close()
+        
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT Y_NUM,printf(\"%.4f\", X_NUM),REC_ID FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
+        for k in results:
+               if(float(k[1]) == 0):
+                   self.per_load=1*100
+                   self.test_data.append([str(float(k[1])),str(int(self.per_load))+str("% ")])               
+               else:
+                    if(int(self.per_10) > 0):
+                        self.mod=int(k[2]) % int(self.per_10)
+                    else:
+                        self.mod=0
+                    if(int(self.mod) == 0):
+                            self.per_load=float(int(k[0])/float(self.max_load))*100
+                            self.test_data.append([str(float(k[1])),str(int(self.per_load))+str("% ")])
+                            #print("load :"+str(k[0])+ " Duration :"+str(k[1]))
+        connection.close()
+       
         
         
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
-        ptext = "<font name=Helvetica size=14> TEST REPORT 1  </font>"   
-        Title = Paragraph(str(ptext), styles["Title"])
-        ptext = "<font name=Helvetica size=11> TEST REPORT 2 </font>"            
+        connection = sqlite3.connect("def.db")        
+        results=connection.execute("SELECT  PRINTER_HEATER_TITLE, PRINTER_HEADER ,  PRINTER_FOOTER FROM GLOBAL_VAR_TEST")
+        for x in results:
+            self.ptext1 = "<font name=Helvetica size=14> "+str(x[0])+"  </font>"
+           
+            self.ptext2 = "<font name=Helvetica size=11> "+str(x[1])+" </font>"
+            
+            self.ptext3 = "\n <font name=Helvetica size=16> <b> Compression Stress Relaxation Test </b></font>"            
+            
+            self.footer_2_str= str(x[2])
         
-        Title2 = Paragraph(str(ptext), styles["Title"])
-        ptext = "\n <font name=Helvetica size=16> <b> Report as on "+str(self.test_date)+" </b></font>"            
-        Title3 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        
+       
+        Title = Paragraph(str(self.ptext1), styles["Title"])
+        
+        Title2 = Paragraph(str(self.ptext2), styles["Title"])
+        Title3 = Paragraph(str(self.ptext3), styles["Title"])
+        footer_2= Paragraph("\n "+str(self.footer_2_str)+"", styles["Normal"])
+        
+        
+        
+          
+        
+                   
+        
+        
         
             
-        comments = Paragraph(str(ptext)+" ------------------------------------------------------------------------------------------------------------------------------- -\n", styles["Normal"])
+        #comments = Paragraph(str(ptext)+" ------------------------------------------------------------------------------------------------------------------------------- -\n", styles["Normal"])
         
-        footer_2= Paragraph("\n Stech Engineers Tested", styles["Normal"])
+        
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -644,11 +718,14 @@ class def_03_Ui_MainWindow(object):
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
         
+        f4=Table(self.test_data)
+        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
+        
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
         
         
-        Elements=[Title3,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title3,Title,Title2,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         
         
@@ -682,13 +759,51 @@ class PlotCanvas_blank(FigureCanvas):
         
         self.x=[]
         self.y=[]
+        self.test_id=0
+        self.test_count=0
+        self.max_load=0
+        self.per_10=0
+        self.mod=1
+        self.add_10_per_load=0
+        '''
         connection = sqlite3.connect("def.db")
-        results=connection.execute("SELECT Y_NUM,X_NUM FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
+        results=connection.execute("SELECT Y_NUM,X_NUM,REC_ID FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
         for k in results:        
                 self.y.append(k[0])
-                self.x.append(k[1])
+                self.x.append(k[1])                
         connection.close()
-       
+        '''
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT count(REC_ID),max(Y_NUM) FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
+        for x in results:
+                self.test_count=int(x[0])
+                self.per_10=int(int(self.test_count)/10)
+                print("record count:"+str(self.test_count)+" self.per_10:"+str(self.per_10)+" graph_id:"+str(self.graph_id))
+                self.max_load=str(x[1])                         
+        connection.close()
+        
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT Y_NUM,printf(\"%.4f\", X_NUM),REC_ID FROM GRAPH_MST WHERE GRAPHI_ID='"+str(self.graph_id)+"'")
+        for k in results:
+               if(float(k[1]) == 0):
+                   self.y.append(float(k[0]))
+                   self.x.append(float(k[1]))               
+               else:
+                if(int(self.per_10) > 0):
+                    self.mod=int(k[2]) % int(self.per_10)
+                else:
+                    self.mod=0
+                print("per_10:"+str(self.per_10)+" mod:"+str(self.mod))
+                if(int(self.mod) == 0):
+                        self.y.append(float(k[0]))
+                        self.x.append(float(k[1])) 
+                        #self.test_data.append([float(k[1]),int(k[0])])
+                        print("load :"+str(k[0])+ " Duration :"+str(k[1]))
+        connection.close()
+        
+        
+        
+        
         ax = self.figure.add_subplot(111)
         #ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
@@ -704,10 +819,13 @@ class PlotCanvas_blank(FigureCanvas):
         
         if(int(self.test_count) > 0):
                 connection = sqlite3.connect("def.db")
-                results=connection.execute("SELECT MAX_FORCE,MAX_TIME FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
-                for k in results:        
-                        self.axes.set_ylim(0,int(str(k[0])))
-                        self.axes.set_xlim(0,int(str(k[1])))
+                results=connection.execute("SELECT MAX_FORCE,MAX_TIME,TEST_ID FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
+                for k in results:
+                        self.add_10_per_load=float(str(k[0]))*0.1
+                        self.add_10_per_load=self.add_10_per_load+float(str(k[0]))
+                        self.axes.set_ylim(0,float(str(self.add_10_per_load)))
+                        self.axes.set_xlim(0,float(str(k[1])))
+                        self.test_id=str(k[2])
                 connection.close()
         else:        
                 self.axes.set_xlim(0,500)
@@ -715,10 +833,11 @@ class PlotCanvas_blank(FigureCanvas):
         
        
        
-        ax.plot(self.x,self.y,'#04756A')
+        #ax.plot(self.x,self.y,'#04756A')
+        ax.plot(self.x,self.y)
         ax.set_ylabel('FORCE (kgf)')
-        ax.set_xlabel('TIME (hrs)')
-        ax.set_title('Report of Test Id:')
+        ax.set_xlabel('DURATION (hrs)')
+        ax.set_title('Report of Test Id:'+str(self.test_id))
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.2', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.2', color='black')        

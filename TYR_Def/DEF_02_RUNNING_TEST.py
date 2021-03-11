@@ -31,6 +31,16 @@ class def_02_Ui_MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
+        self.xstr0x=""
+        self.xstr1x=""
+        self.xstr2x=""
+        self.buff=[]
+        
+        self.IO_error_flgx=0
+        self.xstr3x=""
+        self.xstr2x=""
+        self.xstr4x=""
+        self.current_value=""
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -113,12 +123,68 @@ class def_02_Ui_MainWindow(QMainWindow):
         self.pushButton_7_1.setObjectName("pushButton_7_1")
         
         
+        self.label_2_1 = QtWidgets.QLabel(self.frame)
+        self.label_2_1.setGeometry(QtCore.QRect(500, 80, 101, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        #font.setBold(True)
+        font.setWeight(75)
+        self.label_2_1.setFont(font)
+        self.label_2_1.setText(" FORCE (Kgf) :")
+        self.label_2_1.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_2_1.setObjectName("label_2_1")
+        
+        self.label_2_2 = QtWidgets.QLabel(self.frame)
+        self.label_2_2.setGeometry(QtCore.QRect(600, 80, 101, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        #font.setBold(True)
+        font.setWeight(75)
+        self.label_2_2.setFont(font)
+        self.label_2_2.setText(" 0 ")
+        self.label_2_2.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_2_2.setObjectName("label_2_2")
+        
+        self.label_2_3 = QtWidgets.QLabel(self.frame)
+        self.label_2_3.setGeometry(QtCore.QRect(700, 80, 111, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        #font.setBold(True)
+        font.setWeight(75)
+        self.label_2_3.setFont(font)
+        self.label_2_3.setText(" DURATION (Hrs): ")
+        self.label_2_3.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_2_3.setObjectName("label_2_3")
+        
+        self.label_2_4 = QtWidgets.QLabel(self.frame)
+        self.label_2_4.setGeometry(QtCore.QRect(810, 80, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        #font.setBold(True)
+        font.setWeight(75)
+        self.label_2_4.setFont(font)
+        self.label_2_4.setText(" 0 ")
+        self.label_2_4.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_2_4.setObjectName("label_2_4")
+        
+        
+        
+        
+        
+        
+        
+        
         self.widget = QtWidgets.QWidget(self.frame)
         self.widget.setGeometry(QtCore.QRect(50, 110, 1221, 531))
         self.widget.setObjectName("widget")
         self.gridLayout = QtWidgets.QGridLayout(self.widget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
+        
         self.label_2 = QtWidgets.QLabel(self.widget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -128,6 +194,9 @@ class def_02_Ui_MainWindow(QMainWindow):
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_2.setObjectName("label_2")
+        
+       
+        
         self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
         self.graphicsView = QtWidgets.QGraphicsView(self.widget)
         self.graphicsView.setObjectName("graphicsView")
@@ -142,6 +211,7 @@ class def_02_Ui_MainWindow(QMainWindow):
         MainWindow.setStatusBar(self.statusbar)
         self.started_plot_flg=0
         self.saved_flg=0
+        self.first_record_saved_flg=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -173,12 +243,65 @@ class def_02_Ui_MainWindow(QMainWindow):
         self.pushButton_7.clicked.connect(self.open_new_window)
         
         #self.blank_graph()
+        
+        self.timer2=QtCore.QTimer()
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.check_test_status()
+        self.start_wt()
+        
     
+    def device_date(self):     
+        self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        if(self.started_plot_flg==1):
+              self.label_2_4.setText(str(int(int(self.start_plot.elapsed_time)/3600)))
+              #print("time:"+str(int(int(self.start_plot.elapsed_time)/3600)))
+        '''
+        if(self.label_2_2.text() != ""):
+          if(float(self.label_2_2.text()) > 0):
+                    print("float val Weight :"+str(float(self.label_2_2.text())))
+        
+        
+        if(self.first_record_saved_flg==0):
+               if(float(self.label_2_2.text()) > 0):
+                              self.load_first_record()
+        '''
+        
+    def load_first_record(self):
+        self.current_value="0.0"
+        self.v_max_force="0.0"
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT IFNULL(MAX(Y_NUM),0.0),count(*) FROM GRAPH_MST_TMP")
+        for x in results:
+               if(int(x[1]) > 0):
+                   self.status="RUNNUNG"
+                   self.current_value=str(x[0])                   
+               else:
+                   self.status=""
+                   self.current_value=self.label_2_2.text()
+        
+        if(self.status !="RUNNUNG"):
+            
+                connection.close()
+                connection = sqlite3.connect("def.db")
+                results=connection.execute("SELECT IFNULL(MAX_FORCE,0) FROM TEST_MST WHERE STATUS='RUNNING'")
+                for x in results:
+                       self.v_max_force=str(x[0])            
+                connection.close()
+                connection = sqlite3.connect("def.db")
+                with connection:        
+                                cursor = connection.cursor()                    
+                                #cursor.execute("UPDATE TEST_MST SET STATUS = 'RUNNING',TEST_START_ON = '"+str(tmstamp)+"',MAX_FORCE='"+str(self.label_2_2.text())+"' WHERE STATUS='PENDING' ")
+                                cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES  ('0.0','"+str(self.v_max_force)+"') ")
+                                self.first_record_saved_flg=1
+                                print("Firat Weight Loaded ")
+                connection.commit();                    
+                connection.close()
+        else:
+                pass
     
     def save_test_data(self):
         if(self.started_plot_flg==1):
@@ -204,8 +327,7 @@ class def_02_Ui_MainWindow(QMainWindow):
                         cursor = connection.cursor()
                         cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM GRAPH_MST_TMP")
                         cursor.execute("UPDATE GRAPH_MST SET GRAPHI_ID=(SELECT MAX(IFNULL(GRAPHI_ID,0))+1 FROM GRAPH_MST) WHERE GRAPHI_ID IS NULL")
-                        cursor.execute("UPDATE TEST_MST SET GRAPHI_ID=(SELECT MAX(IFNULL(GRAPHI_ID,0)) FROM GRAPH_MST) WHERE GRAPHI_ID IS NULL")
-                        cursor.execute("DELETE FROM GRAPH_MST_TMP")
+                        cursor.execute("UPDATE TEST_MST SET GRAPHI_ID=(SELECT MAX(IFNULL(GRAPHI_ID,0)) FROM GRAPH_MST) WHERE GRAPHI_ID IS NULL")                        
             connection.commit();                    
             connection.close()
             self.label_2.setText("TEST  SAVED")
@@ -217,6 +339,13 @@ class def_02_Ui_MainWindow(QMainWindow):
         
     
     def on_return(self):
+        if(self.timer1.isActive()): 
+                   self.timer1.stop()                                                                                                      
+                   print("Time 1 has been stopped ")
+        if(self.timer2.isActive()): 
+                   self.timer2.stop()                                                                                                      
+                   print("Time 2 has been stopped ")
+                   
         if(self.started_plot_flg==1):
             self.start_plot.on_stop()
             time.sleep(1)
@@ -231,7 +360,7 @@ class def_02_Ui_MainWindow(QMainWindow):
                 connection.close()
                 '''
                 pass
-            self.pushButton_6.setEnabled(True)
+        self.pushButton_6.setEnabled(True)
            
         
         
@@ -257,55 +386,169 @@ class def_02_Ui_MainWindow(QMainWindow):
             self.start_test()
     
     
-    def device_date(self):     
-        self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+    
     
     def blank_graph(self):
         self.graph_blank =PlotCanvas_blank(self,width=5, height=2)                
         self.gridLayout.addWidget(self.graph_blank, 1, 0, 1, 1)
         
     def start_test(self):
-        tmstamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        #time.sleep(5)
+        self.status=""
+        self.current_value="0.0"
         connection = sqlite3.connect("def.db")
-        with connection:        
-                    cursor = connection.cursor()                    
-                    cursor.execute("UPDATE TEST_MST SET STATUS = 'RUNNING',TEST_START_ON = '"+str(tmstamp)+"' WHERE STATUS='PENDING' ")
-        connection.commit();                    
+        results=connection.execute("SELECT IFNULL(MAX(Y_NUM),0.0),count(*) FROM GRAPH_MST_TMP")
+        for x in results:
+               if(int(x[1]) > 0):
+                   self.status="RUNNUNG"
+                   self.current_value=str(x[0])                   
+               else:
+                   self.status=""
+                   self.current_value="0.0"
         connection.close()
         
+        tmstamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        if(self.status==""):
+            connection = sqlite3.connect("def.db")
+            with connection:        
+                        cursor = connection.cursor()                    
+                        cursor.execute("UPDATE TEST_MST SET STATUS = 'RUNNING',TEST_START_ON = '"+str(tmstamp)+"',MAX_FORCE='"+str(self.label_2_2.text())+"' WHERE STATUS='PENDING' ")
+                        cursor.execute("INSERT INTO GRAPH_MST_TMP(X_NUM,Y_NUM) VALUES  ('0.0','"+str(self.label_2_2.text())+"') ")
+            connection.commit();                    
+            connection.close()
+        else:
+            connection = sqlite3.connect("def.db")
+            with connection:        
+                        cursor = connection.cursor()                    
+                        cursor.execute("UPDATE TEST_MST SET STATUS = 'RUNNING',TEST_START_ON = '"+str(tmstamp)+"',MAX_FORCE='"+str(self.label_2_2.text())+"' WHERE STATUS='PENDING' ")
+            connection.commit();                    
+            connection.close()
+            
         self.start_plot =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
         self.started_plot_flg=1
-        #self.verticalLayout.addWidget(self.start_plot)
+            #self.verticalLayout.addWidget(self.start_plot)
         self.gridLayout.addWidget(self.start_plot, 1, 0, 1, 1)
-        #self.gridLayout.addWidget(self.start_plot, 0, 0, 1, 4)
+            #self.gridLayout.addWidget(self.start_plot, 0, 0, 1, 4)
         self.pushButton_4.setDisabled(True)
         self.pushButton_2.setEnabled(True)
         self.label_2.setText("TEST STARTED")
         self.label_2.show()
+        
  
-    def stop_test(self):        
-        connection = sqlite3.connect("def.db")              
-        with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE TEST_MST SET STATUS = 'STOPPED'  WHERE STATUS='RUNNING' ")          
-        connection.commit();
-        connection.close()
-        self.start_plot.on_stop()
-        self.pushButton_4.setEnabled(True)
-        self.pushButton_2.setDisabled(True)
-        self.pushButton_6.setEnabled(True)
-        self.pushButton_3.setDisabled(True)
-        print("Test Stopped !!")
-        self.label_2.setText("TEST STOPPED")
-        self.label_2.show()
-        self.save_test_data()
+    def stop_test(self):
+        if(self.started_plot_flg==1):
+            connection = sqlite3.connect("def.db")              
+            with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE TEST_MST SET STATUS = 'STOPPED'  WHERE STATUS='RUNNING' ")          
+            connection.commit();
+            connection.close()
+            
+            self.start_plot.on_stop()
+            self.pushButton_4.setEnabled(True)
+            self.pushButton_2.setDisabled(True)
+            self.pushButton_6.setEnabled(True)
+            self.pushButton_3.setDisabled(True)
+            print("Test Stopped !!")
+            self.label_2.setText("TEST STOPPED")
+            self.label_2.show()
+            self.save_test_data()
+        else:
+            pass
   
      
-    def open_new_window(self):       
-        self.window = QtWidgets.QMainWindow()
-        self.ui=def_06_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()   
+    def open_new_window(self):
+        running_test_cnt=0
+        connection = sqlite3.connect("def.db")
+        results=connection.execute("SELECT COUNT(TEST_ID) FROM TEST_MST WHERE STATUS='RUNNING'") 
+        for x in results:
+            running_test_cnt=int(x[0])
+            if(running_test_cnt > 0):
+                self.window = QtWidgets.QMainWindow()
+                self.ui=def_06_Ui_MainWindow()
+                self.ui.setupUi(self.window)           
+                self.window.show()
+            else:
+                self.label_2.setText("NO RUNNING TEST FOUND")
+                self.label_2.show()
+        
+        
+        
+        
+    def start_wt(self):
+        #print("Weight Started ....")
+        try:
+            self.serx = serial.Serial(
+                                port='/dev/ttyAMA0',
+                                baudrate=115200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+        
+            self.serx.flush()       
+                     
+            
+            
+            self.linex = self.serx.readline(15)
+            print("o/p:"+str(self.linex))
+             
+            self.timer2.setInterval(5000)        
+            self.timer2.timeout.connect(self.display_lcd_val)
+            self.timer2.start(1)
+            
+            
+        except IOError:
+            print("IO Errors-load cell connections error")
+            self.IO_error_flgx=1
+            self.label_2.setText("LOAD CELL CONNECTION ERROR")  
+            self.label_2.show()
+            #self.stop_timer()
+            
+            
+    def display_lcd_val(self):               
+        #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        if(self.IO_error_flgx==0):
+            try:
+                self.linex = self.serx.readline()
+                #print(" raw o/p:"+str(self.line))
+                
+                #print("self.line:"+str(self.line,'utf-8'))
+                self.xstr0x=str(self.linex,'utf-8')
+                self.xstr1x=self.xstr0x.replace("\r","")
+                self.xstr2x=self.xstr1x.replace("\n","")
+                self.buffx=self.xstr2x.split("_")
+                #self.last_value=self.current_value 
+                if(len(self.buffx)> 1):
+                        #if(str(self.buff[3]) == 'R'): 
+                                self.xstr2x=str(self.buffx[0])
+                                try:
+                                     self.xstr4x=float(self.xstr2x)
+                                except ValueError:                        
+                                    print("Value Error"+str(self.xstr2x))
+                                    self.xstr4x=0                    
+                                try:
+                                    #self.current_value=float(int(self.xstr4)/1000)
+                                    #self.count_value=float(int(self.buff[1]))                                    
+                                    #self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                    self.label_2_2.setText(str(self.xstr4x))
+                                   
+                                except ValueError:
+                                    print("Value Error :"+str(self.xstr4x))
+                                    self.xstr4x=0
+                                    #self.current_value=0                    
+                                #self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                #self.lcdNumber.setProperty("value", str(self.count_value))
+                                
+                                #print("enable_buttons_flag :"+str(self.enable_buttons_flag)+" self.last_value :"+str(self.last_value)+" self.current_value :"+str(self.current_value))
+                            
+            except IOError:
+                print("IO Errors : Data Read Error") 
+                self.IO_error_flgx=1
+                #self.label_2.setText("DATA READ ERROR")  
+                #self.label_2.show()
        
 
 class PlotCanvas_blank(FigureCanvas):
@@ -320,18 +563,18 @@ class PlotCanvas_blank(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.plot_blank()        
         
-    def plot_blank(self):                
-        
+    def plot_blank(self):               
+        '''
         connection = sqlite3.connect("def.db")              
         with connection:        
                 cursor = connection.cursor()                            
                 cursor.execute("DELETE FROM GRAPH_MST_TMP")                            
         connection.commit()
         connection.close()
-        
+        '''
         self.x=[0,0,0,0,0,0,0,0]
         self.y=[0,0,0,0,0,0,0,0]
-        
+        self.add_10_per_load=0
         self.p=list()
         self.q=list()
       
@@ -351,8 +594,10 @@ class PlotCanvas_blank(FigureCanvas):
         if(int(self.test_count) > 0):
                 connection = sqlite3.connect("def.db")
                 results=connection.execute("SELECT MAX_FORCE,MAX_TIME FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1")
-                for k in results:        
-                        self.axes.set_ylim(0,int(str(k[0])))
+                for k in results:
+                        self.add_10_per_load=float(str(k[0]))*0.1
+                        self.add_10_per_load=int(self.add_10_per_load+float(str(k[0])))
+                        self.axes.set_ylim(0,int(str(self.add_10_per_load)))
                         self.axes.set_xlim(0,float(str(k[1])))
                 connection.close()
         else:        
@@ -426,12 +671,12 @@ class PlotCanvas_Auto(FigureCanvas):
              self.arr_p=[]
              self.arr_q=[]
              connection = sqlite3.connect("def.db")
-             results=connection.execute("select X_NUM,Y_NUM FROM GRAPH_MST_TMP")
+             results=connection.execute("select IFNULL(X_NUM,0.0),IFNULL(Y_NUM,0.0) FROM GRAPH_MST_TMP")
              for x in results:        
-                       self.arr_p.append(int(x[0]))
-                       self.arr_q.append(int(x[1])) 
+                       self.arr_p.append(float(x[0]))
+                       self.arr_q.append(float(x[1])) 
              connection.close()
-             print("Arry Populated !!!!!")
+             #print("Arry Populated !!!!!")
         else:
              pass
      
@@ -450,6 +695,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.axes.set_autoscale_on(True)
         self.max_load=0
         self.test_count=0
+        self.add_10_per_load=0
         connection = sqlite3.connect("def.db")
         results=connection.execute("SELECT count(*) TEST_MST")
         for k in results:        
@@ -458,14 +704,16 @@ class PlotCanvas_Auto(FigureCanvas):
         
         if(int(self.test_count) > 0):
                 connection = sqlite3.connect("def.db")
-                results=connection.execute("SELECT MAX_FORCE,MAX_TIME,(IFNULL(DATA_LOG_TIME,5)*60*60),TEST_ID FROM TEST_MST WHERE STATUS='RUNNING' LIMIT 1")
-                for k in results:        
-                        self.axes.set_ylim(0,int(str(k[0])))
+                results=connection.execute("SELECT IFNULL(MAX_FORCE,0.0),IFNULL(MAX_TIME,0),(IFNULL(DATA_LOG_TIME,5)*60),TEST_ID FROM TEST_MST WHERE STATUS='RUNNING' LIMIT 1")
+                for k in results:
+                        self.add_10_per_load=float(str(k[0]))*0.1
+                        self.add_10_per_load=self.add_10_per_load+float(str(k[0]))
+                        self.axes.set_ylim(0,float(str(self.add_10_per_load)))
                         self.axes.set_xlim(0,float(str(k[1])))
                         self.data_log_time=int(k[2])
-                        self.max_load=int(k[0])
-                        self.axes.set_title('Report of Test Id:'+str(k[3]).zfill(4))
-                        print("self.data_log_time :"+str(self.data_log_time))
+                        self.max_load=float(k[0])
+                        self.axes.set_title('Graph of Test Id:'+str(k[3]).zfill(4))
+                        
                 connection.close()
         else:        
                 self.axes.set_xlim(0,500)
@@ -477,14 +725,8 @@ class PlotCanvas_Auto(FigureCanvas):
         for k in results:        
                 self.test_count=str(k[0])              
         connection.close()
-        if(int(self.test_count) > 0):
-            connection = sqlite3.connect("def.db")
-            results=connection.execute("SELECT IFNULL(Y_NUM,0) FROM GRAPH_MST_TMP order by Y_NUM DESC LIMIT 1")
-            for x in results:        
-                  self.j1=str(x[0])      
-            connection.close()
-        else:
-            self.j1=0
+        
+        
         
         '''
         if(int(self.test_count) > 0):
@@ -499,7 +741,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.status=""
         '''
     
-        
+        #self.axes.plot(self.arr_p,self.arr_q,'-o')
         self.axes.grid(which='major', linestyle='-', linewidth='0.2', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.2', color='black')
         #self.line_cnt, = self.axes.plot([], [], animated=True, lw=1.5,color='#04756A')
@@ -520,7 +762,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ani = animation.FuncAnimation(
                 self.figure,
                 self.plot_grah_only,
-                blit=True, interval=1000
+                blit=True, interval=10
                     )
             print("Done1-On_start")
            
