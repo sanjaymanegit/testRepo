@@ -412,7 +412,7 @@ class TY_01_Ui_MainWindow(object):
         font.setPointSize(10)
         self.label_22_1.setFont(font)
         self.label_22_1.setStyleSheet("color: rgb(0, 0, 255);")
-        self.label_22_1.setObjectName("label_2Reset2_1")
+        self.label_22_1.setObjectName("label_22_1")
         self.gridLayout_4_1.addWidget(self.label_22_1, 1, 0, 1, 1)
         self.lineEdit_2_1_1 = QtWidgets.QLineEdit(self.layoutWidget2_1)
         reg_ex = QRegExp("(\\d+\\.\\d+)")
