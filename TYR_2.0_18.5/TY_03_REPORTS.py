@@ -1047,6 +1047,8 @@ class TY_03_Ui_MainWindow(object):
                self.create_pdf_flexural()
            elif(str(self.label_31.text())=="QLSS"):    
                self.create_pdf_qlss()
+           elif(str(self.label_31.text())=="ILSS"):    
+               self.create_pdf_ilss()
            else:
                self.create_pdf_new()
            
@@ -1214,6 +1216,123 @@ class TY_03_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)      
     
+    def create_pdf_ilss(self):        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:
+            self.graph_typex=x[0]
+            self.unit_typex=x[1]
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT MOD_AT_ANY FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
+        for x in results:            
+                self.shear_mod_ip=str(x[0]) 
+        connection.close()    
+         
+        if(self.shear_mod_ip == ""):
+            self.shear_mod_ip=100
+        else:
+            pass
+        
+        if(self.unit_typex == "Kg/Cm"):
+            #data2= [ ['Spec. \n No', 'Thickness  \n (cm)','Width  \n (cm)','Span  \n (cm)','Length at Peak \n (cm)', 'Force at Peak\n (Kgf)', 'Flexural Strength \n (Kgf/cm2)']]
+            data2= [['Spec. \n No','Length \n (Cm)','Width \n (Cm)','Thickness \n (Cm)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Shear\n Strength \n (Kg/Cm2)','SPAN \n (Mm)','Breaking Mode','Temp. \n (C)']]        
+            #data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Kg/Cm2) Shear Stress']]
+              
+        elif(self.unit_typex == "Lb/Inch"):
+            data2= [ ['Spec. \n No','Length \n (Inch)','Width \n (Inch)','Thickness \n (Inch)','Max. Force \n (Lb)',' Max. \n Disp.  \n (Inch) ',' Shear\n Strength \n (Lb/Inch2)','SPAN \n (Inch)','Breaking Mode','Temp. \n (C)']]        
+            #data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Lb/Inch2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Lb/Inch2) Shear Stress']]
+            #data2= [ ['Spec. \n No', 'Thickness  \n (Inch)','Width  \n (Inch)','Span  \n (Inch)','Length at Peak \n (Inch)', 'Force at Peak\n (Lb)', 'Flexural Strength \n (Lb/Inch2)']]           
+        elif(self.unit_typex == "Newton/Mm"):
+            data2= [ ['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (N)',' Max. \n Disp.  \n (Mm) ',' Shear\n Strength \n (N/Mm2)','SPAN \n (Mm)','Breaking Mode','Temp. \n (C)']]        
+            #data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Newton/Mm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Newton/Mm2) Shear Stress']] 
+            #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (N)', 'Flexural Strength \n (N/mm2)']]            
+        elif(self.unit_typex == "MPA"):
+            data2= [ ['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ',' Shear\n Strength \n (MPA)','SPAN \n (Mm)','Breaking Mode','Temp. \n (C)']]        
+            #data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (MPA)','Shear Modulus \n@ '+str(self.shear_mod_ip)+'\n (MPA) Shear Stress']]
+            #data2= [ ['Spec. \n No', 'Thickness  \n (mm)','Width  \n (mm)','Span  \n (mm)','Length at Peak \n (mm)', 'Force at Peak\n (Kg)', 'Flexural Strength \n (MPA)']]           
+        else:
+            data2= [['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.  \n (Mm) ',' Shear\n Strength \n (Kg/Cm2)','SPAN \n (Mm)','Breaking Mode','Temp. \n (C)']]        
+            #data3= [['Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Kg/Cm2) Shear Stress']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,60,printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.THICKNESS),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.4f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.SPAN),A.BREAK_MODE,A.TEMPERATURE  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TYPE_STR,60,printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SPAN),BREAK_MODE,TEMPERATURE  FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        
+        
+        
+        
+        y=300
+        Elements=[]
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,CURRENT_TIMESTAMP  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+      
+        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+          
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', rightMargin=10,
+                                leftMargin=30,
+                                topMargin=20,
+                                bottomMargin=20,)
+        doc.build(Elements)
+        #print("Done"
+        
     def create_pdf_qlss(self):        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
