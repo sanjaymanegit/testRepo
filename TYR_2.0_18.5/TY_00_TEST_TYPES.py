@@ -161,15 +161,15 @@ class TY_00_T_Ui_MainWindow(object):
                 
             
             if(str(x[4])=='ACTIVE'):
-                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
             else:
-                self.pushButton_5.setEnabled(False)    
+                self.pushButton_6.setEnabled(False)    
              
              
             if(str(x[5])=='ACTIVE'):
-                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
             else:
-                self.pushButton_6.setEnabled(False)   
+                self.pushButton_7.setEnabled(False)   
                 
         connection.close()
         #self.label_3.hide()

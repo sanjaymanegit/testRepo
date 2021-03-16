@@ -692,7 +692,8 @@ class TY_02_Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.sc_blank, 0, 0, 1, 5)
         self.pushButton_5.clicked.connect(self.show_all_specimens)
        
-        self.pushButton.clicked.connect(self.show_real_time) 
+        self.pushButton.clicked.connect(self.show_real_time)
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
         #self.radioButton_3.clicked.connect(self.save_graph_data)
         #self.load_data()
         #self.radioButton_4.setDisabled(True)  ### reset
@@ -707,7 +708,8 @@ class TY_02_Ui_MainWindow(object):
         self.load_cell_hi=0
         self.load_cell_lo=0
         self.extiometer=0
-        self.encoder=0 
+        self.encoder=0
+        self.cycle_id=0
         try:
             self.serial_3 = serial.Serial(
                         port='/dev/ttyUSB0',
@@ -726,13 +728,117 @@ class TY_02_Ui_MainWindow(object):
         except IOError:
             print("IO Errors")
     
+    def delete_cycle(self):
+        if(self.test_type=="Flexural"):
+            row = self.tableWidget.currentRow() 
+            self.cycle_id=str(self.tableWidget.item(row, 9).text())
+            if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.load_data()
+            else:
+                pass
+        else:
+            pass
+            
+    
     def on_timer3_stop(self):
         if(self.timer3.isActive()): 
            self.timer3.stop()
         else:
            pass
            
-           
+    def flexual_objects(self):
+        self.label_3_3= QtWidgets.QLabel(self.frame)
+        self.label_3_3.setGeometry(QtCore.QRect(1080, 490, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.label_3_3.setFont(font)
+        self.label_3_3.setText("Temp.(C):")
+        self.label_3_3.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_3.setObjectName("label_3_3")
+        
+        
+        self.lineEdit_3_3 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_3.setGeometry(QtCore.QRect(1150, 490, 58, 31))
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3_3)
+        self.lineEdit_3_3.setValidator(input_validator)        
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_3_3.setFont(font)
+        self.lineEdit_3_3.setText("25")
+        self.lineEdit_3_3.setObjectName("lineEdit_3_3")
+       
+        self.label_3_4= QtWidgets.QLabel(self.frame)
+        self.label_3_4.setGeometry(QtCore.QRect(790, 490, 90, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.label_3_4.setFont(font)
+        self.label_3_4.setText("Failure Mode:")
+        self.label_3_4.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_4.setObjectName("label_3_4")
+        
+        
+        self.lineEdit_3_4 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_4.setGeometry(QtCore.QRect(890, 490, 150, 31))               
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_3_4.setFont(font)
+        self.lineEdit_3_4.setText("Bending")
+        self.lineEdit_3_4.setObjectName("lineEdit_3_4")
+        
+        
+        
+        self.label_3_5= QtWidgets.QLabel(self.frame)
+        self.label_3_5.setGeometry(QtCore.QRect(470, 490, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.label_3_5.setFont(font)
+        self.label_3_5.setText("Test Method:")
+        self.label_3_5.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_5.setObjectName("label_3_5")
+        
+        
+        self.lineEdit_3_5 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_5.setGeometry(QtCore.QRect(570, 490, 200, 31))               
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        font.setBold(True)        
+        font.setWeight(50)
+        self.lineEdit_3_5.setFont(font)
+        self.lineEdit_3_5.setText("Test Specs.:ADS 26")
+        self.lineEdit_3_5.setObjectName("lineEdit_3_5")
+    
+    
+    
     def loadcell_encoder_status(self):         
         try:                
             self.serial_3.flush()
@@ -933,23 +1039,27 @@ class TY_02_Ui_MainWindow(object):
         connection.close()     
     
     def show_grid_data_flexure(self):
+        
         #print("inside tear list.....")
         self.delete_all_records()
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(10)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Force at Peak(Kgf)',' Displacement(mm) ','Span Length(mm)','Width(mm)','Thickness(mm)','Flexural Strength (Kgf/cm2)','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Failure \n Mode','Test  \n Method','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 250)
+        self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 100)
-        self.tableWidget.setColumnWidth(4, 150)
-        self.tableWidget.setColumnWidth(5, 250)
-        self.tableWidget.setColumnWidth(6, 100)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)
+        self.tableWidget.setColumnWidth(6, 250)
+        self.tableWidget.setColumnWidth(7, 100)
+        self.tableWidget.setColumnWidth(8, 100)
+        self.tableWidget.setColumnWidth(9, 200)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1178,6 +1288,17 @@ class TY_02_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2)")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3)")
                   
+                  if(self.test_type == 'Flexural'):
+                      self.test_method=""        
+                      self.test_method=str(self.lineEdit_3_5.text())
+                      self.failure_mod=""        
+                      self.failure_mod=str(self.lineEdit_3_4.text())
+                      self.tmperature=""        
+                      self.tmperature=str(self.lineEdit_3_3.text())
+                      cursor.execute("UPDATE GLOBAL_VAR SET  BREAK_MODE='"+str(self.failure_mod)+"',TEMPERATURE='"+str(self.tmperature)+"',TEST_METHOD='"+str(self.test_method)+"' ")                                              
+                  else:
+                      pass
+                  
                   #print("ok5")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD100_GUAGE='"+str(self.load100_guage)+"'")
                                        
@@ -1197,7 +1318,7 @@ class TY_02_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
                  
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
               
@@ -1240,6 +1361,9 @@ class TY_02_Ui_MainWindow(object):
                   
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  
+        
                   
                                                           
             connection.commit();
@@ -1336,7 +1460,8 @@ class TY_02_Ui_MainWindow(object):
             self.lineEdit_3.hide()
             self.lineEdit_2.hide()
             
-        elif(str(rows[0][14])=="Flexural"):            
+        elif(str(rows[0][14])=="Flexural"):
+            self.flexual_objects()
             self.show_grid_data_flexure()
             
         else:
