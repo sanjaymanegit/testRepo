@@ -200,7 +200,7 @@ class TY_06_Ui_MainWindow(object):
             elif(self.unit_typex == "Newton/Mm"):
                 self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
             elif(self.unit_typex == "MPA"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (Kg)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
             else: 
                 self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)','Mod %'])
         
@@ -210,9 +210,9 @@ class TY_06_Ui_MainWindow(object):
             if(self.unit_typex=="Lb/Inch"):
                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod % (Lb/Inch2)'])
             elif(self.unit_typex == "Newton/Mm"):
-               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %']) 
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (N)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %']) 
             elif(self.unit_typex == "MPA"):
-               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (mm)', 'Out. Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %']) 
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (mm)', 'Out. Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %']) 
             else:
                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (cm)', 'Out. Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','Mod %'])
         elif (self.shape=="DirectValue"): 
@@ -222,9 +222,9 @@ class TY_06_Ui_MainWindow(object):
                 #print("header")
                 self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod %'])           
             elif(self.unit_typex == "Newton/Mm"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (Kg)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
             elif(self.unit_typex == "MPA"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (Kg)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
             else:   
                 self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)','Mod %'])           
         else:
@@ -315,7 +315,7 @@ class TY_06_Ui_MainWindow(object):
         elif(self.unit_typex == "Newton/Mm"):
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'CS Area \n (mm2)', 'Force at Peak\n (N)', 'Compression \n (mm)', 'Compressive Strength \n (N/mm2)','% Compression \n'])            
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'CS Area \n (mm2)', 'Force at Peak\n (MPA)', 'Compression \n (mm)', 'Compressive Strength \n (MPA)','% Compression \n'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'CS Area \n (mm2)', 'Force at Peak\n (N)', 'Compression \n (mm)', 'Compressive Strength \n (MPA)','% Compression \n'])           
         else:
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'CS Area \n (mm2)', 'Force at Peak\n (MPA)', 'Compression \n (mm)', 'Compressive Strength \n (MPA)','% Compression \n'])
           
@@ -381,7 +381,7 @@ class TY_06_Ui_MainWindow(object):
         elif(self.unit_typex == "Newton/Mm"):
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'Thickness\n (mm)', 'Force at Peak\n (N)', 'Tear Strength \n (N/mm)'])            
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'Thickness\n (mm)', 'Force at Peak\n (MPA)', 'Tear Strength \n (MPA)'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'Thickness\n (mm)', 'Force at Peak\n (N)', 'Tear Strength \n (MPA)'])           
         else:
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No', 'Thickness \n (mm)', 'Force at Peak\n (MPA)', 'Tear Strength \n (MPA)'])
           
@@ -463,7 +463,7 @@ class TY_06_Ui_MainWindow(object):
         elif(self.unit_typex == "Newton/Mm"):
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Failure \n Mode','Test \n Method'])            
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural \n  Strength \n (MPA)','Failure \n Mode','Test \n Method'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Failure \n Mode','Test \n Method'])           
         else:
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Failure \n Mode','Test \n Method'])
           
@@ -548,7 +548,7 @@ class TY_06_Ui_MainWindow(object):
         elif(self.unit_typex == "Newton/Mm"):
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (N/Mm2)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress \n (N/Mm2)','Shear Modulus \n @ '+str(self.shear_mod_ip)+' \n (N/Mm2) Shear Stress'])        
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (MPA)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress','Shear Modulus \n @ '+str(self.shear_mod_ip)+' Shear Stress'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (N)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (MPA)','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress','Shear Modulus \n @ '+str(self.shear_mod_ip)+' Shear Stress'])        
         else:
             self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength','Ult. Shear \n Strain %','Shear Strain \n @ Ult. Shear Stress','Shear Modulus \n @ Ult. Shear Stress','Shear Modulus \n @ '+str(self.shear_mod_ip)+' Shear Stress'])        
         
@@ -603,8 +603,8 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(5, 100)
         self.tableWidget.setColumnWidth(6, 100)
         self.tableWidget.setColumnWidth(7, 100)
-        self.tableWidget.setColumnWidth(8, 300)
-        self.tableWidget.setColumnWidth(9, 100)
+        self.tableWidget.setColumnWidth(8, 200)
+        self.tableWidget.setColumnWidth(9, 300)
         
         
         connection = sqlite3.connect("tyr.db")
@@ -631,21 +631,21 @@ class TY_06_Ui_MainWindow(object):
            
         if(self.unit_typex == "Kg/Cm"):
             self.length=float(int(self.length)*0.1)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Cm)','Width \n (Cm)','Thickness \n (Cm)','Max. Force \n (Kgf)',' Max. \n Disp.(Cm) ',' Shear\n Strength \n (Kgf/Cm2)','SPAN (Cm)',' Breaking Mode','Temperature'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Cm)','Width \n (Cm)','Thickness \n (Cm)','Max. Force \n (Kgf)',' Max. \n Disp.(Cm) ',' Shear\n Strength \n (Kgf/Cm2)','Support \n SPAN (Cm)',' Failure \n Mode','Test \n Method'])        
         elif(self.unit_typex == "Lb/Inch"):
             self.length=float(int(self.length)*0.0393701)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Inch)','Width \n (Inch)','Thickness \n (Inch)','Max. Force \n (Lb)',' Max. \n Disp.(Inch) ',' Shear\n Strength \n (Lb\Inch2)','SPAN (Inch)',' Breaking Mode','Temperature'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Inch)','Width \n (Inch)','Thickness \n (Inch)','Max. Force \n (Lb)',' Max. \n Disp.(Inch) ',' Shear\n Strength \n (Lb\Inch2)','Support \n SPAN (Inch)',' Failure \n Mode','Test \n Method'])        
         elif(self.unit_typex == "Newton/Mm"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (N)',' Max. \n Disp.(Mm) ',' Shear\n Strength \n (N/Mm2)','SPAN (Mm)',' Breaking Mode','Temperature'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (N)',' Max. \n Disp.(Mm) ',' Shear\n Strength \n (N/Mm2)','Support \n SPAN (Mm)',' Failure \n Mode','Test \n Method'])        
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ',' Shear\n Strength \n (MPA)','SPAN (Mm)',' Breaking Mode','Temperature'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (N)',' Max. \n Disp.(Mm) ',' Shear\n Strength \n (MPA)','Support \n SPAN (Mm)',' Failure \n Mode','Test \n Method'])        
         else:
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ',' Shear\n Strength','SPAN (Mm)',' Breaking Mode','Temperature'])        
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ',' Shear\n Strength','Support \n SPAN (Mm)',' Failure \n Mode','Test \n Method'])        
         
         
         #self.tableWidget.setHorizontalHeaderLabels.append('xsdsdsd')
         connection = sqlite3.connect("tyr.db")
-        results1=connection.execute("SELECT TYPE_STR,"+str(self.length)+",printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SPAN),BREAK_MODE,TEMPERATURE FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT TYPE_STR,"+str(self.length)+",printf(\"%.2f\", WIDTH),printf(\"%.2f\", THICKNESS),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SPAN),BREAK_MODE,NULL FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
           
         #results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD,A.E_PAEK_LOAD,A.PERCENTG_E_PEAK_LOAD_MM,A.PERCENTG_E_PEAK_LOAD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")                        
         for row_number, row_data in enumerate(results1):                    
@@ -659,7 +659,7 @@ class TY_06_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.SPAN),A.BREAK_MODE,A.TEMPERATURE FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", A.SPAN),A.BREAK_MODE,A.TEST_METHOD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
         for row_number, row_data in enumerate(results):                    
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

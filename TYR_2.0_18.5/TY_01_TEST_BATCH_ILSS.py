@@ -650,7 +650,7 @@ class TY_01_ilss_Ui_MainWindow(object):
            self.label_16.setText(str(x[4])) #cs area
            
            if(self.test_type=="Flexural"):
-                       self.lineEdit_3_1.setText(str(x[8]))
+                       self.lineEdit_1_1.setText(str(x[8]))
            
            self.label_15.show()
            self.label_16.show()

@@ -660,7 +660,7 @@ class TY_02_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "%E@Break"))
         
         item = self.tableWidget.horizontalHeaderItem(11)
-        item.setText(_translate("MainWindow", "Created On"))
+        item.setText(_translate("MainWindow", "Cycle Id"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -710,6 +710,22 @@ class TY_02_Ui_MainWindow(object):
         self.extiometer=0
         self.encoder=0
         self.cycle_id=0
+        self.test_method=""       
+                      
+        self.failure_mod=""        
+                      
+        self.tmperature=""
+        self.test_type_for_flexural=""
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
+        for x in results:                
+                    self.test_type_for_flexural=str(x[0])            
+        connection.close()
+        if(self.test_type_for_flexural=="Flexural"):
+            self.flexual_objects() 
+        else:
+            pass
+            
         try:
             self.serial_3 = serial.Serial(
                         port='/dev/ttyUSB0',
@@ -729,7 +745,7 @@ class TY_02_Ui_MainWindow(object):
             print("IO Errors")
     
     def delete_cycle(self):
-        if(self.test_type=="Flexural"):
+        if(self.test_type_for_flexural=="Flexural"):
             row = self.tableWidget.currentRow() 
             self.cycle_id=str(self.tableWidget.item(row, 9).text())
             if(int(self.cycle_id) > 0):
@@ -749,6 +765,60 @@ class TY_02_Ui_MainWindow(object):
                     self.load_data()
             else:
                 pass
+        elif(self.test_type_for_flexural=="Tensile"):
+            row = self.tableWidget.currentRow() 
+            self.cycle_id=str(self.tableWidget.item(row, 11).text())
+            if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.load_data()
+        elif(self.test_type_for_flexural=="Compress"):
+            row = self.tableWidget.currentRow() 
+            self.cycle_id=str(self.tableWidget.item(row, 7).text())
+            if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.load_data()
+        elif(self.test_type_for_flexural=="Tear"):
+            row = self.tableWidget.currentRow() 
+            self.cycle_id=str(self.tableWidget.item(row, 4).text())
+            if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.load_data()     
         else:
             pass
             
@@ -970,12 +1040,12 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 150)    
         self.tableWidget.setColumnWidth(7, 120)
-        self.tableWidget.setColumnWidth(8, 150) 
+        self.tableWidget.setColumnWidth(8, 50) 
         
         connection = sqlite3.connect("tyr.db")
-        print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -991,7 +1061,7 @@ class TY_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(8)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
@@ -1000,11 +1070,12 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(4, 200)
         self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 150)
+        self.tableWidget.setColumnWidth(7, 50)
         
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Guage Length (mm)','% Compression','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Guage Length (mm)','% Compression','Created On','Cycle Id'])        
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PRC_E_AT_BREAK) ,CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PRC_E_AT_BREAK) ,CREATED_ON,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1020,15 +1091,16 @@ class TY_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(5)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(3, 400)
+        self.tableWidget.setColumnWidth(4, 50)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),CREATED_ON,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1038,8 +1110,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()     
     
-    def show_grid_data_flexure(self):
-        
+    def show_grid_data_flexure(self):        
         #print("inside tear list.....")
         self.delete_all_records()
         font = QtGui.QFont()
@@ -1057,7 +1128,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 250)
         self.tableWidget.setColumnWidth(7, 100)
         self.tableWidget.setColumnWidth(8, 100)
-        self.tableWidget.setColumnWidth(9, 200)
+        self.tableWidget.setColumnWidth(9, 50)
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
@@ -1083,6 +1154,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_3.hide()
         #print("shape:"+str(self.shape))
         #self.sc_new =PlotCanvas_new1(self,width=5, height=4, dpi=80)
+        
           
         if(self.shape=="Rectangle"):
             if(self.test_type !="Tear"):
@@ -1103,7 +1175,29 @@ class TY_02_Ui_MainWindow(object):
             self.cs_area=str(self.lineEdit_2.text())
         
         self.validation()
-        if(self.goAhead=="Yes"):
+        if(self.goAhead=="Yes"):                
+                ### Update Flexural parameters
+                
+            
+                print("test_type :"+str(self.test_type_for_flexural))
+                if(self.test_type_for_flexural == 'Flexural'):
+                      self.test_method=""        
+                      self.test_method=str(self.lineEdit_3_5.text())
+                      self.failure_mod=""        
+                      self.failure_mod=str(self.lineEdit_3_4.text())
+                      self.tmperature=""        
+                      self.tmperature=str(self.lineEdit_3_3.text())
+                      print("Failuer maode:"+str(self.lineEdit_3_4.text()))
+                      print("Failuer maodevar:"+str(self.failure_mod))
+                      connection = sqlite3.connect("tyr.db")             
+                      with connection:
+                              cursor = connection.cursor() 
+                              cursor.execute("UPDATE GLOBAL_VAR SET  BREAK_MODE='"+str(self.failure_mod)+"',TEMPERATURE='"+str(self.tmperature)+"',TEST_METHOD='"+str(self.test_method)+"' ")
+                      connection.commit();
+                      connection.close()
+                      self.failure_mod="" 
+                else:
+                      pass
                 
                 self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                 self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
@@ -1120,6 +1214,8 @@ class TY_02_Ui_MainWindow(object):
                 results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
                 rows=results.fetchall()
                 connection.close()
+                
+                
                 #self.label_4.setText(str(rows[0][0]))
                 #print("count of stg records :"+str(rows[0][0]))
                 if(int(rows[0][0]) > -2 ):
@@ -1288,16 +1384,7 @@ class TY_02_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2)")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3)")
                   
-                  if(self.test_type == 'Flexural'):
-                      self.test_method=""        
-                      self.test_method=str(self.lineEdit_3_5.text())
-                      self.failure_mod=""        
-                      self.failure_mod=str(self.lineEdit_3_4.text())
-                      self.tmperature=""        
-                      self.tmperature=str(self.lineEdit_3_3.text())
-                      cursor.execute("UPDATE GLOBAL_VAR SET  BREAK_MODE='"+str(self.failure_mod)+"',TEMPERATURE='"+str(self.tmperature)+"',TEST_METHOD='"+str(self.test_method)+"' ")                                              
-                  else:
-                      pass
+                  
                   
                   #print("ok5")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD100_GUAGE='"+str(self.load100_guage)+"'")
@@ -1460,8 +1547,7 @@ class TY_02_Ui_MainWindow(object):
             self.lineEdit_3.hide()
             self.lineEdit_2.hide()
             
-        elif(str(rows[0][14])=="Flexural"):
-            self.flexual_objects()
+        elif(str(rows[0][14])=="Flexural"):            
             self.show_grid_data_flexure()
             
         else:

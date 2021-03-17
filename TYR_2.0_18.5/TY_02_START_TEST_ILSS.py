@@ -666,7 +666,7 @@ class TY_02_ilss_Ui_MainWindow(object):
         font.setBold(True)        
         font.setWeight(50)
         self.label_3_4.setFont(font)
-        self.label_3_4.setText("Break Mode:")
+        self.label_3_4.setText("Failure Mode:")
         self.label_3_4.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3_4.setObjectName("label_3_4")
         
@@ -685,33 +685,30 @@ class TY_02_ilss_Ui_MainWindow(object):
         
         
         self.label_3_5= QtWidgets.QLabel(self.frame)
-        self.label_3_5.setGeometry(QtCore.QRect(590, 490, 80, 31))
+        self.label_3_5.setGeometry(QtCore.QRect(470, 490, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         font.setBold(True)        
         font.setWeight(50)
         self.label_3_5.setFont(font)
-        self.label_3_5.setText("Span.(Mm):")
+        self.label_3_5.setText("Test Method:")
         self.label_3_5.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3_5.setObjectName("label_3_5")
         
         
         self.lineEdit_3_5 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3_5.setGeometry(QtCore.QRect(690, 490, 58, 31))
-        reg_ex = QRegExp("(\d+(\.\d+)?)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3_5)
-        self.lineEdit_3_5.setValidator(input_validator)        
+        self.lineEdit_3_5.setGeometry(QtCore.QRect(570, 490, 200, 31))
+               
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         font.setBold(True)        
         font.setWeight(50)
         self.lineEdit_3_5.setFont(font)
-        self.lineEdit_3_5.setText("0")
+        self.lineEdit_3_5.setText("Test Specs.:ADS 26")
         self.lineEdit_3_5.setObjectName("lineEdit_3_5")
-        
-        
+                
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1367, 21))
@@ -803,7 +800,7 @@ class TY_02_ilss_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.show_all_specimens)
        
         self.pushButton.clicked.connect(self.show_real_time) 
-        
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
         self.lineEdit_3.textChanged.connect(self.cal_cs_area)
         self.lineEdit_4.textChanged.connect(self.cal_cs_area)
         self.pushButton_4.clicked.connect(MainWindow.close)
@@ -813,7 +810,13 @@ class TY_02_ilss_Ui_MainWindow(object):
         self.load_cell_hi=0
         self.load_cell_lo=0
         self.extiometer=0
-        self.encoder=0 
+        self.encoder=0
+        self.test_type_for_ilss=""
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
+        for x in results:                
+                    self.test_type_for_ilss=str(x[0])            
+        connection.close()
         try:
             self.serial_3 = serial.Serial(
                         port='/dev/ttyUSB0',
@@ -831,6 +834,34 @@ class TY_02_ilss_Ui_MainWindow(object):
             self.timer3.start(1)
         except IOError:
             print("IO Errors")
+    
+    
+    def delete_cycle(self):
+        if(self.test_type_for_ilss=="ILSS"):
+            row = self.tableWidget.currentRow() 
+            self.cycle_id=str(self.tableWidget.item(row, 9).text())
+            if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.load_data()
+            else:
+                pass
+        else:
+            pass
+    
+    
+    
     
     def on_timer3_stop(self):
         if(self.timer3.isActive()): 
@@ -920,7 +951,7 @@ class TY_02_ilss_Ui_MainWindow(object):
                    self.thickness=float(self.lineEdit_4.text())
                    self.width=float(self.lineEdit_3.text())
                    self.cs_area=self.thickness * self.width  
-                   self.lineEdit_2.setText(str(self.cs_area*2))
+                   self.lineEdit_2.setText(str(self.cs_area))
                else:
                    self.lineEdit_2.setText("0")
            else:
@@ -1100,9 +1131,9 @@ class TY_02_ilss_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(9)
+        self.tableWidget.setColumnCount(10)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Support Span \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Shear\n Strength \n (Kgf/Cm2)','Failure Mode','Temperature'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Length \n (Mm)','Width \n (Mm)','Thickness \n (Mm)','Support Span \n (Mm)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Shear\n Strength \n (Kgf/Cm2)','Failure Mode','Test Method','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
@@ -1112,9 +1143,10 @@ class TY_02_ilss_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 200)
         self.tableWidget.setColumnWidth(7, 150)
         self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 50)
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", SPAN),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM), BREAK_MODE,TEMPERATURE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", SPAN),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM), BREAK_MODE,TEST_METHOD,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1153,7 +1185,7 @@ class TY_02_ilss_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")             
         with connection:        
                       cursor = connection.cursor()            
-                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.test_max_load)+"', BREAK_MODE='"+str(self.break_mod)+"',TEMPERATURE='"+str(self.tmperature)+"',SPAN='"+str(self.span)+"' ")                                              
+                      cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.test_max_load)+"', BREAK_MODE='"+str(self.break_mod)+"',TEMPERATURE='"+str(self.tmperature)+"',TEST_METHOD='"+str(self.span)+"' ")                                              
                       cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.test_max_load)+"'")
                        
         connection.commit();
@@ -1382,7 +1414,7 @@ class TY_02_ilss_Ui_MainWindow(object):
                  
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,SPAN) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,SPAN FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,SPAN,TEST_METHOD) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,SPAN,TEST_METHOD FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
               
@@ -1425,8 +1457,8 @@ class TY_02_ilss_Ui_MainWindow(object):
                   cursor.execute("INSERT INTO T1(c1,c2,c3,c4) select PEAK_LOAD_KG, CS_AREA,E_AT_BREAK_MM,E_AT_PEAK_LOAD_MM from CYCLES_MST WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   
                   ## Forlum (3*load)/4(*Thickness*width)
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_KG_CM=(cast(PEAK_LOAD_KG as real)/(cast(THINCKNESS as real)*cast(WIDTH as real)*0.1))*0.75 WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
-                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=(cast(PEAK_LOAD_KG as real)*2.20462/(cast(THINCKNESS as real)*cast(WIDTH as real)*0.0393701))*0.75 WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_KG_CM=(cast(PEAK_LOAD_KG as real)/(cast(THINCKNESS as real)*cast(WIDTH as real)*0.1*0.1))*0.75 WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
+                  cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_LB_INCH=(cast(PEAK_LOAD_KG as real)*2.20462/(cast(THINCKNESS as real)*cast(WIDTH as real)*0.0393701*0.0393701))*0.75 WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_N_MM=(cast(PEAK_LOAD_KG as real)*9.81/(cast(THINCKNESS as real)*cast(WIDTH as real)))*0.75  WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   cursor.execute("UPDATE CYCLES_MST SET ULT_SHEAR_STRENGTH_MPA=round((ULT_SHEAR_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #Max load/2*CS_AREA
                   
@@ -1474,6 +1506,7 @@ class TY_02_ilss_Ui_MainWindow(object):
                   
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   
                                                           
             connection.commit();
@@ -1511,7 +1544,7 @@ class TY_02_ilss_Ui_MainWindow(object):
         self.label_32.setText(str(rows[0][12])) ##Job name
         self.label_24.setText(str(rows[0][13])) ##batch id
         #self.lineEdit_3_2.setText(str(rows[0][15])) ##new test max load
-        self.lineEdit_3_5.setText(str(rows[0][16])) ##span
+        #self.lineEdit_3_5.setText(str(rows[0][16])) ##span
         
         if (int(self.label_26.text()) > 0):
             self.label_36.setText(str(rows[0][8]))
