@@ -23,6 +23,8 @@ from reportlab.rl_config import defaultPageSize
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import landscape, letter,inch,A4
 
+LastStateRole = QtCore.Qt.UserRole 
+
 
 class TY_10_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -669,7 +671,7 @@ class TY_10_Ui_MainWindow(object):
         font.setWeight(75)
         self.tableWidget.setFont(font)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setColumnWidth(0, 300)
+        self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 200)
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.setColumnWidth(3, 250)
@@ -677,7 +679,7 @@ class TY_10_Ui_MainWindow(object):
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
         self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','NO.OF.CYCLES.','CREATED-ON','TEST-TYPE'])        
-           
+         
         connection = sqlite3.connect("tyr.db")  
         #results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.TEST_TYPE,B.CREATED_ON FROM TEST_MST B WHERE  B.CREATED_ON  between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
         results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE FROM TEST_MST B")                        
@@ -685,7 +687,16 @@ class TY_10_Ui_MainWindow(object):
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                if(int(column_number) == 0):
+                    #print("data-column_number :"+str(column_number))
+                    item = QtWidgets.QTableWidgetItem()
+                    item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                    item.setCheckState(QtCore.Qt.Checked)
+                    item.setText(str(data))
+                    self.tableWidget.setItem(row_number,column_number,item)
+                    #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                else:
+                    self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
                 #self.lineEdit.setText("")
         connection.close()   
         #self.tableWidget.resizeColumnsToContents()
@@ -706,12 +717,30 @@ class TY_10_Ui_MainWindow(object):
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
         while (i>0):             
-            i=i-1
+            i=i-1            
             self.tableWidget.removeRow(i)
+    
+    def del_uncheked(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):
+            i=i-1  
+            item = self.tableWidget.itemAt(0, i)
+            currentState = item.checkState()
+            lastState = item.data(LastStateRole)
+            print("currentState :"+str(currentState))
+            print("test id  :"+str(item.text()))
+            print("i :"+str(i))
+            if currentState != lastState:                
+                if(currentState == QtCore.Qt.Checked):
+                    print("Checked test ID:"+str(item.text()))
+                else:
+                    print("Un-Checked test ID:"+str(item.text()))
+            
             
     def open_pdf(self):
-        self.create_report_pdf()
-        os.system("xpdf ./reports/dr_other_report.pdf")
+        self.del_uncheked()
+        #self.create_report_pdf()
+        #os.system("xpdf ./reports/dr_other_report.pdf")
     
     def create_report_pdf(self):
         PAGE_HEIGHT=defaultPageSize[1]
