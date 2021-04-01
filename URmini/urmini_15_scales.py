@@ -124,6 +124,9 @@ class urmini_15_MainWindow(object):
         self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_5.setObjectName("line_5")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(190, 180, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -132,6 +135,9 @@ class urmini_15_MainWindow(object):
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         self.lineEdit_2.setGeometry(QtCore.QRect(470, 250, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -140,6 +146,9 @@ class urmini_15_MainWindow(object):
         self.lineEdit_2.setFont(font)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
         self.lineEdit_3.setGeometry(QtCore.QRect(190, 250, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -148,6 +157,9 @@ class urmini_15_MainWindow(object):
         self.lineEdit_3.setFont(font)
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(470, 180, 71, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -265,10 +277,10 @@ class urmini_15_MainWindow(object):
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     def reset_fun(self):
-        self.lineEdit.setText(str(""))
-        self.lineEdit_3.setText(str(""))
-        self.lineEdit_4.setText(str(""))
-        self.lineEdit_2.setText(str(""))
+        self.lineEdit.setText(str("50"))
+        self.lineEdit_3.setText(str("60"))
+        self.lineEdit_4.setText(str("1000"))
+        self.lineEdit_2.setText(str("60"))
         self.label_9.hide()
     
     def load_data(self):
@@ -292,14 +304,47 @@ class urmini_15_MainWindow(object):
        connection.close()
        
     def save_data(self):
-       connection = sqlite3.connect("ur.db")
-       #print("insed saved")  
-       with connection:        
-                cursor = connection.cursor()                    
-                cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.lineEdit_2.text()+"',VOLUMN_TIME_Y_AXIS='"+self.lineEdit_4.text()+"',FLOW_TIME_X_AXIS='"+self.lineEdit_3.text()+"',FLOW_TIME_Y_AXIS='"+self.lineEdit.text()+"'")
-       connection.commit();
-       connection.close()
-       self.label_9.show()
+       self.label_9.hide()
+       if(self.lineEdit.text() == ""):
+                   self.label_9.setText("Max Flow is Empty")
+                   self.label_9.show()
+       elif(int(self.lineEdit.text()) <= 0):
+                   self.label_9.setText("Max Flow should > 0")
+                   self.label_9.show()           
+       elif(self.lineEdit_2.text() == ""):
+                   self.label_9.setText("Max-Time(Vol) is Empty")
+                   self.label_9.show()
+       elif(int(self.lineEdit_2.text()) <= 0):
+                   self.label_9.setText("Max-Time(Vol) should > 0")
+                   self.label_9.show() 
+       elif(self.lineEdit_3.text() == ""):
+                   self.label_9.setText("Max Time(Flow) is Empty")
+                   self.label_9.show()
+       elif(int(self.lineEdit_3.text())  <= 0):
+                   self.label_9.setText("Max Time(Flow) should > 0")
+                   self.label_9.show()
+       elif(self.lineEdit_4.text() == ""):
+                   self.label_9.setText("Max-Vol is Empty")
+                   self.label_9.show()
+       elif(int(self.lineEdit_4.text()) <= 0):
+                   self.label_9.setText("Max-Vol should > 0")
+                   self.label_9.show()
+       else:
+           '''
+           print("vvvv2: "+str(self.lineEdit_2.text()))
+           print("vvvv4: "+str(self.lineEdit_4.text()))
+           print("vvvv3: "+str(self.lineEdit_3.text()))
+           print("vvvv: "+str(self.lineEdit.text()))
+           '''
+           connection = sqlite3.connect("ur.db")
+           #print("insed saved")  
+           with connection:        
+                    cursor = connection.cursor()                    
+                    cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.lineEdit_2.text()+"',VOLUMN_TIME_Y_AXIS='"+self.lineEdit_4.text()+"',FLOW_TIME_X_AXIS='"+self.lineEdit_3.text()+"',FLOW_TIME_Y_AXIS='"+self.lineEdit.text()+"'")
+           connection.commit();
+           connection.close()
+           self.label_9.setText("SAVED SUCCESSFULLY.")
+           self.label_9.show()
 
 
 if __name__ == "__main__":
