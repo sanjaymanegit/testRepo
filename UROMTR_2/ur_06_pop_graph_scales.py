@@ -253,14 +253,41 @@ class ur_06_Ui_MainWindow(object):
        connection.close()
        
     def save_data(self):
-       connection = sqlite3.connect("ur.db")
-       #print("insed saved")  
-       with connection:        
-                cursor = connection.cursor()                    
-                cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.lineEdit_10.text()+"',VOLUMN_TIME_Y_AXIS='"+self.lineEdit_12.text()+"',FLOW_TIME_X_AXIS='"+self.lineEdit_2.text()+"',FLOW_TIME_Y_AXIS='"+self.lineEdit_4.text()+"'")
-       connection.commit();
-       connection.close()
-       self.label_2.show()
+       self.label_2.hide()
+       if(self.lineEdit_2.text() == ""):
+                   self.label_2.setText("Max-Time(Flow) is Empty")
+                   self.label_2.show()
+       elif(int(self.lineEdit_2.text()) <= 0):
+                   self.label_2.setText("Max-Time(Flow) should > 0")
+                   self.label_2.show()           
+       elif(self.lineEdit_10.text() == ""):
+                   self.label_2.setText("Max-Time(Vol) is Empty")
+                   self.label_2.show()
+       elif(int(self.lineEdit_10.text()) <= 0):
+                   self.label_2.setText("Max-Time(Vol) should > 0")
+                   self.label_2.show() 
+       elif(self.lineEdit_4.text() == ""):
+                   self.label_2.setText("Max Flow is Empty")
+                   self.label_2.show()
+       elif(int(self.lineEdit_4.text())  <= 0):
+                   self.label_2.setText("Max Flow should > 0")
+                   self.label_2.show()
+       elif(self.lineEdit_12.text() == ""):
+                   self.label_2.setText("Max-Vol is Empty")
+                   self.label_2.show()
+       elif(int(self.lineEdit_12.text()) <= 0):
+                   self.label_2.setText("Max-Vol should > 0")
+                   self.label_2.show()
+       else:
+               connection = sqlite3.connect("ur.db")
+               #print("insed saved")  
+               with connection:        
+                        cursor = connection.cursor()                    
+                        cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.lineEdit_10.text()+"',VOLUMN_TIME_Y_AXIS='"+self.lineEdit_12.text()+"',FLOW_TIME_X_AXIS='"+self.lineEdit_2.text()+"',FLOW_TIME_Y_AXIS='"+self.lineEdit_4.text()+"'")
+               connection.commit();
+               connection.close()
+               self.label_2.setText("SAVED.")
+               self.label_2.show()
 
 if __name__ == "__main__":
     import sys
