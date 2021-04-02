@@ -567,6 +567,7 @@ class TY_10_Ui_MainWindow(object):
         
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
         self.checkBox.setText(_translate("MainWindow", "ALL"))
+        
         self.label_9.setText(_translate("MainWindow", "UNIT    :"))
         self.comboBox_5.addItem("")
         self.comboBox_5.addItem("")
@@ -615,6 +616,7 @@ class TY_10_Ui_MainWindow(object):
         connection.close()
         self.comboBox_3.currentTextChanged.connect(self.onchage_party)
         self.pushButton_3.clicked.connect(self.open_pdf)
+        self.checkBox.clicked.connect(self.check_uncheck_all_records)
         self.onchage_party()
         self.select_all_tests()
         
@@ -720,32 +722,53 @@ class TY_10_Ui_MainWindow(object):
             i=i-1            
             self.tableWidget.removeRow(i)
     
+    def check_uncheck_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            item = self.tableWidget.item(i, 0)
+            if(self.checkBox.isChecked()):
+                item.setCheckState(QtCore.Qt.Checked)
+            else:
+                item.setCheckState(not QtCore.Qt.Checked)
+    
     def del_uncheked(self):
         i = self.tableWidget.rowCount()       
-        while (i>0):
-            i=i-1  
-            item = self.tableWidget.itemAt(0, i)
+        while (i > 0):
+            i=i-1
+            item = self.tableWidget.item(i, 0)
+            #print("test id  :"+str(item.text()))
             currentState = item.checkState()
-            lastState = item.data(LastStateRole)
-            print("currentState :"+str(currentState))
-            print("test id  :"+str(item.text()))
-            print("i :"+str(i))
-            if currentState != lastState:                
-                if(currentState == QtCore.Qt.Checked):
+            if(currentState == QtCore.Qt.Checked):
                     print("Checked test ID:"+str(item.text()))
-                else:
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()                            
+                            cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B WHERE B.TEST_ID='"+str(item.text())+"' AND B.TEST_ID NOT IN (SELECT TEST_ID FROM TEST_IDS)") 
+                    connection.commit();
+                    connection.close()                    
+            else:
                     print("Un-Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM TEST_IDS WHERE TEST_ID = '"+str(item.text())+"'")                             
+                    connection.commit();
+                    connection.close()
             
+           
+             
             
     def open_pdf(self):
         self.del_uncheked()
-        #self.create_report_pdf()
-        #os.system("xpdf ./reports/dr_other_report.pdf")
+        self.create_report_pdf()
+        os.system("xpdf ./reports/dr_other_report.pdf")
     
     def create_report_pdf(self):
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         test_type=""
+        test_count=0
         #styles.add(ParagraphStyle(name="x", fontSize=12, leading = 7, alignment=TA_LEFT))
         #styles.add(ParagraphStyle(name="x2", fontSize=10, leading = 7, alignment=TA_LEFT))
         
@@ -767,33 +790,43 @@ class TY_10_Ui_MainWindow(object):
         results=connection.execute("SELECT TEST_TYPE FROM TEST_IDS LIMIT 1 ")        
         for x in results:
                 test_type=str(x[0])                
-        connection.close()        
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT count(TEST_ID) FROM TEST_IDS ")        
+        for x in results:
+                test_count=str(x[0])                
+        connection.close()
         
         childs_data=[]
-        if(test_type == "Tensile"):
-            childs_data=[['Test ID.','Cycle Id', ' Thickness ','Width' ,' cs. Area']]
-            connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TEST_ID, 4 ,5,6,8 FROM TEST_MST ")             
-            for k in results:
-                childs_data.append(k)
-            connection.close()                
-        elif(test_type == "Compress"):
-            pass        
-        elif(test_type == "Tear"):
-            pass  
-        
-        elif(test_type == "Flexural"):
-            pass  
-        
-        elif(test_type == "QLSS"):
-            pass  
-        
-        elif(test_type == "ILSS"):
-            pass  
-        
+        childs_data=[['Test ID.','Cycle Id', ' Thickness ','Width' ,' cs. Area']]
+        if(int(test_count) > 0):
+            if(test_type == "Tensile"):
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT TEST_ID, 4 ,5,6,8 FROM TEST_MST where TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")             
+                for k in results:
+                    childs_data.append(k)
+                connection.close()                
+            elif(test_type == "Compress"):
+                pass        
+            elif(test_type == "Tear"):
+                pass  
+            
+            elif(test_type == "Flexural"):
+                pass  
+            
+            elif(test_type == "QLSS"):
+                pass  
+            
+            elif(test_type == "ILSS"):
+                pass  
+            
+            else:
+                self.label_21.show()
+                self.label_21.setText("Invalid Test")
         else:
-            self.label_21.show()
-            self.label_21.setText("Invalid Test")
+            pass
                 
         
         #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))       
