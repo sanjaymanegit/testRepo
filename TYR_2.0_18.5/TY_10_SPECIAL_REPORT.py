@@ -504,6 +504,7 @@ class TY_10_Ui_MainWindow(object):
         self.kgCm2_toMPA=float(0.0980665)
         
         self.test_ids=[]
+        self.length=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -916,19 +917,126 @@ class TY_10_Ui_MainWindow(object):
                         childs_data.append(['Test.Id.','Spec.No.', ' Thickness \n (mm) ', ' Width \n (mm) ', 'CS.Area \n (mm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)'])
                     else:    
                         childs_data.append(['Test.Id.','Spec.No.', ' Thickness \n (cm) ', ' Width \n (cm) ', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)'])        
-                                
                     connection = sqlite3.connect("tyr.db")
                     results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD) ,printf(\"%.2f\", PREC_E_AT_BREAK) ,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2) FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
                     for k in results:
                         childs_data.append(k)
-                    connection.close()                
+                    connection.close()
+                elif(self.specimen_shape=="Cylindrical"):
+                    childs_data=[]
+                    if(self.unit_type=="Lb/Inch"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)'])
+                    elif(self.unit_type == "Newton/Mm"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)'])
+                    elif(self.unit_type == "MPA"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)'])
+                    else: 
+                        childs_data.append(['Test.Id.','Spec.No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)'])
+                    connection = sqlite3.connect("tyr.db")
+                    results1=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.2f\", A.DIAMETER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", BREAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")
+                    for k in results:
+                        childs_data.append(k)
+                    connection.close()
+                elif(self.specimen_shape=="Pipe"):
+                    childs_data=[]
+                    if(self.unit_type=="Lb/Inch"):
+                           childs_data.append(['Test.Id.','Spec.No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)'])
+                    elif(self.unit_type == "Newton/Mm"):
+                           childs_data.append(['Test.Id.','Spec.No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (N)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)']) 
+                    elif(self.unit_type == "MPA"):
+                           childs_data.append(['Test.Id.','Spec.No.', 'Inn.Diameter \n (mm)', 'Out. Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)']) 
+                    else:
+                           childs_data.append(['Test.Id.','Spec.No.', 'Inn.Diameter \n (cm)', 'Out. Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)'])
+                    connection = sqlite3.connect("tyr.db")
+                    results1=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.2f\", A.INN_DIAMETER),printf(\"%.2f\", A.OUT_DIAMTER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
+        
+                    for k in results:
+                        childs_data.append(k)
+                    connection.close()       
+                    
+                elif(self.specimen_shape=="DirectValue"):
+                    childs_data=[]
+                    if(self.unit_type=="Lb/Inch"):                
+                            childs_data.append(['Test.Id.','Spec.No.', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)'])           
+                    elif(self.unit_type == "Newton/Mm"):
+                            childs_data.append(['Test.Id.','Spec.No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)'])
+                    elif(self.unit_type == "MPA"):
+                            childs_data.append(['Test.Id.','Spec.No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)'])
+                    else:   
+                            childs_data.append(['Test.Id.','Spec.No.', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)'])           
+                    connection = sqlite3.connect("tyr.db")
+                    results1=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.2f\", A.INN_DIAMETER),printf(\"%.2f\", A.OUT_DIAMTER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
+                    for k in results:
+                        childs_data.append(k)
+                    connection.close() 
+                    
+                else:
+                    print("Invalid Specimen Shape")
+                    
             elif(test_type == "Compress"):
-                pass        
+                childs_data=[]
+                if(self.unit_type == "Kg/Cm"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'CS Area \n (cm2)', 'Force at Peak\n (Kgf)', 'Compression \n (cm)', 'Compressive Strength \n (Kgf/Cm2)','% Compression \n'])
+                elif(self.unit_type == "Lb/Inch"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'CS Area \n (Inch2)', 'Force at Peak\n (Lb)', 'Compression \n (Inch)', 'Compressive Strength \n (Lb/Inch2)','% Compression \n'])           
+                elif(self.unit_type == "Newton/Mm"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'CS Area \n (mm2)', 'Force at Peak\n (N)', 'Compression \n (mm)', 'Compressive Strength \n (N/mm2)','% Compression \n'])            
+                elif(self.unit_type == "MPA"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'CS Area \n (mm2)', 'Force at Peak\n (N)', 'Compression \n (mm)', 'Compressive Strength \n (MPA)','% Compression \n'])           
+                else:
+                        childs_data.append(['Test.Id.','Spec.No.', 'CS Area \n (mm2)', 'Force at Peak\n (MPA)', 'Compression \n (mm)', 'Compressive Strength \n (MPA)','% Compression \n'])
+          
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.COMPRESSIVE_STRENGTH),printf(\"%.2f\", A.PREC_E_AT_BREAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+                for k in results:
+                        childs_data.append(k)
+                connection.close()        
             elif(test_type == "Tear"):
-                pass  
+                childs_data=[]
+                if(self.unit_type == "Kg/Cm"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Thickness \n (cm)', 'Force at Peak\n (Kgf)', 'Tear Strength \n (Kgf/Cm)'])
+                elif(self.unit_type == "Lb/Inch"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Thickness \n (Inch)', 'Force at Peak\n (Lb)', 'Tear Strength \n (Lb/Inch)'])           
+                elif(self.unit_type == "Newton/Mm"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Thickness\n (mm)', 'Force at Peak\n (N)', 'Tear Strength \n (N/mm)'])            
+                elif(self.unit_type == "MPA"):
+                        childs_data.append(['Test.Id.','Spec.No.', 'Thickness\n (mm)', 'Force at Peak\n (N)', 'Tear Strength \n (MPA)'])           
+                else:
+                        childs_data.append(['Test.Id.','Spec.No.', 'Thickness \n (mm)', 'Force at Peak\n (MPA)', 'Tear Strength \n (MPA)'])
+          
+                connection = sqlite3.connect("tyr.db")               
+                results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.TEAR_STRENGTH)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        
+                for k in results:
+                        childs_data.append(k)
+                connection.close()  
             
             elif(test_type == "Flexural"):
-                pass  
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT IFNULL(GUAGE_MM,0) FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
+                for x in results:
+                        self.length=str(x[0])
+                connection.close()    
+                childs_data=[]
+                if(self.unit_type == "Kg/Cm"):
+                    self.length=float(int(self.length)*0.1)
+                    childs_data.append(['Test.Id.','Spec.No.','Length  \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)', 'Max. \n Displ. \n (cm)', 'Force \n at Peak \n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2) ','Failure \n Mode','Test \n Method'])
+                elif(self.unit_type == "Lb/Inch"):
+                    self.length=float(int(self.length)*0.0393701)
+                    childs_data.append(['Test.Id.','Spec.No.','Length  \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)', 'Max. \n Displ. \n (Inch)', 'Force \n  at Peak\n (Lb)', 'Flexural \n  Strength \n (Lb/Inch2)  ','Failure \n Mode','Test \n Method'])           
+                elif(self.unit_type == "Newton/Mm"):
+                    childs_data.append(['Test.Id.','Spec.No.','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Failure \n Mode','Test \n Method'])            
+                elif(self.unit_type == "MPA"):
+                    childs_data.append(['Test.Id.','Spec.No.','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Failure \n Mode','Test \n Method'])           
+                else:
+                    childs_data.append(['Test.Id.','Spec.No.','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Failure \n Mode','Test \n Method'])
+          
+                connection = sqlite3.connect("tyr.db")               
+                results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,A.CYCLE_ID,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),A.BREAK_MODE,A.TEST_METHOD    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        
+                for k in results:
+                        childs_data.append(k)
+                connection.close() 
             
             elif(test_type == "QLSS"):
                 pass  
