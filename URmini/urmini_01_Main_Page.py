@@ -22,7 +22,6 @@ from matplotlib.figure import Figure
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 '''
-
 from ur_03_ADMIN_MENU import ur_03_A_Ui_MainWindow
 from ur_06_pop_graph_scales import ur_06_Ui_MainWindow
 from ur_12_admin_reports import ur_12_Ui_MainWindow
@@ -858,7 +857,7 @@ class PlotCanvas_Auto(FigureCanvas):
                                 #print("o/p xx:"+str(self.xstr3))
                                   
                                 self.elap_time=float(self.buff[2])
-                                self.p=float( self.elap_time)                               
+                                self.p=float(self.elap_time)                               
                                 self.q=float(self.buff[0])
                                 self.q2=float(self.buff[1])
                                         
@@ -875,7 +874,7 @@ class PlotCanvas_Auto(FigureCanvas):
                                 #print(" Array Q:"+str(self.arr_q))
                                 
                                 #print(" Array P2:"+str(self.arr_p2))
-                                #print(" Array Q2:"+str(self.arr_q2))
+                                print(" Array Q2:"+str(self.arr_q2))
                                 
                                 '''
                                 print(" length Array P:"+str(len(self.arr_p)))
