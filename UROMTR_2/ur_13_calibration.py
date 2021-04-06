@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+from ur_15_load_cell_status import ur_15_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
 import time
@@ -90,6 +90,17 @@ class ur_13_Ui_MainWindow(object):
 "color: rgb(170, 0, 0);")
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(830, 60, 221, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        
+        
         self.line = QtWidgets.QFrame(self.frame)
         self.line.setGeometry(QtCore.QRect(20, 230, 1121, 20))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -189,6 +200,7 @@ class ur_13_Ui_MainWindow(object):
         self.groupBox_2.setTitle(_translate("MainWindow", "Calibration Process"))
         self.groupBox_5.setTitle(_translate("MainWindow", "Step 1"))
         self.pushButton_7.setText(_translate("MainWindow", "OK"))
+        self.pushButton_8_1.setText(_translate("MainWindow", "Load Cell Status"))
         self.pushButton_8.setText(_translate("MainWindow", "NEXT"))
         self.label.setText(_translate("MainWindow", " Put empty Beaker/Pot on base  \n"+" and Click on Ok Button.\n"+" And Procced for Next step"))
         self.groupBox_6.setTitle(_translate("MainWindow", "Step 2"))
@@ -204,6 +216,7 @@ class ur_13_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.start_calibration)
         self.pushButton_7.clicked.connect(self.step1_ok)
         self.pushButton_8.clicked.connect(self.step1_next)
+        self.pushButton_8_1.clicked.connect(self.open_new_window)
         self.pushButton_9.clicked.connect(self.step2_ok)
         self.pushButton_10.clicked.connect(self.step2_verify)
         self.timer1=QtCore.QTimer()
@@ -324,6 +337,13 @@ class ur_13_Ui_MainWindow(object):
             print("IO Errors")
             self.label_5.setText("IO Errors" )  
             self.label_5.show()
+    
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=ur_15_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
 if __name__ == "__main__":
     import sys
