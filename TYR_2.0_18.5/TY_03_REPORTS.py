@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from TY_06_REPORT_PART_2 import TY_06_Ui_MainWindow
+from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
 from print_popup import P_POPUi_MainWindow
 from PyQt5.Qt import QTableWidgetItem
 import sys
@@ -567,6 +568,8 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_5_1.setObjectName("pushButton_5_1")        
         self.gridLayout_2.addWidget(self.pushButton_5_1, 1, 2, 1, 1)
         
+        self.buttongroup = QtWidgets.QButtonGroup()
+        
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(40, 30, 91, 31))
         font = QtGui.QFont()
@@ -591,6 +594,12 @@ class TY_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_2_1.setFont(font)
         self.radioButton_2_1.setObjectName("radioButton_2_1")
+        
+        
+        self.buttongroup.addButton(self.radioButton, 1)
+        self.buttongroup.addButton(self.radioButton_2, 2)
+        self.buttongroup.addButton(self.radioButton_2_1, 3)
+        
         
         self.pushButton_2_1 = QtWidgets.QPushButton(self.frame)
         self.pushButton_2_1.setGeometry(QtCore.QRect(440, 30, 90, 31))
@@ -730,6 +739,7 @@ class TY_03_Ui_MainWindow(object):
         self.radioButton_2.setChecked(False)
         self.set_default_resport_setting()
         self.radioButton_2.clicked.connect(self.report_2_setting)
+        self.radioButton_2_1.clicked.connect(self.special_report_setting)
         self.radioButton_3.clicked.connect(self.report_2_setting)
         self.radioButton.clicked.connect(self.set_default_resport_setting)         
         self.pushButton_3.clicked.connect(self.list_test)
@@ -744,6 +754,8 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_report)
         self.pushButton_7_1.clicked.connect(self.delete_test)        
         self.pushButton_4.clicked.connect(self.open_report_part_2)
+        self.pushButton_2_1.clicked.connect(self.open_special_report)
+        
         
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.load_data()
@@ -1085,6 +1097,12 @@ class TY_03_Ui_MainWindow(object):
         self.ui=TY_06_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_special_report(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_10_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     
     def print_file(self):        
@@ -1153,6 +1171,8 @@ class TY_03_Ui_MainWindow(object):
         
         self.comboBox_4.setEnabled(True)
         self.comboBox_5.setEnabled(True)
+        self.pushButton_2_1.setDisabled(True)
+        self.groupBox_2.setEnabled(True)
         
     def report_2_setting(self):
         self.radioButton.setChecked(False)
@@ -1171,6 +1191,12 @@ class TY_03_Ui_MainWindow(object):
         self.lineEdit_2.setEnabled(True)
         self.pushButton.setEnabled(True)
         self.pushButton_2.setEnabled(True)
+        self.pushButton_2_1.setDisabled(True)
+        self.groupBox_2.setEnabled(True)
+        
+    def special_report_setting(self):
+        self.pushButton_2_1.setEnabled(True)
+        self.groupBox_2.setDisabled(True)
 
     def  list_test(self):
         if (self.radioButton.isChecked()):
