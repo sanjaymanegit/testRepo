@@ -278,7 +278,7 @@ class TY_10_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -516,11 +516,11 @@ class TY_10_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_4.setText(_translate("MainWindow", "SEARCH"))
         self.pushButton_3.setText(_translate("MainWindow", "VIEW"))
-        self.lineEdit.setText(_translate("MainWindow", "2020-10-14"))
+        self.lineEdit.setText(_translate("MainWindow", ""))
         self.label_3.setText(_translate("MainWindow", "FROM:"))
         self.pushButton_8.setText(_translate("MainWindow", "DATE"))
         self.label_4.setText(_translate("MainWindow", "TO:"))
-        self.lineEdit_2.setText(_translate("MainWindow", "2020-10-14"))
+        self.lineEdit_2.setText(_translate("MainWindow", ""))
         self.pushButton_12.setText(_translate("MainWindow", "DATE"))
         self.label_5.setText(_translate("MainWindow", "HH:"))
         self.i=0        
@@ -627,6 +627,7 @@ class TY_10_Ui_MainWindow(object):
         connection.close()
         self.comboBox_3.currentTextChanged.connect(self.onchage_party)
         self.pushButton_3.clicked.connect(self.open_pdf)
+        self.pushButton_4.clicked.connect(self.select_all_tests)
         self.checkBox.clicked.connect(self.check_uncheck_all_records)
         self.onchage_party()
         self.select_all_tests()
@@ -657,7 +658,7 @@ class TY_10_Ui_MainWindow(object):
     def calendar1_on_click(self):
         temp_var = self.calendarWidget.selectedDate() 
         var_name = temp_var.toPyDate()        
-        self.from_dt=str(var_name)
+        #self.from_dt=str(var_name)
         self.lineEdit.setText(str(self.calendarWidget.selectedDate().toString(QtCore.Qt.ISODate)))
         self.calendarWidget.hide()
         
@@ -665,7 +666,7 @@ class TY_10_Ui_MainWindow(object):
     def calendar2_on_click(self):
         temp_var = self.calendarWidget_2.selectedDate() 
         var_name = temp_var.toPyDate()        
-        self.to_dt=str(var_name)
+        #self.to_dt=str(var_name)
         self.lineEdit_2.setText(str(self.calendarWidget_2.selectedDate().toString(QtCore.Qt.ISODate)))
         self.calendarWidget_2.hide()
         
@@ -675,6 +676,8 @@ class TY_10_Ui_MainWindow(object):
         self.party_name=str(self.comboBox_3.currentText())
         self.specimen_name=str(self.comboBox_4.currentText())
         self.unit_type=str(self.comboBox_5.currentText())
+        
+        print("frm:"+str(self.from_dt)+"   to:"+str(self.to_dt))
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SHAPE FROM SPECIMEN_MST  WHERE SPECIMEN_NAME ='"+str(self.specimen_name)+"' LIMIT 1") 
         for x in results:
@@ -690,17 +693,19 @@ class TY_10_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 200)
+        self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 200)
-        self.tableWidget.setColumnWidth(3, 250)
+        self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 200)
+        self.tableWidget.setColumnWidth(5, 200)
+        self.tableWidget.setColumnWidth(6, 250)
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','NO.OF.CYCLES.','CREATED-ON','TEST-TYPE','SPEC. SHAPE'])        
+        self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','NO.OF.CYCLES.','CREATED-ON','TEST-TYPE','SPEC. SHAPE','SPEC-NAME','PARTY'])        
          
         connection = sqlite3.connect("tyr.db")  
-        #results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.TEST_TYPE,B.CREATED_ON FROM TEST_MST B WHERE  B.CREATED_ON  between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
-        results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE,'"+str(self.specimen_shape)+"' FROM TEST_MST B")                        
+        print("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE,'"+str(self.specimen_shape)+"','"+str(self.specimen_name)+"','"+str(self.party_name)+"' FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
+        results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE,'"+str(self.specimen_shape)+"','"+str(self.specimen_name)+"','"+str(self.party_name)+"' FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='"+str(self.specimen_name)+"'")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -727,7 +732,7 @@ class TY_10_Ui_MainWindow(object):
                 cursor = connection.cursor()
                 cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"',SR_UNIT_TYPE='"+str(self.unit_type)+"'")
                 cursor.execute("DELETE FROM TEST_IDS")
-                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B") 
+                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='"+str(self.specimen_name)+"'") 
         connection.commit();
         connection.close()
         
@@ -901,13 +906,15 @@ class TY_10_Ui_MainWindow(object):
                 test_type=str(x[0])                
         connection.close()
         
-        summary_data=[["From Date: "+str(self.from_dt),"To Date: "+str(self.to_dt) , "Party Name: "+str(self.party_name), "Report Date: "+str(datetime.datetime.now().strftime("%d %b %Y %H:%M"))]]
-        summary_data.append(["Specimen Name: "+str(self.specimen_name),"Unit-Type: "+str(self.unit_type) , " Shape : "+str(self.specimen_shape)," Test Type :"+str(test_type)])
+        summary_data=[["From Date:",str(self.from_dt),"To Date: ",str(self.to_dt) , "Party Name: ",str(self.party_name), "Report Date: ",str(datetime.datetime.now().strftime("%d %b %Y %H:%M"))]]
+        summary_data.append(["Specimen Name: ",str(self.specimen_name),"Unit-Type: ",str(self.unit_type) , " Shape : ",str(self.specimen_shape)," Test Type :",str(test_type)])
         
         
         
         
         f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'),('FONTNAME', (4, 0), (4, -1), 'Helvetica-Bold'),('FONTNAME', (6, 0), (6, -1), 'Helvetica-Bold')]))       
+        
         Elements = [Title,Spacer(1,12),Title2,Spacer(1,12),f3,Spacer(1,12),Spacer(1,12)]
         
         
@@ -1130,7 +1137,7 @@ class TY_10_Ui_MainWindow(object):
         
         
         f=Table(childs_data)
-        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
          
         Elements.append(f)
         
