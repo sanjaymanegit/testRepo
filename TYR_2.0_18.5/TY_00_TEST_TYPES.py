@@ -10,7 +10,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
-from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
 import sqlite3
 
 class TY_00_T_Ui_MainWindow(object):
@@ -93,18 +92,6 @@ class TY_00_T_Ui_MainWindow(object):
         '''
         self.pushButton_6.setObjectName("pushButton_6")
         
-        self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(840, 350, 191, 181))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_6.sizePolicy().hasHeightForWidth())
-        self.pushButton_7.setSizePolicy(sizePolicy)
-        self.pushButton_7.setText("Shear \n ILSS")
-        self.pushButton_7.setStyleSheet("background-color: rgb(70,130,180);")
-        
-        self.pushButton_7.setObjectName("pushButton_7")
-        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1367, 21))
@@ -129,14 +116,13 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.save_test_tear)
         #self.pushButton_3.setDisabled(True)
         self.pushButton_4.clicked.connect(self.save_test_flexural)
-        self.pushButton_6.clicked.connect(self.save_test_qlss)
-        self.pushButton_7.clicked.connect(self.save_test_ilss) 
+        self.pushButton_6.clicked.connect(self.save_test_qlss) 
         self.pushButton_4.setDisabled(True)
         self.load_data()
    
     def load_data(self):      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TENSILE_TEST_FLG,COMPRESS_TEST_FLG,TARE_TEST_FLG,flexural_test,QLSS_TEST,ILSS_TEST  FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT TENSILE_TEST_FLG,COMPRESS_TEST_FLG,TARE_TEST_FLG,flexural_test   FROM GLOBAL_VAR") 
         for x in results:            
             if(str(x[0])=='ACTIVE'):
                 self.pushButton.setEnabled(True)
@@ -157,22 +143,13 @@ class TY_00_T_Ui_MainWindow(object):
             if(str(x[3])=='ACTIVE'):
                 self.pushButton_4.setEnabled(True)
             else:
-                self.pushButton_4.setEnabled(False)
-                
-            
-            if(str(x[4])=='ACTIVE'):
-                self.pushButton_6.setEnabled(True)
-            else:
-                self.pushButton_6.setEnabled(False)    
-             
-             
-            if(str(x[5])=='ACTIVE'):
-                self.pushButton_7.setEnabled(True)
-            else:
-                self.pushButton_7.setEnabled(False)   
+                self.pushButton_4.setEnabled(False)    
                 
         connection.close()
-        #self.label_3.hide()
+        #self.label_3.hide()   
+        
+        
+        
         
         
     def save_test_tensile(self):                     
@@ -220,15 +197,6 @@ class TY_00_T_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         self.open_new_window_qlss()
-    
-    def save_test_ilss(self):                     
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='ILSS'")            
-        connection.commit();
-        connection.close()    
-        self.open_new_window_ilss()
         
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
@@ -240,13 +208,7 @@ class TY_00_T_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_qlss_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()
-    
-    def open_new_window_ilss(self):                
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_ilss_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
+        self.window.show()       
 
 
 if __name__ == "__main__":

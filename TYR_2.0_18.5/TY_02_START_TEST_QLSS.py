@@ -721,7 +721,7 @@ class TY_02_qlss_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.show_all_specimens)
        
         self.pushButton.clicked.connect(self.show_real_time) 
-        self.tableWidget.doubleClicked.connect(self.delete_cycle)
+        
         self.lineEdit_3.textChanged.connect(self.cal_cs_area)
         self.lineEdit_4.textChanged.connect(self.cal_cs_area)
         self.pushButton_4.clicked.connect(MainWindow.close)
@@ -731,13 +731,7 @@ class TY_02_qlss_Ui_MainWindow(object):
         self.load_cell_hi=0
         self.load_cell_lo=0
         self.extiometer=0
-        self.encoder=0
-        self.test_type_for_qlss=""
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
-        for x in results:                
-                    self.test_type_for_qlss=str(x[0])            
-        connection.close()
+        self.encoder=0 
         try:
             self.serial_3 = serial.Serial(
                         port='/dev/ttyUSB0',
@@ -756,30 +750,6 @@ class TY_02_qlss_Ui_MainWindow(object):
         except IOError:
             print("IO Errors")
     
-    
-    def delete_cycle(self):
-        if(self.test_type_for_qlss=="QLSS"):
-            row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 10).text())
-            if(int(self.cycle_id) > 0):
-                close = QMessageBox()
-                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
-                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
-                close = close.exec()
-                if close == QMessageBox.Yes:
-                    connection = sqlite3.connect("tyr.db")              
-                    with connection:        
-                                    cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
-                    connection.commit();
-                    connection.close()
-                    self.load_data()
-            else:
-                pass
-        else:
-            pass
     def on_timer3_stop(self):
         if(self.timer3.isActive()): 
            self.timer3.stop()
@@ -1019,9 +989,9 @@ class TY_02_qlss_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(11)
+        self.tableWidget.setColumnCount(10)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (Kgf/Cm2)','Shear Strain \n @Ult. Shear Stress','Ult. Shear \n Strain %','Shear Modulus \n@Ult Shear Stress \n (Kgf/Cm2)','Created On','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Width \n (Mm)','Thickness \n (Mm)','CS Area \n (Mm2)','Max. Force \n (Kgf)',' Max. \n Disp.(Mm) ','Ult. Shear\n Strength \n (Kgf/Cm2)','Shear Strain \n @Ult. Shear Stress','Ult. Shear \n Strain %','Shear Modulus \n@Ult Shear Stress \n (Kgf/Cm2)','Created On'])        
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
@@ -1035,7 +1005,7 @@ class TY_02_qlss_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(10, 50)
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),CREATED_ON,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", ULT_SHEAR_STRENGTH_KG_CM),printf(\"%.2f\", SHEAR_STRAIN_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),printf(\"%.2f\", ULT_SHEAR_STRAIN_KG_CM),printf(\"%.2f\", SHEAR_MOD_COLUMN_VALUE_KG_CM)||'@'||printf(\"%.2f\", SHEAR_MOD_COLUMN_NAME_KG_CM),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

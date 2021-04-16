@@ -555,16 +555,20 @@ class TY_04_Ui_MainWindow(object):
         else:    
             self.graphscal_type="MANNUAL"
         
+        if(self.lineEdit_6.text() != ""):
+            connection = sqlite3.connect("tyr.db")        
+            with connection:        
+                cursor = connection.cursor()                    
+                cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"'") 
+            connection.commit();
+            connection.close() 
         
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-            cursor = connection.cursor()                    
-            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"'") 
-        connection.commit();
-        connection.close() 
-        
-        self.label_16.setText("Saved Successfully !")
-        self.label_16.show()
+            self.label_16.setText("Saved Successfully !")
+            self.label_16.show()
+        else:
+            self.label_16.setText("Breaking Sence is Empty!")
+            self.label_16.show()
+            
         
     def wifi_setup_page(self):
         xx=self.lineEdit_7.text()
