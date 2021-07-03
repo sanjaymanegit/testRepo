@@ -187,7 +187,7 @@ class urmini_06_Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "RETURN"))
         self.pushButton_9.setText(_translate("MainWindow", "SYSTEM"))
         self.pushButton_5.setText(_translate("MainWindow", "PATIENT DATA"))
-        self.pushButton_4.setText(_translate("MainWindow", "HOSTPITAL DETAILS"))
+        self.pushButton_4.setText(_translate("MainWindow", "HOSPITAL DETAILS"))
         self.pushButton_10.setText(_translate("MainWindow", "DOCTORS"))
         self.label_2.setText(_translate("MainWindow", "Menu"))
         self.pushButton_6.setText(_translate("MainWindow", "Shutdown"))
