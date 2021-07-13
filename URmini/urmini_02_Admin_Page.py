@@ -12,6 +12,8 @@ from urmini_05_calibration_Page import urmini_05_Ui_MainWindow
 from urmini_16_factory_reset import urmini_16_Ui_MainWindow
 from urmini_17_password_change import urmini_17_Ui_MainWindow
 from urmini_18_register import urmini_18_Ui_MainWindow
+from urmini_20_Bluetooth_Setup import urmini_20_Ui_MainWindow
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
 import time
@@ -273,12 +275,12 @@ class urmini_02_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "DATE-TIME"))
         self.pushButton_4.setText(_translate("MainWindow", "FACTORY RESET"))
         self.pushButton_10.setText(_translate("MainWindow", "PASSWORD"))
-        self.pushButton_11.setText(_translate("MainWindow", "RECOEVERY"))
+        self.pushButton_11.setText(_translate("MainWindow", "RECOVER"))
         self.pushButton_11.hide()
         self.pushButton_12.setText(_translate("MainWindow", "PRINTER"))
         self.pushButton_12.hide()
-        self.pushButton_13.setText(_translate("MainWindow", "BACKUP"))
-        self.pushButton_13.hide()
+        self.pushButton_13.setText(_translate("MainWindow", "BLUETOOTH"))
+        #self.pushButton_13.hide()
         self.pushButton_14.setText(_translate("MainWindow", "REGISTER"))
         #self.pushButton_14.hide()
         self.pushButton_8.clicked.connect(MainWindow.close)
@@ -287,6 +289,7 @@ class urmini_02_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.open_new_window3)
         self.pushButton_10.clicked.connect(self.open_new_window4)
         self.pushButton_14.clicked.connect(self.open_new_window5)
+        self.pushButton_13.clicked.connect(self.open_new_window6)
         self.pushButton_6.clicked.connect(self.login_page)
         self.pushButton_7.clicked.connect(self.reset_fun)
         self.frame_2.hide()
@@ -382,7 +385,12 @@ class urmini_02_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-        
+    def open_new_window6(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=urmini_20_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()    
 
 
 if __name__ == "__main__":
