@@ -677,7 +677,7 @@ class TY_05_Ui_MainWindow(object):
         if(str(self.lineEdit_13.text()) != ""):
             self.diameter=str(self.lineEdit_13.text())
             try:
-                self.cs_area=(float(self.diameter)*3.14)/2 
+                self.cs_area=(float(self.diameter)*float(self.diameter)*3.14)/4 
                 self.lineEdit_14.setText(str(round(self.cs_area,2)))
             except ValueError:
                 self.lineEdit_14.setText("")
@@ -693,7 +693,7 @@ class TY_05_Ui_MainWindow(object):
                 self.inn_diamter=str(self.lineEdit_8.text())
                 self.out_diameter=str(self.lineEdit_11.text())
                 try:
-                    self.cs_area=((float(self.out_diameter)*3.14)/2)-((float(self.inn_diamter)*3.14)/2) 
+                    self.cs_area=((float(self.out_diameter)*float(self.out_diameter)*3.14)/4)-((float(self.inn_diamter)*float(self.inn_diamter)*3.14)/4) 
                     self.lineEdit_14.setText(str(round(self.cs_area,2)))
                 except ValueError:
                     self.lineEdit_14.setText("")
@@ -846,6 +846,9 @@ class TY_05_Ui_MainWindow(object):
         elif(self.lineEdit_10.text()== ""):
              self.label_21.setText("Guage length is Empty.")
              self.label_21.show()
+        elif(int(self.lineEdit_10.text()) <= 0):
+             self.label_21.setText("Guage length Should not Zero.")
+             self.label_21.show()     
         elif(self.lineEdit_14.text()== ""):
              self.label_21.setText("CS.Area is Empty.")
              self.label_21.show()  

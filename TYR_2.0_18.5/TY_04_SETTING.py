@@ -149,6 +149,9 @@ class TY_04_Ui_MainWindow(object):
         
         
         self.lineEdit_7 = QtWidgets.QLineEdit(self.groupBox_3)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)        
         self.lineEdit_7.setGeometry(QtCore.QRect(180, 100, 101, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -164,6 +167,9 @@ class TY_04_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.groupBox_3)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)        
         self.lineEdit_9.setGeometry(QtCore.QRect(450, 100, 101, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -312,6 +318,9 @@ class TY_04_Ui_MainWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.groupBox_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)        
         self.lineEdit_3.setGeometry(QtCore.QRect(190, 30, 171, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -326,6 +335,9 @@ class TY_04_Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.groupBox_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)        
         self.lineEdit_4.setGeometry(QtCore.QRect(190, 80, 171, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -340,6 +352,9 @@ class TY_04_Ui_MainWindow(object):
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.groupBox_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)        
         self.lineEdit_5.setGeometry(QtCore.QRect(190, 130, 171, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -354,6 +369,9 @@ class TY_04_Ui_MainWindow(object):
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.groupBox_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)        
         self.lineEdit_6.setGeometry(QtCore.QRect(190, 180, 171, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -555,20 +573,16 @@ class TY_04_Ui_MainWindow(object):
         else:    
             self.graphscal_type="MANNUAL"
         
-        if(self.lineEdit_6.text() != ""):
-            connection = sqlite3.connect("tyr.db")        
-            with connection:        
-                cursor = connection.cursor()                    
-                cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"'") 
-            connection.commit();
-            connection.close() 
         
-            self.label_16.setText("Saved Successfully !")
-            self.label_16.show()
-        else:
-            self.label_16.setText("Breaking Sence is Empty!")
-            self.label_16.show()
-            
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+            cursor = connection.cursor()                    
+            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"'") 
+        connection.commit();
+        connection.close() 
+        
+        self.label_16.setText("Saved Successfully !")
+        self.label_16.show()
         
     def wifi_setup_page(self):
         xx=self.lineEdit_7.text()
