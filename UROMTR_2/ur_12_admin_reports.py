@@ -699,6 +699,7 @@ class ur_12_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.p_r_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -942,6 +943,7 @@ class ur_12_Ui_MainWindow(object):
                 self.re_str = str(self.listWidget.currentItem().text())                
                 self.test_id= re.search('\(([^)]+)', self.re_str).group(1)
                 #print("TEST ID : "+str(int(self.test_id)))
+                self.p_r_name=""
                 connection = sqlite3.connect("ur.db")
                 results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
@@ -981,12 +983,15 @@ class ur_12_Ui_MainWindow(object):
                 connection.close()
                 print("self.p_id :"+str(self.p_id))
                 connection = sqlite3.connect("ur.db")
-                results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,DOB_STR FROM PATIENT_MST WHERE P_ID='"+str(self.p_id)+"'")
+                results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,DOB_STR,IFNULL(F_NAME,'NA')||'_'||IFNULL(M_NAME,'NA')||'_'||IFNULL(L_NAME,'NA') FROM PATIENT_MST WHERE P_ID='"+str(self.p_id)+"'")
                 for x in results:
                          self.label_39.setText(str(x[0]))
                          self.label_43.setText(str(x[1])) 
                          self.label_63.setText(str(x[2]))                                             
-                         self.label_48.setText(str(x[3]))                      
+                         self.label_48.setText(str(x[3]))
+                         self.p_r_name=str(x[4])
+                         print("Patient Name :"+str(self.p_r_name))
+                         
                                                
                 connection.close()
                 print("self.dr_id :"+str(self.dr_id))
@@ -1146,7 +1151,7 @@ class ur_12_Ui_MainWindow(object):
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
-                os.system("cp ./reports/ur_reports.pdf /media/usb/ur_reports"+str(self.test_id)+".pdf")
+                os.system("cp ./reports/ur_reports.pdf /media/usb/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")
                 os.system("sudo umount /media/usb")
         else:
              print("Please connect usb storage device")
