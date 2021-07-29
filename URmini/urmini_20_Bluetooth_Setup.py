@@ -277,6 +277,7 @@ class urmini_20_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Register MAC"))
         self.label_5.setText(_translate("MainWindow", "MAC Address :"))
         self.label_6.setText(_translate("MainWindow", "MAC Registered Succesfully"))
+        
         self.pushButton_13.setText(_translate("MainWindow", "Check BlueTooth"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
@@ -291,16 +292,18 @@ class urmini_20_Ui_MainWindow(object):
         item = self.listWidget.item(4)
         item.setText(_translate("MainWindow", "New Item"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
-        self.radioButton.setText(_translate("MainWindow", "ACTIVE"))
-        self.radioButton_2.setText(_translate("MainWindow", "INACTIVE"))
+        self.radioButton.setText(_translate("MainWindow", "INACTIVE"))
+        self.radioButton_2.setText(_translate("MainWindow", "ACTIVE"))
         self.pushButton_14.setText(_translate("MainWindow", "Check Load Cell"))
         self.pushButton_15.setText(_translate("MainWindow", "SAVE"))
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.pushButton_14.clicked.connect(self.open_new_window)
-        self.radioButton.clicked.connect(self.active_show)
-        self.radioButton_2.clicked.connect(self.inactive_hide)        
+        self.radioButton_2.clicked.connect(self.active_show)
+        self.radioButton.clicked.connect(self.inactive_hide)        
         self.pushButton_15.clicked.connect(self.save_data)
-        self.pushButton_12.clicked.connect(self.save_mac)
+        self.pushButton_12.clicked.connect(self.register_mac)
+        self.pushButton_13.clicked.connect(self.list_bth_data)
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -308,6 +311,7 @@ class urmini_20_Ui_MainWindow(object):
         self.login_hide()
         self.pushButton_6.clicked.connect(self.login_page)
         self.pushButton_7.clicked.connect(self.reset_fun)
+        self.load_BTH_data()
 
     def device_date(self):     
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -319,12 +323,29 @@ class urmini_20_Ui_MainWindow(object):
         self.pushButton_15.hide()
         self.label_2.hide()
         self.frame_2.hide()
+        self.label_6.hide()
         
+    def list_bth_data(self):
+        if os.path.exists('/dev/rfcomm0') == False:
+                path = 'sudo rfcomm bind 0 00:20:10:09:05:CD'
+                os.system (path)
+                time.sleep(1)
+        else:
+                f = open('/dev/rfcomm0','r')
+                for line in f:
+                         item= QtWidgets.QListWidgetItem(str(line))
+                         item.setBackground(QtGui.QColor("black"))
+                         self.listWidget.addItem(item)
+                f.close()
+                       
+  
     def login_show(self):
+        self.load_BTH_data()
         self.radioButton.show()
         self.radioButton_2.show()
-        self.pushButton_14.show()
+        #self.pushButton_14.show()
         self.pushButton_15.show()
+       
         
     def inactive_hide(self):
         self.frame_2.hide()
@@ -333,23 +354,23 @@ class urmini_20_Ui_MainWindow(object):
     def active_show(self):
         self.frame_2.show()
         self.pushButton_14.show()
-        self.load_BTH_data()
+        
           
     def load_BTH_data(self):
         connection = sqlite3.connect("ur.db")
         results=connection.execute("select BLUETOOTH_STATUS,MAC_ID_BTH from GLOBAL_VAR_TEST") 
         for x in results:
                   self.lineEdit_2.setText(str(x[1]))
-                  '''
-                  if(str(x[0]) == 'ACTIVE'):
+                  
+                  if(str(x[0]) == 'INACTIVE'):
                           self.radioButton.setChecked(True)
                           self.radioButton_2.setChecked(False)
                           self.b_status="ACTIVE"
                   else:
                           self.radioButton_2.setChecked(True)
-                          self.radioButton_2.setChecked(False)
+                          self.radioButton.setChecked(False)
                           self.b_status="INACTIVE"
-                  '''                 
+                                   
                   
         connection.close()
         #select BLUETOOTH_STATUS,MAC_ID_BTH from GLOBAL_VAR_TEST;
@@ -381,26 +402,40 @@ class urmini_20_Ui_MainWindow(object):
         self.inactive_hide()
     
         
-    def save_data(self): 
+    def save_data(self):
+        if(self.radioButton.isChecked() == True):                          
+                self.b_status="INACTIVE"
+        elif(self.radioButton_2.isChecked() == True):                          
+                self.b_status="ACTIVE"
+        else:
+                self.b_status="INACTIVE"
+        
         connection = sqlite3.connect("ur.db")          
         with connection:        
                 cursor = connection.cursor()                    
-                #cursor.execute("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"',MAC_ID_BTH='"+self.lineEdit_2.text()+"'")
+                print("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"'")
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"'")
                 
         connection.close()                    
         self.label_2.setText("Saved Successfully.") 
         self.label_2.show()
 
-    def save_mac(self): 
-        connection = sqlite3.connect("ur.db")          
-        with connection:        
-                cursor = connection.cursor()                    
-                #cursor.execute("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"',MAC_ID_BTH='"+self.lineEdit_2.text()+"'")
-                cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAC_ID_BTH='"+self.lineEdit_2.text()+"'")                
-        connection.close()                    
-        self.label_2.setText("Saved Successfully.") 
-        self.label_2.show()
+    
+    
+    def register_mac(self):
+        if os.path.exists('/dev/rfcomm0') == False:
+                path = 'sudo rfcomm bind 0 00:20:10:09:05:CD'
+                os.system (path)
+                time.sleep(1)
+        else:                  
+                connection = sqlite3.connect("ur.db")          
+                with connection:        
+                        cursor = connection.cursor()                    
+                        #cursor.execute("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"',MAC_ID_BTH='"+self.lineEdit_2.text()+"'")
+                        cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAC_ID_BTH='"+self.lineEdit_2.text()+"'")                
+                connection.close()                    
+                self.label_6.setText("MAC Registered Successfully.") 
+                self.label_6.show()
 
 if __name__ == "__main__":
     import sys

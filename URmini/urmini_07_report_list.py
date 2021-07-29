@@ -303,6 +303,7 @@ class urmini_07_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.p_r_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -508,17 +509,15 @@ class urmini_07_MainWindow(object):
                          self.dr_v_name=str(x[16])
                 connection.close()
                 print("self.p_id :"+str(self.p_id))
+                self.p_r_name=""
+                if(str(self.p_id) != ""):
+                    connection = sqlite3.connect("ur.db")
+                    results=connection.execute("SELECT IFNULL(F_NAME,'NA')||'_'||IFNULL(M_NAME,'NA')||'_'||IFNULL(L_NAME,'NA') FROM PATIENT_MST WHERE P_ID='"+str(self.p_id)+"'")
+                    for x in results:
+                            self.p_r_name=str(x[0])
+                            print("Patient Name :"+str(self.p_r_name))
+                    connection.close()
                 '''
-                connection = sqlite3.connect("ur.db")
-                results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,DOB_STR FROM PATIENT_MST WHERE P_ID='"+str(self.p_id)+"'")
-                for x in results:
-                         self.label_39.setText(str(x[0]))
-                         self.label_43.setText(str(x[1])) 
-                         self.label_63.setText(str(x[2]))                                             
-                         self.label_48.setText(str(x[3]))                      
-                                               
-                connection.close()
-             
                 print("self.dr_id :"+str(self.dr_id))
                 connection = sqlite3.connect("ur.db")
                 results=connection.execute("SELECT 'Dr.'||FNAME||' '||MNAME||' '||LNAME||' (' ||DR_QUAL||' )'  FROM  DOCTORS_INFO WHERE DR_ID='"+str(self.dr_id)+"'")
@@ -662,7 +661,7 @@ class urmini_07_MainWindow(object):
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
-                os.system("cp ./reports/ur_reports.pdf /media/usb/ur_reports_"+str(self.test_id)+".pdf")
+                os.system("cp ./reports/ur_reports.pdf /media/usb/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")
                 os.system("sudo umount /media/usb")
         else:
              print("Please connect usb storage device")
