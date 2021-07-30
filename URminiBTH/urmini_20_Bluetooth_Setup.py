@@ -172,7 +172,7 @@ class urmini_20_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(8)
         self.label_6.setFont(font)
-        self.label_6.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_6.setStyleSheet("color: rgb(0, 102, 51);")
         self.label_6.setObjectName("label_6")
         
         self.pushButton_13 = QtWidgets.QPushButton(self.frame_2)
@@ -305,12 +305,14 @@ class urmini_20_Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Password :"))
         self.pushButton_8.setText(_translate("MainWindow", "RETURN"))
         self.label_4.setText(_translate("MainWindow", "BLUETOOTH SETUP"))
-        self.pushButton_12.setText(_translate("MainWindow", "Register MAC"))
+        self.pushButton_12.setText(_translate("MainWindow", "Connect"))
         self.label_5.setText(_translate("MainWindow", "MAC Address :"))
         self.label_6.setText(_translate("MainWindow", "MAC Registered Succesfully"))
         
         self.pushButton_13.setText(_translate("MainWindow", "Devices List"))
-        self.pushButton_13_1.setText(_translate("MainWindow", "Check BlueTooth"))
+        self.pushButton_13.setDisabled(True)
+        self.pushButton_13_1.setText(_translate("MainWindow", "Serial Data"))
+        self.pushButton_13_1.setDisabled(True)
         self.label_6_1.setText("")
         
         __sortingEnabled = self.listWidget.isSortingEnabled()
@@ -385,7 +387,7 @@ class urmini_20_Ui_MainWindow(object):
         #item.setBackground(QtGui.QColor("black"))
         self.listWidget.addItem(item)
         self.buff=line.split("_")
-        if(len(self.buff)> 2):
+        if(len(self.buff)> 4):
                         if(str(self.buff[4]) == 'R' or str(self.buff[4]) == 'S'):
                                   if(int(self.buff[3]) < 100)  :
                                         self.label_6_1.setText("Battery: "+str(int(self.buff[3]))+" %")
@@ -534,18 +536,24 @@ class urmini_20_Ui_MainWindow(object):
                                     #cursor.execute("UPDATE GLOBAL_VAR_TEST SET BLUETOOTH_STATUS='"+str(self.b_status)+"',MAC_ID_BTH='"+self.lineEdit_2.text()+"'")
                                     cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAC_ID_BTH='"+self.lineEdit_2.text()+"'")                
                             connection.close()                    
-                            self.label_6.setText("MAC Registered Successfully.") 
+                            self.label_6.setText("Connected...Check Data.") 
                             self.label_6.show()
-                            print("MAC Registered Successfully.:"+self.lineEdit_2.text())
+                            print("Connected :"+self.lineEdit_2.text())
+                            self.pushButton_13_1.setEnabled(True)
+                            self.pushButton_13.setDisabled(True)
                         except bluetooth.btcommon.BluetoothError as err:
                             # Error handler
                             self.label_6.setText("Connection Error.") 
                             self.label_6.show()
+                            self.pushButton_13_1.setDisabled(True)
+                            self.pushButton_13.setEnabled(True)
                             print("Connection Error !!!")
                             pass
             except:
                     self.label_6.setText("Bluetooth Off.") 
                     self.label_6.show()
+                    self.pushButton_13_1.setDisabled(True)
+                    self.pushButton_13.setEnabled(True)
                     print("Bluetooth Off")   
                 
                 

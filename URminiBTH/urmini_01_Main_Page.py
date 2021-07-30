@@ -985,16 +985,17 @@ class PlotCanvas_Auto(FigureCanvas):
                                         print(" not Running status ")
                     
                     
-                        #if(str(self.buff[3]) != ""):
-                        '''
+                        if(str(self.buff[3]) != ""):
+                        
                                 if(int(self.buff[3]) < 100)  :
                                         #self.label_6_2.setText("Battery: "+str(int(self.buff[3]))+" %")
-                                        self.bat_status="Battery: "+str(int(self.buff[3]))
+                                        self.bat_status="Battery: "+str(int(self.buff[3]))+" % "
                                 else:
                                         #self.label_6_2.setText("Battery Charging..")
                                         self.bat_status="Battery Charging"
-                        '''
-                                #print("self.bat_status :"+str(self.bat_status))
+                        else:
+                                print("self.bat_status :"+str(self.bat_status))
+                                self.bat_status="-10"
                                 
                                   
         except IOError:
