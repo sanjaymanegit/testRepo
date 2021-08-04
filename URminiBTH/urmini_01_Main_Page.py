@@ -33,6 +33,7 @@ import time
 import numpy as np
 import sqlite3
 import bluetooth
+import os
 
 
 
@@ -267,6 +268,26 @@ class Urmini_01_MainWindow(object):
         self.pushButton_8.setDefault(True)
         self.pushButton_8.setFlat(False)
         self.pushButton_8.setObjectName("pushButton_8")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(460, 80, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setStyleSheet("background-color: rgb(231, 154, 115);")
+        self.pushButton_8_1.setAutoDefault(True)
+        self.pushButton_8_1.setDefault(True)
+        self.pushButton_8_1.setFlat(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("images/bth.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_8_1.setIcon(icon)
+        self.pushButton_8_1.setIconSize(QtCore.QSize(40, 40))
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
         self.pushButton_9.setGeometry(QtCore.QRect(500, 40, 81, 31))
         font = QtGui.QFont()
@@ -313,6 +334,7 @@ class Urmini_01_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "08 Feb 2021 11:44:09"))
         self.pushButton_2.setText(_translate("MainWindow", "START"))
+        self.pushButton_2.setDisabled(True)
         self.pushButton_3.setText(_translate("MainWindow", "STOP"))
         self.pushButton_4.setText(_translate("MainWindow", "SAVE"))
         self.pushButton_5.setText(_translate("MainWindow", "RESET"))
@@ -333,6 +355,7 @@ class Urmini_01_MainWindow(object):
         self.pushButton_5.clicked.connect(self.blank_graph)
         self.pushButton_7.clicked.connect(self.set_low_fun)
         self.pushButton_8.clicked.connect(self.open_new_window2)
+        self.pushButton_8_1.clicked.connect(self.battery_status)
         self.pushButton_6.clicked.connect(self.open_new_window3)
         self.pushButton_9.clicked.connect(self.open_new_window4)
         self.blank_graph()
@@ -346,40 +369,51 @@ class Urmini_01_MainWindow(object):
         self.timer2.timeout.connect(self.battery_status)
         self.timer2.start(1000)
         '''
-        #self.battery_status()
+        self.battery_status()
         #self.show_baterry_status()
 
     def device_date(self):     
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
-    '''
+    
     def battery_status(self):
         self.mac_addr=""
         connection = sqlite3.connect("ur.db")
         results=connection.execute("select BLUETOOTH_STATUS,MAC_ID_BTH from GLOBAL_VAR_TEST") 
         for x in results:
                 self.mac_addr=str(x[1])
-        connection.close()   
-        try:
+        connection.close()
+        if os.path.exists('/dev/rfcomm0') == False:
+                path = 'sudo rfcomm bind 0 '+str(self.mac_addr)
+                os.system (path)
+                time.sleep(1)
+                print("Command:"+str(path))
+        else:
+            try:
                 nearby_devices = bluetooth.discover_devices()
                 for bdaddr in nearby_devices:
-                    print("Devices"+str(bdaddr))                   
-                    if(str(bdaddr) == str(self.mac_addr)):
-                        try:
-                            s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-                            s.connect((bdaddr,1))
-                            print("Connected !!!")                                               
-                            #self.show_baterry_status()
-                        except bluetooth.btcommon.BluetoothError as err:
-                            # Error handler
-                            self.label_5.setText("Connection Error.") 
-                            self.label_5.show()
-                            print("Connection Error !!!")
-                            pass
-        except:
+                            print("Devices"+str(bdaddr))                   
+                            if(str(bdaddr) == str(self.mac_addr)):
+                                try:
+                                    s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                                    s.connect((bdaddr,1))
+                                    print("Connected !!!")
+                                    self.label_5.setText("BlueTooth ON.") 
+                                    self.label_5.show()
+                                    self.pushButton_2.setEnabled(True)
+                                    
+                                except bluetooth.btcommon.BluetoothError as err:
+                                    # Error handler
+                                    self.label_5.setText("Connection Error.") 
+                                    self.label_5.show()
+                                    self.pushButton_2.setDisabled(True)
+                                    print("Connection Error !!!")
+                                    pass
+            except:
                     self.label_5.setText("Bluetooth Off.") 
                     self.label_5.show()
+                    self.pushButton_2.setDisabled(True)
                     print("Bluetooth Off") 
-      
+    '''  
     def show_baterry_status(self):
         try:
             self.ser = serial.Serial(
@@ -948,7 +982,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
             #print("ok  xx   :"+str(self.xstr2))           
             if(self.IO_error_flg==0):                
-                if(len(self.buff)> 2):                    
+                if(len(self.buff)> 4):                    
                         if(str(self.buff[4]) == 'R'): 
                                         #print("o/p xx:"+str(self.xstr3))
                                         self.xstr3=str(self.buff[0])
