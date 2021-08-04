@@ -1,5 +1,6 @@
-Bus 001 Device 004: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
-Bus 001 Device 005: ID 0424:7800 Standard Microsystems Corp. 
+Bus 001 Device 005: ID 0781:5567 SanDisk Corp. Cruzer Blade
+Bus 001 Device 006: ID 03f0:002a Hewlett-Packard LaserJet P1102
+Bus 001 Device 004: ID 0424:7800 Standard Microsystems Corp. 
 Bus 001 Device 003: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 002: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
