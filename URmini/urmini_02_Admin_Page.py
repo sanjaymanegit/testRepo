@@ -12,7 +12,7 @@ from urmini_05_calibration_Page import urmini_05_Ui_MainWindow
 from urmini_16_factory_reset import urmini_16_Ui_MainWindow
 from urmini_17_password_change import urmini_17_Ui_MainWindow
 from urmini_18_register import urmini_18_Ui_MainWindow
-from urmini_20_Bluetooth_Setup import urmini_20_Ui_MainWindow
+#from urmini_20_Bluetooth_Setup import urmini_20_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import datetime
@@ -280,7 +280,7 @@ class urmini_02_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "PRINTER"))
         self.pushButton_12.hide()
         self.pushButton_13.setText(_translate("MainWindow", "BLUETOOTH"))
-        #self.pushButton_13.hide()
+        self.pushButton_13.setDisabled(True)
         self.pushButton_14.setText(_translate("MainWindow", "REGISTER"))
         #self.pushButton_14.hide()
         self.pushButton_8.clicked.connect(MainWindow.close)
@@ -289,7 +289,7 @@ class urmini_02_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.open_new_window3)
         self.pushButton_10.clicked.connect(self.open_new_window4)
         self.pushButton_14.clicked.connect(self.open_new_window5)
-        self.pushButton_13.clicked.connect(self.open_new_window6)
+        #self.pushButton_13.clicked.connect(self.open_new_window6)
         self.pushButton_6.clicked.connect(self.login_page)
         self.pushButton_7.clicked.connect(self.reset_fun)
         self.frame_2.hide()
