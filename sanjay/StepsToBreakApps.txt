@@ -1,0 +1,13 @@
+TYR-Def:
+1.Go to New Test
+2.Party Name : 50000
+3.Click on RESET
+
+
+URMini:
+1.Go to Report
+2.Select option "By Name"
+3.FNAME=50000
+4.Click on "SEARCH"
+
+
