@@ -482,6 +482,7 @@ class ur_03_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.p_r_name=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -616,6 +617,7 @@ class ur_03_Ui_MainWindow(object):
         self.remark=""
         self.p_name=""
         self.report_date=""
+        self.p_r_name=""
         summary_data=[]
         test_data=[]
         connection = sqlite3.connect("ur.db")        
@@ -628,13 +630,15 @@ class ur_03_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("ur.db")        
-        results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,current_timestamp FROM PATIENT_MST WHERE P_ID IN (SELECT P_ID FROM GLOBAL_VAR_TEST)")
+        results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,current_timestamp,IFNULL(F_NAME,'NA')||'_'||IFNULL(M_NAME,'NA')||'_'||IFNULL(L_NAME,'NA') FROM PATIENT_MST WHERE P_ID IN (SELECT P_ID FROM GLOBAL_VAR_TEST)")
         for x in results:
             summary_data.append(["Patient Name : ",str(x[0]),"Age: ",str(x[2])])
             self.p_name=str(x[0])
             summary_data.append(["Doctors Name:",str(self.dr_name),"Gender:",str(x[1])])
             #summary_data.append(["Report Date: ",str(x[3])[0:10],"",""])
             self.report_date=str(x[3])[0:16]
+            self.p_r_name=str(x[4])
+            print("Patient Name :"+str(self.p_r_name))
         
         connection.close()
         test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
@@ -716,8 +720,10 @@ class ur_03_Ui_MainWindow(object):
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
-                os.system("cp ./reports/ur_reports.pdf /media/usb/ur_reports_"+str(self.test_id)+".pdf")
+                #os.system("cp ./reports/ur_reports.pdf /media/usb/ur_reports_"+str(self.test_id)+".pdf")
+                os.system("cp ./reports/ur_reports.pdf /media/usb/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")
                 os.system("sudo umount /media/usb")
+                print("Report Copied in USB.")
         else:
              print("Please connect usb storage device")
 
