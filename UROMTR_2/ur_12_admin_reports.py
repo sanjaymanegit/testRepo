@@ -1153,6 +1153,7 @@ class ur_12_Ui_MainWindow(object):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
                 os.system("cp ./reports/ur_reports.pdf /media/usb/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")
                 os.system("sudo umount /media/usb")
+                print("Report Copied in USB.")
         else:
              print("Please connect usb storage device")
 
