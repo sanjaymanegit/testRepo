@@ -9,10 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-'''
+
 from urmini_12_hospital_info import urmini_12_Ui_MainWindow
 from urmini_13_doctors_info import urmini_13_Ui_MainWindow
 from urmini_14_patient_data_update import urmini_14_Ui_MainWindow
+'''
+
+
 from urmini_02_Admin_Page import urmini_02_Ui_MainWindow
 '''
 import datetime
@@ -197,10 +200,13 @@ class urmini_06_Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Reboot"))
         self.label_3.setText(_translate("MainWindow", "AnyDesk ID:234567889"))
         self.pushButton_8.clicked.connect(MainWindow.close)
-        '''
+        
         self.pushButton_4.clicked.connect(self.open_new_window)
         self.pushButton_10.clicked.connect(self.open_new_window2)
+        
+        
         self.pushButton_5.clicked.connect(self.open_new_window3)
+        '''
         self.pushButton_9.clicked.connect(self.open_new_window4)
         '''
         self.pushButton_6.clicked.connect(self.shutdown_system)
@@ -230,14 +236,14 @@ class urmini_06_Ui_MainWindow(object):
         print("self.anydesk_id:"+str(self.anydesk_id))
         self.label_3.setText("AnyDesk ID:"+str(self.anydesk_id))    
         f.close()
-    '''   
+     
     def open_new_window(self):       
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
         self.ui=urmini_12_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    
+   
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
@@ -245,13 +251,14 @@ class urmini_06_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    
     def open_new_window3(self):       
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
         self.ui=urmini_14_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    
+    '''  
     def open_new_window4(self):       
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
