@@ -52,7 +52,7 @@ class urmini_01_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 991, 531))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 981, 556))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.frame.setFont(font)
@@ -870,7 +870,7 @@ class PlotCanvas_Auto(FigureCanvas):
                                 #print(" Array Q:"+str(self.arr_q))
                                 
                                 #print(" Array P2:"+str(self.arr_p2))
-                                print(" Array Q2:"+str(self.arr_q2))
+                                #print(" Array Q2:"+str(self.arr_q2))
                                 
                                 '''
                                 print(" length Array P:"+str(len(self.arr_p)))

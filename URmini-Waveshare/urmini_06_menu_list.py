@@ -13,11 +13,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from urmini_12_hospital_info import urmini_12_Ui_MainWindow
 from urmini_13_doctors_info import urmini_13_Ui_MainWindow
 from urmini_14_patient_data_update import urmini_14_Ui_MainWindow
-'''
-
-
 from urmini_02_Admin_Page import urmini_02_Ui_MainWindow
-'''
+
 import datetime
 import sqlite3
 import sys,os
@@ -29,7 +26,7 @@ class urmini_06_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 971, 521))
+        self.frame.setGeometry(QtCore.QRect(20, 20, 981, 556))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.frame.setFont(font)
@@ -49,7 +46,7 @@ class urmini_06_Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(670, 440, 131, 41))
+        self.pushButton_8.setGeometry(QtCore.QRect(670, 480, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -137,7 +134,7 @@ class urmini_06_Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(220, 440, 131, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(220, 480, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -151,7 +148,7 @@ class urmini_06_Ui_MainWindow(object):
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(450, 440, 121, 41))
+        self.pushButton_7.setGeometry(QtCore.QRect(450, 480, 121, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -206,8 +203,9 @@ class urmini_06_Ui_MainWindow(object):
         
         
         self.pushButton_5.clicked.connect(self.open_new_window3)
-        '''
         self.pushButton_9.clicked.connect(self.open_new_window4)
+        '''
+        
         '''
         self.pushButton_6.clicked.connect(self.shutdown_system)
         self.pushButton_7.clicked.connect(self.reboot_system)
@@ -258,14 +256,14 @@ class urmini_06_Ui_MainWindow(object):
         self.ui=urmini_14_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    '''  
+    
     def open_new_window4(self):       
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
         self.ui=urmini_02_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    '''
+
 
 
 if __name__ == "__main__":
