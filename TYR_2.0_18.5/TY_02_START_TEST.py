@@ -1992,7 +1992,7 @@ class PlotCanvas_Auto(FigureCanvas):
             if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*100                 
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"

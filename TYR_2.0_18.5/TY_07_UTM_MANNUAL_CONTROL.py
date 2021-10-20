@@ -170,13 +170,14 @@ class TY_07_Ui_MainWindow(object):
             if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*100                 
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+"\r")
                  self.command_str="*P%04d"%self.calc_speed+"\r"
                  #self.command_str="*P50.00\r"
                  #print("xcxcx :"+str(self.command_str))
-                 self.label_9_1.setText("Running with "+str(round(self.calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" rpm).")
+                 self.display_calc_speed=int(self.calc_speed)/10
+                 self.label_9_1.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" rpm).")
                  self.label_9_1.show()
                  #print("ok-done")
             else:

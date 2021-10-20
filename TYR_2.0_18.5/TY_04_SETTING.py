@@ -412,7 +412,7 @@ class TY_04_Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "Company Details"))
         self.label.setText(_translate("MainWindow", "Company Name:"))
         self.label_2.setText(_translate("MainWindow", "Address:"))
-        self.label_3.setText(_translate("MainWindow", "Phone. No:"))
+        self.label_3.setText(_translate("MainWindow", "Contact. No:"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Graph Scale"))
         self.label_9.setText(_translate("MainWindow", "Load (Y-Axis):"))
         self.label_9_1.setText(_translate("MainWindow", "Device Id:"))
@@ -577,7 +577,7 @@ class TY_04_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
-            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"'") 
+            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_2.text()+"'") 
         connection.commit();
         connection.close() 
         
