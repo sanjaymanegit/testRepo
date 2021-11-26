@@ -38,7 +38,8 @@ import sqlite3
 class Urmini_01_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(645, 489)
+        #MainWindow.resize(645, 489)
+        MainWindow.resize(1024, 600)
         self.t_var=0.001
         self.voiding_time=""
         self.voiding_time_dev=""        
