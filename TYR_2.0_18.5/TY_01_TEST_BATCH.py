@@ -9,6 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_02_START_TEST import TY_02_Ui_MainWindow
+from TY_01_TEST_BATCH_FLEXU import TY_02f_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
@@ -757,7 +758,10 @@ class TY_01_Ui_MainWindow(object):
             connection.close()   
             self.load_test_data()
             self.window = QtWidgets.QMainWindow()
-            self.ui=TY_02_Ui_MainWindow()
+            if(self.test_type=='Flexural'):
+                    self.ui=TY_02f_Ui_MainWindow()
+            else:
+                    self.ui=TY_02_Ui_MainWindow()
             self.ui.setupUi(self.window)           
             self.window.show()       
          

@@ -135,7 +135,7 @@ class Ui_MainWindow(object):
         
        
         self.label_4_1 = QtWidgets.QLabel(self.frame)
-        self.label_4_1.setGeometry(QtCore.QRect(1000, 550, 161, 26))
+        self.label_4_1.setGeometry(QtCore.QRect(810, 590, 361, 126))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)
@@ -143,7 +143,7 @@ class Ui_MainWindow(object):
         #font.setWeight(75)
         self.label_4_1.setFont(font)
         #self.label_4_1.setStyleSheet("color: rgb(0, 0, 255);color: rgb(170, 0, 0);")
-        self.label_4_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4_1.setAlignment(QtCore.Qt.AlignLeft)
         self.label_4_1.setObjectName("label_4_1")
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -180,12 +180,12 @@ class Ui_MainWindow(object):
     def anydesk_open(self):
         self.anydesk_id =0
         os.system("rm -rf anydes_id_f.txt")
-        os.system("anydesk --get-id >> anydes_id_f.txt")
+        os.system("anydesk --get-alias>> anydes_id_f.txt")
         f = open('anydes_id_f.txt','r')
         for line in f:                 
-                    self.anydesk_id = line[0:9]
+                    self.anydesk_id = line[0:29]
         print("self.anydesk_id:"+str(self.anydesk_id))
-        self.label_4_1.setText("AnyDesk ID:"+str(self.anydesk_id))
+        self.label_4_1.setText("<font color=blue> AnyDesk ID: </font> "+str(self.anydesk_id))
         f.close()
         
     def open_new_window(self):        

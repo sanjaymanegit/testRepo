@@ -438,7 +438,7 @@ class TY_04_Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Error: Please fill required mandatory fileds"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Configuration"))
-        self.label_4.setText(_translate("MainWindow", "Auto Reverse Off Time :"))
+        self.label_4.setText(_translate("MainWindow", "AutoReverse Time(Sec):"))
         self.label_5.setText(_translate("MainWindow", "Motor Test Speed(RPM):"))
         self.label_7.setText(_translate("MainWindow", "Motor Max Speed (RPM):"))
         self.label_8.setText(_translate("MainWindow", "Breaking Sense (Kg):"))

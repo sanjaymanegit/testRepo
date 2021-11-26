@@ -209,6 +209,7 @@ class TY_05_Ui_MainWindow(object):
         font.setUnderline(False)
         font.setWeight(75)
         self.label_22.setFont(font)
+        
         self.label_22.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_22.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_22.setObjectName("label_22")

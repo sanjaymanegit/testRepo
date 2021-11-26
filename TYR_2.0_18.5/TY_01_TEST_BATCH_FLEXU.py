@@ -32,7 +32,7 @@ from PyQt5.QtGui import QRegExpValidator
 import datetime
 
 
-class TY_02_Ui_MainWindow(object):
+class TY_02f_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 769)
@@ -393,7 +393,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.verticalHeader().setStretchLastSection(False)
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(790, 10, 131, 51))
+        self.label.setGeometry(QtCore.QRect(790, 10, 141, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(16)
@@ -413,7 +413,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_2.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_2.setObjectName("label_2")
         self.layoutWidget = QtWidgets.QWidget(self.frame)
-        self.layoutWidget.setGeometry(QtCore.QRect(790, 70, 291, 91))
+        self.layoutWidget.setGeometry(QtCore.QRect(790, 70, 371, 91))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -426,17 +426,24 @@ class TY_02_Ui_MainWindow(object):
         self.label_23.setAlignment(QtCore.Qt.AlignCenter)
         self.label_23.setObjectName("label_23")
         self.gridLayout.addWidget(self.label_23, 0, 3, 1, 1)
-        self.label_24 = QtWidgets.QLabel(self.layoutWidget)
+        
+        self.label_24 = QtWidgets.QLineEdit(self.layoutWidget)
+        
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.label_24)
+        self.label_24.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        #font.setBold(True)
-        #font.setWeight(75)
+        font.setPointSize(10)        
         self.label_24.setFont(font)
         self.label_24.setStyleSheet("color: rgb(0, 85, 255);")
         self.label_24.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
         self.gridLayout.addWidget(self.label_24, 0, 4, 1, 1)
+        
+        
+        
         self.label_31 = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -445,7 +452,13 @@ class TY_02_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignCenter)
         self.label_31.setObjectName("label_31")
         self.gridLayout.addWidget(self.label_31, 1, 3, 1, 1)
-        self.label_32 = QtWidgets.QLabel(self.layoutWidget)
+        
+        self.label_32 = QtWidgets.QLineEdit(self.layoutWidget)
+        
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.label_32)
+        self.label_32.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -455,6 +468,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(0, 85, 255);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
+        
         self.gridLayout.addWidget(self.label_32, 1, 4, 1, 1)
         self.label_21 = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
@@ -472,24 +486,36 @@ class TY_02_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.gridLayout.addWidget(self.label_25, 1, 0, 1, 1)
-        self.label_22 = QtWidgets.QLabel(self.layoutWidget)
+        #self.label_22 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_22 = QtWidgets.QLineEdit(self.layoutWidget)
+        
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.label_22)
+        self.label_22.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         #font.setBold(True)
         #font.setWeight(75)
+        #self.label_22.setMaximumWidth(100)
+        
         self.label_22.setFont(font)
         self.label_22.setStyleSheet("color: rgb(0, 85, 255);")
         self.label_22.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_22.setObjectName("label_22")
         self.gridLayout.addWidget(self.label_22, 0, 1, 1, 2)
-        self.label_26 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_26 = QtWidgets.QLineEdit(self.layoutWidget)
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.label_26)
+        self.label_26.setValidator(input_validator)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         #font.setBold(True)
         #font.setWeight(75)
         self.label_26.setFont(font)
+        self.label_26.setMaximumWidth(200)
         self.label_26.setStyleSheet("color: rgb(0, 85, 255);")
         self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
@@ -579,7 +605,7 @@ class TY_02_Ui_MainWindow(object):
         
         
         self.radioButton = QtWidgets.QRadioButton(self.frame)
-        self.radioButton.setGeometry(QtCore.QRect(1130, 70, 141, 31))
+        self.radioButton.setGeometry(QtCore.QRect(1180, 80, 141, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -587,15 +613,57 @@ class TY_02_Ui_MainWindow(object):
         self.radioButton.setChecked(False)
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
-        self.radioButton_2.setGeometry(QtCore.QRect(1130, 120, 141, 31))
+        self.radioButton_2.setGeometry(QtCore.QRect(1180, 120, 141, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.radioButton_2.setFont(font)
         self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
+        
+        self.label_3_1 = QtWidgets.QLabel(self.frame)
+        self.label_3_1.setGeometry(QtCore.QRect(790, 155, 301, 41))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        #font.setBold(False)        
+        #font.setWeight(50)
+        self.label_3_1.setText("Strain at  Break (%) :")
+        self.label_3_1.setFont(font)
+        #self.label_3_1.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_1.setObjectName("label_3_1")
+        
+        self.lineEdit_3_1 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\d+(\.\d+)?)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3_1)
+        self.lineEdit_3_1.setValidator(input_validator)
+        self.lineEdit_3_1.setGeometry(QtCore.QRect(945, 163, 52, 25))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)        
+        self.lineEdit_3_1.setText("5")
+        self.lineEdit_3_1.setFont(font)
+        
+        self.lineEdit_3_1.setObjectName("lineEdit_3_1")
+        
+        self.label_3_2 = QtWidgets.QLabel(self.frame)
+        self.label_3_2.setGeometry(QtCore.QRect(1040, 155, 301, 41))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        
+        self.label_3_2.setText("2 mm")
+        self.label_3_2.setFont(font)
+        self.label_3_2.setStyleSheet("color: rgb(170, 85, 127);")
+        self.label_3_2.setObjectName("label_3_2")
+        
+        
+        
+        
+        
+        
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(790, 170, 301, 41))
+        self.label_3.setGeometry(QtCore.QRect(790, 182, 301, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -675,15 +743,15 @@ class TY_02_Ui_MainWindow(object):
         item = self.tableWidget.item(0, 9)
         item.setText(_translate("MainWindow", "12 Sep 2019 12:12:11 AM"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
-        self.label.setText(_translate("MainWindow", "New Test"))
+        self.label.setText(_translate("MainWindow", "Flexural Test"))
         self.label_2.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
-        self.label_23.setText(_translate("MainWindow", "Batch Id:"))
+        self.label_23.setText(_translate("MainWindow", "Support Radius(mm):"))
         self.label_24.setText(_translate("MainWindow", "Batch_900011"))
-        self.label_31.setText(_translate("MainWindow", "Job Id:"))
-        self.label_32.setText(_translate("MainWindow", "Job_900011"))
-        self.label_21.setText(_translate("MainWindow", "Test Id :"))
-        self.label_25.setText(_translate("MainWindow", "Spec. No.:"))
-        self.label_22.setText(_translate("MainWindow", "90011"))
+        self.label_31.setText(_translate("MainWindow", "Load Radius(mm):"))
+        self.label_32.setText(_translate("MainWindow", "J11"))
+        self.label_21.setText(_translate("MainWindow", "SPAN(mm) :"))
+        self.label_25.setText(_translate("MainWindow", "Speed(rpm).:"))
+        self.label_22.setText(_translate("MainWindow", "90"))
         self.label_26.setText(_translate("MainWindow", "1"))
         self.radioButton.setText(_translate("MainWindow", "Extentiometer"))
         self.radioButton_2.setText(_translate("MainWindow", "Encoder"))
@@ -1056,60 +1124,9 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()  
      
-    def show_grid_data_compress(self):
-        #print("inside compress list.....")
-        self.delete_all_records()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(8)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 150)
-        self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 200)
-        self.tableWidget.setColumnWidth(4, 200)
-        self.tableWidget.setColumnWidth(5, 150)
-        self.tableWidget.setColumnWidth(6, 150)
-        self.tableWidget.setColumnWidth(7, 50)
-        
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Guage Length (mm)','% Compression','Created On','Cycle Id'])        
-       
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PRC_E_AT_BREAK) ,CREATED_ON,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        connection.close()  
+    
   
-    def show_grid_data_tear(self):
-        print("inside tear list.....")
-        self.delete_all_records()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(5)
-        #self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])        
-        self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 150)
-        self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 400)
-        self.tableWidget.setColumnWidth(4, 50)
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),CREATED_ON,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        connection.close()     
+         
     
     def show_grid_data_flexure(self):        
         #print("inside tear list.....")
@@ -1117,9 +1134,9 @@ class TY_02_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(10)
+        self.tableWidget.setColumnCount(13)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Failure \n Mode','Test  \n Method','Cycle ID'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Load Radius \n (mm)','Support Radius \n (mm)',' Speed \n (rpm)','Strain at Break \n ( % )','Failure \n Mode','Test  \n Method','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
@@ -1128,10 +1145,13 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(5, 100)
         self.tableWidget.setColumnWidth(6, 250)
         self.tableWidget.setColumnWidth(7, 100)
-        self.tableWidget.setColumnWidth(8, 100)
-        self.tableWidget.setColumnWidth(9, 50)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 150)
+        self.tableWidget.setColumnWidth(10, 150)
+        self.tableWidget.setColumnWidth(11, 150)
+        self.tableWidget.setColumnWidth(12, 150)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,0,0,0,0,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1477,17 +1497,17 @@ class TY_02_Ui_MainWindow(object):
         results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         rows=results.fetchall()
         connection.close()
-        self.label_26.setText(str(rows[0][0]))
+        self.label_26.setText(str(rows[0][0])) #cycle number
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(SPAN,0),IFNULL(SUPPORT_RADIOUS,0),IFNULL(LOAD_RADIOUS,0),IFNULL(PER_STRAIN_AT_BREAK,0),IFNULL(SPEED_RPM,0) FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
         self.label_27.setText(self.shape) ###shap
-        self.label_22.setText(str(rows[0][7])) ##test id
-        self.label_32.setText(str(rows[0][12])) ##Job name
-        self.label_24.setText(str(rows[0][13])) ##batch id
+        self.label_22.setText(str(rows[0][15])) ##test id
+        self.label_32.setText(str(rows[0][16])) ##Job name
+        self.label_24.setText(str(rows[0][17])) ##batch id
         
         
         if (int(self.label_26.text()) > 0):
@@ -2050,14 +2070,16 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
+             #ax.set_title("Test Id="+str(x[1]))
              self.graph_ids.append(x[0])             
         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,IFNULL(STG_CYCLE_ID,0) FROM GLOBAL_VAR") 
         for x in results:
-             self.test_type=str(x[0])            
+             self.test_type=str(x[0])
+             ax.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         
@@ -2125,7 +2147,7 @@ class PlotCanvas_blank(FigureCanvas):
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
        
-        
+         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:
@@ -2140,9 +2162,10 @@ class PlotCanvas_blank(FigureCanvas):
         ax.plot(self.x,self.y,'b')
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,IFNULL(STG_CYCLE_ID,0) FROM GLOBAL_VAR") 
         for x in results:
-             self.test_type=str(x[0])            
+             self.test_type=str(x[0])
+             ax.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         ax.set_ylabel('Load (Kgf)')
@@ -2159,7 +2182,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_02_Ui_MainWindow()
+    ui = TY_02f_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

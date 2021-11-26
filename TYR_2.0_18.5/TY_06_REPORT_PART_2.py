@@ -420,7 +420,7 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setMidLineWidth(-4)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(10)
+        self.tableWidget.setColumnCount(13)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
@@ -438,7 +438,9 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 150)
         self.tableWidget.setColumnWidth(7, 180)
         self.tableWidget.setColumnWidth(8, 150)
-        
+        self.tableWidget.setColumnWidth(9, 150)
+        self.tableWidget.setColumnWidth(10, 180)
+        self.tableWidget.setColumnWidth(11, 150)
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
         for x in results:           
@@ -456,21 +458,21 @@ class TY_06_Ui_MainWindow(object):
            
         if(self.unit_typex == "Kg/Cm"):
             self.length=float(int(self.length)*0.1)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)', 'Max. \n Displ. \n (cm)', 'Force \n at Peak \n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2) ','Failure \n Mode','Test \n Method'])
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)', 'Max. \n Displ. \n (cm)', 'Force \n at Peak \n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2) ','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])
         elif(self.unit_typex == "Lb/Inch"):
             self.length=float(int(self.length)*0.0393701)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)', 'Max. \n Displ. \n (Inch)', 'Force \n  at Peak\n (Lb)', 'Flexural \n  Strength \n (Lb/Inch2)  ','Failure \n Mode','Test \n Method'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)', 'Max. \n Displ. \n (Inch)', 'Force \n  at Peak\n (Lb)', 'Flexural \n  Strength \n (Lb/Inch2)  ','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])           
         elif(self.unit_typex == "Newton/Mm"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Failure \n Mode','Test \n Method'])            
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])            
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Failure \n Mode','Test \n Method'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])           
         else:
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Failure \n Mode','Test \n Method'])
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])
           
         
        
         connection = sqlite3.connect("tyr.db")
-        results1=connection.execute("SELECT TYPE_STR,990,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.2f\", SPAN),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", FLEXURAL_STRENGTH) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT TYPE_STR,990,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.2f\", SPAN),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", FLEXURAL_STRENGTH),0,0,0 FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             
         #results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD,A.E_PAEK_LOAD,A.PERCENTG_E_PEAK_LOAD_MM,A.PERCENTG_E_PEAK_LOAD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")                        
         for row_number, row_data in enumerate(results1):                    
@@ -484,7 +486,7 @@ class TY_06_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),A.BREAK_MODE,A.TEST_METHOD    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),0,0,0,A.BREAK_MODE,A.TEST_METHOD    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
         for row_number, row_data in enumerate(results):                    
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
+
 import sqlite3
 
 class TY_00_T_Ui_MainWindow(object):
@@ -234,7 +235,9 @@ class TY_00_T_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()       
+        self.window.show()
+    
+   
 
     def open_new_window_qlss(self):                
         self.window = QtWidgets.QMainWindow()
