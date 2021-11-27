@@ -641,7 +641,7 @@ class TY_02f_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)        
-        self.lineEdit_3_1.setText("5")
+        
         self.lineEdit_3_1.setFont(font)
         
         self.lineEdit_3_1.setObjectName("lineEdit_3_1")
@@ -652,7 +652,7 @@ class TY_02f_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         
-        self.label_3_2.setText("2 mm")
+        
         self.label_3_2.setFont(font)
         self.label_3_2.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3_2.setObjectName("label_3_2")
@@ -753,6 +753,8 @@ class TY_02f_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "Speed(rpm).:"))
         self.label_22.setText(_translate("MainWindow", "90"))
         self.label_26.setText(_translate("MainWindow", "1"))
+        self.lineEdit_3_1.setText("5") #% Strain at Break
+        self.label_3_2.setText("2 mm") #% strain conversion to mm
         self.radioButton.setText(_translate("MainWindow", "Extentiometer"))
         self.radioButton_2.setText(_translate("MainWindow", "Encoder"))
         self.label_3.setText(_translate("MainWindow", "Msg:Test Started"))
@@ -1151,7 +1153,7 @@ class TY_02f_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(11, 150)
         self.tableWidget.setColumnWidth(12, 150)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,0,0,0,0,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,0,LOAD_RADIOUS,SUPPORT_RADIOUS,SPEED_RPM,BREAK_MODE,SPEED_RPM,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1386,7 +1388,8 @@ class TY_02f_Ui_MainWindow(object):
             with connection:        
                   cursor = connection.cursor()              
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"',"+
+                  +"SPAN='"+str(self.label_22.text())+"',SUPPORT_RADIOUS='"+str(self.label_24.text())+"',LOAD_RADIOUS='"+str(self.label_32.text())+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_3_1.text())+"',SPEED_RPM='"+str(self.label_26.text())+"'")
                   #print("ok2")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
                   #print("ok3") 
@@ -1426,7 +1429,7 @@ class TY_02f_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
                  
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_BREAK,SPEED_RPM) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD ,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_BREAK,SPEED_RPM FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
               
@@ -1447,8 +1450,22 @@ class TY_02f_Ui_MainWindow(object):
                   
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_MPA=round((FLEXURAL_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
+                  #FLEXURAL_MOD_KG_CM=  ((L*L*L)*F)/(4b*d*d*d*y)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1*THINCKNESS*0.1*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
+                  #self.kg_to_lb=float(2.20462)
+                  #self.mm_to_inch=float(0.0393701)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
                   
+                  #self.kg_to_Newton=float(9.81)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_N_MM=(round((((PEAK_LOAD_KG*9.81)*(SELECT SPAN*SPAN*SPAN FROM GLOBAL_VAR))/(4*WIDTH*THINCKNESS*THINCKNESS*THINCKNESS*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
                   
+                  #self.kgCm2_toMPA=float(0.0980665)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_MPA=round((FLEXURAL_MOD_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
+                 
+                 
+                 
+                 
+                 
                   
                   cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_KG_CM=(SELECT ((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))*100 FROM GLOBAL_VAR)   WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
                   #self.kg_to_lb=float(2.20462)
@@ -1505,9 +1522,10 @@ class TY_02f_Ui_MainWindow(object):
         connection.close()        
         self.shape=rows[0][0]
         self.label_27.setText(self.shape) ###shap
-        self.label_22.setText(str(rows[0][15])) ##test id
-        self.label_32.setText(str(rows[0][16])) ##Job name
-        self.label_24.setText(str(rows[0][17])) ##batch id
+        self.label_22.setText(str(rows[0][15])) ##SUPPORT_RADIOUS
+        self.label_32.setText(str(rows[0][16])) ##LOAD_RADIOUS
+        self.label_24.setText(str(rows[0][17])) 
+        self.lineEdit_3_1.setText(str(rows[0][18])) ##PER_STRAIN_AT_BREAK
         
         
         if (int(self.label_26.text()) > 0):

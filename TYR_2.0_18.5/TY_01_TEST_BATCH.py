@@ -536,6 +536,10 @@ class TY_01_Ui_MainWindow(object):
             self.label_1_1.setText("Span (mm) :")
             self.label_1_1.show()
             self.lineEdit_1_1.show()
+            self.label_2_1.setText("Strain (%) :")
+            self.label_2_1.show()
+            self.lineEdit_2_1.show()
+            self.load_flexural_data()
         else:
              self.label_1_1.hide()
              self.lineEdit_1_1.hide()
@@ -567,8 +571,8 @@ class TY_01_Ui_MainWindow(object):
            self.label_14.setText(str(x[8])) #guage
            self.label_16.setText(str(x[4])) #cs area
            
-           if(self.test_type=="Flexural"):
-                   self.lineEdit_1_1.setText(str(x[8]))
+           #if(self.test_type=="Flexural"):
+                   #self.lineEdit_1_1.setText(str(x[8]))
 
            self.shape=str(x[0])
            self.thickness=str(x[1])
@@ -608,7 +612,16 @@ class TY_01_Ui_MainWindow(object):
         connection.close()
         self.reset_job()
     
-         
+     
+    def load_flexural_data(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select IFNULL(SPAN,0), IFNULL(PER_STRAIN_AT_BREAK,0) FROM GLOBAL_VAR")                 
+        for x in results:
+           self.lineEdit_1_1.setText(str(x[0]))       
+           self.lineEdit_2_1.setText(str(x[1]))
+        connection.close()     
+        print("inside")
+        
     def onchage_combo(self):
         self.label_8.show()
         self.lineEdit_2.show()                
@@ -637,8 +650,8 @@ class TY_01_Ui_MainWindow(object):
            self.label_14.setText(str(x[8])) #guag
            self.label_16.setText(str(x[4])) #cs area
            
-           if(self.test_type=="Flexural"):
-                       self.lineEdit_1_1.setText(str(x[8]))
+           #if(self.test_type=="Flexural"):
+                       #self.lineEdit_1_1.setText(str(x[8]))
            
            self.label_15.show()
            self.label_16.show()
@@ -683,8 +696,9 @@ class TY_01_Ui_MainWindow(object):
     def reset_job(self):
         self.lineEdit.setText("")
         self.lineEdit_2.setText("")
-        self.lineEdit_1_1.setText("0")
-        self.lineEdit_2_1.setText("0")
+        if(self.test_type != "Flexural"):
+                self.lineEdit_1_1.setText("0")
+                self.lineEdit_2_1.setText("0")
         self.lineEdit_2_1_1.setText("0")
         self.lineEdit_1.setText("0")
         connection = sqlite3.connect("tyr.db")
@@ -753,7 +767,7 @@ class TY_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()

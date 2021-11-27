@@ -420,7 +420,7 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setMidLineWidth(-4)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(13)
+        self.tableWidget.setColumnCount(15)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
@@ -441,6 +441,9 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(9, 150)
         self.tableWidget.setColumnWidth(10, 180)
         self.tableWidget.setColumnWidth(11, 150)
+        self.tableWidget.setColumnWidth(12, 180)
+        self.tableWidget.setColumnWidth(13, 150)
+        self.tableWidget.setColumnWidth(14, 150)
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
         for x in results:           
@@ -458,16 +461,16 @@ class TY_06_Ui_MainWindow(object):
            
         if(self.unit_typex == "Kg/Cm"):
             self.length=float(int(self.length)*0.1)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)', 'Max. \n Displ. \n (cm)', 'Force \n at Peak \n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2) ','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)', 'Max. \n Displ. \n (cm)', 'Force \n at Peak \n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2) ','Flexural \n Modulus \n ','Flexural \n Strain \n % (Break)','Flexural \n Strain \n % (Input)',' Support Radious (cm) ',' Load Radious (cm) ','Speed (rpm)','Failure \n Mode','Test \n Method'])
         elif(self.unit_typex == "Lb/Inch"):
             self.length=float(int(self.length)*0.0393701)
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)', 'Max. \n Displ. \n (Inch)', 'Force \n  at Peak\n (Lb)', 'Flexural \n  Strength \n (Lb/Inch2)  ','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)', 'Max. \n Displ. \n (Inch)', 'Force \n  at Peak\n (Lb)', 'Flexural \n  Strength \n (Lb/Inch2)  ','Flexural \n Modulus \n ','Flexural \n Strain \n % (Break)','Flexural \n Strain \n % (Input)',' Support Radious (Inch) ',' Load Radious (Inch) ','Speed (rpm)','Failure \n Mode','Test \n Method'])           
         elif(self.unit_typex == "Newton/Mm"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])            
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (N/mm2)','Flexural \n Modulus \n ','Flexural \n Strain \n % (Break)','Flexural \n Strain \n % (Input)',' Support Radious (mm) ',' Load Radious (mm) ','Speed (rpm)','Failure \n Mode','Test \n Method'])            
         elif(self.unit_typex == "MPA"):
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])           
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)','Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)', 'Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Flexural \n Modulus \n ','Flexural \n Strain \n % (Break)','Flexural \n Strain \n % (Input)',' Support Radious (mm) ',' Load Radious (mm) ','Speed (rpm)','Failure \n Mode','Test \n Method'])           
         else:
-            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Flexural \n Stress \n (Kgf/cm2)','Flexural \n Strain \n (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Failure \n Mode','Test \n Method'])
+            self.tableWidget.setHorizontalHeaderLabels(['Spec. \n No','Length  \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max. \n Displ. \n (mm)', 'Force \n  at Peak\n (Kgf)', 'Flexural\n   Strength \n (MPA)','Flexural \n Modulus \n ','Flexural \n Strain \n % (Break)','Flexural \n Strain \n % (Input)',' Support Radious (mm) ',' Load Radious (mm) ','Speed (rpm)','Failure \n Mode','Test \n Method'])
           
         
        
