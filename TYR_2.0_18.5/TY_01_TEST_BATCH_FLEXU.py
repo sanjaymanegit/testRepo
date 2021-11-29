@@ -628,7 +628,7 @@ class TY_02f_Ui_MainWindow(object):
         font.setPointSize(10)
         #font.setBold(False)        
         #font.setWeight(50)
-        self.label_3_1.setText("Strain at  Break (%) :")
+        self.label_3_1.setText("Input Strain (%) :")
         self.label_3_1.setFont(font)
         #self.label_3_1.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_3_1.setObjectName("label_3_1")
@@ -680,6 +680,9 @@ class TY_02f_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.inut_strain_mm=0
+        self.per_strain_mm=0
+        self.span=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -766,16 +769,18 @@ class TY_02f_Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.show_real_time)
         self.tableWidget.doubleClicked.connect(self.delete_cycle)
         #self.radioButton_3.clicked.connect(self.save_graph_data)
-        #self.load_data()
+        self.load_data()
         #self.radioButton_4.setDisabled(True)  ### reset
         #self.radioButton_3.setDisabled(True) ### Save
         self.lineEdit_3.textChanged.connect(self.cal_cs_area)
         self.lineEdit_4.textChanged.connect(self.cal_cs_area)
+        self.lineEdit_3_1.textChanged.connect(self.on_change_input_strain)
+        self.label_22.textChanged.connect(self.on_change_input_strain)
         self.pushButton_4.clicked.connect(MainWindow.close)
         #self.lineEdit_2.setText("2")
         #self.lineEdit_3.setText("3")
         #self.lineEdit_4.setText("4")  
-        self.load_data()
+        #self.load_data()
         self.load_cell_hi=0
         self.load_cell_lo=0
         self.extiometer=0
@@ -814,6 +819,22 @@ class TY_02f_Ui_MainWindow(object):
             self.timer3.start(1)
         except IOError:
             print("IO Errors")
+    
+    def on_change_input_strain(self):
+        self.inut_strain_mm=0
+        self.per_strain_mm=0
+        self.span=self.label_22.text()
+        
+        if(self.lineEdit_3_1.text() == ""):
+             self.lineEdit_3_1.setText("0")
+        else:
+            print("% : "+str(self.label_3_1.text()))
+            self.per_strain_mm=self.lineEdit_3_1.text()
+            if(int(self.lineEdit_3_1.text()) > 0 ):
+                    self.inut_strain_mm=float((int(self.per_strain_mm)/100)*int(self.span))
+                    self.label_3_2.setText(str(round(self.inut_strain_mm,2))+" mm ")
+        
+             
     
     def delete_cycle(self):
         if(self.test_type_for_flexural=="Flexural"):
@@ -1136,9 +1157,9 @@ class TY_02f_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(13)
+        self.tableWidget.setColumnCount(14)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Flexural \n Modulus \n (Kgf/cm2)','Load Radius \n (mm)','Support Radius \n (mm)',' Speed \n (rpm)','Strain at Break \n ( % )','Failure \n Mode','Test  \n Method','Cycle ID'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Flexural \n Modulus \n ','Support Radius \n (mm)','Load Radius \n (mm)',' Speed \n (rpm)','Input Strain \n (%)','Strain at Break \n ( % )','Failure \n Mode','Test  \n Method','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
@@ -1152,8 +1173,10 @@ class TY_02f_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(10, 150)
         self.tableWidget.setColumnWidth(11, 150)
         self.tableWidget.setColumnWidth(12, 150)
+        self.tableWidget.setColumnWidth(13, 150)
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,0,LOAD_RADIOUS,SUPPORT_RADIOUS,SPEED_RPM,BREAK_MODE,SPEED_RPM,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,FLEXURAL_MOD_KG_CM,LOAD_RADIOUS,SUPPORT_RADIOUS,SPEED_RPM,PER_STRAIN_AT_INPUT,PER_STRAIN_AT_BREAK,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1388,8 +1411,7 @@ class TY_02f_Ui_MainWindow(object):
             with connection:        
                   cursor = connection.cursor()              
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"',"+
-                  +"SPAN='"+str(self.label_22.text())+"',SUPPORT_RADIOUS='"+str(self.label_24.text())+"',LOAD_RADIOUS='"+str(self.label_32.text())+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_3_1.text())+"',SPEED_RPM='"+str(self.label_26.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_4.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_3.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_2.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_4.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_3.text())+"',SPAN='"+str(self.label_22.text())+"',SUPPORT_RADIOUS='"+str(self.label_24.text())+"',LOAD_RADIOUS='"+str(self.label_32.text())+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_3_1.text())+"',SPEED_RPM='"+str(self.label_26.text())+"'")
                   #print("ok2")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
                   #print("ok3") 
@@ -1429,7 +1451,7 @@ class TY_02f_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
                  
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_BREAK,SPEED_RPM) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD ,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_BREAK,SPEED_RPM FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_INPUT,SPEED_RPM) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD ,SPAN,SUPPORT_RADIOUS,LOAD_RADIOUS,PER_STRAIN_AT_INPUT,SPEED_RPM FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
               
@@ -1451,7 +1473,8 @@ class TY_02f_Ui_MainWindow(object):
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_MPA=round((FLEXURAL_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
                   #FLEXURAL_MOD_KG_CM=  ((L*L*L)*F)/(4b*d*d*d*y)
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1*THINCKNESS*0.1*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1*THINCKNESS*0.1*PER_STRAIN_AT_INPUT)),2))  WHERE GRAPH_ID IS NULL")
                   #self.kg_to_lb=float(2.20462)
                   #self.mm_to_inch=float(0.0393701)
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
@@ -1514,10 +1537,10 @@ class TY_02f_Ui_MainWindow(object):
         results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         rows=results.fetchall()
         connection.close()
-        self.label_26.setText(str(rows[0][0])) #cycle number
+        #self.label_26.setText(str(rows[0][0])) #cycle number
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(SPAN,0),IFNULL(SUPPORT_RADIOUS,0),IFNULL(LOAD_RADIOUS,0),IFNULL(PER_STRAIN_AT_BREAK,0),IFNULL(SPEED_RPM,0) FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,IFNULL(SPAN,0),IFNULL(SUPPORT_RADIOUS,0),IFNULL(LOAD_RADIOUS,0),IFNULL(PER_STRAIN_AT_INPUT,0),IFNULL(SPEED_RPM,0) FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
@@ -1526,7 +1549,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label_32.setText(str(rows[0][16])) ##LOAD_RADIOUS
         self.label_24.setText(str(rows[0][17])) 
         self.lineEdit_3_1.setText(str(rows[0][18])) ##PER_STRAIN_AT_BREAK
-        
+        self.label_26.setText(str(rows[0][19])) 
         
         if (int(self.label_26.text()) > 0):
             self.label_36.setText(str(rows[0][8]))
@@ -1596,6 +1619,7 @@ class TY_02f_Ui_MainWindow(object):
             #self.lineEdit_3.show()
             self.lineEdit_2.show()
         self.radioButton_4.setChecked(True)
+        self.on_change_input_strain()
         
         
 class PlotCanvas_Auto(FigureCanvas):     
@@ -1608,10 +1632,19 @@ class PlotCanvas_Auto(FigureCanvas):
         self.axes.minorticks_on()
         self.test_type="Tensile"
         
+        '''
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_NAME from GLOBAL_VAR") 
         for x in results:
             self.test_type=str(x[0])
+        connection.close()
+        '''
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         if(self.test_type=="Compress"):
@@ -2094,11 +2127,12 @@ class PlotCanvas(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,IFNULL(STG_CYCLE_ID,0) FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID) as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             ax.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
+        
         
         
         for g in range(len(self.graph_ids)):
@@ -2180,11 +2214,12 @@ class PlotCanvas_blank(FigureCanvas):
         ax.plot(self.x,self.y,'b')
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,IFNULL(STG_CYCLE_ID,0) FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             ax.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
+        
         
         ax.set_ylabel('Load (Kgf)')
         

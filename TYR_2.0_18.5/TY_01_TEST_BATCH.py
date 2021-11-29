@@ -515,7 +515,7 @@ class TY_01_Ui_MainWindow(object):
             print("ok")
             
         if(str(self.lineEdit_2_1.text()) == ""):
-            self.lineEdit_2_1.setText("0")
+            self.lineEdit_2_1.setText("5")
         else:
             print("ok")
             
@@ -536,7 +536,7 @@ class TY_01_Ui_MainWindow(object):
             self.label_1_1.setText("Span (mm) :")
             self.label_1_1.show()
             self.lineEdit_1_1.show()
-            self.label_2_1.setText("Strain (%) :")
+            self.label_2_1.setText("Input Strain (%) :")
             self.label_2_1.show()
             self.lineEdit_2_1.show()
             self.load_flexural_data()
