@@ -420,7 +420,7 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setMidLineWidth(-4)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(15)
+        self.tableWidget.setColumnCount(16)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
@@ -444,6 +444,8 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(12, 180)
         self.tableWidget.setColumnWidth(13, 150)
         self.tableWidget.setColumnWidth(14, 150)
+        self.tableWidget.setColumnWidth(15, 150)
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
         for x in results:           
@@ -475,7 +477,7 @@ class TY_06_Ui_MainWindow(object):
         
        
         connection = sqlite3.connect("tyr.db")
-        results1=connection.execute("SELECT TYPE_STR,990,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.2f\", SPAN),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", FLEXURAL_STRENGTH),0,0,0 FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT TYPE_STR,990,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.2f\", SPAN),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", FLEXURAL_STRENGTH),printf(\"%.2f\", flexural_mod_kg_cm),printf(\"%.2f\", per_strain_at_break),printf(\"%.2f\", per_strain_at_input),printf(\"%.2f\", support_radious),printf(\"%.2f\", load_radious),printf(\"%.2f\", speed_rpm) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             
         #results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,A.CS_AREA,A.PEAK_LOAD,A.E_PAEK_LOAD,A.PERCENTG_E_PEAK_LOAD_MM,A.PERCENTG_E_PEAK_LOAD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")                        
         for row_number, row_data in enumerate(results1):                    
@@ -489,7 +491,7 @@ class TY_06_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),0,0,0,A.BREAK_MODE,A.TEST_METHOD    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),printf(\"%.2f\", A.FLEXURAL_MOD_KG_CM),printf(\"%.2f\", A.PER_STRAIN_AT_BREAK),printf(\"%.2f\", A.PER_STRAIN_AT_INPUT),printf(\"%.2f\", A.SUPPORT_RADIOUS),printf(\"%.2f\", A.LOAD_RADIOUS),printf(\"%.2f\", A.SPEED_RPM),A.BREAK_MODE,A.TEST_METHOD    FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
         for row_number, row_data in enumerate(results):                    
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
