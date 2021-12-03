@@ -1458,6 +1458,8 @@ class TY_02f_Ui_MainWindow(object):
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK= (((E_AT_PEAK_LOAD_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
                   
+                  cursor.execute("UPDATE CYCLES_MST SET PER_STRAIN_AT_BREAK= round(((cast (E_AT_BREAK_MM as real)/ cast(SPAN as real))*100),2)  WHERE GRAPH_ID IS NULL")
+                  
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK=(PRC_E_AT_BREAK-100)   WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK=(PRC_E_AT_PEAK-100)  WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE CYCLES_MST SET SPAN=(SELECT max(NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR) WHERE GRAPH_ID IS NULL")
@@ -1474,13 +1476,13 @@ class TY_02f_Ui_MainWindow(object):
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_MPA=round((FLEXURAL_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
                   #FLEXURAL_MOD_KG_CM=  ((L*L*L)*F)/(4b*d*d*d*y)
                   
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1*THINCKNESS*0.1*PER_STRAIN_AT_INPUT)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*E_AT_BREAK_MM*0.1*E_AT_BREAK_MM*0.1*E_AT_BREAK_MM*0.1*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   #self.kg_to_lb=float(2.20462)
                   #self.mm_to_inch=float(0.0393701)
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*E_AT_BREAK_MM*0.0393701*E_AT_BREAK_MM*0.0393701*E_AT_BREAK_MM*0.0393701*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   
                   #self.kg_to_Newton=float(9.81)
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_N_MM=(round((((PEAK_LOAD_KG*9.81)*(SELECT SPAN*SPAN*SPAN FROM GLOBAL_VAR))/(4*WIDTH*THINCKNESS*THINCKNESS*THINCKNESS*PER_STRAIN_AT_BREAK)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_N_MM=(round((((PEAK_LOAD_KG*9.81)*(SELECT SPAN*SPAN*SPAN FROM GLOBAL_VAR))/(4*WIDTH*E_AT_BREAK_MM*E_AT_BREAK_MM*E_AT_BREAK_MM*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_MPA=round((FLEXURAL_MOD_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
@@ -1742,7 +1744,10 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0) from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])
-             self.test_type=str(x[1])
+             if(str(x[1]) == "Flexural"):
+                 self.test_type="Compress"
+             else:
+                  self.test_type=str(x[1])
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
@@ -1941,7 +1946,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=int(self.test_guage_mm)-self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
-                    self.p=self.p
+                    #self.p=self.p
+                    self.p=int(self.test_guage_mm)-self.p
                 else:
                     self.p=self.p-int(self.test_guage_mm)
                     #self.p=int(self.test_guage_mm)-self.p
