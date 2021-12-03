@@ -9,12 +9,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_02_START_TEST import TY_02_Ui_MainWindow
-#from TY_01_TEST_BATCH_FLEXU import TY_02f_Ui_MainWindow
+from TY_02_START_TEST_FLEXUR import TY_02f_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
-class TY_01_Ui_MainWindow(object):
+class TY_01_fluxurl_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
@@ -415,6 +415,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_22_1.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_22_1.setObjectName("label_22_1")
         self.gridLayout_4_1.addWidget(self.label_22_1, 1, 0, 1, 1)
+        
         self.lineEdit_2_1_1 = QtWidgets.QLineEdit(self.layoutWidget2_1)
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_2_1_1)
@@ -426,7 +427,19 @@ class TY_01_Ui_MainWindow(object):
         self.lineEdit_2_1_1.setObjectName("lineEdit_2_1_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_2_1_1, 1, 1, 1, 1)
         
+        #3self.gridLayout_4_1.addWidget(self.lineEdit_1, 0, 1, 1, 1)
+        #self.label_22_2 = QtWidgets.QLabel(self.layoutWidget2_1)
         
+        self.label_22_2 = QtWidgets.QLabel(self.frame)
+        self.label_22_2.setGeometry(QtCore.QRect(1150, 415, 141, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.label_22_2.setFont(font)
+        self.label_22_2.setStyleSheet("color: rgb(0, 0, 255);")       
+        self.label_22_2.setText("4mm")
+        self.label_22_2.setObjectName("label_22_2")
+        #elf.gridLayout_4_1.addWidget(self.label_22_2, 1, 0, 1, 1)
         
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -451,6 +464,12 @@ class TY_01_Ui_MainWindow(object):
         self.motor_speed=0
         self.specs=0        
         self.test_type=""
+        
+        
+        self.inut_strain_mm=0
+        self.per_strain_mm=0
+        self.span=0
+        self.max_length=0
         
 
         self.retranslateUi(MainWindow)
@@ -506,8 +525,29 @@ class TY_01_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.lineEdit_1_1.textChanged.connect(self.make_zero_on_null)
         self.lineEdit_2_1.textChanged.connect(self.make_zero_on_null)
+        self.lineEdit_1_1.textChanged.connect(self.on_change_input_strain)
+        self.lineEdit_2_1.textChanged.connect(self.on_change_input_strain)
         self.load_data() 
      
+    
+    
+    def on_change_input_strain(self):
+        self.inut_strain_mm=0
+        self.per_strain_mm=0
+        self.span=self.lineEdit_1_1.text()
+        self.max_length=0
+        
+        if(self.lineEdit_2_1.text() == ""):
+             self.lineEdit_2_1.setText("0")
+        else:
+            print("% : "+str(self.label_2_1.text()))
+            self.per_strain_mm=self.lineEdit_2_1.text()
+            if(int(self.lineEdit_2_1.text()) > 0 ):
+                    self.inut_strain_mm=float((int(self.per_strain_mm)/100)*int(self.span))
+                    self.label_22_2.setText(str(round(self.inut_strain_mm,2))+" mm ")
+                    self.max_length=str(round(self.inut_strain_mm,2))
+        
+    
     def make_zero_on_null(self):
         if(str(self.lineEdit_1_1.text()) == ""):
             self.lineEdit_1_1.setText("0")            
@@ -767,7 +807,7 @@ class TY_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()
@@ -805,7 +845,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_01_Ui_MainWindow()
+    ui = TY_01_fluxurl_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
