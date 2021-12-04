@@ -1566,20 +1566,20 @@ class TY_03_Ui_MainWindow(object):
         
         if(self.unit_typex == "Kg/Cm"):
             #self.length=float(int(self.length)*0.1)
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Failure \n Mode','Test \n Method']]
+            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Load Radious \n (cm)','Support Radious \n (cm)','Failure \n Mode','Test \n Method']]
         elif(self.unit_typex == "Lb/Inch"):
             self.length=float(int(self.length)*0.0393701)
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Failure \n Mode','Test \n Method']]           
+            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Load Radious \n (Inch)','Support Radious \n (Inch)', 'Failure \n Mode','Test \n Method']]           
         elif(self.unit_typex == "Newton/Mm"):
-            data3= [ ['Spec. \n No','Test Speed \n (rpm)','Failure \n Mode','Test \n Method']]            
+            data3= [ ['Spec. \n No','Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]            
         elif(self.unit_typex == "MPA"):
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Failure \n Mode','Test \n Method']]           
+            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]           
         else:
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Failure \n Mode','Test \n Method']]
+            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]
           
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.speed_rpm),A.BREAK_MODE,A.TEST_METHOD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.speed_rpm),printf(\"%.2f\", A.load_radious),printf(\"%.2f\", A.support_radious),A.BREAK_MODE,A.TEST_METHOD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
         for x in results:
                 data3.append(x)
         connection.close()

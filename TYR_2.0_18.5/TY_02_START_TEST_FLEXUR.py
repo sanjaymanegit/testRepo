@@ -1476,13 +1476,13 @@ class TY_02f_Ui_MainWindow(object):
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_MPA=round((FLEXURAL_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
                   #FLEXURAL_MOD_KG_CM=  ((L*L*L)*F)/(4b*d*d*d*y)
                   
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*E_AT_BREAK_MM*0.1*E_AT_BREAK_MM*0.1*E_AT_BREAK_MM*0.1*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_KG_CM=(round(((PEAK_LOAD_KG*(SELECT SPAN*0.1*SPAN*0.1*SPAN*0.1 FROM GLOBAL_VAR))/(4*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1*THINCKNESS*0.1*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   #self.kg_to_lb=float(2.20462)
                   #self.mm_to_inch=float(0.0393701)
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*E_AT_BREAK_MM*0.0393701*E_AT_BREAK_MM*0.0393701*E_AT_BREAK_MM*0.0393701*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_LB_INCH=(round((((PEAK_LOAD_KG*2.20462)*(SELECT SPAN*0.0393701*SPAN*0.0393701*SPAN*0.0393701 FROM GLOBAL_VAR))/(4*WIDTH*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*THINCKNESS*0.0393701*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   
                   #self.kg_to_Newton=float(9.81)
-                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_N_MM=(round((((PEAK_LOAD_KG*9.81)*(SELECT SPAN*SPAN*SPAN FROM GLOBAL_VAR))/(4*WIDTH*E_AT_BREAK_MM*E_AT_BREAK_MM*E_AT_BREAK_MM*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_N_MM=(round((((PEAK_LOAD_KG*9.81)*(SELECT SPAN*SPAN*SPAN FROM GLOBAL_VAR))/(4*WIDTH*THINCKNESS*THINCKNESS*THINCKNESS*per_strain_at_break)),2))  WHERE GRAPH_ID IS NULL")
                   
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_MOD_MPA=round((FLEXURAL_MOD_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
@@ -1820,9 +1820,9 @@ class PlotCanvas_Auto(FigureCanvas):
             if(self.test_type=="Compress"):
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
                     else:
-                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
                     
                     print("self.command_str:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')

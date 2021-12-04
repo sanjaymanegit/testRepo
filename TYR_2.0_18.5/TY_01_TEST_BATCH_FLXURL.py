@@ -655,7 +655,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
      
     def load_flexural_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select IFNULL(SPAN,0), IFNULL(PER_STRAIN_AT_BREAK,0) FROM GLOBAL_VAR")                 
+        results=connection.execute("select IFNULL(SPAN,0), IFNULL(PER_STRAIN_AT_INPUT,0) FROM GLOBAL_VAR")                 
         for x in results:
            self.lineEdit_1_1.setText(str(x[0]))       
            self.lineEdit_2_1.setText(str(x[1]))
