@@ -1545,9 +1545,9 @@ class TY_03_Ui_MainWindow(object):
         elif(self.unit_typex == "Newton/Mm"):
             data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n Strength \n (N/mm2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]            
         elif(self.unit_typex == "MPA"):
-            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n Strength \n (MPA)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]           
+            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n Strength \n (MPa)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]           
         else:
-            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness \n (mm)','Width \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n  Strength \n (MPA)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
+            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness \n (mm)','Width \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n  Strength \n (MPa)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
           
         
         connection = sqlite3.connect("tyr.db")
@@ -1566,16 +1566,16 @@ class TY_03_Ui_MainWindow(object):
         
         if(self.unit_typex == "Kg/Cm"):
             #self.length=float(int(self.length)*0.1)
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Load Radious \n (cm)','Support Radious \n (cm)','Failure \n Mode','Test \n Method']]
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (cm)','Support Radious \n (cm)','Failure \n Mode','Test \n Method']]
         elif(self.unit_typex == "Lb/Inch"):
             self.length=float(int(self.length)*0.0393701)
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)', 'Load Radious \n (Inch)','Support Radious \n (Inch)', 'Failure \n Mode','Test \n Method']]           
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (Inch)','Support Radious \n (Inch)', 'Failure \n Mode','Test \n Method']]           
         elif(self.unit_typex == "Newton/Mm"):
-            data3= [ ['Spec. \n No','Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]            
+            data3= [ ['Spec. \n No','Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]            
         elif(self.unit_typex == "MPA"):
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]           
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]           
         else:
-            data3= [ ['Spec. \n No', 'Test Speed \n (rpm)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]
           
         
         connection = sqlite3.connect("tyr.db")

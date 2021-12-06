@@ -839,7 +839,7 @@ class TY_02f_Ui_MainWindow(object):
     def delete_cycle(self):
         if(self.test_type_for_flexural=="Flexural"):
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 9).text())
+            self.cycle_id=str(self.tableWidget.item(row, 15).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1157,9 +1157,9 @@ class TY_02f_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(14)
+        self.tableWidget.setColumnCount(16)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Flexural \n Modulus \n ','Support Radius \n (mm)','Load Radius \n (mm)',' Speed \n (rpm)','Input Strain \n (%)','Strain at Break \n ( % )','Failure \n Mode','Test  \n Method','Cycle ID'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Flexural \n Modulus \n ','Support Radius \n (mm)','Load Radius \n (mm)',' Speed \n (mm/min)','Input Strain \n (%)','Strain at Break \n ( % )','Failure \n Mode','Test  \n Method','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
@@ -1174,9 +1174,11 @@ class TY_02f_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(11, 150)
         self.tableWidget.setColumnWidth(12, 150)
         self.tableWidget.setColumnWidth(13, 150)
+        self.tableWidget.setColumnWidth(14, 150)
+        self.tableWidget.setColumnWidth(15, 150)
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,FLEXURAL_MOD_KG_CM,LOAD_RADIOUS,SUPPORT_RADIOUS,SPEED_RPM,PER_STRAIN_AT_INPUT,PER_STRAIN_AT_BREAK,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,printf(\"%.2f\", FLEXURAL_MOD_KG_CM),printf(\"%.2f\", LOAD_RADIOUS),printf(\"%.2f\", SUPPORT_RADIOUS),SPEED_RPM,PER_STRAIN_AT_INPUT,PER_STRAIN_AT_BREAK,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
