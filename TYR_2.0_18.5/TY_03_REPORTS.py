@@ -73,7 +73,7 @@ class TY_03_Ui_MainWindow(object):
         self.shape=""
         self.firstbatchid=""
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(120, 640, 111, 31))
+        self.pushButton_3.setGeometry(QtCore.QRect(30, 640, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -81,20 +81,43 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_3.setObjectName("pushButton_3")
         
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(270, 640, 111, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(150, 640, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_7.setFont(font)
         self.pushButton_7.setObjectName("pushButton_7")
         
+                
+        
+        
+        self.pushButton_8 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8.setGeometry(QtCore.QRect(270, 640, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_8.setFont(font)
+        self.pushButton_8.setObjectName("pushButton_8")
+        
+        
+        
         self.pushButton_7_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7_1.setGeometry(QtCore.QRect(560, 640, 111, 31))
+        self.pushButton_7_1.setGeometry(QtCore.QRect(400, 640, 120, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_7_1.setFont(font)
         self.pushButton_7_1.setObjectName("pushButton_7_1")
+        
+        
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(570, 640, 120, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
         
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(30, 70, 711, 261))
@@ -262,21 +285,7 @@ class TY_03_Ui_MainWindow(object):
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.gridLayout_3.addWidget(self.lineEdit_4, 2, 4, 1, 1)
         
-        self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(410, 640, 121, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        self.pushButton_8.setFont(font)
-        self.pushButton_8.setObjectName("pushButton_8")
         
-        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8_1.setGeometry(QtCore.QRect(560, 640, 121, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        self.pushButton_8_1.setFont(font)
-        self.pushButton_8_1.setObjectName("pushButton_8_1")
         
         
         
@@ -519,6 +528,13 @@ class TY_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.label_26.setFont(font)
         self.label_26.setObjectName("label_26")
+        
+        
+        
+        
+        
+        
+        
         self.gridLayout.addWidget(self.label_26, 4, 1, 1, 1)
         self.label_8 = QtWidgets.QLabel(self.frame)
         self.label_8.setGeometry(QtCore.QRect(1070, 20, 231, 31))
@@ -567,6 +583,16 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_5_1.setFont(font)
         self.pushButton_5_1.setObjectName("pushButton_5_1")        
         self.gridLayout_2.addWidget(self.pushButton_5_1, 1, 2, 1, 1)
+        '''
+        self.pushButton_5_2= QtWidgets.QPushButton(self.layoutWidget1)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_5_2.setFont(font)
+        self.pushButton_5_2.setObjectName("pushButton_5_2")        
+        self.gridLayout_2.addWidget(self.pushButton_5_2, 1, 3, 1, 1)
+        '''
+        
         
         self.buttongroup = QtWidgets.QButtonGroup()
         
@@ -667,8 +693,9 @@ class TY_03_Ui_MainWindow(object):
         #self.label_28.setText(_translate("MainWindow", "Shear Modulus@Kg/Cm2:"))
         self.lineEdit_4.setText(_translate("MainWindow", "100"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
-        self.pushButton_8_1.setText(_translate("MainWindow", "Reset"))
-        self.pushButton_8_1.hide()
+        self.pushButton_8_1.setText(_translate("MainWindow", "Email Report"))
+        #self.pushButton_8_1.hide()
+        self.pushButton_8_1.setDisabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -726,6 +753,7 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Part II"))
         self.pushButton_5.setText(_translate("MainWindow", "Print Report"))
         self.pushButton_5_1.setText(_translate("MainWindow", "View Print"))
+        #self.pushButton_5_2.setText(_translate("MainWindow", "Email"))
         self.radioButton.setText(_translate("MainWindow", "Report - 1"))
         self.radioButton_2.setText(_translate("MainWindow", "Report - 2"))
         self.radioButton_2_1.setText(_translate("MainWindow", "Special Reports"))
