@@ -9,6 +9,7 @@
 from TY_06_REPORT_PART_2 import TY_06_Ui_MainWindow
 from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
 from print_popup import P_POPUi_MainWindow
+from email_popup_ui import popup_email_Ui_MainWindow
 from PyQt5.Qt import QTableWidgetItem
 import sys
 import os
@@ -799,6 +800,7 @@ class TY_03_Ui_MainWindow(object):
         self.radioButton_4.clicked.connect(self.by_party_radio)
         self.radioButton_5.clicked.connect(self.by_batch_radio)
         self.tableWidget.doubleClicked.connect(self.open_report)
+        self.pushButton_8_1.clicked.connect(self.open_email_report)
         self.default_dates()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -1134,6 +1136,26 @@ class TY_03_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
+        
+    def open_email_report(self):
+        row = self.tableWidget.currentRow()
+        if(row != -1 ):
+            self.test_id=(self.tableWidget.item(row, 1).text() )
+            print(" test_id :"+str(self.test_id))  
+            connection = sqlite3.connect("tyr.db")        
+            with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+            connection.commit()
+            connection.close()
+            
+            self.window = QtWidgets.QMainWindow()
+            self.ui=popup_email_Ui_MainWindow()
+            self.ui.setupUi(self.window)           
+            self.window.show()
+        else:
+            print(" test_id :--1111"+str(self.test_id))  
+        
     
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
@@ -1174,6 +1196,7 @@ class TY_03_Ui_MainWindow(object):
     
     def show_report_details(self):
         self.groupBox.show()
+        self.pushButton_8_1.setEnabled(True)
         self.graphicsView.show()
         self.pushButton_4.show()
         self.pushButton_5.show()
