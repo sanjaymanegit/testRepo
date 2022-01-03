@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class email_multi_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(668, 423)
@@ -169,13 +169,14 @@ class Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "CLOSE"))
         self.label_4.setText(_translate("MainWindow", "SEND EMAIL"))
         self.label_5.setText(_translate("MainWindow", "Subject   :"))
+        self.pushButton_8.clicked.connect(MainWindow.close)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = email_multi_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

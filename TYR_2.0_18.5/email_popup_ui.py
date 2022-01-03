@@ -21,6 +21,7 @@ from email.mime.multipart import MIMEMultipart
 import base64
 import email, smtplib, ssl
 import re
+import urllib.request
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -273,6 +274,7 @@ class popup_email_Ui_MainWindow(object):
             self.lineEdit_2.setText(str(x[1]))
             #self.lineEdit_3.setText(str(x[2]))
             self.lineEdit_3.setText("Report_of_test_"+str(x[3]).zfill(4)+".pdf")
+            self.lineEdit_3.setDisabled(True)
             self.label_2.setText("Current Test ID is : "+str(x[3]))
             os.system("cp ./reports/Reportxxx.pdf ./reports/emailed/Report_of_test_"+str(x[3]).zfill(4)+".pdf")
             self.filename="Report_of_test_"+str(x[3]).zfill(4)+".pdf"
@@ -281,83 +283,97 @@ class popup_email_Ui_MainWindow(object):
     
     #validate email id string format
     #
+    
+    def connect(self):
+        try:
+            urllib.request.urlopen('http://google.com') #Python 3.x
+            return True
+        except:
+            return False
+        
     def validate(self):
         self.validation_flg="FALSE"
         self.label_2.setText("")
-        if(str(self.lineEdit.text()) != ""):
-              self.match_txt = str(self.lineEdit.text())
-              self.matched_token = re.findall("@", self.match_txt)            
+        #Check for internet connect
+        if(self.connect()):
+            #self.validation_flg="TRUE"
+            if(str(self.lineEdit.text()) != ""):                
+                self.match_txt = str(self.lineEdit.text())
+                self.matched_token = re.findall("@", self.match_txt)            
               
-              if(len(self.matched_token) == 1):
-                   self.validation_flg="TRUE"
-              else:
-                   self.validation_flg="FALSE"
-                   self.label_2.setText("Invalid Email Id.")
-              
-              
-              self.match_txt = str(self.lineEdit.text())
-              self.matched_token = re.findall("\.", self.match_txt)
-              #print(str(self.matched_token))
-              #print(str(len(self.matched_token)))
-              if(self.validation_flg=="TRUE"):
-                  if(len(self.matched_token) == 1):
-                       self.validation_flg="TRUE"
+                if(len(self.matched_token) == 1):
+                   #self.validation_flg="TRUE"
+                   self.match_txt = str(self.lineEdit.text())
+                   self.matched_token = re.findall("\.", self.match_txt)
+                   if(len(self.matched_token) == 1):
+                       #self.validation_flg="TRUE"
+                       if(str(self.lineEdit_2.text()) != ""):
+                           self.validation_flg="TRUE"
+                           if(str(self.lineEdit_3.text()) != ""):
+                                #self.validation_flg="TRUE"
+                                self.match_txt = str(self.lineEdit_3.text())
+                                self.matched_token = re.findall("\.pdf", self.match_txt)
+                                if(len(self.matched_token) == 1):
+                                       self.validation_flg="TRUE"
+                                else:
+                                       self.validation_flg="FALSE"
+                                       self.label_2.setText("Invalid File Name[.pdf].")
+                                
+                           else:
+                                self.validation_flg="FALSE"
+                                self.label_2.setText("File name  is Empty.") 
+                           
+                       else:
+                           self.validation_flg="FALSE"
+                           self.label_2.setText("Subject is Empty.") 
                        
-                  else:
+                       
+                       
+                       
+                   else:
                        self.validation_flg="FALSE"
-                       self.label_2.setText("Invalid Email Id.")
-              
-              self.match_txt = str(self.lineEdit_2.text())
-              self.matched_token = re.findall("\.pdf", self.match_txt)
-              #print(str(self.matched_token))
-              #print(str(len(self.matched_token)))
-              if(self.validation_flg=="TRUE"):
-                  if(str(self.match_txt) == ""):
-                       self.validation_flg="TRUE"
-                  else:
-                       self.validation_flg="FALSE"
-                       self.label_2.setText("Invalid Subject.")     
+                       self.label_2.setText("Invalid Email Id ( DOT Missed )")
+                   
+                   
+                   
+                else:
+                   self.validation_flg="FALSE"
+                   self.label_2.setText("Invalid Email Id ( @ Missied ).")           
+            else:
+                self.validation_flg="FALSE"
+                self.label_2.setText("EmailId is Empty.") 
             
             
-              self.match_txt = str(self.lineEdit_3.text())
-              self.matched_token = re.findall("\.pdf", self.match_txt)
-              #print(str(self.matched_token))
-              #print(str(len(self.matched_token)))
-              if(self.validation_flg=="TRUE"):
-                  if(len(self.matched_token) == 1):
-                       self.validation_flg="TRUE"
-                  else:
-                       self.validation_flg="FALSE"
-                       self.label_2.setText("Invalid File Name[.pdf].")
         else:
-             self.validation_flg="FALSE"
+           self.label_2.setText("Intenet is  OFF.")
+        
+        
     
     
     def reset_fields(self):
         self.lineEdit.setText("")
         self.lineEdit_2.setText("")
-        self.lineEdit_3.setText("")
+        #self.lineEdit_3.setText("")
+        self.label_2.setText("") 
         
     def send_email(self):        
-        if(self.lineEdit.text() != ""):
-             if(self.lineEdit_2.text() != ""): 
-                    self.sender_email = "utmapp3@gmail.com" #
-                    self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
+        self.sender_email = "utmapp3@gmail.com" #
+        self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
                     #password = input("Type your password and press enter:")
-                    self.password = "Dhruv@1210"
+        self.password = "Dhruv@1210"
 
-                    self.message = MIMEMultipart("alternative")
-                    self.message["Subject"] = str(self.lineEdit_2.text())
-                    self.message["From"] = self.sender_email
-                    self.message["To"] = self.receiver_email
+        self.message = MIMEMultipart("alternative")
+        self.message["Subject"] = str(self.lineEdit_2.text())
+        self.message["From"] = self.sender_email
+        self.message["To"] = self.receiver_email
                     
                     # Create the plain-text and HTML version of your message
-                    self.text = """\
+        self.text = """\
                     Hi,
                     How are you?
                     Real Python has many great tutorials:
                     www.realpython.com"""
-                    self.html = """\
+        self.html = """\
                     <html>
                       <body>
                         <p>Hi,<br>
@@ -368,68 +384,52 @@ class popup_email_Ui_MainWindow(object):
                     """
 
                     # Turn these into plain/html MIMEText objects
-                    self.part1 = MIMEText(self.text, "plain")
-                    self.part2 = MIMEText(self.html, "html")
-                    self.filenamewithpath = "/home/pi/TYR_2.0_18.5/reports/emailed/"+str(self.filename)  # In same directory as script
+        self.part1 = MIMEText(self.text, "plain")
+        self.part2 = MIMEText(self.html, "html")
+        self.filenamewithpath = "/home/pi/TYR_2.0_18.5/reports/emailed/"+str(self.filename)  # In same directory as script
 
                     # Open PDF file in binary mode
-                    with open(self.filenamewithpath, "rb") as attachment:
+        with open(self.filenamewithpath, "rb") as attachment:
                         # Add file as application/octet-stream
                         # Email client can usually download this automatically as attachment
                         self.part = MIMEBase("application", "octet-stream")
                         self.part.set_payload(attachment.read())
 
-                    # Encode file in ASCII characters to send by email    
-                    encoders.encode_base64(self.part)
+        # Encode file in ASCII characters to send by email    
+        encoders.encode_base64(self.part)
 
-                    # Add header as key/value pair to attachment part
-                    self.part.add_header(
+        # Add header as key/value pair to attachment part
+        self.part.add_header(
                         "Content-Disposition",
                         "attachment; filename= "+str(self.filename)+"",
-                    )
+        )            
 
-                    
-                                
-            
-                    
-
-                    # Add HTML/plain-text parts to MIMEMultipart message
-                    # The email client will try to render the last part first
-                    self.message.attach(self.part1)
-                    self.message.attach(self.part2)
+        
+        # Add HTML/plain-text parts to MIMEMultipart message
+        # The email client will try to render the last part first
+        self.message.attach(self.part1)
+        self.message.attach(self.part2)
                     # Add attachment to message and convert message to string
-                    self.message.attach(self.part)
+        self.message.attach(self.part)
                    
                     # Create secure connection with server and send email 465
-                    self.context = ssl.create_default_context()
-                    self.validate()
-                    if(self.validation_flg=="TRUE"):
-                        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self.context) as server:
-                            server.login(self.sender_email, self.password)
-                            server.sendmail(
-                                self.sender_email, self.receiver_email, self.message.as_string()
+        self.context = ssl.create_default_context()
+        self.validate()
+        if(self.validation_flg=="TRUE"):
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self.context) as server:
+                    server.login(self.sender_email, self.password)
+                    server.sendmail(
+                            self.sender_email, self.receiver_email, self.message.as_string()
                                 #self.sender_email, self.receiver_email, self.message
                             )
                         
-                        self.label_2.setText("Successfully Sent Email.")
-                        connection = sqlite3.connect("tyr.db")        
-                        with connection:        
-                                cursor = connection.cursor()                
-                                cursor.execute("update global_var set EMAIL_DEFAULT='"+self.lineEdit.text()+"',EMAIL_SUBJECT='"+self.lineEdit_2.text()+"',EMAIL_FILE_NAME='"+self.lineEdit_3.text()+"'")                 
-                        connection.commit()
-                        connection.close()
-                    else:
-                        print("Invalid Inputs.")
-             else:
-                self.label_2.setText("Subject is Empty")
-        else:
-            self.label_2.setText("Email Id is Empty")
-
-                
-        
-    
-        
-
+                    self.label_2.setText("Successfully Sent Email.")
+                    connection = sqlite3.connect("tyr.db")        
+                    with connection:        
+                            cursor = connection.cursor()                
+                            cursor.execute("update global_var set EMAIL_DEFAULT='"+self.lineEdit.text()+"',EMAIL_SUBJECT='"+self.lineEdit_2.text()+"',EMAIL_FILE_NAME='"+self.lineEdit_3.text()+"'")                 
+                    connection.commit()
+                    connection.close()
 
 if __name__ == "__main__":
     import sys
