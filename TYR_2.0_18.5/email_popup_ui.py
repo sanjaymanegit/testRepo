@@ -386,7 +386,7 @@ class popup_email_Ui_MainWindow(object):
                     # Turn these into plain/html MIMEText objects
         self.part1 = MIMEText(self.text, "plain")
         self.part2 = MIMEText(self.html, "html")
-        self.filenamewithpath = "/home/pi/TYR_2.0_18.5/reports/emailed/"+str(self.filename)  # In same directory as script
+        self.filenamewithpath = "./reports/emailed/"+str(self.filename)  # In same directory as script
 
                     # Open PDF file in binary mode
         with open(self.filenamewithpath, "rb") as attachment:

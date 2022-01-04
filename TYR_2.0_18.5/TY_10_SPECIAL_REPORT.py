@@ -558,6 +558,9 @@ class TY_10_Ui_MainWindow(object):
         
         self.test_ids=[]
         self.length=""
+        self.test_id=""
+        self.test_id_type=""
+        self.email_flg="N"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -701,11 +704,15 @@ class TY_10_Ui_MainWindow(object):
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
-    def email_click(self):       
-       self.window = QtWidgets.QMainWindow()
-       self.ui=email_multi_Ui_MainWindow()
-       self.ui.setupUi(self.window)           
-       self.window.show()    
+    def email_click(self):
+        os.system("sudo rm ./reports/emailed/multiple/Report*.pdf")
+        self.email_flg="Y"
+        self.del_uncheked()
+        self.load_reports()
+        self.window = QtWidgets.QMainWindow()
+        self.ui=email_multi_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()    
           
     def from_on_click1(self):
         self.calendarWidget.show()
@@ -903,22 +910,27 @@ class TY_10_Ui_MainWindow(object):
                     for x in results:
                         self.test_id_type=str(x[0])
                     connection.close()
-                    if(str(self.test_id_type)=="Compress"):
-                           self.create_pdf_compress()
-                    elif(str(self.test_id_type)=="Tear"):           
-                           self.create_pdf_tear()
-                    elif(str(self.test_id_type)=="Flexural"):    
-                           self.create_pdf_flexural()
-                    elif(str(self.test_id_type)=="QLSS"):    
-                           self.create_pdf_qlss()
-                    elif(str(self.test_id_type)=="ILSS"):    
-                           self.create_pdf_ilss()
-                    else:
-                           self.create_pdf_new()
+                    
+                    if(self.email_flg=="Y"):                        
+                        
+                        if(str(self.test_id_type)=="Compress"):
+                               self.create_pdf_compress()
+                        elif(str(self.test_id_type)=="Tear"):           
+                               self.create_pdf_tear()
+                        elif(str(self.test_id_type)=="Flexural"):    
+                               self.create_pdf_flexural()
+                        elif(str(self.test_id_type)=="QLSS"):    
+                               self.create_pdf_qlss()
+                        elif(str(self.test_id_type)=="ILSS"):    
+                               self.create_pdf_ilss()
+                        else:
+                               self.create_pdf_new()
         
-        
-        
-        
+    '''    
+    def create_email_pdfs_files(self):
+        self.del_uncheked()
+        self.load_reports()
+    '''    
     def del_uncheked(self):
         i = self.tableWidget.rowCount()       
         while (i > 0):
