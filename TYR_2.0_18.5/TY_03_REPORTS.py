@@ -2173,7 +2173,28 @@ class PlotCanvas(FigureCanvas):
         
         
         
-        if (self.graph_type == "Load Vs Elongation"):       
+        if (self.graph_type == "Load Vs Elongation"):
+                '''
+                ### Univarsal change for  Graphs ####################
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST where TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                     if(self.unit_type == "Lb/Inch"):
+                         ax.set_xlim(0,int((x[0]*float(0.0393701))))
+                         ax.set_ylim(0,int((x[1]*float(2.20462))))
+                     elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlim(0,int((x[0]*float(0.0393701))))
+                         ax.set_ylim(0,int((x[1]*float(9.81))))                     
+                     elif(self.unit_type == "MPA"):
+                         ax.set_xlim(0,int(x[0]))
+                         ax.set_ylim(0,int((x[1]*float(9.81)))) 
+                     else:
+                         ax.set_xlim(0,int(x[0]))
+                         ax.set_ylim(0,int(x[1])) 
+                                          
+                connection.close()
+                '''
+            
                 for g in range(len(self.graph_ids)):
                     #print("graph id :"+str(self.graph_ids[g]))
                     self.x_num=[0]

@@ -797,6 +797,8 @@ class TY_01_ilss_Ui_MainWindow(object):
               cursor = connection.cursor()                                        
               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT IFNULL(MAX(TEST_ID),1) FROM TEST_MST),SPAN='"+self.lineEdit_1_1.text()+"'")
               cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+self.lineEdit_1.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_2_1_1.text()+"'")
+              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_1.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_2_1_1.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+             
               cursor.execute("DELETE FROM STG_GRAPH_MST")
         connection.commit();
         connection.close()     
