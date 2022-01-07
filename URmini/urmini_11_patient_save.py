@@ -681,7 +681,7 @@ class Urmini_11_MainWindow(object):
                   test_data.append(["Voided Vol (ml)       ",str(x[9]),"--"   ])
                   test_data.append(["Flow at 2 sec.        ",str(x[10]),"--"   ])
                   test_data.append(["Accelaration     ",str(x[11]),"-- "   ])
-                  test_data.append(["Hesitancy Time     ",str(x[14]),"-- "   ])
+                  test_data.append(["Hesitancy Time (sec)    ",str(x[14]),"-- "   ])
                   self.remark="xxxx"
         connection.close()
         

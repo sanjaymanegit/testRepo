@@ -438,6 +438,8 @@ class Urmini_01_MainWindow(object):
                     self.avg_flow=0
                 '''
                 self.label_6_1.setText(str(self.start_plot.elap_time))
+                self.hesitancy_time=str(self.start_plot.h_time) 
+                
                 
                 if(len(self.start_plot.arr_q2) > 0):
                     self.max_flow=str(round(float(max(self.start_plot.arr_q2))))
@@ -517,7 +519,7 @@ class Urmini_01_MainWindow(object):
         self.max_flow=0
         self.accel="0"
         self.avg_flow=0
-        self.hesitancy_time=0.0 #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
+        #self.hesitancy_time=self.h_time #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
         self.second_min_flow_val=0
         
         if(len(self.start_plot.arr_q2) > 0 and len(self.start_plot.arr_q) > 0 ):
@@ -608,6 +610,7 @@ class Urmini_01_MainWindow(object):
         else:
                print("Data is not populated") 
                                                           
+        '''
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT MIN(Y_NUM) FROM GRAPH_MST_TMP where Y_NUM > 0")
         for x in results:
@@ -621,7 +624,7 @@ class Urmini_01_MainWindow(object):
               print(" Hesitancy Time  :"+str(x[0]))
               self.hesitancy_time=float(x[0])
         connection.close()
-        
+        '''
         
         print(" Voiding Time:"+str(self.voiding_time))        
        
@@ -846,6 +849,7 @@ class PlotCanvas_Auto(FigureCanvas):
        
         self.flow_val=0
         self.curr_vol=0
+        self.h_time=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -868,13 +872,14 @@ class PlotCanvas_Auto(FigureCanvas):
             #print("ok  xx   :"+str(self.xstr2))           
             if(self.IO_error_flg==0):                
                 if(len(self.buff)> 2):
+                        
                         if(str(self.buff[3]) == 'R'): 
                                 #print("o/p xx:"+str(self.xstr3))
                                 self.xstr3=str(self.buff[0])
                                 #print("o/p xx:"+str(self.xstr3))
                                   
                                 self.elap_time=float(self.buff[2])
-                                self.p=float(self.elap_time)                               
+                                self.p=float(self.elap_time)                            
                                 self.q=float(self.buff[0])
                                 self.q2=float(self.buff[1])
                                         
@@ -901,7 +906,10 @@ class PlotCanvas_Auto(FigureCanvas):
                                 print(" length Array Q2:"+str(len(self.arr_q2)))
                                 '''
                         else:
-                                print(" not Running status ")
+                                
+                                self.h_time=float(self.buff[2])
+                                print(" not Running status and h_time :"+str(self.h_time))
+                                
                                   
         except IOError:
                     print("IO Errors") 
