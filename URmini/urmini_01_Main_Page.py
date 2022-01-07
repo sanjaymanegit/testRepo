@@ -38,8 +38,8 @@ import sqlite3
 class Urmini_01_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        #MainWindow.resize(645, 489)
-        MainWindow.resize(1024, 600)
+        MainWindow.resize(645, 489)
+        #MainWindow.resize(1024, 600)
         self.t_var=0.001
         self.voiding_time=""
         self.voiding_time_dev=""        
@@ -53,10 +53,12 @@ class Urmini_01_MainWindow(object):
         self.max_flow_dev=""        
         self.avg_flow_dev=""
         self.flow_time=""
+        self.hesitancy_time="" #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
+        self.second_min_flow_val=""
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 601, 421))
+        self.frame.setGeometry(QtCore.QRect(20, 30, 601, 421))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.frame.setFont(font)
@@ -462,7 +464,7 @@ class Urmini_01_MainWindow(object):
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_ID='0',ELAPSED_TIME='',MAX_FLOW=''")
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='',TEST_END_ON='', AVG_FLOW='' ,VOIDING_TIME=''")
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET FLOW_TIME='',TIME_TO_MAX_FLOW='', VOIDED_VOL='' , FLOW_AT_2_SEC='' ,ACCEL='', TOTAL_VOLUMN=''")
-                        cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='',AVG_FLOW_DEV='',VOIDING_TIME_DEV='',TIME_TO_MAX_FLOW_DEV='' ")                        
+                        cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='',AVG_FLOW_DEV='',VOIDING_TIME_DEV='',TIME_TO_MAX_FLOW_DEV='', HESITANCY_TIME=''")                        
      
             connection.commit();
             connection.close() 
@@ -515,6 +517,8 @@ class Urmini_01_MainWindow(object):
         self.max_flow=0
         self.accel="0"
         self.avg_flow=0
+        self.hesitancy_time=0.0 #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
+        self.second_min_flow_val=0
         
         if(len(self.start_plot.arr_q2) > 0 and len(self.start_plot.arr_q) > 0 ):
                #self.max_flow=float(max(self.start_plot.arr_q2))
@@ -604,7 +608,19 @@ class Urmini_01_MainWindow(object):
         else:
                print("Data is not populated") 
                                                           
-
+        connection = sqlite3.connect("ur.db")        
+        results=connection.execute("SELECT MIN(Y_NUM) FROM GRAPH_MST_TMP where Y_NUM > 0")
+        for x in results:
+              print(" Second Minimum Volum  :"+str(x[0]))
+              self.second_min_flow_val=float(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("ur.db")        
+        results=connection.execute("SELECT MIN(X_NUM) FROM GRAPH_MST_TMP where Y_NUM ='"+str(self.second_min_flow_val)+"'")
+        for x in results:
+              print(" Hesitancy Time  :"+str(x[0]))
+              self.hesitancy_time=float(x[0])
+        connection.close()
         
         
         print(" Voiding Time:"+str(self.voiding_time))        
@@ -658,7 +674,7 @@ class Urmini_01_MainWindow(object):
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.avg_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 #cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.time_to_max_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET FLOW_TIME='"+str(self.flow_time)+"',TIME_TO_MAX_FLOW='"+str(self.time_to_max_flow)+"', VOIDED_VOL='"+str(self.voided_vol)+"' , FLOW_AT_2_SEC='"+str(self.flow_at_2_sec)+"' ,ACCEL='"+str(self.accel)+"', TOTAL_VOLUMN='"+str(self.total_vol)+"'")                  
-                cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='"+str(self.max_flow_dev)+"',AVG_FLOW_DEV='"+str(self.avg_flow_dev)+"',VOIDING_TIME_DEV='"+str(self.voiding_time_dev)+"',TIME_TO_MAX_FLOW_DEV='"+str(self.time_to_max_flow_dev)+"' ")                  
+                cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='"+str(self.volumn_sd)+"',AVG_FLOW_DEV='"+str(self.flow_sd)+"',VOIDING_TIME_DEV='"+str(self.voiding_time_dev)+"',TIME_TO_MAX_FLOW_DEV='"+str(self.time_to_max_flow_dev)+"', HESITANCY_TIME='"+str(self.hesitancy_time)+"' ")                  
                 
         connection.commit()
         connection.close()

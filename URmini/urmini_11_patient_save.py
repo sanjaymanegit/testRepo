@@ -580,10 +580,10 @@ class Urmini_11_MainWindow(object):
                         cursor = connection.cursor()                
                         cursor.execute("INSERT INTO TEST_MST(DR_NAME,TEST_START_ON,TEST_END_ON,ELAPSED_TIME,MAX_FLOW,MAX_FLOW_DEV,"+
                                        "AVG_FLOW,AVG_FLOW_DEV,VOIDING_TIME,VOIDING_TIME_DEV,FLOW_TIME,TIME_TO_MAX_FLOW,TIME_TO_MAX_FLOW_DEV,"+
-                                       "VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID) "+
+                                       "VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID,HESITANCY_TIME) "+
                                        "SELECT DR_NAME,TEST_START_ON,TEST_END_ON,ELAPSED_TIME,MAX_FLOW,MAX_FLOW_DEV,AVG_FLOW,AVG_FLOW_DEV,VOIDING_TIME,"+
                                        "VOIDING_TIME_DEV,FLOW_TIME,TIME_TO_MAX_FLOW,TIME_TO_MAX_FLOW_DEV,VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,"+
-                                       "VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID FROM GLOBAL_VAR_TEST")
+                                       "VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID,HESITANCY_TIME FROM GLOBAL_VAR_TEST")
                 connection.commit();
                 connection.close()
                 print("TEST_MST - Populated.")
@@ -667,20 +667,21 @@ class Urmini_11_MainWindow(object):
             self.report_date=str(x[3])[0:16]
         
         connection.close()
-        test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
+        test_data=[["  Parameters      ","        Value      ","          Standard Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
-                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
+                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS,HESITANCY_TIME FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_TEST)")
         for x in results:
-                  test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),str(x[1])   ])
-                  test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),str(x[3])   ])
+                  test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),"Vol  SD (%): "+str(x[1])   ])
+                  test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),"Flow SD (%): "+str(x[3])   ])
                   test_data.append(["Voiding Time(sec)     ",str(x[4]),"--"    ])
                   test_data.append(["Flow Time (sec)       ",str(x[6]),"--"   ])
                   test_data.append(["Time to Max Flow(sec) ",str(x[7]),"--"    ])
                   test_data.append(["Voided Vol (ml)       ",str(x[9]),"--"   ])
                   test_data.append(["Flow at 2 sec.        ",str(x[10]),"--"   ])
                   test_data.append(["Accelaration     ",str(x[11]),"-- "   ])
+                  test_data.append(["Hesitancy Time     ",str(x[14]),"-- "   ])
                   self.remark="xxxx"
         connection.close()
         
