@@ -1897,6 +1897,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
                     self.p=int(self.test_guage_mm)-self.p
+                    #self.p=self.p-int(self.test_guage_mm)
                     print("final P :::"+str(self.p))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
