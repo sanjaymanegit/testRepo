@@ -182,7 +182,7 @@ class ur_03_Ui_MainWindow(object):
         self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_16.setObjectName("label_16")
         self.label_18 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_18.setGeometry(QtCore.QRect(410, 90, 91, 31))
+        self.label_18.setGeometry(QtCore.QRect(410, 90, 151, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -209,7 +209,7 @@ class ur_03_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
         self.label_32 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_32.setGeometry(QtCore.QRect(410, 160, 41, 31))
+        self.label_32.setGeometry(QtCore.QRect(410, 160, 132, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -236,7 +236,7 @@ class ur_03_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.label_34 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_34.setGeometry(QtCore.QRect(410, 200, 41, 31))
+        self.label_34.setGeometry(QtCore.QRect(410, 200, 132, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -501,7 +501,7 @@ class ur_03_Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Tested On:"))
         self.label_29.setText(_translate("MainWindow", "Doctors. Comment :"))
         self.label_16.setText(_translate("MainWindow", "Parameter"))
-        self.label_18.setText(_translate("MainWindow", "Deviation (%)"))
+        self.label_18.setText(_translate("MainWindow", "Standard Deviation (%)"))
         self.label_22.setText(_translate("MainWindow", "Value"))
         self.label_31.setText(_translate("MainWindow", " yymaxflow"))
         self.label_32.setText(_translate("MainWindow", "yymxflowdev%"))
@@ -564,9 +564,9 @@ class ur_03_Ui_MainWindow(object):
             self.label_49.setText(str(x[1])[0:10]) #TEST_START_ON
             self.label_28.setText(str(x[2])) #ELAPSED_TIME
             self.label_31.setText(str(x[3]))#MAX_FLOW
-            self.label_32.setText(str(x[4])) #MAX_FLOW_DEV
+            self.label_32.setText("Vol  SD (%): "+str(x[4])) #MAX_FLOW_DEV
             self.label_33.setText(str(x[5]))#AVG_FLOW
-            self.label_34.setText(str(x[6])) #AVG_FLOW_DEV
+            self.label_34.setText("Flow SD (%): "+str(x[6])) #AVG_FLOW_DEV
             self.label_35.setText(str(x[7])) #VOIDING_TIME
             self.label_37.setText(str(x[9])) #FLOW_TIME
             self.label_38.setText(str(x[10]))  #TIME_TO_MAX_FLOW
@@ -641,20 +641,21 @@ class ur_03_Ui_MainWindow(object):
             print("Patient Name :"+str(self.p_r_name))
         
         connection.close()
-        test_data=[["  Parameters      ","        Value      ","          Deviation %                   "]]
+        test_data=[["  Parameters      ","        Value      ","          Standard Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
-                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1 ")
+                                   "round(TOTAL_VOLUMN,2) ,DR_COMMNETS,HESITANCY_TIME FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1 ")
         for x in results:
-                  test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),str(x[1])   ])
-                  test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),str(x[3])   ])
+                  test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),"Vol  SD (%): "+str(x[1])   ])
+                  test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),"Flow SD (%): "+str(x[3])   ])
                   test_data.append(["Voiding Time(sec)     ",str(x[4]),"--"    ])
                   test_data.append(["Flow Time (sec)       ",str(x[6]),"--"   ])
                   test_data.append(["Time to Max Flow(sec) ",str(x[7]),"--"    ])
                   test_data.append(["Voided Vol (ml)       ",str(x[9]),"--"   ])
                   test_data.append(["Flow at 2 sec.        ",str(x[10]),"--"   ])
                   test_data.append(["Accelaration     ",str(x[11]),"-- "   ])
+                  test_data.append(["Hesitancy Time (sec)  ",str(x[14]),"-- "   ])
                   self.remark="xxxx"
         connection.close()
         

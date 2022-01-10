@@ -468,10 +468,10 @@ class ur_02_Ui_MainWindow(object):
                         cursor = connection.cursor()                
                         cursor.execute("INSERT INTO TEST_MST(DR_NAME,TEST_START_ON,TEST_END_ON,ELAPSED_TIME,MAX_FLOW,MAX_FLOW_DEV,"+
                                        "AVG_FLOW,AVG_FLOW_DEV,VOIDING_TIME,VOIDING_TIME_DEV,FLOW_TIME,TIME_TO_MAX_FLOW,TIME_TO_MAX_FLOW_DEV,"+
-                                       "VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID) "+
+                                       "VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID,HESITANCY_TIME) "+
                                        "SELECT DR_NAME,TEST_START_ON,TEST_END_ON,ELAPSED_TIME,MAX_FLOW,MAX_FLOW_DEV,AVG_FLOW,AVG_FLOW_DEV,VOIDING_TIME,"+
                                        "VOIDING_TIME_DEV,FLOW_TIME,TIME_TO_MAX_FLOW,TIME_TO_MAX_FLOW_DEV,VOIDED_VOL,FLOW_AT_2_SEC,ACCEL,VOLUMN_TIME_X,"+
-                                       "VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID FROM GLOBAL_VAR_TEST")
+                                       "VOLUMN_TIME_Y,FLOW_TIME_X,FLOW_TIME_Y,TOTAL_VOLUMN,P_ID,HESITANCY_TIME FROM GLOBAL_VAR_TEST")
                 connection.commit();
                 connection.close()
                 print("TEST_MST - Populated.")

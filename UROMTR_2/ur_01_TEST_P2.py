@@ -61,6 +61,8 @@ class ur_01_Ui_MainWindow(object):
         self.max_flow_dev=""        
         self.avg_flow_dev=""
         self.flow_time=""
+        self.hesitancy_time="" #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
+        self.second_min_flow_val=""
         
         self.groupBox = QtWidgets.QGroupBox(self.frame)
         self.groupBox.setGeometry(QtCore.QRect(300, 10, 201, 91))
@@ -624,7 +626,7 @@ class ur_01_Ui_MainWindow(object):
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_ID='0',ELAPSED_TIME='',MAX_FLOW=''")
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='',TEST_END_ON='', AVG_FLOW='' ,VOIDING_TIME=''")
                         cursor.execute("UPDATE GLOBAL_VAR_TEST SET FLOW_TIME='',TIME_TO_MAX_FLOW='', VOIDED_VOL='' , FLOW_AT_2_SEC='' ,ACCEL='', TOTAL_VOLUMN=''")
-                        cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='',AVG_FLOW_DEV='',VOIDING_TIME_DEV='',TIME_TO_MAX_FLOW_DEV='' ")                        
+                        cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='',AVG_FLOW_DEV='',VOIDING_TIME_DEV='',TIME_TO_MAX_FLOW_DEV='', HESITANCY_TIME='' ")                        
      
             connection.commit();
             connection.close() 
@@ -818,7 +820,7 @@ class ur_01_Ui_MainWindow(object):
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.avg_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 #cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.time_to_max_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET FLOW_TIME='"+str(self.flow_time)+"',TIME_TO_MAX_FLOW='"+str(self.time_to_max_flow)+"', VOIDED_VOL='"+str(self.voided_vol)+"' , FLOW_AT_2_SEC='"+str(self.flow_at_2_sec)+"' ,ACCEL='"+str(self.accel)+"', TOTAL_VOLUMN='"+str(self.total_vol)+"'")                  
-                cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='"+str(self.max_flow_dev)+"',AVG_FLOW_DEV='"+str(self.avg_flow_dev)+"',VOIDING_TIME_DEV='"+str(self.voiding_time_dev)+"',TIME_TO_MAX_FLOW_DEV='"+str(self.time_to_max_flow_dev)+"' ")                  
+                cursor.execute("UPDATE GLOBAL_VAR_TEST SET MAX_FLOW_DEV='"+str(self.volumn_sd)+"',AVG_FLOW_DEV='"+str(self.flow_sd)+"',VOIDING_TIME_DEV='"+str(self.voiding_time_dev)+"',TIME_TO_MAX_FLOW_DEV='"+str(self.time_to_max_flow_dev)+"' , HESITANCY_TIME='"+str(self.hesitancy_time)+"' ")                  
                 
         connection.commit()
         connection.close()
@@ -847,6 +849,7 @@ class ur_01_Ui_MainWindow(object):
                 self.test_start_date=self.start_plot.start_time
                 #self.elap_time=datetime.datetime.now()-self.start_plot.start_time
                 self.test_end_date=datetime.datetime.now()
+                self.hesitancy_time=str(self.start_plot.h_time) 
                 '''
                 if(int(len(self.start_plot.arr_q)) > 0):
                     self.avg_flow=str(round(float(max(self.start_plot.arr_q2)))/round(float(max(self.start_plot.arr_p))))
@@ -1098,6 +1101,7 @@ class PlotCanvas_Auto(FigureCanvas):
        
         self.flow_val=0
         self.curr_vol=0
+        self.h_time=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -1152,6 +1156,7 @@ class PlotCanvas_Auto(FigureCanvas):
                                 '''
                         else:
                                 print(" not Running status ")
+                                self.h_time=float(self.buff[2])
                                   
         except IOError:
                     print("IO Errors") 
