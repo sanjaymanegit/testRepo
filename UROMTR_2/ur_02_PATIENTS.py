@@ -183,6 +183,7 @@ class ur_02_Ui_MainWindow(object):
         self.lineEdit_5.setGeometry(QtCore.QRect(90, 210, 131, 31))
        
         self.lineEdit_5.setObjectName("lineEdit_5")
+        self.lineEdit_5.hide()
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(230, 210, 91, 31))
         font = QtGui.QFont()
@@ -206,7 +207,10 @@ class ur_02_Ui_MainWindow(object):
         self.label_38.setStyleSheet("")
         self.label_38.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_38.setObjectName("label_38")
-        self.label_39 = QtWidgets.QLabel(self.frame)
+        self.label_39 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\d+")
+        input_validator = QRegExpValidator(reg_ex, self.label_39)
+        self.label_39.setValidator(input_validator)
         self.label_39.setGeometry(QtCore.QRect(120, 270, 41, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -283,7 +287,9 @@ class ur_02_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Female"))
         self.radioButton_2.setChecked(False)
         self.label_37.setText(_translate("MainWindow", "DOB :"))
+        self.label_37.hide()
         self.pushButton_5.setText(_translate("MainWindow", "Date"))
+        self.pushButton_5.hide()
         self.label_38.setText(_translate("MainWindow", "Age (Yrs):"))
         self.label_39.setText(_translate("MainWindow", "0"))
         self.label_40.setText(_translate("MainWindow", "Doctors Name :"))
@@ -398,12 +404,15 @@ class ur_02_Ui_MainWindow(object):
     
     def open_new_window(self):
         self.label_34_1.hide()
-        print("Age :"+str(int(self.label_39.text())))
+        #print("Age :"+str(int(self.label_39.text())))
         if(self.lineEdit_2.text()==""):
                self.label_34_1.setText("Error: First Name should not empty")
                self.label_34_1.show()
         elif(self.lineEdit_4.text()==""):
                self.label_34_1.setText("Error: Last Name should not empty")
+               self.label_34_1.show()
+        elif(str(self.label_39.text()) == ""):
+               self.label_34_1.setText("Error: Age Should not be empty")
                self.label_34_1.show()
         elif(str(self.label_39.text()) == "0"):
                self.label_34_1.setText("Error: Age Should be greater than 0")
