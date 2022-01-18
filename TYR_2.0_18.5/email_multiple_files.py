@@ -297,7 +297,7 @@ class email_multi_Ui_MainWindow(object):
                    #self.validation_flg="TRUE"
                    self.match_txt = str(self.lineEdit.text())
                    self.matched_token = re.findall("\.", self.match_txt)
-                   if(len(self.matched_token) == 1):
+                   if(len(self.matched_token) > 0):
                        #self.validation_flg="TRUE"
                        if(str(self.lineEdit_2.text()) != ""):
                            self.validation_flg="TRUE"                           
