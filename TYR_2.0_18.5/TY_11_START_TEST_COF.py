@@ -506,8 +506,9 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "TEST LENGTH \n (mm)."))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "SLEDGE WT \n (gm)."))
-        item = self.tableWidget.horizontalHeaderItem(7)
+        item = self.tableWidget.horizontalHeaderItem(7)        
         item.setText(_translate("MainWindow", "REC.NO"))
+        '''
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -519,20 +520,42 @@ class Ui_MainWindow(object):
         item = self.tableWidget.item(0, 3)
         item.setText(_translate("MainWindow", "23"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
+        '''
         self.label_9.setText(_translate("MainWindow", "PARTY NAME :"))
         self.label_10.setText(_translate("MainWindow", "BATCH ID :"))
         self.label_11.setText(_translate("MainWindow", "TEST ID :"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_13.setText(_translate("MainWindow", "LOAD (gm) :"))
         self.label_14.setText(_translate("MainWindow", "LENGTH (mm) :"))
-        self.label_22.setText(_translate("MainWindow", "Running......"))
-        self.show_grid_data_flexure()
+        self.label_22.setText(_translate("MainWindow", "Running......"))        
         self.pushButton_4.clicked.connect(self.start_test_cof)
         self.pushButton_14.clicked.connect(MainWindow.close)
+        #self.show_grid_data_cof()
+        self.load_data()
+        
+        
+    def load_data(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT PRODUCT_CODE,LOT_NO,SLEDE_WT_GM,TEST_LENGTH_MM,PARTY_NAME,BATCH_ID FROM GLOBAL_VAR") 
+        for x in results:           
+            self.lineEdit.setText(str(x[0]))
+            self.lineEdit_2.setText(str(x[1]))
+            self.lineEdit_3.setText(str(x[2]))
+            self.lineEdit_4.setText(str(x[3]))
+            self.lineEdit_5.setText(str(x[4]))
+            self.lineEdit_6.setText(str(x[5]))
+        connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        for x in results:           
+                 self.label_12.setText(str(x[0]).zfill(3))            
+        connection.close() 
         
         
         
-    def show_grid_data_flexure(self):        
+        
+        
+    def show_grid_data_cof(self):        
         #print("inside tear list.....")
         self.delete_all_records()
         font = QtGui.QFont()
@@ -551,9 +574,13 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(7, 100)
         self.tableWidget.setColumnWidth(8, 100)
         
-        '''
+     
+
+        
+        #print("SELECT row_number() over(order by CYCLE_ID) as x,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,printf(\"%.2f\", FLEXURAL_MOD_KG_CM),printf(\"%.2f\", LOAD_RADIOUS),printf(\"%.2f\", SUPPORT_RADIOUS),SPEED_RPM,PER_STRAIN_AT_INPUT,PER_STRAIN_AT_BREAK,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
+        results=connection.execute("SELECT 1,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -562,7 +589,7 @@ class Ui_MainWindow(object):
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
-        '''
+        
         
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -634,6 +661,7 @@ class Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_21.setText("Data Saved Successfully.")
                 self.label_21.show()
+                
     
     def save_graph_data(self):
          if (len(self.sc_new.arr_p) > 1):             
@@ -649,14 +677,22 @@ class Ui_MainWindow(object):
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
                   #print("ok2")
                   cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
                   cursor.execute("UPDATE GLOBAL_VAR SET STATIC_COF=COF_MAX_FORCE/SLEDE_WT_GM")
                   cursor.execute("UPDATE GLOBAL_VAR SET KINETIC_COF=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)/SLEDE_WT_GM")
                   
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,SLEDE_WT_GM,TEST_LENGTH,MAX_FORCE,STATIC_COF,KINETIC_COF) SELECT TEST_ID,'COF',SLEDE_WT_GM,TEST_LENGTH_MM,COF_MAX_FORCE,STATIC_COF,KINETIC_COF FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                  
+                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
+                  cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  
             connection.commit();
             connection.close()
+            self.show_grid_data_cof()
                 
             
 class PlotCanvas_Auto(FigureCanvas):     
