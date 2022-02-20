@@ -470,6 +470,8 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.goAhead="Yes"
+        self.test_id_exist="No"
+        self.timer3=QtCore.QTimer()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -479,7 +481,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         #self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
-        self.pushButton_3.setText(_translate("MainWindow", "STOP"))
+        self.pushButton_3.setText(_translate("MainWindow", "RESET"))
         self.pushButton_4.setText(_translate("MainWindow", "SART"))
         self.pushButton_13.setText(_translate("MainWindow", "VIEW"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
@@ -527,11 +529,25 @@ class Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_13.setText(_translate("MainWindow", "LOAD (gm) :"))
         self.label_14.setText(_translate("MainWindow", "LENGTH (mm) :"))
-        self.label_22.setText(_translate("MainWindow", "Running......"))        
+        self.label_22.setText(_translate("MainWindow", "Running......"))
+        self.label_22.hide()
+        
         self.pushButton_4.clicked.connect(self.start_test_cof)
         self.pushButton_14.clicked.connect(MainWindow.close)
+        self.pushButton_3.clicked.connect(self.reset)
+        self.pushButton_13.clicked.connect(self.show_all_specimens)
         #self.show_grid_data_cof()
         self.load_data()
+        
+    def reset(self):
+        if(self.timer3.isActive()): 
+           self.timer3.stop() 
+        
+        self.sc_blank =PlotCanvas_blank(self) 
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        
         
         
     def load_data(self):
@@ -551,6 +567,12 @@ class Ui_MainWindow(object):
                  self.label_12.setText(str(x[0]).zfill(3))            
         connection.close() 
         
+    
+    def show_all_specimens(self):        
+        #self.pushButton_3.setDisabled(True) ### save
+        self.sc_data =PlotCanvas(self,width=5, height=2)    
+        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
+        #self.reset()   
         
         
         
@@ -600,7 +622,7 @@ class Ui_MainWindow(object):
             
             
     def start_test_cof(self):        
-        #self.validation()
+        self.validation()
         if(self.goAhead=="Yes"):                
                 ### Update global var
                 self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
@@ -615,7 +637,7 @@ class Ui_MainWindow(object):
                 #self.label_4.setText(str(rows[0][0]))
                 #print("count of stg records :"+str(rows[0][0]))
                 if(int(rows[0][0]) > -2 ):
-                    self.timer3=QtCore.QTimer()
+                    
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1) 
@@ -650,6 +672,26 @@ class Ui_MainWindow(object):
                self.label_21.show()
         else:
                self.goAhead="Yes"
+               
+               connection = sqlite3.connect("tyr.db")
+               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
+               for x in results:           
+                 if(int(x[0]) > 0):
+                       self.test_id_exist="Yes"
+                 else:
+                       self.test_id_exist="No"                     
+               connection.close() 
+               
+               if(self.test_id_exist=="No"):                   
+                   connection = sqlite3.connect("tyr.db")
+                   with connection:        
+                       cursor = connection.cursor()
+                       cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,PRODUCT_CODE,LOT_NO) values('COF_SPECIMEN','"+str(self.lineEdit_6.text())+"','"+str(self.lineEdit_5.text())+"','"+str(self.lineEdit.text())+"','"+str(self.lineEdit_2.text())+"')")
+                   connection.commit();
+                   connection.close()
+                   print("Record inserted  in TEST_MST:")
+               else:
+                   print("Record is not inserted  in TEST_MST:")
         
     def show_load_cell_val(self):        
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
@@ -658,9 +700,10 @@ class Ui_MainWindow(object):
         #self..setProperty("value", 100.0)
         if(str(self.sc_new.save_data_flg) =="Yes"):
                 self.save_graph_data()
-                self.sc_new.save_data_flg=""
+                self.sc_new.save_data_flg="No"
                 self.label_21.setText("Data Saved Successfully.")
                 self.label_21.show()
+                print("Data saved ----1")
                 
     
     def save_graph_data(self):
@@ -681,7 +724,7 @@ class Ui_MainWindow(object):
                   #print("ok2")
                   cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
                   cursor.execute("UPDATE GLOBAL_VAR SET STATIC_COF=COF_MAX_FORCE/SLEDE_WT_GM")
-                  cursor.execute("UPDATE GLOBAL_VAR SET KINETIC_COF=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)/SLEDE_WT_GM")
+                  cursor.execute("UPDATE GLOBAL_VAR SET KINETIC_COF=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)/SLEDE_WT_GM")                  
                   
                   cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,SLEDE_WT_GM,TEST_LENGTH,MAX_FORCE,STATIC_COF,KINETIC_COF) SELECT TEST_ID,'COF',SLEDE_WT_GM,TEST_LENGTH_MM,COF_MAX_FORCE,STATIC_COF,KINETIC_COF FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
@@ -692,6 +735,8 @@ class Ui_MainWindow(object):
                   
             connection.commit();
             connection.close()
+            
+            
             self.show_grid_data_cof()
                 
             
@@ -717,7 +762,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         if(self.test_type=="Compress"):
@@ -1044,28 +1089,14 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.p > self.xlim):
                    self.xlim=(int(self.p)+100)
                    self.xlim_update='YES'                   
-                #time.sleep(1) 
+                #time.sleep(1)
+                self.save_data_flg="No"
             else:                
-                if(self.test_type=="Compress"):
-                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    self.p=int(self.test_guage_mm)-self.p
-                    print("final P :::"+str(self.p))
-                    self.arr_p.append(self.p)
-                    self.arr_q.append(self.q)
-                    self.save_data_flg="Yes"
-                    #self.on_ani_stop()
-                elif(self.test_type=="Flexural"):
-                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    #self.p=int(self.test_guage_mm)-self.p
-                    print("final P :::"+str(self.p))
-                    self.arr_p.append(self.p)
-                    self.arr_q.append(self.q)
-                    self.save_data_flg="Yes"
-                else:
+               
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
                 
-                    self.save_data_flg="Yes"
+                    
                 
        
                     
@@ -1215,7 +1246,7 @@ class PlotCanvas(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID) as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         
