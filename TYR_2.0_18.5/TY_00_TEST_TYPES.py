@@ -12,6 +12,7 @@ from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
 from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
+from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
 
 import sqlite3
 
@@ -33,7 +34,7 @@ class TY_00_T_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(140, 90, 201, 181))
+        self.pushButton.setGeometry(QtCore.QRect(100, 90, 201, 181))
         self.pushButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("images/tensile2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -41,7 +42,7 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton.setIconSize(QtCore.QSize(200, 160))
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(500, 90, 191, 181))
+        self.pushButton_2.setGeometry(QtCore.QRect(460, 90, 191, 181))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -54,15 +55,30 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton_2.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(840, 90, 191, 181))
+        self.pushButton_3.setGeometry(QtCore.QRect(800, 90, 191, 181))
         self.pushButton_3.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("images/tear.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3.setIcon(icon2)
         self.pushButton_3.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_3.setObjectName("pushButton_3")
+        
+        
+        self.pushButton_3_11 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_3_11.setGeometry(QtCore.QRect(1100, 350, 141, 181))
+        self.pushButton_3_11.setText("COF")
+        self.pushButton_3_11.setStyleSheet("background-color: rgb(70,130,180);")
+        #icon2 = QtGui.QIcon()
+        #icon2.addPixmap(QtGui.QPixmap("images/tear.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.pushButton_3_11.setIcon(icon2)
+        #self.pushButton_3_11.setIconSize(QtCore.QSize(200, 160))
+        
+        
+        
+        
+        
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(140, 350, 191, 181))
+        self.pushButton_4.setGeometry(QtCore.QRect(100, 350, 191, 181))
         self.pushButton_4.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("images/flexural.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -70,7 +86,7 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton_4.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(530, 600, 141, 51))
+        self.pushButton_5.setGeometry(QtCore.QRect(490, 600, 141, 51))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
@@ -79,7 +95,7 @@ class TY_00_T_Ui_MainWindow(object):
         
         
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(500, 350, 191, 181))
+        self.pushButton_6.setGeometry(QtCore.QRect(460, 350, 191, 181))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -96,7 +112,7 @@ class TY_00_T_Ui_MainWindow(object):
         self.pushButton_6.setObjectName("pushButton_6")
         
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(840, 350, 191, 181))
+        self.pushButton_7.setGeometry(QtCore.QRect(800, 350, 191, 181))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -132,7 +148,8 @@ class TY_00_T_Ui_MainWindow(object):
         #self.pushButton_3.setDisabled(True)
         self.pushButton_4.clicked.connect(self.save_test_flexural)
         self.pushButton_6.clicked.connect(self.save_test_qlss)
-        self.pushButton_7.clicked.connect(self.save_test_ilss) 
+        self.pushButton_7.clicked.connect(self.save_test_ilss)
+        self.pushButton_3_11.clicked.connect(self.save_test_cof) 
         self.pushButton_4.setDisabled(True)
         self.load_data()
    
@@ -231,6 +248,15 @@ class TY_00_T_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         self.open_new_window_ilss()
+    
+    def save_test_cof(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='COF'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_cof()
         
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
@@ -255,6 +281,12 @@ class TY_00_T_Ui_MainWindow(object):
     def open_new_window_flexurl(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_fluxurl_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window_cof(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_11_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

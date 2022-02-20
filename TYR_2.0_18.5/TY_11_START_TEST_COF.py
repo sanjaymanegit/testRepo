@@ -32,7 +32,7 @@ from PyQt5.QtGui import QRegExpValidator
 import datetime
 
 
-class Ui_MainWindow(object):
+class TY_11_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 769)
@@ -234,6 +234,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(8)
         self.tableWidget.setRowCount(1)
+        
+        
+        
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -485,44 +489,25 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "SART"))
         self.pushButton_13.setText(_translate("MainWindow", "VIEW"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
-        self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
+        self.label_21.setText(_translate("MainWindow", ""))
         self.label_4.setText(_translate("MainWindow", "COF TEST"))
         self.label_5.setText(_translate("MainWindow", "LOT NO  :"))
         self.label_6.setText(_translate("MainWindow", "PRODUCT CODE :"))
         self.label_7.setText(_translate("MainWindow", "SLEDGE  MASS (gm) :"))
         self.label_8.setText(_translate("MainWindow", "TEST LENGTH  (mm) :"))
-        self.tableWidget.setSortingEnabled(True)
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "CYCLE .NO"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "STATIC COF"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "KINETIC COF"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "CREATED \n ON"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "MAX FORCE  \n (mm)"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "TEST LENGTH \n (mm)."))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "SLEDGE WT \n (gm)."))
-        item = self.tableWidget.horizontalHeaderItem(7)        
-        item.setText(_translate("MainWindow", "REC.NO"))
-        '''
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "45"))
-        item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "23"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "23"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
-        '''
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setColumnWidth(2, 120)
+        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 250)
+        self.tableWidget.setColumnWidth(7, 100)
+        
+        
+        
         self.label_9.setText(_translate("MainWindow", "PARTY NAME :"))
         self.label_10.setText(_translate("MainWindow", "BATCH ID :"))
         self.label_11.setText(_translate("MainWindow", "TEST ID :"))
@@ -536,8 +521,10 @@ class Ui_MainWindow(object):
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_3.clicked.connect(self.reset)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
-        #self.show_grid_data_cof()
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
+        
         self.load_data()
+        #self.show_grid_data_cof()
         
     def reset(self):
         if(self.timer3.isActive()): 
@@ -574,6 +561,27 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
         #self.reset()   
         
+    def delete_cycle(self):       
+        row = self.tableWidget.currentRow() 
+        self.cycle_id=str(self.tableWidget.item(row, 6).text())
+        if(int(self.cycle_id) > 0):
+                close = QMessageBox()
+                close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                close = close.exec()
+                if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                    cursor = connection.cursor()                
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
+                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                    connection.commit();
+                    connection.close()
+                    self.show_grid_data_cof()
+                    
+        else:
+                pass
         
         
         
@@ -583,18 +591,18 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['CYCLE NO','STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
-        self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setColumnWidth(0, 120)
+        self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 100)
-        self.tableWidget.setColumnWidth(4, 100)
-        self.tableWidget.setColumnWidth(5, 100)
+        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 250)
-        self.tableWidget.setColumnWidth(7, 100)
-        self.tableWidget.setColumnWidth(8, 100)
+        #self.tableWidget.setColumnWidth(7, 100)
+        #self.tableWidget.setColumnWidth(8, 100)
         
      
 
@@ -602,7 +610,9 @@ class Ui_MainWindow(object):
         #print("SELECT row_number() over(order by CYCLE_ID) as x,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 1,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        print("SELECT ((min(CYCLE_ID)-CYCLE_ID)+1) as cycle_ID,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'),printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
+        
+        results=connection.execute("SELECT printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'),printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -686,7 +696,7 @@ class Ui_MainWindow(object):
                    connection = sqlite3.connect("tyr.db")
                    with connection:        
                        cursor = connection.cursor()
-                       cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,PRODUCT_CODE,LOT_NO) values('COF_SPECIMEN','"+str(self.lineEdit_6.text())+"','"+str(self.lineEdit_5.text())+"','"+str(self.lineEdit.text())+"','"+str(self.lineEdit_2.text())+"')")
+                       cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,BATCH_ID,PARTY_NAME,PRODUCT_CODE,LOT_NO) values('COF_SPECIMEN','COF','"+str(self.lineEdit_6.text())+"','"+str(self.lineEdit_5.text())+"','"+str(self.lineEdit.text())+"','"+str(self.lineEdit_2.text())+"')")
                    connection.commit();
                    connection.close()
                    print("Record inserted  in TEST_MST:")
@@ -732,6 +742,8 @@ class Ui_MainWindow(object):
                   cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                  
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  
+                  cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   
             connection.commit();
             connection.close()
@@ -1349,7 +1361,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = TY_11_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

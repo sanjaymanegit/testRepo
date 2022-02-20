@@ -738,7 +738,7 @@ class TY_03_Ui_MainWindow(object):
         self.label_13.setText(_translate("MainWindow", "Spec. Name :"))
         self.label_25.setText(_translate("MainWindow", "Job Name:"))
         self.label_15.setText(_translate("MainWindow", "Specimen Shape :"))
-        self.label_21.setText(_translate("MainWindow", "Test Speed (RPM):"))
+        self.label_21.setText(_translate("MainWindow", "Test Speed :"))
         self.label_30.setText(_translate("MainWindow", "Test Type:"))
         self.label_31.setText(_translate("MainWindow", "Tensile"))
         self.label_11.setText(_translate("MainWindow", "Test Id:"))
@@ -868,7 +868,7 @@ class TY_03_Ui_MainWindow(object):
         
         self.i=0
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_ID FROM TEST_MST WHERE BATCH_ID = '"+str(self.firstbatchid)+"' AND STATUS != 'PENDING GRAPH' ORDER BY BATCH_ID DESC ") 
+        results=connection.execute("SELECT  TEST_ID FROM TEST_MST WHERE BATCH_ID = '"+str(self.firstbatchid)+"' AND STATUS != 'PENDING GRAPH' ORDER BY TEST_ID DESC ") 
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))            
@@ -942,7 +942,7 @@ class TY_03_Ui_MainWindow(object):
                     cursor = connection.cursor()                
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_REPORT_TEST_ID='"+str(self.test_id)+"'")                                    
                     cursor.execute("INSERT INTO REPORT_MST (TEST_ID,REPORT_TYPE,REPORT_UNIT,MOD_AT_ANY) VALUES('"+str(self.test_id)+"','"+self.comboBox.currentText()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_4.text()+"')")
-                    cursor.execute("UPDATE REPORT_MST SET GUAGE_MM = (SELECT GUAGE_LENGTH FROM TEST_MST WHERE TEST_ID  = '"+str(self.test_id)+"')")
+                    cursor.execute("UPDATE REPORT_MST SET GUAGE_MM = (SELECT ifnull(GUAGE_LENGTH,0) FROM TEST_MST WHERE TEST_ID  = '"+str(self.test_id)+"')")
                     cursor.execute("UPDATE REPORT_MST SET TEST_NAME = (SELECT TEST_TYPE FROM TEST_MST WHERE TEST_ID  = '"+str(self.test_id)+"')")
                    
                     if (self.unit_type == "Kg/Cm"):                       
@@ -994,7 +994,7 @@ class TY_03_Ui_MainWindow(object):
         #print(" test id is :"+str(test_id)+"  mod_at any input val :"+str(mod_at_any_input))
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select GUAGE_LENGTH from test_mst where test_id = '"+str(test_id)+"'") 
+        results=connection.execute("select IFNULL(GUAGE_LENGTH,0) from test_mst where test_id = '"+str(test_id)+"'") 
         for x in results:
             guage_length=str(x[0])  
         
@@ -1048,21 +1048,47 @@ class TY_03_Ui_MainWindow(object):
         
         
     def load_report_main_data(self):
+        self.report_type_cof=""
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,B.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT TEST_TYPE FROM TEST_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-             self.label_12.setText(str(x[0]))
-             self.label_26.setText(str(x[1]))   ##job name
-             self.label_24.setText(str(x[2]))   ##batch Id
-             self.label_31.setText(str(x[3]))  ## test type
-             self.label_14.setText(str(x[4])) ## specimen name
-             #self.label_15.setText(str(x[7])) ## specimen specs
-             self.label_18.setText(str(x[7])) ## party Name
-             self.label_22.setText(str(x[5])) ## mtor speed
-             self.label_20.setText(str(x[6])) ## GUAGE LENGTH
-             self.label_16.setText(str(x[9])) ## shape                         
-             self.label_10.setText(str(x[10])) ##test date
+              self.report_type_cof=str(x[0])
         connection.close()
+        
+        if(self.report_type_cof!='COF'):
+            connection = sqlite3.connect("tyr.db")
+            print("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,B.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+            
+            results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,B.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                 self.label_12.setText(str(x[0]))
+                 self.label_26.setText(str(x[1]))   ##job name
+                 self.label_24.setText(str(x[2]))   ##batch Id
+                 self.label_31.setText(str(x[3]))  ## test type
+                 self.label_14.setText(str(x[4])) ## specimen name
+                 #self.label_15.setText(str(x[7])) ## specimen specs
+                 self.label_18.setText(str(x[7])) ## party Name
+                 self.label_22.setText(str(x[5])) ## mtor speed
+                 self.label_20.setText(str(x[6])) ## GUAGE LENGTH
+                 self.label_16.setText(str(x[9])) ## shape                         
+                 self.label_10.setText(str(x[10])) ##test date
+            connection.close()
+        else:
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,(select MOTOR_TEST_SPEED from SETTING_MST),'00',A.PARTY_NAME,A.PRODUCT_CODE,'NA',A.CREATED_ON FROM TEST_MST A WHERE A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                 self.label_12.setText(str(x[0]))
+                 self.label_26.setText(str(x[8]))   ##Product Code
+                 self.label_24.setText(str(x[2]))   ##batch Id
+                 self.label_31.setText(str(x[3]))  ## test type
+                 self.label_14.setText(str(x[4])) ## specimen name
+                 #self.label_15.setText(str(x[7])) ## specimen specs
+                 self.label_18.setText(str(x[7])) ## party Name
+                 self.label_22.setText(str(x[5])) ## mtor speed
+                 self.label_20.setText(str(x[6])) ## GUAGE LENGTH
+                 self.label_16.setText(str(x[9])) ## shape                         
+                 self.label_10.setText(str(x[10])) ##test date
+            connection.close()
     
     def delete_test(self):
         self.label_7.hide() 
@@ -1104,7 +1130,7 @@ class TY_03_Ui_MainWindow(object):
            self.load_report_main_data()
            print("ok 3")
            self.show_report_details()
-           #print("ok 4 : reproty type :"+str(self.label_31.text()))
+           print("ok 4 : reproty type :"+str(self.label_31.text()))
            
            if(str(self.label_31.text())=="Compress"):
                self.create_pdf_compress()
@@ -1116,6 +1142,8 @@ class TY_03_Ui_MainWindow(object):
                self.create_pdf_qlss()
            elif(str(self.label_31.text())=="ILSS"):    
                self.create_pdf_ilss()
+           elif(str(self.label_31.text())=="COF"):    
+               self.create_pdf_cof()    
            else:
                self.create_pdf_new()
            
@@ -1268,7 +1296,9 @@ class TY_03_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        connection = sqlite3.connect("tyr.db")
+        print("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CNT,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where TEST_ID = '"+str(self.comboBox_4.currentText())+"' AND BATCH_ID= '"+str(self.comboBox_5.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) order by TEST_ID DESC ")                        
+        
+        connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CNT,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where TEST_ID = '"+str(self.comboBox_4.currentText())+"' AND BATCH_ID= '"+str(self.comboBox_5.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) order by TEST_ID DESC ")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1828,6 +1858,7 @@ class TY_03_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        
         for x in results:
             summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
       
@@ -1881,7 +1912,106 @@ class TY_03_Ui_MainWindow(object):
         doc.build(Elements)
         #print("Done")
        
+    def create_pdf_cof(self):        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:
+            self.graph_typex=x[0]
+            self.unit_typex=x[1]
+        connection.close()
+        self.unit_typex = "Kg/Cm"
+        if(self.unit_typex == "Kg/Cm"):
+            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)']]
+        
+          
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.TEST_LENGTH),printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'Min',printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)),  printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(TEST_LENGTH)),printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(TEST_LENGTH)),printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(TEST_LENGTH)),printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for x in results:
+                data2.append(x)
+        connection.close() 
+        
+        y=300
+        Elements=[]
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.PRODUCT_CODE,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,(select MOTOR_TEST_SPEED from SETTING_MST),0,A.PARTY_NAME,'NA','NA',A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A  WHERE   A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
       
+        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("     Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=20,
+                                bottomMargin=30,)
+        doc.build(Elements)
+        #print("Done")
+       
  
     def create_pdf_new(self):        
         connection = sqlite3.connect("tyr.db")
@@ -2170,7 +2300,9 @@ class PlotCanvas(FigureCanvas):
                 self.test_type=(x[0])              
         connection.close()
         
-        
+        if(str(self.test_type)=="COF"):
+            self.graph_type = "Load Vs Elongation"
+            self.unit_type = "Kg/Cm"
         
         
         if (self.graph_type == "Load Vs Elongation"):
@@ -2190,8 +2322,12 @@ class PlotCanvas(FigureCanvas):
                          ax.set_xlim(0,int(x[0]))
                          ax.set_ylim(0,int((float(x[1])*9.81))) 
                      else:
-                         ax.set_xlim(0,int(int(x[0])*0.1))
-                         ax.set_ylim(0,int(x[1]))
+                         if(self.test_type=="COF"):
+                             ax.set_xlim(0,int(int(x[0])))
+                             ax.set_ylim(0,int(x[1]))
+                         else:
+                             ax.set_xlim(0,int(int(x[0])*0.1))
+                             ax.set_ylim(0,int(x[1]))
                 
                                           
                 connection.close
@@ -2202,6 +2338,9 @@ class PlotCanvas(FigureCanvas):
                     connection = sqlite3.connect("tyr.db")
                     if(self.test_type=="Compress"):                        
                             results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.test_type=="COF"):                        
+                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    
                     else:
                         if(self.unit_type == "Lb/Inch"):    
                             self.kg_to_lb=float(2.20462)
@@ -2234,7 +2373,20 @@ class PlotCanvas(FigureCanvas):
                          ax.set_ylabel('Load(N)') 
                     else:
                          ax.set_xlabel('Compression(cm)')
-                         ax.set_ylabel('Load(Kg)')    
+                         ax.set_ylabel('Load(Kg)')
+                elif(self.test_type=="COF"):
+                    if(self.unit_type == "Lb/Inch"):  
+                         ax.set_xlabel('Length(Inch)')
+                         ax.set_ylabel('Load(Lb)')
+                    elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlabel('Length(mm)')
+                         ax.set_ylabel('Load(N)')
+                    elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlabel('Length(mm)')
+                         ax.set_ylabel('Load(N)') 
+                    else:
+                         ax.set_xlabel('Length(mm)')
+                         ax.set_ylabel('Load(gm)') 
                 else:
                     if(self.unit_type == "Lb/Inch"):  
                          ax.set_xlabel('Elongation(Inch)')

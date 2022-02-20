@@ -118,6 +118,8 @@ class TY_06_Ui_MainWindow(object):
             self.select_all_rows_qlss()
         elif(self.test_type=="ILSS"):
             self.select_all_rows_ilss()
+        elif(self.test_type=="COF"):
+            self.select_all_rows_cof()
         else:
             self.select_all_rows()
     
@@ -279,6 +281,79 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)     
         connection.close()    
 
+    
+    def select_all_rows_cof(self):
+        self.delete_all_records()    
+        self.tableWidget.setMidLineWidth(-4)
+        self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(6)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        self.tableWidget.verticalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        self.tableWidget.setColumnCount(6)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setHorizontalHeaderLabels(['No.','STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)'])        
+        self.tableWidget.setColumnWidth(0, 120)
+        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        
+        connection = sqlite3.connect("tyr.db")
+        #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT 'Min',printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)),  printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(TEST_LENGTH)),printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        connection.close()
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT 'Max',printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(TEST_LENGTH)),printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(TEST_LENGTH)),printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results1=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.TEST_LENGTH),printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        connection.close()
+       
+        
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+    
+    
+    
+    
+    
     def select_all_rows_compress(self):
         self.delete_all_records()    
         self.tableWidget.setMidLineWidth(-4)

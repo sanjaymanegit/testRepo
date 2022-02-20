@@ -1520,6 +1520,7 @@ class TY_02f_Ui_MainWindow(object):
                                                           
             connection.commit();
             connection.close()
+            
             #self.pushButton_3.setDisabled(True) ### save
         
         self.load_data()
