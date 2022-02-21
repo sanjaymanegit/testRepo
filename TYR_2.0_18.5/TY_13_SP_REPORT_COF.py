@@ -981,7 +981,7 @@ class TY_13_Ui_MainWindow(object):
         connection.close()
         self.unit_typex = "Kg/Cm"
         if(self.unit_typex == "Kg/Cm"):
-            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)']]
+            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)']]
         
           
         
@@ -1081,7 +1081,7 @@ class TY_13_Ui_MainWindow(object):
         self.del_uncheked()
         data2=[]
         #data2= [['Spec. \n No','Width \n (Cm)','Thickness \n (Cm)','CS Area \n (Cm2)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Utl. Shear\n Strength \n (Kg/Cm2)','Ultimate Shear \n Strain %','Shear Strain \n @ Utl. \n Shear Stress']]        
-        data2=[['Test ID.','Cycle Id', 'STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)']]    
+        data2=[['Test ID.','Cycle Id', 'STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)']]    
         
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT count(TEST_ID) FROM TEST_IDS ")        

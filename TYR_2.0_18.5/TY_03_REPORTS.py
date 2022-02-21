@@ -1925,7 +1925,7 @@ class TY_03_Ui_MainWindow(object):
         connection.close()
         self.unit_typex = "Kg/Cm"
         if(self.unit_typex == "Kg/Cm"):
-            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)']]
+            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)']]
         
           
         

@@ -232,7 +232,7 @@ class TY_11_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(1)
         
         
@@ -493,17 +493,17 @@ class TY_11_Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "COF TEST"))
         self.label_5.setText(_translate("MainWindow", "LOT NO  :"))
         self.label_6.setText(_translate("MainWindow", "PRODUCT CODE :"))
-        self.label_7.setText(_translate("MainWindow", "SLEDGE  MASS (gm) :"))
+        self.label_7.setText(_translate("MainWindow", "SLED  MASS (gm) :"))
         self.label_8.setText(_translate("MainWindow", "TEST LENGTH  (mm) :"))
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)','REC.NO '])        
         self.tableWidget.setColumnWidth(0, 120)
         self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
-        self.tableWidget.setColumnWidth(6, 250)
+        self.tableWidget.setColumnWidth(6, 150)
         
         
         
@@ -593,7 +593,7 @@ class TY_11_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)','REC.NO '])        
         self.tableWidget.setColumnWidth(0, 120)
         self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
@@ -636,6 +636,14 @@ class TY_11_Ui_MainWindow(object):
         self.validation()
         if(self.goAhead=="Yes"):                
                 ### Update global var
+                connection = sqlite3.connect("tyr.db")              
+                with connection:        
+                  cursor = connection.cursor()                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
+                connection.commit();
+                connection.close()
+                
+                
                 self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                 self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
                 
@@ -670,7 +678,7 @@ class TY_11_Ui_MainWindow(object):
                self.label_21.setText("LOT should not NULL.")
                self.label_21.show()
         elif(str(self.lineEdit_3.text()) == ""):
-               self.label_21.setText("Sledge Mass should not NULL.")
+               self.label_21.setText("Sled Mass should not NULL.")
                self.label_21.show()
         elif(str(self.lineEdit_4.text()) == ""):
                self.label_21.setText("Test Length should not NULL.")
@@ -872,7 +880,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0) from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])
              if(str(x[1]) == "Flexural"):
@@ -883,10 +891,11 @@ class PlotCanvas_Auto(FigureCanvas):
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
              self.flex_max_length=float(x[3])
+             self.cof_max_length=float(x[4])
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
              #self.max_length=float(x[3])
-             print("Max Load :"+str(self.max_load).zfill(5)+" Max length :"+str(int(self.max_length)).zfill(5))
+             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
         connection.close()
         
         try:
@@ -918,13 +927,16 @@ class PlotCanvas_Auto(FigureCanvas):
          
             #==== Guage Length Setting before staret =====
             self.ser.flush()
+            
             if(self.test_type=="Flexural"):
                 #self.test_guage_mm=0
                 #self.command_str="*G0.00\r"
                 self.command_str="*G%.2f"%self.test_guage_mm+"\r"
             else:
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+                self.command_str="*G000.0\r"
+                
             print("Guage Length Command : "+str(self.command_str))
+            
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
             #time.sleep(2)
@@ -977,6 +989,22 @@ class PlotCanvas_Auto(FigureCanvas):
                     print("fluexural test started ")
                 else:
                     print("fluexural test not started ")
+            elif(self.test_type=="COF"):                
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.command_str="*S2F%04d"%self.cof_max_length+"\r"                        
+                    else:
+                        self.command_str="*S1F%04d"%self.cof_max_length+"\r"
+                        
+                    print("COF self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("COF test started ")   
+                        
+                else:
+                    print("Error :Serial O/P is not getting ")               
+                
+                
             else:
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
@@ -1080,7 +1108,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     #self.p=self.p
                     self.p=int(self.test_guage_mm)-self.p
                 else:
-                    self.p=self.p-int(self.test_guage_mm)
+                    self.p=self.p
                     #self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
                 
