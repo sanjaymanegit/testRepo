@@ -8,15 +8,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
-from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
-from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
-from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
-from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
+#from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
+#from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
+#from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
+#from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
+#from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
+from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
+from TY_13_SP_REPORT_COF import TY_13_Ui_MainWindow
 
 import sqlite3
 
-class TY_00_T_Ui_MainWindow(object):
+class TY_12_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -234,7 +236,7 @@ class TY_00_T_Ui_MainWindow(object):
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Flexural'")            
         connection.commit();
         connection.close()    
-        self.open_new_window_flexurl()
+        self.open_new_window()
         
     def save_test_qlss(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -243,7 +245,7 @@ class TY_00_T_Ui_MainWindow(object):
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='QLSS'")            
         connection.commit();
         connection.close()    
-        self.open_new_window_qlss()
+        self.open_new_window()
     
     def save_test_ilss(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -252,7 +254,7 @@ class TY_00_T_Ui_MainWindow(object):
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='ILSS'")            
         connection.commit();
         connection.close()    
-        self.open_new_window_ilss()
+        self.open_new_window()
     
     def save_test_cof(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -265,33 +267,15 @@ class TY_00_T_Ui_MainWindow(object):
         
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_Ui_MainWindow()
+        self.ui=TY_10_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
    
-
-    def open_new_window_qlss(self):                
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_qlss_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-    
-    def open_new_window_ilss(self):                
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_ilss_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-    
-    def open_new_window_flexurl(self):                
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_fluxurl_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-    
+  
     def open_new_window_cof(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_11_Ui_MainWindow()
+        self.ui=TY_13_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 
@@ -300,7 +284,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_00_T_Ui_MainWindow()
+    ui = TY_12_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

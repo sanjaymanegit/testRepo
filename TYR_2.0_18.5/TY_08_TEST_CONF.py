@@ -129,6 +129,10 @@ class TY_08_Ui_MainWindow(object):
         self.checkBox_6.setGeometry(QtCore.QRect(340, 120, 141, 31))
         self.checkBox_6.setObjectName("checkBox_6")
         
+        self.checkBox_7 = QtWidgets.QCheckBox(self.groupBox_2)
+        self.checkBox_7.setGeometry(QtCore.QRect(620, 120, 141, 31))
+        self.checkBox_7.setObjectName("checkBox_7")
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1222, 21))
@@ -159,6 +163,7 @@ class TY_08_Ui_MainWindow(object):
         self.checkBox_4.setText(_translate("MainWindow", "Flexural Test"))
         self.checkBox_5.setText(_translate("MainWindow", "QLSS"))
         self.checkBox_6.setText(_translate("MainWindow", "ILSS"))
+        self.checkBox_7.setText(_translate("MainWindow", "COF"))
         
         self.pushButton_3.clicked.connect(MainWindow.close)
         self.pushButton.clicked.connect(self.login_page)
@@ -199,7 +204,7 @@ class TY_08_Ui_MainWindow(object):
     
     def load_data(self):      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TENSILE_TEST_FLG,COMPRESS_TEST_FLG,TARE_TEST_FLG,flexural_test,QLSS_TEST,ILSS_TEST FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT TENSILE_TEST_FLG,COMPRESS_TEST_FLG,TARE_TEST_FLG,flexural_test,QLSS_TEST,ILSS_TEST,COF_ACTIVE_FLG FROM GLOBAL_VAR") 
         for x in results:            
             if(str(x[0])=='ACTIVE'):
                 self.checkBox.setChecked(True)
@@ -229,7 +234,12 @@ class TY_08_Ui_MainWindow(object):
             if(str(x[5])=='ACTIVE'):
                 self.checkBox_6.setChecked(True)
             else:
-                self.checkBox_6.setChecked(False) 
+                self.checkBox_6.setChecked(False)
+            
+            if(str(x[6])=='ACTIVE'):
+                self.checkBox_7.setChecked(True)
+            else:
+                self.checkBox_7.setChecked(False) 
                 
         connection.close()
         self.label_3.hide() 
@@ -264,11 +274,16 @@ class TY_08_Ui_MainWindow(object):
             self.ilss_flag='ACTIVE'
         else:
             self.ilss_flag='DEACTIVE'
+        
+        if(self.checkBox_7.isChecked()):
+            self.cof_flag='ACTIVE'
+        else:
+            self.cof_flag='DEACTIVE'
             
         connection = sqlite3.connect("tyr.db")          
         with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET TENSILE_TEST_FLG = '"+str(self.tensile_flg)+"',COMPRESS_TEST_FLG='"+str(self.compress_flg)+"',TARE_TEST_FLG='"+str(self.tare_flag)+"' , flexural_test='"+str(self.flx_flag)+"',QLSS_TEST='"+str(self.qlss_flag)+"',ILSS_TEST='"+str(self.ilss_flag)+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET TENSILE_TEST_FLG = '"+str(self.tensile_flg)+"',COMPRESS_TEST_FLG='"+str(self.compress_flg)+"',TARE_TEST_FLG='"+str(self.tare_flag)+"' , flexural_test='"+str(self.flx_flag)+"',QLSS_TEST='"+str(self.qlss_flag)+"',ILSS_TEST='"+str(self.ilss_flag)+"',COF_ACTIVE_FLG='"+str(self.cof_flag)+"'") 
         connection.commit();
         connection.close()
         self.label_3.setText("Configuration Saved.") 

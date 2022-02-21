@@ -497,14 +497,13 @@ class TY_11_Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "TEST LENGTH  (mm) :"))
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)','REC.NO '])        
-        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(0, 120)
         self.tableWidget.setColumnWidth(1, 120)
-        self.tableWidget.setColumnWidth(2, 120)
+        self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
         self.tableWidget.setColumnWidth(6, 250)
-        self.tableWidget.setColumnWidth(7, 100)
         
         
         
@@ -527,6 +526,7 @@ class TY_11_Ui_MainWindow(object):
         #self.show_grid_data_cof()
         
     def reset(self):
+        self.label_21.setText("")
         if(self.timer3.isActive()): 
            self.timer3.stop() 
         
@@ -631,7 +631,8 @@ class TY_11_Ui_MainWindow(object):
             
             
             
-    def start_test_cof(self):        
+    def start_test_cof(self):
+        self.label_21.setText("")
         self.validation()
         if(self.goAhead=="Yes"):                
                 ### Update global var
@@ -778,11 +779,13 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         if(self.test_type=="Compress"):
-            self.axes.set_xlabel('Compression (mm)')        
+            self.axes.set_xlabel('Compression (mm)')
+        elif(self.test_type=="COF"):
+            self.axes.set_xlabel('Length (mm)') 
         else:        
             self.axes.set_xlabel('Elongation (mm)')
           
-        self.axes.set_ylabel('Load (gm)') 
+        self.axes.set_ylabel('Force (gm)') 
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         self.compute_initial_figure()
@@ -1282,10 +1285,12 @@ class PlotCanvas(FigureCanvas):
         
         print("self.test_type:"+str(self.test_type))
         if(str(self.test_type)=="Compress"):
-            ax.set_xlabel('Compression (mm)')        
+            ax.set_xlabel('Compression (mm)')
+        elif(str(self.test_type)=="COF"):
+            ax.set_xlabel('Length (mm)')    
         else:
             ax.set_xlabel('Elongation (mm)')
-        ax.set_ylabel('Load (gm)')
+        ax.set_ylabel('Foce (gm)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
@@ -1348,7 +1353,7 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()
         
         
-        ax.set_ylabel('Load (gm)')
+        ax.set_ylabel('Foce (gm)')
         
         
         if(self.test_type=="Compress"):
