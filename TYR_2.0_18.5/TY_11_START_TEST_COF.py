@@ -486,7 +486,7 @@ class TY_11_Ui_MainWindow(object):
         #self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_3.setText(_translate("MainWindow", "RESET"))
-        self.pushButton_4.setText(_translate("MainWindow", "SART"))
+        self.pushButton_4.setText(_translate("MainWindow", "START"))
         self.pushButton_13.setText(_translate("MainWindow", "VIEW"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
         self.label_21.setText(_translate("MainWindow", ""))
