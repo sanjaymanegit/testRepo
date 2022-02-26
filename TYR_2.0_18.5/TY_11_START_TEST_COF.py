@@ -232,7 +232,7 @@ class TY_11_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(1)
         
         
@@ -496,14 +496,14 @@ class TY_11_Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "SLED  MASS (gm) :"))
         self.label_8.setText(_translate("MainWindow", "TEST LENGTH  (mm) :"))
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)','REC.NO '])        
-        self.tableWidget.setColumnWidth(0, 120)
-        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setHorizontalHeaderLabels(['MAX FORCE(init)  \n (gm)','AVG FORCE  \n (gm)','STATIC COF',' KINETIC COF ','SLED MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setColumnWidth(0, 170)
+        self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
-        self.tableWidget.setColumnWidth(6, 150)
+        
         
         
         
@@ -511,7 +511,7 @@ class TY_11_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "BATCH ID :"))
         self.label_11.setText(_translate("MainWindow", "TEST ID :"))
         self.label_12.setText(_translate("MainWindow", "001"))
-        self.label_13.setText(_translate("MainWindow", "LOAD (gm) :"))
+        self.label_13.setText(_translate("MainWindow", "FORCE (gm) :"))
         self.label_14.setText(_translate("MainWindow", "LENGTH (mm) :"))
         self.label_22.setText(_translate("MainWindow", "Running......"))
         self.label_22.hide()
@@ -591,16 +591,16 @@ class TY_11_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['STATIC COF',' KINETIC COF ','CREATED \n ON','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)','REC.NO '])        
-        self.tableWidget.setColumnWidth(0, 120)
+        self.tableWidget.setHorizontalHeaderLabels(['MAX FORCE(init)  \n (gm)','AVG FORCE  \n (gm)','STATIC COF',' KINETIC COF ','SLED MASS \n (gm)','REC.NO '])        
+        self.tableWidget.setColumnWidth(0, 170)
         self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
-        self.tableWidget.setColumnWidth(6, 250)
+        
         #self.tableWidget.setColumnWidth(7, 100)
         #self.tableWidget.setColumnWidth(8, 100)
         
@@ -610,9 +610,8 @@ class TY_11_Ui_MainWindow(object):
         #print("SELECT row_number() over(order by CYCLE_ID) as x,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         
         connection = sqlite3.connect("tyr.db")
-        print("SELECT ((min(CYCLE_ID)-CYCLE_ID)+1) as cycle_ID,printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'),printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
-        
-        results=connection.execute("SELECT printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'),printf(\"%.2f\", MAX_FORCE) ,printf(\"%.2f\", TEST_LENGTH),printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
+         
+        results=connection.execute("SELECT printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", STATIC_COF),printf(\"%.2f\", KINETIC_COF), printf(\"%.2f\", SLEDE_WT_GM),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -741,11 +740,12 @@ class TY_11_Ui_MainWindow(object):
                   #print("ok1")
                   cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
                   #print("ok2")
-                  cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STATIC_COF=COF_MAX_FORCE/SLEDE_WT_GM")
-                  cursor.execute("UPDATE GLOBAL_VAR SET KINETIC_COF=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)/SLEDE_WT_GM")                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM  < 6)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET COF_AVG_FORCE=(SELECT AVG(Y_NUM) FROM STG_GRAPH_MST)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STATIC_COF =cast(COF_MAX_FORCE as real)/cast(SLEDE_WT_GM as real)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET KINETIC_COF=(SELECT AVG(Y_NUM) FROM STG_GRAPH_MST)/SLEDE_WT_GM")                  
                   
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,SLEDE_WT_GM,TEST_LENGTH,MAX_FORCE,STATIC_COF,KINETIC_COF) SELECT TEST_ID,'COF',SLEDE_WT_GM,TEST_LENGTH_MM,COF_MAX_FORCE,STATIC_COF,KINETIC_COF FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,SLEDE_WT_GM,TEST_LENGTH,MAX_FORCE,STATIC_COF,KINETIC_COF,AVG_FORCE) SELECT TEST_ID,'COF',SLEDE_WT_GM,TEST_LENGTH_MM,COF_MAX_FORCE,STATIC_COF,KINETIC_COF,COF_AVG_FORCE FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
                   cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                  
@@ -992,9 +992,9 @@ class PlotCanvas_Auto(FigureCanvas):
             elif(self.test_type=="COF"):                
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                        self.command_str="*S2F%04d"%self.cof_max_length+"\r"                        
+                        self.command_str="*S2F%04d"%self.cof_max_length+"_000.0\r"                        
                     else:
-                        self.command_str="*S1F%04d"%self.cof_max_length+"\r"
+                        self.command_str="*S1F%04d"%self.cof_max_length+"_000.0\r"
                         
                     print("COF self.command_str:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')

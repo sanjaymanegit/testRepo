@@ -1079,7 +1079,7 @@ class TY_03_Ui_MainWindow(object):
             connection.close()
         else:
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,(select MOTOR_TEST_SPEED from SETTING_MST),'00',A.PARTY_NAME,A.PRODUCT_CODE,'NA',A.CREATED_ON FROM TEST_MST A WHERE A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,'NA','NA',A.PARTY_NAME,A.PRODUCT_CODE,'NA',A.CREATED_ON FROM TEST_MST A WHERE A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
             for x in results:
                  self.label_12.setText(str(x[0]))
                  self.label_26.setText(str(x[8]))   ##Product Code
@@ -1925,33 +1925,33 @@ class TY_03_Ui_MainWindow(object):
         connection.close()
         self.unit_typex = "Kg/Cm"
         if(self.unit_typex == "Kg/Cm"):
-            data2= [ ['Spec. \n No', 'STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLED MASS \n (gm)']]
+            data2= [ ['Spec. \n No', 'MAX FORCE(init)  \n (gm)','AVG FORCE  \n (gm)','STATIC COF',' KINETIC COF ','SLED MASS \n (gm)']]
         
           
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.TEST_LENGTH),printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.AVG_FORCE) ,printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Min',printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)),  printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(TEST_LENGTH)),printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT 'Min', printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(AVG_FORCE)),printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)), printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(TEST_LENGTH)),printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(TEST_LENGTH)),printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for x in results:
                 data2.append(x)
@@ -1962,9 +1962,9 @@ class TY_03_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.PRODUCT_CODE,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,(select MOTOR_TEST_SPEED from SETTING_MST),0,A.PARTY_NAME,'NA','NA',A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A  WHERE   A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.PRODUCT_CODE,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,'NA','NA',A.PARTY_NAME,'NA','NA',A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A  WHERE   A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Test Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[6])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[9])],["Party Name :",str(x[7]),"Test Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
       
         
         connection.close() 

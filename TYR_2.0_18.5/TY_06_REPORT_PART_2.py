@@ -297,9 +297,9 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['No.','STATIC COF',' KINETIC COF ','MAX FORCE  \n (gm)','TEST LENGTH \n (mm)','SLEDGE MASS \n (gm)'])        
-        self.tableWidget.setColumnWidth(0, 120)
-        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setHorizontalHeaderLabels(['No.','MAX FORCE(init)  \n (gm)','AVG FORCE \n (mm)','STATIC COF',' KINETIC COF ','SLEDGE MASS \n (gm)'])        
+        self.tableWidget.setColumnWidth(0, 170)
+        self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
         self.tableWidget.setColumnWidth(4, 150)
@@ -307,7 +307,7 @@ class TY_06_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
-        results1=connection.execute("SELECT 'Min',printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)),  printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(TEST_LENGTH)),printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results1=connection.execute("SELECT 'Min',printf(\"%.2f\", Min(MAX_FORCE)) ,printf(\"%.2f\", Min(AVG_FORCE)),printf(\"%.2f\", Min(STATIC_COF)),printf(\"%.2f\", Min(KINETIC_COF)), printf(\"%.2f\", Min(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for row_number, row_data in enumerate(results1):                    
             self.tableWidget.insertRow(row_number)
@@ -319,7 +319,7 @@ class TY_06_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
-        results1=connection.execute("SELECT 'Max',printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(TEST_LENGTH)),printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results1=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_FORCE)) ,printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(STATIC_COF)),printf(\"%.2f\", max(KINETIC_COF)),  printf(\"%.2f\", max(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for row_number, row_data in enumerate(results1):                    
             self.tableWidget.insertRow(row_number)
@@ -329,7 +329,7 @@ class TY_06_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
-        results1=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(TEST_LENGTH)),printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results1=connection.execute("SELECT 'Avg',printf(\"%.2f\", avg(MAX_FORCE)) ,printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(STATIC_COF)),printf(\"%.2f\", avg(KINETIC_COF)),  printf(\"%.2f\", avg(SLEDE_WT_GM)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for row_number, row_data in enumerate(results1):                    
             self.tableWidget.insertRow(row_number)
@@ -339,7 +339,7 @@ class TY_06_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #results1=connection.execute("SELECT TYPE_STR,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", COMPRESSIVE_STRENGTH),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
-        results1=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.TEST_LENGTH),printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results1=connection.execute("SELECT ((A.CYCLE_ID)-C.MIN_CYCLE_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.MAX_FORCE) ,printf(\"%.2f\", A.AVG_FORCE),printf(\"%.2f\", A.STATIC_COF),printf(\"%.2f\", A.KINETIC_COF), printf(\"%.2f\", A.SLEDE_WT_GM) FROM CYCLES_MST A , (SELECT min(CYCLE_ID) as MIN_CYCLE_ID,TEST_ID FROM CYCLES_MST WHERE TEST_ID in (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)) C WHERE A.TEST_ID=C.TEST_ID AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         
         for row_number, row_data in enumerate(results1):                    
             self.tableWidget.insertRow(row_number)
