@@ -321,9 +321,9 @@ class ur_05_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Qualification"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Contact No."))
+        item.setText(_translate("MainWindow", "Email ID."))
         item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Email ID"))
+        item.setText(_translate("MainWindow", "Contact No"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Gender"))
         item = self.tableWidget.horizontalHeaderItem(5)
@@ -352,8 +352,8 @@ class ur_05_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Male"))
         self.radioButton_2.setText(_translate("MainWindow", "Female"))
         self.label_4.setText(_translate("MainWindow", "Qualification :"))
-        self.label_5.setText(_translate("MainWindow", "Email ID:"))
-        self.label_6.setText(_translate("MainWindow", "Contact No :"))
+        self.label_5.setText(_translate("MainWindow", "Email ID :"))
+        self.label_6.setText(_translate("MainWindow", " Contact No:"))
         self.radioButton.setChecked(True)
         self.toolButton.clicked.connect(MainWindow.close)
         self.pushButton.clicked.connect(self.login_page)
@@ -409,7 +409,10 @@ class ur_05_Ui_MainWindow(object):
             self.gender_toedit=(self.tableWidget.item(row, 4).text())
             self.lineEdit_2.setText(str(xx[0]))
             self.lineEdit_3.setText(str(xx[1]))
-            self.lineEdit_4.setText(str(xx[2]))
+            if(int(len(xx)) == 3):
+                self.lineEdit_4.setText(str(xx[2]))
+            else:
+                self.lineEdit_4.setText("")
             self.lineEdit_5.setText(str(self.tableWidget.item(row, 1).text()))
             self.lineEdit_6.setText(str(self.tableWidget.item(row, 2).text()))
             self.lineEdit_7.setText(str(self.tableWidget.item(row, 3).text()))
@@ -432,7 +435,7 @@ class ur_05_Ui_MainWindow(object):
         self.tableWidget.setFont(font) 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         connection = sqlite3.connect("ur.db")
-        results=connection.execute("SELECT fname||' '||mname||' '||lname,DR_QUAL,DR_EMAIL_ID,DR_CONTACT,DR_GENDER,DR_ID FROM DOCTORS_INFO")                        
+        results=connection.execute("SELECT fname||' '||mname||' '||lname,DR_QUAL,DR_CONTACT,DR_EMAIL_ID,DR_GENDER,DR_ID FROM DOCTORS_INFO")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

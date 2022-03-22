@@ -1134,8 +1134,8 @@ class ur_12_Ui_MainWindow(object):
             
             doc = SimpleDocTemplate('./reports/ur_reports.pdf', rightMargin=10,
                                     leftMargin=30,
-                                    topMargin=30,
-                                    bottomMargin=20)
+                                    topMargin=10,
+                                    bottomMargin=10)
             doc.build(Elements)
         #print("Done")
 
