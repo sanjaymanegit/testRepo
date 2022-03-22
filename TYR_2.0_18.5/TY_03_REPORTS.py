@@ -2236,8 +2236,8 @@ class TY_03_Ui_MainWindow(object):
         '''
         doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4,rightMargin=20,
                                 leftMargin=30,
-                                topMargin=30,
-                                bottomMargin=30)
+                                topMargin=10,
+                                bottomMargin=10)
         doc.build(Elements)
         #print("Done")
        

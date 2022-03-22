@@ -1591,6 +1591,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.playing = False
         self.p =0
         self.q =0
+        self.p_old=0
         self.arr_p=[0.0]
         self.arr_q=[0.0]
         self.arr_p1=[0.0]
@@ -1866,10 +1867,31 @@ class PlotCanvas_Auto(FigureCanvas):
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     self.p=self.p
-                else:
+                else:                    
                     self.p=self.p-int(self.test_guage_mm)
+                    if(self.p_old > self.p):
+                         self.p=self.p_old                                            
+                    self.p_old=self.p
+                    #self.p_new=self.p-int(self.test_guage_mm)
+                    
                     #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p
+                    #self.p=self.p   
+                    
+                '''
+                elif(self.test_type=="Tensile"):
+                    self.p=self.p-int(self.test_guage_mm)
+                    if(int(len(self.arr_p)) > 0):
+                        self.p=float(max(self.arr_p))
+                        print("ARRY-P      : XXX "+str(self.arr_p))
+                        print("MAX-P      : XXX "+str(self.p))
+                        
+                        #self.p=float(int(self.p)-int(self.test_guage_mm))
+                        print("Length : XXX  "+str(int(len(self.arr_p))))
+                        print("P      : XXX "+str(self.p))
+                    else:
+                        self.p=self.p-int(self.test_guage_mm)
+                '''   
+                
                 
                 self.arr_p.append(self.p)
                 self.arr_q.append(self.q)
@@ -1890,7 +1912,12 @@ class PlotCanvas_Auto(FigureCanvas):
                               
                 if(self.p > self.xlim):
                    self.xlim=(int(self.p)+100)
-                   self.xlim_update='YES'                   
+                   self.xlim_update='YES'
+                   
+                   
+                   
+                   
+                   
                 #time.sleep(1) 
             else:                
                 if(self.test_type=="Compress"):
@@ -1911,6 +1938,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
                     self.save_data_flg="Yes"
+                
                 else:
                 
                     self.save_data_flg="Yes"
