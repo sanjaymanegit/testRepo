@@ -8,7 +8,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_00_TEST_TYPES import TY_00_T_Ui_MainWindow
+from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
+#from TY_00_TEST_TYPES import TY_00_T_Ui_MainWindow
 from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_04_SETTING import TY_04_Ui_MainWindow
 from TY_05_SPECIMEN import TY_05_Ui_MainWindow
@@ -206,7 +207,7 @@ class Ui_MainWindow(object):
         if(self.go_ahead=="Yes"):  
             if(dev_id=='201910:0003'):
                 self.window = QtWidgets.QMainWindow()
-                self.ui=TY_00_T_Ui_MainWindow()
+                self.ui=TY_12_LIST_Ui_MainWindow()
                 self.ui.setupUi(self.window)           
                 self.window.show()        
             else:
