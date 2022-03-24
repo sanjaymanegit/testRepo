@@ -207,6 +207,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.listWidget.doubleClicked.connect(self.selected_record)
         self.listWidget.clicked.connect(self.selected_record)
         self.load_data()
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)

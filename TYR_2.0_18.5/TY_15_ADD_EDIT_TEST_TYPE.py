@@ -362,9 +362,14 @@ class Ui_MainWindow(object):
         self.lineEdit_15.setText("")
         self.lineEdit_16.setText("")
         self.textEdit.setText("")
-        self.label_32.setText("")
+        
         self.label_24.hide()
         self.listWidget.clear()
+        connection = sqlite3.connect("tyr.db")       
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_TYPE_MST'")       
+        for x in results:           
+                 self.label_32.setText(str(x[0]))            
+        connection.close()  
         
         
         
@@ -372,7 +377,7 @@ class Ui_MainWindow(object):
     def load_data(self):
         self.listWidget.clear() 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y'") 
+        results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST ") 
         for x in results:
             self.listWidget.addItem(str(x[0]))
             self.rec_count=self.rec_count+1
@@ -387,7 +392,7 @@ class Ui_MainWindow(object):
         #self.pushButton_15.setText("")
         self.list_type=self.listWidget.currentItem().text()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME = '"+str(self.list_type)+"'")
+        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE  TEST_TYPE_NAME = '"+str(self.list_type)+"'")
         for x in results:                    
                    self.lineEdit_15.setText(str(x[0])) #Test Name
                    self.textEdit.setText(str(x[1])) #TEST DETAILS
@@ -397,7 +402,8 @@ class Ui_MainWindow(object):
                    if(str(x[3]) == 'Y'):
                        self.comboBox_2.setCurrentText("Y")                      
                    else:
-                       self.comboBox_2.setCurrentText("N")   
+                       self.comboBox_2.setCurrentText("N")
+                   #print("Active Flag : "+str(x[3]))
                    self.test_type_id=str(x[4])
                    self.label_24.hide()
                        
@@ -410,8 +416,7 @@ class Ui_MainWindow(object):
         self.lineEdit_16.setText("")
         self.textEdit.setText("")   
         self.label_24.hide()
-        connection = sqlite3.connect("tyr.db")
-       
+        connection = sqlite3.connect("tyr.db")       
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_TYPE_MST'")       
         for x in results:           
                  self.label_32.setText(str(x[0]))            
