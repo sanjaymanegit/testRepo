@@ -10,6 +10,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import sqlite3
+import re
+import datetime
+import time
+import os,sys
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -204,8 +209,9 @@ class Ui_MainWindow(object):
         self.lineEdit_17.setGeometry(QtCore.QRect(490, 100, 291, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
+        font.setPointSize(24)
         self.lineEdit_17.setFont(font)
+        self.lineEdit_17.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_17.setObjectName("lineEdit_17")
         self.label_22 = QtWidgets.QLabel(self.frame)
         self.label_22.setGeometry(QtCore.QRect(300, 90, 121, 51))
@@ -252,6 +258,7 @@ class Ui_MainWindow(object):
         self.label_27.setStyleSheet("")
         self.label_27.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_27.setObjectName("label_27")
+        
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(370, 640, 111, 41))
         font = QtGui.QFont()
@@ -259,6 +266,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.pushButton_11.setFont(font)
         self.pushButton_11.setObjectName("pushButton_11")
+        
         self.label_23 = QtWidgets.QLabel(self.frame)
         self.label_23.setGeometry(QtCore.QRect(470, 30, 251, 41))
         font = QtGui.QFont()
@@ -286,6 +294,8 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.test_type_id=""
+        self.list_type=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -297,25 +307,90 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "SAVE"))
         self.pushButton_8.setText(_translate("MainWindow", "REFRESH"))
         self.pushButton_9.setText(_translate("MainWindow", "Login"))
-        self.label_24.setText(_translate("MainWindow", "Message: Successfully Saved ."))
+        self.label_24.setText(_translate("MainWindow", ""))
         self.label_25.setText(_translate("MainWindow", "Serial. No.:"))
         self.label_26.setText(_translate("MainWindow", "Test Name :"))
         self.label_28.setText(_translate("MainWindow", "Active :"))
-        self.label_32.setText(_translate("MainWindow", "0001"))
+        self.label_32.setText(_translate("MainWindow", "1"))
         self.pushButton_10.setText(_translate("MainWindow", "DELETE"))
         self.label_21.setText(_translate("MainWindow", "Test Type List :"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Y"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
         self.label_43.setText(_translate("MainWindow", "File Path :"))
-        self.lineEdit_16.setText(_translate("MainWindow", "images"))
+        self.lineEdit_16.setText(_translate("MainWindow", ""))
         self.label_22.setText(_translate("MainWindow", "PASSWORD :"))
-        self.pushButton_13.setText(_translate("MainWindow", "RESET"))
+        self.pushButton_13.setText(_translate("MainWindow", "Reset"))
         self.label_44.setText(_translate("MainWindow", "Image File :"))
         self.label_27.setText(_translate("MainWindow", "Test Description:"))
         self.pushButton_11.setText(_translate("MainWindow", "ADD"))
         self.label_23.setText(_translate("MainWindow", "Configure Test"))
         self.pushButton_12.setText(_translate("MainWindow", "RETURN"))
+        self.pushButton_12.clicked.connect(MainWindow.close)
+        self.pushButton_9.clicked.connect(self.login_page)
+        self.pushButton_13.clicked.connect(self.reset_loging)
+        self.listWidget.clicked.connect(self.selected_record)
+        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+      
+    
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+    
+    def login_page(self):
+         if(str(self.lineEdit_17.text()) == 'singhisking'):          
+                self.go_ahead_flg="No"
+               # self.groupBox_2.show()
+                self.load_data()
+         else:
+                self.label_24.setText("Incorrect Password.") 
+                self.label_24.show()   
+                #self.groupBox_2.hide()
+    
+    def reset_loging(self):
+        self.lineEdit_17.setText("")
+        self.lineEdit_13.setText("")
+        self.lineEdit_15.setText("")
+        self.lineEdit_16.setText("")
+        self.textEdit.setText("")
+        self.label_32.setText("")
+        self.label_24.hide()
+        self.listWidget.clear() 
+        
+        #self.groupBox_2.hide()
+    def load_data(self):
+        self.listWidget.clear() 
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y'") 
+        for x in results:
+            self.listWidget.addItem(str(x[0]))
+        connection.close()
+        self.listWidget.setCurrentRow(0)
+        self.selected_record()
+        
 
+    def selected_record(self):
+        self.test_type_id=""
+        #self.pushButton_15.setText("")
+        self.list_type=self.listWidget.currentItem().text()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME = '"+str(self.list_type)+"'")
+        for x in results:                    
+                   self.lineEdit_15.setText(str(x[0])) #Test Name
+                   self.textEdit.setText(str(x[1])) #TEST DETAILS
+                   self.lineEdit_13.setText(str(x[2])) # image File Name
+                   self.lineEdit_16.setText("images/") #image file path
+                   self.label_32.setText(str(x[4]))
+                   if(str(x[3]) == 'Y'):
+                       self.comboBox_2.setCurrentText("Y")                      
+                   else:
+                       self.comboBox_2.setCurrentText("N")   
+                   self.test_type_id=str(x[4])
+                   self.label_24.hide()
+                       
+        connection.close()
 
 if __name__ == "__main__":
     import sys
