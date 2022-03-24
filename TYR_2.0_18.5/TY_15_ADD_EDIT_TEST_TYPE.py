@@ -296,6 +296,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.test_type_id=""
         self.list_type=""
+        self.operation_flg=""
+        self.rec_count=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -330,6 +332,11 @@ class Ui_MainWindow(object):
         self.pushButton_13.clicked.connect(self.reset_loging)
         self.listWidget.clicked.connect(self.selected_record)
         
+        self.pushButton_11.clicked.connect(self.s_add_click) 
+        self.pushButton_7.clicked.connect(self.s_edit_click)       
+        self.pushButton_10.clicked.connect(self.s_delete_click)
+        self.pushButton_8.clicked.connect(self.s_reset_data)
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -357,7 +364,9 @@ class Ui_MainWindow(object):
         self.textEdit.setText("")
         self.label_32.setText("")
         self.label_24.hide()
-        self.listWidget.clear() 
+        self.listWidget.clear()
+        
+        
         
         #self.groupBox_2.hide()
     def load_data(self):
@@ -366,9 +375,11 @@ class Ui_MainWindow(object):
         results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y'") 
         for x in results:
             self.listWidget.addItem(str(x[0]))
+            self.rec_count=self.rec_count+1
         connection.close()
-        self.listWidget.setCurrentRow(0)
-        self.selected_record()
+        if(int(self.rec_count) > 0):
+            self.listWidget.setCurrentRow(0)
+            self.selected_record()
         
 
     def selected_record(self):
@@ -391,6 +402,123 @@ class Ui_MainWindow(object):
                    self.label_24.hide()
                        
         connection.close()
+
+    def s_reset_data(self):
+        self.lineEdit_17.setText("")
+        self.lineEdit_13.setText("")
+        self.lineEdit_15.setText("")
+        self.lineEdit_16.setText("")
+        self.textEdit.setText("")   
+        self.label_24.hide()
+        connection = sqlite3.connect("tyr.db")
+       
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_TYPE_MST'")       
+        for x in results:           
+                 self.label_32.setText(str(x[0]))            
+        connection.close()  
+       
+        
+    def s_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.s_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.s_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.s_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def s_add_click(self):
+        self.operation_flg="ADD"       
+        self.s_load_data()
+        
+    def s_add_data(self):
+        if(self.label_32.text() != ""):
+            self.validate_ip()
+            if(str(self.go_ahead )== 'Yes'):
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO TEST_TYPE_MST(TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,TEST_TYPE_PATH,ACTIVE_Y_N) VALUES ('"+self.lineEdit_15.text()+"','"+self.textEdit.toPlainText()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_16.text()+"','"+self.comboBox_2.currentText()+"')")                    
+                    connection.commit();                    
+                    connection.close()
+                    self.label_24.setText("Record Added Successfully.")                   
+                    self.label_24.show()
+        else :
+            self.label_24.setText("Id is Empty.")
+            self.label_24.show()
+            
+        self.load_data()
+    
+    def s_edit_click(self):
+        row = self.listWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.s_load_data()
+        else:    
+            self.label_24.setText("Please Select the record.")
+            self.label_24.show() 
+    
+    def s_edit_data(self):
+        if(self.label_32.text() != ""):
+            self.validate_ip()
+            if(str(self.go_ahead )== 'Yes'):
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("UPDATE TEST_TYPE_MST SET TEST_TYPE_NAME='"+self.lineEdit_15.text()+"',TEST_TYPE_DTLS='"+self.textEdit.toPlainText()+"',TEST_TYPE_IMG_FILE='"+self.lineEdit_13.text()+"',TEST_TYPE_PATH='"+self.lineEdit_16.text()+"',ACTIVE_Y_N='"+self.comboBox_2.currentText()+"' WHERE  TEST_TYPE_ID ='"+str(self.test_type_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    self.label_24.setText("Record Saved Successfully.")                    
+                    self.label_24.show()
+                    self.load_data()   
+        
+     
+           
+                   
+    
+    def s_delete_click(self):
+        row = self.listWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.s_load_data()
+        else:    
+            self.label_24.setText("Please Select the record.")
+            self.label_24.show()        
+     
+      
+    def s_delete_data(self):
+        if(self.label_32.text() != ""):
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    #cursor.execute("DELETE FROM TEST_TYPE_MST WHERE TEST_TYPE_ID ='"+str(self.test_type_id)+"'")
+                    cursor.execute("DELETE FROM TEST_TYPE_MST where 1=1") 
+            connection.commit();                    
+            connection.close()            
+            self.label_24.setText("Record Deleted Successfully.")
+            self.label_24.show()            
+            self.load_data()
+            
+    def validate_ip(self):
+        self.go_ahead="No"
+        if(self.lineEdit_15.text() == ""):
+             self.label_24.setText("Test Name is Empty.")
+             self.label_24.show()  
+        elif(self.lineEdit_13.text()== ""):
+             self.label_24.setText("Image File Name is Empty.")
+             self.label_24.show() 
+        elif(self.lineEdit_16.text()== ""):
+             self.label_24.setText("Path is Empty.")
+             self.label_24.show()
+        elif(self.textEdit.toPlainText()== ""):
+             self.label_24.setText("Description is Empty.")
+             self.label_24.show()        
+        else:
+             self.go_ahead="Yes"
 
 if __name__ == "__main__":
     import sys
