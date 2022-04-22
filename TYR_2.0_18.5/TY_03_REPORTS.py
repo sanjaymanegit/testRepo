@@ -8,7 +8,9 @@
 
 from TY_06_REPORT_PART_2 import TY_06_Ui_MainWindow
 #from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
-from TY_12_TEST_TYPES_SP_REPORTS import TY_12_Ui_MainWindow
+#from TY_12_TEST_TYPES_SP_REPORTS import TY_12_Ui_MainWindow
+from TY_12_TEST_LIST_SP_REPORT import TY_12_SP_LIST_Ui_MainWindow
+
 
 
 
@@ -1164,7 +1166,7 @@ class TY_03_Ui_MainWindow(object):
     
     def open_special_report(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_12_Ui_MainWindow()
+        self.ui=TY_12_SP_LIST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         

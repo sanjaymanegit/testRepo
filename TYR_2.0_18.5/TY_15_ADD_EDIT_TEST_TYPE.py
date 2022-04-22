@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
 
 import sqlite3
 import re
@@ -16,7 +18,7 @@ import datetime
 import time
 import os,sys
 
-class Ui_MainWindow(object):
+class TY_15_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -337,6 +339,12 @@ class Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.s_delete_click)
         self.pushButton_8.clicked.connect(self.s_reset_data)
         
+        self.pushButton_11.setDisabled(True) #add
+        self.pushButton_7.setDisabled(True)  #save
+        self.pushButton_10.setDisabled(True) #delete           
+        self.pushButton_8.setDisabled(True) #reset
+                       
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -406,6 +414,11 @@ class Ui_MainWindow(object):
                    #print("Active Flag : "+str(x[3]))
                    self.test_type_id=str(x[4])
                    self.label_24.hide()
+                   
+                   self.pushButton_11.setDisabled(True) #add
+                   self.pushButton_7.setEnabled(True)  #save
+                   self.pushButton_10.setEnabled(True) #delete           
+                   self.pushButton_8.setEnabled(True) #reset
                        
         connection.close()
 
@@ -416,6 +429,10 @@ class Ui_MainWindow(object):
         self.lineEdit_16.setText("")
         self.textEdit.setText("")   
         self.label_24.hide()
+        self.pushButton_11.setEnabled(True) #add
+        self.pushButton_7.setDisabled(True)  #save
+        self.pushButton_10.setDisabled(True) #delete           
+        self.pushButton_8.setEnabled(True) #reset
         connection = sqlite3.connect("tyr.db")       
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_TYPE_MST'")       
         for x in results:           
@@ -452,11 +469,12 @@ class Ui_MainWindow(object):
                     connection.close()
                     self.label_24.setText("Record Added Successfully.")                   
                     self.label_24.show()
+                    self.load_data()
         else :
             self.label_24.setText("Id is Empty.")
             self.label_24.show()
             
-        self.load_data()
+        
     
     def s_edit_click(self):
         row = self.listWidget.currentRow()     
@@ -479,7 +497,7 @@ class Ui_MainWindow(object):
                     connection.close()
                     self.label_24.setText("Record Saved Successfully.")                    
                     self.label_24.show()
-                    self.load_data()   
+                    #self.load_data()   
         
      
            
@@ -495,18 +513,26 @@ class Ui_MainWindow(object):
             self.label_24.show()        
      
       
-    def s_delete_data(self):
+    def s_delete_data(self):        
         if(self.label_32.text() != ""):
-            connection = sqlite3.connect("tyr.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    #cursor.execute("DELETE FROM TEST_TYPE_MST WHERE TEST_TYPE_ID ='"+str(self.test_type_id)+"'")
-                    cursor.execute("DELETE FROM TEST_TYPE_MST where 1=1") 
-            connection.commit();                    
-            connection.close()            
-            self.label_24.setText("Record Deleted Successfully.")
-            self.label_24.show()            
-            self.load_data()
+            close = QMessageBox()
+            close.setText("Confirm Deleteing Test TYPE ID : "+str(self.test_type_id))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
+            if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM TEST_TYPE_MST WHERE TEST_TYPE_ID ='"+str(self.test_type_id)+"'")
+                            #cursor.execute("DELETE FROM TEST_TYPE_MST where 1=1") 
+                    connection.commit();                    
+                    connection.close()            
+                    self.label_24.setText("Record Deleted Successfully.")
+                    self.label_24.show()            
+                    self.load_data()
+            else:
+                    self.label_24.setText("Canceled Delete..")                   
+                    self.label_24.show()
             
     def validate_ip(self):
         self.go_ahead="No"
@@ -529,7 +555,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = TY_15_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

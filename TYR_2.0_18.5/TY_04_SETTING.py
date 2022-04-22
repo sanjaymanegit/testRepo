@@ -16,7 +16,8 @@ import time
 from PyQt5.QtCore import QDate
 import sys,os
 from pop_factory_reset import  factory_reset_Ui_MainWindow
-from TY_08_TEST_CONF import TY_08_Ui_MainWindow
+#from TY_08_TEST_CONF import TY_08_Ui_MainWindow
+from TY_15_ADD_EDIT_TEST_TYPE import TY_15_Ui_MainWindow
 
 class TY_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -599,7 +600,7 @@ class TY_04_Ui_MainWindow(object):
         
     def open_new_window3(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_08_Ui_MainWindow()
+        self.ui=TY_15_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()   
         
