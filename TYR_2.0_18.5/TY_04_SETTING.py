@@ -18,6 +18,7 @@ import sys,os
 from pop_factory_reset import  factory_reset_Ui_MainWindow
 #from TY_08_TEST_CONF import TY_08_Ui_MainWindow
 from TY_15_ADD_EDIT_TEST_TYPE import TY_15_Ui_MainWindow
+from TY_16_email_setup import ty_16_Ui_MainWindow
 
 class TY_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -303,6 +304,15 @@ class TY_04_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_14.setFont(font)
         self.pushButton_14.setObjectName("pushButton_14")
+        
+        self.pushButton_14_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_14_1.setGeometry(QtCore.QRect(1100, 650, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_14_1.setFont(font)
+        self.pushButton_14_1.setObjectName("pushButton_14_1")
+        
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(40, 360, 401, 251))
         font = QtGui.QFont()
@@ -438,6 +448,7 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "Reset"))
         self.label_16.setText(_translate("MainWindow", "Error: Please fill required mandatory fileds"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
+        self.pushButton_14_1.setText(_translate("MainWindow", "E-Mail Setup"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Configuration"))
         self.label_4.setText(_translate("MainWindow", "AutoReverse Time(Sec):"))
         self.label_5.setText(_translate("MainWindow", "Motor Test Speed(RPM):"))
@@ -461,7 +472,8 @@ class TY_04_Ui_MainWindow(object):
         #self.lineEdit_8.setDisabled(True)
         self.label_16.hide()
         self.calendarWidget.hide()
-        self.pushButton_14.clicked.connect(MainWindow.close)        
+        self.pushButton_14.clicked.connect(MainWindow.close)
+        self.pushButton_14_1.clicked.connect(self.open_new_window4) 
         self.load_data()
         #self.pushButton_6.setDisabled(True)
         #self.pushButton_7.setDisabled(True)
@@ -601,6 +613,12 @@ class TY_04_Ui_MainWindow(object):
     def open_new_window3(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_15_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()   
+     
+    def open_new_window4(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=ty_16_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()   
         
