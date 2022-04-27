@@ -356,11 +356,24 @@ class popup_email_Ui_MainWindow(object):
         #self.lineEdit_3.setText("")
         self.label_2.setText("") 
         
-    def send_email(self):        
+    def send_email(self):
+        
         self.sender_email = "utmapp3@gmail.com" #
         self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
                     #password = input("Type your password and press enter:")
         self.password = "Dhruv@1210"
+        self.smtp_server="smtp.gmail.com"
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select FROM_EMAIL_ID,FROM_EMAIL_PWD,FROM_EMAIL_SMTP_SERVER from GLOBAL_VAR") 
+        for x in results:
+            self.sender_email =str(x[0])
+            self.password =str(x[1])
+            self.smtp_server=str(x[2])            
+        connection.close()
+        
+        
 
         self.message = MIMEMultipart("alternative")
         self.message["Subject"] = str(self.lineEdit_2.text())
@@ -416,7 +429,7 @@ class popup_email_Ui_MainWindow(object):
         self.context = ssl.create_default_context()
         self.validate()
         if(self.validation_flg=="TRUE"):
-                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self.context) as server:
+                with smtplib.SMTP_SSL(self.smtp_server, 465, context=self.context) as server:
                     server.login(self.sender_email, self.password)
                     server.sendmail(
                             self.sender_email, self.receiver_email, self.message.as_string()
