@@ -148,27 +148,27 @@ class def_02_Ui_MainWindow(QMainWindow):
         self.label_2_2.setObjectName("label_2_2")
         
         self.label_2_3 = QtWidgets.QLabel(self.frame)
-        self.label_2_3.setGeometry(QtCore.QRect(700, 80, 111, 41))
+        self.label_2_3.setGeometry(QtCore.QRect(700, 80, 200, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         #font.setBold(True)
         font.setWeight(75)
         self.label_2_3.setFont(font)
-        self.label_2_3.setText(" DURATION (Hrs): ")
+        self.label_2_3.setText(" DURATION (HH:MI:SS):")
         self.label_2_3.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_2_3.setObjectName("label_2_3")
         
         self.label_2_4 = QtWidgets.QLabel(self.frame)
-        self.label_2_4.setGeometry(QtCore.QRect(810, 80, 121, 41))
+        self.label_2_4.setGeometry(QtCore.QRect(860, 80, 151, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         #font.setBold(True)
         font.setWeight(75)
         self.label_2_4.setFont(font)
-        self.label_2_4.setText(" 0 ")
-        self.label_2_4.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_2_4.setText("00:00:00")
+        self.label_2_4.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_2_4.setObjectName("label_2_4")
         
         
@@ -257,8 +257,9 @@ class def_02_Ui_MainWindow(QMainWindow):
     def device_date(self):     
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         if(self.started_plot_flg==1):
-              self.label_2_4.setText(str(int(int(self.start_plot.elapsed_time)/3600)))
-              #print("time:"+str(int(int(self.start_plot.elapsed_time)/3600)))
+              #self.label_2_4.setText(str(int(int(self.start_plot.elapsed_time)/3600)))
+              self.label_2_4.setText(str(int(int(self.start_plot.elapsed_time)/3600)).zfill(2)+":"+str(int(int(self.start_plot.elapsed_time)/60)).zfill(2)+":"+str(int(int(self.start_plot.elapsed_time))).zfill(2))
+              print("time:"+str(int(int(self.start_plot.elapsed_time))))
         '''
         if(self.label_2_2.text() != ""):
           if(float(self.label_2_2.text()) > 0):
@@ -652,6 +653,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
+        self.elapsed_time_show=0
         self.status=""
         self.plot_auto()
          
@@ -664,6 +666,9 @@ class PlotCanvas_Auto(FigureCanvas):
          ### append appray from db
         self.end_time = datetime.datetime.now()
         self.elapsed_time=self.end_time-self.start_time
+        self.elapsed_time_show=self.end_time-self.start_time
+        #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.elapsed_time_show)
+        #print("self.elapsed_time_show :"+str(self.time.strftime("",self.elapsed_time_show)))
         self.elapsed_time =self.elapsed_time.days * 24 * 3600 + self.elapsed_time.seconds
         self.elapsed_time=int(self.elapsed_time)
         self.mod=int(self.elapsed_time) % 10        

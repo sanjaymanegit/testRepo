@@ -748,9 +748,10 @@ class def_07_Ui_MainWindow(object):
                 self.c_wt=0
                 if(str(self.lineEdit.text()) != ""):                    
                    self.c_wt=int(str(self.lineEdit.text()))
-                   #print()
+                   print("self.c_wt : "+str(self.c_wt))
                 else:
                    self.c_wt=0
+                   print("inside else self.c_wt : "+str(self.c_wt))
                 if(int(self.c_wt) > 0):
                     self.command_str=""
                     self.command_str=str(self.c_wt)+"\r\n"
@@ -879,8 +880,8 @@ class def_07_Ui_MainWindow(object):
         if(self.IO_error_flg==0):
             try:
                 self.line = self.ser.readline()
-                print(" raw o/p:"+str(self.line))
-                print("self.line:"+str(self.line,'utf-8'))
+                #print(" raw o/p:"+str(self.line))
+                #print("self.line:"+str(self.line,'utf-8'))
                 self.xstr0=str(self.line,'utf-8')
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
