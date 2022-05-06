@@ -449,7 +449,7 @@ class def_05_Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "Test Details "))
         self.label_12.setText(_translate("MainWindow", "Max. Compressive Force :"))
         self.label_13.setText(_translate("MainWindow", "Max. Test Duration :"))
-        self.label_14.setText(_translate("MainWindow", " . Kfg "))
+        self.label_14.setText(_translate("MainWindow", " . Kgf "))
         self.label_15.setText(_translate("MainWindow", " .hrs "))
         self.label_16.setText(_translate("MainWindow", "Temperature at Test :"))
         self.label_17.setText(_translate("MainWindow", " . C"))
