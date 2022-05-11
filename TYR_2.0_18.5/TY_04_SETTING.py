@@ -19,6 +19,7 @@ from pop_factory_reset import  factory_reset_Ui_MainWindow
 #from TY_08_TEST_CONF import TY_08_Ui_MainWindow
 from TY_15_ADD_EDIT_TEST_TYPE import TY_15_Ui_MainWindow
 from TY_16_email_setup import ty_16_Ui_MainWindow
+from TY_17_calbration_extentio_mtr import TY_17_Ui_MainWindow
 
 class TY_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -46,6 +47,7 @@ class TY_04_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
+        
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(230, 650, 111, 31))
         font = QtGui.QFont()
@@ -53,6 +55,15 @@ class TY_04_Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setObjectName("pushButton_5")
+        
+        self.pushButton_5_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_5_1.setGeometry(QtCore.QRect(80, 650, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_5_1.setFont(font)
+        self.pushButton_5_1.setObjectName("pushButton_5_1")
+        
         self.label_6 = QtWidgets.QLabel(self.frame)
         self.label_6.setGeometry(QtCore.QRect(470, 30, 211, 41))
         font = QtGui.QFont()
@@ -419,6 +430,7 @@ class TY_04_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))
         self.pushButton_5.setText(_translate("MainWindow", "Save"))
+        self.pushButton_5_1.setText(_translate("MainWindow", "Callibration"))
         self.label_6.setText(_translate("MainWindow", "System Setting"))
         self.groupBox.setTitle(_translate("MainWindow", "Company Details"))
         self.label.setText(_translate("MainWindow", "Company Name:"))
@@ -473,7 +485,8 @@ class TY_04_Ui_MainWindow(object):
         self.label_16.hide()
         self.calendarWidget.hide()
         self.pushButton_14.clicked.connect(MainWindow.close)
-        self.pushButton_14_1.clicked.connect(self.open_new_window4) 
+        self.pushButton_14_1.clicked.connect(self.open_new_window4)
+        self.pushButton_5_1.clicked.connect(self.open_new_window5) 
         self.load_data()
         #self.pushButton_6.setDisabled(True)
         #self.pushButton_7.setDisabled(True)
@@ -619,6 +632,12 @@ class TY_04_Ui_MainWindow(object):
     def open_new_window4(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=ty_16_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()   
+        
+    def open_new_window5(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_17_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()   
         

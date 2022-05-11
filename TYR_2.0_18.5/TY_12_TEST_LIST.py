@@ -137,6 +137,19 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_11.setStyleSheet("color: rgb(170, 0, 0);")
         self.label_11.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
+        
+        
+        
+        
+        
+        self.checkBox = QtWidgets.QCheckBox(self.frame)
+        self.checkBox.setGeometry(QtCore.QRect(910, 140, 250, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.checkBox.setFont(font)
+        self.checkBox.setObjectName("checkBox")
+        
         self.label_4 = QtWidgets.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(40, 110, 141, 61))
         font = QtGui.QFont()
@@ -201,6 +214,8 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Select Test :"))
         self.label_5.setText(_translate("MainWindow", " TESTS LIST"))
         self.pushButton_15.setText(_translate("MainWindow", "IMAGE"))
+        self.checkBox.setText(_translate("MainWindow", "Enable External Extentiomenter"))
+        self.checkBox.setDisabled(True)
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.open_new_test_win)
         
@@ -248,12 +263,25 @@ class TY_12_LIST_Ui_MainWindow(object):
                        self.pushButton_15.setDisabled(True)
                        self.pushButton_4.setDisabled(True)
                    self.test_type_id=str(x[4])
+                   if(self.label_11.text() == "TENSILE"):
+                       self.checkBox.setEnabled(True)
+                   else:
+                       self.checkBox.setDisabled(True)
                        
         connection.close()
         
         
         
     def open_new_test_win(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()                   
+                    if(self.checkBox.isChecked()):
+                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='Y'")
+                    else:
+                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='N'")
+        connection.commit();
+        connection.close()
         if(str(self.test_type_id) == "1"):
             self.save_test_tensile()
         elif(str(self.test_type_id) == "2"):
@@ -277,9 +305,11 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")            
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")                    
         connection.commit();
-        connection.close()    
+        connection.close()
+        
+        
         self.open_new_window()
         
     def save_test_compress(self):                     

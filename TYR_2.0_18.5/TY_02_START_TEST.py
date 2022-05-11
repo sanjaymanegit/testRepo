@@ -662,7 +662,7 @@ class TY_02_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.cycle_num=0
-
+        self.guage_ext_flg='N'
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -781,9 +781,11 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_1.setDisabled(True)
         self.test_type_for_flexural=""
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
+        results=connection.execute("select NEW_TEST_NAME,GUAGE_EXT_FLG FROM GLOBAL_VAR")                 
         for x in results:                
                     self.test_type_for_flexural=str(x[0])
+                    self.guage_ext_flg=str(x[1])
+                    
                     self.label.setText(str(x[0])+" Test")
                     if(str(x[0]) == "Tensile"):
                         self.pushButton_4_1.setEnabled(True)
@@ -809,11 +811,17 @@ class TY_02_Ui_MainWindow(object):
                         xonxoff=False,
                         timeout = 0.05
                     )
-            
-            self.timer3=QtCore.QTimer()
-            self.timer3.setInterval(5000)        
-            self.timer3.timeout.connect(self.loadcell_encoder_status)
-            self.timer3.start(1)
+            if(self.guage_ext_flg=='Y'):
+                self.extiometer=1
+                self.radioButton.setChecked(True)
+                self.radioButton_2.setDisabled(True)
+                self.radioButton_2.setChecked(False)
+                self.radioButton.setEnabled(True)
+            else:
+                self.timer3=QtCore.QTimer()
+                self.timer3.setInterval(5000)        
+                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                self.timer3.start(1)
         except IOError:
             print("IO Errors")
     
@@ -1987,7 +1995,7 @@ class TY_02_Ui_MainWindow(object):
           
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.TENSILE_STRENGTH) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG*0.1,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
