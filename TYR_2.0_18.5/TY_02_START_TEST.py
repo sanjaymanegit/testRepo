@@ -1279,9 +1279,17 @@ class TY_02_Ui_MainWindow(object):
                       self.failure_mod="" 
                 else:
                       pass
-                
-                self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
-                self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
+                if(self.test_type_for_flexural == "Tensile"):
+                    if(self.guage_ext_flg=="Y"):                    
+                        self.sc_new =Ext_PlotCanvas_Auto(self,width=8, height=5, dpi=90)
+                        self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
+                    else:
+                        self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
+                        self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)                        
+                else:     
+                        self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
+                        self.gridLayout_2.addWidget(self.sc_new, 0,0,1,5)
+                        print("Non Tensile and  Non Guage extetiometer")
                 
                 connection = sqlite3.connect("tyr.db")             
                 with connection:        
@@ -1414,7 +1422,10 @@ class TY_02_Ui_MainWindow(object):
                   if(self.test_type=="Compress" or self.test_type=="Flexural"):
                         cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
                   else:   
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        if(self.guage_ext_flg=="Y"):
+                                cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        else:
+                                cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
             connection.commit();
             connection.close()
             
@@ -2778,6 +2789,483 @@ class PlotCanvas_blank(FigureCanvas):
         else:
             ax.set_xlabel('Elongation (mm)')
         self.draw() 
+
+
+class Ext_PlotCanvas_Auto(FigureCanvas):     
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        
+        self.axes = fig.add_subplot(111)
+        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
+        self.axes.set_facecolor('#CCFFFF')  
+        self.axes.minorticks_on()
+        self.test_type="Tensile"
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME from GLOBAL_VAR") 
+        for x in results:
+            self.test_type=str(x[0])
+        connection.close()
+        
+        if(self.test_type=="Compress"):
+            self.axes.set_xlabel('Compression (mm)')        
+        else:        
+            self.axes.set_xlabel('Elongation (mm)')
+          
+        self.axes.set_ylabel('Load (Kgf)') 
+        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        self.compute_initial_figure()
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)        
+        ###
+        self.playing = False
+        self.p =0
+        self.q =0
+        self.p_old=0
+        self.arr_p=[0.0]
+        self.arr_q=[0.0]
+        self.arr_p1=[0.0]
+        self.arr_q1=[0.0]
+        self.x=0
+        self.y=0
+        #self.ax = self.figure.add_subplot(111) 
+        self.xlim=0
+        self.ylim=10
+        self.line_cnt=0
+        self.xlim_update='NO'
+        self.ylim_update='NO'
+        ##############
+        self.buff=[]
+        self.ybuff=[]
+        self.line=""
+        self.yline=""
+        self.flag=1
+        
+        self.check_R=""
+        self.check_S=""
+        self.IO_error_flg=0
+        self.timer1=QtCore.QTimer()
+       
+       
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        self.save_data_flg=""
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0      
+        self.auto_rev_time_off=0
+        self.break_sence=0
+        self.test_motor_speed=0
+        self.test_guage_mm=0
+        self.test_type="Tensile"
+        self.max_load=0
+        self.max_length=0
+        self.flexural_max_load=100
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
+        self.plot_auto()
+         
+    def compute_initial_figure(self):
+        pass
+    
+   
+    
+    def plot_auto(self):
+        self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        for x in results:
+             self.axes.set_xlim(0,int(x[0]))
+             self.axes.set_ylim(0,int(x[1]))
+             self.flexural_max_load=int(x[1])
+             self.xlim=int(x[0])
+             self.ylim=int(x[1])
+             self.auto_rev_time_off=int(x[2])
+             self.break_sence=int(x[3])
+        connection.close()
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0) from GLOBAL_VAR") 
+        for x in results:            
+             self.test_guage_mm=int(x[0])
+             self.test_type=str(x[1])
+             self.max_load=int(x[2])
+             #self.max_load=100
+             self.max_length=float(float(x[0])-float(x[3]))
+             #self.max_load=str(self.max_load).zfill(5)
+             #self.max_length=str(int(self.max_length)).zfill(5)
+             #self.max_length=float(x[3])
+             print("Max Load :"+str(self.max_load).zfill(5)+" Max length :"+str(int(self.max_length)).zfill(5))
+        connection.close()
+        
+        try:
+            self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
+            
+            self.ser2 = serial.Serial(
+                        port='/dev/ttyAMA0',
+                        baudrate=115200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
+          
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.yline = self.ser.readline()
+            
+            print("Check for Load Cel o/p:"+str(self.yline))
+            
+            
+            self.ser2.flush()           
+            self.yline2 = self.ser2.readline()
+            
+            
+            ystr3=str(self.yline)        
+            ystr3=ystr3[1:int(len(ystr3)-1)]
+            ystr2=ystr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            ystr1=ystr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            ystr=ystr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.ybuff=ystr.split("_")
+            print("Length of Array :"+str(len(self.ybuff)))
+                
+         
+            #==== Guage Length Setting before staret =====
+            self.ser.flush()
+            if(self.test_type=="Flexural"):
+                self.test_guage_mm=0
+                self.command_str="*G0.00\r"
+            else:
+                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            print("Guage Length Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #===== Auto Reverse Time Off =====
+            self.ser.flush()
+            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
+            print("Auto reve. Time off Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #========Motor Speed and Breaking Sence =========            
+            self.validate_speed()            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+            else:   
+                self.ser.write(b'*P0050_0010\r')
+                #print("started with default motor speed . Not gohead ")
+            #self.ser.write(b'*D\r\n')
+                
+            #time.sleep(2)
+            #========Final Motor start Command =========    
+            self.ser.flush()
+            if(self.test_type=="Compress"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                    else:
+                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                    
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)                 
+                else:
+                    print("Compress test not started ")               
+                               
+            elif(self.test_type=="Flexural"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                            #self.ser.write(b'*S2E0599 200\r')
+                            self.command_str="*S2E%04d"%self.flexural_max_load+" 0000\r"
+                    else:
+                            self.command_str="*S1E%04d"%self.flexural_max_load+" 0000\r"
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("fluexural test started ")
+                else:
+                    print("fluexural test not started ")
+            else:
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.ser.write(b'*S2T000.0 000.0\r')
+                        print("Start Command :*S2T000.0 000.0\r")
+                    else:
+                        self.ser.write(b'*S1T000.0 000.0\r')
+                        print("Start Command:*S1T000.0 000.0\r")
+                else:
+                    print("Error :Serial O/P is not getting ")
+            
+        except IOError:
+            #print("IO Errors")
+            self.IO_error_flg=1
+            
+        
+        
+        #self.axes.set_autoscale_on(False)
+        #self.axes.autoscale(tight=True)
+        #self.axes.autoscale(True, 'both', True)
+        #self.axes.plot(self.arr_p,self.arr_q)
+        #Create Timer here          
+        
+        self.timer1.setInterval(1000)     
+        self.timer1.timeout.connect(self.update_graph)
+        self.timer1.start(1)
+       
+        self.on_ani_start()
+    
+    def update_graph(self):       
+        if(self.IO_error_flg==0):
+            '''
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.line = self.ser.readline()
+            print("With Readline Timer Job o/p:"+str(self.line))
+            #print("Running")
+            '''
+            try:
+                self.line = self.ser.readline()
+                print("Timer Job o/p:"+str(self.line))
+                self.ser.flush()
+                self.ser.write(b'*D\r')
+            except IOError:
+                print("IO Errors")    
+                
+            xstr3=str(self.line)        
+            xstr3=xstr3[1:int(len(xstr3)-1)]
+            xstr2=xstr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            xstr1=xstr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            xstr=xstr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.buff=xstr.split("_")
+        
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):
+            #print("length of array :"+str(len(self.buff)))
+            self.check_R = re.findall(r"[R]", xstr)
+            self.check_S = re.findall("[S]", xstr)
+            self.check_OK = re.findall("[OK]", xstr)
+            #print("Checkking R Characher :"+str(self.check_R))
+            #print("Checkking OK Characher :"+str(len(self.check_OK))) 
+            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                #print("Running.... :"+str(self.check_R))
+                #print("length(X).... :"+str(self.buff[4]))
+                #print("load(Y)... :"+str(self.buff[1]))
+                #print("Load Cell No... :"+str(self.buff[7]))
+                #print("Encoder No.. :"+str(self.buff[6]))
+                
+               
+                
+#                if(self.load_cell_hi==1):              
+#                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+#                else:
+#                    self.q=abs(float(self.buff[0]))
+                
+                self.q=abs(float(self.buff[1]))
+                self.p=self.ser2.readline(15)
+                self.xstr0=str(self.p,'utf-8')
+                self.xstr1=self.xstr0.replace("\r","")
+                self.xstr2=self.xstr1.replace("\n","")
+                self.buff=self.xstr2.split("_")                
+                if(len(self.buff)> 1):
+                                self.xstr2=str(self.buff[0])
+                                try:
+                                     self.xstr4=float(self.xstr2)
+                                except ValueError:                        
+                                    print("Value Error"+str(self.xstr2))
+                                    self.xstr4=0   
+                
+                                self.p=float(self.xstr4)
+                    #self.p_new=self.p-int(self.test_guage_mm)
+                    
+                    #self.p=int(self.test_guage_mm)-self.p
+                    #self.p=self.p   
+                    
+                 
+                
+                
+                self.arr_p.append(self.p)
+                self.arr_q.append(self.q)
+                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+               
+                #print(" Array P:"+str(self.arr_p))
+                #print(" Array Q:"+str(self.arr_q))
+               
+                
+                #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
+
+                if(int(self.q) > int(self.ylim)):
+                   self.ylim=(int(self.q)+100)
+                   self.ylim_update='YES'                   
+                   #print(" self.ylim:"+str(self.ylim))
+                
+                #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
+                              
+                if(self.p > self.xlim):
+                   self.xlim=(int(self.p)+100)
+                   self.xlim_update='YES'
+                   
+                   
+                   
+                   
+                   
+                #time.sleep(1) 
+            else:                
+                if(self.test_type=="Compress"):
+                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                    self.p=int(self.test_guage_mm)-self.p
+                    #self.p=self.p-int(self.test_guage_mm)
+                    print("final P :::"+str(self.p))
+                    self.arr_p.append(self.p)
+                    self.arr_q.append(self.q)
+                    self.save_data_flg="Yes"
+                    #self.on_ani_stop()
+                elif(self.test_type=="Flexural"):
+                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                    #self.p=int(self.test_guage_mm)-self.p
+                    print("final P :::"+str(self.p))
+                    self.arr_p.append(self.p)
+                    self.arr_q.append(self.q)
+                    self.save_data_flg="Yes"
+                
+                else:
+                
+                    self.save_data_flg="Yes"
+                
+       
+                    
+                
+               
+     
+          
+    def plot_grah_only(self,i):        
+        #self.arr_p1.append(self.p)
+        #self.arr_q1.append(self.q)
+        #print("Animation :"+str(i))
+        #print(" ANI _P:"+str(self.p)+" q:"+str(self.q))
+        #print("data :"+str(self.arr_p1[0]))
+        '''
+        if(self.xlim_update=='YES'):
+             self.axes.set_xlim(0,int(self.xlim))
+             self.xlim_update='NO'
+             self.axes.relim()
+             #time.sleep(1)
+        if(self.ylim_update=='YES'): 
+             self.axes.set_ylim(0,int(self.ylim))
+             self.ylim_update='NO'
+             self.axes.relim()
+        '''
+        self.line_cnt.set_data(self.arr_p,self.arr_q)
+        return [self.line_cnt]
+        #return self.line_cnt,
+    
+    
+    def on_ani_stop(self):
+        self.on_stop()
+        if self.playing:
+            self.ani._stop()
+        else:
+             pass
+    
+    def on_stop(self):
+        if(self.timer1.isActive()): 
+           self.timer1.stop()                                                                                      
+           #print("Time 1 has been stopped ")
+        #if(self.timer3.isActive()): 
+           #self.timer3.stop()                                                                                      
+           #print("Time 2 has been stopped ")
+           
+    def init(self):
+        self.line_cnt.set_data([], [])
+        return self.line_cnt,
+
+    def on_ani_start(self):        
+        if self.playing:
+            pass
+        else:
+            self.playing = True
+            self.ani = animation.FuncAnimation(
+                self.figure,
+                self.plot_grah_only,init_func=self.init
+                ,blit=True
+                ,interval=10
+                    )
+            print("Done1")
+       
+    def validate_speed(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
+        for x in results:
+             self.speed_val=str(x[0])
+        connection.close()
+        self.goahead_flag=0
+       
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+        connection.close()
+        
+        if(self.input_speed_val != ""):
+            if(int(self.input_speed_val) <= int(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 #print(" calc Speed : "+str(self.calc_speed))
+                 #print(" command: *P"+str(self.calc_speed)+" \r")
+                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))                 
+            else:
+                 print(" not Ok ")
+                 #self.label_9_1.show()
+                 #self.label_3.setText("Speed Should not more than MAX Speed :"+str(self.speed_val))
+                 #self.label_3.show()
+        else:
+            print(" not Ok ")
+            #self.label_3.setText("Motor Speed is Required")
+            #self.label_3.show()            
+    
+    
+ 
+
+
+
+
+
 
 
 if __name__ == "__main__":
