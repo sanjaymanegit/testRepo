@@ -1378,7 +1378,7 @@ class TY_02f_Ui_MainWindow(object):
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                   if(self.test_type=="Compress" or self.test_type=="Flexural"):
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
                   else:   
                         cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
             connection.commit();
@@ -1753,7 +1753,8 @@ class PlotCanvas_Auto(FigureCanvas):
                   self.test_type=str(x[1])
              self.max_load=int(x[2])
              #self.max_load=100
-             self.max_length=float(float(x[0])-float(x[3]))
+             #self.max_length=float(float(x[0])-float(x[3]))
+             self.max_length=float(float(x[3]) - float(x[0]))
              self.flex_max_length=float(x[3])
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
@@ -1946,7 +1947,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress"):
-                    self.p=int(self.test_guage_mm)-self.p
+                    #self.p=int(self.test_guage_mm)-self.p
+                    self.p=self.p-int(self.test_guage_mm)
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     #self.p=self.p
@@ -1981,7 +1983,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.test_type=="Compress"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    self.p=int(self.test_guage_mm)-self.p
+                    #self.p=int(self.test_guage_mm)-self.p
+                    self.p=self.p-int(self.test_guage_mm)
                     print("final P :::"+str(self.p))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)

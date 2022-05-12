@@ -2462,8 +2462,9 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress"):
-                    self.p=int(self.test_guage_mm)-self.p
-                    #print("self.p :"+str(self.p))
+                    #self.p=int(self.test_guage_mm)-self.p                    
+                    self.p=self.p-int(self.test_guage_mm)
+                    #print("actual self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     self.p=self.p
                 else:                    
@@ -2495,7 +2496,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(self.p)
                 self.arr_q.append(self.q)
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
-               
+                print("final P :::"+str(self.p)+", guage lengt :"+str(int(self.test_guage_mm)))
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -2522,9 +2523,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.test_type=="Compress"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p-int(self.test_guage_mm)
-                    print("final P :::"+str(self.p))
+                    #self.p=int(self.test_guage_mm)-self.p
+                    self.p=self.p-int(self.test_guage_mm)
+                    #print("final P :::"+str(self.p)+", guage lengt :"+str(int(self.test_guage_mm)))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
                     self.save_data_flg="Yes"
