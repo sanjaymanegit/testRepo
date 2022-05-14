@@ -1622,6 +1622,136 @@ class TY_02f_Ui_MainWindow(object):
         self.on_change_input_strain()
         
         
+        
+    def create_pdf_flexural(self):
+        self.length=0
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:
+            self.graph_typex=x[0]
+            self.unit_typex=x[1]
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.TEMPERATURE  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine"," Temp.(C) :",str(x[12])]]
+            self.length=str(x[6])        
+        connection.close()
+        
+        if(self.unit_typex == "Kg/Cm"):
+            self.length=float(int(self.length)*0.1)
+            data2= [ ['Spec. \n No', 'Length \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)','Max.\n Displ. \n (cm)', 'Force  \n @  Peak\n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
+        elif(self.unit_typex == "Lb/Inch"):
+            self.length=float(int(self.length)*0.0393701)
+            data2= [ ['Spec. \n No', 'Length \n (Inch)','Thickness  \n (Inch)','Width  \n (Inch)','Support \n Span  \n (Inch)','Max.\n Displacement \n (Inch)', 'Force \n @ Peak\n (Lb)', 'Flexural \n Strength \n (Lb/Inch2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]           
+        elif(self.unit_typex == "Newton/Mm"):
+            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n Strength \n (N/mm2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]            
+        elif(self.unit_typex == "MPA"):
+            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness  \n (mm)','Width  \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n Strength \n (MPa)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]           
+        else:
+            data2= [ ['Spec. \n No','Length \n (mm)', 'Thickness \n (mm)','Width \n (mm)','Support \n Span  \n (mm)','Max.\n Displ. \n (mm)', 'Force \n @  Peak\n (N)', 'Flexural \n  Strength \n (MPa)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
+          
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,"+str(self.length)+",printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.4f\", A.PEAK_LOAD),printf(\"%.2f\", A.FLEXURAL_STRENGTH),printf(\"%.2f\", A.flexural_mod_kg_cm),printf(\"%.2f\", A.per_strain_at_break),printf(\"%.2f\", A.per_strain_at_input) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TYPE_STR,"+str(self.length)+",printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.2f\", SPAN),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.4f\", PEAK_LOAD),printf(\"%.2f\", FLEXURAL_STRENGTH),printf(\"%.2f\", flexural_mod_kg_cm),printf(\"%.2f\", per_strain_at_break),printf(\"%.2f\", per_strain_at_input) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close() 
+        
+        
+        
+        if(self.unit_typex == "Kg/Cm"):
+            #self.length=float(int(self.length)*0.1)
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (cm)','Support Radious \n (cm)','Failure \n Mode','Test \n Method']]
+        elif(self.unit_typex == "Lb/Inch"):
+            self.length=float(int(self.length)*0.0393701)
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (Inch)','Support Radious \n (Inch)', 'Failure \n Mode','Test \n Method']]           
+        elif(self.unit_typex == "Newton/Mm"):
+            data3= [ ['Spec. \n No','Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]            
+        elif(self.unit_typex == "MPA"):
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]           
+        else:
+            data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)','Load Radious \n (mm)','Support Radious \n (mm)','Failure \n Mode','Test \n Method']]
+          
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.speed_rpm),printf(\"%.2f\", A.load_radious),printf(\"%.2f\", A.support_radious),A.BREAK_MODE,A.TEST_METHOD FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+        for x in results:
+                data3.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", speed_rpm),null,null FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data3.append(x)
+        connection.close() 
+        
+        y=300
+        Elements=[]
+        
+        
+        
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f4=Table(data3)
+        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),comments,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', rightMargin=10,
+                                leftMargin=30,
+                                topMargin=20,
+                                bottomMargin=20,)
+        doc.build(Elements)
+        #print("Done")
+        
+        
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -2230,6 +2360,75 @@ class PlotCanvas_blank(FigureCanvas):
             ax.set_xlabel('Elongation (mm)')
         self.draw() 
 
+  ax = self.figure.add_subplot(111)
+       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[0.0]
+        self.test_type="Tensile"
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+             self.graph_ids.append(x[0])             
+        connection.close()
+        
+        ### Univarsal change for  Graphs #####################
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2*0.1,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])            
+        connection.close()
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+        
+            connection = sqlite3.connect("tyr.db")
+            if(self.test_type=="Compress" or self.test_type=="Flexural"):
+                results=connection.execute("SELECT X_NUM*0.1,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:   
+                results=connection.execute("SELECT X_NUM*0.1,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                self.x_num.append(k[0])
+                self.y_num.append(k[1])
+            connection.close() 
+        
+            if(g < 8 ):
+                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+        
+        print("self.test_type:"+str(self.test_type))
+        if(str(self.test_type)=="Compress"):
+            ax.set_xlabel('Compression (Cm)')        
+        else:
+            ax.set_xlabel('Elongation (Cm)')
+        ax.set_ylabel('Load (Kgf)')
+        #self.connect('motion_notify_event', mouse_move)
+        ax.legend()        
+        self.draw()
+        self.figure.savefig('last_graph_kg_cm.png',dpi=100)
+        
+        #ax.connect('motion_notify_event', mouse_move)
+    
+    
 
 if __name__ == "__main__":
     import sys
