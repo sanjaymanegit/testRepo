@@ -214,7 +214,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Select Test :"))
         self.label_5.setText(_translate("MainWindow", " TESTS LIST"))
         self.pushButton_15.setText(_translate("MainWindow", "IMAGE"))
-        self.checkBox.setText(_translate("MainWindow", "Enable External Extentiomenter"))
+        self.checkBox.setText(_translate("MainWindow", "Enable External Extentiometer"))
         self.checkBox.setDisabled(True)
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.open_new_test_win)

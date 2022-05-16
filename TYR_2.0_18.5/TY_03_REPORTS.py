@@ -2342,8 +2342,8 @@ class PlotCanvas(FigureCanvas):
                     self.x_num=[0]
                     self.y_num=[0]
                     connection = sqlite3.connect("tyr.db")
-                    if(self.test_type=="Compress"):                        
-                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    if(self.test_type=="Compressx"):  #This condition is dicommitioned                      
+                            results=connection.execute("SELECT X_NUM*0.1,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.test_type=="COF"):                        
                             results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     

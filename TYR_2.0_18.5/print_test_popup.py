@@ -94,7 +94,7 @@ class P_POP_TEST_Ui_MainWindow(object):
            
     def print_pdf(self):                
         conn = cups.Connection() 
-        file="./reports/Reportxxx.pdf"        
+        file="./reports/test_report.pdf"        
         print("length of printers :"+str(len(self.printers)))
         if(len(self.printers) > 0):
             printer=self.radioButton.text()
