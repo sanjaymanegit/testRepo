@@ -10,6 +10,9 @@
 import sys
 import os
 
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+
 #from P1_main_screen import P1_Ui_MainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.QtGui import QIcon
@@ -972,18 +975,46 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.pushButton_3_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_3.setGeometry(QtCore.QRect(1160, 490, 120, 31))
+        self.pushButton_3_3.setGeometry(QtCore.QRect(1130, 490, 40, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_3_3.setFont(font)
-        self.pushButton_3_3.setText("View Report")        
+        #self.pushButton_3_3.setText("R")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("images/Report.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3_3.setIcon(icon3)
+        self.pushButton_3_3.setIconSize(QtCore.QSize(35, 35))        
         self.pushButton_3_3.setObjectName("pushButton_3_3")
         self.pushButton_3_3.clicked.connect(self.open_pdf)
         
         
+        self.pushButton_3_4 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_3_4.setGeometry(QtCore.QRect(1185, 490, 40, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_3_4.setFont(font)        
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("images/Print.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3_4.setIcon(icon3)
+        self.pushButton_3_4.setIconSize(QtCore.QSize(35, 35)) 
+        self.pushButton_3_4.clicked.connect(self.print_file)
+        self.pushButton_3_4.setObjectName("pushButton_3_4")
         
         
+        self.pushButton_3_5 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_3_5.setGeometry(QtCore.QRect(1240, 490, 40, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_3_5.setFont(font)        
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("images/email.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_3_5.setIcon(icon3)
+        self.pushButton_3_5.setIconSize(QtCore.QSize(20, 20))
+        self.pushButton_3_5.clicked.connect(self.open_email_report)
+        self.pushButton_3_5.setObjectName("pushButton_3_5")
        
         self.label_3_4= QtWidgets.QLabel(self.frame)
         self.label_3_4.setGeometry(QtCore.QRect(790, 490, 150, 31))
@@ -1683,25 +1714,25 @@ class TY_02f_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,"+str(self.length)+",printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.WIDTH*0.1),printf(\"%.2f\", A.SPAN*0.1),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1),printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.FLEXURAL_STRENGTH),printf(\"%.2f\", A.flexural_mod_kg_cm),printf(\"%.2f\", A.per_strain_at_break),printf(\"%.2f\", A.per_strain_at_input) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,"+str(self.length)+",printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.WIDTH*0.1),printf(\"%.2f\", A.SPAN*0.1),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1),printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.FLEXURAL_STRENGTH*100),printf(\"%.2f\", A.flexural_mod_kg_cm),printf(\"%.2f\", A.per_strain_at_break),printf(\"%.2f\", A.per_strain_at_input) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',"+str(self.length)+",printf(\"%.2f\", avg(A.THINCKNESS)*0.1),printf(\"%.2f\", avg(A.WIDTH)*0.1),printf(\"%.2f\", avg(A.SPAN)*0.1),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.FLEXURAL_STRENGTH)),printf(\"%.2f\", avg(A.flexural_mod_kg_cm)),printf(\"%.2f\", avg(A.per_strain_at_break)),printf(\"%.2f\", avg(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',"+str(self.length)+",printf(\"%.2f\", avg(A.THINCKNESS)*0.1),printf(\"%.2f\", avg(A.WIDTH)*0.1),printf(\"%.2f\", avg(A.SPAN)*0.1),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", avg(A.flexural_mod_kg_cm)),printf(\"%.2f\", avg(A.per_strain_at_break)),printf(\"%.2f\", avg(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',"+str(self.length)+",printf(\"%.2f\", max(A.THINCKNESS)*0.1),printf(\"%.2f\", max(A.WIDTH)*0.1),printf(\"%.2f\", max(A.SPAN)*0.1),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.FLEXURAL_STRENGTH)),printf(\"%.2f\", max(A.flexural_mod_kg_cm)),printf(\"%.2f\", max(A.per_strain_at_break)),printf(\"%.2f\", max(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',"+str(self.length)+",printf(\"%.2f\", max(A.THINCKNESS)*0.1),printf(\"%.2f\", max(A.WIDTH)*0.1),printf(\"%.2f\", max(A.SPAN)*0.1),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", max(A.flexural_mod_kg_cm)),printf(\"%.2f\", max(A.per_strain_at_break)),printf(\"%.2f\", max(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',"+str(self.length)+",printf(\"%.2f\", min(A.THINCKNESS)*0.1),printf(\"%.2f\", min(A.WIDTH)*0.1),printf(\"%.2f\", min(A.SPAN)*0.1),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.FLEXURAL_STRENGTH)),printf(\"%.2f\", min(A.flexural_mod_kg_cm)),printf(\"%.2f\", min(A.per_strain_at_break)),printf(\"%.2f\", min(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',"+str(self.length)+",printf(\"%.2f\", min(A.THINCKNESS)*0.1),printf(\"%.2f\", min(A.WIDTH)*0.1),printf(\"%.2f\", min(A.SPAN)*0.1),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", min(A.flexural_mod_kg_cm)),printf(\"%.2f\", min(A.per_strain_at_break)),printf(\"%.2f\", min(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -1866,7 +1897,7 @@ class TY_02f_Ui_MainWindow(object):
     
     def open_email_report(self):
         #self.test_id=(self.tableWidget.item(row, 1).text() )
-        print(" test_id :"+str(self.test_id))  
+        #print(" test_id :"+str(self.test_id))  
         connection = sqlite3.connect("tyr.db")        
         with connection:        
                         cursor = connection.cursor()                
