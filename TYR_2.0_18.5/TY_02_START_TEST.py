@@ -1555,6 +1555,55 @@ class TY_02_Ui_MainWindow(object):
         
         self.load_data()
         
+    
+    def get_defarmetion_point(self):
+        c=0
+        def_point=-1
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST order by REC_ID ASC")
+        for x in results:
+            if (int(c)==0):
+                c=float(x[1])
+            else:    
+                if(float(x[1]) > float(c)):
+                    continue
+                else:
+                    def_point=float(x[0])
+                    break                    
+        connection.close()        
+        
+        if(int(def_point) > 0):
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")                                                               
+            connection.commit();
+            connection.close()
+    
+    def get_load_at_Defarmation(self):
+        def_load=0
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT Y_NUM FROM STG_GRAPH_MST WHERE X_NUM  in (SELECT DEF_POINT FROM GLOBAL_VAR) LIMIT 1")
+        for x in results:
+              def_load=str(x[0])
+        connection.close()
+        
+        if(int(def_load) > 0):
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                cursor.execute("UPDATE GLOBAL_VAR SET DEF_LOAD = '"+str(def_load)+"'")                                                               
+            connection.commit();
+            connection.close()
+        
+        
+    def get_yeild_strength(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                cursor.execute("UPDATE GLOBAL_VAR SET DEF_YEILD_STRG = DEF_LOAD/NEW_TEST_AREA")                                                               
+        connection.commit();
+        connection.close()
+        
+        
+        
     def show_load_cell_val(self):        
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
         self.label_34.setProperty("value", str(max(self.sc_new.arr_q)))
