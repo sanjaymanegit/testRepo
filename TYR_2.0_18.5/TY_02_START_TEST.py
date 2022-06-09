@@ -712,6 +712,7 @@ class TY_02_Ui_MainWindow(object):
         
         item = self.tableWidget.horizontalHeaderItem(11)
         item.setText(_translate("MainWindow", "Cycle Id"))
+        
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -1136,6 +1137,48 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()  
      
+    def show_grid_data_guage_tensile(self):
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(12)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 120)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 150)    
+        self.tableWidget.setColumnWidth(7, 120)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 150)
+        self.tableWidget.setColumnWidth(10, 150)
+        self.tableWidget.setColumnWidth(11, 150)
+        self.tableWidget.setColumnWidth(12, 50)
+        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak \n (Kgf) ', 'Length at Peak \n (mm)', 'Guage Length \n (mm)','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','%E@Peak','%E@Break','Yeild Strength \n (Kg/Cm2)','Cycle Id'])        
+       
+        connection = sqlite3.connect("tyr.db")
+        #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),printf(\"%.2f\", DEF_YEILD_STRG),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()  
+    
+    
+    
+    
+    
+    
     def show_grid_data_compress(self):
         #print("inside compress list.....")
         self.delete_all_records()
@@ -1395,6 +1438,7 @@ class TY_02_Ui_MainWindow(object):
         self.load100_guage=0
         self.load200_guage=0
         self.load300_guage=0
+        self.def_flg="N"
        
         print("Last value of P :"+str(self.sc_new.p))
         #print("Length of P :"+str(len(self.sc_new.arr_p)))
@@ -1406,10 +1450,11 @@ class TY_02_Ui_MainWindow(object):
             
             #### Get Guage length
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME FROM GLOBAL_VAR")                 
+            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")                 
             for x in results:
                 self.guage_length_mm=int(x[0])
                 self.test_type=str(x[1])
+                self.def_flg=str(x[2])
             
             connection.close()
             #print("self.guage_length_mm:"+str(self.guage_length_mm))
@@ -1430,7 +1475,11 @@ class TY_02_Ui_MainWindow(object):
             connection.close()
             
             
-            
+            if(self.def_flg=="N"):
+                self.get_defarmetion_point()
+                self.get_load_at_Defarmation()
+                self.get_yeild_strength()
+                
             
             for g in range(len(self.sc_new.arr_p)):
                  
@@ -1500,7 +1549,7 @@ class TY_02_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
                  
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
                   
               
@@ -1557,12 +1606,12 @@ class TY_02_Ui_MainWindow(object):
         
     
     def get_defarmetion_point(self):
-        c=0
-        def_point=-1
+        c=0.0
+        def_point=-1.00
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST order by REC_ID ASC")
         for x in results:
-            if (int(c)==0):
+            if (float(c)==0):
                 c=float(x[1])
             else:    
                 if(float(x[1]) > float(c)):
@@ -1572,24 +1621,26 @@ class TY_02_Ui_MainWindow(object):
                     break                    
         connection.close()        
         
-        if(int(def_point) > 0):
+        if(float(def_point) > 0):
             connection = sqlite3.connect("tyr.db")              
             with connection:
+                cursor = connection.cursor()
                 cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")                                                               
             connection.commit();
             connection.close()
     
     def get_load_at_Defarmation(self):
-        def_load=0
+        def_load=0.0
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT Y_NUM FROM STG_GRAPH_MST WHERE X_NUM  in (SELECT DEF_POINT FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
               def_load=str(x[0])
         connection.close()
         
-        if(int(def_load) > 0):
+        if(float(def_load) > 0):
             connection = sqlite3.connect("tyr.db")              
             with connection:
+                cursor = connection.cursor()
                 cursor.execute("UPDATE GLOBAL_VAR SET DEF_LOAD = '"+str(def_load)+"'")                                                               
             connection.commit();
             connection.close()
@@ -1598,7 +1649,10 @@ class TY_02_Ui_MainWindow(object):
     def get_yeild_strength(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:
-                cursor.execute("UPDATE GLOBAL_VAR SET DEF_YEILD_STRG = DEF_LOAD/NEW_TEST_AREA")                                                               
+            cursor = connection.cursor()
+            cursor.execute("UPDATE GLOBAL_VAR SET DEF_YEILD_STRG = ((DEF_LOAD)/(NEW_TEST_AREA*0.1*0.1))")
+            #cursor.execute("UPDATE GLOBAL_VAR SET DEF_YEILD_STRG = '100.33'")
+            
         connection.commit();
         connection.close()
         
@@ -1624,7 +1678,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_26.setText(str(rows[0][0]))
      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME FROM GLOBAL_VAR")
+        results=connection.execute("SELECT NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,NEW_TEST_INN_DIAMETER,NEW_TEST_OUTER_DIAMETER,NEW_TEST_AREA,TEST_ID,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_LOAD_CELL_NO,STG_ENCO_EXT_FLG,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")
         rows=results.fetchall()
         connection.close()        
         self.shape=rows[0][0]
@@ -1635,8 +1689,8 @@ class TY_02_Ui_MainWindow(object):
         
         
         if (int(self.label_26.text()) > 0):
-            self.label_36.setText(str(rows[0][8]))
-            self.label_38.setText(str(rows[0][9]))
+            self.label_36.setText(str(round(rows[0][8],2)))
+            self.label_38.setText(str(round(rows[0][9],2)))           
             #self.label_34.setProperty("value", str(rows[0][8]))#load
             #self.label_40.setProperty("value",str(rows[0][9]))   #length 
         else:
@@ -1696,7 +1750,10 @@ class TY_02_Ui_MainWindow(object):
             self.show_grid_data_flexure()
             
         else:
-            self.show_grid_data()
+            if(str(rows[0][15])=="N"):
+                 self.show_grid_data_guage_tensile()
+            else:
+                 self.show_grid_data()
             self.label_28.show()
             #self.label_30.show()
             #self.lineEdit_3.show()
@@ -2141,10 +2198,13 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_2.setEnabled(True)
         self.pushButton_4_3.setEnabled(True)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
+        results=connection.execute("select NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")                 
         for x in results:
                     if(str(x[0]) == "Tensile"):
-                        self.create_pdf_tensile()
+                        if(str(x[1]) == "N"):
+                             self.create_pdf_guage_tensile()
+                        else:
+                             self.create_pdf_tensile()
                     elif(str(x[0]) == "Compress"):
                         self.create_pdf_compress()
                     elif(str(x[0]) == "Tear"):
@@ -2206,7 +2266,250 @@ class TY_02_Ui_MainWindow(object):
         self.ui=popup_email_test_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+  
+  
+    
+    def create_pdf_guage_tensile(self):                
+        self.unit_typex="Kg/Cm"
+        if (self.shape=="Rectangle"):
             
+            if(self.unit_typex == "Kg/Cm"):            
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n','Yeild Strength \n (Kg/cm2)']]
+                    #data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+          
+            connection = sqlite3.connect("tyr.db")
+            #print("SELECT row_number() OVER (ORDER BY CYCLE_ID) ,printf(\"%.2f\", THINCKNESS*0.1),printf(\"%.2f\", WIDTH*0.1) ,printf(\"%.4f\", CS_AREA*0.1*0.1),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM*0.1),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", E_AT_BREAK_MM*0.1),printf(\"%.2f\", PRC_E_AT_BREAK)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+           
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", THINCKNESS*0.1),printf(\"%.2f\", WIDTH*0.1) ,printf(\"%.4f\", CS_AREA*0.1*0.1),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM*0.1),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", E_AT_BREAK_MM*0.1),printf(\"%.2f\", PRC_E_AT_BREAK),printf(\"%.2f\", DEF_YEILD_STRG)   FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+            for x in results:
+                data.append(x)
+            connection.close()  
+        
+            connection = sqlite3.connect("tyr.db")            
+            results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(THINCKNESS*0.1)),printf(\"%.2f\", avg(WIDTH*0.1)) ,printf(\"%.4f\", avg(CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(PEAK_LOAD_KG)),printf(\"%.2f\", avg(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(PRC_E_AT_PEAK)),printf(\"%.2f\", avg(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(PRC_E_AT_BREAK)),printf(\"%.2f\", avg(DEF_YEILD_STRG))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(THINCKNESS*0.1)),printf(\"%.2f\", max(WIDTH*0.1)) ,printf(\"%.4f\", max(CS_AREA*0.1*0.1)),printf(\"%.2f\", max(PEAK_LOAD_KG)),printf(\"%.2f\", max(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(PRC_E_AT_PEAK)),printf(\"%.2f\", max(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(PRC_E_AT_BREAK)),printf(\"%.2f\", max(DEF_YEILD_STRG))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(THINCKNESS*0.1)),printf(\"%.2f\", min(WIDTH*0.1)) ,printf(\"%.4f\", min(CS_AREA*0.1*0.1)),printf(\"%.2f\", min(PEAK_LOAD_KG)),printf(\"%.2f\", min(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(PRC_E_AT_PEAK)),printf(\"%.2f\", min(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(PRC_E_AT_BREAK)),printf(\"%.2f\", min(DEF_YEILD_STRG))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+            for x in results:
+                data.append(x)
+            connection.close()
+                    
+        elif (self.shape=="Cylindrical"):
+            if(self.unit_typex == "Kg/Cm"):    
+                data= [['Spe. \n No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.DIAMETER*0.1),printf(\"%.4f\", A.CS_AREA*0.1*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1),printf(\"%.2f\", A.PRC_E_AT_PEAK),printf(\"%.2f\", A.E_AT_BREAK_MM*0.1),printf(\"%.2f\", A.PRC_E_AT_BREAK) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()  
+        
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.DIAMETER*0.1)),printf(\"%.4f\", avg(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),printf(\"%.2f\", avg(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DIAMETER*0.1)),printf(\"%.4f\", max(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),printf(\"%.2f\", max(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DIAMETER*0.1)),printf(\"%.4f\", min(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", min(A.PRC_E_AT_PEAK)),printf(\"%.2f\", min(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+        elif (self.shape=="Pipe"):            
+            if(self.unit_typex == "Kg/Cm"):                
+                data= [['Spec. \n No.', 'Inn.Dia \n (cm)', 'Out. Dia \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+            
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.INNER_DIAMETER*0.1),printf(\"%.2f\", A.OUTER_DIAMETER*0.1),printf(\"%.4f\", A.CS_AREA*0.1*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1), printf(\"%.2f\", A.PRC_E_AT_PEAK),printf(\"%.2f\", A.E_AT_BREAK_MM*0.1),printf(\"%.2f\", A.PRC_E_AT_BREAK) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.INNER_DIAMETER*0.1)),printf(\"%.2f\", avg(A.OUTER_DIAMETER*0.1)),printf(\"%.4f\", avg(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM*0.1)), printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),printf(\"%.2f\", avg(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.INNER_DIAMETER*0.1)),printf(\"%.2f\", max(A.OUTER_DIAMETER*0.1)),printf(\"%.4f\", max(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM*0.1)), printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),printf(\"%.2f\", max(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.INNER_DIAMETER*0.1)),printf(\"%.2f\", min(A.OUTER_DIAMETER*0.1)),printf(\"%.4f\", min(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM*0.1)), printf(\"%.2f\", min(A.PRC_E_AT_PEAK)),printf(\"%.2f\", min(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close() 
+        
+        elif (self.shape=="DirectValue"):
+            if(self.unit_typex == "Kg/Cm"):    
+                data= [['Spec.\n No.', 'CS.Area \n (cm)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+            elif(self.unit_typex == "Lb/Inch"):
+                data= [['Spec.\n No.', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n']]
+            elif(self.unit_typex == "Newton/Mm"):
+                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+            else:                
+                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']] 
+                
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.CS_AREA*0.1*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1),printf(\"%.2f\", A.PRC_E_AT_PEAK),printf(\"%.2f\", A.E_AT_BREAK_MM*0.1),printf(\"%.2f\", A.PRC_E_AT_BREAK) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'AVG',printf(\"%.4f\",avg(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),printf(\"%.2f\", avg(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MAX',printf(\"%.4f\",max(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),printf(\"%.2f\", max(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT 'MIN',printf(\"%.4f\",min(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", min(A.PRC_E_AT_PEAK)),printf(\"%.2f\", min(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+            for x in results:
+                data.append(x)
+            connection.close()
+            
+        
+                       
+                       
+        else:
+           data= [['Spec. \n No.', 'Thickness (mm)', 'Width (mm)', 'CS.Area (mm2)','Peak Load (kgf)' ,'% E@Peak \n','Break Load (Kg)','E@Break (mm)','%E@Break \n']]
+          
+           connection = sqlite3.connect("tyr.db")
+           results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,printf(\"%.4f\", A.CS_AREA),A.PEAK_LOAD,A.E_PAEK_LOAD,round(A.PREC_E_AT_PEAK,2),round(A.E_BREAK_LOAD,2),round(A.PREC_E_AT_BREAK,2) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+           for x in results:
+                data.append(x)
+           connection.close()  
+ 
+           connection = sqlite3.connect("tyr.db")
+           results=connection.execute("SELECT TYPE_STR,round(THICKNESS,2),round(WIDTH,2),printf(\"%.4f\", CS_AREA),PEAK_LOAD,round(E_PAEK_LOAD,2),PREC_E_AT_BREAK FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+           for x in results:
+               data.append(x)
+           connection.close()            
+
+           
+           
+        if(self.unit_typex == "Kg/Cm"):
+            data2= [ ['Spec. \n No', 'TensileStrength \n (Kgf/Cm2)', 'Mod@100% \n (Kgf/Cm2)', 'Mod@200% \n (Kgf/Cm2)', 'Mod@300% \n (Kgf/Cm2)']]
+        
+                  
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select CYCLE_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_100),printf(\"%.2f\", A.MODULUS_200) ,printf(\"%.2f\", A.MODULUS_300)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+            data2.append(x)
+        connection.close()  
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select 'AVG' as SPECIMEN_NUM,printf(\"%.2f\", avg(A.TENSILE_STRENGTH)),printf(\"%.2f\", avg(A.MODULUS_100)),printf(\"%.2f\", avg(A.MODULUS_200)) ,printf(\"%.2f\", avg(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+        for x in results:
+            data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select 'MAX' as SPECIMEN_NUM,printf(\"%.2f\", max(A.TENSILE_STRENGTH)),printf(\"%.2f\", max(A.MODULUS_100)),printf(\"%.2f\", max(A.MODULUS_200)) ,printf(\"%.2f\", max(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+        for x in results:
+            data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select 'MIN' as SPECIMEN_NUM,printf(\"%.2f\", min(A.TENSILE_STRENGTH)),printf(\"%.2f\", min(A.MODULUS_100)),printf(\"%.2f\", min(A.MODULUS_200)) ,printf(\"%.2f\", min(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+        for x in results:
+            data2.append(x)
+        connection.close() 
+        
+        
+        y=300
+        Elements=[]
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+        connection.close() 
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            #Title2 = Paragraph(str(x[1]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        
+        f1=Table(data)
+        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        #self.show_all_specimens()
+        report_gr_img="last_graph_kg_cm.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f1,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        '''
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
+                                leftMargin=40,
+                                topMargin=30,
+                                bottomMargin=30,)
+        '''
+        doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
+                                leftMargin=30,
+                                topMargin=10,
+                                bottomMargin=10)
+        doc.build(Elements)
+        #print("Done")
+       
+       
+        
+            
+      
        
         
 class PlotCanvas_Auto(FigureCanvas):     

@@ -277,9 +277,9 @@ class TY_12_LIST_Ui_MainWindow(object):
         with connection:        
                     cursor = connection.cursor()                   
                     if(self.checkBox.isChecked()):
-                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='Y'")
+                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='Y', DEF_FLG='Y'")
                     else:
-                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='N'")
+                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='N', DEF_FLG='N'")
         connection.commit();
         connection.close()
         if(str(self.test_type_id) == "1"):
