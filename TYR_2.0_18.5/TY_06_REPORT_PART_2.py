@@ -89,6 +89,7 @@ class TY_06_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.test_type=""
+        self.def_flg=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -99,13 +100,14 @@ class TY_06_Ui_MainWindow(object):
         self.label_6_1.setText(_translate("MainWindow", " [ Test Id: 265 ]    [ Batch Id : 3452321qwe ] "))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.pushButton_14.clicked.connect(MainWindow.close)
-        
+        self.def_flg=""
         #self.select_all_rows_2()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,BATCH_ID,TEST_TYPE FROM TEST_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT TEST_ID,BATCH_ID,TEST_TYPE,DEF_FLG FROM TEST_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
         for x in results:           
             self.label_6_1.setText("[ Test Id: "+str(x[0])+" ]              [ Batch Id:"+str(x[1])+" ]")
             self.test_type=str(x[2])
+            self.def_flg=str(x[3])
         connection.close()
         
         if(self.test_type=="Compress"):
@@ -121,7 +123,10 @@ class TY_06_Ui_MainWindow(object):
         elif(self.test_type=="COF"):
             self.select_all_rows_cof()
         else:
-            self.select_all_rows()
+            if(self.def_flg=="N"):
+                 self.guage_select_all_rows()
+            else:
+                 self.select_all_rows()
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -281,7 +286,158 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)     
         connection.close()    
 
-    
+    def guage_select_all_rows(self):
+        self.delete_all_records()    
+        self.tableWidget.setMidLineWidth(-4)
+        self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(15)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        self.tableWidget.verticalHeader().setStyleSheet("QHeaderView { font-size:  10pt};")
+        #self.tableWidget.horizontalHeader().setStyleSheet("::section {background-color : lightGray;font-size:10pt;}")
+   
+        #self.tableWidget.setRowCount(1)
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 50)
+        self.tableWidget.setColumnWidth(1, 80)
+        self.tableWidget.setColumnWidth(2, 80)
+        self.tableWidget.setColumnWidth(3, 80)
+        self.tableWidget.setColumnWidth(4, 120)
+        self.tableWidget.setColumnWidth(5, 80)
+        self.tableWidget.setColumnWidth(6, 80)    
+        self.tableWidget.setColumnWidth(7, 120)
+        self.tableWidget.setColumnWidth(8, 80)    
+        self.tableWidget.setColumnWidth(9, 120)
+        self.tableWidget.setColumnWidth(10, 100)
+        self.tableWidget.setColumnWidth(11, 100)
+        self.tableWidget.setColumnWidth(12, 100)    
+        self.tableWidget.setColumnWidth(13, 100)
+        self.tableWidget.setColumnWidth(14, 100)
+        
+     
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+        for x in results:           
+            self.unit_typex=x[1]
+        connection.close()
+        
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+           
+        # SELECT SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_NAME IN ( SELECT SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_NAME IN ( SELECT SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR))") 
+        for x in results:
+            self.shape=x[0]
+        connection.close()
+        #self.shape='Pipe'                                 
+        print ("shape :"+self.shape)        
+        if (self.shape=="Rectangle"):
+            if(self.unit_typex=="Lb/Inch"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe.No.', ' Thickness \n (Inch) ', ' Width \n (Inch) ', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Yeild Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod % (Lb/Inch2)' ])        
+            elif(self.unit_typex == "Newton/Mm"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe.No.', ' Thickness \n (mm) ', ' Width \n (mm) ', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Yeild Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
+            elif(self.unit_typex == "MPA"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe.No.', ' Thickness \n (mm) ', ' Width \n (mm) ', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Yeild Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
+            else:    
+                self.tableWidget.setHorizontalHeaderLabels(['Spe.No.', ' Thickness \n (cm) ', ' Width \n (cm) ', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Yeild Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','Mod %'])        
+        
+        
+            
+        elif (self.shape=="Cylindrical"):     
+            self.tableWidget.setColumnCount(13)
+            self.lastIndex=12
+            if(self.unit_typex=="Lb/Inch"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Yeild Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod % (Lb/Inch2)'])
+            elif(self.unit_typex == "Newton/Mm"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Yeild Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
+            elif(self.unit_typex == "MPA"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Yeild Strength \n (N/mm2)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
+            else: 
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Yeild Strength \n (Kgf/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)','Mod %'])
+        
+        elif (self.shape=="Pipe"):            
+            self.tableWidget.setColumnCount(14)
+            self.lastIndex=13
+            if(self.unit_typex=="Lb/Inch"):
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Yeild Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod % (Lb/Inch2)'])
+            elif(self.unit_typex == "Newton/Mm"):
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (Inch)', 'Out. Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (N)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Yeild Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %']) 
+            elif(self.unit_typex == "MPA"):
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (mm)', 'Out. Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Yeild Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %']) 
+            else:
+               self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Inn.Diameter \n (cm)', 'Out. Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Yeild Strength \n (Kg.Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','Mod %'])
+        elif (self.shape=="DirectValue"): 
+            self.tableWidget.setColumnCount(12)
+            self.lastIndex=11
+            if(self.unit_typex=="Lb/Inch"):
+                #print("header")
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak','E@Break \n (Inch)','% E@Break','Tensile Strength \n (Lb/Inch2)','Yeild Strength \n (Lb/Inch2)','Mod@100% \n (Lb/Inch2)','Mod@200% \n (Lb/Inch2)','Mod@300% \n (Lb/Inch2)','Mod %'])           
+            elif(self.unit_typex == "Newton/Mm"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (N/Mm2)','Yeild Strength \n (N/Mm2)','Mod@100% \n (N/Mm2)','Mod@200% \n (N/Mm2)','Mod@300% \n (N/Mm2)','Mod %'])
+            elif(self.unit_typex == "MPA"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (MPA)','Yeild Strength \n (MPA)','Mod@100% \n (MPA)','Mod@200% \n (MPA)','Mod@300% \n (MPA)','Mod %'])
+            else:   
+                self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Yeild Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)','Mod %'])           
+        else:
+           self.tableWidget.setHorizontalHeaderLabels(['Spe. No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (kg)' ,'% E@Peak','E@Break \n (mm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Yeild Strength \n (Kgf/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)','Mod %'])
+       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT MOD_AT_ANY FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
+        for rows in results:
+                print(" self.lastIndex :"+str(self.lastIndex))
+                item = self.tableWidget.horizontalHeaderItem(self.lastIndex)
+                if(self.unit_typex=="Lb/Inch"):
+                    item.setText("Mod@"+str(rows[0])+"% \n (Lb/Inch2)")
+                elif(self.unit_typex == "Newton/Mm"):
+                    item.setText("Mod@"+str(rows[0])+"% \n (N/Mm2)")                    
+                elif(self.unit_typex == "MPA"):
+                    item.setText("Mod@"+str(rows[0])+"% \n (MPA)")    
+                else: 
+                    item.setText("Mod@"+str(rows[0])+"% \n (Kgf/Cm2)")   
+             
+        connection = sqlite3.connect("tyr.db")
+        print("shape : "+str(self.shape))
+        if (self.shape=="Rectangle"):            
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD) ,printf(\"%.2f\", PREC_E_AT_BREAK) ,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY)   FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD) ,printf(\"%.2f\", PREC_E_AT_BREAK) ,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2),round(MOD_AT_ANY,2) FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
+        elif (self.shape=="Cylindrical"):
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.2f\", DIAMETER),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", BREAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.DIAMETER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", BREAK_LOAD),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")
+        elif (self.shape=="Pipe"):            
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.2f\", INN_DIAMETER),printf(\"%.2f\", OUT_DIAMTER),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")           
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.INN_DIAMETER),printf(\"%.2f\", A.OUT_DIAMTER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
+        elif (self.shape=="DirectValue"): 
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")           
+        else:
+            print("NO Val")
+            results=connection.execute("SELECT TYPE_STR as specimen_no,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")
+            results1=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID ")           
+            
+        for row_number, row_data in enumerate(results):                        
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))
+                
+        for row_number, row_data in enumerate(results1):                    
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):                
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))
+                
+                                        
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)     
+        connection.close()
     def select_all_rows_cof(self):
         self.delete_all_records()    
         self.tableWidget.setMidLineWidth(-4)

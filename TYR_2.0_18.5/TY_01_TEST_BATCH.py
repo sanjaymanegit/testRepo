@@ -784,7 +784,7 @@ class TY_01_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
               cursor = connection.cursor()                                
-              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR")                                
+              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG FROM GLOBAL_VAR")                                
         connection.commit();
         connection.close()  
         
