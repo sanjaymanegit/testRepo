@@ -1475,7 +1475,7 @@ class TY_02_Ui_MainWindow(object):
             connection.close()
             
             
-            if(self.def_flg=="N"):
+            if(self.def_flg=="Y"):
                 self.get_defarmetion_point()
                 self.get_load_at_Defarmation()
                 self.get_yeild_strength()

@@ -123,7 +123,7 @@ class TY_06_Ui_MainWindow(object):
         elif(self.test_type=="COF"):
             self.select_all_rows_cof()
         else:
-            if(self.def_flg=="N"):
+            if(self.def_flg=="Y"):
                  self.guage_select_all_rows()
             else:
                  self.select_all_rows()

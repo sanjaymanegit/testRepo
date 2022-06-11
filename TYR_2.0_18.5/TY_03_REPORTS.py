@@ -1153,7 +1153,7 @@ class TY_03_Ui_MainWindow(object):
            elif(str(self.label_31.text())=="COF"):    
                self.create_pdf_cof()    
            else:
-               if(self.def_flg=='N'):
+               if(self.def_flg=='Y'):
                    self.guage_create_pdf_new()
                else:
                    self.create_pdf_new()
