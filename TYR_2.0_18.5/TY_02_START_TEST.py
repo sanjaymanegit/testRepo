@@ -1750,7 +1750,7 @@ class TY_02_Ui_MainWindow(object):
             self.show_grid_data_flexure()
             
         else:
-            if(str(rows[0][15])=="N"):
+            if(str(rows[0][15])=="Y"):
                  self.show_grid_data_guage_tensile()
             else:
                  self.show_grid_data()
@@ -2201,7 +2201,7 @@ class TY_02_Ui_MainWindow(object):
         results=connection.execute("select NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")                 
         for x in results:
                     if(str(x[0]) == "Tensile"):
-                        if(str(x[1]) == "N"):
+                        if(str(x[1]) == "Y"):
                              self.create_pdf_guage_tensile()
                         else:
                              self.create_pdf_tensile()
@@ -3447,8 +3447,9 @@ class Ext_PlotCanvas_Auto(FigureCanvas):
 #                    self.q=abs(float(self.buff[0]))
                 
                 self.q=abs(float(self.buff[1]))
-                self.p=self.ser2.readline(15)
+                self.p=self.ser2.readline(15)                
                 self.xstr0=str(self.p,'utf-8')
+                print("Second Port2:"+str(self.xstr0))
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
                 self.buff=self.xstr2.split("_")                
