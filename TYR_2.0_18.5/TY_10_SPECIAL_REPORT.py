@@ -926,7 +926,7 @@ class TY_10_Ui_MainWindow(object):
                         elif(str(self.test_id_type)=="ILSS"):    
                                self.create_pdf_ilss()
                         else:
-                               if(self.def_flg=="N"):
+                               if(self.def_flg=="Y"):
                                    self.guage_create_pdf_new()
                                else:
                                    self.create_pdf_new()
