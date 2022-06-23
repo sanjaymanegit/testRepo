@@ -782,7 +782,7 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_1.setDisabled(True)
         self.test_type_for_flexural=""
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_NAME,GUAGE_EXT_FLG FROM GLOBAL_VAR")                 
+        results=connection.execute("select NEW_TEST_NAME,IS_INTERNAL_ENCODER,GUAGE_EXT_FLG FROM GLOBAL_VAR")                 
         for x in results:                
                     self.test_type_for_flexural=str(x[0])
                     self.guage_ext_flg=str(x[1])
@@ -1159,7 +1159,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(11, 150)
         self.tableWidget.setColumnWidth(12, 50)
         
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak \n (Kgf) ', 'Length at Peak \n (mm)', 'Guage Length \n (mm)','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','%E@Peak','%E@Break','Yeild Strength \n (Kg/Cm2)','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak \n (Kgf) ', 'Length at Peak \n (mm)', 'Guage Length \n (mm)','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','%E@Peak','%E@Break','Yeild Strength \n (Kgf/Cm2)','Cycle Id'])        
        
         connection = sqlite3.connect("tyr.db")
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
@@ -1450,7 +1450,7 @@ class TY_02_Ui_MainWindow(object):
             
             #### Get Guage length
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")                 
+            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,IS_METAL FROM GLOBAL_VAR")                 
             for x in results:
                 self.guage_length_mm=int(x[0])
                 self.test_type=str(x[1])
@@ -1609,7 +1609,7 @@ class TY_02_Ui_MainWindow(object):
         c=0.0
         def_point=-1.00
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST order by REC_ID ASC")
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
         for x in results:
             if (float(c)==0):
                 c=float(x[1])
@@ -2274,7 +2274,7 @@ class TY_02_Ui_MainWindow(object):
         if (self.shape=="Rectangle"):
             
             if(self.unit_typex == "Kg/Cm"):            
-                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n','Yeild Strength \n (Kg/cm2)']]
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n','Yeild Strength \n (Kgf/cm2)']]
                     #data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
           
             connection = sqlite3.connect("tyr.db")
@@ -3235,7 +3235,8 @@ class Ext_PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                 cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                
+                cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT='0.0', DEF_LOAD='0.0',DEF_YEILD_STRG='0.0' ") 
         connection.commit();
         connection.close()
         

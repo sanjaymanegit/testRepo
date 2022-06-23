@@ -285,6 +285,11 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_21.setObjectName("label_21")
         self.gridLayout_4.addWidget(self.label_21, 0, 0, 1, 1)
         self.lineEdit = QtWidgets.QLineEdit(self.layoutWidget2)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
@@ -300,6 +305,11 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_22.setObjectName("label_22")
         self.gridLayout_4.addWidget(self.label_22, 1, 0, 1, 1)
         self.lineEdit_2 = QtWidgets.QLineEdit(self.layoutWidget2)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)

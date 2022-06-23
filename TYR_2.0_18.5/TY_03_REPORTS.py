@@ -1393,7 +1393,7 @@ class TY_03_Ui_MainWindow(object):
         if(self.unit_typex == "Kg/Cm"):
             self.length=float(int(self.length)*0.1)
             #data2= [ ['Spec. \n No', 'Thickness  \n (cm)','Width  \n (cm)','Span  \n (cm)','Length at Peak \n (cm)', 'Force at Peak\n (Kgf)', 'Flexural Strength \n (Kgf/cm2)']]
-            data2= [['Spec. \n No','Length \n (Cm)','Width \n (Cm)','Thickness \n (Cm)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Shear\n Strength \n (Kg/Cm2)','Support \n SPAN \n (Cm)','Failure \n Mode','Test \n Method.']]        
+            data2= [['Spec. \n No','Length \n (Cm)','Width \n (Cm)','Thickness \n (Cm)','Max. Force \n (Kgf)',' Max. \n Disp. \n (Cm) ','Shear\n Strength \n (Kgf/Cm2)','Support \n SPAN \n (Cm)','Failure \n Mode','Test \n Method.']]        
             #data3= [['Spec. \n No','Shear Modulus \n@ Utl. \n Shear Stress \n (Kg/Cm2)','Shear Modulus \n@ '+str(self.shear_mod_ip)+' \n (Kg/Cm2) Shear Stress']]
               
         elif(self.unit_typex == "Lb/Inch"):
@@ -2265,7 +2265,7 @@ class TY_03_Ui_MainWindow(object):
         if (self.shape=="Rectangle"):
             
             if(self.unit_typex == "Kg/Cm"):            
-                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kg/Cm2)']]
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kgf/Cm2)']]
             elif(self.unit_typex == "Lb/Inch"):
                     data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n',' Yeild Strength \n (Lb/Inch2)']]
             elif(self.unit_typex == "Newton/Mm"):

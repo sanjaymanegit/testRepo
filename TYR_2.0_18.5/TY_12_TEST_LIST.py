@@ -25,13 +25,13 @@ import os,sys
 class TY_12_LIST_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1368, 768)
+        MainWindow.resize(1390, 772)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
+        self.frame.setGeometry(QtCore.QRect(10, 10, 1331, 711))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         self.frame.setFont(font)
@@ -127,29 +127,16 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(610, 140, 301, 31))
+        self.label_11.setGeometry(QtCore.QRect(610, 140, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(24)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_11.setFont(font)
         self.label_11.setStyleSheet("color: rgb(170, 0, 0);")
         self.label_11.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
-        
-        
-        
-        
-        
-        self.checkBox = QtWidgets.QCheckBox(self.frame)
-        self.checkBox.setGeometry(QtCore.QRect(910, 140, 250, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Sans Serif")
-        font.setPointSize(10)
-        self.checkBox.setFont(font)
-        self.checkBox.setObjectName("checkBox")
-        
         self.label_4 = QtWidgets.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(40, 110, 141, 61))
         font = QtGui.QFont()
@@ -184,18 +171,58 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.pushButton_15.setObjectName("pushButton_15")
         self.textEdit = QtWidgets.QTextEdit(self.frame)
         self.textEdit.setGeometry(QtCore.QRect(610, 210, 401, 101))
-        self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName("textEdit")
+        self.frame_2 = QtWidgets.QFrame(self.frame)
+        self.frame_2.setGeometry(QtCore.QRect(1050, 130, 261, 351))
+        self.frame_2.setStyleSheet("background-color: rgb(196, 255, 187);")
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.frame_3 = QtWidgets.QFrame(self.frame_2)
+        self.frame_3.setGeometry(QtCore.QRect(20, 30, 181, 111))
+        self.frame_3.setStyleSheet("background-color: rgb(254, 207, 255);")
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.radioButton = QtWidgets.QRadioButton(self.frame_3)
+        self.radioButton.setGeometry(QtCore.QRect(20, 20, 131, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.radioButton.setFont(font)
+        self.radioButton.setObjectName("radioButton")
+        self.radioButton_2 = QtWidgets.QRadioButton(self.frame_3)
+        self.radioButton_2.setGeometry(QtCore.QRect(20, 60, 131, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.radioButton_2.setFont(font)
+        self.radioButton_2.setObjectName("radioButton_2")
+        self.frame_5 = QtWidgets.QFrame(self.frame_2)
+        self.frame_5.setGeometry(QtCore.QRect(20, 170, 221, 151))
+        self.frame_5.setStyleSheet("background-color: rgb(228, 244, 255);")
+        self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_5.setObjectName("frame_5")
+        self.frame_5.hide()
+        self.radioButton_5 = QtWidgets.QRadioButton(self.frame_5)
+        self.radioButton_5.setGeometry(QtCore.QRect(20, 30, 181, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.radioButton_5.setFont(font)
+        self.radioButton_5.setObjectName("radioButton_5")
+        self.radioButton_6 = QtWidgets.QRadioButton(self.frame_5)
+        self.radioButton_6.setGeometry(QtCore.QRect(20, 80, 191, 51))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.radioButton_6.setFont(font)
+        self.radioButton_6.setObjectName("radioButton_6")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1390, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.list_type=""
-        self.test_type_id=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -206,27 +233,56 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_4.setText(_translate("MainWindow", "GO FOR TEST"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
-        '''        
-        '''
+        __sortingEnabled = self.listWidget.isSortingEnabled()
+        self.listWidget.setSortingEnabled(False)
+        item = self.listWidget.item(0)
+        item.setText(_translate("MainWindow", "TENSILE"))
+        item = self.listWidget.item(1)
+        item.setText(_translate("MainWindow", "COMPRESSION"))
+        item = self.listWidget.item(2)
+        item.setText(_translate("MainWindow", "TEAR"))
+        item = self.listWidget.item(3)
+        item.setText(_translate("MainWindow", "FLEXURAL"))
+        item = self.listWidget.item(4)
+        item.setText(_translate("MainWindow", "COF"))
+        item = self.listWidget.item(5)
+        item.setText(_translate("MainWindow", "ILLS"))
+        item = self.listWidget.item(6)
+        item.setText(_translate("MainWindow", "QLSS"))
+        self.listWidget.setSortingEnabled(__sortingEnabled)
         self.label_9.setText(_translate("MainWindow", "Test Name :"))
         self.label_10.setText(_translate("MainWindow", "Test Details :"))
         self.label_11.setText(_translate("MainWindow", "Tensile "))
         self.label_4.setText(_translate("MainWindow", "Select Test :"))
         self.label_5.setText(_translate("MainWindow", " TESTS LIST"))
         self.pushButton_15.setText(_translate("MainWindow", "IMAGE"))
-        self.checkBox.setText(_translate("MainWindow", "Enable External Extentiometer"))
-        self.checkBox.setDisabled(True)
+        self.radioButton.setText(_translate("MainWindow", "Non -Metal"))
+        self.radioButton_2.setText(_translate("MainWindow", "Metal"))
+        self.radioButton_5.setText(_translate("MainWindow", "External (Ext/Encoder)"))
+        self.radioButton_6.setText(_translate("MainWindow", "Internal  (Ext/Encoder)"))
+        
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.open_new_test_win)
         
         self.listWidget.doubleClicked.connect(self.selected_record)
         self.listWidget.clicked.connect(self.selected_record)
+        self.radioButton.clicked.connect(self.show_extiometer_setting)
+        self.radioButton_2.clicked.connect(self.show_extiometer_setting)
         self.load_data()
         
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
+    
+    def show_extiometer_setting(self):
+        if(self.radioButton.isChecked()):
+            self.frame_5.hide()            
+        elif(self.radioButton_2.isChecked()):
+            self.frame_5.show()
+        else:
+            self.frame_5.hide()
+        
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -263,10 +319,34 @@ class TY_12_LIST_Ui_MainWindow(object):
                        self.pushButton_15.setDisabled(True)
                        self.pushButton_4.setDisabled(True)
                    self.test_type_id=str(x[4])
+                   
                    if(self.label_11.text() == "TENSILE"):
-                       self.checkBox.setEnabled(True)
+                       self.frame_2.show()
+                       connection = sqlite3.connect("tyr.db")
+                       results=connection.execute("SELECT  IS_METAL,IS_INTERNAL_ENCODER FROM GLOBAL_VAR")
+                       for x in results:
+                            if(str(x[0]) == 'Y'):
+                                self.radioButton_2.setChecked(True)
+                                self.radioButton.setChecked(False)
+                                self.frame_5.show()
+                            else:
+                                self.radioButton_2.setChecked(False)
+                                self.radioButton.setChecked(True)
+                                self.frame_5.hide()
+                                
+                                
+                            if(str(x[1]) == 'Y'):
+                                self.radioButton_5.setChecked(True)
+                                self.radioButton_6.setChecked(False)
+                            else:
+                                self.radioButton_5.setChecked(False)
+                                self.radioButton_6.setChecked(True)
+                                
+                       connection.close()  
+                       
+                       
                    else:
-                       self.checkBox.setDisabled(True)
+                       self.frame_2.hide()
                        
         connection.close()
         
@@ -276,10 +356,12 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()                   
-                    if(self.checkBox.isChecked()):
-                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='Y', DEF_FLG='Y'")
+                    if(self.radioButton_2.isChecked()):
+                         cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='Y',GUAGE_EXT_FLG='Y', DEF_FLG='Y'")
+                    if(self.radioButton_5.isChecked()):
+                         cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='Y',IS_INTERNAL_ENCODER='Y',GUAGE_EXT_FLG='Y', DEF_FLG='Y'")     
                     else:
-                         cursor.execute("UPDATE GLOBAL_VAR SET GUAGE_EXT_FLG='N', DEF_FLG='N'")
+                         cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='N',IS_INTERNAL_ENCODER='N',GUAGE_EXT_FLG='N', DEF_FLG='N'")
         connection.commit();
         connection.close()
         if(str(self.test_type_id) == "1"):

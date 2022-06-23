@@ -284,7 +284,12 @@ class TY_01_Ui_MainWindow(object):
         self.label_21.setFont(font)
         self.label_21.setObjectName("label_21")
         self.gridLayout_4.addWidget(self.label_21, 0, 0, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(self.layoutWidget2)
+        self.lineEdit = QtWidgets.QLineEdit(self.layoutWidget2)        
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
@@ -300,6 +305,9 @@ class TY_01_Ui_MainWindow(object):
         self.label_22.setObjectName("label_22")
         self.gridLayout_4.addWidget(self.label_22, 1, 0, 1, 1)
         self.lineEdit_2 = QtWidgets.QLineEdit(self.layoutWidget2)
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
@@ -500,6 +508,9 @@ class TY_01_Ui_MainWindow(object):
         self.label_1_1.hide()
         self.label_2_1.setText("Compressive.Length(mm):")
         self.label_2_1.hide()
+        
+        
+        
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_7.clicked.connect(self.reset_job)
         self.pushButton_3.clicked.connect(self.open_window)
@@ -611,6 +622,7 @@ class TY_01_Ui_MainWindow(object):
                
         connection.close()
         self.reset_job()
+        
     
      
     def load_flexural_data(self):

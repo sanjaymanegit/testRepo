@@ -157,6 +157,11 @@ class TY_11_Ui_MainWindow(object):
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        
         self.lineEdit.setGeometry(QtCore.QRect(240, 110, 221, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -166,6 +171,12 @@ class TY_11_Ui_MainWindow(object):
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
+        
+        
         self.lineEdit_2.setGeometry(QtCore.QRect(240, 160, 221, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -366,6 +377,12 @@ class TY_11_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        
+        
         self.lineEdit_5.setGeometry(QtCore.QRect(1000, 110, 271, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -375,6 +392,11 @@ class TY_11_Ui_MainWindow(object):
         self.lineEdit_5.setFont(font)
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("^[a-zA-Z0-9]+$")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
+        
         self.lineEdit_6.setGeometry(QtCore.QRect(1000, 160, 271, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")

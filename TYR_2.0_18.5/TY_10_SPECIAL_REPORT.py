@@ -2062,7 +2062,7 @@ class TY_10_Ui_MainWindow(object):
         if (self.shape=="Rectangle"):
             
             if(self.unit_typex == "Kg/Cm"):            
-                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kg/Cm2)']]
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kgf/Cm2)']]
             elif(self.unit_typex == "Lb/Inch"):
                     data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n',' Yeild Strength \n (Lb/Inch2)']]
             elif(self.unit_typex == "Newton/Mm"):
