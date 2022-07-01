@@ -430,19 +430,23 @@ class popup_email_test_Ui_MainWindow(object):
         self.validate()
         if(self.validation_flg=="TRUE"):
                 with smtplib.SMTP_SSL(self.smtp_server, 465, context=self.context) as server:
-                    server.login(self.sender_email, self.password)
-                    server.sendmail(
-                            self.sender_email, self.receiver_email, self.message.as_string()
-                                #self.sender_email, self.receiver_email, self.message
-                            )
-                        
-                    self.label_2.setText("Successfully Sent Email.")
-                    connection = sqlite3.connect("tyr.db")        
-                    with connection:        
-                            cursor = connection.cursor()                
-                            cursor.execute("update global_var set EMAIL_DEFAULT='"+self.lineEdit.text()+"',EMAIL_SUBJECT='"+self.lineEdit_2.text()+"',EMAIL_FILE_NAME='"+self.lineEdit_3.text()+"'")                 
-                    connection.commit()
-                    connection.close()
+                    try:
+                        server.login(self.sender_email, self.password)
+                        server.sendmail(
+                                self.sender_email, self.receiver_email, self.message.as_string()
+                                    #self.sender_email, self.receiver_email, self.message
+                                )
+                            
+                        self.label_2.setText("Successfully Sent Email.")
+                        connection = sqlite3.connect("tyr.db")        
+                        with connection:        
+                                cursor = connection.cursor()                
+                                cursor.execute("update global_var set EMAIL_DEFAULT='"+self.lineEdit.text()+"',EMAIL_SUBJECT='"+self.lineEdit_2.text()+"',EMAIL_FILE_NAME='"+self.lineEdit_3.text()+"'")                 
+                        connection.commit()
+                        connection.close()
+                    except Exception as e:
+                        self.label_2.setText("Error !!.")
+                        print("Error:"+str(e))
 
 if __name__ == "__main__":
     import sys

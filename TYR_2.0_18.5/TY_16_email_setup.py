@@ -531,14 +531,19 @@ class ty_16_Ui_MainWindow(object):
             self.context = ssl.create_default_context()           
             if(self.validation_flg=="TRUE"):
                     with smtplib.SMTP_SSL(self.smtp_server, 465, context=self.context) as server:
-                        server.login(self.sender_email, self.password)
-                        server.sendmail(
-                                self.sender_email, self.receiver_email, self.message.as_string()
-                                    #self.sender_email, self.receiver_email, self.message
-                                )
-                            
-                        self.label_7.setText("Successfully Sent Email.")
-                        self.label_7.show()
+                        try:
+                            server.login(self.sender_email, self.password)
+                            server.sendmail(
+                                    self.sender_email, self.receiver_email, self.message.as_string()
+                                        #self.sender_email, self.receiver_email, self.message
+                                    )
+                                
+                            self.label_7.setText("Successfully Sent Email.")
+                            self.label_7.show()
+                        except Exception as e:
+                            self.label_7.setText("Error !!!!.")
+                            self.label_7.show()
+                            print("Error:"+str(e))
     
         
 
