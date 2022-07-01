@@ -579,6 +579,7 @@ class urmini_07_MainWindow(object):
                                    "round(VOIDING_TIME_DEV,2),round(FLOW_TIME,2),round(TIME_TO_MAX_FLOW,2),round(TIME_TO_MAX_FLOW_DEV,2),round(VOIDED_VOL,2),round(FLOW_AT_2_SEC,2),round(ACCEL,2),"+
                                    "round(TOTAL_VOLUMN,2) ,DR_COMMNETS,HESITANCY_TIME FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR_REPORT)")
         for x in results:
+                  '''
                   test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),"Vol  SD (%): "+str(x[1])   ])
                   test_data.append(["Avg. Flow (ml/sec)    ",str(x[2]),"Flow SD (%): "+str(x[3])   ])
                   test_data.append(["Voiding Time(sec)     ",str(x[4]),"--"    ])
@@ -589,6 +590,19 @@ class urmini_07_MainWindow(object):
                   test_data.append(["Accelaration     ",str(x[11]),"-- "   ])
                   test_data.append(["Hesitancy Time (sec)  ",str(x[14]),"-- "   ])
                   self.remark="xxxx"
+                  '''
+                  
+                  test_data.append(["Voided Vol (ml)    ",str(x[9]),"Vol  SD (%): "+str(x[1])   ])
+                  test_data.append(["Max. Flow (ml/sec)    ",str(x[0]),"Flow SD (%): "+str(x[3])   ])
+                  test_data.append(["Avg. Flow (ml/sec)     ",str(x[2]),"--"    ])
+                  test_data.append(["Flow Time (sec)       ",str(x[6]),"--"   ])
+                  test_data.append(["Voiding Time(sec)  ",str(x[4]),"--"    ])
+                  test_data.append(["Time to Max Flow(sec)      ",str(x[7]),"--"   ])
+                  test_data.append(["Flow at 2 sec.        ",str(x[10]),"--"   ])
+                  test_data.append(["Accelaration     ",str(x[11]),"-- "   ])
+                  test_data.append(["Hesitancy Time (sec)  ",str(x[14]),"-- "   ])
+                  self.remark="xxxx"
+                  
         connection.close()
         
         
