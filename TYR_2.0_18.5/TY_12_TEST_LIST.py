@@ -358,7 +358,7 @@ class TY_12_LIST_Ui_MainWindow(object):
                     cursor = connection.cursor()                   
                     if(self.radioButton_2.isChecked()):
                          cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='Y',GUAGE_EXT_FLG='Y', DEF_FLG='Y'")
-                    if(self.radioButton_5.isChecked()):
+                    elif(self.radioButton_5.isChecked()):
                          cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='Y',IS_INTERNAL_ENCODER='Y',GUAGE_EXT_FLG='Y', DEF_FLG='Y'")     
                     else:
                          cursor.execute("UPDATE GLOBAL_VAR SET IS_METAL='N',IS_INTERNAL_ENCODER='N',GUAGE_EXT_FLG='N', DEF_FLG='N'")

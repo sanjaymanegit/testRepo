@@ -1622,13 +1622,17 @@ class TY_02_Ui_MainWindow(object):
                     break                    
         connection.close()        
         
-        if(float(def_point) > 0):
-            connection = sqlite3.connect("tyr.db")              
-            with connection:
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
                 cursor = connection.cursor()
-                cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")                                                               
-            connection.commit();
-            connection.close()
+                if(float(def_point) > 0):
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")
+                else:                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0")
+                    
+        connection.commit();
+        connection.close()
     
     def get_load_at_Defarmation(self):
         def_load=0.0
@@ -1638,13 +1642,17 @@ class TY_02_Ui_MainWindow(object):
               def_load=str(x[0])
         connection.close()
         
-        if(float(def_load) > 0):
-            connection = sqlite3.connect("tyr.db")              
-            with connection:
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
                 cursor = connection.cursor()
-                cursor.execute("UPDATE GLOBAL_VAR SET DEF_LOAD = '"+str(def_load)+"'")                                                               
-            connection.commit();
-            connection.close()
+                if(float(def_load) > 0):
+                        cursor.execute("UPDATE GLOBAL_VAR SET DEF_LOAD = '"+str(def_load)+"'")
+                else:
+                        cursor.execute("UPDATE GLOBAL_VAR SET DEF_LOAD = '"+str(def_load)+"'")
+                        
+        connection.commit();
+        connection.close()
         
         
     def get_yeild_strength(self):
@@ -2199,7 +2207,7 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_2.setEnabled(True)
         self.pushButton_4_3.setEnabled(True)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_NAME,DEF_FLG FROM GLOBAL_VAR")                 
+        results=connection.execute("select NEW_TEST_NAME,IS_METAL FROM GLOBAL_VAR")                 
         for x in results:
                     if(str(x[0]) == "Tensile"):
                         if(str(x[1]) == "Y"):
