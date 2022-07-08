@@ -829,7 +829,7 @@ class TY_02_Ui_MainWindow(object):
     def delete_cycle(self):
         if(self.test_type_for_flexural=="Flexural"):
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 9).text())
+            self.cycle_id=str(self.tableWidget.item(row, 10).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -849,7 +849,7 @@ class TY_02_Ui_MainWindow(object):
                 pass
         elif(self.test_type_for_flexural=="Tensile"):
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 11).text())
+            self.cycle_id=str(self.tableWidget.item(row, 12).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1165,7 +1165,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),printf(\"%.2f\", DEF_YEILD_STRG),printf(\"%.2f\", DEF_POINT),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),printf(\"%.2f\", DEF_YEILD_STRG),printf(\"%.2f\", DEF_POINT*0.1),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1609,16 +1609,35 @@ class TY_02_Ui_MainWindow(object):
     def get_defarmetion_point(self):
         c=0.0
         def_point=-1.00
+        def_buffer_6_prc=0.0
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
         for x in results:
-            if (float(c)==0):
+            def_buffer_6_prc=float(x[0])*0.15            
+        connection.close()
+        
+        if(float(def_buffer_6_prc) > 0):
+               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
+        else:
+               def_buffer_6_prc=6.0
+                
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        for x in results:
+            print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
+            if (float(c)==0):                
                 c=float(x[1])
             else:    
                 if(float(x[1]) > float(c)):
+                    c=float(x[1])
                     continue
+                elif(float(x[1]) == float(c)):
+                    def_point=float(x[0])
+                    print("Break 1 Point :"+str(def_point))
+                    break
                 else:
                     def_point=float(x[0])
+                    print("Break 2 Point :"+str(def_point))
                     break                    
         connection.close()        
         
@@ -1640,6 +1659,7 @@ class TY_02_Ui_MainWindow(object):
         results=connection.execute("SELECT Y_NUM FROM STG_GRAPH_MST WHERE X_NUM  in (SELECT DEF_POINT FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
               def_load=str(x[0])
+              
         connection.close()
         
         
