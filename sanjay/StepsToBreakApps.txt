@@ -11,3 +11,9 @@ URMini:
 4.Click on "SEARCH"
 
 
+UTM: 
+1.Setting
+2.Load Y Setting (50000)
+3.Click on "Config Test" 
+
+
