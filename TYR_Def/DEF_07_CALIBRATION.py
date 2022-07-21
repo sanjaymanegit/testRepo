@@ -582,7 +582,7 @@ class def_07_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "No"))
         self.pushButton_9.setText(_translate("MainWindow", "RETURN"))
         self.groupBox_7.setTitle(_translate("MainWindow", " MESSAGE"))
-        self.label_44.setText(_translate("MainWindow", "Successfully set Capacity."))
+        self.label_44.setText(_translate("MainWindow", ""))
         self.label_44.hide()
         self.pushButton_9.clicked.connect(MainWindow.close)
         self.timer2=QtCore.QTimer()

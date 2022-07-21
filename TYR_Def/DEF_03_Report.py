@@ -574,7 +574,7 @@ class def_03_Ui_MainWindow(object):
             product_id=self.get_usb_storage_id()
             if(product_id != "ERROR"):
                     os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
-                    os.system("cp ./reports/ur_reports.pdf /media/usb/stech_reports"+str(self.test_id)+".pdf")
+                    os.system("cp ./reports/stech_reports.pdf /media/usb/stech_reports"+str(self.test_id)+".pdf")
                     os.system("sudo umount /media/usb")
             else:
                  print("Please connect usb storage device")

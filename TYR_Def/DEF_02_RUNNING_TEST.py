@@ -441,7 +441,7 @@ class def_02_Ui_MainWindow(QMainWindow):
             connection = sqlite3.connect("def.db")              
             with connection:        
                         cursor = connection.cursor()
-                        cursor.execute("UPDATE TEST_MST SET STATUS = 'STOPPED'  WHERE STATUS='RUNNING' ")          
+                        cursor.execute("UPDATE TEST_MST SET STATUS = 'STOPPED',TEST_END_ON=current_timestamp  WHERE STATUS='RUNNING' ")          
             connection.commit();
             connection.close()
             
