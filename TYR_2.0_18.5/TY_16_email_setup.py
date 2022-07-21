@@ -478,12 +478,14 @@ class ty_16_Ui_MainWindow(object):
     def send_test_email(self):
         self.save_validate()
         self.test_validate()
-        if(self.validation_flg=="TRUE"):        
-            #self.sender_email = "utmapp3@gmail.com" #
-            #self.receiver_email = "sanjaymane1610@gmail.com"
-            #self.password = "Dhruv@1210"
-            #self.smtp_server="smtp.gmail.com"
+        if(self.validation_flg=="TRUE"):
             
+            '''
+            self.sender_email = "utmapp4ae@gmail.com" #
+            self.receiver_email = "sanjaymane1610@gmail.com"
+            self.password = "Dhruv@1210"
+            self.smtp_server="smtp.gmail.com"
+            '''
             self.sender_email = str(self.lineEdit_2.text())
             self.receiver_email = str(self.pushButton_11.text())
             self.password = str(self.lineEdit_3.text())
