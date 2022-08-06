@@ -210,3 +210,59 @@ Werkzeug==0.11.15
 wifi==0.3.8
 wrapt==1.9.0
 zipp==1.0.0
+========================
+
+pi@raspberrypi:~ $ sudo pip show qt5
+DEPRECATION: Python 3.5 reached the end of its life on September 13th, 2020. Please upgrade your Python as Python 3.5 is no longer maintained. pip 21.0 will drop support for Python 3.5 in January 2021. pip 21.0 will remove support for this functionality.
+Name: qt5
+Version: 0.0.0
+Summary: A  placeholder package for testing purposes
+Home-page: UNKNOWN
+Author: empyrical
+Author-email: empyrical@outlook.com
+License: UNKNOWN
+Location: /usr/local/lib/python3.5/dist-packages
+Requires: 
+Required-by:
+======================
+pi@raspberrypi:~ $ history
+    1  python --version
+    2  pyinstaller
+    3  sudo pyinstaller
+    4  cd work/
+    5  cd URmini/
+    6  chmod 777 *.*
+    7  chmod 777 *
+    8  ls
+    9  python --version
+   10  pip freeze
+   11  sudo apt-get install xrdp
+   12  sudo pip install qt5=0.0.0
+   13  sudo pip install qt5==0.0.0
+   14  sudo pip freeze
+   15  sudo apt-get install qt5-default
+   16  sudo apt-get update -y
+   17  sudo apt-get install -y qt5-default
+   18  python -m pip install PyQt5
+   19  sudo pip freeze
+   20  sudo pip show PyQt5
+   21  python --version
+   22  sudo pip3 show PyQt5
+   23  sudo pip install pyqt5
+   24  sudo apt install qt5-default
+   25  sudo apt install pyqt5-default
+   26  clear
+   27  sudo apt-get install qtcreator pyqt5-dev-tools
+   28  sudo apt-get install python3-pyqt5
+   29  sudo apt-get install qttools5-dev-tools
+   30  sudo pip install matplotlib
+   31  sudo pip install pandas
+   32  sudo pip install cv2
+   33  sudo pip install -U numpy
+   34  sudo apt-get install libatlas-base-dev
+   35  sudo pip uninstall numpy
+   36  sudo apt install python3-numpy
+   37  sudo pip install -U numpy
+   38  clear
+   39  history
+   ===========================================================
