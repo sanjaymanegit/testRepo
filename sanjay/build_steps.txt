@@ -22,4 +22,4 @@ sudo pyinstaller --onefile --add-data "tyr.db:." --name=TYR_1.0 "P1_main_screen.
 sudo pyinstaller --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "ur_01_TEST_P2.py"
 
 #### URmini #####
-sudo pyinstaller --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "urmini_01_Main_Page.py"
+sudo pyinstaller --clean --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "urmini_01_Main_Page.py"
