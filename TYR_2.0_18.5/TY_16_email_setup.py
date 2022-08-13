@@ -324,6 +324,7 @@ class ty_16_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "CLOSE"))
         self.pushButton_13.setText(_translate("MainWindow", "LOGIN"))
         self.label_10.setText(_translate("MainWindow", "SMTP Port :"))
+        self.lineEdit_5.setText("singhisking")
         self.pushButton_12.clicked.connect(MainWindow.close)
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        

@@ -357,14 +357,14 @@ class popup_email_Ui_MainWindow(object):
         self.label_2.setText("") 
         
     def send_email(self):
-        
-        self.sender_email = "utmapp3@gmail.com" #
+        '''
+        self.sender_email = "pankaj@nishigandhapolymers.com" #
         self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
                     #password = input("Type your password and press enter:")
-        self.password = "Dhruv@1210"
+        self.password = "pkb_1976"
         self.smtp_server="smtp.gmail.com"
         
-        
+        '''
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select FROM_EMAIL_ID,FROM_EMAIL_PWD,FROM_EMAIL_SMTP_SERVER from GLOBAL_VAR") 
         for x in results:
@@ -372,7 +372,7 @@ class popup_email_Ui_MainWindow(object):
             self.password =str(x[1])
             self.smtp_server=str(x[2])            
         connection.close()
-        
+       
         
 
         self.message = MIMEMultipart("alternative")
