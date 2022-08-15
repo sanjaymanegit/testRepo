@@ -14,12 +14,22 @@ sudo pyinstaller --clean --onedir --add-data "wt.db:." --add-data "services.db:.
 ### TYR_18.5 #####
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.py"
 
+### TYR_def #####
+sudo pyinstaller --clean --onedir --add-data "def.db:." --add-data "services.db:." --name=TYR "DEF_01_Main.py"
+
+
 #### TYR Touch Screen ####
 sudo pyinstaller --onefile --add-data "tyr.db:." --name=TYR_1.0 "P1_main_screen.py"
 
 
 #### UR #####
-sudo pyinstaller --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "ur_01_TEST_P2.py"
+sudo pyinstaller --clean --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "ur_01_TEST_P2.py"
 
 #### URmini #####
 sudo pyinstaller --clean --onedir --add-data "ur.db:." --add-data "services.db:." --name=UR "urmini_01_Main_Page.py"
+
+#### FCI #####
+sudo pyinstaller --onedir --add-data "fci.db:." --add-data "services.db:." --name=FCI "fci_00_login.py"
+
+#### FCI_RS #####
+sudo pyinstaller --onedir --add-data "fci.db:." --add-data "services.db:." --name=FCI_RS "fci_00_login.py"
