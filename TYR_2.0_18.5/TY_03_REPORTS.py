@@ -9,7 +9,9 @@
 from TY_06_REPORT_PART_2 import TY_06_Ui_MainWindow
 #from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
 #from TY_12_TEST_TYPES_SP_REPORTS import TY_12_Ui_MainWindow
-from TY_12_TEST_LIST_SP_REPORT import TY_12_SP_LIST_Ui_MainWindow
+#from TY_12_TEST_LIST_SP_REPORT import TY_12_SP_LIST_Ui_MainWindow
+from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
+from TY_13_SP_REPORT_COF import TY_13_Ui_MainWindow
 
 
 
@@ -792,7 +794,7 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_report)
         self.pushButton_7_1.clicked.connect(self.delete_test)        
         self.pushButton_4.clicked.connect(self.open_report_part_2)
-        self.pushButton_2_1.clicked.connect(self.open_special_report)
+        self.pushButton_2_1.clicked.connect(self.open_speacial_report)
         
         
         self.pushButton_8.clicked.connect(MainWindow.close)
@@ -1170,12 +1172,36 @@ class TY_03_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
-    def open_special_report(self):
+#    def open_special_report(self):
+#        self.window = QtWidgets.QMainWindow()
+#        self.ui=TY_12_SP_LIST_Ui_MainWindow()
+#        self.ui.setupUi(self.window)           
+#        self.window.show()
+     
+    #### Special Report Logic #######
+        
+    def open_new_window_cof(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_12_SP_LIST_Ui_MainWindow()
+        self.ui=TY_13_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-        
+    
+    def open_new_window_oth(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_10_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+     
+    def open_speacial_report(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME from  GLOBAL_VAR ") 
+        for x in results:
+            if(str(x[0]) == 'COF'):
+                  self.open_new_window_cof()
+            else:
+                  self.open_new_window_oth()
+               
+        connection.close() 
         
     def open_email_report(self):
         row = self.tableWidget.currentRow()

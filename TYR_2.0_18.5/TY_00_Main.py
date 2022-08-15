@@ -14,6 +14,8 @@ from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_04_SETTING import TY_04_Ui_MainWindow
 from TY_05_SPECIMEN import TY_05_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
+from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
+
 import sqlite3
 import datetime
 
@@ -217,7 +219,7 @@ class Ui_MainWindow(object):
         
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_03_Ui_MainWindow()
+        self.ui=TY_18_TEST_TYPE_REPORTS_Ui()
         self.ui.setupUi(self.window)           
         self.window.show()        
         

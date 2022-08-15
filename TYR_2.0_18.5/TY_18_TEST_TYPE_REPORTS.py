@@ -9,11 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
-from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
-from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
-from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
-from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
+#from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
+#from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
+#from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
+#from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
+#from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
+
+from TY_03_REPORTS import TY_03_Ui_MainWindow
 
 import sqlite3
 import re
@@ -22,10 +24,10 @@ import time
 import os,sys
 
 
-class TY_12_LIST_Ui_MainWindow(object):
+class TY_18_TEST_TYPE_REPORTS_Ui(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1390, 772)
+        MainWindow.resize(1367, 772)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -231,7 +233,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
-        self.pushButton_4.setText(_translate("MainWindow", "GO FOR TEST"))
+        self.pushButton_4.setText(_translate("MainWindow", "GO FOR REPORTS"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
@@ -254,7 +256,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Test Details :"))
         self.label_11.setText(_translate("MainWindow", "Tensile "))
         self.label_4.setText(_translate("MainWindow", "Select Test :"))
-        self.label_5.setText(_translate("MainWindow", " TESTS TYPES ( NEW TEST )"))
+        self.label_5.setText(_translate("MainWindow", " TESTS TYPES ( REPORTS )"))
         self.pushButton_15.setText(_translate("MainWindow", "IMAGE"))
         self.radioButton.setText(_translate("MainWindow", "Non -Metal"))
         self.radioButton_2.setText(_translate("MainWindow", "Metal"))
@@ -451,32 +453,32 @@ class TY_12_LIST_Ui_MainWindow(object):
         
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()    
    
 
     def open_new_window_qlss(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_qlss_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
     def open_new_window_ilss(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_ilss_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
     def open_new_window_flexurl(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_01_fluxurl_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
     def open_new_window_cof(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_11_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 
@@ -485,7 +487,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_12_LIST_Ui_MainWindow()
+    ui = TY_18_TEST_TYPE_REPORTS_Ui()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
