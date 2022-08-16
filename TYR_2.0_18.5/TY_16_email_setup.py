@@ -147,7 +147,7 @@ class ty_16_Ui_MainWindow(object):
         self.pushButton_10.setFlat(False)
         self.pushButton_10.setObjectName("pushButton_10")
         self.label_7 = QtWidgets.QLabel(self.frame)
-        self.label_7.setGeometry(QtCore.QRect(390, 290, 171, 31))
+        self.label_7.setGeometry(QtCore.QRect(390, 230, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
