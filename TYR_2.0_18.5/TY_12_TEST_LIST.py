@@ -292,7 +292,7 @@ class TY_12_LIST_Ui_MainWindow(object):
     def load_data(self):
         self.listWidget.clear() 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y'") 
+        results=connection.execute("SELECT  TEST_TYPE_NAME||'('||TEST_TYPE_ID||')' FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y'") 
         for x in results:
             self.listWidget.addItem(str(x[0]))
         connection.close()
@@ -304,7 +304,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.pushButton_15.setText("")
         self.list_type=self.listWidget.currentItem().text()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME = '"+str(self.list_type)+"'")
+        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME||'('||TEST_TYPE_ID||')' = '"+str(self.list_type)+"'")
         for x in results:                    
                    self.label_11.setText(str(x[0]))
                    self.textEdit.setText(str(x[1])) #ADDRESS1
@@ -377,7 +377,9 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "6"):
             self.save_test_ilss()
         elif(str(self.test_type_id) == "7"):
-            self.save_test_qlss ()    
+            self.save_test_qlss ()
+        elif(str(self.test_type_id) == "8"):
+            self.save_test_tensile_8() 
         else:
             print("Invalid Test ID")
             
@@ -388,6 +390,18 @@ class TY_12_LIST_Ui_MainWindow(object):
         with connection:        
                     cursor = connection.cursor()
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")                    
+        connection.commit();
+        connection.close()
+        
+        
+        self.open_new_window()
+        
+        
+    def save_test_tensile_8(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile_8'")                    
         connection.commit();
         connection.close()
         
