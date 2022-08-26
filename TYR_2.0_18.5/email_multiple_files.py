@@ -333,10 +333,10 @@ class email_multi_Ui_MainWindow(object):
         
         
     def send_email(self):        
-        self.sender_email = "utmapp3@gmail.com" #
-        self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
-                    #password = input("Type your password and press enter:")
-        self.password = "Dhruv@1210"
+#        self.sender_email = "utmapp3@gmail.com" #
+#        self.receiver_email = str(self.lineEdit.text()) #"sanjaymane1610@gmail.com"
+#                    #password = input("Type your password and press enter:")
+#        self.password = "Dhruv@1210"
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select FROM_EMAIL_ID,FROM_EMAIL_PWD,FROM_EMAIL_SMTP_SERVER from GLOBAL_VAR") 
@@ -345,7 +345,8 @@ class email_multi_Ui_MainWindow(object):
             self.password =str(x[1])
             self.smtp_server=str(x[2])            
         connection.close()
-
+        
+        self.receiver_email = str(self.lineEdit.text())
         self.message = MIMEMultipart("alternative")
         self.message["Subject"] = str(self.lineEdit_2.text())
         self.message["From"] = self.sender_email

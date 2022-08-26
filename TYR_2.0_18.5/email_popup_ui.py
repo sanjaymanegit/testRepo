@@ -365,6 +365,7 @@ class popup_email_Ui_MainWindow(object):
         self.smtp_server="smtp.gmail.com"
         
         '''
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select FROM_EMAIL_ID,FROM_EMAIL_PWD,FROM_EMAIL_SMTP_SERVER from GLOBAL_VAR") 
         for x in results:
@@ -374,7 +375,7 @@ class popup_email_Ui_MainWindow(object):
         connection.close()
        
         
-
+        self.receiver_email = str(self.lineEdit.text())
         self.message = MIMEMultipart("alternative")
         self.message["Subject"] = str(self.lineEdit_2.text())
         self.message["From"] = self.sender_email

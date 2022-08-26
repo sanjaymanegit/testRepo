@@ -18,6 +18,8 @@ from TY_13_SP_REPORT_COF import TY_13_Ui_MainWindow
 
 from print_popup import P_POPUi_MainWindow
 from email_popup_ui import popup_email_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
+
 from PyQt5.Qt import QTableWidgetItem
 import sys
 import os
@@ -91,7 +93,7 @@ class TY_03_Ui_MainWindow(object):
         self.pushButton_3.setObjectName("pushButton_3")
         
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(150, 640, 80, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(120, 640, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -102,7 +104,7 @@ class TY_03_Ui_MainWindow(object):
         
         
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(270, 640, 80, 31))
+        self.pushButton_8.setGeometry(QtCore.QRect(240, 640, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -112,7 +114,7 @@ class TY_03_Ui_MainWindow(object):
         
         
         self.pushButton_7_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7_1.setGeometry(QtCore.QRect(400, 640, 120, 31))
+        self.pushButton_7_1.setGeometry(QtCore.QRect(360, 640, 120, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -122,12 +124,20 @@ class TY_03_Ui_MainWindow(object):
         
         
         self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8_1.setGeometry(QtCore.QRect(570, 640, 120, 31))
+        self.pushButton_8_1.setGeometry(QtCore.QRect(510, 640, 120, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_8_1.setFont(font)
         self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        self.pushButton_8_2 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_2.setGeometry(QtCore.QRect(650, 640, 90, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_8_2.setFont(font)
+        self.pushButton_8_2.setObjectName("pushButton_8_2")
         
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(30, 70, 711, 261))
@@ -704,8 +714,10 @@ class TY_03_Ui_MainWindow(object):
         self.lineEdit_4.setText(_translate("MainWindow", "100"))
         self.pushButton_8.setText(_translate("MainWindow", "Return"))
         self.pushButton_8_1.setText(_translate("MainWindow", "Email Report"))
+        self.pushButton_8_2.setText(_translate("MainWindow", "Comment"))
         #self.pushButton_8_1.hide()
         self.pushButton_8_1.setDisabled(True)
+        self.pushButton_8_2.setDisabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -810,6 +822,8 @@ class TY_03_Ui_MainWindow(object):
         self.radioButton_5.clicked.connect(self.by_batch_radio)
         self.tableWidget.doubleClicked.connect(self.open_report)
         self.pushButton_8_1.clicked.connect(self.open_email_report)
+        self.pushButton_8_2.clicked.connect(self.open_comment_popup)
+        
         self.default_dates()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -1222,7 +1236,27 @@ class TY_03_Ui_MainWindow(object):
         else:
             print(" test_id :--1111"+str(self.test_id))  
         
-    
+    def open_comment_popup(self):
+        row = self.tableWidget.currentRow()
+        if(row != -1 ):
+            self.test_id=(self.tableWidget.item(row, 1).text() )
+            print(" test_id :"+str(self.test_id))  
+            connection = sqlite3.connect("tyr.db")        
+            with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+            connection.commit()
+            connection.close()
+            
+            self.window = QtWidgets.QMainWindow()
+            self.ui=comment_Ui_MainWindow()
+            self.ui.setupUi(self.window)           
+            self.window.show()
+        else:
+            print(" test_id :--1111"+str(self.test_id))
+        
+        
+        
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
         self.window = QtWidgets.QMainWindow()
@@ -1263,6 +1297,7 @@ class TY_03_Ui_MainWindow(object):
     def show_report_details(self):
         self.groupBox.show()
         self.pushButton_8_1.setEnabled(True)
+        self.pushButton_8_2.setEnabled(True)
         self.graphicsView.show()
         self.pushButton_4.show()
         self.pushButton_5.show()
@@ -2275,7 +2310,8 @@ class TY_03_Ui_MainWindow(object):
         doc.build(Elements)
         #print("Done")
        
-    def guage_create_pdf_new(self):        
+    def guage_create_pdf_new(self):
+        self.comments=""
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
         for x in results:
@@ -2292,22 +2328,22 @@ class TY_03_Ui_MainWindow(object):
         if (self.shape=="Rectangle"):
             
             if(self.unit_typex == "Kg/Cm"):            
-                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@\nBreak \n (cm)','%E@Break \n',' Yeild \n Strength \n (Kgf/Cm2)','E@Yeild \n Strength \n (Cm)']]
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'%E \n',' Yeild \n Strength \n (Kgf/Cm2)']]
             elif(self.unit_typex == "Lb/Inch"):
-                    data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@\nBreak \n (Inch)','%E@Break \n',' Yeild \n Strength \n (Lb/Inch2)','E@Yeild \n Strength \n (Inch)']]
+                    data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'%E \n',' Yeild \n Strength \n (Lb/Inch2)']]
             elif(self.unit_typex == "Newton/Mm"):
-                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','E@Peak \n %','E@\nBreak \n (mm)','E@Break \n %',' Yeild \n Strength \n (N/mm2)','E@Yeild \n Strength \n (mm)']]
+                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E \n %',' Yeild \n Strength \n (N/mm2)']]
             else:        
-                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@\nBreak \n (mm)','%E@Break \n',' Yeild \n Strength \n (MPA)','E@Yeild \n Strength \n (mm)']]
+                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'%E \n',' Yeild \n Strength \n (MPA)']]
           
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.PREC_E_AT_BREAK),printf(\"%.2f\", A.def_yeild_strg),printf(\"%.2f\", A.def_point)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.PREC_E_AT_BREAK),printf(\"%.2f\", A.def_yeild_strg)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
             for x in results:
                 data.append(x)
             connection.close()  
         
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", def_yeild_strg),printf(\"%.2f\", def_point) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", def_yeild_strg) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             for x in results:
                 data.append(x)
             connection.close()            
@@ -2397,37 +2433,26 @@ class TY_03_Ui_MainWindow(object):
            
            
         if(self.unit_typex == "Kg/Cm"):
-            data2= [ ['Spec. \n No', 'TensileStrength \n (Kgf/Cm2)', 'Mod@100% \n (Kgf/Cm2)', 'Mod@200% \n (Kgf/Cm2)', 'Mod@300% \n (Kgf/Cm2)']]
+            data2= [ ['Spec. \n No', 'TensileStrength \n (Kgf/Cm2)' ]]
         elif(self.unit_typex == "Lb/Inch"):
-            data2= [ ['Spec. \n No', 'TensileStrength \n (Lb/Inch2)', 'Mod@100% \n (Lb/Inch2)', 'Mod@200% \n (Lb/Inch2)', 'Mod@300% \n (Lb/Inch2)']]
+            data2= [ ['Spec. \n No', 'TensileStrength \n (Lb/Inch2)' ]]
         elif(self.unit_typex == "Newton/Mm"):
-            data2= [ ['Spec. \n No', 'TensileStrength \n (N/Mm2)', 'Mod@100% \n (N/Mm2)', 'Mod@200% \n (N/Mm2)', 'Mod@300% \n (N/Mm2)']]
+            data2= [ ['Spec. \n No', 'TensileStrength \n (N/Mm2)' ]]
         elif(self.unit_typex == "MPA"):
-            data2= [ ['Spec. \n No', 'TensileStrength \n (MPA)', 'Mod@100% \n (MPA)', 'Mod@200% \n (MPA)', 'Mod@300% \n (MPA)']]    
+            data2= [ ['Spec. \n No', 'TensileStrength \n (MPA)' ]]    
         else:
-            data2= [ ['Spec. \n No', 'TensileStrength \n (Kg/Cm2)', 'Mod@100% \n (Kg/Cm2)', 'Mod@200% \n (Kg/Cm2)', 'Mod@300% \n (Kg/Cm2)']]
+            data2= [ ['Spec. \n No', 'TensileStrength \n (Kg/Cm2)']]
         
-        connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT MOD_AT_ANY FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
-        for rows in results:
-            if(self.unit_typex == "Lb/Inch"):
-                data2[0].append("Mod@"+str(rows[0])+"% \n (Lb/Inch2)")
-            elif(self.unit_typex == "Newton/Mm"):
-                data2[0].append("Mod@"+str(rows[0])+"% \n (N/Mm2)")
-            elif(self.unit_typex == "MPA"):
-                data2[0].append("Mod@"+str(rows[0])+"% \n (MPA)")    
-            else:    
-                data2[0].append("Mod@"+str(rows[0])+"% \n (Kgf/Cm2)")
-        connection.close()
+        
                    
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_100),printf(\"%.2f\", A.MODULUS_200) ,printf(\"%.2f\", A.MODULUS_300),printf(\"%.2f\", A.MOD_AT_ANY) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
+        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
         for x in results:
             data2.append(x)
         connection.close()  
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200) ,printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MOD_AT_ANY) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
         for x in results:
             data2.append(x)
         connection.close()           
@@ -2438,10 +2463,10 @@ class TY_03_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.comments  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
-      
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "","",""]]
+            self.comments=str(x[12])
         connection.close() 
         
         PAGE_HEIGHT=defaultPageSize[1]
@@ -2460,6 +2485,8 @@ class TY_03_Ui_MainWindow(object):
         
         footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
         
+        footer_3= Paragraph("Comments :  "+str(self.comments), styles["Normal"])
+        
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
         d.add(linea_firma)
@@ -2476,21 +2503,17 @@ class TY_03_Ui_MainWindow(object):
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
+        
          
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f1,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f1,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),footer_3,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
-        '''
-        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
-                                leftMargin=40,
-                                topMargin=30,
-                                bottomMargin=30,)
-        '''
+        
         doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4,rightMargin=20,
                                 leftMargin=30,
                                 topMargin=10,
