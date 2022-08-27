@@ -14,6 +14,7 @@ from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
 from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
 from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
+from TY_01_TEST_BATCH_TENSILE_8 import TY_01_T8_Ui_MainWindow
 
 import sqlite3
 import re
@@ -401,12 +402,12 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile_8'")                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")                    
         connection.commit();
         connection.close()
         
         
-        self.open_new_window()
+        self.open_new_window_tensile_8()
         
     def save_test_compress(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -491,6 +492,12 @@ class TY_12_LIST_Ui_MainWindow(object):
     def open_new_window_cof(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_11_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window_tensile_8(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_01_T8_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

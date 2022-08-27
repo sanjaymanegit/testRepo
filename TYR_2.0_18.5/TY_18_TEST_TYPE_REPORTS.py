@@ -16,6 +16,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 #from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
 
 from TY_03_REPORTS import TY_03_Ui_MainWindow
+from TY_13_SP_REPORT_TENSILE_8 import TY_13_T8_Ui_MainWindow
 
 import sqlite3
 import re
@@ -379,7 +380,9 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         elif(str(self.test_type_id) == "6"):
             self.save_test_ilss()
         elif(str(self.test_type_id) == "7"):
-            self.save_test_qlss ()    
+            self.save_test_qlss()
+        elif(str(self.test_type_id) == "8"):
+            self.save_test_tensile_8()
         else:
             print("Invalid Test ID")
             
@@ -391,10 +394,19 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
                     cursor = connection.cursor()
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")                    
         connection.commit();
-        connection.close()
-        
+        connection.close()        
         
         self.open_new_window()
+        
+    def save_test_tensile_8(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile_8'")                    
+        connection.commit();
+        connection.close()        
+        
+        self.open_new_window_tensile_8()
         
     def save_test_compress(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -479,6 +491,12 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
     def open_new_window_cof(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_03_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_new_window_tensile_8(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_13_T8_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 

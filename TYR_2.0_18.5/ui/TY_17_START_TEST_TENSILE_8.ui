@@ -1087,7 +1087,7 @@ color: rgb(255, 0, 0);</string>
       <string notr="true">color: rgb(170, 0, 127);</string>
      </property>
      <property name="text">
-      <string>Force (gm) :</string>
+      <string>Force (Kgf) :</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1235,7 +1235,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>RETURN</string>
+      <string>SAVE</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_15">
@@ -1349,6 +1349,31 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_17">
+     <property name="geometry">
+      <rect>
+       <x>1220</x>
+       <y>650</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>RETURN</string>
      </property>
     </widget>
    </widget>

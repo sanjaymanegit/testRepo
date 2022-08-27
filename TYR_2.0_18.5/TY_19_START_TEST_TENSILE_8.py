@@ -9,9 +9,37 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
+
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
+
+#from P1_main_screen import P1_Ui_MainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+from PyQt5.QtGui import QIcon
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
+import random
+import serial,time
+import array  as arr
+import numpy as np
+
+import re
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+import datetime
 
 
-class Ui_MainWindow(object):
+
+class TY_19_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -146,9 +174,17 @@ class Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
+        self.lineEdit.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit.setGeometry(QtCore.QRect(300, 70, 81, 31))
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
+        self.lineEdit_2.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_2.setGeometry(QtCore.QRect(450, 70, 81, 31))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_8 = QtWidgets.QLabel(self.frame)
@@ -163,6 +199,10 @@ class Ui_MainWindow(object):
         self.label_8.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_8.setObjectName("label_8")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
+        self.lineEdit_3.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_3.setGeometry(QtCore.QRect(300, 130, 81, 31))
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.label_13 = QtWidgets.QLabel(self.frame)
@@ -177,6 +217,10 @@ class Ui_MainWindow(object):
         self.label_13.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_13.setObjectName("label_13")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
+        self.lineEdit_4.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_4.setGeometry(QtCore.QRect(300, 190, 81, 31))
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.label_14 = QtWidgets.QLabel(self.frame)
@@ -257,6 +301,10 @@ class Ui_MainWindow(object):
         self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_28.setObjectName("label_28")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
+        self.lineEdit_7.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_7.setGeometry(QtCore.QRect(450, 590, 101, 41))
         self.lineEdit_7.setObjectName("lineEdit_7")
         self.label_30 = QtWidgets.QLabel(self.frame)
@@ -321,7 +369,7 @@ class Ui_MainWindow(object):
         self.label_33.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
-        self.label_34 = QtWidgets.QLabel(self.frame)
+        self.label_34 = QtWidgets.QLineEdit(self.frame)
         self.label_34.setGeometry(QtCore.QRect(290, 350, 251, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -366,6 +414,10 @@ class Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        self.lineEdit_5.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_5.setGeometry(QtCore.QRect(290, 470, 101, 41))
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.label_22 = QtWidgets.QLabel(self.frame)
@@ -402,6 +454,10 @@ class Ui_MainWindow(object):
         self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_23.setObjectName("label_23")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
+        self.lineEdit_6.setStyleSheet("color: rgb(170, 0, 127);")
         self.lineEdit_6.setGeometry(QtCore.QRect(280, 590, 101, 41))
         self.lineEdit_6.setObjectName("lineEdit_6")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
@@ -465,7 +521,7 @@ class Ui_MainWindow(object):
 "background-color: rgb(0, 180, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_13.setGeometry(QtCore.QRect(710, 630, 141, 31))
+        self.pushButton_13.setGeometry(QtCore.QRect(700, 630, 141, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -487,7 +543,7 @@ class Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_14.setObjectName("pushButton_14")
         self.pushButton_15 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_15.setGeometry(QtCore.QRect(710, 670, 141, 31))
+        self.pushButton_15.setGeometry(QtCore.QRect(700, 670, 141, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -539,6 +595,17 @@ class Ui_MainWindow(object):
         self.label_36.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_36.setAlignment(QtCore.Qt.AlignCenter)
         self.label_36.setObjectName("label_36")
+        self.pushButton_17 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_17.setGeometry(QtCore.QRect(1220, 650, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_17.setFont(font)
+        self.pushButton_17.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_17.setObjectName("pushButton_17")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -547,6 +614,11 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.goAhead="Yes"
+        self.test_id_exist="No"
+        self.timer3=QtCore.QTimer()
+        self.sc_blank=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -554,7 +626,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
+        self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.label_11.setText(_translate("MainWindow", "TEST ID :"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_9.setText(_translate("MainWindow", "Initial Size (mm)"))
@@ -562,9 +634,9 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "*"))
         self.label_13.setText(_translate("MainWindow", "Gauge Length (mm)"))
         self.label_14.setText(_translate("MainWindow", "Tensile Strength (Mpa)"))
-        self.label_15.setText(_translate("MainWindow", "564.33"))
+        self.label_15.setText(_translate("MainWindow", "0.00"))
         self.label_16.setText(_translate("MainWindow", "Yeild Strength (Mpa)"))
-        self.label_17.setText(_translate("MainWindow", "335.88"))
+        self.label_17.setText(_translate("MainWindow", "0.00"))
         self.label_24.setText(_translate("MainWindow", "Final Area (mm²)"))
         self.label_25.setText(_translate("MainWindow", "Reduction Area % :"))
         self.label_28.setText(_translate("MainWindow", "*"))
@@ -579,23 +651,591 @@ class Ui_MainWindow(object):
         self.label_22.setText(_translate("MainWindow", "Elongation %"))
         self.label_29.setText(_translate("MainWindow", "25"))
         self.label_23.setText(_translate("MainWindow", "Final Size (mm)"))
-        self.label_18.setText(_translate("MainWindow", "Force (gm) :"))
+        self.label_18.setText(_translate("MainWindow", "Force (Kgf) :"))
         self.label_19.setText(_translate("MainWindow", "Elongation (mm) :"))
         self.pushButton_3.setText(_translate("MainWindow", "E-Mail"))
-        self.pushButton_4.setText(_translate("MainWindow", "SART"))
-        self.pushButton_13.setText(_translate("MainWindow", "VIEW REPORT"))
-        self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
-        self.pushButton_15.setText(_translate("MainWindow", "PRINT REPORT"))
-        self.pushButton_16.setText(_translate("MainWindow", "REMARK"))
-        self.label_35.setText(_translate("MainWindow", "Running......"))
+        self.pushButton_4.setText(_translate("MainWindow", "Start"))
+        self.pushButton_13.setText(_translate("MainWindow", "View Report"))
+        self.pushButton_14.setText(_translate("MainWindow", "Save"))
+        self.pushButton_15.setText(_translate("MainWindow", "Print Report"))
+        self.pushButton_16.setText(_translate("MainWindow", "Remark"))
+        self.label_35.setText(_translate("MainWindow", "Please click on START button to start test"))
         self.label_36.setText(_translate("MainWindow", "TENSILE - MATERIAL TESTING"))
+        self.pushButton_17.setText(_translate("MainWindow", "RETURN"))
+        self.pushButton_17.clicked.connect(MainWindow.close)
+        #self.pushButton_4_1.clicked.connect(self.open_pdf)
+        self.pushButton_15.clicked.connect(self.print_file)
+        self.pushButton_3.clicked.connect(self.open_email_report)
+        self.pushButton_16.clicked.connect(self.open_comment_popup)
+        self.reset()
+        self.load_data()
+        
+    def reset(self):        
+        if(self.timer3.isActive()): 
+           self.timer3.stop() 
+        
+        self.sc_blank =PlotCanvas_blank(self) 
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        
+    
+    def load_data(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT  NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_SPECIMEN_NAME FROM GLOBAL_VAR") 
+        for x in results:
+            self.label_31.setText("( "+str(x[0])+" )")
+            self.lineEdit.setText(str(x[1]))
+            self.lineEdit_2.setText(str(x[2]))
+            self.lineEdit_3.setText(str(int(x[2])*int(x[1])))
+            self.lineEdit_4.setText(str(x[4]))
+            self.lineEdit_5.setText(str(x[4]))
+            self.lineEdit_6.setText(str(x[1]))
+            self.lineEdit_7.setText(str(x[2]))
+            self.label_27.setText(str(x[5]))
+            
+        connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        for x in results:           
+                 self.label_12.setText(str(x[0]).zfill(3))
+                 self.test_id=str(x[0])
+        connection.close()
+        
+        
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
+    def open_comment_popup(self):
+        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+
+class PlotCanvas_Auto(FigureCanvas):     
+    def __init__(self, parent=None, width=5, height=4, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        
+        self.axes = fig.add_subplot(111)
+        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
+        self.axes.set_facecolor('#CCFFFF')  
+        self.axes.minorticks_on()
+        self.test_type="Tensile"
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])
+             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+        connection.close()
+        
+        if(self.test_type=="Compress"):
+            self.axes.set_xlabel('Compression (mm)')
+        elif(self.test_type=="COF"):
+            self.axes.set_xlabel('Length (mm)') 
+        else:        
+            self.axes.set_xlabel('Elongation (mm)')
+          
+        self.axes.set_ylabel('Force (gm)') 
+        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        self.compute_initial_figure()
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)        
+        ###
+        self.playing = False
+        self.p =0
+        self.q =0
+        self.arr_p=[0.0]
+        self.arr_q=[0.0]
+        self.arr_p1=[0.0]
+        self.arr_q1=[0.0]
+        self.x=0
+        self.y=0
+        #self.ax = self.figure.add_subplot(111) 
+        self.xlim=0
+        self.ylim=10
+        self.line_cnt=0
+        self.xlim_update='NO'
+        self.ylim_update='NO'
+        ##############
+        self.buff=[]
+        self.ybuff=[]
+        self.line=""
+        self.yline=""
+        self.flag=1
+        
+        self.check_R=""
+        self.check_S=""
+        self.IO_error_flg=0
+        self.timer1=QtCore.QTimer()
+       
+       
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        self.save_data_flg=""
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0      
+        self.auto_rev_time_off=0
+        self.break_sence=0
+        self.test_motor_speed=0
+        self.test_guage_mm=0
+        self.test_type="Tensile"
+        self.max_load=0
+        self.max_length=0
+        self.flexural_max_load=100
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
+        self.plot_auto()
+         
+    def compute_initial_figure(self):
+        pass
+    
+   
+    
+    def plot_auto(self):
+        self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        for x in results:
+             self.axes.set_xlim(0,int(x[0]))
+             self.axes.set_ylim(0,int(x[1]))
+             self.flexural_max_load=int(x[1])
+             self.xlim=int(x[0])
+             self.ylim=int(x[1])
+             self.auto_rev_time_off=int(x[2])
+             self.break_sence=int(x[3])
+        connection.close()
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0) from GLOBAL_VAR") 
+        for x in results:            
+             self.test_guage_mm=int(x[0])
+             if(str(x[1]) == "Flexural"):
+                 self.test_type="Compress"
+             else:
+                  self.test_type=str(x[1])
+             self.max_load=int(x[2])
+             #self.max_load=100
+             self.max_length=float(float(x[0])-float(x[3]))
+             self.flex_max_length=float(x[3])
+             self.cof_max_length=float(x[4])
+             
+             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        connection.close()
+        
+        try:
+            self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
+          
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.yline = self.ser.readline()
+            print("Check for Load Cel o/p:"+str(self.yline))
+            ystr3=str(self.yline)        
+            ystr3=ystr3[1:int(len(ystr3)-1)]
+            ystr2=ystr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            ystr1=ystr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            ystr=ystr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.ybuff=ystr.split("_")
+            print("Length of Array :"+str(len(self.ybuff)))
+                
+         
+            #==== Guage Length Setting before staret =====
+            self.ser.flush()
+            
+            if(self.test_type=="Flexural"):
+                #self.test_guage_mm=0
+                #self.command_str="*G0.00\r"
+                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            else:
+                self.command_str="*G000.0\r"
+                
+            print("Guage Length Command : "+str(self.command_str))
+            
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #===== Auto Reverse Time Off =====
+            self.ser.flush()
+            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
+            print("Auto reve. Time off Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #========Motor Speed and Breaking Sence =========            
+            self.validate_speed()            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+            else:   
+                self.ser.write(b'*P0050_0010\r')
+                #print("started with default motor speed . Not gohead ")
+            #self.ser.write(b'*D\r\n')
+                
+            #time.sleep(2)
+            #========Final Motor start Command =========    
+            self.ser.flush()
+            if(self.test_type=="Compress"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                    else:
+                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                    
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)                 
+                else:
+                    print("Compress test not started ")               
+                               
+            elif(self.test_type=="Flexural"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                            #self.ser.write(b'*S2E0599 200\r')
+                            self.command_str="*S2C%04d"%self.flexural_max_load+" %04d"%self.flexural_max_load+"\r"
+                            #self.command_str="*S2E%04d"%self.flexural_max_load+" 0000\r"
+                    else:
+                            #self.command_str="*S1E%04d"%self.flexural_max_load+" 0000\r"
+                            self.command_str="*S1C%04d"%self.flexural_max_load+" %04d"%self.flexural_max_load+"\r"
+                            
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("fluexural test started ")
+                else:
+                    print("fluexural test not started ")
+            elif(self.test_type=="COF"):                
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.command_str="*S2F%04d"%self.cof_max_length+"_000.0\r"                        
+                    else:
+                        self.command_str="*S1F%04d"%self.cof_max_length+"_000.0\r"
+                        
+                    print("COF self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("COF test started ")   
+                        
+                else:
+                    print("Error :Serial O/P is not getting ")               
+                
+                
+            else:
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.ser.write(b'*S2T000.0 000.0\r')
+                        print("Start Command :*S2T000.0 000.0\r")
+                    else:
+                        self.ser.write(b'*S1T000.0 000.0\r')
+                        print("Start Command:*S1T000.0 000.0\r")
+                else:
+                    print("Error :Serial O/P is not getting ")
+            
+        except IOError:
+            #print("IO Errors")
+            self.IO_error_flg=1
+            
+        
+        
+                 
+        
+        self.timer1.setInterval(1000)     
+        self.timer1.timeout.connect(self.update_graph)
+        self.timer1.start(1)
+        
+        self.on_ani_start()
+    
+    def update_graph(self):       
+        if(self.IO_error_flg==0):
+            '''
+            
+            '''
+            try:
+                self.line = self.ser.readline()
+                print("Timer Job o/p:"+str(self.line))
+                self.ser.flush()
+                self.ser.write(b'*D\r')
+            except IOError:
+                print("IO Errors")    
+                
+            xstr3=str(self.line)        
+            xstr3=xstr3[1:int(len(xstr3)-1)]
+            xstr2=xstr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            xstr1=xstr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            xstr=xstr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.buff=xstr.split("_")
+        
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):
+            #print("length of array :"+str(len(self.buff)))
+            self.check_R = re.findall(r"[R]", xstr)
+            self.check_S = re.findall("[S]", xstr)
+            self.check_OK = re.findall("[OK]", xstr)
+            
+            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                
+                
+                if(str(self.buff[6])=="2"):
+                    self.load_cell_hi=1
+                    self.load_cell_lo=0
+                else:
+                    self.load_cell_hi=0
+                    self.load_cell_lo=1
+                    
+                if(str(self.buff[7])=="2"):
+                    self.extiometer=1
+                    self.encoder=0
+                else:
+                    self.extiometer=0
+                    self.encoder=1
+                
+                if(self.load_cell_hi==1):              
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                else:
+                    self.q=abs(float(self.buff[0]))
+                
+                if(self.encoder==1):
+                    self.p=abs(float(self.buff[4])) #
+                else:
+                    self.p=abs(float(self.buff[5]))
+                    
+                    
+                if(self.test_type=="Compress"):
+                    self.p=int(self.test_guage_mm)-self.p
+                    #print("self.p :"+str(self.p))
+                elif(self.test_type=="Flexural"):
+                    #self.p=self.p
+                    self.p=int(self.test_guage_mm)-self.p
+                else:
+                    self.p=self.p
+                    
+                
+                self.arr_p.append(self.p)
+                self.arr_q.append(self.q)
+                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+               
+                
+
+                if(int(self.q) > int(self.ylim)):
+                   self.ylim=(int(self.q)+100)
+                   self.ylim_update='YES'                   
+                   
+                              
+                if(self.p > self.xlim):
+                   self.xlim=(int(self.p)+100)
+                   self.xlim_update='YES'                   
+                
+                self.save_data_flg="No"
+            else:                
+               
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
+                
+                    
+                
+       
+                    
+                
+               
+     
+          
+    def plot_grah_only(self,i):       
+        
+        self.line_cnt.set_data(self.arr_p,self.arr_q)
+        return [self.line_cnt]
+        #return self.line_cnt,
+    
+    
+    def on_ani_stop(self):
+        self.on_stop()
+        if self.playing:
+            self.ani._stop()
+        else:
+             pass
+    
+    def on_stop(self):
+        if(self.timer1.isActive()): 
+           self.timer1.stop()                                                                                      
+           
+           
+    def init(self):
+        self.line_cnt.set_data([], [])
+        return self.line_cnt,
+
+    def on_ani_start(self):        
+        if self.playing:
+            pass
+        else:
+            self.playing = True
+            self.ani = animation.FuncAnimation(
+                self.figure,
+                self.plot_grah_only,init_func=self.init
+                ,blit=True
+                ,interval=10
+                    )
+            print("Done1")
+       
+    def validate_speed(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
+        for x in results:
+             self.speed_val=str(x[0])
+        connection.close()
+        self.goahead_flag=0
+       
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+        connection.close()
+        
+        if(self.input_speed_val != ""):
+            if(int(self.input_speed_val) <= int(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 
+                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))                 
+            else:
+                 print(" not Ok ")
+                 
+        else:
+            print(" not Ok ")
+                      
+    
+
+class PlotCanvas_blank(FigureCanvas):
+    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot_blank()        
+        
+    def plot_blank(self):                
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        self.x=[0,0,0,0,0,0,0,0]
+        self.y=[0,0,0,0,0,0,0,0]
+        
+        self.p=list()
+        self.q=list()
+        self.test_type="Tensile"
+        ax = self.figure.add_subplot(111)
+        ax.set_facecolor('#CCFFFF')
+        ax.minorticks_on()
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+       
+         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
+        connection.close()
+               
+        for i in range(len(self.x)):
+              self.p.append(self.x[i])
+              self.q.append(self.y[i])  
+              
+        ax.plot(self.x,self.y,'b')
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])
+             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+        connection.close()
+        
+        
+        ax.set_ylabel('Stress  (MPa)')
+        
+        
+        if(self.test_type=="Compress"):
+            ax.set_xlabel('Compression (mm)')       
+        else:
+            ax.set_xlabel(' Strain (%)')
+        self.draw() 
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = TY_19_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

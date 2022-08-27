@@ -385,7 +385,7 @@ class TY_15_Ui_MainWindow(object):
     def load_data(self):
         self.listWidget.clear() 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME FROM TEST_TYPE_MST ") 
+        results=connection.execute("SELECT  TEST_TYPE_NAME ||'-'||TEST_TYPE_ID FROM TEST_TYPE_MST order by TEST_TYPE_ID ") 
         for x in results:
             self.listWidget.addItem(str(x[0]))
             self.rec_count=self.rec_count+1
@@ -400,7 +400,7 @@ class TY_15_Ui_MainWindow(object):
         #self.pushButton_15.setText("")
         self.list_type=self.listWidget.currentItem().text()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE  TEST_TYPE_NAME = '"+str(self.list_type)+"'")
+        results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE  TEST_TYPE_NAME ||'-'||TEST_TYPE_ID = '"+str(self.list_type)+"'")
         for x in results:                    
                    self.lineEdit_15.setText(str(x[0])) #Test Name
                    self.textEdit.setText(str(x[1])) #TEST DETAILS
