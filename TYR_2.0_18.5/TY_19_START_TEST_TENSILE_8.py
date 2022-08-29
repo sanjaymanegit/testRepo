@@ -654,11 +654,16 @@ class TY_19_Ui_MainWindow(object):
         self.label_18.setText(_translate("MainWindow", "Force (Kgf) :"))
         self.label_19.setText(_translate("MainWindow", "Elongation (mm) :"))
         self.pushButton_3.setText(_translate("MainWindow", "E-Mail"))
+        self.pushButton_3.setDisabled(True)
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_13.setText(_translate("MainWindow", "View Report"))
+        self.pushButton_13.setDisabled(True)
         self.pushButton_14.setText(_translate("MainWindow", "Save"))
+        
         self.pushButton_15.setText(_translate("MainWindow", "Print Report"))
+        self.pushButton_15.setDisabled(True)
         self.pushButton_16.setText(_translate("MainWindow", "Remark"))
+        self.pushButton_16.setDisabled(True)
         self.label_35.setText(_translate("MainWindow", "Please click on START button to start test"))
         self.label_36.setText(_translate("MainWindow", "TENSILE - MATERIAL TESTING"))
         self.pushButton_17.setText(_translate("MainWindow", "RETURN"))
@@ -668,7 +673,7 @@ class TY_19_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.print_file)
         self.pushButton_3.clicked.connect(self.open_email_report)
         self.pushButton_16.clicked.connect(self.open_comment_popup)
-        
+        self.pushButton_14.clicked.connect(self.validation)
         
         self.reset()
         self.load_data()
@@ -717,7 +722,7 @@ class TY_19_Ui_MainWindow(object):
             
         connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("select seq from sqlite_sequence WHERE name = 'TEST_MST'")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
@@ -922,7 +927,12 @@ class TY_19_Ui_MainWindow(object):
             try:
                 self.final_length=float(self.lineEdit_5.text())
             except ValueError as e:
-                self.label_29.setText("100")
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error");
+            except TypeError as e:
+                    print("Caluculation error2");
+            except:
+                    print("Caluculation error3");
                 
         
         try:
@@ -930,12 +940,37 @@ class TY_19_Ui_MainWindow(object):
         except ValueError as e:
             try:
                 self.guage_length=float(self.lineEdit_4.text())
-            except ValueError as e:
-                self.label_29.setText("100")
-        self.elongation=self.final_length-self.guage_length
-        self.prc_elongation=(self.elongation*100)/self.guage_length
+            except ValueError as e:                   
+                    print("Caluculation error");
+            except TypeError as e:
+                    print("Caluculation error2");
+            except:
+                    print("Caluculation error3");
+                
+                
+                
+                
+        try:        
+            self.elongation=self.final_length-self.guage_length
+        except ValueError as e:                   
+                    print("Caluculation error");
+        except TypeError as e:
+                    print("Caluculation error2");
+        except:
+                    print("Caluculation error3");   
         
-        self.label_29.setText(str(round(self.prc_elongation,0))+" % ")
+        try:
+            self.prc_elongation=(self.elongation*100)/self.guage_length
+            self.label_29.setText(str(round(self.prc_elongation,0))+" % ")
+        
+        except ValueError as e:                   
+                    print("Caluculation error");
+        except TypeError as e:
+                    print("Caluculation error2");
+        except:
+                    print("Caluculation error3");   
+        
+        
             
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
@@ -976,8 +1011,7 @@ class TY_19_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-        
-        
+    
     def start_test_tensile_8(self):
         self.label_35.setText("")
         self.validation()
@@ -986,7 +1020,7 @@ class TY_19_Ui_MainWindow(object):
                 connection = sqlite3.connect("tyr.db")              
                 with connection:        
                   cursor = connection.cursor()                  
-                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
                 connection.commit();
                 connection.close()
                 
@@ -997,18 +1031,65 @@ class TY_19_Ui_MainWindow(object):
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
                 rows=results.fetchall()
-                connection.close()
+                connection.close()                
                 
                 
-                #self.label_4.setText(str(rows[0][0]))
-                #print("count of stg records :"+str(rows[0][0]))
-                if(int(rows[0][0]) > -2 ):
-                    
-                    self.timer3.setInterval(1000)        
-                    self.timer3.timeout.connect(self.show_load_cell_val)
-                    self.timer3.start(1) 
         else:
                 print("validation Error")
+        
+        
+    def validation(self):
+        self.goAhead="No"
+        if(str(self.lineEdit.text()) == ""):
+               self.label_35.setText("Initail Size Parameters  1 should not be NULL.")
+               self.label_35.show()
+        elif(str(self.lineEdit_2.text()) == ""):
+               self.label_35.setText("Initail Size Parameters  2 should not be NULL.")
+               self.label_35.show()
+        elif(str(self.lineEdit_3.text()) == ""):
+               self.label_35.setText("Inital Area should not be NULL.")
+               self.label_35.show()
+        elif(str(self.lineEdit_4.text()) == ""):
+               self.label_35.setText("Guage Length Should not be NULL")
+               self.label_35.show()
+        elif(str(self.lineEdit_5.text()) == ""):
+               self.label_35.setText("Final Lenght Should not be NULL")
+               self.label_35.show()
+        elif(str(self.lineEdit_6.text()) == ""):
+               self.label_35.setText("Final Size Parameters  1 should not be NULL.")
+               self.label_35.show()
+        elif(str(self.lineEdit_7.text()) == ""):
+               self.label_35.setText("Size Parameters  2 should not be NULL.")
+               self.label_35.show()
+        else:
+               self.goAhead="Yes"
+               
+               connection = sqlite3.connect("tyr.db")
+               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
+               for x in results:           
+                 if(int(x[0]) > 0):
+                       self.test_id_exist="Yes"
+                 else:
+                       self.test_id_exist="No"                     
+               connection.close() 
+               
+               if(self.test_id_exist=="Yes"):                   
+                   connection = sqlite3.connect("tyr.db")
+                   with connection:        
+                       cursor = connection.cursor()
+                       cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                   connection.commit();
+                   connection.close()
+                   print("Record updated  in TEST_MST:")
+                   self.label_35.setText("Test Data Saved Successfully")
+                   self.pushButton_13.setEnabled(True)
+                   self.pushButton_15.setEnabled(True)
+                   self.pushButton_16.setEnabled(True)
+                   self.pushButton_3.setEnabled(True)
+                   
+               else:
+                   print("Record is not updated  in TEST_MST:")
+                   self.label_35.setText("Test Data is not Saved Successfully")
                 
 
 class PlotCanvas_Auto(FigureCanvas):     
