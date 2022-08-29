@@ -642,7 +642,7 @@ class TY_19_Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "*"))
         self.label_30.setText(_translate("MainWindow", "12.47"))
         self.label_32.setText(_translate("MainWindow", "53.14"))
-        self.label_31.setText(_translate("MainWindow", "( Rectangle )"))
+        self.label_31.setText(_translate("MainWindow", "(Rectangle)"))
         self.label_33.setText(_translate("MainWindow", "Sepc. Details"))
         self.label_34.setText(_translate("MainWindow", "#SEDRER DRFDERE"))
         self.label_26.setText(_translate("MainWindow", "Sepc. ID"))
@@ -663,12 +663,32 @@ class TY_19_Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "TENSILE - MATERIAL TESTING"))
         self.pushButton_17.setText(_translate("MainWindow", "RETURN"))
         self.pushButton_17.clicked.connect(MainWindow.close)
+        
         #self.pushButton_4_1.clicked.connect(self.open_pdf)
         self.pushButton_15.clicked.connect(self.print_file)
         self.pushButton_3.clicked.connect(self.open_email_report)
         self.pushButton_16.clicked.connect(self.open_comment_popup)
+        
+        
         self.reset()
         self.load_data()
+        if(self.label_31.text() == "(Rectangle)"):
+                self.thickness_onChange()
+                self.lineEdit.textChanged.connect(self.thickness_onChange)
+                self.lineEdit_2.textChanged.connect(self.width_onChange)
+                self.f_thickness_onChange()
+                self.lineEdit_6.textChanged.connect(self.f_thickness_onChange)
+                self.lineEdit_7.textChanged.connect(self.f_width_onChange)
+        else:
+                self.diameter_onChange()
+                self.lineEdit.textChanged.connect(self.diameter_onChange)
+                self.f_diameter_onChange()
+                self.lineEdit_6.textChanged.connect(self.f_diameter_onChange)
+                
+        
+        self.final_length_onChange()
+        self.lineEdit_5.textChanged.connect(self.final_length_onChange)
+        self.lineEdit_4.textChanged.connect(self.final_length_onChange)
         
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -684,7 +704,7 @@ class TY_19_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT  NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_SPECIMEN_NAME FROM GLOBAL_VAR") 
         for x in results:
-            self.label_31.setText("( "+str(x[0])+" )")
+            self.label_31.setText("("+str(x[0])+")")
             self.lineEdit.setText(str(x[1]))
             self.lineEdit_2.setText(str(x[2]))
             self.lineEdit_3.setText(str(int(x[2])*int(x[1])))
@@ -693,6 +713,7 @@ class TY_19_Ui_MainWindow(object):
             self.lineEdit_6.setText(str(x[1]))
             self.lineEdit_7.setText(str(x[2]))
             self.label_27.setText(str(x[5]))
+            self.label_30.setText(str(int(x[2])*int(x[1])))
             
         connection.close()
         connection = sqlite3.connect("tyr.db")
@@ -703,6 +724,219 @@ class TY_19_Ui_MainWindow(object):
         connection.close()
         
         
+    def thickness_onChange(self):
+        self.thickness=""
+        self.width=""
+        
+        try:
+            self.thickness=int(self.lineEdit.text())
+        except ValueError as e:
+            try:
+                self.thickness=float(self.lineEdit.text())
+            except ValueError as e:
+                self.lineEdit_3.setText("0.00")    
+                
+        
+        try:
+            self.width=int(self.lineEdit_2.text())
+        except ValueError as e:
+            try:
+                self.width=float(self.lineEdit_2.text())
+            except ValueError as e:
+                self.lineEdit_3.setText("0.00")  
+        
+        #print(" thickness :"+str(type(self.thickness))+" width:"+str(type(self.width)))
+        #self.lineEdit_3.setText(str(float(float(int(self.thickness))*float(int(self.width)))))
+        try:
+            self.lineEdit_3.setText(str(float(self.thickness * self.width)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+        
+        self.f_thickness_onChange()    
+            
+            
+    def width_onChange(self):
+        self.thickness=""
+        self.width=""        
+        try:
+            self.thickness=int(self.lineEdit.text())
+        except ValueError as e:
+            try:
+                self.thickness=float(self.lineEdit.text())
+            except ValueError as e:
+                self.lineEdit_3.setText("0.00") 
+        try:
+            self.width=int(self.lineEdit_2.text())
+        except ValueError as e:
+            try:
+                self.width=float(self.lineEdit_2.text())
+            except ValueError as e:
+                self.lineEdit_3.setText("0.00")
+        try:
+            self.lineEdit_3.setText(str(float(self.thickness * self.width)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+        
+        self.f_width_onChange()   
+            
+    def diameter_onChange(self):
+        self.label_8.hide()
+        self.lineEdit_2.hide()
+        self.diameter="0.0"
+        try:
+            self.diameter=int(self.lineEdit.text())
+        except ValueError as e:
+            try:
+                self.diameter=float(self.lineEdit.text())
+            except ValueError as e:
+                self.lineEdit_3.setText("0.00")
+                
+        try:
+            self.lineEdit_3.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+       
+        self.f_diameter_onChange()
+    
+    def f_thickness_onChange(self):
+        self.thickness=""
+        self.width=""
+        
+        try:
+            self.thickness=int(self.lineEdit_6.text())
+        except ValueError as e:
+            try:
+                self.thickness=float(self.lineEdit_6.text())
+            except ValueError as e:
+                self.label_30.setText("0.00")    
+                
+        
+        try:
+            self.width=int(self.lineEdit_7.text())
+        except ValueError as e:
+            try:
+                self.width=float(self.lineEdit_7.text())
+            except ValueError as e:
+                self.label_30.setText("0.00")  
+        
+        #print(" thickness :"+str(type(self.thickness))+" width:"+str(type(self.width)))
+        #self.lineEdit_3.setText(str(float(float(int(self.thickness))*float(int(self.width)))))
+        try:
+            self.label_30.setText(str(float(self.thickness * self.width)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+        
+        self.f_reduced_area_prc()
+            
+    def f_width_onChange(self):
+        self.thickness=""
+        self.width=""        
+        try:
+            self.thickness=int(self.lineEdit_6.text())
+        except ValueError as e:
+            try:
+                self.thickness=float(self.lineEdit_6.text())
+            except ValueError as e:
+                self.label_30.setText("0.00") 
+        try:
+            self.width=int(self.lineEdit_7.text())
+        except ValueError as e:
+            try:
+                self.width=float(self.lineEdit_7.text())
+            except ValueError as e:
+                self.label_30.setText("0.00")
+        try:
+            self.label_30.setText(str(float(self.thickness * self.width)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+        
+        self.f_reduced_area_prc()
+            
+            
+    def f_diameter_onChange(self):
+        self.label_8.hide()
+        self.lineEdit_2.hide()
+        self.diameter="0.0"
+        try:
+            self.diameter=int(self.lineEdit_6.text())
+        except ValueError as e:
+            try:
+                self.diameter=float(self.lineEdit_6.text())
+            except ValueError as e:
+                self.label_30.setText("0.00")
+                
+        try:
+            self.label_30.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
+        except ValueError as e:
+            #self.lineEdit_3.setText("0.00")
+            print("Caluculation error");
+        except TypeError as e:
+            print("Caluculation error2");
+        except:
+            print("Caluculation error3");
+        self.f_reduced_area_prc()
+    
+    def f_reduced_area_prc(self):
+        self.initial_area=self.lineEdit_3.text()
+        self.final_area=self.label_30.text()
+        if (float(self.initial_area) > float(self.final_area)):
+                self.reduced_area=float(self.initial_area)-float(self.final_area)
+                self.reduced_area_prc=float(float(self.reduced_area)*100/float(self.initial_area))
+                self.label_32.setText(str(round(self.reduced_area_prc,0)))
+                print("intial area:"+str(self.initial_area)+" finala area :"+str(self.final_area))
+        else:
+                self.label_32.setText("-1")
+    
+    def final_length_onChange(self):
+        self.final_length=self.lineEdit_5.text()
+        self.guage_length=self.lineEdit_4.text()
+        self.prc_elongation=0        
+        try:
+            self.final_length=int(self.lineEdit_5.text())
+        except ValueError as e:
+            try:
+                self.final_length=float(self.lineEdit_5.text())
+            except ValueError as e:
+                self.label_29.setText("100")
+                
+        
+        try:
+            self.guage_length=int(self.lineEdit_4.text())
+        except ValueError as e:
+            try:
+                self.guage_length=float(self.lineEdit_4.text())
+            except ValueError as e:
+                self.label_29.setText("100")
+        self.elongation=self.final_length-self.guage_length
+        self.prc_elongation=(self.elongation*100)/self.guage_length
+        
+        self.label_29.setText(str(round(self.prc_elongation,0))+" % ")
+            
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
         self.window = QtWidgets.QMainWindow()
@@ -741,6 +975,41 @@ class TY_19_Ui_MainWindow(object):
         self.ui=comment_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+        
+        
+        
+    def start_test_tensile_8(self):
+        self.label_35.setText("")
+        self.validation()
+        if(self.goAhead=="Yes"):                
+                ### Update global var
+                connection = sqlite3.connect("tyr.db")              
+                with connection:        
+                  cursor = connection.cursor()                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PRODUCT_CODE='"+str(self.lineEdit.text())+"',LOT_NO='"+str(self.lineEdit_2.text())+"',SLEDE_WT_GM='"+str(self.lineEdit_3.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_4.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"', BATCH_ID='"+str(self.lineEdit_6.text())+"'")
+                connection.commit();
+                connection.close()
+                
+                
+                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                rows=results.fetchall()
+                connection.close()
+                
+                
+                #self.label_4.setText(str(rows[0][0]))
+                #print("count of stg records :"+str(rows[0][0]))
+                if(int(rows[0][0]) > -2 ):
+                    
+                    self.timer3.setInterval(1000)        
+                    self.timer3.timeout.connect(self.show_load_cell_val)
+                    self.timer3.start(1) 
+        else:
+                print("validation Error")
+                
 
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
