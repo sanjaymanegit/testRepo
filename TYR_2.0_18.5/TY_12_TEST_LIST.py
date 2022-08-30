@@ -402,7 +402,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile'")                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Tensile_8'")                    
         connection.commit();
         connection.close()
         
