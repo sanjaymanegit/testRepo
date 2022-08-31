@@ -16,7 +16,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 #from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
 
 from TY_03_REPORTS import TY_03_Ui_MainWindow
-from TY_13_SP_REPORT_TENSILE_8 import TY_13_T8_Ui_MainWindow
+from TY_21_SP_REPORT_TENSILE_8 import TY_13_T8_Ui_MainWindow
 
 import sqlite3
 import re

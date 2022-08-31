@@ -640,6 +640,7 @@ class TY_19_Ui_MainWindow(object):
         self.timer3=QtCore.QTimer()
         self.sc_blank=""
         self.yeild_strength=""
+        self.shape=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -665,7 +666,7 @@ class TY_19_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "53.14"))
         self.label_31.setText(_translate("MainWindow", "(Rectangle)"))
         self.label_33.setText(_translate("MainWindow", "Sepc. Details"))
-        self.label_34.setText(_translate("MainWindow", "#ABCD"))
+        self.label_34.setText(_translate("MainWindow", ""))
         self.label_26.setText(_translate("MainWindow", "Sepc. ID"))
         self.label_27.setText(_translate("MainWindow", "D00232"))
         self.label_21.setText(_translate("MainWindow", "Final Length (mm)"))
@@ -729,18 +730,24 @@ class TY_19_Ui_MainWindow(object):
     
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),NEW_TEST_DIAMETER,IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_SPECIMEN_NAME FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT  NEW_TEST_SPE_SHAPE,IFNULL(NEW_TEST_THICKNESS,0),IFNULL(NEW_TEST_WIDTH,0),IFNULL(NEW_TEST_DIAMETER,0),IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_SPECIMEN_NAME FROM GLOBAL_VAR") 
         for x in results:
+            self.shape=str(x[0])
             self.label_31.setText("("+str(x[0])+")")
-            self.lineEdit.setText(str(x[1]))
+            if(self.label_31.text() == "(Rectangle)"):
+                    self.lineEdit.setText(str(x[1]))
+                    self.lineEdit_6.setText(str(x[1]))
+            else:       
+                    self.lineEdit.setText(str(x[3]))
+                    self.lineEdit_6.setText(str(x[3]))
             self.lineEdit_2.setText(str(x[2]))
-            self.lineEdit_3.setText(str(int(x[2])*int(x[1])))
             self.lineEdit_4.setText(str(x[4]))
             self.lineEdit_5.setText(str(x[4]))
-            self.lineEdit_6.setText(str(x[1]))
+           
+           
             self.lineEdit_7.setText(str(x[2]))
             self.label_27.setText(str(x[5]))
-            self.label_30.setText(str(int(x[2])*int(x[1])))
+            
             
         connection.close()
         connection = sqlite3.connect("tyr.db")
@@ -818,7 +825,9 @@ class TY_19_Ui_MainWindow(object):
             
     def diameter_onChange(self):
         self.label_8.hide()
+        self.label_28.hide()
         self.lineEdit_2.hide()
+        self.lineEdit_7.hide()
         self.diameter="0.0"
         try:
             self.diameter=int(self.lineEdit.text())
@@ -937,7 +946,7 @@ class TY_19_Ui_MainWindow(object):
                 self.label_32.setText(str(round(self.reduced_area_prc,0)))
                 print("intial area:"+str(self.initial_area)+" finala area :"+str(self.final_area))
         else:
-                self.label_32.setText("-1")
+                self.label_32.setText("0")
     
     def final_length_onChange(self):
         self.final_length=self.lineEdit_5.text()
@@ -1168,7 +1177,7 @@ class TY_19_Ui_MainWindow(object):
         if(str(self.lineEdit.text()) == ""):
                self.label_35.setText("Initail Size Parameters  1 should not be NULL.")
                self.label_35.show()
-        elif(str(self.lineEdit_2.text()) == ""):
+        elif(str(self.lineEdit_2.text()) == "" and self.label_31.text() == "(Rectangle)"):
                self.label_35.setText("Initail Size Parameters  2 should not be NULL.")
                self.label_35.show()
         elif(str(self.lineEdit_3.text()) == ""):
@@ -1183,7 +1192,7 @@ class TY_19_Ui_MainWindow(object):
         elif(str(self.lineEdit_6.text()) == ""):
                self.label_35.setText("Final Size Parameters  1 should not be NULL.")
                self.label_35.show()
-        elif(str(self.lineEdit_7.text()) == ""):
+        elif(str(self.lineEdit_7.text()) == "" and self.label_31.text() == "(Rectangle)"):
                self.label_35.setText("Size Parameters  2 should not be NULL.")
                self.label_35.show()
         else:
@@ -1203,7 +1212,7 @@ class TY_19_Ui_MainWindow(object):
                    with connection:        
                        cursor = connection.cursor()
                        cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.label_27.text())+"',SPEC_DTLS='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+
-                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+"',FINAL_AREA='"+str(self.label_30.text())+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+"',FINAL_AREA='"+str(self.label_30.text())+"', SHAPE='"+str(self.shape)+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                        
                    connection.commit();
                    connection.close()
@@ -1266,6 +1275,13 @@ class TY_19_Ui_MainWindow(object):
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
+        
+        self.star=" * "
+        if(self.label_31.text() == "(Rectangle)"):
+                self.star=" * "
+        else:
+                self.star="  "
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT INI_THICKNESS,INI_WIDTH,INI_AREA,FINAL_THICKNESS,FINAL_WIDTH,FINAL_AREA,REDUCED_AREA_PRC,GUAGE_LENGTH,FINAL_LENGTH,ELONGATION_PERC,TENSILE_STRENGTH,YEILD_STRENGTH FROM TEST_MST  where TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
@@ -1273,10 +1289,10 @@ class TY_19_Ui_MainWindow(object):
             Title3 = Paragraph(str(ptext2), styles["Normal"])
             
             line0= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+" * "+str(x[1]), styles["Normal"])
+            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+str(self.star)+str(x[1]), styles["Normal"])
             line2 = Paragraph("              Initial Area (mm2) :  "+str(x[2]), styles["Normal"])
             line3= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+" * "+str(x[4]), styles["Normal"])
+            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+str(self.star)+str(x[4]), styles["Normal"])
             line5 = Paragraph("              Final Area (mm2)   :  "+str(x[5]), styles["Normal"])
             line6= Paragraph(" --------------------------------------------------------------", styles["Normal"])
             line7 = Paragraph("              Reduced Area (%)   :  "+str(x[6]), styles["Normal"])
@@ -1763,9 +1779,10 @@ class PlotCanvas_Auto(FigureCanvas):
                        
                 self.arr_p.append((self.p/float(self.test_guage_mm))*100)
                 self.arr_q.append((self.q*self.kg_to_Newton/float(self.test_cs_area)))
+                
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
                
-                
+                #print(" test_guage_mm:"+str(self.test_guage_mm)+" test_cs_area:"+str(self.test_cs_area))
 
                 if(int(self.q) > int(self.ylim)):
                    self.ylim=(int(self.q)+100)

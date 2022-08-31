@@ -732,20 +732,27 @@ class TY_20_Ui_MainWindow(object):
     
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,FINAL_AREA,REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,round(FINAL_AREA,2),REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH,SPECIMEN_NAME,SPEC_DTLS,CREATED_ON,SHAPE  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
-            self.label_31.setText("("+str(x[0])+")")
+            self.label_12.setText("("+str(x[0])+")")
             self.lineEdit.setText(str(x[1]))
+            self.lineEdit.setReadOnly(True)
             self.lineEdit_2.setText(str(x[2]))
+            self.lineEdit_2.setReadOnly(True)
             self.lineEdit_3.setText(str(x[3]))
+            self.lineEdit_3.setReadOnly(True)
             self.lineEdit_4.setText(str(x[4]))
             self.lineEdit_5.setText(str(x[5]))
             self.lineEdit_6.setText(str(x[6]))
             self.lineEdit_7.setText(str(x[7]))
-            self.label_27.setText(str(x[9]))
-            self.label_30.setText(str(x[8]))
+            self.label_30.setText(str(x[9]))
+            self.label_32.setText(str(x[8]))
             self.label_15.setText(str(x[10]))
             self.label_17.setText(str(x[11]))
+            self.label_27.setText(str(x[12]))
+            self.label_34.setText(str(x[13]))
+            self.label_20.setText(str(x[14]))
+            self.label_31.setText("("+str(x[15])+")")
      
             
         connection.close()
@@ -824,7 +831,9 @@ class TY_20_Ui_MainWindow(object):
             
     def diameter_onChange(self):
         self.label_8.hide()
+        self.label_28.hide()
         self.lineEdit_2.hide()
+        self.lineEdit_7.hide()
         self.diameter="0.0"
         try:
             self.diameter=int(self.lineEdit.text())
@@ -943,7 +952,7 @@ class TY_20_Ui_MainWindow(object):
                 self.label_32.setText(str(round(self.reduced_area_prc,0)))
                 print("intial area:"+str(self.initial_area)+" finala area :"+str(self.final_area))
         else:
-                self.label_32.setText("-1")
+                self.label_32.setText("0")
     
     def final_length_onChange(self):
         self.final_length=self.lineEdit_5.text()
@@ -1057,7 +1066,7 @@ class TY_20_Ui_MainWindow(object):
         if(str(self.lineEdit.text()) == ""):
                self.label_35.setText("Initail Size Parameters  1 should not be NULL.")
                self.label_35.show()
-        elif(str(self.lineEdit_2.text()) == ""):
+        elif(str(self.lineEdit_2.text()) == "" and self.label_31.text() == "(Rectangle)"):
                self.label_35.setText("Initail Size Parameters  2 should not be NULL.")
                self.label_35.show()
         elif(str(self.lineEdit_3.text()) == ""):
@@ -1069,7 +1078,7 @@ class TY_20_Ui_MainWindow(object):
         elif(str(self.lineEdit_5.text()) == ""):
                self.label_35.setText("Final Lenght Should not be NULL")
                self.label_35.show()
-        elif(str(self.lineEdit_6.text()) == ""):
+        elif(str(self.lineEdit_6.text()) == ""  and self.label_31.text() == "(Rectangle)"):
                self.label_35.setText("Final Size Parameters  1 should not be NULL.")
                self.label_35.show()
         elif(str(self.lineEdit_7.text()) == ""):
@@ -1155,6 +1164,14 @@ class TY_20_Ui_MainWindow(object):
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
+        self.star=" * "
+        if(self.label_31.text() == "(Rectangle)"):
+                self.star=" * "
+        else:
+                self.star="  "
+        
+        
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT INI_THICKNESS,INI_WIDTH,INI_AREA,FINAL_THICKNESS,FINAL_WIDTH,FINAL_AREA,REDUCED_AREA_PRC,GUAGE_LENGTH,FINAL_LENGTH,ELONGATION_PERC,TENSILE_STRENGTH,YEILD_STRENGTH FROM TEST_MST  where TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
@@ -1162,10 +1179,10 @@ class TY_20_Ui_MainWindow(object):
             Title3 = Paragraph(str(ptext2), styles["Normal"])
             
             line0= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+" * "+str(x[1]), styles["Normal"])
+            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+str(self.star)+str(x[1]), styles["Normal"])
             line2 = Paragraph("              Initial Area (mm2) :  "+str(x[2]), styles["Normal"])
             line3= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+" * "+str(x[4]), styles["Normal"])
+            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+str(self.star)+str(x[4]), styles["Normal"])
             line5 = Paragraph("              Final Area (mm2)   :  "+str(x[5]), styles["Normal"])
             line6= Paragraph(" --------------------------------------------------------------", styles["Normal"])
             line7 = Paragraph("              Reduced Area (%)   :  "+str(x[6]), styles["Normal"])
@@ -1274,7 +1291,7 @@ class PlotCanvas(FigureCanvas):
         
         ### Univarsal change for  Graphs #####################
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
              ax.set_xlim(0,int(x[0]))
              ax.set_ylim(0,int(x[1]))          
