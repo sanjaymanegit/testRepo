@@ -743,7 +743,7 @@ class TY_19_Ui_MainWindow(object):
             self.lineEdit_2.setText(str(x[2]))
             self.lineEdit_4.setText(str(x[4]))
             self.lineEdit_5.setText(str(x[4]))
-           
+            
            
             self.lineEdit_7.setText(str(x[2]))
             self.label_27.setText(str(x[5]))
@@ -1082,6 +1082,12 @@ class TY_19_Ui_MainWindow(object):
             self.get_defarmetion_point()
             self.label_15.setText(str(round(max(self.sc_new.arr_q),2)))
             self.label_17.setText(str(self.yeild_strength))
+            
+            guage_length=""
+            f_guage_length=""
+            guage_length=str(self.lineEdit_4.text())
+            f_guage_length=str((((round(max(self.sc_new.arr_p),2))*float(guage_length))/100))
+            self.lineEdit_5.setText(str(round((float(guage_length)+float(f_guage_length)),2)))
      
     
     
@@ -1104,24 +1110,30 @@ class TY_19_Ui_MainWindow(object):
                def_buffer_6_prc=6.0
                 
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT round(X_NUM,2),round(Y_NUM,2) FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
         for x in results:
             print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
             if (float(c)==0):                
                 c=float(round(x[1],2))
             else:    
-                if(float(round(x[1],2)) > float(c)):
+                if(float(x[1]) > float(c)):
                     c=float(x[1])
                     continue
-                elif(float(round(x[1],2)) == float(c)):
+                elif(float(x[1]) == float(c)):
                     def_point=float(x[0])
                     def_point_y=float(x[1])
-                    print("Break 1 Point :"+str(def_point))
+                    print("Break 1 Point :"+str(def_point_y))
+                    break
+                elif(float(x[1]) <  float(c)):
+                    def_point=float(x[0])
+                    def_point_y=float(x[1])
+                    print("Break 1.5 Point :"+str(def_point_y))
                     break
                 else:
+                    c=float(x[1])
                     def_point=float(x[0])
                     def_point_y=float(x[1])
-                    print("Break 2 Point :"+str(def_point))
+                    print("Break 2 Point :"+str(def_point_y))
                     break                    
         connection.close()        
         
