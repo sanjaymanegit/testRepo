@@ -15,6 +15,7 @@ from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
 from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
 from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
 from TY_22_TEST_BATCH_TENSILE_8 import TY_01_T8_Ui_MainWindow
+from TY_23_START_TEST_PEELOFF import TY_23_PEELOFF_Ui_MainWindow
 
 import sqlite3
 import re
@@ -380,7 +381,9 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "7"):
             self.save_test_qlss ()
         elif(str(self.test_type_id) == "8"):
-            self.save_test_tensile_8() 
+            self.save_test_tensile_8()
+        elif(str(self.test_type_id) == "14"):
+            self.save_test_peeloff() 
         else:
             print("Invalid Test ID")
             
@@ -463,7 +466,24 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         self.open_new_window_cof()
+    
+    def save_test_peeloff(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PEELOFF'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_peeloff()
         
+    
+    def open_new_window_peeloff(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_23_PEELOFF_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()    
+    
+    
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_Ui_MainWindow()

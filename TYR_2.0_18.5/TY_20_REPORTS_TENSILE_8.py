@@ -1148,8 +1148,6 @@ class TY_20_Ui_MainWindow(object):
     
     def create_pdf_tensile_8(self):
         
-        
-        
         self.remark="______________________________________________________________________________"
         y=300
         Elements=[]
@@ -1164,20 +1162,27 @@ class TY_20_Ui_MainWindow(object):
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
+        
         self.star=" * "
         if(self.label_31.text() == "(Rectangle)"):
                 self.star=" * "
         else:
                 self.star="  "
         
-        
-        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT INI_THICKNESS,INI_WIDTH,INI_AREA,FINAL_THICKNESS,FINAL_WIDTH,FINAL_AREA,REDUCED_AREA_PRC,GUAGE_LENGTH,FINAL_LENGTH,ELONGATION_PERC,TENSILE_STRENGTH,YEILD_STRENGTH FROM TEST_MST  where TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
+            self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
             
+            
+            self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
+            self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
+            self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
+            self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"Yeild   Strength (MPa) :",str(x[11])])
+            
+            '''
             line0= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
             line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+str(self.star)+str(x[1]), styles["Normal"])
             line2 = Paragraph("              Initial Area (mm2) :  "+str(x[2]), styles["Normal"])
@@ -1194,6 +1199,8 @@ class TY_20_Ui_MainWindow(object):
             
             line12 = Paragraph("              Tensile Strength (MPa)    :  "+str(x[10]), styles["Normal"])
             line13 = Paragraph("              Yeild   Strength (MPa)    :  "+str(x[11]), styles["Normal"])
+            '''
+            
             
             
             
@@ -1213,9 +1220,9 @@ class TY_20_Ui_MainWindow(object):
         connection.close()
         
         blank=Paragraph("                                                                                          ", styles["Normal"])
-        comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])        
+        comments = Paragraph("<font name=Helvetica size=14><b>  Remark : </b></font>"+str(self.remark), styles["Normal"])        
         
-        footer_2= Paragraph("     Authorised and Signed By : _________________.", styles["Normal"])
+        footer_2= Paragraph("<font name=Helvetica size=14><b>   Authorised and Signed By : _________________ </b></font>",styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -1232,12 +1239,14 @@ class TY_20_Ui_MainWindow(object):
         f3=Table(self.summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
-         
+        f4=Table(self.param_data)
+        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,line0,line1,line2,line3,Spacer(1,12),Spacer(1,12),line4,line5,line6,line7,Spacer(1,12),Spacer(1,12),line8,line9,line10,line11,Spacer(1,12),Spacer(1,12),line12,line13,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
@@ -1247,6 +1256,7 @@ class TY_20_Ui_MainWindow(object):
                                 topMargin=10,
                                 bottomMargin=30,)
         doc.build(Elements)
+       
     
    
   
