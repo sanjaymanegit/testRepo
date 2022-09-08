@@ -194,7 +194,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -831,7 +831,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.label_47 = QtWidgets.QLabel(self.frame)
-        self.label_47.setGeometry(QtCore.QRect(770, 80, 141, 31))
+        self.label_47.setGeometry(QtCore.QRect(840, 80, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -975,6 +975,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.test_id_exist="No"
         self.timer3=QtCore.QTimer()
         self.sc_blank=""
+        self.cycle_num=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -990,7 +991,10 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_21.hide()
         self.label_5.setText(_translate("MainWindow", "Spec.Details"))
         self.label_6.setText(_translate("MainWindow", "Speciment Name :"))
+        
         self.tableWidget.setSortingEnabled(True)
+        self.tableWidget.setHorizontalHeaderLabels(['Avg. Load (N)','First Peak Load (N)','Max Load (N)','Min Load (N)','Layers','REC.NO '])  
+        '''
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -1007,7 +1011,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Layer"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Rec.No"))
-        '''
+        
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -1043,31 +1047,27 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Min Loads"))
         self.label_25.setText(_translate("MainWindow", "First Peak"))
         self.label_26.setText(_translate("MainWindow", "Avg Load"))
-        self.label_27.setText(_translate("MainWindow", "111.00"))
-        self.label_28.setText(_translate("MainWindow", "222.00"))
-        self.label_29.setText(_translate("MainWindow", "333.00"))
-        self.label_30.setText(_translate("MainWindow", "444.00"))
-        self.label_31.setText(_translate("MainWindow", "666.99"))
-        self.label_32.setText(_translate("MainWindow", "777.00"))
-        self.label_33.setText(_translate("MainWindow", "888.00"))
-        self.label_34.setText(_translate("MainWindow", "999.00"))
-        self.label_35.setText(_translate("MainWindow", "A10.00"))
-        self.label_36.setText(_translate("MainWindow", "555.00"))
-        self.label_37.setText(_translate("MainWindow", "B11.00"))
-        self.label_38.setText(_translate("MainWindow", "C22.00"))
-        self.label_39.setText(_translate("MainWindow", "D33.00"))
-        self.label_40.setText(_translate("MainWindow", "E34.00"))
-        self.label_41.setText(_translate("MainWindow", "F98.00"))
-        self.label_42.setText(_translate("MainWindow", "G34.00"))
-        self.label_43.setText(_translate("MainWindow", "F56.00"))
-        self.label_44.setText(_translate("MainWindow", "Y66.89"))
-        self.label_45.setText(_translate("MainWindow", "J67.00"))
-        self.label_46.setText(_translate("MainWindow", "K87.00"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "New Item"))
+        self.label_27.setText(_translate("MainWindow", "0.00"))
+        self.label_28.setText(_translate("MainWindow", "0.00"))
+        self.label_29.setText(_translate("MainWindow", "0.00"))
+        self.label_30.setText(_translate("MainWindow", "0.00"))
+        self.label_31.setText(_translate("MainWindow", "0.99"))
+        self.label_32.setText(_translate("MainWindow", "0.00"))
+        self.label_33.setText(_translate("MainWindow", "0.00"))
+        self.label_34.setText(_translate("MainWindow", "0.00"))
+        self.label_35.setText(_translate("MainWindow", "0.00"))
+        self.label_36.setText(_translate("MainWindow", "0.00"))
+        self.label_37.setText(_translate("MainWindow", "0.00"))
+        self.label_38.setText(_translate("MainWindow", "0.00"))
+        self.label_39.setText(_translate("MainWindow", "0.00"))
+        self.label_40.setText(_translate("MainWindow", "0.00"))
+        self.label_41.setText(_translate("MainWindow", "0.00"))
+        self.label_42.setText(_translate("MainWindow", "0.00"))
+        self.label_43.setText(_translate("MainWindow", "0.00"))
+        self.label_44.setText(_translate("MainWindow", "0.00"))
+        self.label_45.setText(_translate("MainWindow", "0.00"))
+        self.label_46.setText(_translate("MainWindow", "0.00"))
+        
         self.label_47.setText(_translate("MainWindow", "Layers :"))
         self.label_48.setText(_translate("MainWindow", "BatchID:"))
         self.label_49.setText(_translate("MainWindow", "PEELOFF TEST"))
@@ -1076,12 +1076,12 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
         self.pushButton_8.setText(_translate("MainWindow", "Report Print"))
         self.label_50.setText(_translate("MainWindow", "Stat."))
-        self.label_51.setText(_translate("MainWindow", "5"))
+        self.label_51.setText(_translate("MainWindow", "0"))
         self.label_7.setText(_translate("MainWindow", "Unit :"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "N"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "N/mm"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
+        self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         
         self.sc_blank =PlotCanvas_blank(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1093,6 +1093,12 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.start_test_peeloff)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
+        
+        self.pushButton_8.clicked.connect(self.print_file)
+        self.pushButton_5.clicked.connect(self.open_email_report)
+        self.pushButton_6.clicked.connect(self.save_data)
+        self.pushButton_7.clicked.connect(self.open_pdf)
+        
         #self.reset()
         self.load_data()
         
@@ -1119,14 +1125,73 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
             self.i=self.i+1
         connection.close()             
             
-        connection.close()
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
         connection.close()
         self.onchage_combo()
+        #self.calculations()
+        
+       
+    def calculations(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(max(AVG_FORCE),2), round(max(DEF_LOAD),2), round(max(MAX_FORCE),2), round(max(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_27.setText(str(x[0]))  #111.00
+                    self.label_31.setText(str(x[1]))   #666.99
+                    self.label_37.setText(str(x[2]))   #B11.00"
+                    self.label_42.setText(str(x[3]))    #G34.00                 
+        connection.close()
+       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(min(AVG_FORCE),2), round(min(DEF_LOAD),2), round(min(MAX_FORCE),2), round(min(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_28.setText(str(x[0]))  #222.00
+                    self.label_32.setText(str(x[1]))   #777.99
+                    self.label_38.setText(str(x[2]))   #C22.00"
+                    self.label_43.setText(str(x[3]))    #F56.00                 
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(avg(AVG_FORCE),2), round(avg(DEF_LOAD),2), round(avg(MAX_FORCE),2), round(avg(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_29.setText(str(x[0]))  #333.00
+                    self.label_33.setText(str(x[1]))   #888.00
+                    self.label_39.setText(str(x[2]))   #D33.00"
+                    self.label_44.setText(str(x[3]))    #Y66.00                 
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_30.setText(str(np.std(x[0])))  #444.00
+                    self.label_34.setText(str(np.std(x[1])))   #999.00
+                    self.label_40.setText(str(np.std(x[2])))   #E34.00"
+                    self.label_45.setText(str(np.std(x[3])))    #J69.00                 
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_36.setText(str(np.var(x[0])))  #555.00
+                    self.label_35.setText(str(np.var(x[1])))   #A10.00
+                    self.label_41.setText(str(np.var(x[2])))   #E34.00"
+                    self.label_46.setText(str(np.var(x[3])))    #K87.00                 
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select count(cycle_id) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                    self.label_51.setText(str(x[0]))                           
+        connection.close()
+        
+        
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
@@ -1198,8 +1263,9 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
        
             
     def save_graph_data(self):
+         self.cycle_num=0
          if (len(self.sc_new.arr_p) > 1):            
-            
+            self.cycle_num=int(str(self.label_51.text()))+1
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
@@ -1219,10 +1285,15 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET MIN_FORCE=(SELECT MIN(Y_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
+                          cursor.execute("UPDATE GLOBAL_VAR SET COF_AVG_FORCE=(SELECT AVG(Y_NUM) FROM STG_GRAPH_MST)")
+                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")                         
                           #print("ok2")
                           cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,AVG_FORCE,DEF_LOAD,MAX_FORCE,MIN_FORCE,LAYERS) SELECT TEST_ID,'PEELOFF',COF_AVG_FORCE,DEF_LOAD,COF_MAX_FORCE,MIN_FORCE,LAYERS FROM GLOBAL_VAR")
-                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                           
+                          
+                          cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
+                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' ,BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.lineEdit_5.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
@@ -1288,9 +1359,9 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         with connection:
                 cursor = connection.cursor()
                 if(float(def_point) > 0):
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"',DEF_LOAD='"+str(def_point_y)+"'")
                 else:                    
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0")
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0,DEF_LOAD=0")
                     
         connection.commit();
         connection.close()
@@ -1314,7 +1385,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
          
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.test_id)+"' order by cycle_id Asc")
+        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1323,8 +1394,207 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         #self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
-        
+        self.calculations()
+       
+    
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
             
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
+    def open_comment_popup(self):
+        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def save_data(self):
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update TEST_MST SET BATCH_ID='"+str(self.lineEdit_3.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"',JOB_NAME='"+str(self.lineEdit_2.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ")
+                    self.label_21.show()
+                    self.label_21.setText("Data Saved Successfully .")
+                    
+        connection.commit()
+        connection.close()
+        
+    def create_pdf_PEELOFF(self):        
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
+#        for x in results:
+#            self.graph_typex=x[0]
+#            self.unit_typex=x[1]
+#        connection.close()
+        self.unit_typex="N/mm"
+        if(self.unit_typex == "N/mm"):
+            data2= [ ['Spec. \n No', 'Avg. Load \n (N)', 'Load at First Peak\n (N)', 'Max Load \n (N)', 'Min Load \n (N)','Layers\n']]
+        else:
+            data2= [ ['Spec. \n No', 'Avg. Load \n (N)', 'Load at First Peak\n (N)', 'Max Load \n (N)', 'Min Load \n (N)','Layers\n']]
+          
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.AVG_FORCE),printf(\"%.2f\", A.DEF_LOAD),printf(\"%.2f\", A.MAX_FORCE),printf(\"%.2f\", A.MIN_FORCE),printf(\"%.2f\", A.LAYERS) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.AVG_FORCE)),printf(\"%.2f\",avg(A.DEF_LOAD)),printf(\"%.2f\", avg(A.MAX_FORCE)),printf(\"%.2f\", avg(A.MIN_FORCE)),printf(\"%.2f\", avg(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.AVG_FORCE)),printf(\"%.2f\",max(A.DEF_LOAD)),printf(\"%.2f\", max(A.MAX_FORCE)),printf(\"%.2f\", max(A.MIN_FORCE)),printf(\"%.2f\", max(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.AVG_FORCE)),printf(\"%.2f\",min(A.DEF_LOAD)),printf(\"%.2f\", min(A.MAX_FORCE)),printf(\"%.2f\", min(A.MIN_FORCE)),printf(\"%.2f\", min(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:                    
+                    data2.append(['STDev',str(np.std(x[0])),str(np.std(x[1])),str(np.std(x[2])),str(np.std(x[3]))])
+        connection.close()
+        
+        self.arr1=[]
+        self.arr2=[]
+        self.arr3=[]
+        self.arr4=[]
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        for x in results:
+                        self.arr1.append(str(x[0]))
+                        self.arr2.append(str(x[1]))
+                        self.arr3.append(str(x[2]))
+                        self.arr4.append(str(x[3])) 
+        connection.close()
+        #data2.append(['Var',str(np.std(self.arr1)),str(np.std(self.arr2)),str(np.std(self.arr3)),str(np.std(self.arr4)),'0']) 
+        c=np.std(self.arr1)
+        print(" arr1 :"+str(c))
+        '''
+        y=300
+        Elements=[]
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+      
+        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        
+        footer_2= Paragraph("     Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=20,
+                                bottomMargin=30,)
+        doc.build(Elements)
+        
+    def open_pdf(self):
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
+        self.create_pdf_PEELOFF() 
+        
+        os.system("xpdf ./reports/test_report.pdf")        
+        #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/test_report.pdf /media/usb/Report_of_test_"+str(self.test_id)+".pdf")
+                os.system("sudo umount /media/usb")
+        else:
+             print("Please connect usb storage device") 
+        
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data.txt")
+        try:
+           f = open('lsusb_data.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+        return product_id 
             
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
@@ -1934,7 +2204,7 @@ class PlotCanvas_blank(FigureCanvas):
         if(self.test_type=="Compress"):
             ax.set_xlabel('Compression (mm)')       
         else:
-            ax.set_xlabel(' blank Distance (mm)')
+            ax.set_xlabel('Distance (mm)')
         self.draw() 
 
 if __name__ == "__main__":
