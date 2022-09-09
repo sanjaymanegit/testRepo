@@ -79,10 +79,10 @@ class TY_19_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(1020, 20, 281, 31))
+        self.label_20.setGeometry(QtCore.QRect(1100, 10, 281, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_20.setFont(font)
@@ -349,6 +349,7 @@ class TY_19_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
+        
         self.label_31 = QtWidgets.QLabel(self.frame)
         self.label_31.setGeometry(QtCore.QRect(160, 10, 101, 31))
         font = QtGui.QFont()
@@ -360,6 +361,39 @@ class TY_19_Ui_MainWindow(object):
         self.label_31.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_31.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
+        
+        self.label_31_1 = QtWidgets.QLabel(self.frame)
+        self.label_31_1.setGeometry(QtCore.QRect(260, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_31_1.setFont(font)
+        self.label_31_1.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_31_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_31_1.setObjectName("label_31_1")
+        
+        self.lineEdit_31_2 = QtWidgets.QLineEdit(self.frame) 
+        self.lineEdit_31_2.setGeometry(QtCore.QRect(370, 10, 101, 31))
+        self.lineEdit_31_2.setObjectName("lineEdit_31_2")
+        
+        self.label_31_3 = QtWidgets.QLabel(self.frame)
+        self.label_31_3.setGeometry(QtCore.QRect(480, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_31_3.setFont(font)
+        self.label_31_3.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_31_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_31_3.setObjectName("label_31_3")
+        
+        self.lineEdit_31_3 = QtWidgets.QLineEdit(self.frame)       
+        self.lineEdit_31_3.setGeometry(QtCore.QRect(570, 10, 101, 31))
+        self.lineEdit_31_3.setObjectName("lineEdit_31_3")
+        
         self.line_12 = QtWidgets.QFrame(self.frame)
         self.line_12.setGeometry(QtCore.QRect(0, 510, 571, 20))
         self.line_12.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -411,7 +445,7 @@ class TY_19_Ui_MainWindow(object):
         self.label_26.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
-        self.label_27 = QtWidgets.QLabel(self.frame)
+        self.label_27 = QtWidgets.QLineEdit(self.frame)
         self.label_27.setGeometry(QtCore.QRect(290, 420, 251, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -604,17 +638,19 @@ class TY_19_Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.layoutWidget)
         self.graphicsView.setObjectName("graphicsView")
         self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
-        self.label_36 = QtWidgets.QLabel(self.frame)
-        self.label_36.setGeometry(QtCore.QRect(540, 10, 341, 31))
+        self.comboBox_2 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2.setGeometry(QtCore.QRect(750, 10, 341, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_36.setFont(font)
-        self.label_36.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_36.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_36.setObjectName("label_36")
+        font.setPointSize(10)        
+        self.comboBox_2.setFont(font)
+        self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
+        
+        
         self.pushButton_17 = QtWidgets.QPushButton(self.frame)
         self.pushButton_17.setGeometry(QtCore.QRect(1220, 650, 101, 31))
         font = QtGui.QFont()
@@ -665,10 +701,13 @@ class TY_19_Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", "12.47"))
         self.label_32.setText(_translate("MainWindow", "53.14"))
         self.label_31.setText(_translate("MainWindow", "(Rectangle)"))
-        self.label_33.setText(_translate("MainWindow", "Sepc. Details"))
+        self.label_31_1.setText(_translate("MainWindow", "Sr.No :"))
+        self.label_31_3.setText(_translate("MainWindow", "Location :"))
+        
+        self.label_33.setText(_translate("MainWindow", "Item Description :"))
         self.label_34.setText(_translate("MainWindow", ""))
-        self.label_26.setText(_translate("MainWindow", "Sepc. ID"))
-        self.label_27.setText(_translate("MainWindow", "D00232"))
+        self.label_26.setText(_translate("MainWindow", "Coil.ID"))
+        self.label_27.setText(_translate("MainWindow", "")) #coid ID
         self.label_21.setText(_translate("MainWindow", "Final Length (mm)"))
         self.label_22.setText(_translate("MainWindow", "Elongation %"))
         self.label_29.setText(_translate("MainWindow", "25"))
@@ -687,7 +726,10 @@ class TY_19_Ui_MainWindow(object):
         self.pushButton_16.setText(_translate("MainWindow", "Remark"))
         self.pushButton_16.setDisabled(True)
         self.label_35.setText(_translate("MainWindow", "Please click on START button to start test"))
-        self.label_36.setText(_translate("MainWindow", "TENSILE - MATERIAL TESTING"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Mechanical Testing Report - Cylinder Parent Material"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Mechanical Testing Report - Welding Sample"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Mechanical Testing Report - Raw Material"))
+        #self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         self.pushButton_17.setText(_translate("MainWindow", "RETURN"))
         self.pushButton_17.clicked.connect(MainWindow.close)
         
@@ -717,6 +759,16 @@ class TY_19_Ui_MainWindow(object):
         self.lineEdit_5.textChanged.connect(self.final_length_onChange)
         self.lineEdit_4.textChanged.connect(self.final_length_onChange)
         self.pushButton_4.clicked.connect(self.start_test_tensile_8)
+        self.comboBox_2.currentTextChanged.connect(self.onchage_combo)
+    
+    def onchage_combo(self):                      
+        if(self.comboBox_2.currentText() == "Mechanical Testing Report - Raw Material"):
+                self.label_31_1.setText("Heat Number :")
+                self.label_31_3.setText("Supplier :")        
+        else:
+                self.label_31_1.setText("Sr.No :")
+                self.label_31_3.setText("Location :")
+                
         
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -746,7 +798,7 @@ class TY_19_Ui_MainWindow(object):
             
            
             self.lineEdit_7.setText(str(x[2]))
-            self.label_27.setText(str(x[5]))
+            #self.label_27.setText(str(x[5]))
             
             
         connection.close()
@@ -1230,7 +1282,10 @@ class TY_19_Ui_MainWindow(object):
                    with connection:        
                        cursor = connection.cursor()
                        cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.label_27.text())+"',SPEC_DTLS='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+
-                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+"',FINAL_AREA='"+str(self.label_30.text())+"', SHAPE='"+str(self.shape)+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+
+                        "',COIL_ID='"+str(self.label_27.text())+"', SR_ID='"+str(self.lineEdit_31_2.text())+"',LOCATION='"+str(self.lineEdit_31_3.text())+"',SUPPLIER='"+str(self.lineEdit_31_3.text())+"',HEAT_NO='"+str(self.lineEdit_31_2.text())+
+                        "',SAMPLE_TYPE='"+str(self.comboBox_2.currentText())+
+                        "',FINAL_AREA='"+str(self.label_30.text())+"', SHAPE='"+str(self.shape)+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                        
                    connection.commit();
                    connection.close()
@@ -1276,16 +1331,21 @@ class TY_19_Ui_MainWindow(object):
         return product_id
     
     def create_pdf_tensile_8(self):
-        
+        self.sample_type=""
         self.remark="______________________________________________________________________________"
         y=300
         Elements=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.SPECIMEN_NAME,A.BATCH_ID,A.SPEC_DTLS,A.PARTY_NAME,A.COMMENTS  FROM TEST_MST A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-        for x in results:
-            self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[0])],["Specimen ID : ",str(x[2]),"Batch ID: ",str(x[3])],["Specimen Details:  ",str(x[4]),"Party Name:",str(x[5])]]
-            self.remark=str(x[6])
+        results=connection.execute("SELECT A.SAMPLE_TYPE,A.TEST_ID,A.CREATED_ON,A.COIL_ID,A.SR_ID,A.LOCATION,A.SPEC_DTLS,A.COMMENTS  FROM TEST_MST A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:                    
+                    self.sample_type=str(x[0])                    
+                    if(str(x[0]) == "Mechanical Testing Report - Raw Material"):                
+                                self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[2])],["Coil ID : : ",str(x[3]),"Heat Number : ",str(x[4])],["Supplier : ",str(x[5]),"Item Description :",str(x[6])]]
+                    else:
+                                self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[2])],["Coil ID : : ",str(x[3]),"Serial Number: ",str(x[4])],["Sample Location : ",str(x[5]),"Item Description :",str(x[6])]]
+                    
+                    self.remark=str(x[7])
         connection.close()
         
         PAGE_HEIGHT=defaultPageSize[1]
@@ -1303,40 +1363,21 @@ class TY_19_Ui_MainWindow(object):
         for x in results:
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
-            self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
-            
-            
-            self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
-            self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
-            self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
-            self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"Yeild   Strength (MPa) :",str(x[11])])
-            
-            '''
-            line0= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+str(self.star)+str(x[1]), styles["Normal"])
-            line2 = Paragraph("              Initial Area (mm2) :  "+str(x[2]), styles["Normal"])
-            line3= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+str(self.star)+str(x[4]), styles["Normal"])
-            line5 = Paragraph("              Final Area (mm2)   :  "+str(x[5]), styles["Normal"])
-            line6= Paragraph(" --------------------------------------------------------------", styles["Normal"])
-            line7 = Paragraph("              Reduced Area (%)   :  "+str(x[6]), styles["Normal"])
-            
-            line8 = Paragraph("              Guage Length(mm)    :  "+str(x[7]), styles["Normal"])
-            line9 = Paragraph("              Final Length (mm)   :  "+str(x[8]), styles["Normal"])
-            line10= Paragraph(" --------------------------------------------------------------", styles["Normal"])
-            line11 = Paragraph("              Elongation (%)   :  "+str(x[9]), styles["Normal"])
-            
-            line12 = Paragraph("              Tensile Strength (MPa)    :  "+str(x[10]), styles["Normal"])
-            line13 = Paragraph("              Yeild   Strength (MPa)    :  "+str(x[11]), styles["Normal"])
-            '''
-            
-            
-            
-            
-            
-            
-            
-            
+            if(self.sample_type == "Mechanical Testing Report - Welding Sample"):
+                    
+                    self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
+                    self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
+                    #self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
+                    #self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
+                    self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"",""])                
+                
+            else:    
+                    self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
+                    self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
+                    self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
+                    self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
+                    self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"Yeild   Strength (MPa) :",str(x[11])])
+                   
         connection.close()
         
         
@@ -1351,7 +1392,7 @@ class TY_19_Ui_MainWindow(object):
         blank=Paragraph("                                                                                          ", styles["Normal"])
         comments = Paragraph("<font name=Helvetica size=14><b>  Remark : </b></font>"+str(self.remark), styles["Normal"])        
         
-        footer_2= Paragraph("<font name=Helvetica size=14><b>   Authorised and Signed By : _________________ </b></font>",styles["Normal"])
+        footer_2= Paragraph("<font name=Helvetica size=14><b>   Tested By: _________________                    Approved  By:_________________  </b></font>",styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -1361,7 +1402,7 @@ class TY_19_Ui_MainWindow(object):
         #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
         
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
-        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        TS_STR = Paragraph("<font name=Helvetica size=11>"+str(self.sample_type)+" </font>", styles["Title"])
         #f2=Table(data2)
         #f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
          
@@ -1375,10 +1416,8 @@ class TY_19_Ui_MainWindow(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12)]
         
-        #Elements.append(f1,Spacer(1,12))        
-        #Elements.append(f2,Spacer(1,12))
         
         doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
                                 leftMargin=20,

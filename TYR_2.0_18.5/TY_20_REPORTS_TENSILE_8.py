@@ -79,10 +79,10 @@ class TY_20_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(1020, 20, 281, 31))
+        self.label_20.setGeometry(QtCore.QRect(1100, 10, 281, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_20.setFont(font)
@@ -349,6 +349,7 @@ class TY_20_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
+        
         self.label_31 = QtWidgets.QLabel(self.frame)
         self.label_31.setGeometry(QtCore.QRect(160, 10, 101, 31))
         font = QtGui.QFont()
@@ -360,6 +361,39 @@ class TY_20_Ui_MainWindow(object):
         self.label_31.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_31.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
+        
+        self.label_31_1 = QtWidgets.QLabel(self.frame)
+        self.label_31_1.setGeometry(QtCore.QRect(260, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_31_1.setFont(font)
+        self.label_31_1.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_31_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_31_1.setObjectName("label_31_1")
+        
+        self.lineEdit_31_2 = QtWidgets.QLineEdit(self.frame) 
+        self.lineEdit_31_2.setGeometry(QtCore.QRect(370, 10, 101, 31))
+        self.lineEdit_31_2.setObjectName("lineEdit_31_2")
+        
+        self.label_31_3 = QtWidgets.QLabel(self.frame)
+        self.label_31_3.setGeometry(QtCore.QRect(480, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_31_3.setFont(font)
+        self.label_31_3.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_31_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_31_3.setObjectName("label_31_3")
+        
+        self.lineEdit_31_3 = QtWidgets.QLineEdit(self.frame)       
+        self.lineEdit_31_3.setGeometry(QtCore.QRect(570, 10, 101, 31))
+        self.lineEdit_31_3.setObjectName("lineEdit_31_3")
+        
         self.line_12 = QtWidgets.QFrame(self.frame)
         self.line_12.setGeometry(QtCore.QRect(0, 510, 571, 20))
         self.line_12.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -411,7 +445,7 @@ class TY_20_Ui_MainWindow(object):
         self.label_26.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_26.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
-        self.label_27 = QtWidgets.QLabel(self.frame)
+        self.label_27 = QtWidgets.QLineEdit(self.frame)
         self.label_27.setGeometry(QtCore.QRect(290, 420, 251, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -489,6 +523,7 @@ class TY_20_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 100.0)
         self.lcdNumber.setProperty("intValue", 100)
         self.lcdNumber.setObjectName("lcdNumber")
+        self.lcdNumber.hide()
         self.label_18 = QtWidgets.QLabel(self.frame)
         self.label_18.setGeometry(QtCore.QRect(1110, 630, 81, 31))
         font = QtGui.QFont()
@@ -507,6 +542,7 @@ class TY_20_Ui_MainWindow(object):
 "color: rgb(255, 0, 0);")
         self.lcdNumber_2.setProperty("intValue", 100)
         self.lcdNumber_2.setObjectName("lcdNumber_2")
+        self.lcdNumber_2.hide()
         self.label_19 = QtWidgets.QLabel(self.frame)
         self.label_19.setGeometry(QtCore.QRect(990, 630, 91, 31))
         font = QtGui.QFont()
@@ -604,17 +640,19 @@ class TY_20_Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.layoutWidget)
         self.graphicsView.setObjectName("graphicsView")
         self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
-        self.label_36 = QtWidgets.QLabel(self.frame)
-        self.label_36.setGeometry(QtCore.QRect(540, 10, 341, 31))
+        self.comboBox_2 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2.setGeometry(QtCore.QRect(750, 10, 341, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_36.setFont(font)
-        self.label_36.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_36.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_36.setObjectName("label_36")
+        font.setPointSize(10)        
+        self.comboBox_2.setFont(font)
+        self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
+        
+        
         self.pushButton_17 = QtWidgets.QPushButton(self.frame)
         self.pushButton_17.setGeometry(QtCore.QRect(1220, 650, 101, 31))
         font = QtGui.QFont()
@@ -640,6 +678,7 @@ class TY_20_Ui_MainWindow(object):
         self.timer3=QtCore.QTimer()
         self.sc_blank=""
         self.yeild_strength=""
+        self.shape=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -664,10 +703,13 @@ class TY_20_Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", "12.47"))
         self.label_32.setText(_translate("MainWindow", "53.14"))
         self.label_31.setText(_translate("MainWindow", "(Rectangle)"))
-        self.label_33.setText(_translate("MainWindow", "Sepc. Details"))
+        self.label_31_1.setText(_translate("MainWindow", "Sr.No :"))
+        self.label_31_3.setText(_translate("MainWindow", "Location :"))
+        
+        self.label_33.setText(_translate("MainWindow", "Item Description :"))
         self.label_34.setText(_translate("MainWindow", ""))
-        self.label_26.setText(_translate("MainWindow", "Sepc. ID"))
-        self.label_27.setText(_translate("MainWindow", "D00232"))
+        self.label_26.setText(_translate("MainWindow", "Coil.ID"))
+        self.label_27.setText(_translate("MainWindow", "")) #coid ID
         self.label_21.setText(_translate("MainWindow", "Final Length (mm)"))
         self.label_22.setText(_translate("MainWindow", "Elongation %"))
         self.label_29.setText(_translate("MainWindow", "25"))
@@ -677,18 +719,22 @@ class TY_20_Ui_MainWindow(object):
         self.label_19.setText(_translate("MainWindow", "Strain (%) :"))
         self.label_19.hide()
         self.pushButton_3.setText(_translate("MainWindow", "E-Mail"))
-       
-        self.pushButton_4.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_3.setDisabled(True)
+        self.pushButton_4.setText(_translate("MainWindow", "Start"))
+        self.pushButton_4.hide()
         self.pushButton_13.setText(_translate("MainWindow", "View Report"))
-      
+        self.pushButton_13.setDisabled(True)
         self.pushButton_14.setText(_translate("MainWindow", "Save"))
         
         self.pushButton_15.setText(_translate("MainWindow", "Print Report"))
-        
+        self.pushButton_15.setDisabled(True)
         self.pushButton_16.setText(_translate("MainWindow", "Remark"))
-        
+        self.pushButton_16.setDisabled(True)
         self.label_35.setText(_translate("MainWindow", ""))
-        self.label_36.setText(_translate("MainWindow", "TENSILE - MATERIAL TESTING"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Mechanical Testing Report - Cylinder Parent Material"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Mechanical Testing Report - Welding Sample"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Mechanical Testing Report - Raw Material"))
+        #self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         self.pushButton_17.setText(_translate("MainWindow", "RETURN"))
         self.pushButton_17.clicked.connect(MainWindow.close)
         
@@ -717,7 +763,17 @@ class TY_20_Ui_MainWindow(object):
         self.final_length_onChange()
         self.lineEdit_5.textChanged.connect(self.final_length_onChange)
         self.lineEdit_4.textChanged.connect(self.final_length_onChange)
-        #self.pushButton_4.clicked.connect(self.start_test_tensile_8)
+        self.pushButton_4.clicked.connect(self.start_test_tensile_8)
+        self.comboBox_2.currentTextChanged.connect(self.onchage_combo)
+    
+    def onchage_combo(self):                      
+        if(self.comboBox_2.currentText() == "Mechanical Testing Report - Raw Material"):
+                self.label_31_1.setText("Heat Number :")
+                self.label_31_3.setText("Supplier :")        
+        else:
+                self.label_31_1.setText("Sr.No :")
+                self.label_31_3.setText("Location :")
+                
         
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -725,14 +781,13 @@ class TY_20_Ui_MainWindow(object):
         
         self.sc_blank =PlotCanvas(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-        self.lcdNumber.setProperty("value", 0.0)
-        self.lcdNumber.hide()
-        self.lcdNumber_2.setProperty("value", 0.0)
-        self.lcdNumber_2.hide()
+        #self.lcdNumber.setProperty("value", 0.0)
+        #self.lcdNumber_2.setProperty("value", 0.0)
+        
     
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,round(FINAL_AREA,2),REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH,SPECIMEN_NAME,SPEC_DTLS,CREATED_ON,SHAPE  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,round(FINAL_AREA,2),REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH,SPECIMEN_NAME,SPEC_DTLS,CREATED_ON,SHAPE,SR_ID,LOCATION,SAMPLE_TYPE  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
             self.label_12.setText("("+str(x[0])+")")
             self.lineEdit.setText(str(x[1]))
@@ -753,6 +808,9 @@ class TY_20_Ui_MainWindow(object):
             self.label_34.setText(str(x[13]))
             self.label_20.setText(str(x[14]))
             self.label_31.setText("("+str(x[15])+")")
+            self.lineEdit_31_2.setText(str(x[16]))
+            self.lineEdit_31_3.setText(str(x[17]))
+            self.comboBox_2.setCurrentText(str(x[18]))           
      
             
         connection.close()
@@ -762,7 +820,6 @@ class TY_20_Ui_MainWindow(object):
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
         connection.close()
-        
         
     def thickness_onChange(self):
         self.thickness=""
@@ -1048,17 +1105,152 @@ class TY_20_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-   
-                
-   
-    
-    
-    
-  
-                
-                
-                
+    def show_load_cell_val(self):        
+        #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
+        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
         
+        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        
+        if(str(self.sc_new.save_data_flg) =="Yes"):
+                self.save_graph_data()
+                self.sc_new.save_data_flg=""
+                self.label_35.setText("Data Saved Successfully.")
+                self.label_35.show()
+                
+    def save_graph_data(self):
+         if (len(self.sc_new.arr_p) > 1):             
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.sc_new.arr_p)):                     
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+            connection.commit();
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")              
+            with connection:        
+                  cursor = connection.cursor()
+                  #print("ok1")
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")
+                  
+                  #print("ok2")
+                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
+                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
+                  cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' ,GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
+                  cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  
+            connection.commit();
+            connection.close()
+            print("Data Saved Ok in STG_GRAPH_MST")
+            self.yeild_strength="0.00"
+            self.get_defarmetion_point()
+            self.label_15.setText(str(round(max(self.sc_new.arr_q),2)))
+            self.label_17.setText(str(self.yeild_strength))
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("select STG_E_AT_PEAK_LOAD_MM from GLOBAL_VAR") 
+            for x in results:
+                    guage_length=""
+                    f_guage_length=""
+                    guage_length=str(self.lineEdit_4.text())
+                    f_guage_length=str((((round(float(x[0]),2))*float(guage_length))/100))
+                    self.lineEdit_5.setText(str(round((float(guage_length)+float(f_guage_length)),2)))
+            connection.close()
+                
+    
+    def get_defarmetion_point(self):
+        c=0.0
+        def_point=-1.00
+        def_point_x=-1.00
+        def_point_y=-1.00
+        def_buffer_6_prc=0.0
+        self.yeild_strength=""
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        for x in results:
+            def_buffer_6_prc=float(x[0])*0.15            
+        connection.close()
+        
+        if(float(def_buffer_6_prc) > 0):
+               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
+        else:
+               def_buffer_6_prc=6.0
+                
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        for x in results:
+            print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
+            if (float(c)==0):                
+                c=float(round(x[1],2))
+            else:    
+                if(float(x[1]) > float(c)):
+                    c=float(x[1])
+                    continue
+                elif(float(x[1]) == float(c)):
+                    def_point=float(x[0])
+                    def_point_y=float(x[1])
+                    print("Break 1 Point :"+str(def_point_y))
+                    break
+                elif(float(x[1]) <  float(c)):
+                    def_point=float(x[0])
+                    def_point_y=float(x[1])
+                    print("Break 1.5 Point :"+str(def_point_y))
+                    break
+                else:
+                    c=float(x[1])
+                    def_point=float(x[0])
+                    def_point_y=float(x[1])
+                    print("Break 2 Point :"+str(def_point_y))
+                    break                    
+        connection.close()        
+        
+        self.yeild_strength=str(round(def_point_y,2))
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                cursor = connection.cursor()
+                if(float(def_point) > 0):
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"'")
+                else:                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0")
+                    
+        connection.commit();
+        connection.close()
+    def start_test_tensile_8(self):
+        self.label_35.setText("")
+        self.validation()
+        if(self.goAhead=="Yes"):                
+                ### Update global var
+                connection = sqlite3.connect("tyr.db")              
+                with connection:        
+                  cursor = connection.cursor()                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"', NEW_TEST_AREA='"+str(self.lineEdit_3.text())+"'")
+                connection.commit();
+                connection.close()
+                
+                
+                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                rows=results.fetchall()
+                connection.close()
+                
+                #self.label_4.setText(str(rows[0][0]))
+                #print("count of stg records :"+str(rows[0][0]))
+                if(int(rows[0][0]) > -2 ):
+                    
+                    self.timer3.setInterval(1000)        
+                    self.timer3.timeout.connect(self.show_load_cell_val)
+                    self.timer3.start(1) 
+                
+                
+                
+                
+        else:
+                print("validation Error")
         
         
     def validation(self):
@@ -1078,10 +1270,10 @@ class TY_20_Ui_MainWindow(object):
         elif(str(self.lineEdit_5.text()) == ""):
                self.label_35.setText("Final Lenght Should not be NULL")
                self.label_35.show()
-        elif(str(self.lineEdit_6.text()) == ""  and self.label_31.text() == "(Rectangle)"):
+        elif(str(self.lineEdit_6.text()) == ""):
                self.label_35.setText("Final Size Parameters  1 should not be NULL.")
                self.label_35.show()
-        elif(str(self.lineEdit_7.text()) == ""):
+        elif(str(self.lineEdit_7.text()) == "" and self.label_31.text() == "(Rectangle)"):
                self.label_35.setText("Size Parameters  2 should not be NULL.")
                self.label_35.show()
         else:
@@ -1101,7 +1293,10 @@ class TY_20_Ui_MainWindow(object):
                    with connection:        
                        cursor = connection.cursor()
                        cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.label_27.text())+"',SPEC_DTLS='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+
-                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+"',FINAL_AREA='"+str(self.label_30.text())+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+
+                        "',COIL_ID='"+str(self.label_27.text())+"', SR_ID='"+str(self.lineEdit_31_2.text())+"',LOCATION='"+str(self.lineEdit_31_3.text())+"',SUPPLIER='"+str(self.lineEdit_31_3.text())+"',HEAT_NO='"+str(self.lineEdit_31_2.text())+
+                        "',SAMPLE_TYPE='"+str(self.comboBox_2.currentText())+
+                        "',FINAL_AREA='"+str(self.label_30.text())+"', SHAPE='"+str(self.shape)+"'      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                        
                    connection.commit();
                    connection.close()
@@ -1147,16 +1342,21 @@ class TY_20_Ui_MainWindow(object):
         return product_id
     
     def create_pdf_tensile_8(self):
-        
+        self.sample_type=""
         self.remark="______________________________________________________________________________"
         y=300
         Elements=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.SPECIMEN_NAME,A.BATCH_ID,A.SPEC_DTLS,A.PARTY_NAME,A.COMMENTS  FROM TEST_MST A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-        for x in results:
-            self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[0])],["Specimen ID : ",str(x[2]),"Batch ID: ",str(x[3])],["Specimen Details:  ",str(x[4]),"Party Name:",str(x[5])]]
-            self.remark=str(x[6])
+        results=connection.execute("SELECT A.SAMPLE_TYPE,A.TEST_ID,A.CREATED_ON,A.COIL_ID,A.SR_ID,A.LOCATION,A.SPEC_DTLS,A.COMMENTS  FROM TEST_MST A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:                    
+                    self.sample_type=str(x[0])                    
+                    if(str(x[0]) == "Mechanical Testing Report - Raw Material"):                
+                                self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[2])],["Coil ID : : ",str(x[3]),"Heat Number : ",str(x[4])],["Supplier : ",str(x[5]),"Item Description :",str(x[6])]]
+                    else:
+                                self.summary_data=[["Test No: ",str(x[1]),"Tested Date: ",str(x[2])],["Coil ID : : ",str(x[3]),"Serial Number: ",str(x[4])],["Sample Location : ",str(x[5]),"Item Description :",str(x[6])]]
+                    
+                    self.remark=str(x[7])
         connection.close()
         
         PAGE_HEIGHT=defaultPageSize[1]
@@ -1174,40 +1374,21 @@ class TY_20_Ui_MainWindow(object):
         for x in results:
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
-            self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
-            
-            
-            self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
-            self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
-            self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
-            self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"Yeild   Strength (MPa) :",str(x[11])])
-            
-            '''
-            line0= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line1 = Paragraph("              Initial Size (mm)  :     "+str(x[0])+str(self.star)+str(x[1]), styles["Normal"])
-            line2 = Paragraph("              Initial Area (mm2) :  "+str(x[2]), styles["Normal"])
-            line3= Paragraph(" ----------------------------------------------------------------", styles["Normal"])
-            line4 = Paragraph("              Final Size (mm)    :  "+str(x[3])+str(self.star)+str(x[4]), styles["Normal"])
-            line5 = Paragraph("              Final Area (mm2)   :  "+str(x[5]), styles["Normal"])
-            line6= Paragraph(" --------------------------------------------------------------", styles["Normal"])
-            line7 = Paragraph("              Reduced Area (%)   :  "+str(x[6]), styles["Normal"])
-            
-            line8 = Paragraph("              Guage Length(mm)    :  "+str(x[7]), styles["Normal"])
-            line9 = Paragraph("              Final Length (mm)   :  "+str(x[8]), styles["Normal"])
-            line10= Paragraph(" --------------------------------------------------------------", styles["Normal"])
-            line11 = Paragraph("              Elongation (%)   :  "+str(x[9]), styles["Normal"])
-            
-            line12 = Paragraph("              Tensile Strength (MPa)    :  "+str(x[10]), styles["Normal"])
-            line13 = Paragraph("              Yeild   Strength (MPa)    :  "+str(x[11]), styles["Normal"])
-            '''
-            
-            
-            
-            
-            
-            
-            
-            
+            if(self.sample_type == "Mechanical Testing Report - Welding Sample"):
+                    
+                    self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
+                    self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
+                    #self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
+                    #self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
+                    self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"",""])                
+                
+            else:    
+                    self.param_data=[["Initial Size (mm)  : ",str(x[0])+str(self.star)+str(x[1]),"Initial Area (mm2) : ",str(x[2])],["Final Size (mm)    :",str(x[3])+str(self.star)+str(x[4]),"Final Area (mm2) : ",str(x[5])]]
+                    self.param_data.append(["Reduced Area (%)   : ",str(x[6])," "," "])
+                    self.param_data.append(["Guage Length(mm)    : ",str(x[7]),"Final Length (mm)   :",str(x[8])])
+                    self.param_data.append(["Elongation (%)   : ",str(x[9])," "," "])
+                    self.param_data.append(["Tensile Strength (MPa)    : ",str(x[10]),"Yeild   Strength (MPa) :",str(x[11])])
+                   
         connection.close()
         
         
@@ -1222,7 +1403,7 @@ class TY_20_Ui_MainWindow(object):
         blank=Paragraph("                                                                                          ", styles["Normal"])
         comments = Paragraph("<font name=Helvetica size=14><b>  Remark : </b></font>"+str(self.remark), styles["Normal"])        
         
-        footer_2= Paragraph("<font name=Helvetica size=14><b>   Authorised and Signed By : _________________ </b></font>",styles["Normal"])
+        footer_2= Paragraph("<font name=Helvetica size=14><b>   Tested By: _________________                    Approved  By:_________________  </b></font>",styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -1232,7 +1413,7 @@ class TY_20_Ui_MainWindow(object):
         #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
         
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
-        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        TS_STR = Paragraph("<font name=Helvetica size=11>"+str(self.sample_type)+" </font>", styles["Title"])
         #f2=Table(data2)
         #f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
          
@@ -1246,17 +1427,14 @@ class TY_20_Ui_MainWindow(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12)]
         
-        #Elements.append(f1,Spacer(1,12))        
-        #Elements.append(f2,Spacer(1,12))
         
         doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
                                 leftMargin=20,
                                 topMargin=10,
                                 bottomMargin=30,)
         doc.build(Elements)
-       
     
    
   
@@ -1301,7 +1479,7 @@ class PlotCanvas(FigureCanvas):
         
         ### Univarsal change for  Graphs #####################
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:
              ax.set_xlim(0,int(x[0]))
              ax.set_ylim(0,int(x[1]))          
@@ -1344,9 +1522,500 @@ class PlotCanvas(FigureCanvas):
         
         #ax.connect('motion_notify_event', mouse_move)
 
-  
+class PlotCanvas_Auto(FigureCanvas):     
+    def __init__(self, parent=None, width=5, height=4, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        
+        self.axes = fig.add_subplot(111)
+        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
+        self.axes.set_facecolor('#CCFFFF')  
+        self.axes.minorticks_on()
+        self.test_type="Tensile"
+        
+        
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
+#        for x in results:
+#             self.test_type=str(x[0])
+#             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+#        connection.close()
+        
+        if(self.test_type=="Compress"):
+            self.axes.set_xlabel('Compression (mm)')
+        elif(self.test_type=="COF"):
+            self.axes.set_xlabel('Length (mm)') 
+        else:        
+            self.axes.set_xlabel('Strain (%)')
+          
+        self.axes.set_ylabel('Stress (MPa)') 
+        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        self.compute_initial_figure()
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)        
+        ###
+        self.playing = False
+        self.p =0
+        self.q =0
+        self.arr_p=[0.0]
+        self.arr_q=[0.0]
+        self.arr_p1=[0.0]
+        self.arr_q1=[0.0]
+        self.x=0
+        self.y=0
+        #self.ax = self.figure.add_subplot(111) 
+        self.xlim=0
+        self.ylim=10
+        self.line_cnt=0
+        self.xlim_update='NO'
+        self.ylim_update='NO'
+        ##############
+        self.buff=[]
+        self.ybuff=[]
+        self.line=""
+        self.yline=""
+        self.flag=1
+        
+        self.check_R=""
+        self.check_S=""
+        self.IO_error_flg=0
+        self.timer1=QtCore.QTimer()
+       
+       
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        self.save_data_flg=""
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0      
+        self.auto_rev_time_off=0
+        self.break_sence=0
+        self.test_motor_speed=0
+        self.test_guage_mm=0
+        self.test_type="Tensile"
+        self.max_load=0
+        self.max_length=0
+        self.flexural_max_load=100
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
+        self.plot_auto()
+         
+    def compute_initial_figure(self):
+        pass
     
+   
+    
+    def plot_auto(self):
+        self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        for x in results:
+             self.axes.set_xlim(0,int(x[0]))
+             self.axes.set_ylim(0,int(x[1]))
+             self.flexural_max_load=int(x[1])
+             self.xlim=int(x[0])
+             self.ylim=int(x[1])
+             self.auto_rev_time_off=int(x[2])
+             self.break_sence=int(x[3])
+        connection.close()
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),IFNULL(NEW_TEST_AREA,0) from GLOBAL_VAR") 
+        for x in results:            
+             self.test_guage_mm=int(x[0])
+             if(str(x[1]) == "Flexural"):
+                 self.test_type="Compress"
+             else:
+                  self.test_type=str(x[1])
+             self.max_load=int(x[2])
+             #self.max_load=100
+             self.max_length=float(float(x[0])-float(x[3]))
+             self.flex_max_length=float(x[3])
+             self.cof_max_length=float(x[4])
+             self.test_cs_area=float(x[5])
+             
+             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        connection.close()
+        
+        try:
+            self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
+          
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.yline = self.ser.readline()
+            print("Check for Load Cel o/p:"+str(self.yline))
+            ystr3=str(self.yline)        
+            ystr3=ystr3[1:int(len(ystr3)-1)]
+            ystr2=ystr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            ystr1=ystr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            ystr=ystr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.ybuff=ystr.split("_")
+            print("Length of Array :"+str(len(self.ybuff)))
+                
+         
+            #==== Guage Length Setting before staret =====
+            self.ser.flush()
+            
+            if(self.test_type=="Flexural"):
+                #self.test_guage_mm=0
+                #self.command_str="*G0.00\r"
+                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            else:
+                self.command_str="*G000.0\r"
+                
+            print("Guage Length Command : "+str(self.command_str))
+            
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #===== Auto Reverse Time Off =====
+            self.ser.flush()
+            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
+            print("Auto reve. Time off Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #========Motor Speed and Breaking Sence =========            
+            self.validate_speed()            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+            else:   
+                self.ser.write(b'*P0050_0010\r')
+                #print("started with default motor speed . Not gohead ")
+            #self.ser.write(b'*D\r\n')
+                
+            #time.sleep(2)
+            #========Final Motor start Command =========    
+            self.ser.flush()
+            if(self.test_type=="Compress"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                    else:
+                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                    
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)                 
+                else:
+                    print("Compress test not started ")               
+                               
+            elif(self.test_type=="Flexural"):
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                            #self.ser.write(b'*S2E0599 200\r')
+                            self.command_str="*S2C%04d"%self.flexural_max_load+" %04d"%self.flexural_max_load+"\r"
+                            #self.command_str="*S2E%04d"%self.flexural_max_load+" 0000\r"
+                    else:
+                            #self.command_str="*S1E%04d"%self.flexural_max_load+" 0000\r"
+                            self.command_str="*S1C%04d"%self.flexural_max_load+" %04d"%self.flexural_max_load+"\r"
+                            
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("fluexural test started ")
+                else:
+                    print("fluexural test not started ")
+            elif(self.test_type=="COF"):                
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.command_str="*S2F%04d"%self.cof_max_length+"_000.0\r"                        
+                    else:
+                        self.command_str="*S1F%04d"%self.cof_max_length+"_000.0\r"
+                        
+                    print("COF self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    print("COF test started ")   
+                        
+                else:
+                    print("Error :Serial O/P is not getting ")               
+                
+                
+            else:
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        self.ser.write(b'*S2T000.0 000.0\r')
+                        print("Start Command :*S2T000.0 000.0\r")
+                    else:
+                        self.ser.write(b'*S1T000.0 000.0\r')
+                        print("Start Command:*S1T000.0 000.0\r")
+                else:
+                    print("Error :Serial O/P is not getting ")
+            
+        except IOError:
+            #print("IO Errors")
+            self.IO_error_flg=1
+            
+        
+        
+                 
+        
+        self.timer1.setInterval(1000)     
+        self.timer1.timeout.connect(self.update_graph)
+        self.timer1.start(1)
+        
+        self.on_ani_start()
+    
+    def update_graph(self):       
+        if(self.IO_error_flg==0):
+            '''
+            
+            '''
+            try:
+                self.line = self.ser.readline()
+                print("Timer Job o/p:"+str(self.line))
+                self.ser.flush()
+                self.ser.write(b'*D\r')
+            except IOError:
+                print("IO Errors")    
+                
+            xstr3=str(self.line)        
+            xstr3=xstr3[1:int(len(xstr3)-1)]
+            xstr2=xstr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            xstr1=xstr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            xstr=xstr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.buff=xstr.split("_")
+        
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):
+            #print("length of array :"+str(len(self.buff)))
+            self.check_R = re.findall(r"[R]", xstr)
+            self.check_S = re.findall("[S]", xstr)
+            self.check_OK = re.findall("[OK]", xstr)
+            
+            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                
+                
+                if(str(self.buff[6])=="2"):
+                    self.load_cell_hi=1
+                    self.load_cell_lo=0
+                else:
+                    self.load_cell_hi=0
+                    self.load_cell_lo=1
+                    
+                if(str(self.buff[7])=="2"):
+                    self.extiometer=1
+                    self.encoder=0
+                else:
+                    self.extiometer=0
+                    self.encoder=1
+                
+                if(self.load_cell_hi==1):              
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                else:
+                    self.q=abs(float(self.buff[0]))
+                
+                if(self.encoder==1):
+                    self.p=abs(float(self.buff[4])) #
+                else:
+                    self.p=abs(float(self.buff[5]))
+                    
+                    
+                if(self.test_type=="Compress"):
+                    self.p=int(self.test_guage_mm)-self.p
+                    #print("self.p :"+str(self.p))
+                elif(self.test_type=="Flexural"):
+                    #self.p=self.p
+                    self.p=int(self.test_guage_mm)-self.p
+                else:
+                    self.p=self.p
+                    
+                #### Convert ro stress and Streain
+                self.kg_to_Newton=float(9.81)
+                #self.x_num.append((self.p/float(test_guage_mm.guage))*100)
+                #self.y_num.append((self.q*self.kg_to_Newton/float(self.self.test_cs_area)))
+                       
+                self.arr_p.append((self.p/float(self.test_guage_mm))*100)
+                self.arr_q.append((self.q*self.kg_to_Newton/float(self.test_cs_area)))
+                
+                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+               
+                #print(" test_guage_mm:"+str(self.test_guage_mm)+" test_cs_area:"+str(self.test_cs_area))
+
+                if(int(self.q) > int(self.ylim)):
+                   self.ylim=(int(self.q)+100)
+                   self.ylim_update='YES'                   
+                   
+                              
+                if(self.p > self.xlim):
+                   self.xlim=(int(self.p)+100)
+                   self.xlim_update='YES'                   
+                
+                self.save_data_flg="No"
+            else:                
+               
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
+                
+                    
+                
+       
+                    
+                
+               
      
+          
+    def plot_grah_only(self,i):       
+        
+        self.line_cnt.set_data(self.arr_p,self.arr_q)
+        return [self.line_cnt]
+        #return self.line_cnt,
+    
+    
+    def on_ani_stop(self):
+        self.on_stop()
+        if self.playing:
+            self.ani._stop()
+        else:
+             pass
+    
+    def on_stop(self):
+        if(self.timer1.isActive()): 
+           self.timer1.stop()                                                                                      
+           
+           
+    def init(self):
+        self.line_cnt.set_data([], [])
+        return self.line_cnt,
+
+    def on_ani_start(self):        
+        if self.playing:
+            pass
+        else:
+            self.playing = True
+            self.ani = animation.FuncAnimation(
+                self.figure,
+                self.plot_grah_only,init_func=self.init
+                ,blit=True
+                ,interval=10
+                    )
+            print("Done1")
+       
+    def validate_speed(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
+        for x in results:
+             self.speed_val=str(x[0])
+        connection.close()
+        self.goahead_flag=0
+       
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+        connection.close()
+        
+        if(self.input_speed_val != ""):
+            if(int(self.input_speed_val) <= int(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 
+                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))                 
+            else:
+                 print(" not Ok ")
+                 
+        else:
+            print(" not Ok ")
+                      
+    
+
+class PlotCanvas_blank(FigureCanvas):
+    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot_blank()        
+        
+    def plot_blank(self):                
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        self.x=[0,0,0,0,0,0,0,0]
+        self.y=[0,0,0,0,0,0,0,0]
+        
+        self.p=list()
+        self.q=list()
+        self.test_type="Tensile"
+        ax = self.figure.add_subplot(111)
+        ax.set_facecolor('#CCFFFF')
+        ax.minorticks_on()
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+       
+         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
+        connection.close()
+               
+        for i in range(len(self.x)):
+              self.p.append(self.x[i])
+              self.q.append(self.y[i])  
+              
+        ax.plot(self.x,self.y,'b')
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])
+             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+        connection.close()
+        
+        
+        ax.set_ylabel('Stress  (MPa)')
+        
+        
+        if(self.test_type=="Compress"):
+            ax.set_xlabel('Compression (mm)')       
+        else:
+            ax.set_xlabel(' Strain (%)')
+        self.draw() 
+
 
 if __name__ == "__main__":
     import sys
@@ -1356,3 +2025,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

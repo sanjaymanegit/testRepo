@@ -995,40 +995,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(True)
         self.tableWidget.setHorizontalHeaderLabels(['Avg. Load (N)','First Peak Load (N)','Max Load (N)','Min Load (N)','Layers','REC.NO '])  
         '''
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Sr.No"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Avg Load"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "First Peak"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Max Load"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Min Load"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Layer"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Rec.No"))
         
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "67"))
-        item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "45"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "23"))
-        item = self.tableWidget.item(0, 4)
-        item.setText(_translate("MainWindow", "23"))
-        item = self.tableWidget.item(0, 5)
-        item.setText(_translate("MainWindow", "55"))
-        item = self.tableWidget.item(0, 6)
-        item.setText(_translate("MainWindow", "11"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
         '''
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
         self.label_10.setText(_translate("MainWindow", "Total Samples :"))
@@ -1689,13 +1656,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.axes.minorticks_on()
         self.test_type="Tensile"
         
-        '''
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME from GLOBAL_VAR") 
-        for x in results:
-            self.test_type=str(x[0])
-        connection.close()
-        '''
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 

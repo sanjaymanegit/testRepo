@@ -312,7 +312,7 @@ class TY_13_T8_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -760,15 +760,17 @@ class TY_13_T8_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.setColumnWidth(3, 200)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 150)
+      
        
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','CREATED-ON','Spec. ID','Batch ID','SHAPE'])        
+        self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','CREATED-ON','COIL. ID','SERIAL NO','LOCATION','MATERIAL TYPE'])        
          
         connection = sqlite3.connect("tyr.db")  
-        print("SELECT B.TEST_ID,B.CREATED_ON,B.SPECIMEN_NAME,BATCH_ID,SHAPE FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile'")                        
-       
-        results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.SPECIMEN_NAME,BATCH_ID,SHAPE FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile_8'")                        
+        
+        results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.COIL_ID,B.SR_ID,B.LOCATION,B.SAMPLE_TYPE FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile_8'")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -863,7 +865,7 @@ class TY_13_T8_Ui_MainWindow(object):
         
             
 
- 
+''' 
 
  
 class PlotCanvas(FigureCanvas):
@@ -1056,7 +1058,7 @@ class PlotCanvas(FigureCanvas):
         else:
             print("Incorrect Graph Type !!!")   
     
-
+'''
     
             
 
