@@ -787,7 +787,7 @@ class TY_20_Ui_MainWindow(object):
     
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,round(FINAL_AREA,2),REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH,SPECIMEN_NAME,SPEC_DTLS,CREATED_ON,SHAPE,SR_ID,LOCATION,SAMPLE_TYPE  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT TEST_ID,INI_THICKNESS,INI_WIDTH,INI_AREA,GUAGE_LENGTH,FINAL_LENGTH,FINAL_THICKNESS,FINAL_WIDTH,round(FINAL_AREA,2),REDUCED_AREA_PRC,TENSILE_STRENGTH,YEILD_STRENGTH,SPECIMEN_NAME,SPEC_DTLS,CREATED_ON,SHAPE,SR_ID,LOCATION,SAMPLE_TYPE,COIL_ID  FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
             self.label_12.setText("("+str(x[0])+")")
             self.lineEdit.setText(str(x[1]))
@@ -804,13 +804,14 @@ class TY_20_Ui_MainWindow(object):
             self.label_32.setText(str(x[8]))
             self.label_15.setText(str(x[10]))
             self.label_17.setText(str(x[11]))
-            self.label_27.setText(str(x[12]))
+            #self.label_27.setText(str(x[12]))
             self.label_34.setText(str(x[13]))
             self.label_20.setText(str(x[14]))
             self.label_31.setText("("+str(x[15])+")")
             self.lineEdit_31_2.setText(str(x[16]))
             self.lineEdit_31_3.setText(str(x[17]))
-            self.comboBox_2.setCurrentText(str(x[18]))           
+            self.comboBox_2.setCurrentText(str(x[18]))
+            self.label_27.setText(str(x[19]))
      
             
         connection.close()
@@ -820,6 +821,7 @@ class TY_20_Ui_MainWindow(object):
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
         connection.close()
+        self.onchage_combo()
         
     def thickness_onChange(self):
         self.thickness=""
@@ -1292,7 +1294,7 @@ class TY_20_Ui_MainWindow(object):
                    connection = sqlite3.connect("tyr.db")
                    with connection:        
                        cursor = connection.cursor()
-                       cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.label_27.text())+"',SPEC_DTLS='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+
+                       cursor.execute("UPDATE TEST_MST SET SPEC_DTLS='"+str(self.label_34.text())+"',INI_THICKNESS='"+str(self.lineEdit.text())+"',INI_WIDTH='"+str(self.lineEdit_2.text())+"',INI_DIAMETER='"+str(self.lineEdit.text())+"',INI_AREA='"+str(self.lineEdit_3.text())+"',REDUCED_AREA_PRC='"+str(self.label_32.text())+
                         "',TENSILE_STRENGTH='"+str(self.label_15.text())+"',YEILD_STRENGTH='"+str(self.label_17.text())+"',FINAL_LENGTH='"+str(self.lineEdit_5.text())+"',ELONGATION_PERC='"+str(self.label_29.text())+"',FINAL_THICKNESS='"+str(self.lineEdit_6.text())+"',FINAL_WIDTH='"+str(self.lineEdit_7.text())+"',FINAL_DIAMETER='"+str(self.lineEdit.text())+
                         "',COIL_ID='"+str(self.label_27.text())+"', SR_ID='"+str(self.lineEdit_31_2.text())+"',LOCATION='"+str(self.lineEdit_31_3.text())+"',SUPPLIER='"+str(self.lineEdit_31_3.text())+"',HEAT_NO='"+str(self.lineEdit_31_2.text())+
                         "',SAMPLE_TYPE='"+str(self.comboBox_2.currentText())+

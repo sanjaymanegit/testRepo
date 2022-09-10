@@ -62,7 +62,7 @@ from reportlab.graphics.shapes import Line, Drawing
 
 
 
-class TY_23_PEELOFF_Ui_MainWindow(object):
+class TY_25_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -378,6 +378,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 100.0)
         self.lcdNumber.setProperty("intValue", 100)
         self.lcdNumber.setObjectName("lcdNumber")
+        self.lcdNumber.hide()
         self.label_13 = QtWidgets.QLabel(self.frame)
         self.label_13.setGeometry(QtCore.QRect(650, 270, 81, 31))
         font = QtGui.QFont()
@@ -399,7 +400,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.lcdNumber_2.setProperty("value", 100.0)
         self.lcdNumber_2.setProperty("intValue", 100)
         self.lcdNumber_2.setObjectName("lcdNumber_2")
-        
+        self.lcdNumber_2.hide()
         self.label_13_2 = QtWidgets.QLabel(self.frame)
         self.label_13_2.setGeometry(QtCore.QRect(650, 370, 81, 31))
         font = QtGui.QFont()
@@ -985,6 +986,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
+        self.pushButton_4.hide()
         self.pushButton_13.setText(_translate("MainWindow", "All"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
@@ -1002,7 +1004,9 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_13.setText(_translate("MainWindow", "LOAD (N) :"))
+        self.label_13.hide()
         self.label_13_2.setText(_translate("MainWindow", "Distance (mm) :"))
+        self.label_13_2.hide()
         self.label_22.setText(_translate("MainWindow", "Running......"))
         self.label_22.hide()
         self.label_15.setText(_translate("MainWindow", "Max :"))
@@ -1068,7 +1072,8 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         #self.reset()
         self.load_data()
-        
+        self.show_all_specimens()
+        self.show_grid_data_peeloff()
         
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -2243,7 +2248,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_23_PEELOFF_Ui_MainWindow()
+    ui = TY_25_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
