@@ -152,7 +152,7 @@ class TY_26_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -1186,6 +1186,10 @@ class TY_26_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.tableWidget.setSortingEnabled(True)
+        
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','Elong.@Break (%)','Elong.@1500N (%)','Elong.@5800N (%)','REC.NO '])  
+      
+        '''
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -1218,7 +1222,8 @@ class TY_26_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "23"))
         item = self.tableWidget.item(0, 6)
         item.setText(_translate("MainWindow", "11"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+        '''
+        #self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
@@ -1605,7 +1610,7 @@ class TY_26_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',LAYERS='"+str(self.lineEdit.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET MIN_FORCE=(SELECT MIN(Y_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
@@ -1620,7 +1625,7 @@ class TY_26_Ui_MainWindow(object):
                           
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
-                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' ,BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.lineEdit_5.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
+                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                     
                   except:
@@ -1699,7 +1704,8 @@ class TY_26_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Avg. Load (N)','First Peak Load (N)','Max Load (N)','Min Load (N)','Layers','REC.NO '])        
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','Elong.@Break (%)','Elong.@1500N (%)','Elong.@5800N (%)','REC.NO '])  
+              
         self.tableWidget.setColumnWidth(0, 170)
         self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
