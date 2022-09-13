@@ -286,6 +286,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
         self.lineEdit_5.setGeometry(QtCore.QRect(860, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -417,6 +420,7 @@ class TY_26_Ui_MainWindow(object):
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.line_4 = QtWidgets.QFrame(self.frame)
+        
         self.line_4.setGeometry(QtCore.QRect(760, 580, 581, 21))
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -441,6 +445,7 @@ class TY_26_Ui_MainWindow(object):
         self.line_8.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_8.setObjectName("line_8")
         self.line_9 = QtWidgets.QFrame(self.frame)
+        
         self.line_9.setGeometry(QtCore.QRect(910, 480, 20, 231))
         self.line_9.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_9.setLineWidth(3)
@@ -459,6 +464,7 @@ class TY_26_Ui_MainWindow(object):
         self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_11.setObjectName("line_11")
         self.line_7 = QtWidgets.QFrame(self.frame)
+        
         self.line_7.setGeometry(QtCore.QRect(760, 500, 581, 21))
         self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_7.setLineWidth(3)
@@ -887,6 +893,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_52.setObjectName("label_52")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(150, 100, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -951,6 +960,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_58.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_58.setObjectName("label_58")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
         self.lineEdit_7.setGeometry(QtCore.QRect(150, 150, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -982,6 +994,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_60.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_60.setObjectName("label_60")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
         self.lineEdit_9.setGeometry(QtCore.QRect(150, 200, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1078,6 +1093,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_61.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_61.setObjectName("label_61")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
         self.lineEdit_8.setGeometry(QtCore.QRect(860, 110, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1184,44 +1202,13 @@ class TY_26_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_13.setText(_translate("MainWindow", "All"))
         self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
+        self.label_21.hide()
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.tableWidget.setSortingEnabled(True)
         
         self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','Elong.@Break (%)','Elong.@1500N (%)','Elong.@5800N (%)','REC.NO '])  
       
-        '''
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Spec.No"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "CA. Area (mm2)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Load@Break(N)"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Elong.@Break(%)"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Elong.@1500(%)"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Elong.@5800(%)"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Rec.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "100"))
-        item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "67"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "45"))
-        item = self.tableWidget.item(0, 4)
-        item.setText(_translate("MainWindow", "23"))
-        item = self.tableWidget.item(0, 5)
-        item.setText(_translate("MainWindow", "23"))
-        item = self.tableWidget.item(0, 6)
-        item.setText(_translate("MainWindow", "11"))
+        '''       
         '''
         #self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
@@ -1297,7 +1284,7 @@ class TY_26_Ui_MainWindow(object):
         self.label_64.setText(_translate("MainWindow", "100"))
         self.label_65.setText(_translate("MainWindow", "(mm2)"))
         self.label_66.setText(_translate("MainWindow", "Total Specemens :"))
-        self.label_67.setText(_translate("MainWindow", "003"))
+        self.label_67.setText(_translate("MainWindow", "00"))
         
         self.sc_blank =PlotCanvas_blank(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1306,14 +1293,18 @@ class TY_26_Ui_MainWindow(object):
         
         
         self.pushButton_15.clicked.connect(MainWindow.close)
-        self.pushButton_4.clicked.connect(self.start_test_peeloff)
-        #self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.pushButton_4.clicked.connect(self.start_test_FBST)
+        self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
         
         self.pushButton_8.clicked.connect(self.print_file)
         self.pushButton_5.clicked.connect(self.open_email_report)
-        self.pushButton_6.clicked.connect(self.save_data)
+        self.pushButton_9.clicked.connect(self.validation)
         self.pushButton_7.clicked.connect(self.open_pdf)
+        self.pushButton_6.clicked.connect(self.open_comment_popup)
+        self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
+        self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
+        
         
         self.load_data()
     
@@ -1339,7 +1330,102 @@ class TY_26_Ui_MainWindow(object):
         self.onchage_combo()
         #self.calculations()
         
-       
+    def cs_area_calculation(self):
+        self.shape=""
+        self.thickness=""
+        self.width=""
+        self.diameter=""
+        self.cs_area=""
+        self.out_dia=""
+        self.inn_dia=""
+        
+        self.shape=self.label_61.text()
+        if(self.shape== "Rectangle"):
+            if(self.lineEdit_5.text() != ""):
+                try:
+                        self.thickness=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                                self.thickness=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00") 
+                try:
+                        self.width=int(self.lineEdit_8.text())
+                except ValueError as e:
+                        try:
+                            self.width=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00")
+                                
+                try:
+                        self.label_64.setText(str(float(self.thickness * self.width)))
+                except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error1");
+                    self.label_64.setText(str("0"))
+                except TypeError as e:
+                    print("Caluculation error2");
+                    self.label_64.setText(str("0"))
+                except:
+                    print("Caluculation error3");
+                    self.label_64.setText(str("0"))
+            else:
+                    self.label_64.setText(str("0"))
+        elif(self.shape== "Cylindrical"):
+                try:
+                    self.diameter=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                            self.diameter=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                            self.label_64.setText("0.00")
+                
+                try:
+                            self.label_64.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
+                except ValueError as e:
+                            #self.lineEdit_3.setText("0.00")
+                            print("Caluculation error4");
+                            self.label_64.setText(str("0"))
+                except TypeError as e:
+                            print("Caluculation error5");
+                            self.label_64.setText(str("0"))
+                except:
+                            print("Caluculation error6");
+                            self.label_64.setText(str("0"))                           
+        
+        elif(self.shape== "Pipe"):
+                try:
+                        self.inn_dia=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                                self.inn_dia=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00") 
+                try:
+                        self.out_dia=int(self.lineEdit_8.text())
+                except ValueError as e:
+                        try:
+                            self.out_dia=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00")
+                                
+                try:
+                        self.cs_area=((float(self.out_dia)*float(self.out_dia)*3.14)/4)-((float(self.inn_dia)*float(self.inn_dia)*3.14)/4) 
+                        self.label_64.setText(str(float(self.cs_area)))
+                except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error7");
+                    self.label_64.setText(str("0"))
+                except TypeError as e:
+                    print("Caluculation error8");
+                    self.label_64.setText(str("0"))
+                except:
+                    print("Caluculation error9");
+                    self.label_64.setText(str("0"))
+        else:
+            self.label_64.setText(str("0"))
+        
+        
     def calculations(self):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute(" select round(max(AVG_FORCE),2), round(max(DEF_LOAD),2), round(max(MAX_FORCE),2), round(max(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
@@ -1399,12 +1485,49 @@ class TY_26_Ui_MainWindow(object):
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select PARTY_NAME,GUAGE_LENGTH_MM,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        #print("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        
+        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
-           #self.lineEdit.setText(str(x[0])) # Layers
-            self.label_64.setText(str(x[1])) # Sepc Details
-           #self.lineEdit_3.setText(str(x[0])) # Batch ID
-            #self.lineEdit_5.setText(str(x[0]))#Party NAme
+           self.lineEdit_4.setText(str(x[0])) # CS AREA
+           self.label_64.setText(str(x[0])) # ca area label
+           self.lineEdit_7.setText(str(x[1])) # GUAGE LENGTH
+           self.lineEdit_9.setText(str(x[2])) # SPEED
+           self.label_51.setText(str(x[3])) # Party Name
+           self.label_61.setText(str(x[7]))
+           self.label_54.show()
+           self.lineEdit_5.show()
+           self.label_55.show()
+           self.lineEdit_8.show()
+           self.label_56.show()
+           self.label_62.show()
+          
+           if(str(x[7]) == "Rectangle"):
+                 self.lineEdit_5.setText(str(x[4]))#THICKNESS
+                 self.lineEdit_8.setText(str(x[5]))#WIDTH
+           elif(str(x[7]) == "Pipe"):
+                 self.label_54.setText("Inn.Diam.")
+                 self.lineEdit_5.setText(str(x[8]))#INN Diameter
+                 self.label_55.setText("Out.Diam.")
+                 self.lineEdit_8.setText(str(x[9]))#OUT.DIAMETER        
+           elif(str(x[7]) == "Cylindrical"):
+                 self.label_54.setText("Diameter.")
+                 self.lineEdit_5.setText(str(x[6]))# Diameter
+                 self.label_55.hide()
+                 self.lineEdit_8.hide()
+                 self.label_62.hide()
+           elif(str(x[7]) == "DirectValue"):
+                self.label_54.hide()
+                self.lineEdit_5.hide()
+                self.label_55.hide()
+                self.lineEdit_8.hide()
+                self.label_56.hide()
+                self.label_62.hide()
+           else:
+                self.label_21.setText("Invalid:"+str(x[7]))
+           
+           #self.lineEdit_5.setText("5")#Party NAme
+            
             
         connection.close()
     
@@ -1439,54 +1562,13 @@ class TY_26_Ui_MainWindow(object):
         self.ui=comment_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    
-    
-    def onchage_combo(self):                      
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select PARTY_NAME,GUAGE_LENGTH_MM,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
-        for x in results:
-            #self.lineEdit.setText(str(x[0])) # Layers
-            self.label_64.setText(str(x[2])) # Sepc Details
-            #self.lineEdit_3.setText(str(x[0])) # Batch ID
-            #self.lineEdit_5.setText(str(x[0]))#Party NAme
-            
-        connection.close()
         
-        
-    def start_test_peeloff(self):
+    def start_test_FBST(self):
         #elf.label_35.setText("")
-        #self.validation()
+        self.validation()
         if(self.goAhead=="Yes"):
             
-               connection = sqlite3.connect("tyr.db")
-               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
-               for x in results:           
-                 if(int(x[0]) > 0):
-                       self.test_id_exist="Yes"
-                 else:
-                       self.test_id_exist="No"                     
-               connection.close() 
-               
-               if(self.test_id_exist=="Yes"):
-                   
-                     ### Update global var
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                            cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.lineEdit_5.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
-                        connection.commit();
-                        connection.close()
-                        
-               else:        
-                        ### INSERT 
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:        
-                          cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE) VALUES('"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_5.text()+"','FBST')")
-                        connection.commit();
-                        connection.close()
+             
              
                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
@@ -1506,33 +1588,21 @@ class TY_26_Ui_MainWindow(object):
               
     def validation(self):
         self.goAhead="No"
-        '''
-        if(str(self.lineEdit.text()) == ""):
-               self.label_35.setText("Initail Size Parameters  1 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_2.text()) == "" and self.label_31.text() == "(Rectangle)"):
-               self.label_35.setText("Initail Size Parameters  2 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_3.text()) == ""):
-               self.label_35.setText("Inital Area should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_4.text()) == ""):
-               self.label_35.setText("Guage Length Should not be NULL")
-               self.label_35.show()
-        elif(str(self.lineEdit_5.text()) == ""):
-               self.label_35.setText("Final Lenght Should not be NULL")
-               self.label_35.show()
-        elif(str(self.lineEdit_6.text()) == ""):
-               self.label_35.setText("Final Size Parameters  1 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_7.text()) == "" and self.label_31.text() == "(Rectangle)"):
-               self.label_35.setText("Size Parameters  2 should not be NULL.")
-               self.label_35.show()
+        self.label_21.setText("") 
+        if(self.lineEdit_4.text() == ""): # CS AREA
+                    self.label_21.show()
+                    self.label_21.setText("CS AREA Should not Empty.")           
+        elif(self.label_64.text() == "0"): # ca area label
+                    self.label_21.show()
+                    self.label_21.setText("CS AREA Should not zero.")
+        elif(self.lineEdit_7.text() == ""): # GUAGE LENGTH
+                    self.label_21.show()
+                    self.label_21.setText("Guage Length Should not Empty.")   
+        elif(self.lineEdit_3.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Batch ID Should not Empty.") 
         else:
                self.goAhead="Yes"
-        '''
-        self.goAhead="Yes"
-        if(self.goAhead=="Yes"):
                connection = sqlite3.connect("tyr.db")
                results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
                for x in results:           
@@ -1540,34 +1610,31 @@ class TY_26_Ui_MainWindow(object):
                        self.test_id_exist="Yes"
                  else:
                        self.test_id_exist="No"                     
-               connection.close()
+               connection.close() 
                
-               if(self.test_id_exist=="Yes"):                   
-                   connection = sqlite3.connect("tyr.db")
-                   with connection:        
-                       cursor = connection.cursor()
-                       cursor.execute("UPDATE TEST_MST SET      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
-                       
-                   connection.commit();
-                   connection.close()
-                   print("Record updated  in TEST_MST:")
+               if(self.test_id_exist=="Yes"):
                    
-               else:
-                   print("Record is not updated  in TEST_MST:")
-                   self.label_35.setText("Test Data is not Saved Successfully")
+                     ### Update global var
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                            cursor = connection.cursor()                  
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        connection.commit();
+                        connection.close()
+                        
+               else:        
+                        ### INSERT 
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                          cursor = connection.cursor()                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','FBST','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_9.text())+"')")
+                        connection.commit();
+                        connection.close()
+       
+              
     
-    def save_data(self):
-        #print(" test_id :"+str(self.test_id))  
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                    cursor = connection.cursor()                
-                    cursor.execute("update TEST_MST SET BATCH_ID='"+str(self.lineEdit_3.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"',JOB_NAME='"+str(self.lineEdit_2.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ")
-                    self.label_21.show()
-                    self.label_21.setText("Data Saved Successfully .")
-                    
-        connection.commit()
-        connection.close()
-        
     def show_load_cell_val(self):      
         
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
@@ -1603,7 +1670,7 @@ class TY_26_Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
-            self.get_defarmetion_point()
+            self.get_points()
             
             connection = sqlite3.connect("tyr.db")              
             with connection:        
@@ -1611,14 +1678,10 @@ class TY_26_Ui_MainWindow(object):
                   #print("ok1")
                   try:
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET MIN_FORCE=(SELECT MIN(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET COF_AVG_FORCE=(SELECT AVG(Y_NUM) FROM STG_GRAPH_MST)")
-                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")                         
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,AVG_FORCE,DEF_LOAD,MAX_FORCE,MIN_FORCE,LAYERS) SELECT TEST_ID,'PEELOFF',COF_AVG_FORCE,DEF_LOAD,COF_MAX_FORCE,MIN_FORCE,LAYERS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2 FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
@@ -1637,64 +1700,71 @@ class TY_26_Ui_MainWindow(object):
             self.show_grid_data_peeloff()
             
         
-    def get_defarmetion_point(self):
-        c=0.0
-        def_point=-1.00
-        def_point_x=-1.00
-        def_point_y=-1.00
+    def get_points(self):
+       
+        self.load_point_1=0
+        self.load_point_2=0
+        self.E_at_load_point_1=0
+        self.E_at_load_point_2=0
         def_buffer_6_prc=0.0
-        self.yeild_strength=""
+        
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
         for x in results:
-            def_buffer_6_prc=float(x[0])*0.15            
+            def_buffer_6_prc=float(x[0])*0.30           
         connection.close()
         
         if(float(def_buffer_6_prc) > 0):
                print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
         else:
-               def_buffer_6_prc=6.0
+               def_buffer_6_prc=30.0
                 
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where Y_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
         for x in results:
-            print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
-            if (float(c)==0):                
-                c=float(round(x[1],2))
-            else:    
-                if(float(x[1]) > float(c)):
-                    c=float(x[1])
-                    continue
-                elif(float(x[1]) == float(c)):
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 1 Point :"+str(def_point_y))
-                    break
-                elif(float(x[1]) <  float(c)):
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 1.5 Point :"+str(def_point_y))
-                    break
-                else:
-                    c=float(x[1])
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 2 Point :"+str(def_point_y))
-                    break                    
+                 self.load_point_1= float(str(x[0]))           
         connection.close()        
         
-        self.yeild_strength=str(round(def_point_y,2))
+        #### Load Point 2
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        for x in results:
+            def_buffer_6_prc=float(x[0])*0.60          
+        connection.close()
+        
+        if(float(def_buffer_6_prc) > 0):
+               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
+        else:
+               def_buffer_6_prc=60.0
+                
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where Y_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        for x in results:
+                 self.load_point_2= float(str(x[0]))           
+        connection.close()
+        
+        #### Elongation Load Point 2       
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where Y_NUM = '"+str(self.load_point_1)+"' order by REC_ID ASC")
+        for x in results:
+                 self.E_at_load_point_1= float(str(x[0]))           
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where Y_NUM = '"+str(self.load_point_2)+"' order by REC_ID ASC")
+        for x in results:
+                 self.E_at_load_point_2= float(str(x[0]))           
+        connection.close()
+        
         connection = sqlite3.connect("tyr.db")              
         with connection:
-                cursor = connection.cursor()
-                if(float(def_point) > 0):
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"',DEF_LOAD='"+str(def_point_y)+"'")
-                else:                    
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0,DEF_LOAD=0")
-                    
+                cursor = connection.cursor()               
+                cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1 = '"+str(self.load_point_1)+"',LOAD_POINT_2='"+str(self.load_point_2)+"',E_AT_LOAD_POINT_1='"+str(self.E_at_load_point_1)+"',E_AT_LOAD_POINT_2='"+str(self.E_at_load_point_2)+"'")
         connection.commit();
         connection.close()
         
+                
         
     def show_grid_data_peeloff(self):        
         #print("inside tear list.....")
@@ -1704,7 +1774,7 @@ class TY_26_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','Elong.@Break (%)','Elong.@1500N (%)','Elong.@5800N (%)','REC.NO '])  
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','Elong.@Break (%)','Elong.@LOAD_POINT_1 (%)','Elong.@LOAD_POINT_2 (%)','REC.NO '])  
               
         self.tableWidget.setColumnWidth(0, 170)
         self.tableWidget.setColumnWidth(1, 120)
@@ -1716,7 +1786,7 @@ class TY_26_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
          
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1725,7 +1795,7 @@ class TY_26_Ui_MainWindow(object):
         #self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
-        self.calculations()
+        #self.calculations()
        
          
     def reset(self):        
