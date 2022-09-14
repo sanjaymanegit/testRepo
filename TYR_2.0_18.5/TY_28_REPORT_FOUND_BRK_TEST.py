@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'TY_23_START_TEST_PEELOFF.ui'
+# Form implementation generated from reading ui file 'TY_26_START_TEST_FOUND_BRK_TEST.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -57,12 +57,10 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
+        
 
 
-
-
-
-class TY_25_Ui_MainWindow(object):
+class TY_28_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -82,10 +80,10 @@ class TY_25_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label_20 = QtWidgets.QLabel(self.frame)
-        self.label_20.setGeometry(QtCore.QRect(970, 20, 331, 41))
+        self.label_20.setGeometry(QtCore.QRect(1140, 10, 191, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_20.setFont(font)
@@ -93,7 +91,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(650, 500, 91, 41))
+        self.pushButton_4.setGeometry(QtCore.QRect(650, 540, 81, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -104,7 +102,7 @@ class TY_25_Ui_MainWindow(object):
 "background-color: rgb(0, 180, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_13.setGeometry(QtCore.QRect(650, 570, 91, 41))
+        self.pushButton_13.setGeometry(QtCore.QRect(650, 600, 81, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -115,24 +113,13 @@ class TY_25_Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_13.setObjectName("pushButton_13")
         self.line = QtWidgets.QFrame(self.frame)
-        self.line.setGeometry(QtCore.QRect(0, 230, 1331, 20))
+        self.line.setGeometry(QtCore.QRect(0, 230, 1341, 20))
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line.setLineWidth(3)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
-        self.pushButton_14 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_14.setGeometry(QtCore.QRect(650, 640, 91, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.pushButton_14.setFont(font)
-        self.pushButton_14.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);")
-        self.pushButton_14.setObjectName("pushButton_14")
         self.label_21 = QtWidgets.QLabel(self.frame)
-        self.label_21.setGeometry(QtCore.QRect(1040, 180, 261, 31))
+        self.label_21.setGeometry(QtCore.QRect(1040, 200, 281, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -142,19 +129,8 @@ class TY_25_Ui_MainWindow(object):
         self.label_21.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_21.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
-        self.label_5 = QtWidgets.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(150, 180, 121, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.frame)
-        self.label_6.setGeometry(QtCore.QRect(150, 80, 141, 31))
+        self.label_6.setGeometry(QtCore.QRect(10, 50, 111, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -164,26 +140,8 @@ class TY_25_Ui_MainWindow(object):
         self.label_6.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(920, 80, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(320, 180, 211, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(760, 260, 571, 201))
+        self.tableWidget.setGeometry(QtCore.QRect(760, 260, 581, 201))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -279,7 +237,7 @@ class TY_25_Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
@@ -317,7 +275,7 @@ class TY_25_Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setItem(0, 6, item)
         self.label_9 = QtWidgets.QLabel(self.frame)
-        self.label_9.setGeometry(QtCore.QRect(590, 130, 121, 31))
+        self.label_9.setGeometry(QtCore.QRect(330, 100, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -327,19 +285,11 @@ class TY_25_Ui_MainWindow(object):
         self.label_9.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
-        self.label_10 = QtWidgets.QLabel(self.frame)
-        self.label_10.setGeometry(QtCore.QRect(590, 80, 131, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_10.setFont(font)
-        self.label_10.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_10.setObjectName("label_10")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_5.setGeometry(QtCore.QRect(730, 130, 271, 31))
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        self.lineEdit_5.setGeometry(QtCore.QRect(860, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -348,7 +298,7 @@ class TY_25_Ui_MainWindow(object):
         self.lineEdit_5.setFont(font)
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(30, 30, 91, 31))
+        self.label_11.setGeometry(QtCore.QRect(10, 10, 121, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -359,7 +309,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_11.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_11.setObjectName("label_11")
         self.label_12 = QtWidgets.QLabel(self.frame)
-        self.label_12.setGeometry(QtCore.QRect(150, 30, 61, 31))
+        self.label_12.setGeometry(QtCore.QRect(150, 10, 41, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -370,7 +320,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_12.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_12.setObjectName("label_12")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber.setGeometry(QtCore.QRect(650, 310, 81, 51))
+        self.lcdNumber.setGeometry(QtCore.QRect(650, 320, 81, 61))
         self.lcdNumber.setStyleSheet("background-color: rgb(0, 0, 0);\n"
 "font: 10pt \"MS Sans Serif\";\n"
 "color: rgb(255, 0, 0);")
@@ -380,7 +330,7 @@ class TY_25_Ui_MainWindow(object):
         self.lcdNumber.setObjectName("lcdNumber")
         self.lcdNumber.hide()
         self.label_13 = QtWidgets.QLabel(self.frame)
-        self.label_13.setGeometry(QtCore.QRect(650, 270, 81, 31))
+        self.label_13.setGeometry(QtCore.QRect(650, 280, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -390,29 +340,6 @@ class TY_25_Ui_MainWindow(object):
         self.label_13.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_13.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_13.setObjectName("label_13")
-        
-        self.lcdNumber_2 = QtWidgets.QLCDNumber(self.frame)
-        self.lcdNumber_2.setGeometry(QtCore.QRect(650, 410, 81, 51))
-        self.lcdNumber_2.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"font: 10pt \"MS Sans Serif\";\n"
-"color: rgb(255, 0, 0);")
-        self.lcdNumber_2.setSmallDecimalPoint(False)
-        self.lcdNumber_2.setProperty("value", 100.0)
-        self.lcdNumber_2.setProperty("intValue", 100)
-        self.lcdNumber_2.setObjectName("lcdNumber_2")
-        self.lcdNumber_2.hide()
-        self.label_13_2 = QtWidgets.QLabel(self.frame)
-        self.label_13_2.setGeometry(QtCore.QRect(650, 370, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(9)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_13_2.setFont(font)
-        self.label_13_2.setStyleSheet("color: rgb(170, 0, 127);")
-        self.label_13_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_13_2.setObjectName("label_13_2")
-        
         self.layoutWidget = QtWidgets.QWidget(self.frame)
         self.layoutWidget.setGeometry(QtCore.QRect(30, 250, 611, 441))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -494,6 +421,7 @@ class TY_25_Ui_MainWindow(object):
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.line_4 = QtWidgets.QFrame(self.frame)
+        
         self.line_4.setGeometry(QtCore.QRect(760, 580, 581, 21))
         self.line_4.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -518,6 +446,7 @@ class TY_25_Ui_MainWindow(object):
         self.line_8.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_8.setObjectName("line_8")
         self.line_9 = QtWidgets.QFrame(self.frame)
+        
         self.line_9.setGeometry(QtCore.QRect(910, 480, 20, 231))
         self.line_9.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_9.setLineWidth(3)
@@ -536,13 +465,14 @@ class TY_25_Ui_MainWindow(object):
         self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_11.setObjectName("line_11")
         self.line_7 = QtWidgets.QFrame(self.frame)
+        
         self.line_7.setGeometry(QtCore.QRect(760, 500, 581, 21))
         self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_7.setLineWidth(3)
         self.line_7.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_7.setObjectName("line_7")
         self.label_23 = QtWidgets.QLabel(self.frame)
-        self.label_23.setGeometry(QtCore.QRect(1100, 480, 71, 31))
+        self.label_23.setGeometry(QtCore.QRect(1070, 480, 111, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -553,7 +483,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_23.setObjectName("label_23")
         self.label_24 = QtWidgets.QLabel(self.frame)
-        self.label_24.setGeometry(QtCore.QRect(1220, 480, 71, 31))
+        self.label_24.setGeometry(QtCore.QRect(1210, 480, 111, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -564,7 +494,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_24.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
         self.label_25 = QtWidgets.QLabel(self.frame)
-        self.label_25.setGeometry(QtCore.QRect(960, 480, 71, 31))
+        self.label_25.setGeometry(QtCore.QRect(940, 480, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -575,7 +505,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.label_26 = QtWidgets.QLabel(self.frame)
-        self.label_26.setGeometry(QtCore.QRect(840, 480, 71, 31))
+        self.label_26.setGeometry(QtCore.QRect(830, 480, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -818,7 +748,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_46.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_46.setObjectName("label_46")
         self.comboBox = QtWidgets.QComboBox(self.frame)
-        self.comboBox.setGeometry(QtCore.QRect(320, 80, 211, 31))
+        self.comboBox.setGeometry(QtCore.QRect(150, 50, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -826,24 +756,13 @@ class TY_25_Ui_MainWindow(object):
         font.setWeight(75)
         self.comboBox.setFont(font)
         self.comboBox.setObjectName("comboBox")
+        
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.label_47 = QtWidgets.QLabel(self.frame)
-        self.label_47.setGeometry(QtCore.QRect(840, 80, 101, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_47.setFont(font)
-        self.label_47.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_47.setObjectName("label_47")
         self.label_48 = QtWidgets.QLabel(self.frame)
-        self.label_48.setGeometry(QtCore.QRect(150, 130, 151, 31))
+        self.label_48.setGeometry(QtCore.QRect(330, 150, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -854,19 +773,21 @@ class TY_25_Ui_MainWindow(object):
         self.label_48.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_48.setObjectName("label_48")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3.setGeometry(QtCore.QRect(320, 130, 211, 31))
+        self.lineEdit_3.setGeometry(QtCore.QRect(450, 150, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_3.setFont(font)
+        self.lineEdit_3.setReadOnly(True)
+        
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.label_49 = QtWidgets.QLabel(self.frame)
-        self.label_49.setGeometry(QtCore.QRect(590, 20, 341, 31))
+        self.label_49.setGeometry(QtCore.QRect(430, 10, 251, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(16)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_49.setFont(font)
@@ -874,7 +795,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_49.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_49.setObjectName("label_49")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(1030, 80, 81, 31))
+        self.pushButton_5.setGeometry(QtCore.QRect(1040, 60, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -885,7 +806,7 @@ class TY_25_Ui_MainWindow(object):
 "background-color: rgb(0, 180, 0);")
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1030, 130, 81, 31))
+        self.pushButton_6.setGeometry(QtCore.QRect(1040, 110, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -896,7 +817,7 @@ class TY_25_Ui_MainWindow(object):
 "background-color: rgb(0, 180, 0);")
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(1130, 80, 121, 31))
+        self.pushButton_7.setGeometry(QtCore.QRect(1170, 60, 121, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -907,7 +828,7 @@ class TY_25_Ui_MainWindow(object):
 "background-color: rgb(0, 180, 0);")
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(1130, 130, 121, 31))
+        self.pushButton_8.setGeometry(QtCore.QRect(1170, 110, 121, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -928,19 +849,8 @@ class TY_25_Ui_MainWindow(object):
         self.label_50.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_50.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_50.setObjectName("label_50")
-        self.label_51 = QtWidgets.QLabel(self.frame)
-        self.label_51.setGeometry(QtCore.QRect(730, 80, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_51.setFont(font)
-        self.label_51.setStyleSheet("color: rgb(170, 0, 127);")
-        self.label_51.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_51.setObjectName("label_51")
         self.label_7 = QtWidgets.QLabel(self.frame)
-        self.label_7.setGeometry(QtCore.QRect(590, 180, 121, 31))
+        self.label_7.setGeometry(QtCore.QRect(330, 50, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -951,7 +861,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.comboBox_2 = QtWidgets.QComboBox(self.frame)
-        self.comboBox_2.setGeometry(QtCore.QRect(730, 180, 71, 31))
+        self.comboBox_2.setGeometry(QtCore.QRect(400, 50, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -959,10 +869,314 @@ class TY_25_Ui_MainWindow(object):
         font.setWeight(75)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        
+        self.label_51 = QtWidgets.QLabel(self.frame)
+        self.label_51.setGeometry(QtCore.QRect(450, 100, 271, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_51.setFont(font)
+        self.label_51.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_51.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_51.setObjectName("label_51")
+        self.label_52 = QtWidgets.QLabel(self.frame)
+        self.label_52.setGeometry(QtCore.QRect(10, 100, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_52.setFont(font)
+        self.label_52.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_52.setObjectName("label_52")
+        self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
+        self.lineEdit_4.setGeometry(QtCore.QRect(150, 100, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_4.setFont(font)
+        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.label_53 = QtWidgets.QLabel(self.frame)
+        self.label_53.setGeometry(QtCore.QRect(240, 100, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_53.setFont(font)
+        self.label_53.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_53.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_53.setObjectName("label_53")
+        self.label_54 = QtWidgets.QLabel(self.frame)
+        self.label_54.setGeometry(QtCore.QRect(740, 60, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_54.setFont(font)
+        self.label_54.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_54.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_54.setObjectName("label_54")
+        self.label_55 = QtWidgets.QLabel(self.frame)
+        self.label_55.setGeometry(QtCore.QRect(740, 100, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_55.setFont(font)
+        self.label_55.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_55.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_55.setObjectName("label_55")
+        self.label_56 = QtWidgets.QLabel(self.frame)
+        self.label_56.setGeometry(QtCore.QRect(950, 60, 41, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_56.setFont(font)
+        self.label_56.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_56.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_56.setObjectName("label_56")
+        self.label_58 = QtWidgets.QLabel(self.frame)
+        self.label_58.setGeometry(QtCore.QRect(10, 150, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_58.setFont(font)
+        self.label_58.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_58.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_58.setObjectName("label_58")
+        self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
+        self.lineEdit_7.setGeometry(QtCore.QRect(150, 150, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_7.setFont(font)
+        self.lineEdit_7.setObjectName("lineEdit_7")
+        self.label_59 = QtWidgets.QLabel(self.frame)
+        self.label_59.setGeometry(QtCore.QRect(240, 150, 41, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_59.setFont(font)
+        self.label_59.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_59.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_59.setObjectName("label_59")
+        self.label_60 = QtWidgets.QLabel(self.frame)
+        self.label_60.setGeometry(QtCore.QRect(10, 200, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_60.setFont(font)
+        self.label_60.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_60.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_60.setObjectName("label_60")
+        self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
+        self.lineEdit_9.setGeometry(QtCore.QRect(150, 200, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_9.setFont(font)
+        self.lineEdit_9.setObjectName("lineEdit_9")
+        self.label_63 = QtWidgets.QLabel(self.frame)
+        self.label_63.setGeometry(QtCore.QRect(240, 200, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_63.setFont(font)
+        self.label_63.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_63.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_63.setObjectName("label_63")
+        self.line_14 = QtWidgets.QFrame(self.frame)
+        self.line_14.setGeometry(QtCore.QRect(1010, 0, 20, 241))
+        self.line_14.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_14.setLineWidth(3)
+        self.line_14.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_14.setObjectName("line_14")
+        self.pushButton_15 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_15.setGeometry(QtCore.QRect(1170, 160, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_15.setFont(font)
+        self.pushButton_15.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_15.setObjectName("pushButton_15")
+        self.pushButton_9 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_9.setGeometry(QtCore.QRect(1040, 160, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_9.setFont(font)
+        self.pushButton_9.setStyleSheet("color: rgb(255, 255, 255);\n"
+"background-color: rgb(0, 180, 0);")
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.label_14 = QtWidgets.QLabel(self.frame)
+        self.label_14.setGeometry(QtCore.QRect(650, 400, 81, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_14.setFont(font)
+        self.label_14.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_14.setObjectName("label_14")
+        self.lcdNumber_2 = QtWidgets.QLCDNumber(self.frame)
+        self.lcdNumber_2.setGeometry(QtCore.QRect(650, 450, 81, 61))
+        self.lcdNumber_2.setStyleSheet("background-color: rgb(0, 0, 0);\n"
+"font: 10pt \"MS Sans Serif\";\n"
+"color: rgb(255, 0, 0);")
+        self.lcdNumber_2.setSmallDecimalPoint(False)
+        self.lcdNumber_2.setProperty("value", 100.0)
+        self.lcdNumber_2.setProperty("intValue", 100)
+        self.lcdNumber_2.setObjectName("lcdNumber_2")
+        self.lcdNumber_2.hide()
+        self.line_15 = QtWidgets.QFrame(self.frame)
+        self.line_15.setGeometry(QtCore.QRect(720, 0, 20, 241))
+        self.line_15.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_15.setLineWidth(3)
+        self.line_15.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_15.setObjectName("line_15")
+        self.label_10 = QtWidgets.QLabel(self.frame)
+        self.label_10.setGeometry(QtCore.QRect(740, 20, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_10.setFont(font)
+        self.label_10.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_10.setObjectName("label_10")
+        self.label_61 = QtWidgets.QLabel(self.frame)
+        self.label_61.setGeometry(QtCore.QRect(820, 20, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_61.setFont(font)
+        self.label_61.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_61.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_61.setObjectName("label_61")
+        self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
+        self.lineEdit_8.setGeometry(QtCore.QRect(860, 110, 71, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_8.setFont(font)
+        self.lineEdit_8.setObjectName("lineEdit_8")
+        self.label_62 = QtWidgets.QLabel(self.frame)
+        self.label_62.setGeometry(QtCore.QRect(950, 110, 41, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_62.setFont(font)
+        self.label_62.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_62.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_62.setObjectName("label_62")
+        self.line_16 = QtWidgets.QFrame(self.frame)
+        self.line_16.setGeometry(QtCore.QRect(750, 150, 251, 21))
+        self.line_16.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_16.setLineWidth(3)
+        self.line_16.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_16.setObjectName("line_16")
+        self.label_47 = QtWidgets.QLabel(self.frame)
+        self.label_47.setGeometry(QtCore.QRect(750, 170, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_47.setFont(font)
+        self.label_47.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_47.setObjectName("label_47")
+        self.label_64 = QtWidgets.QLabel(self.frame)
+        self.label_64.setGeometry(QtCore.QRect(860, 170, 71, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_64.setFont(font)
+        self.label_64.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_64.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_64.setObjectName("label_64")
+        self.label_65 = QtWidgets.QLabel(self.frame)
+        self.label_65.setGeometry(QtCore.QRect(950, 170, 51, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_65.setFont(font)
+        self.label_65.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_65.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_65.setObjectName("label_65")
+        self.label_66 = QtWidgets.QLabel(self.frame)
+        self.label_66.setGeometry(QtCore.QRect(500, 50, 141, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_66.setFont(font)
+        self.label_66.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_66.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_66.setObjectName("label_66")
+        self.label_67 = QtWidgets.QLabel(self.frame)
+        self.label_67.setGeometry(QtCore.QRect(670, 50, 41, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_67.setFont(font)
+        self.label_67.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_67.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_67.setObjectName("label_67")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1367, 21))
@@ -978,35 +1192,35 @@ class TY_25_Ui_MainWindow(object):
         self.sc_blank=""
         self.cycle_num=0
 
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        #self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_4.hide()
         self.pushButton_13.setText(_translate("MainWindow", "All"))
-        self.pushButton_14.setText(_translate("MainWindow", "Return"))
+        self.pushButton_13.hide()
         self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
         self.label_21.hide()
-        self.label_5.setText(_translate("MainWindow", "Spec.Details"))
-        self.label_6.setText(_translate("MainWindow", "Speciment Name :"))
-        
+        self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.tableWidget.setSortingEnabled(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Avg. Load (N)','First Peak Load (N)','Max Load (N)','Min Load (N)','Layers','REC.NO '])  
-        '''
         
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','E@Break (mm)','E@Load_Point1 (mm)','E@Load_Point2 (mm)','REC.NO '])
+        self.tableWidget.resizeColumnsToContents()
+      
+        '''       
         '''
+        #self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
-        self.label_10.setText(_translate("MainWindow", "Total Samples :"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_13.setText(_translate("MainWindow", "LOAD (N) :"))
         self.label_13.hide()
-        self.label_13_2.setText(_translate("MainWindow", "Distance (mm) :"))
-        self.label_13_2.hide()
         self.label_22.setText(_translate("MainWindow", "Running......"))
         self.label_22.hide()
         self.label_15.setText(_translate("MainWindow", "Max :"))
@@ -1014,77 +1228,96 @@ class TY_25_Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Avg :"))
         self.label_18.setText(_translate("MainWindow", "Std. :"))
         self.label_19.setText(_translate("MainWindow", "Var. :"))
-        self.label_23.setText(_translate("MainWindow", "Max Loads"))
-        self.label_24.setText(_translate("MainWindow", "Min Loads"))
-        self.label_25.setText(_translate("MainWindow", "First Peak"))
-        self.label_26.setText(_translate("MainWindow", "Avg Load"))
-        self.label_27.setText(_translate("MainWindow", "0.00"))
-        self.label_28.setText(_translate("MainWindow", "0.00"))
-        self.label_29.setText(_translate("MainWindow", "0.00"))
-        self.label_30.setText(_translate("MainWindow", "0.00"))
-        self.label_31.setText(_translate("MainWindow", "0.99"))
-        self.label_32.setText(_translate("MainWindow", "0.00"))
-        self.label_33.setText(_translate("MainWindow", "0.00"))
-        self.label_34.setText(_translate("MainWindow", "0.00"))
-        self.label_35.setText(_translate("MainWindow", "0.00"))
-        self.label_36.setText(_translate("MainWindow", "0.00"))
-        self.label_37.setText(_translate("MainWindow", "0.00"))
-        self.label_38.setText(_translate("MainWindow", "0.00"))
-        self.label_39.setText(_translate("MainWindow", "0.00"))
-        self.label_40.setText(_translate("MainWindow", "0.00"))
-        self.label_41.setText(_translate("MainWindow", "0.00"))
-        self.label_42.setText(_translate("MainWindow", "0.00"))
-        self.label_43.setText(_translate("MainWindow", "0.00"))
-        self.label_44.setText(_translate("MainWindow", "0.00"))
-        self.label_45.setText(_translate("MainWindow", "0.00"))
-        self.label_46.setText(_translate("MainWindow", "0.00"))
-        
-        self.label_47.setText(_translate("MainWindow", "Layers :"))
+        self.label_23.setText(_translate("MainWindow", "E@LoadPt1(mm)"))
+        self.label_24.setText(_translate("MainWindow", "E@LoadPt2(mm)"))
+        self.label_25.setText(_translate("MainWindow", "E@Break(mm)"))
+        self.label_26.setText(_translate("MainWindow", "BrkLoad(N)"))
+        self.label_27.setText(_translate("MainWindow", "111.00"))
+        self.label_28.setText(_translate("MainWindow", "222.00"))
+        self.label_29.setText(_translate("MainWindow", "333.00"))
+        self.label_30.setText(_translate("MainWindow", "444.00"))
+        self.label_31.setText(_translate("MainWindow", "666.99"))
+        self.label_32.setText(_translate("MainWindow", "777.00"))
+        self.label_33.setText(_translate("MainWindow", "888.00"))
+        self.label_34.setText(_translate("MainWindow", "999.00"))
+        self.label_35.setText(_translate("MainWindow", "A10.00"))
+        self.label_36.setText(_translate("MainWindow", "555.00"))
+        self.label_37.setText(_translate("MainWindow", "B11.00"))
+        self.label_38.setText(_translate("MainWindow", "C22.00"))
+        self.label_39.setText(_translate("MainWindow", "D33.00"))
+        self.label_40.setText(_translate("MainWindow", "E34.00"))
+        self.label_41.setText(_translate("MainWindow", "F98.00"))
+        self.label_42.setText(_translate("MainWindow", "G34.00"))
+        self.label_43.setText(_translate("MainWindow", "F56.00"))
+        self.label_44.setText(_translate("MainWindow", "Y66.89"))
+        self.label_45.setText(_translate("MainWindow", "J67.00"))
+        self.label_46.setText(_translate("MainWindow", "K87.00"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "New Item"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "New Item"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "New Item"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "New Item"))
         self.label_48.setText(_translate("MainWindow", "BatchID:"))
-        self.label_49.setText(_translate("MainWindow", "PEELOFF TEST"))
+        self.label_49.setText(_translate("MainWindow", "FOUNDATION BREAKING TEST"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
-        self.pushButton_6.setText(_translate("MainWindow", "Save"))
+        self.pushButton_6.setText(_translate("MainWindow", "Remark"))
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
         self.pushButton_8.setText(_translate("MainWindow", "Report Print"))
         self.label_50.setText(_translate("MainWindow", "Stat."))
-        self.label_51.setText(_translate("MainWindow", "0"))
         self.label_7.setText(_translate("MainWindow", "Unit :"))
+        self.comboBox_2.addItem("")
         self.comboBox_2.setItemText(0, _translate("MainWindow", "N/mm"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
+        #self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
+        #self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
+        #self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
+        self.label_51.setText(_translate("MainWindow", "MRF"))
+        self.label_52.setText(_translate("MainWindow", "CS Area :"))
+        self.label_53.setText(_translate("MainWindow", "(mm2)"))
+        self.label_54.setText(_translate("MainWindow", "Thickness :"))
+        self.label_55.setText(_translate("MainWindow", "Width :"))
+        self.label_56.setText(_translate("MainWindow", "(mm)"))
+        self.label_58.setText(_translate("MainWindow", "Guage Length :"))
+        self.label_59.setText(_translate("MainWindow", "(mm)"))
+        self.label_60.setText(_translate("MainWindow", "Speed :"))
+        self.label_63.setText(_translate("MainWindow", "(mm / min)"))
+        self.pushButton_15.setText(_translate("MainWindow", "Return"))
+        self.pushButton_9.setText(_translate("MainWindow", "Save"))
+        self.pushButton_9.hide()
+        self.label_14.setText(_translate("MainWindow", "Elongation : \n"
+" (mm) "))
+        self.label_14.hide()
+        self.label_10.setText(_translate("MainWindow", "Shape:"))
+        self.label_61.setText(_translate("MainWindow", "Rectangle"))
+        self.label_62.setText(_translate("MainWindow", "(mm)"))
+        self.label_47.setText(_translate("MainWindow", "CS Area:"))
+        self.label_64.setText(_translate("MainWindow", "100"))
+        self.label_65.setText(_translate("MainWindow", "(mm2)"))
+        self.label_66.setText(_translate("MainWindow", "Total Specemens :"))
+        self.label_67.setText(_translate("MainWindow", "00"))
         
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
         
         
-        self.pushButton_14.clicked.connect(MainWindow.close)
-        self.pushButton_4.clicked.connect(self.start_test_peeloff)
+        self.pushButton_15.clicked.connect(MainWindow.close)
+        self.pushButton_4.clicked.connect(self.start_test_FBST)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
         
         self.pushButton_8.clicked.connect(self.print_file)
         self.pushButton_5.clicked.connect(self.open_email_report)
-        self.pushButton_6.clicked.connect(self.save_data)
+        self.pushButton_9.clicked.connect(self.validation)
         self.pushButton_7.clicked.connect(self.open_pdf)
+        self.pushButton_6.clicked.connect(self.open_comment_popup)
+        self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
+        self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
+        #self.tableWidget.doubleClicked.connect(self.delete_cycle)
         
-        #self.reset()
+        
         self.load_data()
-        self.show_all_specimens()
-        self.show_grid_data_peeloff()
-        
-    def reset(self):        
-        if(self.timer3.isActive()): 
-           self.timer3.stop() 
-        
-        #self.sc_blank =PlotCanvas_blank(self) 
-        #self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-        self.lcdNumber.setProperty("value", 0.0)
-        self.lcdNumber_2.setProperty("value", 0.0)
-        
-        
+        #self.delete_all_records()
     
     def load_data(self):
         self.i=0
@@ -1103,14 +1336,137 @@ class TY_25_Ui_MainWindow(object):
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
+                 self.lineEdit_3.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
         self.onchage_combo()
-        #self.calculations()
+        self.show_grid_data_FBST()
         
-       
+    def delete_cycle(self):
+        i = self.tableWidget.rowCount()   
+        if(i>0):
+            row = self.tableWidget.currentRow()
+            
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
+            if(int(self.cycle_id) > 0):
+                    close = QMessageBox()
+                    close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                    close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                    close = close.exec()
+                    if close == QMessageBox.Yes:
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                        cursor = connection.cursor()                
+                                        cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                        
+                        connection.commit();
+                        connection.close()
+                        self.show_grid_data_FBST()
+                        
+            else:
+                    pass
+            
+    
+    def cs_area_calculation(self):
+        self.shape=""
+        self.thickness=""
+        self.width=""
+        self.diameter=""
+        self.cs_area=""
+        self.out_dia=""
+        self.inn_dia=""
+        
+        self.shape=self.label_61.text()
+        if(self.shape== "Rectangle"):
+            if(self.lineEdit_5.text() != ""):
+                try:
+                        self.thickness=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                                self.thickness=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00") 
+                try:
+                        self.width=int(self.lineEdit_8.text())
+                except ValueError as e:
+                        try:
+                            self.width=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00")
+                                
+                try:
+                        self.label_64.setText(str(float(self.thickness * self.width)))
+                except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error1");
+                    self.label_64.setText(str("0"))
+                except TypeError as e:
+                    print("Caluculation error2");
+                    self.label_64.setText(str("0"))
+                except:
+                    print("Caluculation error3");
+                    self.label_64.setText(str("0"))
+            else:
+                    self.label_64.setText(str("0"))
+        elif(self.shape== "Cylindrical"):
+                try:
+                    self.diameter=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                            self.diameter=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                            self.label_64.setText("0.00")
+                
+                try:
+                            self.label_64.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
+                except ValueError as e:
+                            #self.lineEdit_3.setText("0.00")
+                            print("Caluculation error4");
+                            self.label_64.setText(str("0"))
+                except TypeError as e:
+                            print("Caluculation error5");
+                            self.label_64.setText(str("0"))
+                except:
+                            print("Caluculation error6");
+                            self.label_64.setText(str("0"))                           
+        
+        elif(self.shape== "Pipe"):
+                try:
+                        self.inn_dia=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                                self.inn_dia=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00") 
+                try:
+                        self.out_dia=int(self.lineEdit_8.text())
+                except ValueError as e:
+                        try:
+                            self.out_dia=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00")
+                                
+                try:
+                        self.cs_area=((float(self.out_dia)*float(self.out_dia)*3.14)/4)-((float(self.inn_dia)*float(self.inn_dia)*3.14)/4) 
+                        self.label_64.setText(str(float(self.cs_area)))
+                except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error7");
+                    self.label_64.setText(str("0"))
+                except TypeError as e:
+                    print("Caluculation error8");
+                    self.label_64.setText(str("0"))
+                except:
+                    print("Caluculation error9");
+                    self.label_64.setText(str("0"))
+        else:
+            self.label_64.setText(str("0"))
+        
+        
     def calculations(self):
+        #results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(max(AVG_FORCE),2), round(max(DEF_LOAD),2), round(max(MAX_FORCE),2), round(max(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LOAD_MM),2), round(max(E_AT_LOAD_POINT_1),2), round(max(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
         for x in results:
                     self.label_27.setText(str(x[0]))  #111.00
                     self.label_31.setText(str(x[1]))   #666.99
@@ -1119,7 +1475,7 @@ class TY_25_Ui_MainWindow(object):
         connection.close()
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(min(AVG_FORCE),2), round(min(DEF_LOAD),2), round(min(MAX_FORCE),2), round(min(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LOAD_MM),2), round(min(E_AT_LOAD_POINT_1),2), round(min(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
         for x in results:
                     self.label_28.setText(str(x[0]))  #222.00
                     self.label_32.setText(str(x[1]))   #777.99
@@ -1129,7 +1485,7 @@ class TY_25_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(avg(AVG_FORCE),2), round(avg(DEF_LOAD),2), round(avg(MAX_FORCE),2), round(avg(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LOAD_MM),2), round(avg(E_AT_LOAD_POINT_1),2), round(avg(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
         for x in results:
                     self.label_29.setText(str(x[0]))  #333.00
                     self.label_33.setText(str(x[1]))   #888.00
@@ -1137,9 +1493,9 @@ class TY_25_Ui_MainWindow(object):
                     self.label_44.setText(str(x[3]))    #Y66.00                 
         connection.close()
         
-        '''
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(PEAK_LOAD_KG,2), round(E_AT_PEAK_LOAD_MM,2), round(E_AT_LOAD_POINT_1,2), round(E_AT_LOAD_POINT_2,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
         for x in results:
                     self.label_30.setText(str(np.std(x[0])))  #444.00
                     self.label_34.setText(str(np.std(x[1])))   #999.00
@@ -1149,70 +1505,117 @@ class TY_25_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(PEAK_LOAD_KG,2), round(E_AT_PEAK_LOAD_MM,2), round(E_AT_LOAD_POINT_1,2), round(E_AT_LOAD_POINT_2,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
         for x in results:
                     self.label_36.setText(str(np.var(x[0])))  #555.00
                     self.label_35.setText(str(np.var(x[1])))   #A10.00
                     self.label_41.setText(str(np.var(x[2])))   #E34.00"
                     self.label_46.setText(str(np.var(x[3])))    #K87.00                 
         connection.close()
-        '''
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select count(cycle_id) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select count(cycle_id),ifnull(max(cycle_num),0)+1 from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
         for x in results:
-                    self.label_51.setText(str(x[0]))                           
+                    self.label_67.setText(str(x[0]))                    
+                    self.cycle_num=int(x[1])
+                    print("self.cycle_num :"+str(self.cycle_num))
         connection.close()
         
         
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select PARTY_NAME,GUAGE_LENGTH_MM,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        #print("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        
+        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
-           #self.lineEdit.setText(str(x[0])) # Layers
-            self.lineEdit_2.setText(str(x[2])) # Sepc Details
-           #self.lineEdit_3.setText(str(x[0])) # Batch ID
-            self.lineEdit_5.setText(str(x[0]))#Party NAme
+           self.lineEdit_4.setText(str(x[0])) # CS AREA
+           self.lineEdit_4.setReadOnly(True)
+           self.label_64.setText(str(x[0])) # ca area label
+           self.lineEdit_7.setText(str(x[1])) # GUAGE LENGTH
+           self.lineEdit_7.setReadOnly(True)
+           self.lineEdit_9.setText(str(x[2])) # SPEED
+           self.lineEdit_9.setReadOnly(True)
+           self.label_51.setText(str(x[3])) # Party Name
+           self.label_61.setText(str(x[7]))
+           self.label_54.show()
+           self.lineEdit_5.show()
+           self.lineEdit_5.setReadOnly(True)
+           self.label_55.show()
+           self.lineEdit_8.show()
+           self.lineEdit_8.setReadOnly(True)
+           self.label_56.show()
+           self.label_62.show()
+          
+           if(str(x[7]) == "Rectangle"):
+                 self.lineEdit_5.setText(str(x[4]))#THICKNESS
+                 self.lineEdit_8.setText(str(x[5]))#WIDTH
+           elif(str(x[7]) == "Pipe"):
+                 self.label_54.setText("Inn.Diam.")
+                 self.lineEdit_5.setText(str(x[8]))#INN Diameter
+                 self.label_55.setText("Out.Diam.")
+                 self.lineEdit_8.setText(str(x[9]))#OUT.DIAMETER        
+           elif(str(x[7]) == "Cylindrical"):
+                 self.label_54.setText("Diameter.")
+                 self.lineEdit_5.setText(str(x[6]))# Diameter
+                 self.label_55.hide()
+                 self.lineEdit_8.hide()
+                 self.label_62.hide()
+           elif(str(x[7]) == "DirectValue"):
+                self.label_54.hide()
+                self.lineEdit_5.hide()
+                self.label_55.hide()
+                self.lineEdit_8.hide()
+                self.label_56.hide()
+                self.label_62.hide()
+           else:
+                self.label_21.setText("Invalid:"+str(x[7]))
+           
+           #self.lineEdit_5.setText("5")#Party NAme
+            
             
         connection.close()
+    
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_comment_popup(self):
         
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
-    def start_test_peeloff(self):
+    def start_test_FBST(self):
         #elf.label_35.setText("")
-        #self.validation()
+        
+        self.validation()
         if(self.goAhead=="Yes"):
             
-               connection = sqlite3.connect("tyr.db")
-               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
-               for x in results:           
-                 if(int(x[0]) > 0):
-                       self.test_id_exist="Yes"
-                 else:
-                       self.test_id_exist="No"                     
-               connection.close() 
-               
-               if(self.test_id_exist=="Yes"):
-                   
-                     ### Update global var
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:        
-                          cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                          cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.lineEdit_5.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
-                        connection.commit();
-                        connection.close()
-                        
-               else:        
-                        ### INSERT 
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:        
-                          cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE) VALUES('"+self.comboBox.currentText()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_5.text()+"','PEELOFF')")
-                        connection.commit();
-                        connection.close()
-                
-                
+             
+             
                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
                 
@@ -1228,35 +1631,24 @@ class TY_25_Ui_MainWindow(object):
         else:
                 print("validation Error")
                 
+              
     def validation(self):
         self.goAhead="No"
-        '''
-        if(str(self.lineEdit.text()) == ""):
-               self.label_35.setText("Initail Size Parameters  1 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_2.text()) == "" and self.label_31.text() == "(Rectangle)"):
-               self.label_35.setText("Initail Size Parameters  2 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_3.text()) == ""):
-               self.label_35.setText("Inital Area should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_4.text()) == ""):
-               self.label_35.setText("Guage Length Should not be NULL")
-               self.label_35.show()
-        elif(str(self.lineEdit_5.text()) == ""):
-               self.label_35.setText("Final Lenght Should not be NULL")
-               self.label_35.show()
-        elif(str(self.lineEdit_6.text()) == ""):
-               self.label_35.setText("Final Size Parameters  1 should not be NULL.")
-               self.label_35.show()
-        elif(str(self.lineEdit_7.text()) == "" and self.label_31.text() == "(Rectangle)"):
-               self.label_35.setText("Size Parameters  2 should not be NULL.")
-               self.label_35.show()
+        self.label_21.setText("") 
+        if(self.lineEdit_4.text() == ""): # CS AREA
+                    self.label_21.show()
+                    self.label_21.setText("CS AREA Should not Empty.")           
+        elif(self.label_64.text() == "0"): # ca area label
+                    self.label_21.show()
+                    self.label_21.setText("CS AREA Should not zero.")
+        elif(self.lineEdit_7.text() == ""): # GUAGE LENGTH
+                    self.label_21.show()
+                    self.label_21.setText("Guage Length Should not Empty.")   
+        elif(self.lineEdit_3.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Batch ID Should not Empty.") 
         else:
                self.goAhead="Yes"
-        '''
-        self.goAhead="Yes"
-        if(self.goAhead=="Yes"):
                connection = sqlite3.connect("tyr.db")
                results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
                for x in results:           
@@ -1266,19 +1658,28 @@ class TY_25_Ui_MainWindow(object):
                        self.test_id_exist="No"                     
                connection.close() 
                
-               if(self.test_id_exist=="Yes"):                   
-                   connection = sqlite3.connect("tyr.db")
-                   with connection:        
-                       cursor = connection.cursor()
-                       cursor.execute("UPDATE TEST_MST SET      WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
-                       
-                   connection.commit();
-                   connection.close()
-                   print("Record updated  in TEST_MST:")
+               if(self.test_id_exist=="Yes"):
                    
-               else:
-                   print("Record is not updated  in TEST_MST:")
-                   self.label_35.setText("Test Data is not Saved Successfully")
+                     ### Update global var
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                            cursor = connection.cursor()                  
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        connection.commit();
+                        connection.close()
+                        
+               else:        
+                        ### INSERT 
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                          cursor = connection.cursor()                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','FBST','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_9.text())+"')")
+                        connection.commit();
+                        connection.close()
+       
+              
     
     def show_load_cell_val(self):      
         
@@ -1302,12 +1703,12 @@ class TY_25_Ui_MainWindow(object):
     def show_all_specimens(self): 
         self.sc_data =PlotCanvas(self,width=5, height=4, dpi=80)    
         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
-       
-            
-    def save_graph_data(self):
-         self.cycle_num=0
+    
+    def save_graph_data(self):         
          if (len(self.sc_new.arr_p) > 1):            
-            self.cycle_num=int(str(self.label_51.text()))+1
+            
+            #self.cycle_num=int(str(self.label_67.text()))+1
+            
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
@@ -1316,29 +1717,25 @@ class TY_25_Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
-            self.get_defarmetion_point()
-            
+            self.get_points()
+            #self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',LAYERS='"+str(self.lineEdit.text())+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET MIN_FORCE=(SELECT MIN(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET COF_MAX_FORCE=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET COF_AVG_FORCE=(SELECT AVG(Y_NUM) FROM STG_GRAPH_MST)")
-                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")                         
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,AVG_FORCE,DEF_LOAD,MAX_FORCE,MIN_FORCE,LAYERS) SELECT TEST_ID,'PEELOFF',COF_AVG_FORCE,DEF_LOAD,COF_MAX_FORCE,MIN_FORCE,LAYERS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2 FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
-                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' ,BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.lineEdit_5.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
+                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                     
                   except:
@@ -1347,68 +1744,90 @@ class TY_25_Ui_MainWindow(object):
             connection.commit();
             connection.close()            
             print("Data Saved Ok in STG_GRAPH_MST")           
-            self.show_grid_data_peeloff()
+            self.show_grid_data_FBST()
             
         
-    def get_defarmetion_point(self):
-        c=0.0
-        def_point=-1.00
-        def_point_x=-1.00
-        def_point_y=-1.00
+    def get_points(self):
+       
+        self.load_point_1=0
+        self.load_point_2=0
+        self.E_at_load_point_1=0
+        self.E_at_load_point_2=0
+        self.max_load=0
+        self.max_load_rec_id=0
         def_buffer_6_prc=0.0
-        self.yeild_strength=""
+        
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
         for x in results:
-            def_buffer_6_prc=float(x[0])*0.15            
+            def_buffer_6_prc=float(x[0])*0.30
+            self.max_load=float(x[0])
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT rec_id FROM STG_GRAPH_MST where Y_NUM = '"+str(self.max_load)+"'  order by REC_ID ASC")
+        for x in results:            
+            self.max_load_rec_id=int(x[0])
+        connection.close()
+        
+        
+        
+        
+        if(float(def_buffer_6_prc) > 0):
+               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
+        else:
+               def_buffer_6_prc=30.0
+               
+               
+                
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where Y_NUM <  "+str(def_buffer_6_prc)+"  and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
+        for x in results:
+                 self.load_point_1= float(str(x[0]))           
+        connection.close()        
+        
+        #### Load Point 2
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        for x in results:
+            def_buffer_6_prc=float(x[0])*0.60          
         connection.close()
         
         if(float(def_buffer_6_prc) > 0):
                print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
         else:
-               def_buffer_6_prc=6.0
+               def_buffer_6_prc=60.0
                 
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where Y_NUM <  "+str(def_buffer_6_prc)+" and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
         for x in results:
-            print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
-            if (float(c)==0):                
-                c=float(round(x[1],2))
-            else:    
-                if(float(x[1]) > float(c)):
-                    c=float(x[1])
-                    continue
-                elif(float(x[1]) == float(c)):
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 1 Point :"+str(def_point_y))
-                    break
-                elif(float(x[1]) <  float(c)):
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 1.5 Point :"+str(def_point_y))
-                    break
-                else:
-                    c=float(x[1])
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 2 Point :"+str(def_point_y))
-                    break                    
-        connection.close()        
+                 self.load_point_2= float(str(x[0]))           
+        connection.close()
         
-        self.yeild_strength=str(round(def_point_y,2))
+        #### Elongation Load Point 2       
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where Y_NUM = '"+str(self.load_point_1)+"' and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
+        for x in results:
+                 self.E_at_load_point_1= float(str(x[0]))           
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where Y_NUM = '"+str(self.load_point_2)+"' and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
+        for x in results:
+                 self.E_at_load_point_2= float(str(x[0]))           
+        connection.close()
+        
         connection = sqlite3.connect("tyr.db")              
         with connection:
-                cursor = connection.cursor()
-                if(float(def_point) > 0):
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = '"+str(def_point)+"',DEF_LOAD='"+str(def_point_y)+"'")
-                else:                    
-                    cursor.execute("UPDATE GLOBAL_VAR SET DEF_POINT = 0,DEF_LOAD=0")
-                    
+                cursor = connection.cursor()               
+                cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1 = '"+str(self.load_point_1)+"',LOAD_POINT_2='"+str(self.load_point_2)+"',E_AT_LOAD_POINT_1='"+str(self.E_at_load_point_1)+"',E_AT_LOAD_POINT_2='"+str(self.E_at_load_point_2)+"'")
         connection.commit();
         connection.close()
-    
-    def show_grid_data_peeloff(self):        
+        
+                
+        
+    def show_grid_data_FBST(self):        
         #print("inside tear list.....")
         self.delete_all_records()
         font = QtGui.QFont()
@@ -1416,7 +1835,8 @@ class TY_25_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Avg. Load (N)','First Peak Load (N)','Max Load (N)','Min Load (N)','Layers','REC.NO '])        
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','E@Break (mm)','E@LOAD_POINT_1 (mm)','E@LOAD_POINT_2 (mm)','REC.NO '])  
+              
         self.tableWidget.setColumnWidth(0, 170)
         self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setColumnWidth(2, 150)
@@ -1427,7 +1847,7 @@ class TY_25_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
          
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1438,59 +1858,26 @@ class TY_25_Ui_MainWindow(object):
         connection.close()
         self.calculations()
        
-    
+         
+    def reset(self):        
+        if(self.timer3.isActive()): 
+           self.timer3.stop() 
+        
+        #self.sc_blank =PlotCanvas_blank(self) 
+        #self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        
+        
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
         self.window = QtWidgets.QMainWindow()
         self.ui=P_POP_TEST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+              
     
-    def open_email_report(self):
-        #self.test_id=(self.tableWidget.item(row, 1).text() )
-        self.test_id=self.label_12.text()
-        print(" test_id :"+str(self.test_id))  
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                        cursor = connection.cursor()                
-                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
-        connection.commit()
-        connection.close()
-            
-        self.window = QtWidgets.QMainWindow()
-        self.ui=popup_email_test_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-        
-        
-    def open_comment_popup(self):
-        
-        #print(" test_id :"+str(self.test_id))  
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                    cursor = connection.cursor()                
-                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
-        connection.commit()
-        connection.close()
-            
-        self.window = QtWidgets.QMainWindow()
-        self.ui=comment_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-    
-    def save_data(self):
-        #print(" test_id :"+str(self.test_id))  
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                    cursor = connection.cursor()                
-                    cursor.execute("update TEST_MST SET BATCH_ID='"+str(self.lineEdit_3.text())+"', PARTY_NAME='"+str(self.lineEdit_5.text())+"',JOB_NAME='"+str(self.lineEdit_2.text())+"' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ")
-                    self.label_21.show()
-                    self.label_21.setText("Data Saved Successfully .")
-                    
-        connection.commit()
-        connection.close()
-        
-    def create_pdf_PEELOFF(self):        
+    def create_pdf_FBST(self):        
 #        connection = sqlite3.connect("tyr.db")
 #        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
 #        for x in results:
@@ -1499,59 +1886,37 @@ class TY_25_Ui_MainWindow(object):
 #        connection.close()
         self.unit_typex="N/mm"
         if(self.unit_typex == "N/mm"):
-            data2= [ ['Spec. \n No', 'Avg. Load \n (N)', 'Load at First Peak\n (N)', 'Max Load \n (N)', 'Min Load \n (N)','Layers\n']]
+            data2= [ ['Spec.No', 'Break. Load (N)', 'E@Break(mm)', 'E@Load Point 1 (mm)', 'E@Load Point 2 (mm)']]
         else:
-            data2= [ ['Spec. \n No', 'Avg. Load \n (N)', 'Load at First Peak\n (N)', 'Max Load \n (N)', 'Min Load \n (N)','Layers\n']]
+            data2= [ ['Spec.No', 'Avg. Load (N)', 'Load at First Peak\n (N)', 'Max Load \n (N)', 'Min Load \n (N)']]
           
+        #esults=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.AVG_FORCE),printf(\"%.2f\", A.DEF_LOAD),printf(\"%.2f\", A.MAX_FORCE),printf(\"%.2f\", A.MIN_FORCE),printf(\"%.2f\", A.LAYERS) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.E_AT_LOAD_POINT_1),printf(\"%.2f\", A.E_AT_LOAD_POINT_2) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.AVG_FORCE)),printf(\"%.2f\",avg(A.DEF_LOAD)),printf(\"%.2f\", avg(A.MAX_FORCE)),printf(\"%.2f\", avg(A.MIN_FORCE)),printf(\"%.2f\", avg(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.AVG_FORCE)),printf(\"%.2f\",max(A.DEF_LOAD)),printf(\"%.2f\", max(A.MAX_FORCE)),printf(\"%.2f\", max(A.MIN_FORCE)),printf(\"%.2f\", max(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\",avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.AVG_FORCE)),printf(\"%.2f\",min(A.DEF_LOAD)),printf(\"%.2f\", min(A.MAX_FORCE)),printf(\"%.2f\", min(A.MIN_FORCE)),printf(\"%.2f\", min(A.LAYERS)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\",max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
-        '''
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
-        for x in results:                    
-                    data2.append(['STDev',str(np.std(x[0])),str(np.std(x[1])),str(np.std(x[2])),str(np.std(x[3]))])
+        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\",min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
         connection.close()
         
-        self.arr1=[]
-        self.arr2=[]
-        self.arr3=[]
-        self.arr4=[]
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
-        for x in results:
-                        self.arr1.append(str(x[0]))
-                        self.arr2.append(str(x[1]))
-                        self.arr3.append(str(x[2]))
-                        self.arr4.append(str(x[3])) 
-        connection.close()
-        #data2.append(['Var',str(np.std(self.arr1)),str(np.std(self.arr2)),str(np.std(self.arr3)),str(np.std(self.arr4)),'0']) 
-        c=np.std(self.arr1)
-        print(" arr1 :"+str(c))
-        '''
         y=300
         Elements=[]
         summary_data=[]
@@ -1610,7 +1975,7 @@ class TY_25_Ui_MainWindow(object):
         
     def open_pdf(self):
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
-        self.create_pdf_PEELOFF() 
+        self.create_pdf_FBST() 
         
         os.system("xpdf ./reports/test_report.pdf")        
         #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
@@ -1638,7 +2003,10 @@ class TY_25_Ui_MainWindow(object):
         except:
            product_id = "ERROR"
         return product_id 
-            
+        
+        
+        
+
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -1670,8 +2038,7 @@ class PlotCanvas(FigureCanvas):
         self.y_num=[0.0]
         self.test_type="Tensile"
         self.color=['b','r','g','y','k','c','m','b']
-        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
-        
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
@@ -1705,8 +2072,7 @@ class PlotCanvas(FigureCanvas):
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])
-            connection.close() 
-        
+            connection.close()
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
         
@@ -1730,17 +2096,10 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
-        self.test_type="Tensile"
+        self.test_type="FBST"
         
         
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
-        for x in results:
-             self.test_type=str(x[0])
-             #self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
-        connection.close()
-        
+       
         if(self.test_type=="Compress"):
             self.axes.set_xlabel('Compression (mm)')
         elif(self.test_type=="COF"):
@@ -1780,6 +2139,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.check_R=""
         self.check_S=""
         self.IO_error_flg=0
+        
         self.timer1=QtCore.QTimer()
        
        
@@ -1837,11 +2197,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0) from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=int(x[0])
-             if(str(x[1]) == "Flexural"):
-                 self.test_type="Compress"
-             else:
-                  self.test_type=str(x[1])
+             self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
@@ -1958,10 +2314,10 @@ class PlotCanvas_Auto(FigureCanvas):
                     print("COF test started ")   
                         
                 else:
-                    print("Error :Serial O/P is not getting ")               
-                
+                    print("Error :Serial O/P is not getting ")
                 
             else:
+                print("len(self.ybuff) :"+str(len(self.ybuff)))
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
                         self.ser.write(b'*S2T000.0 000.0\r')
@@ -1990,7 +2346,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.write(b'*D\r')
             self.line = self.ser.readline()
             print("With Readline Timer Job o/p:"+str(self.line))
-            #print("Running")
+            #print("")
             '''
             try:
                 self.line = self.ser.readline()
@@ -2000,7 +2356,7 @@ class PlotCanvas_Auto(FigureCanvas):
             except IOError:
                 print("IO Errors")    
                 
-            xstr3=str(self.line)        
+            xstr3=str(self.line)
             xstr3=xstr3[1:int(len(xstr3)-1)]
             xstr2=xstr3.replace("'\\r","")        
             #print("replace3('\r):"+str(xstr2))
@@ -2070,8 +2426,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
 
                 if(int(self.q) > int(self.ylim)):
-                   self.ylim=(int(self.q)+100)
-                   self.ylim_update='YES'                   
+                    self.ylim=(int(self.q)+100)
+                    self.ylim_update='YES'                   
                    #print(" self.ylim:"+str(self.ylim))
                 
                 #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
@@ -2115,7 +2471,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ani._stop()
         else:
              pass
-    
+            
     def on_stop(self):
         if(self.timer1.isActive()): 
            self.timer1.stop()
@@ -2144,7 +2500,6 @@ class PlotCanvas_Auto(FigureCanvas):
              self.speed_val=str(x[0])
         connection.close()
         self.goahead_flag=0
-       
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
@@ -2170,16 +2525,8 @@ class PlotCanvas_Auto(FigureCanvas):
             print(" not Ok ")
             #self.label_3.setText("Motor Speed is Required")
             #self.label_3.show()            
-    
                 
 
-       
-                    
-                
-               
-     
-   
-    
 class PlotCanvas_blank(FigureCanvas):
     def __init__(self, parent=None, width=1, height=0.1, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -2223,8 +2570,8 @@ class PlotCanvas_blank(FigureCanvas):
                
         for i in range(len(self.x)):
               self.p.append(self.x[i])
-              self.q.append(self.y[i])  
-              
+              self.q.append(self.y[i])
+        
         ax.plot(self.x,self.y,'b')
         
         connection = sqlite3.connect("tyr.db")
@@ -2243,12 +2590,15 @@ class PlotCanvas_blank(FigureCanvas):
         else:
             ax.set_xlabel('Distance (mm)')
         self.draw() 
+                    
+                
+                
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_25_Ui_MainWindow()
+    ui = TY_28_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
