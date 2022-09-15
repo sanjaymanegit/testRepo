@@ -639,7 +639,7 @@ class TY_24_PEEL_OFF_Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "UNIT    :"))
         self.comboBox_5.addItem("")
         #self.comboBox_5.addItem("")
-        self.comboBox_5.setItemText(0, _translate("MainWindow", "MPa/mm"))
+        self.comboBox_5.setItemText(0, _translate("MainWindow", "N/mm"))
         #self.comboBox_5.setItemText(1, _translate("MainWindow", "MPA"))
         self.label_21.setText(_translate("MainWindow", "No Data Found"))
         self.label_21.hide()

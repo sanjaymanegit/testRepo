@@ -1065,6 +1065,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.open_email_report)
         self.pushButton_6.clicked.connect(self.save_data)
         self.pushButton_7.clicked.connect(self.open_pdf)
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
         
         #self.reset()
         self.load_data()
@@ -1100,8 +1101,31 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
                  self.test_id=str(x[0])
         connection.close()
         self.onchage_combo()
-        #self.calculations()
-        
+        self.show_grid_data_peeloff()
+    
+    def delete_cycle(self):
+        i = self.tableWidget.rowCount()   
+        if(i>0):
+            row = self.tableWidget.currentRow()
+            
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
+            if(int(self.cycle_id) > 0):
+                    close = QMessageBox()
+                    close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                    close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                    close = close.exec()
+                    if close == QMessageBox.Yes:
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                        cursor = connection.cursor()                
+                                        cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                        
+                        connection.commit();
+                        connection.close()
+                        self.show_grid_data_peeloff()
+                        
+            else:
+                    pass    
        
     def calculations(self):
         connection = sqlite3.connect("tyr.db")
@@ -1422,7 +1446,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
          
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
+        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", DEF_LOAD),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE), printf(\"%.2f\", LAYERS),CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' order by cycle_id Asc")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

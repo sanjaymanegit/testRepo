@@ -988,6 +988,7 @@ class TY_25_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_4.hide()
         self.pushButton_13.setText(_translate("MainWindow", "All"))
+        self.pushButton_13.hide()
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
         self.label_21.hide()
@@ -1044,6 +1045,7 @@ class TY_25_Ui_MainWindow(object):
         self.label_49.setText(_translate("MainWindow", "PEELOFF TEST"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
         self.pushButton_6.setText(_translate("MainWindow", "Save"))
+        self.pushButton_6.hide()
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
         self.pushButton_8.setText(_translate("MainWindow", "Report Print"))
         self.label_50.setText(_translate("MainWindow", "Stat."))
@@ -1054,7 +1056,7 @@ class TY_25_Ui_MainWindow(object):
         self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
@@ -1090,11 +1092,15 @@ class TY_25_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        results=connection.execute("SELECT SPECIMEN_NAME,SPEC_DTLS,BATCH_ID,PARTY_NAME FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:            
             self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
+            self.comboBox.setItemText(self.i,str(x[0])) 
+            print("Spec,dtls :"+str(x[1]))
+            self.lineEdit_2.setText(str(x[1]))
+            self.lineEdit_3.setText(str(x[2]))
+            self.lineEdit_5.setText(str(x[3]))
+            #self.i=self.i+1
         connection.close()             
             
         
@@ -1104,7 +1110,7 @@ class TY_25_Ui_MainWindow(object):
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
         connection.close()
-        self.onchage_combo()
+        #self.onchage_combo()
         #self.calculations()
         
        
