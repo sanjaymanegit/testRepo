@@ -1,4 +1,9 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+
+from MDR_02_SETTING import mdr_02_Ui_MainWindow
+
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -98,7 +103,7 @@ class MDR_01_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(19)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -108,6 +113,7 @@ class MDR_01_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setVerticalHeaderItem(0, item)
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -123,6 +129,7 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
+        
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -164,6 +171,115 @@ class MDR_01_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(9, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(10, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(11, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(12, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(13, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(14, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(15, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(16, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(17, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(18, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(19, item)
+       
+        
+        
+       
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -715,6 +831,15 @@ class MDR_01_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget_2.setHorizontalHeaderItem(2, item)
+        '''
+        
+        
+        '''
+        
+        
+        
+        
+        
         self.label_50 = QtWidgets.QLabel(self.frame)
         self.label_50.setGeometry(QtCore.QRect(790, 510, 431, 31))
         font = QtGui.QFont()
@@ -838,6 +963,16 @@ class MDR_01_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Elong.@5800(%)"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Rec.No"))
+        '''
+        item = self.tableWidget.horizontalHeaderItem(7)
+        item.setText(_translate("MainWindow", "T_S2"))
+        item = self.tableWidget.horizontalHeaderItem(8)
+        item.setText(_translate("MainWindow", "T_S5"))
+        '''
+        
+        
+        
+        
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -914,8 +1049,95 @@ class MDR_01_Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
-        
+        self.lcdNumber_3.setProperty("value", 0.0)
+        self.load_data()
         self.pushButton_9.clicked.connect(self.start_test_MDR)
+        self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.toolButton_4.clicked.connect(self.open_setting)
+        
+        self.pushButton_8.clicked.connect(self.open_comment_popup)
+        self.pushButton_7.clicked.connect(self.print_file)
+        self.pushButton_5.clicked.connect(self.open_email_report)
+        
+        self.show_grid_data_MDR()
+        self.show_grid_data_LIMITS()
+        self.onchage_combo()
+        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+       
+    
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    
+    def load_data(self):
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT METHOD_NAME FROM METHODS_MST WHERE STATUS = 'ACTIVE'") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        self.i=0
+        self.comboBox_2.clear()
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT SHIFT_NAME FROM SHIFT_MST ") 
+        for x in results:            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+    
+    def onchage_combo(self):                      
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select SET_TEMP,SET_TORQUE,SET_TEST_TIME,SPEC_NUM,ARC FROM METHODS_MST WHERE METHOD_NAME='"+self.comboBox.currentText()+"'")                 
+        for x in results:
+           self.label_23.setText(str(x[0])) # TempA
+           self.label_18.setText(str(x[1])) # Tarq
+           self.label_26.setText(str(x[2])) # Time
+           self.label_12.setText(str(x[3])) # Spec Name
+           self.label_29.setText(str(x[4])) # Arc
+        connection.close()
+        self.show_grid_data_LIMITS()
+    
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_email_report(self):        
+        connection = sqlite3.connect("mdr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_comment_popup(self):
+        connection = sqlite3.connect("mdr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
         
     def start_test_MDR(self):        
         self.goAhead="Yes"
@@ -942,6 +1164,7 @@ class MDR_01_Ui_MainWindow(object):
         
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
         self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_r)))  
         
         if(str(self.sc_new.save_data_flg) =="Yes"):            
                 self.reset()
@@ -995,10 +1218,98 @@ class MDR_01_Ui_MainWindow(object):
                     
                   except:
                           print("SQL Error")
-                      
+            self.calculations()         
             connection.commit();
             connection.close()            
             print("Data Saved Ok in STG_GRAPH_MST")
+        
+    def show_grid_data_MDR(self):        
+        #print("inside tear list.....")
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(19)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setHorizontalHeaderLabels(['Test Id','Spec.No.','S_ML','S_MH','S2_ML','S2_MH','T_S1','T_S2','T_S5','TC_10','TC_50','TC_90','Tan at ML','Tan at MH','OC','CR','End Temp.','Trend','RT'])  
+              
+        self.tableWidget.setColumnWidth(0, 170)
+        self.tableWidget.setColumnWidth(1, 120)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnWidth(4, 150)
+        self.tableWidget.setColumnWidth(5, 150)
+        self.tableWidget.setColumnWidth(6, 170)
+        self.tableWidget.setColumnWidth(7, 120)
+        self.tableWidget.setColumnWidth(8, 150)
+        self.tableWidget.setColumnWidth(9, 150)
+        self.tableWidget.setColumnWidth(10, 150)
+        self.tableWidget.setColumnWidth(11, 150)
+        self.tableWidget.setColumnWidth(12, 170)
+        self.tableWidget.setColumnWidth(13, 120)
+        self.tableWidget.setColumnWidth(14, 150)
+        self.tableWidget.setColumnWidth(15, 150)
+        self.tableWidget.setColumnWidth(16, 150)
+        self.tableWidget.setColumnWidth(17, 150)
+        self.tableWidget.setColumnWidth(18, 170)
+        self.tableWidget.setColumnWidth(19, 150)
+        
+        
+        
+        connection = sqlite3.connect("mdr.db")
+         
+        results=connection.execute("SELECT TEST_ID,printf(\"%.2f\", S_ML),printf(\"%.2f\", S_MH),printf(\"%.2f\", S2_ML),printf(\"%.2f\", S2_MH),printf(\"%.2f\", T_S1),printf(\"%.2f\", T_S2),printf(\"%.2f\", T_S5),printf(\"%.2f\", TC_10),printf(\"%.2f\", TC_50),printf(\"%.2f\", TC_90),printf(\"%.2f\", TAN_AT_ML),printf(\"%.2f\", TAN_AT_MH),printf(\"%.2f\", OC),printf(\"%.2f\", CR),printf(\"%.2f\", END_TEMP),TREAND,printf(\"%.2f\", RT)   FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()
+    
+    def show_grid_data_LIMITS(self):        
+        #print("inside tear list.....")
+        self.delete_all_records2()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_2.setFont(font)
+        self.tableWidget_2.setColumnCount(3)
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setHorizontalHeaderLabels(['Param','L-Limit','U-Limit'])  
+              
+        self.tableWidget_2.setColumnWidth(0, 170)
+        self.tableWidget_2.setColumnWidth(1, 120)
+        self.tableWidget_2.setColumnWidth(2, 120)
+        
+        connection = sqlite3.connect("mdr.db")         
+        results=connection.execute("SELECT A.PARAM,printf(\"%.2f\", A.L_VAL),printf(\"%.2f\", A.U_VAL)    FROM LIMITS_MST A,METHODS_MST B WHERE A.LIMIT_ID=B.LIMIT_ID AND B.METHOD_NAME='"+str(self.comboBox.currentText())+"'")
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_2.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget_2.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        self.tableWidget_2.resizeColumnsToContents()
+        #self.tableWidget_2.resizeRowsToContents()
+        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()
+     
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)
+    
+    def delete_all_records2(self):
+        i = self.tableWidget_2.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget_2.removeRow(i)
+    
+    def open_setting(self):    
+        self.window = QtWidgets.QMainWindow()
+        self.ui=mdr_02_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
 
 
@@ -1120,7 +1431,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
              
-             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+             print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
         connection.close()
         
         try:
