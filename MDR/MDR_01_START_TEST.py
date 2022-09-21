@@ -1556,19 +1556,14 @@ class PlotCanvas_Auto(FigureCanvas):
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
         connection.close()
+        '''
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0) from GLOBAL_VAR") 
-        for x in results:            
-             self.test_guage_mm=int(x[0])             
-             self.max_load=int(x[2])
-             #self.max_load=100
-             self.max_length=float(float(x[0])-float(x[3]))
-             self.flex_max_length=float(x[3])
-             self.cof_max_length=float(x[4])
-             
-             print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
-        connection.close()
+        '''
+        self.test_guage_mm=609
+        self.max_load=0
+        self.cof_max_length=100
+        print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        
         
         try:
             self.ser = serial.Serial(
@@ -1808,19 +1803,16 @@ class PlotCanvas_Auto(FigureCanvas):
     
     
     def validate_speed(self):
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
         for x in results:
              self.speed_val=str(x[0])
         connection.close()
         self.goahead_flag=0
+        '''
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-        connection.close()
-        
+        '''
+        self.input_speed_val=100
         if(self.input_speed_val != ""):
             if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
