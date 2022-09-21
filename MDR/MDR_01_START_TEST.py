@@ -404,10 +404,12 @@ class MDR_01_Ui_MainWindow(object):
         self.line_15.setObjectName("line_15")
         self.toolButton = QtWidgets.QToolButton(self.frame)
         self.toolButton.setGeometry(QtCore.QRect(270, 30, 81, 81))
+        
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./images/stop.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(100, 100))
+        
         self.toolButton.setObjectName("toolButton")
         self.label_48 = QtWidgets.QLabel(self.frame)
         self.label_48.setGeometry(QtCore.QRect(10, 80, 61, 31))
@@ -873,6 +875,8 @@ class MDR_01_Ui_MainWindow(object):
         self.label_32.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
+        
+        self.buttongroup = QtWidgets.QButtonGroup()
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(20, 20, 71, 41))
         font = QtGui.QFont()
@@ -890,7 +894,13 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.radioButton_2.setFont(font)
+        self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
+        
+        self.buttongroup.addButton(self.radioButton, 1)
+        self.buttongroup.addButton(self.radioButton_2, 2)
+        
+        
         self.label_52 = QtWidgets.QLabel(self.frame)
         self.label_52.setGeometry(QtCore.QRect(1050, 550, 101, 31))
         font = QtGui.QFont()
@@ -933,11 +943,12 @@ class MDR_01_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         
-        self.goAhead="Yes"
+        self.goAhead="No"
         self.test_id_exist="No"
         self.timer3=QtCore.QTimer()
         self.sc_blank=""
         self.cycle_num=0
+        self.machine_health="NOTOK"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -992,6 +1003,7 @@ class MDR_01_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_13.setText(_translate("MainWindow", "Torque (N) :"))
         self.label_22.setText(_translate("MainWindow", "Running......"))
+        self.label_22.hide()
         self.label_14.setText(_translate("MainWindow", "Temp1 (.C) "))
         self.toolButton.setText(_translate("MainWindow", "..."))
         self.label_48.setText(_translate("MainWindow", "Status :"))
@@ -1029,7 +1041,9 @@ class MDR_01_Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "Arc. "))
         self.label_29.setText(_translate("MainWindow", "0.5"))
         self.pushButton_9.setText(_translate("MainWindow", "Start Test"))
+        self.pushButton_9.setDisabled(True)
         self.pushButton_11.setText(_translate("MainWindow", "Stop Test"))
+        self.pushButton_11.setDisabled(True)
         self.tableWidget_2.setSortingEnabled(True)
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "P"))
@@ -1038,12 +1052,13 @@ class MDR_01_Ui_MainWindow(object):
         item = self.tableWidget_2.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "U"))
         self.label_50.setText(_translate("MainWindow", "Preparing for Test is in Progress .....36%"))
+        self.label_50.hide()
         self.label_51.setText(_translate("MainWindow", " Machine is Down."))
         self.label_32.setText(_translate("MainWindow", "Limits :"))
         self.radioButton.setText(_translate("MainWindow", "ON"))
         self.radioButton_2.setText(_translate("MainWindow", "OFF"))
         self.label_52.setText(_translate("MainWindow", "Elapsed Time :"))
-        self.label_33.setText(_translate("MainWindow", "054"))
+        self.label_33.setText(_translate("MainWindow", "000"))
         self.label_34.setText(_translate("MainWindow", "(Min)"))
         self.sc_blank =PlotCanvas_blank(self,width=8, height=5,dpi=90)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1052,12 +1067,17 @@ class MDR_01_Ui_MainWindow(object):
         self.lcdNumber_3.setProperty("value", 0.0)
         self.load_data()
         self.pushButton_9.clicked.connect(self.start_test_MDR)
+        self.pushButton_11.clicked.connect(self.stop_test_MDR)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.toolButton_4.clicked.connect(self.open_setting)
         
         self.pushButton_8.clicked.connect(self.open_comment_popup)
         self.pushButton_7.clicked.connect(self.print_file)
         self.pushButton_5.clicked.connect(self.open_email_report)
+        
+        self.radioButton.clicked.connect(self.machine_status)
+        self.radioButton_2.clicked.connect(self.machine_status)
+         
         
         self.show_grid_data_MDR()
         self.show_grid_data_LIMITS()
@@ -1073,7 +1093,103 @@ class MDR_01_Ui_MainWindow(object):
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
+    def machine_status(self):
+        self.machine_health="NOTOK"
+        self.ErrorMsg=""
+        if(self.radioButton.isChecked()):
+            self.radioButton.setDisabled(True)
+            self.radioButton_2.setEnabled(True)
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("./images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.toolButton.setIcon(icon)
+            self.toolButton.setIconSize(QtCore.QSize(100, 100))
+            self.check_machine_health()
+            if(self.machine_health=="NOTOK"):
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("./images/stop1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                self.toolButton.setIcon(icon)
+                self.toolButton.setIconSize(QtCore.QSize(100, 100))
+                self.label_51.setText(str(self.ErrorMsg))                
+            else:
+                self.label_51.setText("Machine is ON")
+                self.pushButton_9.setEnabled(True)
+                self.pushButton_11.setEnabled(True)
+                
+            
+        elif(self.radioButton_2.isChecked()):
+            self.radioButton_2.setDisabled(True)
+            self.radioButton.setEnabled(True)
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("./images/stop.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.toolButton.setIcon(icon)
+            self.toolButton.setIconSize(QtCore.QSize(100, 100))
+            self.label_51.setText("Machine is DOWN")
+            self.pushButton_9.setDisabled(True)
+            self.pushButton_11.setDisabled(True)
+        else:
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("./images/stop.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.toolButton.setIcon(icon)
+            self.toolButton.setIconSize(QtCore.QSize(100, 100))
+            self.pushButton_9.setDisabled(True)
+            self.pushButton_11.setDisabled(True)
+            
+    def check_machine_health(self):
+        self.machine_health="OK"
+        self.go_ahead="No"
+        self.ErrorMsg="Connection Issue"
+        self.check_registration()
+        if(self.go_ahead=="No"):            
+            self.ErrorMsg="Registration Error"
+            self.machine_health="NOTOK"
+        else:
+            self.ErrorMsg="Start Test"
+            
+        
+        
+    def check_registration(self):        
+        self.go_ahead="No"
+        f = open("/var/local/devid", "r")
+        dev_id=f.read()
+        f.close()
+        serial_no=self.getserial()        
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select DEVICE_SERIAL_NO from GLOBAL_VAR") 
+        for x in results:
+            #print("serial_no:"+str(serial_no))
+            if(serial_no == str(x[0])):
+               self.go_ahead="Yes"
+            else:
+               self.go_ahead="No"
+        connection.close()
+        
+        if(self.go_ahead =="Yes"):  
+            if(dev_id=='201910:0003'):
+                #self.label_51.setText("Start Test")
+                print("dev id ok :"+str(dev_id))
+                
+            else:
+                print("dev id Error :"+str(dev_id))   
+        else:
+           print("Device Invalid :call 9773540255")
+        
     
+    
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+            
+            
     def load_data(self):
         self.i=0
         self.comboBox.clear()
@@ -1094,6 +1210,13 @@ class MDR_01_Ui_MainWindow(object):
             self.comboBox_2.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
         connection.close()
+        
+        connection = sqlite3.connect("mdr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set TEST_ID=''")                 
+        connection.commit()
+        connection.close() 
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("mdr.db")
@@ -1104,6 +1227,7 @@ class MDR_01_Ui_MainWindow(object):
            self.label_26.setText(str(x[2])) # Time
            self.label_12.setText(str(x[3])) # Spec Name
            self.label_29.setText(str(x[4])) # Arc
+          
         connection.close()
         self.show_grid_data_LIMITS()
     
@@ -1139,16 +1263,16 @@ class MDR_01_Ui_MainWindow(object):
         self.window.show()
         
         
-    def start_test_MDR(self):        
-        self.goAhead="Yes"
-        if(self.goAhead=="Yes"):
-            
-             
-             
+    def start_test_MDR(self):
+        close = QMessageBox()
+        close.setText("Are You Sure Want To Start Test ? Please Confirm ")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:
+               self.label_22.show()
                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
-               self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
-                
-               connection = sqlite3.connect("tyr.db")
+               self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+               connection = sqlite3.connect("mdr.db")
                results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
                rows=results.fetchall()
                connection.close()
@@ -1160,18 +1284,30 @@ class MDR_01_Ui_MainWindow(object):
         else:
                 print("validation Error")
     
+    def stop_test_MDR(self):
+        close = QMessageBox()
+        close.setText("Are You Sure Want To Stop Test ? Please Confirm ")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:  
+               
+               print("Stop Test Here")
+                
+        else:
+                print("validation Error")
+    
+    
     def show_load_cell_val(self):      
         
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
         self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_r)))  
-        
+        self.label_50.show()
+        self.label_50.setText(" Test Started  ..... %")
         if(str(self.sc_new.save_data_flg) =="Yes"):            
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
-                self.label_21.show()
-                self.label_21.setText("Data Saved Successfully.")
                 
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -1187,7 +1323,7 @@ class MDR_01_Ui_MainWindow(object):
             
             #self.cycle_num=int(str(self.label_67.text()))+1
             
-            connection = sqlite3.connect("tyr.db")
+            connection = sqlite3.connect("mdr.db")
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
@@ -1197,31 +1333,31 @@ class MDR_01_Ui_MainWindow(object):
             
             #self.get_points()
             #self.cycle_num=self.cycle_num+1
-            connection = sqlite3.connect("tyr.db")              
+            connection = sqlite3.connect("mdr.db")              
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")                         
-                          #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2 FROM GLOBAL_VAR")
-                          
-                          cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
-                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_TORQUE='"+str(self.label_18.text())+"',SPECIMEN_NAME_ID='"+str(self.label_12.text())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',TEST_TEMP='"+str(self.label_23.text())+"',METHOD_NAME='"+str(self.comboBox.currentText())+"',TEST_TIME_MM='"+str(self.label_26.text())+"'")                         
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
-                          cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
-                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
-                          cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                    
-                  except:
-                          print("SQL Error")
-            self.calculations()         
+                          cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                          cursor.execute("INSERT INTO TEST_MST_MDR(SPECIMEN_NUM,BATCH_ID,TEST_TEMP,METHOD_NAME,TRQ,TEST_TIME_MIN) SELECT SPECIMEN_NAME_ID,BATCH_ID,TEST_TEMP,METHOD_NAME,TEST_TORQUE,TEST_TIME_MM FROM GLOBAL_VAR")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT MAX(TEST_ID) FROM TEST_MST_MDR)")
+                          cursor.execute("UPDATE TEST_MST_MDR SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
+                          cursor.execute("UPDATE TEST_MST_MDR SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                     
+                          self.label_22.show()
+                          self.label_22.setText("Data Saved.")
+                
+                  except e:
+                          print("SQL Error"+str(e))
+                          self.label_22.show()
+                          self.label_22.setText("SQL Error.")
+            #self.calculations()         
             connection.commit();
             connection.close()            
             print("Data Saved Ok in STG_GRAPH_MST")
+            self.show_grid_data_MDR()
         
     def show_grid_data_MDR(self):        
         #print("inside tear list.....")
@@ -1258,7 +1394,7 @@ class MDR_01_Ui_MainWindow(object):
         
         connection = sqlite3.connect("mdr.db")
          
-        results=connection.execute("SELECT TEST_ID,printf(\"%.2f\", S_ML),printf(\"%.2f\", S_MH),printf(\"%.2f\", S2_ML),printf(\"%.2f\", S2_MH),printf(\"%.2f\", T_S1),printf(\"%.2f\", T_S2),printf(\"%.2f\", T_S5),printf(\"%.2f\", TC_10),printf(\"%.2f\", TC_50),printf(\"%.2f\", TC_90),printf(\"%.2f\", TAN_AT_ML),printf(\"%.2f\", TAN_AT_MH),printf(\"%.2f\", OC),printf(\"%.2f\", CR),printf(\"%.2f\", END_TEMP),TREAND,printf(\"%.2f\", RT)   FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NUM,printf(\"%.2f\", S_ML),printf(\"%.2f\", S_MH),printf(\"%.2f\", S2_ML),printf(\"%.2f\", S2_MH),printf(\"%.2f\", T_S1),printf(\"%.2f\", T_S2),printf(\"%.2f\", T_S5),printf(\"%.2f\", TC_10),printf(\"%.2f\", TC_50),printf(\"%.2f\", TC_90),printf(\"%.2f\", TAN_AT_ML),printf(\"%.2f\", TAN_AT_MH),printf(\"%.2f\", OC),printf(\"%.2f\", CR),printf(\"%.2f\", END_TEMP),TREAND,printf(\"%.2f\", RT)   FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1402,14 +1538,14 @@ class PlotCanvas_Auto(FigureCanvas):
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
         #self.line_cnt2, = self.axes2.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
+        connection = sqlite3.connect("mdr.db")              
         with connection:        
                 cursor = connection.cursor()                            
                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
         connection.commit();
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
         for x in results:
              self.axes.set_xlim(0,int(x[0]))
@@ -1714,7 +1850,7 @@ class PlotCanvas_blank(FigureCanvas):
         
     def plot_blank(self):                
         
-        connection = sqlite3.connect("tyr.db")              
+        connection = sqlite3.connect("mdr.db")              
         with connection:        
                 cursor = connection.cursor()                            
                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
@@ -1734,7 +1870,7 @@ class PlotCanvas_blank(FigureCanvas):
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
        
          
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:
              ax.set_xlim(0,int(x[0]))
