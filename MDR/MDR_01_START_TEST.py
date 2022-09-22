@@ -9,9 +9,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import os
 
-#from print_test_popup import P_POP_TEST_Ui_MainWindow
-#from email_popup_test_report import popup_email_test_Ui_MainWindow
-#from comment_popup import comment_Ui_MainWindow
+
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -1011,9 +1009,13 @@ class MDR_01_Ui_MainWindow(object):
         self.toolButton_3.setText(_translate("MainWindow", "..."))
         self.toolButton_4.setText(_translate("MainWindow", "..."))
         self.pushButton_5.setText(_translate("MainWindow", "Email Report"))
+        self.pushButton_5.setDisabled(True)
         self.pushButton_6.setText(_translate("MainWindow", "View Report"))
+        self.pushButton_6.setDisabled(True)
         self.pushButton_7.setText(_translate("MainWindow", "Print Report"))
+        self.pushButton_7.setDisabled(True)
         self.pushButton_8.setText(_translate("MainWindow", "Remark"))
+        self.pushButton_8.setDisabled(True)
         self.comboBox.setItemText(0, _translate("MainWindow", "Method 1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Method 2"))
         self.comboBox.setItemText(2, _translate("MainWindow", "Method 3"))
@@ -1499,7 +1501,7 @@ class MDR_01_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("mdr.db")
-        results=connection.execute("SELECT S_ML,S_MH,S2_ML,S2_MH,T_S1,T_S2,T_S5,TC_10,TC_50,TC_90,TAN_AT_ML,TAN_AT_MH,OC,CR,END_TEMP,TREAND,RT,STATUS FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT S_ML,S_MH,S2_ML,S2_MH,T_S1,T_S2,T_S5,TC_10,TC_50,TC_90,TAN_AT_ML,TAN_AT_MH,OC,CR,END_TEMP,TREAND,RT,STATUS FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT IFNULL(TEST_ID,1) FROM GLOBAL_VAR)")
         for x in results:
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
