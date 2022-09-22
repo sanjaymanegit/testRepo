@@ -597,7 +597,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.line_13.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_13.setObjectName("line_13")
         self.label_27 = QtWidgets.QLabel(self.frame)
-        self.label_27.setGeometry(QtCore.QRect(850, 510, 41, 41))
+        self.label_27.setGeometry(QtCore.QRect(850, 510, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -608,7 +608,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_27.setObjectName("label_27")
         self.label_28 = QtWidgets.QLabel(self.frame)
-        self.label_28.setGeometry(QtCore.QRect(850, 550, 41, 41))
+        self.label_28.setGeometry(QtCore.QRect(850, 550, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -619,7 +619,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_28.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_28.setObjectName("label_28")
         self.label_29 = QtWidgets.QLabel(self.frame)
-        self.label_29.setGeometry(QtCore.QRect(850, 590, 41, 41))
+        self.label_29.setGeometry(QtCore.QRect(850, 590, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -630,7 +630,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_29.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_29.setObjectName("label_29")
         self.label_30 = QtWidgets.QLabel(self.frame)
-        self.label_30.setGeometry(QtCore.QRect(850, 630, 41, 41))
+        self.label_30.setGeometry(QtCore.QRect(850, 630, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -641,7 +641,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_30.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_30.setObjectName("label_30")
         self.label_31 = QtWidgets.QLabel(self.frame)
-        self.label_31.setGeometry(QtCore.QRect(960, 510, 41, 41))
+        self.label_31.setGeometry(QtCore.QRect(960, 510, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -652,7 +652,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
         self.label_32 = QtWidgets.QLabel(self.frame)
-        self.label_32.setGeometry(QtCore.QRect(960, 550, 41, 41))
+        self.label_32.setGeometry(QtCore.QRect(960, 550, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -663,7 +663,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_32.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.label_33 = QtWidgets.QLabel(self.frame)
-        self.label_33.setGeometry(QtCore.QRect(960, 590, 41, 41))
+        self.label_33.setGeometry(QtCore.QRect(960, 590, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -674,7 +674,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.label_34 = QtWidgets.QLabel(self.frame)
-        self.label_34.setGeometry(QtCore.QRect(960, 630, 41, 41))
+        self.label_34.setGeometry(QtCore.QRect(960, 630, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -685,7 +685,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_34.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
         self.label_35 = QtWidgets.QLabel(self.frame)
-        self.label_35.setGeometry(QtCore.QRect(960, 670, 41, 41))
+        self.label_35.setGeometry(QtCore.QRect(960, 670, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -696,7 +696,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_35.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_35.setObjectName("label_35")
         self.label_36 = QtWidgets.QLabel(self.frame)
-        self.label_36.setGeometry(QtCore.QRect(850, 670, 41, 41))
+        self.label_36.setGeometry(QtCore.QRect(850, 670, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -707,7 +707,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_36.setObjectName("label_36")
         self.label_37 = QtWidgets.QLabel(self.frame)
-        self.label_37.setGeometry(QtCore.QRect(1110, 510, 41, 41))
+        self.label_37.setGeometry(QtCore.QRect(1110, 510, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -718,7 +718,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_37.setObjectName("label_37")
         self.label_38 = QtWidgets.QLabel(self.frame)
-        self.label_38.setGeometry(QtCore.QRect(1110, 550, 41, 41))
+        self.label_38.setGeometry(QtCore.QRect(1110, 550, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -729,7 +729,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_38.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_38.setObjectName("label_38")
         self.label_39 = QtWidgets.QLabel(self.frame)
-        self.label_39.setGeometry(QtCore.QRect(1110, 590, 41, 41))
+        self.label_39.setGeometry(QtCore.QRect(1110, 590, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -740,7 +740,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_39.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_39.setObjectName("label_39")
         self.label_40 = QtWidgets.QLabel(self.frame)
-        self.label_40.setGeometry(QtCore.QRect(1110, 630, 41, 41))
+        self.label_40.setGeometry(QtCore.QRect(1110, 630, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -751,7 +751,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_40.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_40.setObjectName("label_40")
         self.label_41 = QtWidgets.QLabel(self.frame)
-        self.label_41.setGeometry(QtCore.QRect(1110, 670, 41, 41))
+        self.label_41.setGeometry(QtCore.QRect(1110, 670, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -762,7 +762,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_41.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_41.setObjectName("label_41")
         self.label_42 = QtWidgets.QLabel(self.frame)
-        self.label_42.setGeometry(QtCore.QRect(1220, 510, 41, 41))
+        self.label_42.setGeometry(QtCore.QRect(1220, 510, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -773,7 +773,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_42.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_42.setObjectName("label_42")
         self.label_43 = QtWidgets.QLabel(self.frame)
-        self.label_43.setGeometry(QtCore.QRect(1220, 550, 41, 41))
+        self.label_43.setGeometry(QtCore.QRect(1220, 550, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -784,7 +784,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_43.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_43.setObjectName("label_43")
         self.label_44 = QtWidgets.QLabel(self.frame)
-        self.label_44.setGeometry(QtCore.QRect(1220, 590, 41, 41))
+        self.label_44.setGeometry(QtCore.QRect(1220, 590, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -795,7 +795,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_44.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_44.setObjectName("label_44")
         self.label_45 = QtWidgets.QLabel(self.frame)
-        self.label_45.setGeometry(QtCore.QRect(1220, 630, 41, 41))
+        self.label_45.setGeometry(QtCore.QRect(1220, 630, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -806,7 +806,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         self.label_45.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_45.setObjectName("label_45")
         self.label_46 = QtWidgets.QLabel(self.frame)
-        self.label_46.setGeometry(QtCore.QRect(1220, 670, 41, 41))
+        self.label_46.setGeometry(QtCore.QRect(1220, 670, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1129,7 +1129,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
        
     def calculations(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(max(AVG_FORCE),2), round(max(DEF_LOAD),2), round(max(MAX_FORCE),2), round(max(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(max(AVG_FORCE),2), round(max(DEF_LOAD),2), round(max(MAX_FORCE),2), round(max(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_27.setText(str(x[0]))  #111.00
                     self.label_31.setText(str(x[1]))   #666.99
@@ -1138,7 +1138,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         connection.close()
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(min(AVG_FORCE),2), round(min(DEF_LOAD),2), round(min(MAX_FORCE),2), round(min(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(min(AVG_FORCE),2), round(min(DEF_LOAD),2), round(min(MAX_FORCE),2), round(min(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_28.setText(str(x[0]))  #222.00
                     self.label_32.setText(str(x[1]))   #777.99
@@ -1148,7 +1148,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(avg(AVG_FORCE),2), round(avg(DEF_LOAD),2), round(avg(MAX_FORCE),2), round(avg(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(avg(AVG_FORCE),2), round(avg(DEF_LOAD),2), round(avg(MAX_FORCE),2), round(avg(MIN_FORCE),2) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_29.setText(str(x[0]))  #333.00
                     self.label_33.setText(str(x[1]))   #888.00
@@ -1158,7 +1158,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_30.setText(str(np.std(x[0])))  #444.00
                     self.label_34.setText(str(np.std(x[1])))   #999.00
@@ -1168,7 +1168,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select round(AVG_FORCE,2), round(DEF_LOAD,2), round(MAX_FORCE,2), round(MIN_FORCE,2) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_36.setText(str(np.var(x[0])))  #555.00
                     self.label_35.setText(str(np.var(x[1])))   #A10.00
@@ -1177,7 +1177,7 @@ class TY_23_PEELOFF_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select count(cycle_id) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        results=connection.execute(" select count(cycle_id) from CYCLES_MST WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_51.setText(str(x[0]))                           
         connection.close()
@@ -2077,7 +2077,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=self.p
                     #self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
-                
+                self.q=float(self.q)*9.81
                 self.arr_p.append(self.p)
                 self.arr_q.append(self.q)
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))

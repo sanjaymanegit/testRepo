@@ -2401,7 +2401,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=self.p
                     #self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
-                
+                self.q=float(self.q)*9.81
                 self.arr_p.append(self.p)
                 self.arr_q.append(self.q)
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
