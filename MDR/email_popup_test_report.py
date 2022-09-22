@@ -267,7 +267,7 @@ class popup_email_test_Ui_MainWindow(object):
     
     
     def load_data(self):
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT EMAIL_DEFAULT,EMAIL_SUBJECT,EMAIL_FILE_NAME,EMAIL_TEST_ID FROM GLOBAL_VAR") 
         for x in results:
             self.lineEdit.setText(str(x[0]))
@@ -365,7 +365,7 @@ class popup_email_test_Ui_MainWindow(object):
         self.smtp_server="smtp.gmail.com"
         
         
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("select FROM_EMAIL_ID,FROM_EMAIL_PWD,FROM_EMAIL_SMTP_SERVER from GLOBAL_VAR") 
         for x in results:
             self.sender_email =str(x[0])
@@ -438,7 +438,7 @@ class popup_email_test_Ui_MainWindow(object):
                                 )
                             
                         self.label_2.setText("Successfully Sent Email.")
-                        connection = sqlite3.connect("tyr.db")        
+                        connection = sqlite3.connect("mdr.db")        
                         with connection:        
                                 cursor = connection.cursor()                
                                 cursor.execute("update global_var set EMAIL_DEFAULT='"+self.lineEdit.text()+"',EMAIL_SUBJECT='"+self.lineEdit_2.text()+"',EMAIL_FILE_NAME='"+self.lineEdit_3.text()+"'")                 
