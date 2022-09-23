@@ -771,6 +771,10 @@ class TY_26_Ui_MainWindow(object):
         self.label_48.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_48.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_48.setObjectName("label_48")
+        
+        
+        
+        
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_3.setGeometry(QtCore.QRect(450, 150, 161, 31))
         font = QtGui.QFont()
@@ -778,9 +782,63 @@ class TY_26_Ui_MainWindow(object):
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.lineEdit_3.setFont(font)
-        
+        self.lineEdit_3.setFont(font)        
         self.lineEdit_3.setObjectName("lineEdit_3")
+        
+        self.label_48_1 = QtWidgets.QLabel(self.frame)
+        self.label_48_1.setGeometry(QtCore.QRect(330, 200, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_48_1.setFont(font)
+        self.label_48_1.setText("Load1 (N):")
+        self.label_48_1.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_48_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_48_1.setObjectName("label_48_1")
+        
+        self.lineEdit_3_1 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_1.setGeometry(QtCore.QRect(450, 200, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_3_1.setFont(font)
+        self.lineEdit_3_1.setText("1500")
+        self.lineEdit_3_1.setObjectName("lineEdit_3_1")
+        
+        
+        self.label_48_2 = QtWidgets.QLabel(self.frame)
+        self.label_48_2.setGeometry(QtCore.QRect(530, 200, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_48_2.setFont(font)
+        self.label_48_2.setText("Load2 (N):")
+        self.label_48_2.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_48_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_48_2.setObjectName("label_48_2")
+        
+        self.lineEdit_3_2 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_3_2.setGeometry(QtCore.QRect(630, 200, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_3_2.setFont(font)
+        self.lineEdit_3_2.setText("5800")
+        self.lineEdit_3_2.setObjectName("lineEdit_3_2")
+        
+        
+        
+        
+        
+        
         self.label_49 = QtWidgets.QLabel(self.frame)
         self.label_49.setGeometry(QtCore.QRect(430, 10, 251, 31))
         font = QtGui.QFont()
@@ -1222,8 +1280,8 @@ class TY_26_Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Avg :"))
         self.label_18.setText(_translate("MainWindow", "Std. :"))
         self.label_19.setText(_translate("MainWindow", "Var. :"))
-        self.label_23.setText(_translate("MainWindow", "E@LoadPt1(mm)"))
-        self.label_24.setText(_translate("MainWindow", "E@LoadPt2(mm)"))
+        self.label_23.setText(_translate("MainWindow", "E@"+str(self.lineEdit_3_1.text())+"(mm)"))
+        self.label_24.setText(_translate("MainWindow", "E@"+str(self.lineEdit_3_2.text())+"(mm)"))
         self.label_25.setText(_translate("MainWindow", "E@Break(mm)"))
         self.label_26.setText(_translate("MainWindow", "BrkLoad(N)"))
         self.label_27.setText(_translate("MainWindow", "111.00"))
@@ -1272,7 +1330,7 @@ class TY_26_Ui_MainWindow(object):
         self.label_56.setText(_translate("MainWindow", "(mm)"))
         self.label_58.setText(_translate("MainWindow", "Guage Length :"))
         self.label_59.setText(_translate("MainWindow", "(mm)"))
-        self.label_60.setText(_translate("MainWindow", "Speed :"))
+        self.label_60.setText(_translate("MainWindow", "Test Speed :"))
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
@@ -1822,7 +1880,7 @@ class TY_26_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','E@Break (mm)','E@LOAD_POINT_1 (mm)','E@LOAD_POINT_2 (mm)','REC.NO '])  
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Break Load (N)','E@Break (mm)','%E@'+str(self.lineEdit_3_1.text())+' (mm)','%E@'+str(self.lineEdit_3_2.text())+' (mm)','REC.NO '])  
               
         self.tableWidget.setColumnWidth(0, 170)
         self.tableWidget.setColumnWidth(1, 120)

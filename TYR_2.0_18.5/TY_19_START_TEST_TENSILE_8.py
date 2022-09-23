@@ -276,7 +276,11 @@ class TY_19_Ui_MainWindow(object):
         self.label_16.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_16.setObjectName("label_16")
-        self.label_17 = QtWidgets.QLabel(self.frame)
+        #self.label_17 = QtWidgets.QLabel(self.frame)
+        self.label_17 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.label_17)
+        self.label_17.setValidator(input_validator)
         self.label_17.setGeometry(QtCore.QRect(300, 300, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -834,10 +838,10 @@ class TY_19_Ui_MainWindow(object):
         #print(" thickness :"+str(type(self.thickness))+" width:"+str(type(self.width)))
         #self.lineEdit_3.setText(str(float(float(int(self.thickness))*float(int(self.width)))))
         try:
-            self.lineEdit_3.setText(str(float(self.thickness * self.width)))
+            self.lineEdit_3.setText(str(round(float(self.thickness * self.width),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error1");
         except TypeError as e:
             print("Caluculation error2");
         except:
@@ -864,14 +868,14 @@ class TY_19_Ui_MainWindow(object):
             except ValueError as e:
                 self.lineEdit_3.setText("0.00")
         try:
-            self.lineEdit_3.setText(str(float(self.thickness * self.width)))
+            self.lineEdit_3.setText(str(round(float(self.thickness * self.width),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error4");
         except TypeError as e:
-            print("Caluculation error2");
+            print("Caluculation error5");
         except:
-            print("Caluculation error3");
+            print("Caluculation error6");
         
         self.f_width_onChange()   
             
@@ -893,11 +897,11 @@ class TY_19_Ui_MainWindow(object):
             self.lineEdit_3.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error7");
         except TypeError as e:
-            print("Caluculation error2");
+            print("Caluculation error8");
         except:
-            print("Caluculation error3");
+            print("Caluculation error9");
        
         self.f_diameter_onChange()
     
@@ -925,14 +929,14 @@ class TY_19_Ui_MainWindow(object):
         #print(" thickness :"+str(type(self.thickness))+" width:"+str(type(self.width)))
         #self.lineEdit_3.setText(str(float(float(int(self.thickness))*float(int(self.width)))))
         try:
-            self.label_30.setText(str(float(self.thickness * self.width)))
+            self.label_30.setText(str(round(float(self.thickness * self.width),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error10");
         except TypeError as e:
-            print("Caluculation error2");
+            print("Caluculation error11");
         except:
-            print("Caluculation error3");
+            print("Caluculation error12");
         
         self.f_reduced_area_prc()
             
@@ -954,14 +958,14 @@ class TY_19_Ui_MainWindow(object):
             except ValueError as e:
                 self.label_30.setText("0.00")
         try:
-            self.label_30.setText(str(float(self.thickness * self.width)))
+            self.label_30.setText(str(round(float(self.thickness * self.width),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error13");
         except TypeError as e:
-            print("Caluculation error2");
+            print("Caluculation error14");
         except:
-            print("Caluculation error3");
+            print("Caluculation error15");
         
         self.f_reduced_area_prc()
             
@@ -982,11 +986,11 @@ class TY_19_Ui_MainWindow(object):
             self.label_30.setText(str(round(float((self.diameter * self.diameter * 3.14)/4),2)))
         except ValueError as e:
             #self.lineEdit_3.setText("0.00")
-            print("Caluculation error");
+            print("Caluculation error16");
         except TypeError as e:
-            print("Caluculation error2");
+            print("Caluculation error17");
         except:
-            print("Caluculation error3");
+            print("Caluculation error18");
         self.f_reduced_area_prc()
     
     def f_reduced_area_prc(self):
@@ -1011,11 +1015,11 @@ class TY_19_Ui_MainWindow(object):
                 self.final_length=float(self.lineEdit_5.text())
             except ValueError as e:
                     #self.lineEdit_3.setText("0.00")
-                    print("Caluculation error");
+                    print("Caluculation error19");
             except TypeError as e:
-                    print("Caluculation error2");
+                    print("Caluculation error20");
             except:
-                    print("Caluculation error3");
+                    print("Caluculation error21");
                 
         
         try:
@@ -1024,11 +1028,11 @@ class TY_19_Ui_MainWindow(object):
             try:
                 self.guage_length=float(self.lineEdit_4.text())
             except ValueError as e:                   
-                    print("Caluculation error");
+                    print("Caluculation error22");
             except TypeError as e:
-                    print("Caluculation error2");
+                    print("Caluculation error23");
             except:
-                    print("Caluculation error3");
+                    print("Caluculation error24");
                 
                 
                 
@@ -1036,22 +1040,22 @@ class TY_19_Ui_MainWindow(object):
         try:        
             self.elongation=self.final_length-self.guage_length
         except ValueError as e:                   
-                    print("Caluculation error");
+                    print("Caluculation error25");
         except TypeError as e:
-                    print("Caluculation error2");
+                    print("Caluculation error26");
         except:
-                    print("Caluculation error3");   
+                    print("Caluculation error27");   
         
         try:
             self.prc_elongation=(self.elongation*100)/self.guage_length
             self.label_29.setText(str(round(self.prc_elongation,0))+" % ")
         
         except ValueError as e:                   
-                    print("Caluculation error");
+                    print("Caluculation error28");
         except TypeError as e:
-                    print("Caluculation error2");
+                    print("Caluculation error29");
         except:
-                    print("Caluculation error3");   
+                    print("Caluculation error30");   
         
         
             
@@ -1112,9 +1116,14 @@ class TY_19_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(self.sc_new.arr_p[g])+"','"+str(self.sc_new.arr_q[g])+"')")
             connection.commit();
             connection.close()
+            
+            self.yeild_strength="0.00"
+            self.get_defarmetion_point()
+            self.label_15.setText(str(round(max(self.sc_new.arr_q),2)))
+            self.label_17.setText(str(self.yeild_strength))
             
             connection = sqlite3.connect("tyr.db")              
             with connection:        
@@ -1129,14 +1138,12 @@ class TY_19_Ui_MainWindow(object):
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' ,GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                   cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  cursor.execute("UPDATE TEST_MST SET TENSILE_STRENGTH='"+str(round(max(self.sc_new.arr_q),2))+"', YEILD_STRENGTH='"+str(self.yeild_strength)+"'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                   
             connection.commit();
             connection.close()
             print("Data Saved Ok in STG_GRAPH_MST")
-            self.yeild_strength="0.00"
-            self.get_defarmetion_point()
-            self.label_15.setText(str(round(max(self.sc_new.arr_q),2)))
-            self.label_17.setText(str(self.yeild_strength))
+            
             
             connection = sqlite3.connect("tyr.db")
             results=connection.execute("select STG_E_AT_PEAK_LOAD_MM from GLOBAL_VAR") 
@@ -1145,6 +1152,7 @@ class TY_19_Ui_MainWindow(object):
                     f_guage_length=""
                     guage_length=str(self.lineEdit_4.text())
                     f_guage_length=str((((round(float(x[0]),2))*float(guage_length))/100))
+                    print("Strain :"+str(x[0])+" guage_length:"+str(guage_length)+"    converted length :"+str(f_guage_length)+" Final Length : "+str(round((float(guage_length)+float(f_guage_length)),2)))
                     self.lineEdit_5.setText(str(round((float(guage_length)+float(f_guage_length)),2)))
             connection.close()
                 
@@ -1156,21 +1164,39 @@ class TY_19_Ui_MainWindow(object):
         def_point_y=-1.00
         def_buffer_6_prc=0.0
         self.yeild_strength=""
+        self.max_load_rec_id=0
+#        connection = sqlite3.connect("tyr.db")        
+#        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+#        for x in results:
+#            def_buffer_6_prc=float(x[0])*0.25            
+#        connection.close()
+#        
+#        if(float(def_buffer_6_prc) > 0):
+#               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
+#        else:
+#               def_buffer_6_prc=6.0
+
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT max(X_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
+        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
         for x in results:
-            def_buffer_6_prc=float(x[0])*0.15            
+            def_buffer_6_prc=float(x[0])*0.30
+            self.max_load=float(x[0])
         connection.close()
         
-        if(float(def_buffer_6_prc) > 0):
-               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
-        else:
-               def_buffer_6_prc=6.0
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT rec_id FROM STG_GRAPH_MST where Y_NUM = '"+str(self.max_load)+"'  order by REC_ID ASC")
+        for x in results:            
+            self.max_load_rec_id=int(x[0])
+        connection.close()
+
+
+
                 
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where X_NUM >  "+str(def_buffer_6_prc)+"  order by REC_ID ASC")
+        results=connection.execute("SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST where Y_NUM >  "+str(def_buffer_6_prc)+" and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
         for x in results:
             print("x_num :"+str(x[0])+"   y_num:"+str(x[1]))
+            
             if (float(c)==0):                
                 c=float(round(x[1],2))
             else:    
@@ -1290,7 +1316,7 @@ class TY_19_Ui_MainWindow(object):
                    connection.commit();
                    connection.close()
                    print("Record updated  in TEST_MST:")
-                   self.label_35.setText("Test Data Saved Successfully")
+                   #self.label_35.setText("Test Data Saved Successfully")
                    self.pushButton_13.setEnabled(True)
                    self.pushButton_15.setEnabled(True)
                    self.pushButton_16.setEnabled(True)
@@ -1470,8 +1496,8 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -1843,11 +1869,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.kg_to_Newton=float(9.81)
                 #self.x_num.append((self.p/float(test_guage_mm.guage))*100)
                 #self.y_num.append((self.q*self.kg_to_Newton/float(self.self.test_cs_area)))
-                       
-                self.arr_p.append((self.p/float(self.test_guage_mm))*100)
-                self.arr_q.append((self.q*self.kg_to_Newton/float(self.test_cs_area)))
+                self.p=float(self.p)/float(self.test_guage_mm)*100
+                self.q=float(self.q)*self.kg_to_Newton/float(self.test_cs_area)  
+                self.arr_p.append(float(self.p))
+                self.arr_q.append(float(self.q))
                 
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                print(" Timer P:"+str(float(self.p))+" q:"+str(float(self.q)))
                
                 #print(" test_guage_mm:"+str(self.test_guage_mm)+" test_cs_area:"+str(self.test_cs_area))
 
