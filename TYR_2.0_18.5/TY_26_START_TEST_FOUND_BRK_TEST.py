@@ -2287,9 +2287,25 @@ class PlotCanvas_Auto(FigureCanvas):
         ###
         self.playing = False
         self.p =0
+        self.p_cm =0
+        self.p_inch =0
+        
         self.q =0
+        self.q_n =0
+        self.q_lb =0
+        
+        
+        
+        
         self.arr_p=[0.0]
+        self.arr_p_cm=[0.0]
+        self.arr_p_inch=[0.0]
+        
+        
         self.arr_q=[0.0]
+        self.arr_q_n=[0.0]
+        self.arr_q_lb=[0.0]
+        
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
         self.x=0

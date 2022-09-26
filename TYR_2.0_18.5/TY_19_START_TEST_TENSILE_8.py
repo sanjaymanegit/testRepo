@@ -1158,16 +1158,7 @@ class TY_19_Ui_MainWindow(object):
         def_buffer_6_prc=0.0
         self.yeild_strength=""
         self.max_load_rec_id=0
-#        connection = sqlite3.connect("tyr.db")        
-#        results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
-#        for x in results:
-#            def_buffer_6_prc=float(x[0])*0.25            
-#        connection.close()
-#        
-#        if(float(def_buffer_6_prc) > 0):
-#               print("def_buffer_6_prc :"+str(def_buffer_6_prc))     
-#        else:
-#               def_buffer_6_prc=6.0
+
 
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT max(Y_NUM) FROM STG_GRAPH_MST where X_NUM > 0 order by REC_ID ASC")
@@ -1186,7 +1177,7 @@ class TY_19_Ui_MainWindow(object):
         
         print(" ===================================")
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT round(X_NUM,2),round(Y_NUM,2),REC_ID FROM STG_GRAPH_MST where Y_NUM >  "+str(def_buffer_6_prc)+" and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
+        results=connection.execute("SELECT round(X_NUM,2),round(Y_NUM,0),REC_ID FROM STG_GRAPH_MST where Y_NUM >  "+str(def_buffer_6_prc)+" and rec_id < '"+str(self.max_load_rec_id)+"' order by REC_ID ASC")
         for x in results:
             print("Rec Id :"+str(x[2])+"  x_num :"+str(x[0])+"   y_num:"+str(x[1]))
             
@@ -1197,10 +1188,8 @@ class TY_19_Ui_MainWindow(object):
                     c=float(x[1])
                     continue
                 elif(float(x[1]) == float(c)):
-                    def_point=float(x[0])
-                    def_point_y=float(x[1])
-                    print("Break 1 Point :"+str(def_point_y))
-                    break
+                    c=float(x[1])
+                    continue
                 elif(float(x[1]) <  float(c)):
                     def_point=float(x[0])
                     def_point_y=float(x[1])
