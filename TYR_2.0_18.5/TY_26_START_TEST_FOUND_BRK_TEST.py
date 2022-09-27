@@ -1317,9 +1317,9 @@ class TY_26_Ui_MainWindow(object):
         self.label_50.setText(_translate("MainWindow", "Stat."))
         self.label_7.setText(_translate("MainWindow", "Unit :"))
         self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
         self.comboBox_2.setItemText(0, _translate("MainWindow", "N/mm"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
+        #self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
         #self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
         #self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         self.label_51.setText(_translate("MainWindow", "MRF"))
@@ -2825,12 +2825,12 @@ class PlotCanvas_blank(FigureCanvas):
         for x in results:
              if(self.unit_type=="Kgf/cm"):
                  ax.set_xlim(0,int(x[0])/10)
-                 ax.set_ylim(0,int(x[1])/9.81)
+                 ax.set_ylim(0,int(x[1]))
                  ax.set_xlabel('Distance (cm)')
                  ax.set_ylabel('Load (Kgf) ')
              else:
                  ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
+                 ax.set_ylim(0,int(x[1]) * 9.81)
                  ax.set_xlabel('Distance (mm)')
                  ax.set_ylabel('Load (N) ')
         connection.close()

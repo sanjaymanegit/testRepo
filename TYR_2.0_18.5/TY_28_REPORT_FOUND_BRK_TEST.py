@@ -1323,8 +1323,9 @@ class TY_28_Ui_MainWindow(object):
         self.label_50.setText(_translate("MainWindow", "Stat."))
         self.label_7.setText(_translate("MainWindow", "Unit :"))
         self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
         self.comboBox_2.setItemText(0, _translate("MainWindow", "N/mm"))
-        #self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf/cm"))
         #self.comboBox_2.setItemText(2, _translate("MainWindow", "Lbs/inch"))
         #self.comboBox_2.setItemText(3, _translate("MainWindow", "MPa/mm"))
         self.label_51.setText(_translate("MainWindow", "MRF"))
@@ -1360,7 +1361,7 @@ class TY_28_Ui_MainWindow(object):
         
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.start_test_FBST)
-        self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        #self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.comboBox_2.currentTextChanged.connect(self.on_change_unit_type)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
         
@@ -1382,7 +1383,7 @@ class TY_28_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        results=connection.execute("SELECT SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID IN (select TEST_ID FROM GLOBAL_VAR)") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            
@@ -1472,7 +1473,7 @@ class TY_28_Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
-        
+        self.show_grid_data_FBST()
         
         
     def delete_cycle(self):
@@ -1600,8 +1601,15 @@ class TY_28_Ui_MainWindow(object):
         #results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by cycle_id Asc")
         self.label_23.setText("%E@"+str(self.lineEdit_3_1.text())+"(N)")
         self.label_24.setText("%E@"+str(self.lineEdit_3_2.text())+"(N)")
+        self.unit_type=self.comboBox_2.currentText()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LOAD_MM),2), round(max(E_AT_LOAD_POINT_1),2), round(max(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        if(self.unit_type=="N/mm"):
+            results=connection.execute(" select round(max(PEAK_LOAD_N),2), round(max(E_AT_PEAK_LOAD_MM),2), round(max(E_AT_LOAD_POINT_1),2), round(max(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+        
+        elif(self.unit_type == "Kgf/cm"):
+            results=connection.execute(" select round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LAOD_CM),2), round(max(E_AT_LOAD_POINT_1),2), round(max(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+        else:
+            results=connection.execute(" select round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LOAD_MM),2), round(max(E_AT_LOAD_POINT_1),2), round(max(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_27.setText(str(x[0]))  #111.00
                     self.label_31.setText(str(x[1]))   #666.99
@@ -1610,7 +1618,13 @@ class TY_28_Ui_MainWindow(object):
         connection.close()
        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LOAD_MM),2), round(min(E_AT_LOAD_POINT_1),2), round(min(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        if(self.unit_type=="N/mm"):
+                    results=connection.execute(" select round(min(PEAK_LOAD_N),2), round(min(E_AT_PEAK_LOAD_MM),2), round(min(E_AT_LOAD_POINT_1),2), round(min(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+        elif(self.unit_type == "Kgf/cm"):
+                    results=connection.execute(" select round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LAOD_CM),2), round(min(E_AT_LOAD_POINT_1),2), round(min(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+        else:
+                    results=connection.execute(" select round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LOAD_MM),2), round(min(E_AT_LOAD_POINT_1),2), round(min(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+        
         for x in results:
                     self.label_28.setText(str(x[0]))  #222.00
                     self.label_32.setText(str(x[1]))   #777.99
@@ -1620,7 +1634,14 @@ class TY_28_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute(" select round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LOAD_MM),2), round(avg(E_AT_LOAD_POINT_1),2), round(avg(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID in ( SELECT TEST_ID FROM GLOBAL_VAR) ")       
+        if(self.unit_type=="N/mm"):
+            results=connection.execute(" select round(avg(PEAK_LOAD_N),2), round(avg(E_AT_PEAK_LOAD_MM),2), round(avg(E_AT_LOAD_POINT_1),2), round(avg(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+       
+        elif(self.unit_type == "Kgf/cm"):
+            results=connection.execute(" select round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LAOD_CM),2), round(avg(E_AT_LOAD_POINT_1),2), round(avg(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
+       
+        else:
+            results=connection.execute(" select round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LOAD_MM),2), round(avg(E_AT_LOAD_POINT_1),2), round(avg(E_AT_LOAD_POINT_2),2) from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
         for x in results:
                     self.label_29.setText(str(x[0]))  #333.00
                     self.label_33.setText(str(x[1]))   #888.00
@@ -2002,10 +2023,16 @@ class TY_28_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(4, 150)
         self.tableWidget.setColumnWidth(5, 150)
         
-        
+        self.unit_type=self.comboBox_2.currentText()
+        print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-         
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1),printf(\"%.2f\", E_AT_LOAD_POINT_2), CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
+        if(self.unit_type=="N/mm"): 
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_N),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1),printf(\"%.2f\", E_AT_LOAD_POINT_2), CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
+        elif(self.unit_type == "Kgf/cm"):
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LAOD_CM),printf(\"%.2f\", E_AT_LOAD_POINT_1),printf(\"%.2f\", E_AT_LOAD_POINT_2), CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
+        else:
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1),printf(\"%.2f\", E_AT_LOAD_POINT_2), CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
+        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2054,26 +2081,50 @@ class TY_28_Ui_MainWindow(object):
         #esults=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", E_AT_LOAD_POINT_1)||'@'||LOAD_POINT_1,printf(\"%.2f\", E_AT_LOAD_POINT_2)||'@'||LOAD_POINT_2, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by CYCLE_NUM Asc")
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.E_AT_LOAD_POINT_1),printf(\"%.2f\", A.E_AT_LOAD_POINT_2) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        if(self.unit_typex == "N/mm"):
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_N),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.E_AT_LOAD_POINT_1),printf(\"%.2f\", A.E_AT_LOAD_POINT_2) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        elif(self.unit_typex == "Kgf/cm"):
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LAOD_CM),printf(\"%.2f\", A.E_AT_LOAD_POINT_1),printf(\"%.2f\", A.E_AT_LOAD_POINT_2) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        else:
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.E_AT_LOAD_POINT_1),printf(\"%.2f\", A.E_AT_LOAD_POINT_2) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\",avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        if(self.unit_typex == "N/mm"):
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_N)),printf(\"%.2f\",avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        elif(self.unit_typex == "Kgf/cm"):
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\",avg(A.E_AT_PEAK_LAOD_CM)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        else:
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\",avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", avg(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+       
         for x in results:
                 data2.append(x)
         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\",max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        if(self.unit_typex == "N/mm"):
+            results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_N)),printf(\"%.2f\",max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        
+        elif(self.unit_typex == "Kgf/cm"):
+            results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\",max(A.E_AT_PEAK_LAOD_CM)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        
+        else:
+            results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\",max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", max(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\",min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        if(self.unit_typex == "N/mm"):
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_N)),printf(\"%.2f\",min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        elif(self.unit_typex == "Kgf/cm"):
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\",min(A.E_AT_PEAK_LAOD_CM)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+        else:
+              results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\",min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_1)),printf(\"%.2f\", min(A.E_AT_LOAD_POINT_2)) FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2082,10 +2133,10 @@ class TY_28_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
             self.remark=str(x[12])
         
         connection.close() 
@@ -2219,14 +2270,19 @@ class PlotCanvas(FigureCanvas):
         for x in results:
             if(self.unit_type == "N/mm"):
                  ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
+                 ax.set_ylim(0,int(x[1])*9.81)
                  ax.set_xlabel('Distnace (mm)')
                  ax.set_ylabel('Load (N)')
-            else:     
+            if(self.unit_type == "Kgf/cm"):
                  ax.set_xlim(0,int(x[0])/10)
-                 ax.set_ylim(0,int(x[1])/9.81)
+                 ax.set_ylim(0,int(x[1]))
                  ax.set_xlabel('Distnace (cm)')
-                 ax.set_ylabel('Load (Kgf)')
+                 ax.set_ylabel('Load kgf)')
+            else:     
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1])*9.81)
+                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_ylabel('Load (N)')
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -2239,16 +2295,21 @@ class PlotCanvas(FigureCanvas):
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
-        
-            connection = sqlite3.connect("tyr.db")           
-            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            print(" Unit Type :"+str(self.unit_type))
+            connection = sqlite3.connect("tyr.db")
+            if(self.unit_type == "N/mm"):
+                results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.unit_type == "Kgf/cm"):
+                results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:                
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
-                self.x_num.append(k[0])
-                self.y_num.append(k[1])
+                    self.x_num.append(k[0])
+                    self.y_num.append(k[1])
             connection.close()
             if(g < 8 ):
-                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
-        
+                    ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+            
         print("self.test_type:"+str(self.test_type))
         
         ax.legend()        
