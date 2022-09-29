@@ -1,11 +1,14 @@
 
 
+from MDR_03_SYSTEM import mdr_03_Ui_MainWindow
+from MDR_04_METHODS import mdr_04_Ui_MainWindow
+
 from register import reg_Ui_MainWindow
 from email_setup import email_setup_Ui_MainWindow
 from date_time_setup import datetime_set_Ui_MainWindow
 from callibration_process import calibration_Ui_MainWindow
 from factory_reset import factory_reset_Ui_MainWindow
-from MDR_03_SYSTEM import mdr_03_Ui_MainWindow
+
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -218,8 +221,19 @@ class mdr_02_Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.open_callibration_window)
         self.pushButton_13.clicked.connect(self.open_factoryReset_window)
         self.pushButton_4.clicked.connect(self.open_system_window)
+        self.pushButton.clicked.connect(self.open_methods_window)
         
         self.anydesk_open()
+        
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+       
+    
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     
     def open_new_window(self):       
@@ -249,6 +263,12 @@ class mdr_02_Ui_MainWindow(object):
     def open_factoryReset_window(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=factory_reset_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_methods_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=mdr_04_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
