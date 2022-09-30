@@ -2,10 +2,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.Qt import QTableWidgetItem
 import serial,time
 import datetime
 import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+
 
 class mdr_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -97,6 +101,9 @@ class mdr_04_Ui_MainWindow(object):
         self.label_2.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_2.setObjectName("label_2")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         self.lineEdit_2.setGeometry(QtCore.QRect(1000, 180, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -126,6 +133,9 @@ class mdr_04_Ui_MainWindow(object):
         self.label_7.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_7.setObjectName("label_7")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
         self.lineEdit_3.setGeometry(QtCore.QRect(1000, 230, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -155,6 +165,9 @@ class mdr_04_Ui_MainWindow(object):
         self.label_9.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_9.setObjectName("label_9")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(1000, 280, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -184,6 +197,9 @@ class mdr_04_Ui_MainWindow(object):
         self.label_11.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_11.setObjectName("label_11")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
         self.lineEdit_5.setGeometry(QtCore.QRect(1000, 330, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -482,6 +498,9 @@ class mdr_04_Ui_MainWindow(object):
         self.label_18.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_18.setObjectName("label_18")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame_2)
+        
+        
+        
         self.lineEdit_6.setGeometry(QtCore.QRect(830, 60, 391, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -511,6 +530,11 @@ class mdr_04_Ui_MainWindow(object):
         self.label_19.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_19.setObjectName("label_19")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame_2)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
+        
         self.lineEdit_7.setGeometry(QtCore.QRect(830, 110, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -540,6 +564,11 @@ class mdr_04_Ui_MainWindow(object):
         self.label_21.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_21.setObjectName("label_21")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame_2)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
+        
         self.lineEdit_8.setGeometry(QtCore.QRect(830, 160, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -588,6 +617,11 @@ class mdr_04_Ui_MainWindow(object):
         self.label_24.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_24.setObjectName("label_24")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame_2)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
+        self.lineEdit_10.setValidator(input_validator)
+        
         self.lineEdit_10.setGeometry(QtCore.QRect(1140, 160, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -669,6 +703,11 @@ class mdr_04_Ui_MainWindow(object):
         self.label_28.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_28.setObjectName("label_28")
         self.lineEdit_12 = QtWidgets.QLineEdit(self.frame_2)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_12)
+        self.lineEdit_12.setValidator(input_validator)
+        
         self.lineEdit_12.setGeometry(QtCore.QRect(1140, 110, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -752,6 +791,10 @@ class mdr_04_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.go_ahead="No"
+        self.operation_flg="ADD"
+        self.method_id=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -871,21 +914,371 @@ class mdr_04_Ui_MainWindow(object):
         self.pushButton_9.clicked.connect(MainWindow.close)
         self.frame_2.hide()
         self.pushButton_10.clicked.connect(self.limits_load)
+        self.pushButton.clicked.connect(self.c_add_click)
+        self.pushButton_2.clicked.connect(self.reset_all)
+        self.pushButton_3.clicked.connect(self.c_edit_click)
+        self.pushButton_4.clicked.connect(self.c_delete_click)
+        
+        self.pushButton_5.clicked.connect(self.L_add_click)        
+        self.pushButton_6.clicked.connect(self.L_edit_click)
+        self.pushButton_7.clicked.connect(self.L_delete_click)
+        self.pushButton_8.clicked.connect(self.reset_limits)
+        
+        self.tableWidget.doubleClicked.connect(self.c_fetch_data_from_tw)
+        self.tableWidget_2.doubleClicked.connect(self.L_fetch_data_from_tw)
         
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.show_grid_methods()
-       
+        self.reset_all()
+        
     
+    def reset_all(self):        
+        
+        self.pushButton.setEnabled(True) ##--Add
+        self.pushButton_3.setDisabled(True)## --save
+        self.pushButton_4.setDisabled(True)##--delete
+        self.pushButton_2.setEnabled(True) ##--Reset
+        self.pushButton_10.setDisabled(True)## --set Limit
+        
+        self.lineEdit.setText("")
+        self.lineEdit_2.setText("")
+        self.lineEdit_3.setText("")
+        self.lineEdit_4.setText("")
+        self.lineEdit_5.setText("")
+        self.lineEdit_11.setText("")
+        self.label_3.setText("")  
+        self.frame_2.hide()
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'METHODS_MST'")       
+        for x in results:           
+                 self.label_13.setText(str(x[0]).zfill(3))            
+        connection.close()  
+    
+    def c_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.c_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.c_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.c_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    
+    def c_add_click(self):
+        self.operation_flg="ADD"       
+        self.c_load_data()
+        
+    def c_add_data(self):
+        self.validations()
+        if(self.label_13.text() != ""):            
+            if(self.go_ahead=="Yes"):
+                connection = sqlite3.connect("mdr.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("INSERT INTO METHODS_MST(METHOD_NAME,SET_TORQUE,SET_TEMP,SET_TEST_TIME,ARC,SPEC_NUM) VALUES('"+self.lineEdit.text()+"','"+self.lineEdit_2.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_5.text()+"','"+self.lineEdit_11.text()+"')")                    
+                connection.commit();                    
+                connection.close();  
+          
+                self.label_3.setText("Record Added Successfully.")           
+                self.label_3.show()
+                self.show_grid_methods()
+        else :
+            self.label_3.setText("Id is Empty.")
+            self.label_3.show()            
+        
+    def c_edit_click(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.c_load_data()
+        else:    
+            self.label_3.setText("Please Select the record.")
+            self.label_3.show() 
+    
+    def c_edit_data(self):
+        self.validations()
+        if(self.go_ahead == 'Yes'):
+            connection = sqlite3.connect("mdr.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE METHODS_MST SET METHOD_NAME='"+str(self.lineEdit.text())+"',SET_TORQUE='"+self.lineEdit_2.text()+"',SET_TEMP='"+self.lineEdit_3.text()+"', SET_TEST_TIME='"+self.lineEdit_4.text()+"',ARC='"+self.lineEdit_4.text()+"',SPEC_NUM ='"+self.lineEdit_11.text()+"'   WHERE  METHOD_ID ='"+str(self.method_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            self.label_3.setText("Record Saved Successfully.")       
+            self.label_3.show()
+            self.show_grid_methods()
+    
+    def c_delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.c_load_data()
+        else:    
+            self.label_3.setText("Please Select the record.")
+            self.label_3.show()        
+     
+      
+    def c_delete_data(self):
+        if(self.label_13.text() != ""):
+            close = QMessageBox()
+            close.setText("Confirm Deleteing Method ID : "+str(self.method_id))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
+            if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("mdr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM METHODS_MST WHERE METHOD_ID ='"+str(self.method_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    
+                    self.label_3.setText("Record Deleted Successfully.")                   
+                    self.label_3.show()                    
+                    self.show_grid_methods()
+            else:
+                    self.label_3.setText("Canceled Delete..")                   
+                    self.label_3.show()
+            
+    
+    
+    
+    def validations(self):        
+        self.go_ahead="No"
+        if(self.lineEdit.text() == ""):
+             self.label_3.setText("Method Name is Empty.")
+             self.label_3.show()  
+        elif(self.lineEdit_2.text()== ""):
+             self.label_3.setText("Max. Torque is Empty.")
+             self.label_3.show()
+        elif(self.lineEdit_3.text()== ""):
+             self.label_3.setText("Max. Temparature is Empty.")
+             self.label_3.show()
+        elif(self.lineEdit_4.text() == ""):
+             self.label_3.setText("Max. Time is Empty.")
+             self.label_3.show()     
+        elif(self.lineEdit_5.text()== ""):
+             self.label_3.setText("Arc is Empty.")
+             self.label_3.show()
+        elif(self.lineEdit_11.text()== ""):
+             self.label_3.setText("Spec. No is Empty.")
+             self.label_3.show()
+        else:
+             self.go_ahead="Yes"
+    
+    
+    def c_fetch_data_from_tw(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.method_id=str(self.tableWidget.item(row, 0).text())
+            self.label_13.setText(str(self.tableWidget.item(row, 0).text()).zfill(3)) 
+            self.lineEdit.setText(str(self.tableWidget.item(row, 1).text())) #Method Name
+            self.method_name=str(self.tableWidget.item(row, 1).text())
+            self.lineEdit_11.setText(str(self.tableWidget.item(row, 2).text())) #Spec.Num
+            self.lineEdit_2.setText(str(self.tableWidget.item(row, 3).text())) #Max. Torq
+            self.lineEdit_3.setText(str(self.tableWidget.item(row, 4).text())) #Max. Temp
+            self.lineEdit_4.setText(str(self.tableWidget.item(row, 5).text())) #Time
+            self.lineEdit_5.setText(str(self.tableWidget.item(row, 6).text())) # Arc            
+           
+            
+            self.pushButton.setDisabled(True) ##--Add
+            self.pushButton_3.setEnabled(True)## --save
+            self.pushButton_4.setEnabled(True)##--delete
+            self.pushButton_2.setEnabled(True) ##--Reset
+            self.pushButton_10.setEnabled(True)## --set Limit
+            self.limits_load()
+            
+        else:    
+            self.label_3.setText("Please Select the record.")
+            self.label_3.show()
+    
+    
+    
+    ###############################
+    
+    def reset_limits(self):        
+        
+        self.pushButton_5.setEnabled(True) ##--Add
+        self.pushButton_6.setDisabled(True)## --save
+        self.pushButton_7.setDisabled(True)##--delete
+        self.pushButton_8.setEnabled(True) ##--Reset
+        
+        
+        self.lineEdit_6.setText("")
+        self.lineEdit_7.setText("")
+        self.lineEdit_8.setText("")
+        self.lineEdit_9.setText("")
+        self.lineEdit_10.setText("10")
+        self.lineEdit_12.setText("12")
+        self.label_26.setText("")  
+        
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'LIMITS_MST'")       
+        for x in results:           
+                 self.label_18.setText(str(x[0]).zfill(3))            
+        connection.close()  
+    
+    
+    def L_load_data(self):        
+        if(self.L_operation_flg=="ADD"):
+                #print("inside Add ")
+                self.L_add_data()
+        elif(self.L_operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.L_edit_data()
+        elif(self.L_operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.L_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    
+    def L_add_click(self):
+        self.L_operation_flg="ADD"       
+        self.L_load_data()
+        
+    def L_add_data(self):
+        self.L_validations()
+        if(self.label_18.text() != ""):            
+            if(self.go_ahead=="Yes"):
+                connection = sqlite3.connect("mdr.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("INSERT INTO LIMITS_MST(PARAM,U_VAL,L_VAL,UNIT,TARGET_VAL,TOL_PER,METHOD_ID) VALUES('"+self.lineEdit_6.text()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_9.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit_12.text()+"','"+str(int(self.method_id))+"')")                    
+                connection.commit();                    
+                connection.close();  
+          
+                self.label_26.setText("Record Added Successfully.")           
+                self.label_26.show()
+                self.show_grid_limits()
+        else :
+            self.label_26.setText("Id is Empty.")
+            self.label_26.show()            
+        
+    def L_edit_click(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.L_operation_flg="EDIT"
+            self.L_load_data()
+        else:    
+            self.label_26.setText("Please Select the record.")
+            self.label_26.show() 
+    
+    def L_edit_data(self):
+        self.L_validations()
+        if(self.go_ahead == 'Yes'):
+            connection = sqlite3.connect("mdr.db")
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE LIMITS_MST SET PARAM='"+str(self.lineEdit_6.text())+"',U_VAL='"+self.lineEdit_7.text()+"',L_VAL='"+self.lineEdit_8.text()+"', UNIT='"+self.lineEdit_9.text()+"',TARGET_VAL='"+self.lineEdit_10.text()+"',ARC ='"+self.lineEdit_12.text()+"'   WHERE  LIMIT_ID ='"+str(self.limit_id)+"'")                    
+            connection.commit();                    
+            connection.close()
+            self.label_26.setText("Record Saved Successfully.")       
+            self.label_26.show()
+            self.show_grid_limits()
+    
+    def L_delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.L_operation_flg="DELETE"
+            self.L_load_data()
+        else:    
+            self.label_26.setText("Please Select the record.")
+            self.label_26.show()        
+     
+      
+    def L_delete_data(self):
+        if(self.label_18.text() != ""):
+            close = QMessageBox()
+            close.setText("Confirm Deleteing Limit ID : "+str(self.limit_id))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
+            if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("mdr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM LIMITS_MST WHERE LIMIT_ID ='"+str(self.limit_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    
+                    self.label_26.setText("Record Deleted Successfully.")                   
+                    self.label_26.show()                    
+                    self.show_grid_limits()
+            else:
+                    self.label_26.setText("Canceled Delete..")                   
+                    self.label_26.show()
+            
+    
+    
+    
+    def L_validations(self):        
+        self.go_ahead="No"
+        if(self.lineEdit_6.text() == ""):
+             self.label_26.setText("Pamaeter is Empty.")
+             self.label_26.show()  
+        elif(self.lineEdit_7.text()== ""):
+             self.label_26.setText("U-Limit is Empty.")
+             self.label_3.show()
+        elif(self.lineEdit_8.text()== ""):
+             self.label_26.setText("L-Limit is Empty.")
+             self.label_26.show()
+        elif(self.lineEdit_9.text() == ""):
+             self.label_26.setText("Unit is Empty.")
+             self.label_26.show()     
+        elif(self.lineEdit_10.text()== ""):
+             self.label_26.setText("Target is Empty.")
+             self.label_26.show()
+        elif(self.lineEdit_12.text()== ""):
+             self.label_26.setText("Tolarance is Empty.")
+             self.label_26.show()
+        else:
+             self.go_ahead="Yes"
+    
+    
+    def L_fetch_data_from_tw(self):        
+        row = self.tableWidget_2.currentRow()     
+        if(row != -1 ):
+            self.limit_id=str(self.tableWidget_2.item(row, 0).text())
+            self.label_18.setText(str(self.tableWidget_2.item(row, 0).text()).zfill(3)) 
+            self.lineEdit_6.setText(str(self.tableWidget_2.item(row, 1).text()))           
+            self.lineEdit_7.setText(str(self.tableWidget_2.item(row, 2).text())) 
+            self.lineEdit_8.setText(str(self.tableWidget_2.item(row, 3).text())) 
+            self.lineEdit_9.setText(str(self.tableWidget_2.item(row, 5).text())) 
+            self.lineEdit_10.setText(str(self.tableWidget_2.item(row, 6).text())) 
+            self.lineEdit_12.setText(str(self.tableWidget_2.item(row, 4).text()))      
+           
+            
+            self.pushButton_5.setDisabled(True) ##--Add
+            self.pushButton_6.setEnabled(True)## --save
+            self.pushButton_7.setEnabled(True)##--delete
+            self.pushButton_8.setEnabled(True) ##--Reset
+            
+            #self.limits_load()
+            
+        else:    
+            self.label_26.setText("Please Select the record.")
+            self.label_26.show()
+    
+    #####################################################
+            
     def device_date(self):     
         self.label_5.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
      
     
     def limits_load(self):
         self.frame_2.show()
-        self.show_grid_limits()
+        self.label_15.setText(str(self.method_id)+"  ("+str(self.method_name)+")")
+        if(str(self.method_id) != ""):
+            self.show_grid_limits()
+            self.reset_limits()
         
     
     def show_grid_methods(self):        
@@ -938,7 +1331,7 @@ class mdr_04_Ui_MainWindow(object):
         self.tableWidget_2.setColumnWidth(6, 150)
         
         connection = sqlite3.connect("mdr.db")         
-        results=connection.execute("SELECT LIMIT_ID,PARAM,printf(\"%.2f\", U_VAL),printf(\"%.2f\", L_VAL) ,printf(\"%.2f\", TARGET_VAL),printf(\"%.2f\", TOL_PER)   FROM LIMITS_MST")
+        results=connection.execute("SELECT LIMIT_ID,PARAM,printf(\"%.2f\", U_VAL),printf(\"%.2f\", L_VAL) ,printf(\"%.2f\", TARGET_VAL),UNIT,printf(\"%.2f\", TOL_PER)   FROM LIMITS_MST where METHOD_ID = '"+str(int(self.method_id))+"'")
         for row_number, row_data in enumerate(results):            
             self.tableWidget_2.insertRow(row_number)
             for column_number, data in enumerate(row_data):
