@@ -1,5 +1,6 @@
 
 from MDR_02_SETTING import mdr_02_Ui_MainWindow
+from MDR_05_SP_MDR import mdr_05_Ui_MainWindow
 
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
@@ -8,8 +9,6 @@ from comment_popup import comment_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import os
-
-
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -1072,6 +1071,7 @@ class MDR_01_Ui_MainWindow(object):
         self.pushButton_11.clicked.connect(self.stop_test_MDR)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.toolButton_4.clicked.connect(self.open_setting)
+        self.toolButton_3.clicked.connect(self.open_report)
         
         self.pushButton_8.clicked.connect(self.open_comment_popup)
         self.pushButton_7.clicked.connect(self.print_file)
@@ -1230,6 +1230,7 @@ class MDR_01_Ui_MainWindow(object):
            self.label_26.setText(str(x[2])) # Time
            self.label_12.setText(str(x[3])) # Spec Name
            self.label_29.setText(str(x[4])) # Arc
+           self.lineEdit_3.setText("BATCH_ID_"+str(x[3]))
           
         connection.close()
         self.show_grid_data_LIMITS()
@@ -1330,7 +1331,7 @@ class MDR_01_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,R_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_r[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1342,7 +1343,7 @@ class MDR_01_Ui_MainWindow(object):
                   #print("ok1")
                   try:
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_TORQUE='"+str(self.label_18.text())+"',SPECIMEN_NAME_ID='"+str(self.label_12.text())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',TEST_TEMP='"+str(self.label_23.text())+"',METHOD_NAME='"+str(self.comboBox.currentText())+"',TEST_TIME_MM='"+str(self.label_26.text())+"'")                         
-                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")                  
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,R_NUM) SELECT X_NUM,Y_NUM,R_NUM FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE GLOBAL_VAR SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           cursor.execute("INSERT INTO TEST_MST_MDR(SPECIMEN_NUM,BATCH_ID,TEST_TEMP,METHOD_NAME,TRQ,TEST_TIME_MIN,GRAPH_ID) SELECT SPECIMEN_NAME_ID,BATCH_ID,TEST_TEMP,METHOD_NAME,TEST_TORQUE,TEST_TIME_MM,GRAPH_ID FROM GLOBAL_VAR")
@@ -1451,7 +1452,12 @@ class MDR_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-    
+    def open_report(self):    
+        self.window = QtWidgets.QMainWindow()
+        self.ui=mdr_05_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def open_pdf(self):
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
         self.create_pdf_mdr()
@@ -1906,9 +1912,9 @@ class PlotCanvas_Auto(FigureCanvas):
                     #self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
                 self.r=170.00
-                self.arr_p.append(self.p)
-                self.arr_q.append(self.q)
-                self.arr_r.append(self.r)
+                self.arr_p.append(float(self.p))
+                self.arr_q.append(float(self.q))
+                self.arr_r.append(float(self.r))
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
                 
 

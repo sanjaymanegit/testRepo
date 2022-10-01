@@ -1115,9 +1115,12 @@ class mdr_04_Ui_MainWindow(object):
         self.lineEdit_7.setText("")
         self.lineEdit_8.setText("")
         self.lineEdit_9.setText("")
-        self.lineEdit_10.setText("10")
-        self.lineEdit_12.setText("12")
-        self.label_26.setText("")  
+        self.lineEdit_10.setText("")
+        self.lineEdit_12.setText("")
+        self.label_26.setText("")
+        self.label_20.setText("")
+        self.label_22.setText("")
+        self.label_29.setText("") 
         
         
         connection = sqlite3.connect("mdr.db")
@@ -1178,7 +1181,7 @@ class mdr_04_Ui_MainWindow(object):
             connection = sqlite3.connect("mdr.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE LIMITS_MST SET PARAM='"+str(self.lineEdit_6.text())+"',U_VAL='"+self.lineEdit_7.text()+"',L_VAL='"+self.lineEdit_8.text()+"', UNIT='"+self.lineEdit_9.text()+"',TARGET_VAL='"+self.lineEdit_10.text()+"',ARC ='"+self.lineEdit_12.text()+"'   WHERE  LIMIT_ID ='"+str(self.limit_id)+"'")                    
+                    cursor.execute("UPDATE LIMITS_MST SET PARAM='"+str(self.lineEdit_6.text())+"',U_VAL='"+self.lineEdit_7.text()+"',L_VAL='"+self.lineEdit_8.text()+"', UNIT='"+self.lineEdit_9.text()+"',TARGET_VAL='"+self.lineEdit_12.text()+"',TOL_PER ='"+self.lineEdit_10.text()+"'   WHERE  LIMIT_ID ='"+str(self.limit_id)+"'")                    
             connection.commit();                    
             connection.close()
             self.label_26.setText("Record Saved Successfully.")       
@@ -1253,7 +1256,11 @@ class mdr_04_Ui_MainWindow(object):
             self.lineEdit_8.setText(str(self.tableWidget_2.item(row, 3).text())) 
             self.lineEdit_9.setText(str(self.tableWidget_2.item(row, 5).text())) 
             self.lineEdit_10.setText(str(self.tableWidget_2.item(row, 6).text())) 
-            self.lineEdit_12.setText(str(self.tableWidget_2.item(row, 4).text()))      
+            self.lineEdit_12.setText(str(self.tableWidget_2.item(row, 4).text()))
+            
+            self.label_20.setText(str(self.tableWidget_2.item(row, 5).text()))
+            self.label_22.setText(str(self.tableWidget_2.item(row, 5).text()))
+            self.label_29.setText(str(self.tableWidget_2.item(row, 5).text())) 
            
             
             self.pushButton_5.setDisabled(True) ##--Add
