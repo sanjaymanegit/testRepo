@@ -165,7 +165,7 @@ class mdr_04_Ui_MainWindow(object):
         self.label_9.setStyleSheet("color: rgb(0, 85, 127);")
         self.label_9.setObjectName("label_9")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        reg_ex = QRegExp("(\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
         self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(1000, 280, 101, 31))
@@ -1308,7 +1308,7 @@ class mdr_04_Ui_MainWindow(object):
         
         connection = sqlite3.connect("mdr.db")
          
-        results=connection.execute("SELECT METHOD_ID,METHOD_NAME,SPEC_NUM,printf(\"%.2f\", SET_TORQUE),printf(\"%.2f\", SET_TEMP),printf(\"%.2f\", SET_TEST_TIME),printf(\"%.2f\", ARC) FROM METHODS_MST")
+        results=connection.execute("SELECT METHOD_ID,METHOD_NAME,SPEC_NUM,printf(\"%.2f\", SET_TORQUE),printf(\"%.2f\", SET_TEMP),printf(\"%d\", SET_TEST_TIME),printf(\"%.2f\", ARC) FROM METHODS_MST")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -686,7 +686,7 @@ class mdr_06_Ui_MainWindow(object):
              print("ok")
         connection.close()
         self.show_grid_data_MDR()
-        self.sc_blank =PlotCanvas(self)          
+        self.sc_blank =PlotCanvas(self, width=8, height=5, dpi=100)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
         
@@ -773,7 +773,7 @@ class mdr_06_Ui_MainWindow(object):
         self.window.show()
     
     def open_pdf(self):
-        self.sc_data =PlotCanvas(self,width=2, height=2,dpi=90) 
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=100) 
         self.create_pdf_mdr()
         os.system("xpdf ./reports/test_report.pdf")
         product_id=self.get_usb_storage_id()
@@ -799,13 +799,89 @@ class mdr_06_Ui_MainWindow(object):
            f.close()
         except:
            product_id = "ERROR"
-        return product_id 
+        return product_id
+    
+    def create_pdf_mdr(self):
+        self.sample_type=""
+        self.remark="______________________________________________________________________________"
+        y=300
+        Elements=[]
+        
+        connection = sqlite3.connect("mdr.db")        
+        results=connection.execute("SELECT METHOD_NAME,SPECIMEN_NUM,BATCH_ID,CREATED_ON,ARC,TEST_TEMP,TEST_TIME_MIN,SHIFT,COMMENTS  FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:                    
+                    
+                    self.summary_data=[["Method : ",str(x[0]),"Spec.No: ",str(x[1])],["Batch No: ",str(x[2]),"Date: ",str(x[3])],["Arc: ",str(x[4]),"Set Temp(.c):",str(x[5])]]
+                    self.summary_data.append(["Test Time (min) : ",str(x[6]),"Shift: ",str(x[7])])
+                    self.remark=str(x[8])
+        connection.close()
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT S_ML,S_MH,S2_ML,S2_MH,T_S1,T_S2,T_S5,TC_10,TC_50,TC_90,TAN_AT_ML,TAN_AT_MH,OC,CR,END_TEMP,TREAND,RT,STATUS FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT IFNULL(TEST_ID,1) FROM GLOBAL_VAR)")
+        for x in results:
+            ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
+            Title3 = Paragraph(str(ptext2), styles["Normal"])
+               
+            self.param_data=[["S` ML : "+str(x[0]),"S` MH : "+str(x[1]),"S`` ML: "+str(x[2]),"S`` MH: "+str(x[3])]]
+            self.param_data.append(["TS1: "+str(x[4]),"TS2: "+str(x[5]),"TS5: "+str(x[6]),"TC10 "+str(x[7])])
+            self.param_data.append(["TC50 : "+str(x[8]),"TC90: "+str(x[9]),"TAN AT ML: "+str(x[10]),"TAN AT MH: "+str(x[11])])
+            self.param_data.append(["OC : "+str(x[12]),"CR : "+str(x[13]),"End. Temp.: "+str(x[14]),"Trend: "+str(x[15])])
+            self.param_data.append(["RT : "+str(x[16]),"Status : "+str(x[17])," "," "])
+                   
+        connection.close()
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        comments = Paragraph("<font name=Helvetica size=14><b>  Remark : </b></font>"+str(self.remark), styles["Normal"])        
+        
+        footer_2= Paragraph("<font name=Helvetica size=14><b>   Tested By: _________________                    Verified  By:_________________  </b></font>",styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        TS_STR = Paragraph("<font name=Helvetica size=11>"+str(self.sample_type)+" </font>", styles["Title"])
+        #f2=Table(data2)
+        #f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(self.summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        f4=Table(self.param_data)
+        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12)]
+        
+        
+        doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=10,
+                                bottomMargin=30,)
+        doc.build(Elements)
         
         
     
 
 class PlotCanvas(FigureCanvas):
-    def __init__(self, parent=None, width=2, height=2, dpi=80):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         #fig.savefig('ssdsd.png')
         self.axes = fig.add_subplot(111)        
@@ -827,10 +903,12 @@ class PlotCanvas(FigureCanvas):
         ax2 = ax.twinx()
         color = 'tab:green'
         ax2.set_ylabel('TEMP (.C)', color = color)
+#        ax.set_xlim(0,200)
+#        ax.set_ylim(0,200)
         ax2.set_ylim(0,200)
         
-        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
-        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        ax.grid(which='major', linestyle='-', linewidth='0.50', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
         self.s=[]
         self.t=[]
@@ -841,6 +919,17 @@ class PlotCanvas(FigureCanvas):
         self.test_type="Tensile"
         self.color=['b','r','g','y','k','c','m','b']
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
+        
+        
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))            
+#             self.xlim=int(x[0])
+#             self.ylim=int(x[1])            
+        connection.close()
         
         connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
@@ -863,7 +952,7 @@ class PlotCanvas(FigureCanvas):
         
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
-                ax2.plot(self.x_num,self.r_num, self.color[g],label="Specimen_"+str(g+1))
+                ax2.plot(self.x_num,self.r_num, 'g',label="Temparature")
         
         
         ax.set_xlabel('TIME (Min)')
@@ -871,7 +960,7 @@ class PlotCanvas(FigureCanvas):
        
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()
-        ax2.legend() 
+        #ax2.legend() 
         self.draw()
         self.figure.savefig('last_graph.png',dpi=100)
 

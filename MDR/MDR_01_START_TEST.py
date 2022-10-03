@@ -946,6 +946,8 @@ class MDR_01_Ui_MainWindow(object):
         self.sc_blank=""
         self.cycle_num=0
         self.machine_health="NOTOK"
+        self.max_time_mm=0
+        self.test_per=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1228,6 +1230,8 @@ class MDR_01_Ui_MainWindow(object):
            self.label_23.setText(str(x[0])) # TempA
            self.label_18.setText(str(x[1])) # Tarq
            self.label_26.setText(str(x[2])) # Time
+           self.max_time_mm=str((x[2]))
+           self.test_per=0
            self.label_12.setText(str(x[3])) # Spec Name
            self.label_29.setText(str(x[4])) # Arc
            self.lineEdit_3.setText("BATCH_ID_"+str(x[3]))
@@ -1305,13 +1309,32 @@ class MDR_01_Ui_MainWindow(object):
         
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
         self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-        self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_r)))  
+        self.label_33.setText(str(int(max(self.sc_new.arr_p))))
+        self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_r)))
+        
+        #self.max_time_mm=int((x[2]))
+        if(int(self.max_time_mm) > int(self.label_33.text())):
+             self.test_per=((int(self.max_time_mm) -  int(self.label_33.text()) )/int(self.max_time_mm)) *100
+             
+        else:
+             self.test_per=100
+        self.label_50.setText("Test Started..."+str(int(self.test_per))+"  % ")
+        
         self.label_50.show()
-        self.label_50.setText(" Test Started  ..... %")
+        #self.label_50.setText(" Test Started  ..... %")
         if(str(self.sc_new.save_data_flg) =="Yes"):            
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
+                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
+                self.pushButton_8.setEnabled(True)
+                self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                self.label_33.setText(str(int(max(self.sc_new.arr_p))))
+                self.lcdNumber_3.setProperty("value",str(int(max(self.sc_new.arr_r)))) 
+                
                 
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -1321,6 +1344,7 @@ class MDR_01_Ui_MainWindow(object):
         #self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
+        self.label_33.setText("0")
         
     def save_graph_data(self):         
          if (len(self.sc_new.arr_p) > 1):            
@@ -1331,7 +1355,7 @@ class MDR_01_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,R_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_r[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,R_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_r[g]))+"')")
             connection.commit();
             connection.close()
             
@@ -1342,11 +1366,11 @@ class MDR_01_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_TORQUE='"+str(self.label_18.text())+"',SPECIMEN_NAME_ID='"+str(self.label_12.text())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',TEST_TEMP='"+str(self.label_23.text())+"',METHOD_NAME='"+str(self.comboBox.currentText())+"',TEST_TIME_MM='"+str(self.label_26.text())+"'")                         
-                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,R_NUM) SELECT X_NUM,Y_NUM,R_NUM FROM STG_GRAPH_MST")                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_TORQUE='"+str(self.label_18.text())+"',SPECIMEN_NAME_ID='"+str(self.label_12.text())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',TEST_TEMP='"+str(self.label_23.text())+"',METHOD_NAME='"+str(self.comboBox.currentText())+"',TEST_TIME_MM='"+str(self.label_26.text())+"',OPERATOR='"+str(self.lineEdit_4.text())+"',SHIFT='"+str(self.comboBox_2.currentText())+"'")                         
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,R_NUM) SELECT X_NUM,Y_NUM,R_NUM FROM STG_GRAPH_MST")
+                          cursor.execute("UPDATE GLOBAL_VAR SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST)")
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                          cursor.execute("UPDATE GLOBAL_VAR SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                          cursor.execute("INSERT INTO TEST_MST_MDR(SPECIMEN_NUM,BATCH_ID,TEST_TEMP,METHOD_NAME,TRQ,TEST_TIME_MIN,GRAPH_ID) SELECT SPECIMEN_NAME_ID,BATCH_ID,TEST_TEMP,METHOD_NAME,TEST_TORQUE,TEST_TIME_MM,GRAPH_ID FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO TEST_MST_MDR(SPECIMEN_NUM,BATCH_ID,TEST_TEMP,METHOD_NAME,TRQ,TEST_TIME_MIN,GRAPH_ID,OPERATOR,SHIFT) SELECT SPECIMEN_NAME_ID,BATCH_ID,TEST_TEMP,METHOD_NAME,TEST_TORQUE,TEST_TIME_MM,GRAPH_ID ,OPERATOR,SHIFT FROM GLOBAL_VAR")
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT MAX(TEST_ID) FROM TEST_MST_MDR)")
                           cursor.execute("UPDATE TEST_MST_MDR SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST_MDR SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1494,11 +1518,11 @@ class MDR_01_Ui_MainWindow(object):
         Elements=[]
         
         connection = sqlite3.connect("mdr.db")        
-        results=connection.execute("SELECT METHOD_NAME,SPECIMEN_NUM,BATCH_ID,CREATED_ON,ARC,TEST_TEMP,TEST_TIME_MIN,SHIFT,COMMENTS  FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT METHOD_NAME,SPECIMEN_NUM,BATCH_ID,CREATED_ON,ARC,TEST_TEMP,TEST_TIME_MIN,SHIFT,COMMENTS,OPERATOR  FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:                    
                     
                     self.summary_data=[["Method : ",str(x[0]),"Spec.No: ",str(x[1])],["Batch No: ",str(x[2]),"Date: ",str(x[3])],["Arc: ",str(x[4]),"Set Temp(.c):",str(x[5])]]
-                    self.summary_data.append(["Test Time (min) : ",str(x[6]),"Shift: ",str(x[7])])
+                    self.summary_data.append(["Test Time (min) : ",str(x[6]),"Shift: ",str(x[7])+" ( "+str(x[9])+" )"])
                     self.remark=str(x[8])
         connection.close()
         
@@ -1512,11 +1536,15 @@ class MDR_01_Ui_MainWindow(object):
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
                
-            self.param_data=[["S` ML : "+str(x[0]),"S` MH : "+str(x[1]),"S`` ML: "+str(x[2]),"S`` MH: "+str(x[3])]]
-            self.param_data.append(["TS1: "+str(x[4]),"TS2: "+str(x[5]),"TS5: "+str(x[6]),"TC10 "+str(x[7])])
-            self.param_data.append(["TC50 : "+str(x[8]),"TC90: "+str(x[9]),"TAN AT ML: "+str(x[10]),"TAN AT MH: "+str(x[11])])
-            self.param_data.append(["OC : "+str(x[12]),"CR : "+str(x[13]),"End. Temp.: "+str(x[14]),"Trend: "+str(x[15])])
-            self.param_data.append(["RT : "+str(x[16]),"Status : "+str(x[17])," "," "])
+            self.param_data=[["S` ML : ",str(x[0]),"S` MH : ",str(x[1])]]
+            self.param_data.append(["S`` ML: ",str(x[2]),"S`` MH: ",str(x[3])])
+            self.param_data.append(["TS1: ",str(x[4]),"TS2: ",str(x[5])])
+            self.param_data.append(["TS5: ",str(x[6]),"TC10 ",str(x[7])])
+            self.param_data.append(["TC50 : ",str(x[8]),"TC90: ",str(x[9])])
+            self.param_data.append(["TAN AT ML: ",str(x[10]),"TAN AT MH: ",str(x[11])])
+            self.param_data.append(["OC : ",str(x[12]),"CR : ",str(x[13])])
+            self.param_data.append(["End. Temp.: ",str(x[14]),"Trend: ",str(x[15])])
+            self.param_data.append(["RT : ",str(x[16]),"Status : ",str(x[17])])
                    
         connection.close()
         
@@ -1556,13 +1584,13 @@ class MDR_01_Ui_MainWindow(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         
-        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12)]
+        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),comments,Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12)]
         
         
         doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
                                 leftMargin=20,
                                 topMargin=10,
-                                bottomMargin=30,)
+                                bottomMargin=10,)
         doc.build(Elements)
     
 
@@ -1587,18 +1615,36 @@ class PlotCanvas(FigureCanvas):
        
         ax.set_facecolor('#CCFFFF')   
         ax.minorticks_on()
+        ax2 = ax.twinx()
+        color = 'tab:green'
+        ax2.set_ylabel('TEMP (.C)', color = color)
+#        ax.set_xlim(0,200)
+#        ax.set_ylim(0,200)
+        ax2.set_ylim(0,200)
         
-        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
-        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        ax.grid(which='major', linestyle='-', linewidth='0.50', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
         self.s=[]
         self.t=[]
         self.graph_ids=[]    
         self.x_num=[0.0]
-        self.y_num=[0.0]
+        self.y_num=[133.0]
+        self.r_num=[0.0]
         self.test_type="Tensile"
         self.color=['b','r','g','y','k','c','m','b']
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
+        
+        
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))            
+#             self.xlim=int(x[0])
+#             self.ylim=int(x[1])            
+        connection.close()
         
         connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
@@ -1607,31 +1653,31 @@ class PlotCanvas(FigureCanvas):
         connection.close()
         
         
-        
-        
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
         
             connection = sqlite3.connect("mdr.db")               
-            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            results=connection.execute("SELECT X_NUM,Y_NUM,R_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])
+                self.r_num.append(k[2])
             connection.close() 
         
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                ax2.plot(self.x_num,self.r_num, 'g',label="Temparature")
         
         
         ax.set_xlabel('TIME (Min)')
         ax.set_ylabel('TORQUE(N)')
+       
         #self.connect('motion_notify_event', mouse_move)
-        ax.legend()        
+        ax.legend()
+        #ax2.legend() 
         self.draw()
         self.figure.savefig('last_graph.png',dpi=100)
-
-
         
        
 
@@ -1639,7 +1685,7 @@ class PlotCanvas(FigureCanvas):
 
 
 class PlotCanvas_Auto(FigureCanvas):     
-    def __init__(self, parent=None, width=5, height=4, dpi=80):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         
         self.axes = fig.add_subplot(111)
@@ -1649,8 +1695,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.test_type="MDR"
         self.axes.set_xlabel('TIME (min)')
         self.axes.set_ylabel('TORQUE (N)')
-        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        self.axes.grid(which='major', linestyle='-', linewidth='0.50', color='red')
+        self.axes.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
         self.axes2 = self.axes.twinx()
         color = 'tab:green'
@@ -1669,7 +1715,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.r =170
         
         self.arr_p=[0.0]
-        self.arr_q=[0.0]
+        self.arr_q=[133.0]
         self.arr_r=[0.0]
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
