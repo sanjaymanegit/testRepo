@@ -911,6 +911,7 @@ class mdr_04_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Return"))
         self.label_27.setText(_translate("MainWindow", "Spec.No :"))
         self.pushButton_10.setText(_translate("MainWindow", "Set Limits"))
+        self.pushButton_10.hide()
         self.pushButton_9.clicked.connect(MainWindow.close)
         self.frame_2.hide()
         self.pushButton_10.clicked.connect(self.limits_load)

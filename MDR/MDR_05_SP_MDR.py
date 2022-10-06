@@ -2,6 +2,8 @@
 
 
 from MDR_06_REPORT_MDR import mdr_06_Ui_MainWindow
+from print_sr_popup import SR_P_POPUi_MainWindow
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import QTableWidgetItem
@@ -219,12 +221,12 @@ class mdr_05_Ui_MainWindow(object):
         self.comboBox_2.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
+#        self.comboBox_2.addItem("")
         self.comboBox_7 = QtWidgets.QComboBox(self.frame)
         self.comboBox_7.setGeometry(QtCore.QRect(470, 80, 51, 31))
         font = QtGui.QFont()
@@ -235,13 +237,13 @@ class mdr_05_Ui_MainWindow(object):
         self.comboBox_7.setFont(font)
         self.comboBox_7.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
-        self.comboBox_7.setObjectName("comboBox_7")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
-        self.comboBox_7.addItem("")
+#        self.comboBox_7.setObjectName("comboBox_7")
+#        self.comboBox_7.addItem("")
+#        self.comboBox_7.addItem("")
+#        self.comboBox_7.addItem("")
+#        self.comboBox_7.addItem("")
+#        self.comboBox_7.addItem("")
+#        self.comboBox_7.addItem("")
         self.label_11 = QtWidgets.QLabel(self.frame)
         self.label_11.setGeometry(QtCore.QRect(300, 80, 41, 31))
         font = QtGui.QFont()
@@ -275,23 +277,44 @@ class mdr_05_Ui_MainWindow(object):
         self.comboBox_8.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "color: rgb(0, 0, 0);")
         self.comboBox_8.setObjectName("comboBox_8")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
+#        self.comboBox_8.addItem("")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_13.setGeometry(QtCore.QRect(990, 80, 81, 31))
+        self.pushButton_13.setGeometry(QtCore.QRect(990, 80, 31, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_13.setFont(font)
-        self.pushButton_13.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);")
+        #self.pushButton_13.setStyleSheet("background-color: rgb(90, 90, 134);\n""color: rgb(255, 255, 255);")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("./images/print4.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_13.setIcon(icon1)
+        self.pushButton_13.setIconSize(QtCore.QSize(50, 50))
         self.pushButton_13.setObjectName("pushButton_13")
+        
+        
+        self.pushButton_13_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_13_1.setGeometry(QtCore.QRect(1050, 80, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_13_1.setFont(font)
+        #self.pushButton_13.setStyleSheet("background-color: rgb(90, 90, 134);\n""color: rgb(255, 255, 255);")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("./images/delete2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_13_1.setIcon(icon1)
+        self.pushButton_13_1.setIconSize(QtCore.QSize(50, 50))
+        self.pushButton_13_1.setObjectName("pushButton_13_1")
+        
+        
         self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
         self.calendarWidget.setGeometry(QtCore.QRect(110, 250, 341, 231))
         self.calendarWidget.setStyleSheet("background-color: rgb(170, 255, 255);\n"
@@ -475,7 +498,7 @@ class mdr_05_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.checkBox.setFont(font)
-        self.checkBox.setChecked(True)
+        self.checkBox.setChecked(False)
         self.checkBox.setObjectName("checkBox")
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(880, 52, 431, 20))
@@ -590,7 +613,7 @@ class mdr_05_Ui_MainWindow(object):
             self.comboBox_8.setItemText(self.i,str("%02d"%x))            
             self.i=self.i+1
             
-        self.pushButton_13.setText(_translate("MainWindow", "Print"))
+        #self.pushButton_13.setText(_translate("MainWindow", "Print"))
         self.tableWidget.setSortingEnabled(True)
         
         __sortingEnabled = self.tableWidget.isSortingEnabled()
@@ -609,6 +632,12 @@ class mdr_05_Ui_MainWindow(object):
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_3.clicked.connect(self.select_all_tests)
         self.checkBox.clicked.connect(self.check_uncheck_all_records)
+        self.pushButton_4.clicked.connect(self.open_all_recds_pdf)
+        self.pushButton_13.setDisabled(True)
+        self.pushButton_13.clicked.connect(self.print_file)
+        self.pushButton_13_1.clicked.connect(self.del_tests)
+        
+        
         
         self.comboBox.setCurrentText("00")
         self.comboBox.setCurrentText("00")
@@ -793,7 +822,22 @@ class mdr_05_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-       
+     
+    def print_file(self):
+        test_count=0
+        connection = sqlite3.connect("mdr.db")        
+        results=connection.execute("SELECT count(TEST_ID) FROM TEST_IDS ")        
+        for x in results:
+                test_count=str(x[0])                
+        connection.close()
+        
+        if(int(test_count) > 0):                         
+                self.window = QtWidgets.QMainWindow()
+                self.ui=SR_P_POPUi_MainWindow()
+                self.ui.setupUi(self.window)           
+                self.window.show()
+            
+        
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -802,34 +846,137 @@ class mdr_05_Ui_MainWindow(object):
             self.tableWidget.removeRow(i)
             
     
-    def del_cheked(self):
-        i = self.tableWidget.rowCount()
-        records_cnt=int(i)        
-        while (i > 0):
-            i=i-1
-            item = self.tableWidget.item(i, 0)            
-            currentState = item.checkState()
-            if(currentState == QtCore.Qt.Checked):
-                        self.test_id=str(item.text())
-                        #print(" test_id :"+str(self.test_id)) 
+    def open_all_recds_pdf(self):        
+        self.sc_blank =PlotCanvas(self,width=8, height=5,dpi=100)  
+        self.create_all_rec_pdf()
+        self.pushButton_13.setEnabled(True)
+        os.system("xpdf ./reports/all_records.pdf")
+    
+    
+    def create_all_rec_pdf(self):
+        self.del_uncheked()
+        #self.load_reports()
+        self.specimen_shape=""
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        test_type=""
+        test_count=0
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        if(self.radioButton.isChecked()):
+             self.name="Method Name"
+             self.name_str=str(self.comboBox_3.currentText())           
+        else:
+             self.name="Batch Id"
+             self.name_str=str(self.comboBox_4.currentText())
+        
+        
+        
+        summary_data=[["From Date:",str(self.from_dt),"To Date: ",str(self.to_dt) , str(self.name),str(self.name_str), "Report Date: ",str(datetime.datetime.now().strftime("%d %b %Y %H:%M"))]]
+       
+           
+        
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'),('FONTNAME', (4, 0), (4, -1), 'Helvetica-Bold'),('FONTNAME', (6, 0), (6, -1), 'Helvetica-Bold')]))       
+        
+        report_gr_img="all_graphs.png"        
+        pdf_img= Image(report_gr_img, 10* inch, 6 * inch)
+        #pdf_img= Image(report_gr_img)
+        
+       
+        
+        connection = sqlite3.connect("mdr.db")        
+        results=connection.execute("SELECT count(TEST_ID) FROM TEST_IDS ")        
+        for x in results:
+                test_count=str(x[0])                
+        connection.close()
+        
+        childs_data=[]        
+        if(int(test_count) > 0):
+            childs_data.append(['Test Id','Spec.No.','S_ML','S_MH','S2_ML','S2_MH','T_S1','T_S2','T_S5','TC_10','TC_50','TC_90','Tan at ML','Tan at MH','OC','CR','End Temp.','Trend','RT'])  
+            connection = sqlite3.connect("mdr.db")
+            results=connection.execute("SELECT TEST_ID,SPECIMEN_NUM,printf(\"%.2f\", S_ML),printf(\"%.2f\", S_MH),printf(\"%.2f\", S2_ML),printf(\"%.2f\", S2_MH),printf(\"%.2f\", T_S1),printf(\"%.2f\", T_S2),printf(\"%.2f\", T_S5),printf(\"%.2f\", TC_10),printf(\"%.2f\", TC_50),printf(\"%.2f\", TC_90),printf(\"%.2f\", TAN_AT_ML),printf(\"%.2f\", TAN_AT_MH),printf(\"%.2f\", OC),printf(\"%.2f\", CR),printf(\"%.2f\", END_TEMP),TREAND,printf(\"%.2f\", RT)   FROM TEST_MST_MDR WHERE TEST_ID IN ( SELECT TEST_ID FROM TEST_IDS )")
+            for k in results:
+                        childs_data.append(k)
+            connection.close()
+        else:
+            print("Please Select Tests.")
+        
+        Elements = [Title,Spacer(1,12),Title2,Spacer(1,12),f3,Spacer(1,12),Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12)]
+        
+        
+        if(int(test_count) > 0):
+            f=Table(childs_data)
+            f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+            Elements.append(f) 
+            
+            
+        doc = SimpleDocTemplate('./reports/all_records.pdf',pagesize=A4 ,rightMargin=10,
+                                leftMargin=20,
+                                topMargin=10,
+                                bottomMargin=10,)
+        doc.pagesize = landscape(A4)
+        doc.build(Elements)
+    
+    
+    def del_tests(self):
+        self.del_uncheked()
+        test_count=0
+        connection = sqlite3.connect("mdr.db")        
+        results=connection.execute("SELECT count(TEST_ID) FROM TEST_IDS ")        
+        for x in results:
+                test_count=str(x[0])                
+        connection.close()        
+        if(int(test_count) > 0):
                         close = QMessageBox()
-                        close.setText("Deleteting Test ID: "+str(self.test_id)+" Tests.Please Confirm !!!")
+                        close.setText("Deleteting test which are checked. Please Confirm !!!")
                         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
                         close = close.exec()                                
                         if close == QMessageBox.Yes: 
                                     connection = sqlite3.connect("mdr.db")
                                     with connection:        
                                             cursor = connection.cursor()                                        
-                                            cursor.execute("delete from TEST_MST_MDR WHERE  TEST_ID = '"+str(self.test_id)+"'")
-                                            print("delete from TEST_MST_MDR WHERE  TEST_ID = '"+str(self.test_id)+"'")
+                                            cursor.execute("delete from TEST_MST_MDR WHERE  TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")                                            
                                     connection.commit();
                                     connection.close()
                                     self.select_all_tests()
                                     print("deleted  test ID:"+str(self.test_id))
                         else:
-                                    print(" Cancled Delete.")
+                                    print(" Cancled Delete.")                                
+        else:
+                print(" Do not Delete this test id")
+                    
+    def del_uncheked(self):
+        i = self.tableWidget.rowCount()
+        records_cnt=int(i)    
+        while (i > 0):
+            i=i-1
+            item = self.tableWidget.item(i, 0)
+            #print("test id  :"+str(item.text()))
+            currentState = item.checkState()
+            if(currentState == QtCore.Qt.Checked):
+                    print("Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("mdr.db")          
+                    with connection:        
+                            cursor = connection.cursor()                            
+                            cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,'NA'  FROM TEST_MST_MDR B WHERE B.TEST_ID='"+str(item.text())+"' AND B.TEST_ID NOT IN (SELECT TEST_ID FROM TEST_IDS)") 
+                    connection.commit();
+                    connection.close()                    
             else:
-                    print(" Do not Delete this test id")
+                    print("Un-Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("mdr.db")          
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM TEST_IDS WHERE TEST_ID = '"+str(item.text())+"'")                             
+                    connection.commit();
+                    connection.close()
         
     def open_doubleClick_report(self):
         row = self.tableWidget.currentRow()
@@ -860,6 +1007,85 @@ class mdr_05_Ui_MainWindow(object):
                 item.setCheckState(not QtCore.Qt.Checked)
         
 
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        #fig.savefig('ssdsd.png')
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #FigureCanvas.setStyleSheet("background-color:red;")
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)       
+        
+        self.plot()        
+        
+        
+    def plot(self):
+        ax = self.figure.add_subplot(111)       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+#        ax2 = ax.twinx()
+#        color = 'tab:green'
+#        ax2.set_ylabel('TEMP (.C)', color = color)
+#        ax2.set_ylim(0,200)
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.30', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.30', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[133.0]
+        self.r_num=[0.0]
+        self.test_type="Tensile"
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))
+        connection.close()
+        
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+             self.graph_ids.append(x[0])             
+        connection.close()
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+        
+            connection = sqlite3.connect("mdr.db")               
+            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                self.x_num.append(k[0])
+                self.y_num.append(k[1])
+                #self.r_num.append(k[2])
+            connection.close() 
+        
+            if(g < 8 ):
+                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1),linewidth=0.60)
+                #ax2.plot(self.x_num,self.r_num, 'g',label="Temparature")
+            else:
+                ax.plot(self.x_num,self.y_num, 'b',label="Specimen_"+str(g+1),linewidth=0.56)
+        
+        ax.set_xlabel('TIME (Min)')
+        ax.set_ylabel('TORQUE(N)')
+        
+         #self.connect('motion_notify_event', mouse_move)
+        ax.legend()
+        #ax2.legend() 
+        self.draw()
+        self.figure.savefig('all_graphs.png',width=10, height=4,dpi=100)
+        
+        
 
 if __name__ == "__main__":
     import sys

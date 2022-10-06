@@ -778,8 +778,7 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
-        self.pushButton_9.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+        self.pushButton_9.setStyleSheet("background-color: rgb(85, 170, 255);")
         self.pushButton_9.setObjectName("pushButton_9")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(920, 550, 121, 41))
@@ -789,9 +788,21 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_11.setFont(font)
-        self.pushButton_11.setStyleSheet("background-color: rgb(255, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+        self.pushButton_11.setStyleSheet("background-color: rgb(255, 85, 127);\n ")
         self.pushButton_11.setObjectName("pushButton_11")
+        
+        self.pushButton_11_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_11_1.setGeometry(QtCore.QRect(1060, 550, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_11_1.setFont(font)
+        self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
+        self.pushButton_11_1.setObjectName("pushButton_11_1")
+        
+        
         self.tableWidget_2 = QtWidgets.QTableWidget(self.frame)
         self.tableWidget_2.setGeometry(QtCore.QRect(1090, 270, 251, 201))
         font = QtGui.QFont()
@@ -899,7 +910,7 @@ class MDR_01_Ui_MainWindow(object):
         
         
         self.label_52 = QtWidgets.QLabel(self.frame)
-        self.label_52.setGeometry(QtCore.QRect(1050, 550, 101, 31))
+        self.label_52.setGeometry(QtCore.QRect(1050, 510, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -910,7 +921,7 @@ class MDR_01_Ui_MainWindow(object):
         self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_52.setObjectName("label_52")
         self.label_33 = QtWidgets.QLabel(self.frame)
-        self.label_33.setGeometry(QtCore.QRect(1160, 550, 51, 31))
+        self.label_33.setGeometry(QtCore.QRect(1160, 510, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -921,7 +932,7 @@ class MDR_01_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.label_34 = QtWidgets.QLabel(self.frame)
-        self.label_34.setGeometry(QtCore.QRect(1220, 550, 61, 31))
+        self.label_34.setGeometry(QtCore.QRect(1220, 510, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(9)
@@ -1047,6 +1058,8 @@ class MDR_01_Ui_MainWindow(object):
         self.pushButton_9.setDisabled(True)
         self.pushButton_11.setText(_translate("MainWindow", "Stop Test"))
         self.pushButton_11.setDisabled(True)
+        self.pushButton_11_1.setText(_translate("MainWindow", "Reset"))
+        self.pushButton_11_1.setDisabled(True)
         self.tableWidget_2.setSortingEnabled(True)
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "P"))
@@ -1061,7 +1074,7 @@ class MDR_01_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "ON"))
         self.radioButton_2.setText(_translate("MainWindow", "OFF"))
         self.label_52.setText(_translate("MainWindow", "Elapsed Time :"))
-        self.label_33.setText(_translate("MainWindow", "000"))
+        self.label_33.setText(_translate("MainWindow", "0"))
         self.label_34.setText(_translate("MainWindow", "(Min)"))
         self.sc_blank =PlotCanvas_blank(self,width=8, height=5,dpi=90)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1079,6 +1092,7 @@ class MDR_01_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.print_file)
         self.pushButton_5.clicked.connect(self.open_email_report)
         self.pushButton_6.clicked.connect(self.open_pdf)
+        self.pushButton_11_1.clicked.connect(self.reset_test)
         
         self.radioButton.clicked.connect(self.machine_status)
         self.radioButton_2.clicked.connect(self.machine_status)
@@ -1094,7 +1108,24 @@ class MDR_01_Ui_MainWindow(object):
         self.timer1.start(1)
         
        
-    
+    def reset_test(self):
+        self.sc_blank =PlotCanvas_blank(self,width=8, height=5,dpi=90)          
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        self.lcdNumber_3.setProperty("value", 0.0)
+        self.label_50.hide()
+        self.label_22.hide()
+        self.label_33.setText("0")
+        connection = sqlite3.connect("mdr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set TEST_ID='0'")                 
+        connection.commit()
+        connection.close()
+        self.show_grid_data_MDR()
+        
+        
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
@@ -1387,6 +1418,7 @@ class MDR_01_Ui_MainWindow(object):
             connection.close()            
             print("Data Saved Ok in STG_GRAPH_MST")
             self.show_grid_data_MDR()
+            self.pushButton_11_1.setEnabled(True)
         
     def show_grid_data_MDR(self):        
         #print("inside tear list.....")
