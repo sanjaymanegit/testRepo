@@ -1010,7 +1010,7 @@ class mdr_04_Ui_MainWindow(object):
             connection = sqlite3.connect("mdr.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE METHODS_MST SET METHOD_NAME='"+str(self.lineEdit.text())+"',SET_TORQUE='"+self.lineEdit_2.text()+"',SET_TEMP='"+self.lineEdit_3.text()+"', SET_TEST_TIME='"+self.lineEdit_4.text()+"',ARC='"+self.lineEdit_4.text()+"',SPEC_NUM ='"+self.lineEdit_11.text()+"'   WHERE  METHOD_ID ='"+str(self.method_id)+"'")                    
+                    cursor.execute("UPDATE METHODS_MST SET METHOD_NAME='"+str(self.lineEdit.text())+"',SET_TORQUE='"+self.lineEdit_2.text()+"',SET_TEMP='"+self.lineEdit_3.text()+"', SET_TEST_TIME='"+self.lineEdit_4.text()+"',ARC='"+self.lineEdit_5.text()+"',SPEC_NUM ='"+self.lineEdit_11.text()+"'   WHERE  METHOD_ID ='"+str(self.method_id)+"'")                    
             connection.commit();                    
             connection.close()
             self.label_3.setText("Record Saved Successfully.")       

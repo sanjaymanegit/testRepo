@@ -1345,7 +1345,7 @@ class MDR_01_Ui_MainWindow(object):
         
         #self.max_time_mm=int((x[2]))
         if(int(self.max_time_mm) > int(self.label_33.text())):
-             self.test_per=((int(self.max_time_mm) -  int(self.label_33.text()) )/int(self.max_time_mm)) *100
+             self.test_per=(int(self.label_33.text())/int(self.max_time_mm)) *100
              
         else:
              self.test_per=100

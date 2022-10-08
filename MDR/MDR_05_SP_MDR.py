@@ -846,7 +846,8 @@ class mdr_05_Ui_MainWindow(object):
             self.tableWidget.removeRow(i)
             
     
-    def open_all_recds_pdf(self):        
+    def open_all_recds_pdf(self):
+        self.del_uncheked()
         self.sc_blank =PlotCanvas(self,width=8, height=5,dpi=100)  
         self.create_all_rec_pdf()
         self.pushButton_13.setEnabled(True)
@@ -1083,7 +1084,7 @@ class PlotCanvas(FigureCanvas):
         ax.legend()
         #ax2.legend() 
         self.draw()
-        self.figure.savefig('all_graphs.png',width=10, height=4,dpi=100)
+        self.figure.savefig('all_graphs.png',dpi=100)
         
         
 

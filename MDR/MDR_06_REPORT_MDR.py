@@ -801,6 +801,9 @@ class mdr_06_Ui_MainWindow(object):
            product_id = "ERROR"
         return product_id
     
+    
+        
+        
     def create_pdf_mdr(self):
         self.sample_type=""
         self.remark="______________________________________________________________________________"
@@ -808,11 +811,11 @@ class mdr_06_Ui_MainWindow(object):
         Elements=[]
         
         connection = sqlite3.connect("mdr.db")        
-        results=connection.execute("SELECT METHOD_NAME,SPECIMEN_NUM,BATCH_ID,CREATED_ON,ARC,TEST_TEMP,TEST_TIME_MIN,SHIFT,COMMENTS  FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT METHOD_NAME,SPECIMEN_NUM,BATCH_ID,CREATED_ON,ARC,TEST_TEMP,TEST_TIME_MIN,SHIFT,COMMENTS,OPERATOR  FROM TEST_MST_MDR A where A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:                    
                     
                     self.summary_data=[["Method : ",str(x[0]),"Spec.No: ",str(x[1])],["Batch No: ",str(x[2]),"Date: ",str(x[3])],["Arc: ",str(x[4]),"Set Temp(.c):",str(x[5])]]
-                    self.summary_data.append(["Test Time (min) : ",str(x[6]),"Shift: ",str(x[7])])
+                    self.summary_data.append(["Test Time (min) : ",str(x[6]),"Shift: ",str(x[7])+" ( "+str(x[9])+" )"])
                     self.remark=str(x[8])
         connection.close()
         
@@ -826,13 +829,18 @@ class mdr_06_Ui_MainWindow(object):
             ptext2 = "<font name=Helvetica size=14> <b>Parameters : </b> </font>"            
             Title3 = Paragraph(str(ptext2), styles["Normal"])
                
-            self.param_data=[["S` ML : "+str(x[0]),"S` MH : "+str(x[1]),"S`` ML: "+str(x[2]),"S`` MH: "+str(x[3])]]
-            self.param_data.append(["TS1: "+str(x[4]),"TS2: "+str(x[5]),"TS5: "+str(x[6]),"TC10 "+str(x[7])])
-            self.param_data.append(["TC50 : "+str(x[8]),"TC90: "+str(x[9]),"TAN AT ML: "+str(x[10]),"TAN AT MH: "+str(x[11])])
-            self.param_data.append(["OC : "+str(x[12]),"CR : "+str(x[13]),"End. Temp.: "+str(x[14]),"Trend: "+str(x[15])])
-            self.param_data.append(["RT : "+str(x[16]),"Status : "+str(x[17])," "," "])
+            self.param_data=[["S` ML : ",str(x[0]),"S` MH : ",str(x[1])]]
+            self.param_data.append(["S`` ML: ",str(x[2]),"S`` MH: ",str(x[3])])
+            self.param_data.append(["TS1: ",str(x[4]),"TS2: ",str(x[5])])
+            self.param_data.append(["TS5: ",str(x[6]),"TC10 ",str(x[7])])
+            self.param_data.append(["TC50 : ",str(x[8]),"TC90: ",str(x[9])])
+            self.param_data.append(["TAN AT ML: ",str(x[10]),"TAN AT MH: ",str(x[11])])
+            self.param_data.append(["OC : ",str(x[12]),"CR : ",str(x[13])])
+            self.param_data.append(["End. Temp.: ",str(x[14]),"Trend: ",str(x[15])])
+            self.param_data.append(["RT : ",str(x[16]),"Status : ",str(x[17])])
                    
         connection.close()
+        
         
         connection = sqlite3.connect("mdr.db")
         results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
@@ -868,15 +876,15 @@ class mdr_06_Ui_MainWindow(object):
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
-        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),Spacer(1,12),comments,Spacer(1,12),Spacer(1,12),Spacer(1,12)]
+        
+        Elements=[Title,Title2,TS_STR,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Title3,Spacer(1,12),Spacer(1,12),f4,Spacer(1,12),Spacer(1,12),Spacer(1,12),blank,blank,blank,Spacer(1,12),comments,Spacer(1,12),footer_2,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12)]
         
         
         doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
                                 leftMargin=20,
                                 topMargin=10,
-                                bottomMargin=30,)
+                                bottomMargin=10,)
         doc.build(Elements)
-        
         
     
 
