@@ -867,7 +867,7 @@ class TY_02_Ui_MainWindow(object):
                 pass
         elif(self.test_type_for_flexural=="Tensile"):
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 12).text())
+            self.cycle_id=str(self.tableWidget.item(row, 11).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))

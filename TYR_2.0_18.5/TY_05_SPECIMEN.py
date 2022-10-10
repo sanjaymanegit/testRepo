@@ -859,9 +859,15 @@ class TY_05_Ui_MainWindow(object):
         elif(self.lineEdit_10.text()== ""):
              self.label_21.setText("Guage length is Empty.")
              self.label_21.show()
-        elif(int(self.lineEdit_10.text()) <= 0):
+        elif(float(self.lineEdit_10.text()) <= 0):
              self.label_21.setText("Guage length Should not Zero.")
-             self.label_21.show()     
+             self.label_21.show()
+        elif(self.lineEdit_4.text() == ""):
+             self.label_21.setText("Test Speed Should not null.")
+             self.label_21.show() 
+        elif(float(self.lineEdit_4.text()) <= 0):
+             self.label_21.setText("Test Speed Should not Zero.")
+             self.label_21.show()  
         elif(self.lineEdit_14.text()== ""):
              self.label_21.setText("CS.Area is Empty.")
              self.label_21.show()  
