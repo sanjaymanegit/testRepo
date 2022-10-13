@@ -237,7 +237,6 @@ pi@raspberrypi:~ $ history
     9  python --version
    10  pip freeze
    11  sudo apt-get install xrdp
-   12  sudo pip install qt5=0.0.0
    13  sudo pip install qt5==0.0.0
    14  sudo pip freeze
    15  sudo apt-get install qt5-default
@@ -266,3 +265,6 @@ pi@raspberrypi:~ $ history
    38  clear
    39  history
    ===========================================================
+   
+   sudo pip3 install pandas==0.19.2
+	
