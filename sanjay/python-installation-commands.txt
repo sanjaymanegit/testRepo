@@ -6,3 +6,6 @@
 6)cd Python-3.9.1
 7)sudo make -j 4
 8)sudo make altinstall
+9)vi ./bashrc
+10) alias python= '/usr/local/bin/Python3.9.1'
+11) python --version     #check python version

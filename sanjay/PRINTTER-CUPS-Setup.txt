@@ -1,0 +1,23 @@
+HPLIP setup
+1)sudo apt-get update
+2)sudo apt-get install hplip-gui
+3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+====Old Pluging downlowads (Prefer Sourceforge)=====
+https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/
+https://sourceforge.net/projects/hplip/files/hplip/
+======================================================

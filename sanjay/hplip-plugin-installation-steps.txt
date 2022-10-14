@@ -1,5 +1,0 @@
-
-====Old Pluging downlowads (Prefer Sourceforge)=====
-https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/
-https://sourceforge.net/projects/hplip/files/hplip/
-======================================================
