@@ -9,3 +9,223 @@
 9)vi ./bashrc
 10) alias python= '/usr/local/bin/Python3.9.1'
 11) python --version     #check python version
+
+
+12)pi@raspberrypi:~ $ sudo pip freeze     #to check all packages with version in current python
+DEPRECATION: Python 3.5 reached the end of its life on September 13th, 2020. Please upgrade your Python as Python 3.5 is no longer maintained. pip 21.0 will drop support for Python 3.5 in January 2021. pip 21.0 will remove support for this functionality.
+altgraph==0.16.1
+appdirs==1.4.3
+applescript==2019.4.13
+argcomplete==1.11.0
+astroid==1.4.9
+asttokens==1.1.13
+automationhat==0.1.0
+beautifulsoup4==4.5.3
+blinker==1.3
+blinkt==0.1.2
+buttonshim==0.0.2
+Cap1xxx==0.1.3
+certifi==2020.6.20
+chardet==3.0.4
+click==6.6
+colorama==0.3.7
+colorzero==1.1
+contextvars==2.4
+cryptography==1.7.1
+cycler==0.10.0
+decorator==4.4.1
+detect==2019.4.13
+docutils==0.13.1
+drumhat==0.1.0
+envirophat==1.0.0
+ExplorerHAT==0.4.2
+flake8==3.2.1
+Flask==0.12.1
+fourletterphat==0.1.0
+fpdf==1.7.2
+future==0.17.1
+googletrans==3.0.0
+gpiozero==1.5.0
+h11==0.9.0
+h2==3.2.0
+hpack==3.0.0
+hstspreload==2020.10.20
+html5lib==0.999999999
+httpcore==0.9.1
+httpx==0.13.3
+hyperframe==5.2.0
+idna==2.2
+imageio==2.6.1
+immutables==0.14
+importlib-metadata==1.4.0
+imutils==0.5.3
+isort==4.2.5
+itsdangerous==0.24
+jedi==0.10.2
+Jinja2==2.8
+keyring==10.1
+keyrings.alt==1.3
+lazy-object-proxy==1.2.2
+lxml==3.7.1
+macholib==1.11
+MarkupSafe==0.23
+matplotlib==2.0.0
+mccabe==0.5.3
+microdotphat==0.2.1
+MinimalModbus==0.5
+more-itertools==8.1.0
+mote==0.0.4
+motephat==0.0.2
+mypy==0.470
+networkx==2.4
+notify2==0.3
+numexpr==2.6.1
+numpy==1.12.1
+oauthlib==2.0.1
+only==2019.4.13
+opencv-contrib-python==4.1.1.26
+opencv-python==4.1.1.26
+pandas==0.19.2
+pantilthat==0.0.7
+pbkdf2==1.3
+pefile==2018.8.8
+pexpect==4.2.1
+pgzero==1.2
+phatbeat==0.1.1
+pianohat==0.1.0
+picamera==1.13
+picraft==1.0
+piglow==1.2.4
+pigpio==1.38
+Pillow==7.0.0
+psutil==5.6.7
+ptyprocess==0.5.1
+public==2019.4.13
+py-translate==1.0.3
+pyasn1==0.1.9
+PyBluez==0.23
+pycodestyle==2.2.0
+pycrypto==2.6.1
+pycups==1.9.74
+pyflakes==1.3.0
+pygame==1.9.3
+Pygments==2.2.0
+pygobject==3.22.0
+pyinotify==0.9.6
+PyInstaller==3.4
+PyJWT==1.4.2
+pylint==1.6.5
+pyOpenSSL==16.2.0
+pyparsing==2.1.10
+pyperclip==1.5.27
+pyserial==3.2.1
+python-apt==1.1.0b5
+python-dateutil==2.5.3
+python-escpos==2.2.0
+python-printer-escpos==0.0.2
+python-vlc==3.0.7110
+python-wifi==0.6.1
+pytz==2016.7
+pyusb==1.0.2
+PyWavelets==1.1.1
+pyxdg==0.25
+PyYAML==5.3
+qrcode==6.1
+qt5==0.0.0
+rainbowhat==0.1.0
+reportlab==3.5.23
+requests==2.12.4
+requests-oauthlib==0.7.0
+rfc3986==1.4.0
+roman==2.0.0
+RPi.GPIO==0.6.5
+runcmd==2019.4.13
+scapy==2.4.4
+scikit-image==0.15.0
+scipy==0.18.1
+scrollphat==0.0.7
+scrollphathd==1.2.1
+SecretStorage==2.3.1
+secure-smtplib==0.1.1
+sense-emu==1.1
+simplejson==3.10.0
+six==1.12.0
+skywriter==0.0.7
+sn3218==1.2.7
+sniffio==1.2.0
+spidev==3.3
+tables==3.3.0
+temp==2019.4.13
+tesserocr==2.5.0
+thonny==3.1.0
+thonny-pi==1.1
+touchphat==0.0.1
+twython==3.4.0
+typed-ast==0.6.3
+unicornhathd==0.0.4
+urllib3==1.19.1
+vendorize==0.2.1
+vlc==2018.11.20
+webencodings==0.5
+Werkzeug==0.11.15
+wifi==0.3.8
+wrapt==1.9.0
+zipp==1.0.0
+========================
+
+
+13)sudo pip3 install pandas==0.19.2   # This is sample command to install package with right version.
+14)pi@raspberrypi:~ $ sudo pip show qt5  # This is the command to see detailed of Package.
+DEPRECATION: Python 3.5 reached the end of its life on September 13th, 2020. Please upgrade your Python as Python 3.5 is no longer maintained. pip 21.0 will drop support for Python 3.5 in January 2021. pip 21.0 will remove support for this functionality.
+Name: qt5
+Version: 0.0.0
+Summary: A  placeholder package for testing purposes
+Home-page: UNKNOWN
+Author: empyrical
+Author-email: empyrical@outlook.com
+License: UNKNOWN
+Location: /usr/local/lib/python3.5/dist-packages
+Requires: 
+Required-by:
+
+15) #### Following used commands #######
+pi@raspberrypi:~ $ history
+    1  python --version
+    2  pyinstaller
+    3  sudo pyinstaller
+    4  cd work/
+    5  cd URmini/
+    6  chmod 777 *.*
+    7  chmod 777 *
+    8  ls
+    9  python --version
+   10  pip freeze
+   11  sudo apt-get install xrdp
+   13  sudo pip install qt5==0.0.0
+   14  sudo pip freeze
+   15  sudo apt-get install qt5-default
+   16  sudo apt-get update -y
+   17  sudo apt-get install -y qt5-default
+   18  python -m pip install PyQt5
+   19  sudo pip freeze
+   20  sudo pip show PyQt5
+   21  python --version
+   22  sudo pip3 show PyQt5
+   23  sudo pip install pyqt5
+   24  sudo apt install qt5-default
+   25  sudo apt install pyqt5-default
+   26  clear
+   27  sudo apt-get install qtcreator pyqt5-dev-tools
+   28  sudo apt-get install python3-pyqt5
+   29  sudo apt-get install qttools5-dev-tools
+   30  sudo pip install matplotlib
+   31  sudo pip install pandas
+   32  sudo pip install cv2
+   33  sudo pip install -U numpy
+   34  sudo apt-get install libatlas-base-dev
+   35  sudo pip uninstall numpy
+   36  sudo apt install python3-numpy
+   37  sudo pip install -U numpy
+   38  clear
+   39  history
+   ===========================================================
