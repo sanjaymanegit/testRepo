@@ -1,4 +1,5 @@
 1)Location to Download the NOOBS ZIP files from 
+https://downloads.raspberrypi.org/NOOBS/images/NOOBS-2021-05-28/
 
 2)Unzip Files on Windows m/chown
 
