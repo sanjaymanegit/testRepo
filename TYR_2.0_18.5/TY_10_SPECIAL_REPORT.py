@@ -762,7 +762,6 @@ class TY_10_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['TEST NO.','NO.OF.CYCLES.','CREATED-ON','TEST-TYPE','SPEC. SHAPE','SPEC-NAME','PARTY'])        
          
         connection = sqlite3.connect("tyr.db")  
-        print("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE,'"+str(self.specimen_shape)+"','"+str(self.specimen_name)+"','"+str(self.party_name)+"' FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'")                        
         results=connection.execute("SELECT B.TEST_ID,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.CREATED_ON,B.TEST_TYPE,'"+str(self.specimen_shape)+"','"+str(self.specimen_name)+"','"+str(self.party_name)+"' FROM TEST_MST B where B.TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND B.TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) AND B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='"+str(self.specimen_name)+"'")                        
        
         for row_number, row_data in enumerate(results):            
@@ -970,7 +969,7 @@ class TY_10_Ui_MainWindow(object):
         
         
     
-    def create_report_pdf(self):
+    def create_report_pdf(self):   # This pdf is for all selected test 
         self.del_uncheked()
         self.load_reports()
         self.specimen_shape=""
@@ -1005,12 +1004,14 @@ class TY_10_Ui_MainWindow(object):
         summary_data.append(["Specimen Name: ",str(self.specimen_name),"Unit-Type: ",str(self.unit_type) , " Shape : ",str(self.specimen_shape)," Test Type :",str(test_type)])
         
         
+        all_report_gr_img="all_last_graph.png"        
+        all_pdf_img= Image(all_report_gr_img, 6 * inch, 4 * inch)
         
         
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'),('FONTNAME', (4, 0), (4, -1), 'Helvetica-Bold'),('FONTNAME', (6, 0), (6, -1), 'Helvetica-Bold')]))       
         
-        Elements = [Title,Spacer(1,12),Title2,Spacer(1,12),f3,Spacer(1,12),Spacer(1,12)]
+        Elements = [Title,Spacer(1,12),Title2,Spacer(1,12),f3,Spacer(1,12),all_pdf_img,Spacer(1,12)]
         
         
         
@@ -1023,8 +1024,8 @@ class TY_10_Ui_MainWindow(object):
         childs_data=[]
         childs_data=[['Test ID.','Cycle Id', ' Thickness ','Width' ,' cs. Area']]
         if(int(test_count) > 0):
-            if(test_type == "Tensile"):
-                
+            self.sc_all =all_PlotCanvas(self,width=8, height=5,dpi=90) 
+            if(test_type == "Tensile"):                
                 
                 if (self.specimen_shape=="Rectangle"):
                     childs_data=[]
@@ -1038,6 +1039,12 @@ class TY_10_Ui_MainWindow(object):
                         childs_data.append(['Test.\n Id.','Spec.\n No.','Guage \n Length \n (mm)',' Thick-\n ness  \n (cm) ', ' Width \n (cm) ', 'CS.Area \n (cm2)','Force at Peak \n (Kgf)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)'])        
                     connection = sqlite3.connect("tyr.db")
                     results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,(SELECT X.GUAGE100 FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as GUAGE,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD) ,printf(\"%.2f\", PREC_E_AT_BREAK) ,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID,round(TENSILE_STRENGTH,2),round(MODULUS_100,2),round(MODULUS_200,2),round(MODULUS_300,2) FROM REPORT_PART_2 group by REPORT_ID ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
+                    for k in results:
+                        childs_data.append(k)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'Avg.' as TEST_ID,0 AS SPECIMEN_NO,(SELECT avg(X.GUAGE100) FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as GUAGE,printf(\"%.2f\", avg(A.THICKNESS)),printf(\"%.2f\", avg(A.WIDTH)),printf(\"%.4f\", avg(A.CS_AREA)),printf(\"%.2f\", avg(A.PEAK_LOAD)),printf(\"%.2f\", avg(A.E_PAEK_LOAD)),printf(\"%.2f\", avg(PREC_E_AT_PEAK)),printf(\"%.2f\", avg(E_BREAK_LOAD)) ,printf(\"%.2f\", avg(PREC_E_AT_BREAK)) ,printf(\"%.2f\", avg(TENSILE_STRENGTH)) ,printf(\"%.2f\", avg(MODULUS_100)) ,printf(\"%.2f\", avg(MODULUS_200)),printf(\"%.2f\", avg(MODULUS_300)) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID,round(avg(TENSILE_STRENGTH),2),round(avg(MODULUS_100),2),round(avg(MODULUS_200),2),round(avg(MODULUS_300),2) FROM REPORT_PART_2 group by REPORT_ID ) B WHERE A.REPORT_ID=B.REPORT_ID ")       
                     for k in results:
                         childs_data.append(k)
                     connection.close()
@@ -1084,7 +1091,12 @@ class TY_10_Ui_MainWindow(object):
                     else:   
                             childs_data.append(['Test.\n Id.','Spec.\n No.','Guage \n Length \n (mm)','CS.Area \n (cm2)','Force at Peak \n (Kg)' ,'E@Peak \n (cm)','% E@Peak','E@Break \n (cm)','% E@Break','Tensile Strength \n (Kg/Cm2)','Mod@100% \n (Kg/Cm2)','Mod@200% \n (Kg/Cm2)','Mod@300% \n (Kg/Cm2)'])           
                     connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,(SELECT X.GUAGE100 FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as GUAGE,printf(\"%.2f\", A.INN_DIAMETER),printf(\"%.2f\", A.OUT_DIAMTER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 group by REPORT_ID ) B WHERE A.REPORT_ID=B.REPORT_ID")       
+                    results=connection.execute("SELECT (SELECT X.TEST_ID FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as TEST_ID,((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,(SELECT X.GUAGE100 FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as GUAGE,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 group by REPORT_ID ) B WHERE A.REPORT_ID=B.REPORT_ID")       
+                    for k in results:
+                        childs_data.append(k)
+                    connection.close()
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'Avg' as TEST_ID,0 AS SPECIMEN_NO,(SELECT avg(X.GUAGE100) FROM CYCLES_MST X WHERE X.CYCLE_ID=A.CYCLE_ID) as GUAGE,printf(\"%.4f\", avg(A.CS_AREA)),printf(\"%.2f\", avg(A.PEAK_LOAD)),printf(\"%.2f\", avg(A.E_PAEK_LOAD)),printf(\"%.2f\", avg(PREC_E_AT_PEAK)),printf(\"%.2f\", avg(E_BREAK_LOAD)),printf(\"%.2f\", avg(PREC_E_AT_BREAK)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(MODULUS_100)),printf(\"%.2f\", avg(MODULUS_200)),printf(\"%.2f\", avg(MODULUS_300)) FROM REPORT_PART_2 A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_PART_2 group by REPORT_ID ) B WHERE A.REPORT_ID=B.REPORT_ID")       
                     for k in results:
                         childs_data.append(k)
                     connection.close() 
@@ -2445,7 +2457,191 @@ class PlotCanvas(FigureCanvas):
             print("Incorrect Graph Type !!!")   
     
 
+class all_PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.graph_type=""
+        self.unit_type=""
+        self.cs_area=0
+        self.guage=0
+        self.thickness=0
+        self.test_type=""
+        self.plot()        
+        
+    def plot(self):
+        #data = [random.random() for i in range(25)]
+                
+        ax = self.figure.add_subplot(111)
+        ax.set_facecolor('#CCFFFF')
+        #ax.setStyleSheet("background-color: rgb(255, 239, 242);")
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM ") 
+        for x in results:
+            self.graph_type=str(x[0])
+            self.unit_type=str(x[1])          
+        connection.close()        
+        self.graph_ids=[]
+        self.testx_ids=[]  
+        self.x_num=[0]
+        self.y_num=[0] 
+        self.color=['b','r','g','y','k','c','m','b']
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE,CS_AREA,IFNULL(GUAGE100,0),THINCKNESS FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) order by GRAPH_ID") 
+        for x in results:
+                self.graph_ids.append(x[0])             
+                #ax.set_title("Test Id="+str(x[1]))
+                self.testx_ids.append(x[1])
+                self.cs_area=(x[3])
+                self.guage=(x[4])
+                self.thickness=str(x[5])
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TEST_TYPE FROM TEST_IDS LIMIT 1") 
+        for x in results:                
+                self.test_type=(x[0])              
+        connection.close()
+        
+        
+        
+        
+        if (self.graph_type == "Load Vs Elongation"):
+                
+                ### Univarsal change for  Graphs ####################
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT avg(GRAPH_SCAL_X_LENGTH),avg(GRAPH_SCAL_Y_LOAD) from TEST_MST where TEST_ID IN (SELECT NEW_REPORT_TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                     if(self.unit_type == "Lb/Inch"):
+                         #int_inch=x[0]*
+                         ax.set_xlim(0,int((float(x[0])*0.0393701)))
+                         ax.set_ylim(0,int((float(x[1])*2.20462)))
+                     elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlim(0,int((float(x[0]))))
+                         ax.set_ylim(0,int((float(x[1])*9.81)))                     
+                     elif(self.unit_type == "MPA"):
+                         ax.set_xlim(0,int(x[0]))
+                         ax.set_ylim(0,int((float(x[1])*9.81))) 
+                     else:
+                         ax.set_xlim(0,int(int(x[0])*0.1))
+                         ax.set_ylim(0,int(x[1]))
     
+                
+                for g in range(len(self.graph_ids)):
+                    #print("graph id :"+str(self.graph_ids[g]))
+                    self.x_num=[0]
+                    self.y_num=[0]
+                    connection = sqlite3.connect("tyr.db")
+                    if(self.test_type=="Compress"):                        
+                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    else:
+                        if(self.unit_type == "Lb/Inch"):    
+                            self.kg_to_lb=float(2.20462)
+                            self.mm_to_inch=float(0.0393701) 
+                            results=connection.execute("SELECT X_NUM*'"+str(self.mm_to_inch)+"',Y_NUM*'"+str(self.kg_to_lb)+"'FROM GRAPH_MST WHERE X_NUM > 0 AND GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                        elif(self.unit_type == "Newton/Mm"):
+                            self.kg_to_Newton=float(9.81)                                
+                            results=connection.execute("SELECT X_NUM,Y_NUM*'"+str(self.kg_to_Newton)+"'FROM GRAPH_MST WHERE X_NUM > 0 AND GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                        elif(self.unit_type == "MPA"):
+                            self.kg_to_Newton=float(9.81)                                
+                            results=connection.execute("SELECT X_NUM,Y_NUM*'"+str(self.kg_to_Newton)+"'FROM GRAPH_MST WHERE X_NUM > 0 AND GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                          
+                        else:
+                            results=connection.execute("SELECT X_NUM*0.1,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    for k in results:
+                        self.x_num.append(k[0])
+                        self.y_num.append(k[1])
+                    connection.close() 
+                    if (g < 8):
+                         ax.plot(self.x_num,self.y_num, self.color[g],label="Test_id:"+str(self.testx_ids[g])+"   Graph Id:"+str(self.graph_ids[g]))
+                    else:
+                        ax.plot(self.x_num,self.y_num, 'b',label="Test_id:"+str(self.testx_ids[g])+"   Graph Id:"+str(self.graph_ids[g]))
+                         
+                if(self.test_type=="Compress"):
+                    if(self.unit_type == "Lb/Inch"):  
+                         ax.set_xlabel('Compression(Inch)')
+                         ax.set_ylabel('Load(Lb)')
+                    elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlabel('Compression(mm)')
+                         ax.set_ylabel('Load(N)')
+                    elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlabel('Compression(mm)')
+                         ax.set_ylabel('Load(N)') 
+                    else:
+                         ax.set_xlabel('Compression(cm)')
+                         ax.set_ylabel('Load(Kg)')    
+                else:
+                    if(self.unit_type == "Lb/Inch"):  
+                         ax.set_xlabel('Elongation(Inch)')
+                         ax.set_ylabel('Load(Lb)')
+                    elif(self.unit_type == "Newton/Mm"):
+                         ax.set_xlabel('Elongation(mm)')
+                         ax.set_ylabel('Load(N)')
+                    elif(self.unit_type == "MPA"):
+                         ax.set_xlabel('Elongation(mm)')
+                         ax.set_ylabel('Load(N)')
+                    else:
+                         ax.set_xlabel('Elongation(cm)')
+                         ax.set_ylabel('Load(Kgf)')    
+                
+                ax.legend()
+                ax.minorticks_on()
+                ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+                ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+                self.draw()
+                self.figure.savefig('all_last_graph.png',dpi=100)
+                
+        elif(self.graph_type == "Stress Vs Strain"):
+            #print("Graph Type :"+str(self.graph_type)) 
+            for g in range(len(self.graph_ids)):
+                #print("graph id :"+str(self.graph_ids[g]))
+                self.x_num=[0]                
+                self.y_num=[0]
+                if(self.test_type !="QLSS"):
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    for k in results:                    
+                        self.x_num.append((k[0]/float(self.guage))*100)
+                        self.y_num.append((k[1]/float(self.cs_area)*100))
+                    connection.close() 
+                    print("self.cs_area:"+str(self.cs_area))
+                    if (g < 8):
+                        ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                else:
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    for k in results:                    
+                        self.x_num.append(((k[0]/(2*float(self.thickness))))*100)
+                        self.y_num.append((k[1]/float(self.cs_area)*100))
+                    connection.close() 
+                    print("self.cs_area:"+str(self.cs_area))
+                    if (g < 8):
+                        ax.plot(self.x_num,self.y_num, self.color[g],label="Test_id:"+str(self.testx_ids[g])+"   Graph Id:"+str(self.graph_ids[g]))
+                    else:
+                        ax.plot(self.x_num,self.y_num, 'b',label="Test_id:"+str(self.testx_ids[g])+"   Graph Id:"+str(self.graph_ids[g]))
+                
+                
+                
+                ax.set_xlabel('Strain(%)')
+                ax.set_ylabel('Stress')    
+                ax.legend()
+                ax.minorticks_on()
+                ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+                ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+                self.draw()
+                self.figure.savefig('all_last_graph.png',dpi=100)
+        else:
+            print("Incorrect Graph Type !!!")   
+    
+       
             
 
 if __name__ == "__main__":
