@@ -700,8 +700,12 @@ class ty_29_Ui_MainWindow(object):
         self.label_66.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_66.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_66.setObjectName("label_66")
-        self.label_67 = QtWidgets.QLabel(self.frame)
-        self.label_67.setGeometry(QtCore.QRect(850, 130, 101, 31))
+        self.label_67 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.label_67)
+        self.label_67.setValidator(input_validator)
+        
+        self.label_67.setGeometry(QtCore.QRect(850, 130, 60, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -938,7 +942,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_15.setText(_translate("MainWindow", "Max :"))
         self.label_16.setText(_translate("MainWindow", "Min :"))
         self.label_17.setText(_translate("MainWindow", "Avg :"))
-        self.label_25.setText(_translate("MainWindow", "Max.Length (mm)"))
+        self.label_25.setText(_translate("MainWindow", "Test Time (sec)"))
         self.label_26.setText(_translate("MainWindow", "Max. Load(Kgf)"))
         self.label_27.setText(_translate("MainWindow", "111.00"))
         self.label_28.setText(_translate("MainWindow", "222.00"))
@@ -965,11 +969,11 @@ class ty_29_Ui_MainWindow(object):
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
-        self.label_14.setText(_translate("MainWindow", "Elongation : \n"
-" (mm) "))
+        self.label_14.setText(_translate("MainWindow", "Time : \n"
+" (sec) "))
         self.label_61.setText(_translate("MainWindow", "Rectangle"))
-        self.label_66.setText(_translate("MainWindow", "Total Specemens :"))
-        self.label_67.setText(_translate("MainWindow", "0"))
+        self.label_66.setText(_translate("MainWindow", "Test Time (sec) :"))
+        self.label_67.setText(_translate("MainWindow", "60"))
         self.label_68.setText(_translate("MainWindow", "(Kgf.)"))
         self.label_70.setText(_translate("MainWindow", "(mm)"))
         self.label_71.setText(_translate("MainWindow", "Y- Axis:"))
@@ -989,6 +993,10 @@ class ty_29_Ui_MainWindow(object):
         self.lineEdit_11.textChanged.connect(self.click_onRadiobutt)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
+        self.pushButton_5.clicked.connect(self.open_email_report)    
+        self.pushButton_7.clicked.connect(self.open_pdf)
+        self.pushButton_6.clicked.connect(self.open_comment_popup)
+        self.pushButton_8.clicked.connect(self.print_file)
         self.load_data()
         
     def load_data(self):
@@ -1044,8 +1052,7 @@ class ty_29_Ui_MainWindow(object):
         self.sc_blank =PlotCanvas_blank(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
-        self.lcdNumber_2.setProperty("value", 0.0)
-        
+        self.lcdNumber_2.setProperty("value", 0.0)        
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
@@ -1064,15 +1071,26 @@ class ty_29_Ui_MainWindow(object):
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
                 self.start_test_by="elongation"
+                self.label_13.setText("Elongation \n (mm)")
+                self.sc_blank =PlotCanvas2_blank(self)          
+                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         elif(self.radioButton_2.isChecked()):### Load
                 self.lineEdit_10.setEnabled(True)
                 self.lineEdit_11.setDisabled(True)
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
                 self.start_test_by="load"
+                self.label_13.setText("Load \n (Kgf)")
+                self.sc_blank =PlotCanvas_blank(self)          
+                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         else:
             print("Enable Radio Button Please ......")
-            
+        
+        
+
+        self.show_grid_data_PROOF()
+        
+       
             
      
             
@@ -1081,8 +1099,7 @@ class ty_29_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                        cursor = connection.cursor()                
-                       cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1 = '"+str(self.lineEdit_12.text())+"', GRAPH_SCALE_CELL_2= '"+str(self.lineEdit_13.text())+"' ")
-                                        
+                       cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1 = '"+str(self.lineEdit_12.text())+"', GRAPH_SCALE_CELL_2= '"+str(self.lineEdit_13.text())+"' ")                                        
         connection.commit();
         connection.close()        
         self.sc_blank =PlotCanvas_blank(self)          
@@ -1140,7 +1157,7 @@ class ty_29_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"'")
                             cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                         connection.commit();
                         connection.close()
@@ -1150,7 +1167,7 @@ class ty_29_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                           cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"'")
                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','PROOF','"+str(self.lineEdit_9.text())+"')")
                         connection.commit();
                         connection.close()
@@ -1193,7 +1210,7 @@ class ty_29_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(self.sc_new.arr_p[g])+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1211,11 +1228,10 @@ class ty_29_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,"+str(self.label_67.text())+",PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
-                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                          
+                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
@@ -1283,8 +1299,12 @@ class ty_29_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(5)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Max.Elongation '+str(self.x_unit),'Status','REC.NO '])  
-              
+        
+        if(self.start_test_by=="load"):
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Test Time (sec)','Status','REC.NO '])  
+        else:
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Elongation '+str(self.x_unit),'Test Time (sec)','Status','REC.NO '])
+                
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
         self.tableWidget.setColumnWidth(2, 170)
@@ -1316,7 +1336,7 @@ class ty_29_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute(" select count(cycle_id),ifnull(max(cycle_num),0)+1 from CYCLES_MST WHERE TEST_ID ='"+str(self.label_12.text())+"' ")       
         for x in results:
-                    self.label_67.setText(str(x[0]))                    
+                    #self.label_67.setText(str(x[0]))                    
                     self.cycle_num=int(x[1])
                     print("self.cycle_num :"+str(self.cycle_num))
         connection.close()
@@ -1350,7 +1370,197 @@ class ty_29_Ui_MainWindow(object):
                 
     def show_all_specimens(self): 
         self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
-        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)   
+        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
+        
+        
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def create_pdf_PROOF(self):
+        self.remark=""
+        self.unit_typex=self.comboBox_2.currentText()
+        self.unit_typex == "Kgf/mm"        
+        
+        if(self.start_test_by=="load"):
+            if(self.unit_typex == "Kgf/mm"):            
+                data2= [['Spec.No', 'Max.Load(Kgf)', 'Test Time (sec)', 'Status']]
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+        else:
+                data2= [['Spec.No', 'Max.Elongation(mm)', 'Test Time (sec)', 'Status']]
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+        
+        y=300
+        Elements=[]
+        summary_data=[]
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
+        
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[8])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            self.remark=str(x[12])
+        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        
+        
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+                
+        footer_2= Paragraph("     Authorised: __________________________________.            Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=20,
+                                bottomMargin=10,)
+        doc.build(Elements)
+        
+    def open_pdf(self):
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=100) 
+        self.create_pdf_PROOF() 
+        
+        os.system("xpdf ./reports/test_report.pdf")       
+        
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/test_report.pdf /media/usb/Report_of_test_"+str(self.test_id)+".pdf")
+                os.system("sudo umount /media/usb")
+        else:
+             print("Please connect usb storage device") 
+        
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data.txt")
+        try:
+           f = open('lsusb_data.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+        return product_id
+    
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_comment_popup(self):        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+
 
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
@@ -1363,7 +1573,7 @@ class PlotCanvas(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)       
-        
+        self.proof_test_by=""
         self.plot()        
         
         
@@ -1385,12 +1595,18 @@ class PlotCanvas(FigureCanvas):
         self.unit_type=""
         self.color=['b','r','g','y','k','c','m','b']
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
-#        connection = sqlite3.connect("tyr.db")
-#        results=connection.execute("SELECT NEW_TEST_NAME,CURR_UNIT_TYPE FROM GLOBAL_VAR") 
-#        for x in results:
-#            self.test_type=str(x[0])
-#            self.unit_type=str(x[1])
-#        connection.close()
+
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT PROOF_TEST_BY FROM GLOBAL_VAR") 
+        for x in results:
+            self.proof_test_by=str(x[0])
+            if(self.proof_test_by=="load"):
+                     ax.set_xlabel('Time (sec)')
+                     ax.set_ylabel('Load kgf)')                
+            else:
+                     ax.set_xlabel('Time (sec)')
+                     ax.set_ylabel('Elongation mm)')  
+        connection.close()
         
         self.unit_type="Kgf/mm"
         ### Univarsal change for  Graphs #####################
@@ -1400,18 +1616,15 @@ class PlotCanvas(FigureCanvas):
             if(self.unit_type == "N/mm"):
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1])*9.81)
-                 ax.set_xlabel('Distnace (mm)')
-                 ax.set_ylabel('Load (N)')
+                 
             if(self.unit_type == "Kgf/mm"):
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1]))
-                 ax.set_xlabel('Distnace (mm)')
-                 ax.set_ylabel('Load kgf)')
+                 
             else:     
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1])*9.81)
-                 ax.set_xlabel('Distnace (mm)')
-                 ax.set_ylabel('Load (N)')
+                 
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -1530,6 +1743,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.max_length=0
         self.flexural_max_load=100
         self.unit_type =""
+        self.proof_test_by=""
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.plot_auto()
@@ -1550,7 +1764,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
@@ -1563,6 +1777,16 @@ class PlotCanvas_Auto(FigureCanvas):
              #self.max_length=float(x[3])
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
+             self.proof_test_by=str(x[6])
+             if(self.proof_test_by=="load"):
+                     self.axes.set_xlabel('Time (sec)')
+                     self.axes.set_ylabel('Load kgf)')                
+             else:
+                     self.axes.set_xlabel('Time (sec)')
+                     self.axes.set_ylabel('Elongation mm)')
+             
+             
+             
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
@@ -1574,24 +1798,21 @@ class PlotCanvas_Auto(FigureCanvas):
                      #self.flexural_max_load=int(x[1])/9.81
                      self.xlim=int(x[0])
                      self.ylim=int(x[1])
-                     self.axes.set_xlabel('Distance (mm)')
-                     self.axes.set_ylabel('Load (Kgf)')
+                     
              elif(self.unit_type == "N/mm"):
                      self.axes.set_xlim(0,int(x[0]))
                      self.axes.set_ylim(0,int(x[1])*9.81)
                      #self.flexural_max_load=int(x[1])/9.81
                      self.xlim=int(x[0])
                      self.ylim=int(x[1])* 9.81
-                     self.axes.set_xlabel('Distance (mm)')
-                     self.axes.set_ylabel('Load (N)')         
+                              
              else:
                      self.axes.set_xlim(0,int(x[0]))
                      self.axes.set_ylim(0,int(x[1]))
                      #self.flexural_max_load=int(x[1])
                      self.xlim=int(x[0])
                      self.ylim=int(x[1])
-                     self.axes.set_xlabel('Distance (xxmm)')
-                     self.axes.set_ylabel('Load (xN)') 
+                      
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
         connection.close()
@@ -1907,14 +2128,16 @@ class PlotCanvas_blank(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.plot_blank()        
         
-    def plot_blank(self):                
+    def plot_blank(self):               
         
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
+#        connection = sqlite3.connect("tyr.db")
+#        connection.commit();
+#        with connection:        
+#                cursor = connection.cursor()                            
+#                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#        connection.commit();
+#        connection.close()
+        
         self.x=[0,0,0,0,0,0,0,0]
         self.y=[0,0,0,0,0,0,0,0]
         
@@ -1936,9 +2159,69 @@ class PlotCanvas_blank(FigureCanvas):
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:             
                  ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
-                 ax.set_xlabel('Distance (mm)')
+                 ax.set_ylim(0,int(x[1]))                               
+                 ax.set_xlabel('Time (sec)')
                  ax.set_ylabel('Load (Kgf) ')             
+        connection.close()
+               
+        for i in range(len(self.x)):
+              self.p.append(self.x[i])
+              self.q.append(self.y[i])
+        
+        ax.plot(self.x,self.y,'b')
+        self.draw() 
+
+
+      
+        
+class PlotCanvas2_blank(FigureCanvas):
+    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        self.unit_type=""
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot_blank()        
+        
+    def plot_blank(self):               
+        
+#        connection = sqlite3.connect("tyr.db")
+#        connection.commit();
+#        with connection:        
+#                cursor = connection.cursor()                            
+#                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#        connection.commit();
+#        connection.close()
+        
+        self.x=[0,0,0,0,0,0,0,0]
+        self.y=[0,0,0,0,0,0,0,0]
+        
+        self.p=list()
+        self.q=list()
+        self.test_type="Tensile"
+        ax = self.figure.add_subplot(111)
+        ax.set_facecolor('#CCFFFF')
+        ax.minorticks_on()
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CURR_UNIT_TYPE from GLOBAL_VAR") 
+        for x in results:
+                self.unit_type=str(x[0]) 
+        connection.close() 
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,PROOF_TEST_MODE from SETTING_MST") 
+        for x in results:             
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1]))                 
+                 ax.set_xlabel('Time (sec)')
+                 ax.set_ylabel('Elongation (mm) ')
+                     
         connection.close()
                
         for i in range(len(self.x)):
