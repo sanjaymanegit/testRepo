@@ -888,6 +888,8 @@ class ty_29_Ui_MainWindow(object):
         self.cycle_num=0
         self.x_unit='mm'
         self.y_unit='N'
+        self.start_test_by="load"  #### This status is "load" Or "elongation"
+        self.status_str=""
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -981,7 +983,12 @@ class ty_29_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_16.clicked.connect(self.set_graoh)
         self.pushButton_4.clicked.connect(self.start_test_PROOF)
+        self.radioButton.clicked.connect(self.click_onRadiobutt)
+        self.radioButton_2.clicked.connect(self.click_onRadiobutt)
+        self.lineEdit_10.textChanged.connect(self.click_onRadiobutt)
+        self.lineEdit_11.textChanged.connect(self.click_onRadiobutt)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.pushButton_13.clicked.connect(self.show_all_specimens)
         self.load_data()
         
     def load_data(self):
@@ -1038,6 +1045,7 @@ class ty_29_Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
+        
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
@@ -1047,9 +1055,27 @@ class ty_29_Ui_MainWindow(object):
             self.label_51.setText(str(x[3])) # Party Name
             self.label_61.setText(str(x[7]))
         connection.close()
+        self.click_onRadiobutt()
         
-        
-
+    def click_onRadiobutt(self):
+        if(self.radioButton.isChecked()): ### Elongation 
+                self.lineEdit_10.setDisabled(True)
+                self.lineEdit_11.setEnabled(True)
+                self.label_21.show()
+                self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
+                self.start_test_by="elongation"
+        elif(self.radioButton_2.isChecked()):### Load
+                self.lineEdit_10.setEnabled(True)
+                self.lineEdit_11.setDisabled(True)
+                self.label_21.show()
+                self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
+                self.start_test_by="load"
+        else:
+            print("Enable Radio Button Please ......")
+            
+            
+     
+            
     
     def set_graoh(self):
         connection = sqlite3.connect("tyr.db")              
@@ -1132,8 +1158,8 @@ class ty_29_Ui_MainWindow(object):
               
     
     def show_load_cell_val(self):
-        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
-        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         
         if(str(self.sc_new.save_data_flg) =="Yes"):            
                 self.reset()
@@ -1145,6 +1171,9 @@ class ty_29_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
+                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        
     
     def reset(self):        
         if(self.timer3.isActive()): 
@@ -1168,21 +1197,21 @@ class ty_29_Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
-            #self.get_points()
+            self.update_status()
             #self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',STATUS='"+str(self.status_str)+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT X_NUM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))")
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
@@ -1202,6 +1231,47 @@ class ty_29_Ui_MainWindow(object):
             print("Data Saved Ok in STG_GRAPH_MST")           
             self.show_grid_data_PROOF()
     
+    def update_status(self):
+        #self.start_test_by="load"  #### This status is "load" Or "elongation"
+        self.status_str=""
+        self.max_load_proof=str(self.lineEdit_10.text())
+        self.max_elongation_proof=str(self.lineEdit_11.text())
+        if(self.start_test_by=="load"):
+            connection = sqlite3.connect("tyr.db")         
+            results=connection.execute("SELECT IFNULL(MAX(Y_NUM),0) FROM STG_GRAPH_MST")
+            for x in results:
+                if(float(x[0]) > int(self.max_load_proof)):
+                         print("PASS for Max Load :"+str(self.max_load_proof))
+                         self.status_str="PASS for Max Load :"+str(self.max_load_proof)
+                         
+                elif(float(x[0]) == int(self.max_load_proof)):
+                         print("PASS for Max Load :"+str(self.max_load_proof))
+                         self.status_str="PASS for Max Load :"+str(self.max_load_proof)
+                else:
+                         print("FAIL for Max Load :"+str(self.max_load_proof))
+                         self.status_str="FAIL for Max Load :"+str(self.max_load_proof)
+                         
+            connection.close()           
+        elif(self.start_test_by=="elongation"):
+            connection = sqlite3.connect("tyr.db")         
+            results=connection.execute("SELECT IFNULL(MAX(X_NUM),0) FROM STG_GRAPH_MST")
+            for x in results:
+                if(float(x[0]) > int(self.max_elongation_proof)):
+                         print("PASS")
+                         self.status_str="PASS for Max Elong. :"+str(self.max_elongation_proof)
+                elif(float(x[0]) == int(self.max_elongation_proof)):
+                         print("PASS")
+                         self.status_str="PASS for Max Elong. :"+str(self.max_elongation_proof)
+                else:
+                         print("FAIL")
+                         self.status_str="FAIL for Max Elong. :"+str(self.max_elongation_proof)
+            connection.close()            
+        else:
+            print("Invalid Status.")
+            
+        
+        
+    
     def show_grid_data_PROOF(self):
         self.x_unit='(mm)'
         self.y_unit='(Kgf)'
@@ -1218,7 +1288,7 @@ class ty_29_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
         self.tableWidget.setColumnWidth(2, 170)
-        self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 100)
      
         
@@ -1226,11 +1296,11 @@ class ty_29_Ui_MainWindow(object):
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
         if(self.unit_type=="N/mm"): 
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", LOAD_POINT_1),printf(\"%.2f\", LOAD_POINT_2),'PASS', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         elif(self.unit_type == "Kgf/mm"):
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", LOAD_POINT_1),printf(\"%.2f\", LOAD_POINT_2),'PASS', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         else:
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", LOAD_POINT_1),printf(\"%.2f\", LOAD_POINT_2),'PASS', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1251,14 +1321,131 @@ class ty_29_Ui_MainWindow(object):
                     print("self.cycle_num :"+str(self.cycle_num))
         connection.close()
         
+        self.unit_type=self.comboBox_2.currentText()
+        connection = sqlite3.connect("tyr.db")
+        if(self.unit_type == "Kgf/mm"):
+               results=connection.execute(" select  round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LOAD_MM),2),round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LOAD_MM),2),round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LOAD_MM),2) from CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")       
+        else:
+               results=connection.execute(" select  round(avg(PEAK_LOAD_KG),2), round(avg(E_AT_PEAK_LOAD_MM),2),round(min(PEAK_LOAD_KG),2), round(min(E_AT_PEAK_LOAD_MM),2),round(max(PEAK_LOAD_KG),2), round(max(E_AT_PEAK_LOAD_MM),2) from CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")       
+      
+        for x in results:
+                    self.label_27.setText(str(x[0]))  
+                    self.label_31.setText(str(x[1]))
+                    
+                    self.label_28.setText(str(x[2]))  
+                    self.label_32.setText(str(x[3]))
+                    
+                    self.label_29.setText(str(x[4]))  
+                    self.label_33.setText(str(x[5]))
+                                   
+        connection.close()
+        print("Calculations Updated !!!!!")
+        
+        
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
             self.tableWidget.removeRow(i)      
                 
+    def show_all_specimens(self): 
+        self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
+        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)   
+
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        #fig.savefig('ssdsd.png')
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #FigureCanvas.setStyleSheet("background-color:red;")
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)       
+        
+        self.plot()        
         
         
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[0.0]
+        self.test_type="Tensile"
+        self.unit_type=""
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT NEW_TEST_NAME,CURR_UNIT_TYPE FROM GLOBAL_VAR") 
+#        for x in results:
+#            self.test_type=str(x[0])
+#            self.unit_type=str(x[1])
+#        connection.close()
+        
+        self.unit_type="Kgf/mm"
+        ### Univarsal change for  Graphs #####################
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+            if(self.unit_type == "N/mm"):
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1])*9.81)
+                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_ylabel('Load (N)')
+            if(self.unit_type == "Kgf/mm"):
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1]))
+                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_ylabel('Load kgf)')
+            else:     
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1])*9.81)
+                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_ylabel('Load (N)')
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+             self.graph_ids.append(x[0])             
+        connection.close()
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+            print(" Unit Type :"+str(self.unit_type))
+            connection = sqlite3.connect("tyr.db")
+            if(self.unit_type == "N/mm"):
+                results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.unit_type == "Kgf/mm"):
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:                
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                    self.x_num.append(k[0])
+                    self.y_num.append(k[1])
+            connection.close()
+            if(g < 8 ):
+                    ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+            
+        print("self.test_type:"+str(self.test_type))
+        
+        ax.legend()        
+        self.draw()
+        self.figure.savefig('last_graph.png',dpi=100)
+
+
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -1588,12 +1775,14 @@ class PlotCanvas_Auto(FigureCanvas):
 #                        self.q=float(self.q)
 
 
+                self.p=float(self.p)
                 self.p_cm=float(self.p)/10
                 self.arr_p_cm.append(float(self.p_cm))
                 
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
+                self.q=float(self.q)
                 self.q_n=float(self.q)*9.81
                 self.arr_q_n.append(float(self.q_n))
                 
