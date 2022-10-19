@@ -942,7 +942,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_15.setText(_translate("MainWindow", "Max :"))
         self.label_16.setText(_translate("MainWindow", "Min :"))
         self.label_17.setText(_translate("MainWindow", "Avg :"))
-        self.label_25.setText(_translate("MainWindow", "Test Time (sec)"))
+        self.label_25.setText(_translate("MainWindow", "Elongation (mm)"))
         self.label_26.setText(_translate("MainWindow", "Max. Load(Kgf)"))
         self.label_27.setText(_translate("MainWindow", "111.00"))
         self.label_28.setText(_translate("MainWindow", "222.00"))
@@ -969,8 +969,8 @@ class ty_29_Ui_MainWindow(object):
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
-        self.label_14.setText(_translate("MainWindow", "Time : \n"
-" (sec) "))
+        self.label_14.setText(_translate("MainWindow", "Elongation: \n"
+" (mm) "))
         self.label_61.setText(_translate("MainWindow", "Rectangle"))
         self.label_66.setText(_translate("MainWindow", "Test Time (sec) :"))
         self.label_67.setText(_translate("MainWindow", "60"))
@@ -1071,18 +1071,18 @@ class ty_29_Ui_MainWindow(object):
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
                 self.start_test_by="elongation"
-                self.label_13.setText("Elongation \n (mm)")
-                self.sc_blank =PlotCanvas2_blank(self)          
-                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+                #self.label_13.setText("Load \n (Kgf)")
+#                self.sc_blank =PlotCanvas2_blank(self)          
+#                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         elif(self.radioButton_2.isChecked()):### Load
                 self.lineEdit_10.setEnabled(True)
                 self.lineEdit_11.setDisabled(True)
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
                 self.start_test_by="load"
-                self.label_13.setText("Load \n (Kgf)")
-                self.sc_blank =PlotCanvas_blank(self)          
-                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+                #self.label_13.setText("Load \n (Kgf)")
+#                self.sc_blank =PlotCanvas_blank(self)          
+#                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         else:
             print("Enable Radio Button Please ......")
         
@@ -1157,7 +1157,7 @@ class ty_29_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")
                             cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                         connection.commit();
                         connection.close()
@@ -1167,7 +1167,7 @@ class ty_29_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                           cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")
                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','PROOF','"+str(self.lineEdit_9.text())+"')")
                         connection.commit();
                         connection.close()
@@ -1221,14 +1221,14 @@ class ty_29_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',STATUS='"+str(self.status_str)+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',STATUS='"+str(self.status_str)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,"+str(self.label_67.text())+",PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
@@ -1301,9 +1301,9 @@ class ty_29_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
         if(self.start_test_by=="load"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Test Time (sec)','Status','REC.NO '])  
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Elongation(mm)','Status','REC.NO '])  
         else:
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Elongation '+str(self.x_unit),'Test Time (sec)','Status','REC.NO '])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Elongation '+str(self.x_unit),'Elongation(mm)','Status','REC.NO '])
                 
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1764,7 +1764,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
@@ -1779,13 +1779,15 @@ class PlotCanvas_Auto(FigureCanvas):
              self.unit_type=str(x[5])
              self.proof_test_by=str(x[6])
              if(self.proof_test_by=="load"):
-                     self.axes.set_xlabel('Time (sec)')
-                     self.axes.set_ylabel('Load kgf)')                
+                     self.axes.set_xlabel('Elongation (mm)')
+                     self.axes.set_ylabel('Load (kgf)')                
              else:
-                     self.axes.set_xlabel('Time (sec)')
-                     self.axes.set_ylabel('Elongation mm)')
+                     self.axes.set_xlabel('Elongation (mm)')
+                     self.axes.set_ylabel('Load (kgf)')
              
-             
+             self.proof_max_load=float(str(x[7]))
+             self.proof_max_length=float(str(x[8]))
+             self.test_time_sec=float(str(x[9]))
              
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
@@ -1893,13 +1895,23 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("len(self.ybuff) :"+str(len(self.ybuff)))
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
+                        #self.ser.write(b'*S2T000.0 000.0\r')
+                        #print("Start Command :*S2P"+str(self.proof_max_load)+" "+str(self.proof_max_length)+" "+str(self.test_time_sec)+"\r")
+                        self.command_str="*S2P%.2f"%self.proof_max_load+" %.2f"%self.proof_max_length+" %.2f"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        
                     else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
+                        #self.ser.write(b'*S1P000.0 000.0\r')
+                        #print("Start Command:*S1T000.0 000.0\r")
+                        self.command_str="*S1P%.2f"%self.proof_max_load+" %.2f"%self.proof_max_length+" %.2f"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
                 else:
                     print("Error :Serial O/P is not getting ")
+                    
             
         except IOError:
             #print("IO Errors")
@@ -2160,7 +2172,7 @@ class PlotCanvas_blank(FigureCanvas):
         for x in results:             
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1]))                               
-                 ax.set_xlabel('Time (sec)')
+                 ax.set_xlabel('Elongation (mm)')
                  ax.set_ylabel('Load (Kgf) ')             
         connection.close()
                
@@ -2174,62 +2186,7 @@ class PlotCanvas_blank(FigureCanvas):
 
       
         
-class PlotCanvas2_blank(FigureCanvas):
-    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        self.unit_type=""
-        FigureCanvas.__init__(self, fig)
-        #self.setParent(parent)
-        FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-        self.plot_blank()        
-        
-    def plot_blank(self):               
-        
-#        connection = sqlite3.connect("tyr.db")
-#        connection.commit();
-#        with connection:        
-#                cursor = connection.cursor()                            
-#                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-#        connection.commit();
-#        connection.close()
-        
-        self.x=[0,0,0,0,0,0,0,0]
-        self.y=[0,0,0,0,0,0,0,0]
-        
-        self.p=list()
-        self.q=list()
-        self.test_type="Tensile"
-        ax = self.figure.add_subplot(111)
-        ax.set_facecolor('#CCFFFF')
-        ax.minorticks_on()
-        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-       
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CURR_UNIT_TYPE from GLOBAL_VAR") 
-        for x in results:
-                self.unit_type=str(x[0]) 
-        connection.close() 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,PROOF_TEST_MODE from SETTING_MST") 
-        for x in results:             
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))                 
-                 ax.set_xlabel('Time (sec)')
-                 ax.set_ylabel('Elongation (mm) ')
-                     
-        connection.close()
-               
-        for i in range(len(self.x)):
-              self.p.append(self.x[i])
-              self.q.append(self.y[i])
-        
-        ax.plot(self.x,self.y,'b')
-        self.draw() 
+
         
 
 if __name__ == "__main__":
