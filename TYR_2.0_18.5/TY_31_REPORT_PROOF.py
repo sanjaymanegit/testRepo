@@ -51,7 +51,7 @@ from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
 
-class ty_29_Ui_MainWindow(object):
+class ty_31_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -907,8 +907,10 @@ class ty_29_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_13.setText(_translate("MainWindow", "All"))
+        self.pushButton_4.hide()
+        self.pushButton_13.hide()
         self.label_21.setText(_translate("MainWindow", ""))
-        
+        self.label_21.hide()
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
@@ -941,6 +943,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "001"))
         self.label_13.setText(_translate("MainWindow", "Load \n"
 " (Kgf) :"))
+        self.label_13.hide()
         self.label_22.setText(_translate("MainWindow", ""))
         self.label_15.setText(_translate("MainWindow", "Max :"))
         self.label_16.setText(_translate("MainWindow", "Min :"))
@@ -953,11 +956,8 @@ class ty_29_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "666.99"))
         self.label_32.setText(_translate("MainWindow", "777.00"))
         self.label_33.setText(_translate("MainWindow", "888.00"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "New Item"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "New Item"))
+        self.comboBox.setDisabled(True)
+        
         self.label_48.setText(_translate("MainWindow", "Batch ID:"))
         self.label_49.setText(_translate("MainWindow", "PROOF TEST"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
@@ -972,8 +972,10 @@ class ty_29_Ui_MainWindow(object):
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
+        self.pushButton_9.hide()
         self.label_14.setText(_translate("MainWindow", "Elongation: \n"
 " (mm) "))
+        self.label_14.hide()
         self.label_61.setText(_translate("MainWindow", "Rectangle"))
         self.label_66.setText(_translate("MainWindow", "Test Time (sec) :"))
         self.label_67.setText(_translate("MainWindow", "5"))
@@ -1040,11 +1042,10 @@ class ty_29_Ui_MainWindow(object):
             else:
                 self.lineEdit_12.setText(str(x[0]))
                 self.lineEdit_13.setText(str(x[1]))
-        connection.close()
-        
+        connection.close()        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("SELECT TEST_ID FROM GLOBAL_VAR")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
@@ -1052,15 +1053,21 @@ class ty_29_Ui_MainWindow(object):
         connection.close()
         self.onchage_combo()
         self.show_grid_data_PROOF()
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
         
-        self.pushButton_5.setDisabled(True)
-        self.pushButton_6.setDisabled(True)
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_8.setDisabled(True)
+        
+        self.lcdNumber.hide()
+        self.lcdNumber_2.hide()
+        self.lineEdit_3.setReadOnly(True)
+        self.lineEdit_9.setReadOnly(True)
+        self.lineEdit_10.setReadOnly(True)
+        self.lineEdit_11.setReadOnly(True)
+        self.label_67.setReadOnly(True)
+        
+        
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
@@ -1077,8 +1084,8 @@ class ty_29_Ui_MainWindow(object):
                 self.lineEdit_10.setDisabled(True)
                 self.lineEdit_10.setText("9999")
                 self.lineEdit_11.setEnabled(True)
-                self.label_21.show()
-                self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
+                self.label_21.hide()
+                #self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
                 self.start_test_by="elongation"
                 #self.label_13.setText("Load \n (Kgf)")
 #                self.sc_blank =PlotCanvas2_blank(self)          
@@ -1087,8 +1094,8 @@ class ty_29_Ui_MainWindow(object):
                 self.lineEdit_10.setEnabled(True)
                 self.lineEdit_11.setText("9999")
                 self.lineEdit_11.setDisabled(True)
-                self.label_21.show()
-                self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
+                #self.label_21.show()
+                #self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
                 self.start_test_by="load"
                 #self.label_13.setText("Load \n (Kgf)")
 #                self.sc_blank =PlotCanvas_blank(self)          
@@ -1112,7 +1119,7 @@ class ty_29_Ui_MainWindow(object):
                        cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1 = '"+str(self.lineEdit_12.text())+"', GRAPH_SCALE_CELL_2= '"+str(self.lineEdit_13.text())+"' ")                                        
         connection.commit();
         connection.close()        
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
         
@@ -1613,11 +1620,11 @@ class PlotCanvas(FigureCanvas):
         for x in results:
             self.proof_test_by=str(x[0])
             if(self.proof_test_by=="load"):
-                     ax.set_xlabel('Time (sec)')
+                     ax.set_xlabel('Elongation (mm)')
                      ax.set_ylabel('Load kgf)')                
             else:
-                     ax.set_xlabel('Time (sec)')
-                     ax.set_ylabel('Elongation mm)')  
+                     ax.set_xlabel('Elongation (mm)')
+                     ax.set_ylabel('Load kgf)')
         connection.close()
         
         self.unit_type="Kgf/mm"
@@ -2206,7 +2213,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = ty_29_Ui_MainWindow()
+    ui = ty_31_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
