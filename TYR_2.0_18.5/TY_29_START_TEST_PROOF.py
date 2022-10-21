@@ -701,7 +701,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_66.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_66.setObjectName("label_66")
         self.label_67 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        reg_ex = QRegExp("(\\d+\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.label_67)
         self.label_67.setValidator(input_validator)
         
@@ -717,7 +717,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_67.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_67.setObjectName("label_67")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        reg_ex = QRegExp("(\\d+\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
         self.lineEdit_10.setValidator(input_validator)
         self.lineEdit_10.setGeometry(QtCore.QRect(450, 190, 60, 31))
@@ -747,7 +747,7 @@ class ty_29_Ui_MainWindow(object):
         self.line_17.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_17.setObjectName("line_17")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        reg_ex = QRegExp("(\\d+\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
         self.lineEdit_11.setValidator(input_validator)
         self.lineEdit_11.setGeometry(QtCore.QRect(850, 190, 61, 31))
@@ -1000,6 +1000,7 @@ class ty_29_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
         self.load_data()
         
     def load_data(self):
@@ -1572,7 +1573,29 @@ class ty_29_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
-
+    def delete_cycle(self):
+        i = self.tableWidget.rowCount()   
+        if(i>0):
+            row = self.tableWidget.currentRow()
+            
+            self.cycle_id=str(self.tableWidget.item(row, 4).text())
+            if(int(self.cycle_id) > 0):
+                    close = QMessageBox()
+                    close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
+                    close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+                    close = close.exec()
+                    if close == QMessageBox.Yes:
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                        cursor = connection.cursor()                
+                                        cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                        
+                        connection.commit();
+                        connection.close()
+                        self.show_grid_data_PROOF()
+                        
+            else:
+                    pass  
 
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):

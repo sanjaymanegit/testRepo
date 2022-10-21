@@ -959,7 +959,7 @@ class ty_31_Ui_MainWindow(object):
         self.comboBox.setDisabled(True)
         
         self.label_48.setText(_translate("MainWindow", "Batch ID:"))
-        self.label_49.setText(_translate("MainWindow", "PROOF TEST"))
+        self.label_49.setText(_translate("MainWindow", "REPORTS - PROOF TEST"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
         self.pushButton_6.setText(_translate("MainWindow", "Remark"))
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
@@ -1005,14 +1005,24 @@ class ty_31_Ui_MainWindow(object):
         self.load_data()
         
     def load_data(self):
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TEST_ID FROM GLOBAL_VAR")       
+        for x in results:           
+                 self.label_12.setText(str(x[0]).zfill(3))
+                 self.test_id=str(x[0])
+                 #self.lineEdit_3.setText("Batch_"+str(x[0]).zfill(3))
+        connection.close()
+        
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        results=connection.execute("SELECT SPECIMEN_NAME,BATCH_ID FROM TEST_MST WHERE  TEST_ID = '"+str(self.label_12.text())+"'") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
+            self.lineEdit_3.setText(str(x[1]))
         connection.close()
         
         connection = sqlite3.connect("tyr.db")              
@@ -1022,16 +1032,7 @@ class ty_31_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(PROOF_MAX_LOAD,0),IFNULL(PROOF_MAX_LENGTH ,0) FROM GLOBAL_VAR") 
-        for x in results:
-            if(self.comboBox_2.currentText() =="N/mm"):
-                self.lineEdit_10.setText(str(x[0]))
-                self.lineEdit_11.setText(str(x[1]))
-            else:
-                self.lineEdit_10.setText(str(x[0]))
-                self.lineEdit_11.setText(str(x[1]))
-        connection.close()
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_1 as Load_Y_axis,GRAPH_SCALE_CELL_2  as length_x_axis FROM SETTING_MST") 
@@ -1044,13 +1045,7 @@ class ty_31_Ui_MainWindow(object):
                 self.lineEdit_13.setText(str(x[1]))
         connection.close()        
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID FROM GLOBAL_VAR")       
-        for x in results:           
-                 self.label_12.setText(str(x[0]).zfill(3))
-                 self.test_id=str(x[0])
-                 self.lineEdit_3.setText("Batch_"+str(x[0]).zfill(3))
-        connection.close()
+        
         self.onchage_combo()
         self.show_grid_data_PROOF()
         self.sc_blank =PlotCanvas(self)          
@@ -1063,9 +1058,11 @@ class ty_31_Ui_MainWindow(object):
         self.lcdNumber_2.hide()
         self.lineEdit_3.setReadOnly(True)
         self.lineEdit_9.setReadOnly(True)
-        self.lineEdit_10.setReadOnly(True)
-        self.lineEdit_11.setReadOnly(True)
-        self.label_67.setReadOnly(True)
+        self.lineEdit_10.setDisabled(True)
+        self.lineEdit_11.setDisabled(True)
+        self.label_67.setDisabled(True)
+        self.radioButton.setDisabled(True)
+        self.radioButton_2.setDisabled(True)
         
         
     
@@ -1074,10 +1071,11 @@ class ty_31_Ui_MainWindow(object):
         results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
             self.lineEdit_9.setText(str(x[2])) # SPEED
+            self.lineEdit_9.setReadOnly(True)
             self.label_51.setText(str(x[3])) # Party Name
             self.label_61.setText(str(x[7]))
         connection.close()
-        self.click_onRadiobutt()
+        #self.click_onRadiobutt()
         
     def click_onRadiobutt(self):
         if(self.radioButton.isChecked()): ### Elongation 
