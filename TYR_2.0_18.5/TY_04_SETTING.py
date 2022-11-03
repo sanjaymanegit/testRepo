@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'TY_04_SETTING.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -16,10 +9,10 @@ import time
 from PyQt5.QtCore import QDate
 import sys,os
 from pop_factory_reset import  factory_reset_Ui_MainWindow
-#from TY_08_TEST_CONF import TY_08_Ui_MainWindow
 from TY_15_ADD_EDIT_TEST_TYPE import TY_15_Ui_MainWindow
 from TY_16_email_setup import ty_16_Ui_MainWindow
 from TY_17_calbration_extentio_mtr import TY_17_Ui_MainWindow
+from usb_bakp import usb_bkp_Ui_MainWindow
 
 class TY_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -324,6 +317,16 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_14_1.setFont(font)
         self.pushButton_14_1.setObjectName("pushButton_14_1")
         
+        
+        self.pushButton_14_2 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_14_2.setGeometry(QtCore.QRect(800, 30, 331, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_14_2.setFont(font)        
+        self.pushButton_14_2.setObjectName("pushButton_14_2")
+        
+        
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(40, 360, 401, 251))
         font = QtGui.QFont()
@@ -461,6 +464,7 @@ class TY_04_Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Error: Please fill required mandatory fileds"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.pushButton_14_1.setText(_translate("MainWindow", "E-Mail Setup"))
+        self.pushButton_14_2.setText("Copy PDF reports to USB")
         self.groupBox_2.setTitle(_translate("MainWindow", "Configuration"))
         self.label_4.setText(_translate("MainWindow", "AutoReverse Time(Sec):"))
         self.label_5.setText(_translate("MainWindow", "Motor Test Speed(RPM):"))
@@ -486,6 +490,7 @@ class TY_04_Ui_MainWindow(object):
         self.calendarWidget.hide()
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_14_1.clicked.connect(self.open_new_window4)
+        self.pushButton_14_2.clicked.connect(self.open_new_window6)
         self.pushButton_5_1.clicked.connect(self.open_new_window5) 
         self.load_data()
         #self.pushButton_6.setDisabled(True)
@@ -641,7 +646,11 @@ class TY_04_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()   
         
-        
+    def open_new_window6(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=usb_bkp_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()     
         
 if __name__ == "__main__":
     import sys
