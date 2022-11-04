@@ -6,7 +6,8 @@ from MDR_04_METHODS import mdr_04_Ui_MainWindow
 from register import reg_Ui_MainWindow
 from email_setup import email_setup_Ui_MainWindow
 from date_time_setup import datetime_set_Ui_MainWindow
-from callibration_process import calibration_Ui_MainWindow
+#from callibration_process import calibration_Ui_MainWindow
+from MDR_07_CALIBRATION import mdr_07_Ui_MainWindow
 from factory_reset import factory_reset_Ui_MainWindow
 
 
@@ -256,7 +257,7 @@ class mdr_02_Ui_MainWindow(object):
         
     def open_callibration_window(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=calibration_Ui_MainWindow()
+        self.ui=mdr_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

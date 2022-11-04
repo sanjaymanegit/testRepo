@@ -179,24 +179,24 @@ class comment_Ui_MainWindow(object):
         
             
     def load_data(self):
-        connection = sqlite3.connect("tyr.db")
+        connection = sqlite3.connect("mdr.db")
         results=connection.execute("SELECT EMAIL_TEST_ID FROM GLOBAL_VAR") 
         for x in results:
              self.label_8.setText(str(x[0]))
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT COMMENTS FROM TEST_MST WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)") 
+        connection = sqlite3.connect("mdr.db")
+        results=connection.execute("SELECT COMMENTS FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
              self.textEdit.setText(str(x[0]))
         connection.close()
         self.label_2.hide()
     
     def save_data(self):        
-        connection = sqlite3.connect("tyr.db")        
+        connection = sqlite3.connect("mdr.db")        
         with connection:        
                 cursor = connection.cursor()                
-                cursor.execute("update TEST_MST set COMMENTS='"+self.textEdit.toPlainText()+"' WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)")                 
+                cursor.execute("update TEST_MST_MDR set COMMENTS='"+self.textEdit.toPlainText()+"' WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)")                 
         connection.commit()
         connection.close()
         self.label_2.setText("Successfully Saved Comments.")

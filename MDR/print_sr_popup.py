@@ -78,7 +78,7 @@ class SR_P_POPUi_MainWindow(object):
     def load_data(self):
        conn = cups.Connection ()
        self.printers = conn.getPrinters ()
-       file="./reports/sr_report.pdf"       
+       file="./reports/all_records.pdf"       
        for printer in self.printers:
            self.i=self.i+1           
            self.radioButton = QtWidgets.QRadioButton(self.widget)
@@ -94,7 +94,7 @@ class SR_P_POPUi_MainWindow(object):
            
     def print_pdf(self):                
         conn = cups.Connection() 
-        file="./reports/sr_report.pdf"        
+        file="./reports/all_records.pdf"        
         print("length of printers :"+str(len(self.printers)))
         if(len(self.printers) > 0):
             printer=self.radioButton.text()
