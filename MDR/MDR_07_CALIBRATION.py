@@ -7,6 +7,7 @@ import sys,os
 import sqlite3
 
 
+import serial
 
 class mdr_07_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -338,6 +339,39 @@ class mdr_07_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.ld_flag="No"
+        self.capacity_flag="No"
+        self.off_position_flag="No"
+        self.flag="No"
+        self.ser =""
+        self.line =""                   
+       
+        self.xstr0=""
+        self.xstr1=""
+        self.xstr2=""
+        self.buff=[]
+        
+        self.IO_error_flg=0
+        self.xstr3=""
+        self.xstr2=""
+        self.xstr4=""
+        self.current_value=0
+        self.green_counter=0
+        
+        self.last_value=0
+        self.current_value=0
+        self.enable_buttons_flag="No"
+        self.enable_counter=0
+        self.weighing_crosses_min_wt_lim="No"
+        self.weighing_crosses_max_wt_lim="No"
+        self.wt_min_limit=0
+        self.wt_max_limit=0      
+        self.c1_count=0
+        
+        self.ld_set=0
+        self.mod_val=0
+        
+        self.last_display_val=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -366,17 +400,94 @@ class mdr_07_Ui_MainWindow(object):
         self.pushButton_16.setText(_translate("MainWindow", "Print Calibration Certificate"))
         self.label_27.setText(_translate("MainWindow", "Please Set the Toqtue Proper."))
         self.pushButton_14.clicked.connect(MainWindow.close)
-        
+        self.timer2=QtCore.QTimer()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
+        
+        
+       
+        self.start_reading()        
+       
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
         
+    def start_reading(self):
+        #print("Weight Started ....")
+        try:
+            self.ser = serial.Serial(
+                                port='/dev/ttyAMA0',
+                                baudrate=115200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+        
+            self.ser.flush()       
+            
+            
+            self.line = self.ser.readline(15)
+            print("o/p:"+str(self.line))
+             
+            self.timer2.setInterval(1000)        
+            self.timer2.timeout.connect(self.display_lcd_val)
+            self.timer2.start(1)
+        
+        except IOError:
+                    print("IO Errors")      
+   
+                
+    def display_lcd_val(self):               
+            #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+            self.label_27.hide()
+            if(self.IO_error_flg==0):            
+                try:
+                    self.line = self.ser.readline()
+                    print("Timer Job o/p:"+str(self.line))
+                    self.ser.flush()
+                    self.ser.write(b'*D\r')
+                except IOError:
+                    print("IO Errors")    
+                    
+                xstr3=str(self.line)
+                xstr3=xstr3[1:int(len(xstr3)-1)]
+                xstr2=xstr3.replace("'\\r","")        
+                #print("replace3('\r):"+str(xstr2))
+                xstr1=xstr2.replace("'","")        
+                #print("replace2('):"+str(xstr1))
+                xstr=xstr1.replace("\\r","")
+                #print("replace1(\r):"+str(xstr))        
+                self.buff=xstr.split("_")
+            #print("length of array :"+str(len(self.buff)))
+            if(int(len(self.buff)) > 8 ):
+                #print("length of array :"+str(len(self.buff)))
+                self.check_R = re.findall(r"[R]", xstr)
+                self.check_S = re.findall("[S]", xstr)
+                self.check_OK = re.findall("[OK]", xstr)
+                #print("Checkking R Characher :"+str(self.check_R))
+                #print("Checkking OK Characher :"+str(len(self.check_OK))) 
+                if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                    self.p=self.p                 
+                    self.r=170.00
+                    self.arr_p.append(float(self.p))
+                    self.arr_q.append(float(self.q))
+                    self.arr_r.append(float(self.r))
+                    print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                    self.lcdNumber_2.setProperty("value", str(self.arr_p))
+                    self.lcdNumber.setProperty("value", str(self.q)) 
+                    
 
+                
+            
+        
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop() 
 
 if __name__ == "__main__":
     import sys

@@ -6,9 +6,9 @@ from MDR_04_METHODS import mdr_04_Ui_MainWindow
 from register import reg_Ui_MainWindow
 from email_setup import email_setup_Ui_MainWindow
 from date_time_setup import datetime_set_Ui_MainWindow
-#from callibration_process import calibration_Ui_MainWindow
 from MDR_07_CALIBRATION import mdr_07_Ui_MainWindow
 from factory_reset import factory_reset_Ui_MainWindow
+from usb_bakp import usb_bkp_Ui_MainWindow
 
 
 
@@ -204,8 +204,8 @@ class mdr_02_Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "Graph Setup"))
         self.pushButton_8.setDisabled(True)
         self.pushButton_10.setText(_translate("MainWindow", "Torque-Calibration"))
-        self.pushButton_11.setText(_translate("MainWindow", "Temp1-Calibration"))
-        self.pushButton_11.setDisabled(True)
+        self.pushButton_11.setText(_translate("MainWindow", "USB-copy reports"))
+        #self.pushButton_11.setDisabled(True)
         self.pushButton_12.setText(_translate("MainWindow", "Temp2-Calibration"))
         self.pushButton_12.setDisabled(True)
         self.pushButton_9.setText(_translate("MainWindow", "Date-Time Setup"))
@@ -223,7 +223,7 @@ class mdr_02_Ui_MainWindow(object):
         self.pushButton_13.clicked.connect(self.open_factoryReset_window)
         self.pushButton_4.clicked.connect(self.open_system_window)
         self.pushButton.clicked.connect(self.open_methods_window)
-        
+        self.pushButton_11.clicked.connect(self.open_usb_copy_window)
         self.anydesk_open()
         
         self.timer1=QtCore.QTimer()
@@ -276,6 +276,12 @@ class mdr_02_Ui_MainWindow(object):
     def open_system_window(self):       
         self.window = QtWidgets.QMainWindow()
         self.ui=mdr_03_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_usb_copy_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=usb_bkp_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show() 
         
