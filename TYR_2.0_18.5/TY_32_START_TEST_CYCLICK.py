@@ -2,7 +2,52 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
+import os
 
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
+
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+from PyQt5.QtGui import QIcon
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
+import random
+import serial,time
+import array  as arr
+import numpy as np
+
+import re
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+import datetime
+
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
+from reportlab.pdfgen.canvas import Canvas
+import pandas as pd
+from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
+from reportlab.rl_settings import showBoundary
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+import sqlite3
+
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
+from reportlab.platypus import *
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Line, Drawing
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -910,7 +955,7 @@ class Ui_MainWindow(object):
         self.label_70.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_70.setObjectName("label_70")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_7.setGeometry(QtCore.QRect(460, 130, 41, 31))
+        self.lineEdit_7.setGeometry(QtCore.QRect(460, 130, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -1177,6 +1222,881 @@ class Ui_MainWindow(object):
         self.label_30.setText(_translate("MainWindow", " (sec)"))
         self.label_31.setText(_translate("MainWindow", " (sec)"))
         self.label_32.setText(_translate("MainWindow", " (sec)"))
+        self.pushButton_15.clicked.connect(MainWindow.close)
+        self.comboBox.currentTextChanged.connect(self.onchange_specs)
+        self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
+        self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
+        
+        self.load_data()
+    
+   
+    def load_data(self):
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE SHAPE = 'Rectangle'") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR SET CURR_UNIT_TYPE = '"+str(self.comboBox_2.currentText())+"'")                                        
+        connection.commit();
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_1 as Load_Y_axis,GRAPH_SCALE_CELL_2  as length_x_axis FROM SETTING_MST") 
+        for x in results:
+            if(self.comboBox_2.currentText() =="N/mm"):
+                self.lineEdit_12.setText(str(x[0]))
+                self.lineEdit_13.setText(str(x[1]))
+            else:
+                self.lineEdit_12.setText(str(x[0]))
+                self.lineEdit_13.setText(str(x[1]))
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        for x in results:           
+                 self.label_12.setText(str(x[0]).zfill(3))
+                 self.test_id=str(x[0])
+                 self.lineEdit_3.setText("Batch_"+str(x[0]).zfill(3))
+        connection.close()
+        
+        self.pushButton_5.setDisabled(True)
+        self.pushButton_6.setDisabled(True)
+        self.pushButton_7.setDisabled(True)
+        self.pushButton_8.setDisabled(True)
+        
+                
+        self.sc_blank =PlotCanvas_blank(self)          
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        self.onchange_specs()
+        
+    def onchange_specs(self):                      
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,SHAPE  FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        for x in results:
+            self.label_64.setText(str(x[0]))
+            self.lineEdit_7.setText(str(x[1])) #Guage
+            self.lineEdit_9.setText(str(x[2])) # SPEED
+            self.label_51.setText(str(x[3])) # Party Name
+            self.lineEdit_5.setText(str(x[4])) # Thickness
+            self.lineEdit_6.setText(str(x[4])) # f_Thickness
+            self.lineEdit_8.setText(str(x[5])) # Width
+            self.lineEdit_10.setText(str(x[5])) # f_Width
+            self.label_61.setText(str(x[6]))  # Shape
+        connection.close()
+     
+    def cs_area_calculation(self):
+        self.shape=""
+        self.thickness=""
+        self.width=""
+        self.diameter=""
+        self.cs_area=""
+        self.out_dia=""
+        self.inn_dia=""
+        
+        self.shape=self.label_61.text()
+        if(self.shape== "Rectangle"):
+            if(self.lineEdit_5.text() != ""):
+                try:
+                        self.thickness=int(self.lineEdit_5.text())
+                except ValueError as e:
+                        try:
+                                self.thickness=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00") 
+                try:
+                        self.width=int(self.lineEdit_8.text())
+                except ValueError as e:
+                        try:
+                            self.width=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.label_64.setText("0.00")
+                                
+                try:
+                        self.label_64.setText(str(float(self.thickness * self.width)))
+                except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error1");
+                    self.label_64.setText(str("0"))
+                except TypeError as e:
+                    print("Caluculation error2");
+                    self.label_64.setText(str("0"))
+                except:
+                    print("Caluculation error3");
+                    self.label_64.setText(str("0"))
+            else:
+                    self.label_64.setText(str("0"))
+        else:
+            print("Invalid Shape")
+        
+    
+    
+    def set_graoh(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1 = '"+str(self.lineEdit_12.text())+"', GRAPH_SCALE_CELL_2= '"+str(self.lineEdit_13.text())+"' ")                                        
+        connection.commit();
+        connection.close()        
+        self.sc_blank =PlotCanvas_blank(self)          
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        
+        
+    def start_test_CYCLICK(self):
+        #elf.label_35.setText("")
+        
+        self.validation()
+        if(self.goAhead=="Yes"):               
+               self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+               self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+               connection = sqlite3.connect("tyr.db")
+               results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+               rows=results.fetchall()
+               connection.close()
+               if(int(rows[0][0]) > -2 ):
+                    self.timer3.setInterval(1000)        
+                    self.timer3.timeout.connect(self.show_load_cell_val)
+                    self.timer3.start(1)                
+        else:
+                print("validation Error")
+                
+    def validation(self):
+        self.goAhead="No"
+        self.label_21.setText("") 
+          
+        if(self.lineEdit_3.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Batch ID Should not Empty.")                    
+        elif(self.lineEdit_9.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Test Speed Should not Empty.")               
+        elif(self.lineEdit_10.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Max Load Should not Empty.")
+        elif(self.lineEdit_11.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Max Length Should not Empty.")
+        else:
+               self.goAhead="Yes"
+               connection = sqlite3.connect("tyr.db")
+               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
+               for x in results:           
+                 if(int(x[0]) > 0):
+                       self.test_id_exist="Yes"
+                 else:
+                       self.test_id_exist="No"                     
+               connection.close() 
+               
+               if(self.test_id_exist=="Yes"):
+                   ### Update global var
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                            cursor = connection.cursor()                  
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"'")
+                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                        connection.commit();
+                        connection.close()
+                        
+               else:        
+                        ### INSERT 
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                          cursor = connection.cursor()                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"'")
+                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','PROOF','"+str(self.lineEdit_9.text())+"')")
+                        connection.commit();
+                        connection.close()
+    
+    def show_load_cell_val(self):
+        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.label_22.setText("ElapsedTime(sec) : "+str(self.sc_new.t))
+        self.label_22.show()
+        if(str(self.sc_new.save_data_flg) =="Yes"):            
+                self.reset()
+                self.save_graph_data()
+                self.sc_new.save_data_flg=""
+                self.label_21.show()
+                self.label_21.setText("Data Saved Successfully.")
+                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
+                self.pushButton_8.setEnabled(True)
+                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                
+    def reset(self):        
+        if(self.timer3.isActive()): 
+           self.timer3.stop() 
+        
+        #self.sc_blank =PlotCanvas_blank(self) 
+        #self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+    
+    def save_graph_data(self):         
+         if (len(self.sc_new.arr_p) > 1):            
+            
+            #self.cycle_num=int(str(self.label_67.text()))+1
+            
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.sc_new.arr_p)):                     
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
+            connection.commit();
+            connection.close()
+            
+            self.update_status()
+            #self.cycle_num=self.cycle_num+1
+            connection = sqlite3.connect("tyr.db")              
+            with connection:        
+                  cursor = connection.cursor()
+                  #print("ok1")
+                  try:
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_5.text())+"',STATUS='"+str(self.status_str)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
+                         
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
+                          #print("ok2")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
+                          
+                          cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
+                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N FROM STG_GRAPH_MST")                  
+                          cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
+                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
+                          cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                    
+                  
+                  except Exception as e:
+                          print("SQL Error:"+str(e))
+                          connection.commit();
+           
+            connection.commit();
+            connection.close()            
+            print("Data Saved Ok in STG_GRAPH_MST")           
+            #self.show_grid_data_PROOF()
+        
+    
+
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        #fig.savefig('ssdsd.png')
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #FigureCanvas.setStyleSheet("background-color:red;")
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)       
+        self.proof_test_by=""
+        self.plot()        
+        
+        
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[0.0]
+        self.test_type="Tensile"
+        self.unit_type=""
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
+
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT PROOF_TEST_BY FROM GLOBAL_VAR") 
+        for x in results:
+            self.proof_test_by=str(x[0])
+            if(self.proof_test_by=="load"):
+                     ax.set_xlabel('Elongation (mm)')
+                     ax.set_ylabel('Load kgf)')                
+            else:
+                     ax.set_xlabel('Elongation (mm)')
+                     ax.set_ylabel('Load kgf)')
+        connection.close()
+        
+        self.unit_type="Kgf/mm"
+        ### Univarsal change for  Graphs #####################
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+            if(self.unit_type == "N/mm"):
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1])*9.81)
+                 
+            if(self.unit_type == "Kgf/mm"):
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1]))
+                 
+            else:     
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1])*9.81)
+                 
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+             self.graph_ids.append(x[0])             
+        connection.close()
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+            print(" Unit Type :"+str(self.unit_type))
+            connection = sqlite3.connect("tyr.db")
+            if(self.unit_type == "N/mm"):
+                results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.unit_type == "Kgf/mm"):
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:                
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                    self.x_num.append(k[0])
+                    self.y_num.append(k[1])
+            connection.close()
+            if(g < 8 ):
+                    ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+            
+        print("self.test_type:"+str(self.test_type))
+        
+        ax.legend()        
+        self.draw()
+        self.figure.savefig('last_graph.png',dpi=100)
+
+class PlotCanvas_Auto(FigureCanvas):     
+    def __init__(self, parent=None, width=5, height=4, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        
+        self.axes = fig.add_subplot(111)
+        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
+        self.axes.set_facecolor('#CCFFFF')  
+        self.axes.minorticks_on()
+        self.test_type="FBST"
+        
+        
+       
+        
+        
+        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        self.compute_initial_figure()
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)        
+        ###
+        self.playing = False
+        self.p =0
+        self.p_cm =0
+        self.p_inch =0
+        self.t=0
+        self.q =0
+        self.q_n =0
+        self.q_lb =0
+        
+        
+        
+        
+        self.arr_p=[0.0]
+        self.arr_p_cm=[0.0]
+        self.arr_p_inch=[0.0]
+        
+        
+        self.arr_q=[0.0]
+        self.arr_q_n=[0.0]
+        self.arr_q_lb=[0.0]
+        self.arr_p1=[0.0]
+        self.arr_q1=[0.0]
+        self.x=0
+        self.y=0
+        #self.ax = self.figure.add_subplot(111) 
+        self.xlim=0
+        self.ylim=10
+        self.line_cnt=0
+        self.xlim_update='NO'
+        self.ylim_update='NO'
+        ##############
+        self.buff=[]
+        self.ybuff=[]
+        self.line=""
+        self.yline=""
+        self.flag=1
+        
+        self.check_R=""
+        self.check_S=""
+        self.IO_error_flg=0
+        
+        self.timer1=QtCore.QTimer()
+       
+       
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        self.save_data_flg=""
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0      
+        self.auto_rev_time_off=0
+        self.break_sence=0
+        self.test_motor_speed=0
+        self.test_guage_mm=0
+        self.test_type="Tensile"
+        self.max_load=0
+        self.max_length=0
+        self.flexural_max_load=100
+        self.unit_type =""
+        self.proof_test_by=""
+        self.start_time = datetime.datetime.now()
+        self.end_time = datetime.datetime.now()
+        self.plot_auto()
+         
+    def compute_initial_figure(self):
+        pass
+    
+    def plot_auto(self):
+        self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                cursor = connection.cursor()                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+        connection.commit();
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC from GLOBAL_VAR") 
+        for x in results:            
+             self.test_guage_mm=int(x[0])             
+             self.max_load=int(x[2])
+             #self.max_load=100
+             self.max_length=float(float(x[0])-float(x[3]))
+             self.flex_max_length=float(x[3])
+             self.cof_max_length=float(x[4])
+             #self.max_load=str(self.max_load).zfill(5)
+             #self.max_length=str(int(self.max_length)).zfill(5)
+             #self.max_length=float(x[3])
+             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+             self.unit_type=str(x[5])
+             self.proof_test_by=str(x[6])
+             if(self.proof_test_by=="load"):
+                     self.axes.set_xlabel('Elongation (mm)')
+                     self.axes.set_ylabel('Load (kgf)')                
+             else:
+                     self.axes.set_xlabel('Elongation (mm)')
+                     self.axes.set_ylabel('Load (kgf)')
+             
+             self.proof_max_load=int(str(x[7]))
+             self.proof_max_length=int(str(x[8]))
+             self.test_time_sec=int(str(x[9]))
+             
+        connection.close()
+        print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        for x in results:
+             if(self.unit_type == "Kgf/mm"):
+                     self.axes.set_xlim(0,int(x[0]))
+                     self.axes.set_ylim(0,int(x[1]))
+                     #self.flexural_max_load=int(x[1])/9.81
+                     self.xlim=int(x[0])
+                     self.ylim=int(x[1])
+                     
+             elif(self.unit_type == "N/mm"):
+                     self.axes.set_xlim(0,int(x[0]))
+                     self.axes.set_ylim(0,int(x[1])*9.81)
+                     #self.flexural_max_load=int(x[1])/9.81
+                     self.xlim=int(x[0])
+                     self.ylim=int(x[1])* 9.81
+                              
+             else:
+                     self.axes.set_xlim(0,int(x[0]))
+                     self.axes.set_ylim(0,int(x[1]))
+                     #self.flexural_max_load=int(x[1])
+                     self.xlim=int(x[0])
+                     self.ylim=int(x[1])
+                      
+             self.auto_rev_time_off=int(x[2])
+             self.break_sence=int(x[3])
+        connection.close()
+        
+        try:
+            self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
+          
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.yline = self.ser.readline()
+            print("Check for Load Cel o/p:"+str(self.yline))
+            ystr3=str(self.yline)
+            ystr3=ystr3[1:int(len(ystr3)-1)]
+            ystr2=ystr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            ystr1=ystr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            ystr=ystr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.ybuff=ystr.split("_")
+            print("Length of Array :"+str(len(self.ybuff)))
+                
+         
+            #==== Guage Length Setting before staret =====
+            self.ser.flush()
+            
+            if(self.test_type=="Flexural"):
+                #self.test_guage_mm=0
+                #self.command_str="*G0.00\r"
+                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            else:
+                self.command_str="*G000.0\r"
+                
+            print("Guage Length Command : "+str(self.command_str))
+            
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #===== Auto Reverse Time Off =====
+            self.ser.flush()
+            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
+            print("Auto reve. Time off Command : "+str(self.command_str))
+            b = bytes(self.command_str, 'utf-8')
+            self.ser.write(b)
+            #time.sleep(2)
+            #========Motor Speed and Breaking Sence =========            
+            self.validate_speed()            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+            else:   
+                self.ser.write(b'*P0050_0010\r')
+                #print("started with default motor speed . Not gohead ")
+            #self.ser.write(b'*D\r\n')
+                
+            #time.sleep(2)
+            #========Final Motor start Command =========    
+            self.ser.flush()
+            if(self.test_type=="Compress"):
+                 print("Compress")                  
+            elif(self.test_type=="Flexural"):
+                print("Flexural")    
+            elif(self.test_type=="COF"):
+                print("COF")
+            else:
+                print("len(self.ybuff) :"+str(len(self.ybuff)))
+                if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                        #self.ser.write(b'*S2T000.0 000.0\r')
+                        #print("Start Command :*S2P"+str(self.proof_max_load)+" "+str(self.proof_max_length)+" "+str(self.test_time_sec)+"\r")
+                        self.command_str="*S2P%05d"%self.proof_max_load+" %05d"%self.proof_max_length+" %05d"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        
+                    else:
+                        #self.ser.write(b'*S1P000.0 000.0\r')
+                        #print("Start Command:*S1T000.0 000.0\r")
+                        self.command_str="*S1P%05d"%self.proof_max_load+" %05d"%self.proof_max_length+" %05d"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                else:
+                    print("Error :Serial O/P is not getting ")
+                    
+            
+        except IOError:
+            #print("IO Errors")
+            self.IO_error_flg=1
+        
+        self.timer1.setInterval(1000)     
+        self.timer1.timeout.connect(self.update_graph)
+        self.timer1.start(1)
+        
+        self.on_ani_start()
+    
+    def update_graph(self):       
+        if(self.IO_error_flg==0):
+            '''
+            self.ser.flush()
+            self.ser.write(b'*D\r')
+            self.line = self.ser.readline()
+            print("With Readline Timer Job o/p:"+str(self.line))
+            #print("")
+            '''
+            try:
+                self.line = self.ser.readline()
+                print("Timer Job o/p:"+str(self.line))
+                self.ser.flush()
+                self.ser.write(b'*D\r')
+            except IOError:
+                print("IO Errors")    
+                
+            xstr3=str(self.line)
+            xstr3=xstr3[1:int(len(xstr3)-1)]
+            xstr2=xstr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            xstr1=xstr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            xstr=xstr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.buff=xstr.split("_")
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):
+            #print("length of array :"+str(len(self.buff)))
+            self.check_R = re.findall(r"[R]", xstr)
+            self.check_S = re.findall("[S]", xstr)
+            self.check_OK = re.findall("[OK]", xstr)
+            #print("Checkking R Characher :"+str(self.check_R))
+            #print("Checkking OK Characher :"+str(len(self.check_OK))) 
+            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                #print("Running.... :"+str(self.check_R))
+                #print("length(X).... :"+str(self.buff[4]))
+                #print("load(Y)... :"+str(self.buff[1]))
+                #print("Load Cell No... :"+str(self.buff[7]))
+                #print("Encoder No.. :"+str(self.buff[6]))
+                if(str(self.buff[6])=="2"):
+                    self.load_cell_hi=1
+                    self.load_cell_lo=0
+                else:
+                    self.load_cell_hi=0
+                    self.load_cell_lo=1
+                    
+                if(str(self.buff[7])=="2"):
+                    self.extiometer=1
+                    self.encoder=0
+                else:
+                    self.extiometer=0
+                    self.encoder=1
+                
+                if(self.load_cell_hi==1):              
+                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                else:
+                    self.q=abs(float(self.buff[0]))
+                
+                self.t=abs(float(self.buff[3]))
+                if(self.encoder==1):
+                    self.p=abs(float(self.buff[4])) #
+                else:
+                    self.p=abs(float(self.buff[5]))
+                
+                if(self.test_type=="Compress"):
+                    self.p=int(self.test_guage_mm)-self.p
+                    #print("self.p :"+str(self.p))
+                elif(self.test_type=="Flexural"):
+                    #self.p=self.p
+                    self.p=int(self.test_guage_mm)-self.p
+                else:
+                    self.p=self.p
+                    
+                
+                self.p=float(self.p)
+                self.p_cm=float(self.p)/10
+                self.arr_p_cm.append(float(self.p_cm))
+                
+                self.p_inch=float(self.p)*0.0393701
+                self.arr_p_inch.append(float(self.p_inch))
+                
+                self.q=float(self.q)
+                self.q_n=float(self.q)*9.81
+                self.arr_q_n.append(float(self.q_n))
+                
+                self.q_lb=float(self.q)*2.20462
+                self.arr_q_lb.append(float(self.q_lb))
+                
+                self.arr_p.append(float(self.p))
+                self.arr_q.append(float(self.q))
+                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                
+                #print(" Array P:"+str(self.arr_p))
+                #print(" Array Q:"+str(self.arr_q))
+               
+                
+                #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
+
+                if(int(self.q) > int(self.ylim)):
+                    self.ylim=(int(self.q)+100)
+                    self.ylim_update='YES'                   
+                   #print(" self.ylim:"+str(self.ylim))
+                
+                #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
+                              
+                if(self.p > self.xlim):
+                   self.xlim=(int(self.p)+100)
+                   self.xlim_update='YES'                   
+                #time.sleep(1)
+                self.save_data_flg="No"
+            
+            else:                
+               
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
+        
+    def plot_grah_only(self,i):        
+        if(self.unit_type == "Kgf/mm"):
+            self.line_cnt.set_data(self.arr_p,self.arr_q)
+            return [self.line_cnt]
+            #return self.line_cnt,
+        elif(self.unit_type == "N/mm"):
+            self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+            return [self.line_cnt]
+            #return self.line_cnt,
+        else:    
+           self.line_cnt.set_data(self.arr_p,self.arr_q)
+           return [self.line_cnt]
+           #return self.line_cnt,
+    
+    
+    def on_ani_stop(self):
+        self.on_stop()
+        if self.playing:
+            self.ani._stop()
+        else:
+             pass
+            
+    def on_stop(self):
+        if(self.timer1.isActive()): 
+           self.timer1.stop()
+    
+    def init(self):
+        self.line_cnt.set_data([], [])
+        return self.line_cnt,
+
+    def on_ani_start(self):        
+        if self.playing:
+            pass
+        else:
+            self.playing = True
+            self.ani = animation.FuncAnimation(
+                self.figure,
+                self.plot_grah_only,init_func=self.init
+                ,blit=True
+                ,interval=10
+                    )
+            print("Done1")
+       
+    def validate_speed(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
+        for x in results:
+             self.speed_val=str(x[0])
+        connection.close()
+        self.goahead_flag=0
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+        connection.close()
+        
+        if(self.input_speed_val != ""):
+            if(int(self.input_speed_val) <= int(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 #print(" calc Speed : "+str(self.calc_speed))
+                 #print(" command: *P"+str(self.calc_speed)+" \r")
+                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
+            else:
+                 print(" not Ok ")
+                 #self.label_9_1.show()
+                 #self.label_3.setText("Speed Should not more than MAX Speed :"+str(self.speed_val))
+                 #self.label_3.show()
+        else:
+            print(" not Ok ")
+            #self.label_3.setText("Motor Speed is Required")
+            #self.label_3.show()     
+        
+    
+
+
+class PlotCanvas_blank(FigureCanvas):
+    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        self.unit_type=""
+        FigureCanvas.__init__(self, fig)
+        #self.setParent(parent)
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot_blank()        
+        
+    def plot_blank(self):               
+        
+#        connection = sqlite3.connect("tyr.db")
+#        connection.commit();
+#        with connection:        
+#                cursor = connection.cursor()                            
+#                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#        connection.commit();
+#        connection.close()
+        
+        self.x=[0,0,0,0,0,0,0,0]
+        self.y=[0,0,0,0,0,0,0,0]
+        
+        self.p=list()
+        self.q=list()
+        self.test_type="Tensile"
+        ax = self.figure.add_subplot(111)
+        ax.set_facecolor('#CCFFFF')
+        ax.minorticks_on()
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CURR_UNIT_TYPE from GLOBAL_VAR") 
+        for x in results:
+                self.unit_type=str(x[0]) 
+        connection.close() 
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:             
+                 ax.set_xlim(0,int(x[0]))
+                 ax.set_ylim(0,int(x[1]))                               
+                 ax.set_xlabel('Elongation (mm)')
+                 ax.set_ylabel('Load (Kgf) ')             
+        connection.close()
+               
+        for i in range(len(self.x)):
+              self.p.append(self.x[i])
+              self.q.append(self.y[i])
+        
+        ax.plot(self.x,self.y,'b')
+        self.draw() 
 
 
 if __name__ == "__main__":
