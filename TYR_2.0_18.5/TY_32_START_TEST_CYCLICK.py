@@ -1108,6 +1108,16 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.goAhead="Yes"
+        self.test_id_exist="No"
+        self.timer3=QtCore.QTimer()
+        self.sc_blank=""
+        self.cycle_num=0
+        self.x_unit='mm'
+        self.y_unit='N'
+        self.start_test_by="load"  #### This status is "load" Or "elongation"
+        self.status_str=""
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1115,10 +1125,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
+        #self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
+        self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_13.setText(_translate("MainWindow", "All"))
-        self.label_21.setText(_translate("MainWindow", "Compleated Successfully. "))
+        self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
@@ -1186,8 +1197,7 @@ class Ui_MainWindow(object):
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
-        self.label_14.setText(_translate("MainWindow", "Elongation : \n"
-" (mm) "))
+        self.label_14.setText(_translate("MainWindow", "Elongation : \n (mm) "))
         self.label_61.setText(_translate("MainWindow", "Rectangle"))
         self.label_66.setText(_translate("MainWindow", "Iterations:"))
         self.label_67.setText(_translate("MainWindow", "3"))
@@ -1223,6 +1233,9 @@ class Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", " (sec)"))
         self.label_32.setText(_translate("MainWindow", " (sec)"))
         self.pushButton_15.clicked.connect(MainWindow.close)
+        self.pushButton_16.clicked.connect(self.set_data)
+        self.pushButton_4.clicked.connect(self.start_test_CYCLICK)
+        
         self.comboBox.currentTextChanged.connect(self.onchange_specs)
         self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
@@ -1268,6 +1281,30 @@ class Ui_MainWindow(object):
                  self.lineEdit_3.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
         
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select ELONGATION_PER,HOLDING_TIME_SEC,ITR_NO from ITRATION_MST WHERE IS_ACTIVE = 'Y'")       
+        for x in results:
+                if(int(x[2]) == 1):
+                        self.lineEdit_11.setText(str(x[0]))
+                        self.lineEdit_16.setText(str(x[1]))
+                elif(int(x[2]) == 2):
+                        self.lineEdit_14.setText(str(x[0]))
+                        self.lineEdit_15.setText(str(x[1]))
+                elif(int(x[2]) == 3):
+                        self.lineEdit_17.setText(str(x[0]))
+                        self.lineEdit_18.setText(str(x[1]))
+                else:
+                        self.lineEdit_11.setText("-0")
+                        self.lineEdit_16.setText("-0")
+                    
+        connection.close()
+        
+        
+        
+        
+        
+        
         self.pushButton_5.setDisabled(True)
         self.pushButton_6.setDisabled(True)
         self.pushButton_7.setDisabled(True)
@@ -1279,6 +1316,7 @@ class Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
         self.onchange_specs()
+        self.show_grid_data_CYCLICK()
         
     def onchange_specs(self):                      
         connection = sqlite3.connect("tyr.db")
@@ -1341,13 +1379,24 @@ class Ui_MainWindow(object):
         
     
     
-    def set_graoh(self):
+    def set_data(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                        cursor = connection.cursor()                
                        cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1 = '"+str(self.lineEdit_12.text())+"', GRAPH_SCALE_CELL_2= '"+str(self.lineEdit_13.text())+"' ")                                        
         connection.commit();
-        connection.close()        
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE ITRATION_MST SET ELONGATION_PER = '"+str(self.lineEdit_11.text())+"', HOLDING_TIME_SEC= '"+str(self.lineEdit_16.text())+"' WHERE ITR_NO =1 ")                                        
+                       cursor.execute("UPDATE ITRATION_MST SET ELONGATION_PER = '"+str(self.lineEdit_14.text())+"', HOLDING_TIME_SEC= '"+str(self.lineEdit_15.text())+"' WHERE ITR_NO =2 ")                                        
+                       cursor.execute("UPDATE ITRATION_MST SET ELONGATION_PER = '"+str(self.lineEdit_17.text())+"', HOLDING_TIME_SEC= '"+str(self.lineEdit_18.text())+"' WHERE ITR_NO =3 ")                                        
+        connection.commit();
+        connection.close()
+        self.label_21.setText("Data Set Successfully !")
         self.sc_blank =PlotCanvas_blank(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
@@ -1357,6 +1406,9 @@ class Ui_MainWindow(object):
         
         self.validation()
         if(self.goAhead=="Yes"):               
+               
+               ### Get Elongation and Hodel time form each itration and set in the global var
+               ##### call in loop
                self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
                connection = sqlite3.connect("tyr.db")
@@ -1366,7 +1418,9 @@ class Ui_MainWindow(object):
                if(int(rows[0][0]) > -2 ):
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
-                    self.timer3.start(1)                
+                    self.timer3.start(1)
+                    
+               ###
         else:
                 print("validation Error")
                 
@@ -1380,12 +1434,12 @@ class Ui_MainWindow(object):
         elif(self.lineEdit_9.text() == ""): #    
                     self.label_21.show()
                     self.label_21.setText("Test Speed Should not Empty.")               
-        elif(self.lineEdit_10.text() == ""): #    
-                    self.label_21.show()
-                    self.label_21.setText("Max Load Should not Empty.")
         elif(self.lineEdit_11.text() == ""): #    
                     self.label_21.show()
-                    self.label_21.setText("Max Length Should not Empty.")
+                    self.label_21.setText("Elongation per Should not Empty for itration 1.")
+        elif(self.lineEdit_16.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Holding time Should not Empty for iteration 1.")
         else:
                self.goAhead="Yes"
                connection = sqlite3.connect("tyr.db")
@@ -1412,7 +1466,7 @@ class Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                           cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','PROOF','"+str(self.lineEdit_9.text())+"')")
                         connection.commit();
                         connection.close()
@@ -1457,7 +1511,7 @@ class Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
-            self.update_status()
+            #self.update_status()
             #self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:        
@@ -1488,8 +1542,53 @@ class Ui_MainWindow(object):
             connection.commit();
             connection.close()            
             print("Data Saved Ok in STG_GRAPH_MST")           
-            #self.show_grid_data_PROOF()
+            self.show_grid_data_CYCLICK()
+    
+     
+    def show_grid_data_CYCLICK(self):
+        self.x_unit='(mm)'
+        self.y_unit='(Kgf)'
+        self.unit_type = "Kgf/mm"
+        #print("inside tear list.....")
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(10)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Elongation (%)','Holding Time (sec)','Ult.Shear Stress','Ult.Shear Strain','Shear Modulus @ Max Load','Shear Strain @ Max Load','Max Load (Kgf)','Status','REC.NO ']) 
+        
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 170)
+        self.tableWidget.setColumnWidth(2, 170)
+        self.tableWidget.setColumnWidth(3, 200)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 170)
+        self.tableWidget.setColumnWidth(6, 170)
+        self.tableWidget.setColumnWidth(7, 200)
+        self.tableWidget.setColumnWidth(8, 100)
+     
+        
+        self.unit_type=self.comboBox_2.currentText()
+        print(" Grid data :"+str(self.unit_type))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),STATUS, ID FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+       
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()
+        
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)     
     
 
 class PlotCanvas(FigureCanvas):
@@ -1712,7 +1811,7 @@ class PlotCanvas_Auto(FigureCanvas):
                      self.axes.set_xlabel('Elongation (mm)')
                      self.axes.set_ylabel('Load (kgf)')
              
-             self.proof_max_load=int(str(x[7]))
+             self.proof_max_load=int(str("9999"))
              self.proof_max_length=int(str(x[8]))
              self.test_time_sec=int(str(x[9]))
              
