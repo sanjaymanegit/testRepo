@@ -1403,27 +1403,92 @@ class Ui_MainWindow(object):
         
     def start_test_CYCLICK(self):
         #elf.label_35.setText("")
-        
+        self.itr_no=[]
+        self.elongation_per=[]
+        self.holding_time=[]
         self.validation()
-        if(self.goAhead=="Yes"):               
-               
+        self.go_to_next=0
+        self.guage_len=self.lineEdit_7.text()
+        self.length_mm=0
+        if(self.goAhead=="Yes"):
                ### Get Elongation and Hodel time form each itration and set in the global var
                ##### call in loop
-               self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
-               self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
                connection = sqlite3.connect("tyr.db")
-               results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
-               rows=results.fetchall()
+               results=connection.execute("SELECT ITR_NO,ELONGATION_PER,HOLDING_TIME_SEC FROM ITRATION_MST")                 
+               for x in results:
+                            self.length_mm=0
+                            self.itr_no.append(int(x[0]))
+                            self.length_mm=float(self.guage_len)+float(float(self.guage_len)*float(x[1]/100))
+                            self.elongation_per.append(float(self.length_mm))
+                            self.holding_time.append(float(x[2]))            
                connection.close()
-               if(int(rows[0][0]) > -2 ):
-                    self.timer3.setInterval(1000)        
-                    self.timer3.timeout.connect(self.show_load_cell_val)
-                    self.timer3.start(1)
-                    
-               ###
+               if(self.go_to_next==0):
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                       cursor = connection.cursor()                
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[0])+"', TEST_TIME_SEC='"+str(self.holding_time[0])+"' ")                                        
+                        connection.commit();
+                        connection.close()                            
+                        self.label_21.setText("Itr No:"+str(self.itr_no[0])+"  Lenngth mm:"+str(self.elongation_per[0])+" Time Sec :"+str(self.holding_time[0]))                        
+                        self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                        self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                        rows=results.fetchall()
+                        connection.close()
+                        if(int(rows[0][0]) > -2 ):
+                                        self.timer3.setInterval(1000)        
+                                        self.timer3.timeout.connect(self.show_load_cell_val)
+                                        self.timer3.start(1)
+                                        
+                                        
         else:
+            
                 print("validation Error")
                 
+    def start_test_CYCLICK2(self):
+                if(self.go_to_next==1):
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                       cursor = connection.cursor()                
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
+                        connection.commit();
+                        connection.close()                            
+                        self.label_21.setText("Iteration No:"+str(self.itr_no[1])+"  Elongation mm:"+str(self.elongation_per[1])+"   Holding Time Sec :"+str(self.holding_time[1]))                        
+                                                
+                        self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                        self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                        rows=results.fetchall()
+                        connection.close()
+                        if(int(rows[0][0]) > -2 ):
+                                        self.timer3.setInterval(1000)        
+                                        self.timer3.timeout.connect(self.show_load_cell_val)
+                                        self.timer3.start(1)
+    
+    
+    def start_test_CYCLICK3(self):
+                if(self.go_to_next==2):
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                       cursor = connection.cursor()                
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[2])+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
+                        connection.commit();
+                        connection.close()                            
+                        self.label_21.setText("Iteration No:"+str(self.itr_no[2])+"  Elongation mm:"+str(self.elongation_per[2])+"   Holding Time Sec :"+str(self.holding_time[2]))                        
+                                                
+                        self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
+                        self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+                        rows=results.fetchall()
+                        connection.close()
+                        if(int(rows[0][0]) > -2 ):
+                                        self.timer3.setInterval(1000)        
+                                        self.timer3.timeout.connect(self.show_load_cell_val)
+                                        self.timer3.start(1)
+    
     def validation(self):
         self.goAhead="No"
         self.label_21.setText("") 
@@ -1482,13 +1547,21 @@ class Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_21.show()
                 self.label_21.setText("Data Saved Successfully.")
+                self.go_to_next=self.go_to_next+1
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                
+                if(self.go_to_next==1):
+                        self.start_test_CYCLICK2()
+                elif(self.go_to_next==2):
+                        self.start_test_CYCLICK3()
+                else:
+                        self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
+                        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
+                        print("Stopped all iterations.")
     def reset(self):        
         if(self.timer3.isActive()): 
            self.timer3.stop() 
@@ -1510,25 +1583,36 @@ class Ui_MainWindow(object):
                         cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
             connection.commit();
             connection.close()
-            
+            self.status_str=""
             #self.update_status()
-            #self.cycle_num=self.cycle_num+1
+            self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_5.text())+"',STATUS='"+str(self.status_str)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_6.text())+"',STATUS='"+str(self.status_str)+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
                           
-                          cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
-                          cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRESS=10")
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRAIN=10")
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRESS_AT_MAX_LOAD=10")
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRAIN_AT_MAX_LOAD=10")
+                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES_AT_MAX_LOAD=10")
+                          
+                          
+                          
+                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS) SELECT TEST_ID,'CYCLICK',ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS FROM GLOBAL_VAR")
+                          
+                          
+                          
+                          cursor.execute("UPDATE CYCLES_MST_CYCLIC SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
+                          cursor.execute("UPDATE CYCLES_MST_CYCLIC SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
@@ -1657,7 +1741,7 @@ class PlotCanvas(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST_CYCLIC WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
              self.graph_ids.append(x[0])             
         connection.close()
@@ -1812,7 +1896,7 @@ class PlotCanvas_Auto(FigureCanvas):
                      self.axes.set_ylabel('Load (kgf)')
              
              self.proof_max_load=int(str("9999"))
-             self.proof_max_length=int(str(x[8]))
+             self.proof_max_length=float(str(x[8]))
              self.test_time_sec=int(str(x[9]))
              
         connection.close()
