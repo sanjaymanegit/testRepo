@@ -584,6 +584,9 @@ class Ui_MainWindow(object):
         self.label_60.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_60.setObjectName("label_60")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
         self.lineEdit_9.setGeometry(QtCore.QRect(120, 130, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -702,6 +705,10 @@ class Ui_MainWindow(object):
         self.label_71.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_71.setObjectName("label_71")
         self.lineEdit_12 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_12)
+        self.lineEdit_12.setValidator(input_validator)
+        
         self.lineEdit_12.setGeometry(QtCore.QRect(740, 480, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -733,6 +740,10 @@ class Ui_MainWindow(object):
         self.label_73.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_73.setObjectName("label_73")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
+        self.lineEdit_13.setValidator(input_validator)
+        
         self.lineEdit_13.setGeometry(QtCore.QRect(1020, 480, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -797,6 +808,12 @@ class Ui_MainWindow(object):
         self.label_56.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_56.setObjectName("label_56")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
+        
+        
         self.lineEdit_5.setGeometry(QtCore.QRect(670, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -817,6 +834,12 @@ class Ui_MainWindow(object):
         self.label_62.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_62.setObjectName("label_62")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
+        
+        
         self.lineEdit_8.setGeometry(QtCore.QRect(670, 110, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -887,6 +910,9 @@ class Ui_MainWindow(object):
         self.label_57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_57.setObjectName("label_57")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
         self.lineEdit_6.setGeometry(QtCore.QRect(470, 200, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -918,6 +944,9 @@ class Ui_MainWindow(object):
         self.label_59.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_59.setObjectName("label_59")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
+        self.lineEdit_10.setValidator(input_validator)
         self.lineEdit_10.setGeometry(QtCore.QRect(760, 200, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -953,8 +982,11 @@ class Ui_MainWindow(object):
         self.label_70.setFont(font)
         self.label_70.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_70.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_70.setObjectName("label_70")
+        self.label_70.setObjectName("label_70")        
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
         self.lineEdit_7.setGeometry(QtCore.QRect(460, 130, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -981,6 +1013,9 @@ class Ui_MainWindow(object):
         self.line_19.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_19.setObjectName("line_19")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
+        self.lineEdit_11.setValidator(input_validator)
         self.lineEdit_11.setGeometry(QtCore.QRect(1080, 600, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -990,6 +1025,9 @@ class Ui_MainWindow(object):
         self.lineEdit_11.setFont(font)
         self.lineEdit_11.setObjectName("lineEdit_11")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
+        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(1080, 641, 51, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -999,6 +1037,9 @@ class Ui_MainWindow(object):
         self.lineEdit_14.setFont(font)
         self.lineEdit_14.setObjectName("lineEdit_14")
         self.lineEdit_15 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_15)
+        self.lineEdit_15.setValidator(input_validator)
         self.lineEdit_15.setGeometry(QtCore.QRect(1220, 640, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1008,6 +1049,9 @@ class Ui_MainWindow(object):
         self.lineEdit_15.setFont(font)
         self.lineEdit_15.setObjectName("lineEdit_15")
         self.lineEdit_16 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_16)
+        self.lineEdit_16.setValidator(input_validator)
         self.lineEdit_16.setGeometry(QtCore.QRect(1220, 600, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1017,6 +1061,9 @@ class Ui_MainWindow(object):
         self.lineEdit_16.setFont(font)
         self.lineEdit_16.setObjectName("lineEdit_16")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_17)
+        self.lineEdit_17.setValidator(input_validator)
         self.lineEdit_17.setGeometry(QtCore.QRect(1080, 680, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1026,6 +1073,9 @@ class Ui_MainWindow(object):
         self.lineEdit_17.setFont(font)
         self.lineEdit_17.setObjectName("lineEdit_17")
         self.lineEdit_18 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_18)
+        self.lineEdit_18.setValidator(input_validator)
         self.lineEdit_18.setGeometry(QtCore.QRect(1220, 680, 51, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1131,6 +1181,7 @@ class Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "All"))
         self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
+        '''
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -1156,6 +1207,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Rec.No"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
+        
         item = self.tableWidget.item(0, 0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.item(0, 1)
@@ -1167,12 +1219,13 @@ class Ui_MainWindow(object):
         item = self.tableWidget.item(0, 9)
         item.setText(_translate("MainWindow", "11"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
+        '''
+        
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
-        self.label_13.setText(_translate("MainWindow", "Load \n"
-" (Kgf) :"))
-        self.label_22.setText(_translate("MainWindow", "Running......"))
+        self.label_13.setText(_translate("MainWindow", "Load \n (Kgf) :"))
+        self.label_22.setText(_translate("MainWindow", ""))
         self.label_15.setText(_translate("MainWindow", "3"))
         self.label_16.setText(_translate("MainWindow", "2"))
         self.label_17.setText(_translate("MainWindow", "1"))
@@ -1239,6 +1292,12 @@ class Ui_MainWindow(object):
         self.comboBox.currentTextChanged.connect(self.onchange_specs)
         self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
+        
+        self.pushButton_13.clicked.connect(self.show_all_specimens)
+        self.pushButton_5.clicked.connect(self.open_email_report)    
+        self.pushButton_7.clicked.connect(self.open_pdf)
+        self.pushButton_6.clicked.connect(self.open_comment_popup)
+        self.pushButton_8.clicked.connect(self.print_file)
         
         self.load_data()
     
@@ -1532,7 +1591,7 @@ class Ui_MainWindow(object):
                         with connection:        
                           cursor = connection.cursor()                  
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','PROOF','"+str(self.lineEdit_9.text())+"')")
+                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','CYCLICK','"+str(self.lineEdit_9.text())+"')")
                         connection.commit();
                         connection.close()
     
@@ -1607,7 +1666,7 @@ class Ui_MainWindow(object):
                           
                           
                           
-                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS) SELECT TEST_ID,'CYCLICK',ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS,ELONG_PER,HOLDING_TIME_PRC,MAX_LEN,MAX_LOAD) SELECT TEST_ID,'CYCLICK',ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS,PROOF_MAX_LENGTH,TEST_TIME_SEC,STG_E_AT_PEAK_LOAD_MM,STG_PEAK_LOAD_KG FROM GLOBAL_VAR")
                           
                           
                           
@@ -1639,9 +1698,9 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(10)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        #self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Elongation (%)','Holding Time (sec)','Ult.Shear Stress','Ult.Shear Strain','Shear Modulus @ Max Load','Shear Strain @ Max Load','Max Load (Kgf)','Status','REC.NO ']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Ult.Shear \n Stress','Ult.Shear \n Strain','Shear Modulus \n @ Max Load','Shear Strain \n @ Max Load','Max Load (Kgf)','Max Length (mm)','Status']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1651,13 +1710,19 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(5, 170)
         self.tableWidget.setColumnWidth(6, 170)
         self.tableWidget.setColumnWidth(7, 200)
-        self.tableWidget.setColumnWidth(8, 100)
+        self.tableWidget.setColumnWidth(8, 200)
+        self.tableWidget.setColumnWidth(9, 200)
+        
+        
      
         
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),STATUS, ID FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        #print("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD), CS_AREA,STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID =109 order by CYCLE_NUM Asc")
+        
+        #results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),MAX_LOAD,MAX_LEN,'fgfdg' FROM CYCLES_MST_CYCLIC WHERE TEST_ID =109 order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),MAX_LOAD,MAX_LEN,STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1672,7 +1737,178 @@ class Ui_MainWindow(object):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget.removeRow(i)     
+            self.tableWidget.removeRow(i)
+            
+    
+    def show_all_specimens(self): 
+        self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
+        self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
+        
+        
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_pdf(self):
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=100) 
+        self.create_pdf_CYCLICK() 
+        
+        os.system("xpdf ./reports/test_report.pdf")       
+        
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/test_report.pdf /media/usb/Report_of_test_"+str(self.test_id)+".pdf")
+                os.system("sudo umount /media/usb")
+        else:
+             print("Please connect usb storage device") 
+        
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data.txt")
+        try:
+           f = open('lsusb_data.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+        return product_id
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_comment_popup(self):        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    
+    def create_pdf_CYCLICK(self):
+        self.remark=""
+        self.unit_typex=self.comboBox_2.currentText()
+        self.unit_typex == "Kgf/mm"
+        if(self.unit_typex == "Kgf/mm"):            
+                data2= [['ITR.No.','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Ult.Shear \n Stress','Ult.Shear \n Strain','Shear Modulus \n @ Max Load','Shear Strain \n @ Max Load','Status']]
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(ELONG_PER)),printf(\"%.2f\", avg(HOLDING_TIME_PRC)),printf(\"%.2f\", avg(ULT_SHEAR_STRESS)),printf(\"%.2f\", avg(ULT_SHEAR_STRAIN)),printf(\"%.2f\", avg(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", avg(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(ELONG_PER)),printf(\"%.2f\", min(HOLDING_TIME_PRC)),printf(\"%.2f\", min(ULT_SHEAR_STRESS)),printf(\"%.2f\", min(ULT_SHEAR_STRAIN)),printf(\"%.2f\", min(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", min(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(ELONG_PER)),printf(\"%.2f\", max(HOLDING_TIME_PRC)),printf(\"%.2f\", max(ULT_SHEAR_STRESS)),printf(\"%.2f\", max(ULT_SHEAR_STRAIN)),printf(\"%.2f\", max(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", max(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                for x in results:
+                        data2.append(x)
+                connection.close()
+        else:
+             print("create pdf error - invalid unit toe ")
+                
+       
+        
+        y=300
+        Elements=[]
+        summary_data=[]
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
+        
+        for x in results:
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[8])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            self.remark=str(x[12])        
+        connection.close() 
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        
+        
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+                
+        footer_2= Paragraph("     Authorised: __________________________________.            Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
+        
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 11),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+         
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        
+        doc = SimpleDocTemplate('./reports/test_report.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=20,
+                                bottomMargin=10,)
+        doc.build(Elements)
+                
     
 
 class PlotCanvas(FigureCanvas):
