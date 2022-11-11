@@ -14,9 +14,12 @@
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0105.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0106.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0110.pdf
+/home/pi/TYR_2.0_18.5/reports/Report_of_test_0114.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0115.pdf
+/home/pi/TYR_2.0_18.5/reports/Report_of_test_0116.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0132.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0133.pdf
+/home/pi/TYR_2.0_18.5/reports/Report_of_test_0135.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0139.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0143.pdf
 /home/pi/TYR_2.0_18.5/reports/Report_of_test_0148.pdf
