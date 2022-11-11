@@ -1200,7 +1200,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Shear Strain @ Max Load"))
         item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Max.Load (Kgf)"))
+        item.setText(_translate("MainWindow", "Max.Load (N)"))
         item = self.tableWidget.horizontalHeaderItem(8)
         item.setText(_translate("MainWindow", "Status"))
         item = self.tableWidget.horizontalHeaderItem(9)
@@ -1224,7 +1224,7 @@ class Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
-        self.label_13.setText(_translate("MainWindow", "Load \n (Kgf) :"))
+        self.label_13.setText(_translate("MainWindow", "Load \n (N) :"))
         self.label_22.setText(_translate("MainWindow", ""))
         self.label_15.setText(_translate("MainWindow", "3"))
         self.label_16.setText(_translate("MainWindow", "2"))
@@ -1244,18 +1244,19 @@ class Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "Report Print"))
         self.label_50.setText(_translate("MainWindow", "Itr.No"))
         self.label_7.setText(_translate("MainWindow", "Unit :"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf/mm"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "N/mm"))
         self.label_51.setText(_translate("MainWindow", "MRF INDIA PPVT LTD"))
         self.label_60.setText(_translate("MainWindow", "Speed :"))
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
+        self.pushButton_9.hide()
         self.label_14.setText(_translate("MainWindow", "Elongation : \n (mm) "))
         self.label_61.setText(_translate("MainWindow", "Rectangle"))
         self.label_66.setText(_translate("MainWindow", "Iterations:"))
-        self.label_67.setText(_translate("MainWindow", "3"))
+        self.label_67.setText(_translate("MainWindow", "0"))
         self.label_71.setText(_translate("MainWindow", "Y- Axis:"))
-        self.label_72.setText(_translate("MainWindow", "(Kg.)"))
+        self.label_72.setText(_translate("MainWindow", "(N)"))
         self.label_73.setText(_translate("MainWindow", "X- Axis:"))
         self.label_74.setText(_translate("MainWindow", "(mm)"))
         self.pushButton_16.setText(_translate("MainWindow", "Set-data"))
@@ -1347,12 +1348,18 @@ class Ui_MainWindow(object):
                 if(int(x[2]) == 1):
                         self.lineEdit_11.setText(str(x[0]))
                         self.lineEdit_16.setText(str(x[1]))
+                        self.lineEdit_11.setReadOnly(True)
+                        self.lineEdit_16.setReadOnly(True)
                 elif(int(x[2]) == 2):
                         self.lineEdit_14.setText(str(x[0]))
                         self.lineEdit_15.setText(str(x[1]))
+                        self.lineEdit_14.setReadOnly(True)
+                        self.lineEdit_15.setReadOnly(True)
                 elif(int(x[2]) == 3):
                         self.lineEdit_17.setText(str(x[0]))
                         self.lineEdit_18.setText(str(x[1]))
+                        self.lineEdit_17.setReadOnly(True)
+                        self.lineEdit_18.setReadOnly(True)
                 else:
                         self.lineEdit_11.setText("-0")
                         self.lineEdit_16.setText("-0")
@@ -1477,7 +1484,7 @@ class Ui_MainWindow(object):
                for x in results:
                             self.length_mm=0
                             self.itr_no.append(int(x[0]))
-                            self.length_mm=float(self.guage_len)+float(float(self.guage_len)*float(x[1]/100))
+                            self.length_mm=float(float(self.guage_len)*float(x[1]/100))
                             self.elongation_per.append(float(self.length_mm))
                             self.holding_time.append(float(x[2]))            
                connection.close()
@@ -1489,6 +1496,8 @@ class Ui_MainWindow(object):
                         connection.commit();
                         connection.close()                            
                         self.label_21.setText("Itr No:"+str(self.itr_no[0])+"  Lenngth mm:"+str(self.elongation_per[0])+" Time Sec :"+str(self.holding_time[0]))                        
+                        
+                        self.label_67.setText("1")
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
                         connection = sqlite3.connect("tyr.db")
@@ -1513,8 +1522,8 @@ class Ui_MainWindow(object):
                                        cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
                         connection.commit();
                         connection.close()                            
-                        self.label_21.setText("Iteration No:"+str(self.itr_no[1])+"  Elongation mm:"+str(self.elongation_per[1])+"   Holding Time Sec :"+str(self.holding_time[1]))                        
-                                                
+                        self.label_21.setText("ItrNo:"+str(self.itr_no[1])+"  Elon.(mm):"+str(self.elongation_per[1])+"  Time (Sec):"+str(self.holding_time[1]))                        
+                        self.label_67.setText("2")                       
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
                         connection = sqlite3.connect("tyr.db")
@@ -1535,8 +1544,8 @@ class Ui_MainWindow(object):
                                        cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[2])+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
                         connection.commit();
                         connection.close()                            
-                        self.label_21.setText("Iteration No:"+str(self.itr_no[2])+"  Elongation mm:"+str(self.elongation_per[2])+"   Holding Time Sec :"+str(self.holding_time[2]))                        
-                                                
+                        self.label_21.setText("Itr No:"+str(self.itr_no[2])+"  Elon.(mm):"+str(self.elongation_per[2])+"  Time (Sec):"+str(self.holding_time[2]))                        
+                        self.label_67.setText("3")                       
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
                         connection = sqlite3.connect("tyr.db")
@@ -1596,7 +1605,7 @@ class Ui_MainWindow(object):
                         connection.close()
     
     def show_load_cell_val(self):
-        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_n)))        
         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         self.label_22.setText("ElapsedTime(sec) : "+str(self.sc_new.t))
         self.label_22.show()
@@ -1611,14 +1620,14 @@ class Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
-                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_n)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                 if(self.go_to_next==1):
                         self.start_test_CYCLICK2()
                 elif(self.go_to_next==2):
                         self.start_test_CYCLICK3()
                 else:
-                        self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
+                        self.sc_data =PlotCanvas(self,width=8, height=5, dpi=100)    
                         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
                         print("Stopped all iterations.")
     def reset(self):        
@@ -1643,33 +1652,30 @@ class Ui_MainWindow(object):
             connection.commit();
             connection.close()
             self.status_str=""
-            #self.update_status()
+            self.update_status()
             self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:        
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_6.text())+"',STATUS='"+str(self.status_str)+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_6.text())+"',NEW_TEST_AREA='"+str(self.label_64.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_5.text())+"',STATUS='"+str(self.status_str)+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
+                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LENGTH=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
                           
-                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRESS=10")
-                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRAIN=10")
-                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRESS_AT_MAX_LOAD=10")
-                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_SHEAR_STRAIN_AT_MAX_LOAD=10")
-                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES_AT_MAX_LOAD=10")
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=MAX_LOAD/NEW_TEST_AREA")
+                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRESS=MAX_LOAD/NEW_TEST_AREA")
+                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRAIN=MAX_LENGTH/NEW_TEST_AREA")
+                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=SHEAR_STRESS/SHEAR_STRAIN")
+                          #cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES_AT_MAX_LOAD=10")
                           
                           
                           
-                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS,ELONG_PER,HOLDING_TIME_PRC,MAX_LEN,MAX_LOAD) SELECT TEST_ID,'CYCLICK',ULT_SHEAR_STRESS,ULT_SHEAR_STRAIN,ULT_SHEAR_STRESS_AT_MAX_LOAD,ULT_SHEAR_STRAIN_AT_MAX_LOAD,SHEAR_MODULES_AT_MAX_LOAD,STATUS,PROOF_MAX_LENGTH,TEST_TIME_SEC,STG_E_AT_PEAK_LOAD_MM,STG_PEAK_LOAD_KG FROM GLOBAL_VAR")
-                          
-                          
-                          
+                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULUS,STATUS,ELONG_PER,HOLDING_TIME_PRC,MAX_LENGTH,MAX_LOAD) SELECT TEST_ID,'CYCLICK',ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULES,STATUS,PROOF_MAX_LENGTH,TEST_TIME_SEC,MAX_LENGTH,MAX_LOAD FROM GLOBAL_VAR")
                           cursor.execute("UPDATE CYCLES_MST_CYCLIC SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST_CYCLIC SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N FROM STG_GRAPH_MST")                  
@@ -1688,6 +1694,32 @@ class Ui_MainWindow(object):
             self.show_grid_data_CYCLICK()
     
      
+    def update_status(self):
+        #self.start_test_by="load"  #### This status is "load" Or "elongation"
+        self.status_str=""
+        guage_len=str(self.lineEdit_5.text())
+        
+        expected_elongation=0
+        after_test_length=0
+        connection = sqlite3.connect("tyr.db")         
+        results=connection.execute("SELECT IFNULL(PROOF_MAX_LENGTH,0),MAX_LENGTH FROM GLOBAL_VAR")
+        for x in results:
+                expected_elongation=float(x[0])
+                v=float(x[1])
+                print("expected_elongation:"+str(expected_elongation)+" expected_elongation:"+str(expected_elongation))
+                if(float(expected_elongation) > float(after_test_length)):
+                         print("PASS")
+                         self.status_str="PASS for EXPECTED Elong. :"+str(expected_elongation)
+                elif(float(expected_elongation) == float(after_test_length)):
+                         print("PASS")
+                         self.status_str="PASS for EXPECTED Elong. :"+str(expected_elongation)
+                                  
+                else:
+                         print("FAIL")
+                         self.status_str="FAIL for EXPECTED Elong. :"+str(expected_elongation)
+        connection.close()            
+        
+    
     def show_grid_data_CYCLICK(self):
         self.x_unit='(mm)'
         self.y_unit='(Kgf)'
@@ -1697,10 +1729,9 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(10)
-        #self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Ult.Shear \n Stress','Ult.Shear \n Strain','Shear Modulus \n @ Max Load','Shear Strain \n @ Max Load','Max Load (Kgf)','Max Length (mm)','Status']) 
+        self.tableWidget.setColumnCount(9)
+        #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain','Shear Modulus','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1711,18 +1742,11 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 170)
         self.tableWidget.setColumnWidth(7, 200)
         self.tableWidget.setColumnWidth(8, 200)
-        self.tableWidget.setColumnWidth(9, 200)
-        
-        
-     
         
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        #print("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD), CS_AREA,STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID =109 order by CYCLE_NUM Asc")
-        
-        #results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),MAX_LOAD,MAX_LEN,'fgfdg' FROM CYCLES_MST_CYCLIC WHERE TEST_ID =109 order by CYCLE_NUM Asc")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),MAX_LOAD,MAX_LEN,STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),MAX_LOAD,MAX_LENGTH,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1741,7 +1765,7 @@ class Ui_MainWindow(object):
             
     
     def show_all_specimens(self): 
-        self.sc_data =PlotCanvas(self,width=5, height=4, dpi=100)    
+        self.sc_data =PlotCanvas(self,width=8, height=5, dpi=100)    
         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
         
         
@@ -1753,7 +1777,7 @@ class Ui_MainWindow(object):
         self.window.show()
     
     def open_pdf(self):
-        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=100) 
+        self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_CYCLICK() 
         
         os.system("xpdf ./reports/test_report.pdf")       
@@ -1817,29 +1841,29 @@ class Ui_MainWindow(object):
     def create_pdf_CYCLICK(self):
         self.remark=""
         self.unit_typex=self.comboBox_2.currentText()
-        self.unit_typex == "Kgf/mm"
-        if(self.unit_typex == "Kgf/mm"):            
-                data2= [['ITR.No.','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Ult.Shear \n Stress','Ult.Shear \n Strain','Shear Modulus \n @ Max Load','Shear Strain \n @ Max Load','Status']]
+        self.unit_typex == "N/mm"
+        if(self.unit_typex == "N/mm"):            
+                data2= [['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain','Shear Modulus','Max Load (N)','Max Length (mm)','Status']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),printf(\"%.2f\", ULT_SHEAR_STRESS),printf(\"%.2f\", ULT_SHEAR_STRAIN),printf(\"%.2f\", ULT_SHEAR_STRESS_AT_MAX_LOAD),printf(\"%.2f\", ULT_SHEAR_STRAIN_AT_MAX_LOAD),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", MAX_LENGTH),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                for x in results:
+                     data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", avg(SHEAR_STRAIN)),printf(\"%.2f\", avg(SHEAR_MODULUS)),printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(ELONG_PER)),printf(\"%.2f\", avg(HOLDING_TIME_PRC)),printf(\"%.2f\", avg(ULT_SHEAR_STRESS)),printf(\"%.2f\", avg(ULT_SHEAR_STRAIN)),printf(\"%.2f\", avg(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", avg(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", min(SHEAR_STRAIN)),printf(\"%.2f\", min(SHEAR_MODULUS)),printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(ELONG_PER)),printf(\"%.2f\", min(HOLDING_TIME_PRC)),printf(\"%.2f\", min(ULT_SHEAR_STRESS)),printf(\"%.2f\", min(ULT_SHEAR_STRAIN)),printf(\"%.2f\", min(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", min(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(ELONG_PER)),printf(\"%.2f\", max(HOLDING_TIME_PRC)),printf(\"%.2f\", max(ULT_SHEAR_STRESS)),printf(\"%.2f\", max(ULT_SHEAR_STRAIN)),printf(\"%.2f\", max(ULT_SHEAR_STRESS_AT_MAX_LOAD)),printf(\"%.2f\", max(ULT_SHEAR_STRAIN_AT_MAX_LOAD)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", max(SHEAR_STRAIN)),printf(\"%.2f\", max(SHEAR_MODULUS)),printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
@@ -1855,7 +1879,7 @@ class Ui_MainWindow(object):
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[8])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
             self.remark=str(x[12])        
         connection.close() 
         PAGE_HEIGHT=defaultPageSize[1]
@@ -1932,7 +1956,7 @@ class PlotCanvas(FigureCanvas):
         ax.set_facecolor('#CCFFFF')   
         ax.minorticks_on()
         
-        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         
         self.s=[]
@@ -1950,11 +1974,11 @@ class PlotCanvas(FigureCanvas):
         for x in results:
             self.proof_test_by=str(x[0])
             if(self.proof_test_by=="load"):
-                     ax.set_xlabel('Elongation (mm)')
-                     ax.set_ylabel('Load kgf)')                
+                     ax.set_xlabel('Displacement (mm)')
+                     ax.set_ylabel('Load (N)')                
             else:
-                     ax.set_xlabel('Elongation (mm)')
-                     ax.set_ylabel('Load kgf)')
+                     ax.set_xlabel('Displacement (mm)')
+                     ax.set_ylabel('Load (N)')
         connection.close()
         
         self.unit_type="Kgf/mm"
@@ -1964,7 +1988,7 @@ class PlotCanvas(FigureCanvas):
         for x in results:
             if(self.unit_type == "N/mm"):
                  ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1])*9.81)
+                 ax.set_ylim(0,int(x[1]))
                  
             if(self.unit_type == "Kgf/mm"):
                  ax.set_xlim(0,int(x[0]))
@@ -1991,15 +2015,15 @@ class PlotCanvas(FigureCanvas):
             if(self.unit_type == "N/mm"):
                 results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             elif(self.unit_type == "Kgf/mm"):
-                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             else:                
-                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
                     self.x_num.append(k[0])
                     self.y_num.append(k[1])
             connection.close()
             if(g < 8 ):
-                    ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                    ax.plot(self.x_num,self.y_num, self.color[g],label="Ireration No:"+str(g+1))
             
         print("self.test_type:"+str(self.test_type))
         
@@ -2008,7 +2032,7 @@ class PlotCanvas(FigureCanvas):
         self.figure.savefig('last_graph.png',dpi=100)
 
 class PlotCanvas_Auto(FigureCanvas):     
-    def __init__(self, parent=None, width=5, height=4, dpi=80):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         
         self.axes = fig.add_subplot(111)
@@ -2125,11 +2149,11 @@ class PlotCanvas_Auto(FigureCanvas):
              self.unit_type=str(x[5])
              self.proof_test_by=str(x[6])
              if(self.proof_test_by=="load"):
-                     self.axes.set_xlabel('Elongation (mm)')
-                     self.axes.set_ylabel('Load (kgf)')                
+                     self.axes.set_xlabel('Displacement (mm)')
+                     self.axes.set_ylabel('Load (N)')                
              else:
-                     self.axes.set_xlabel('Elongation (mm)')
-                     self.axes.set_ylabel('Load (kgf)')
+                     self.axes.set_xlabel('Displacement (mm)')
+                     self.axes.set_ylabel('Load (N)')
              
              self.proof_max_load=int(str("9999"))
              self.proof_max_length=float(str(x[8]))
@@ -2149,10 +2173,10 @@ class PlotCanvas_Auto(FigureCanvas):
                      
              elif(self.unit_type == "N/mm"):
                      self.axes.set_xlim(0,int(x[0]))
-                     self.axes.set_ylim(0,int(x[1])*9.81)
+                     self.axes.set_ylim(0,int(x[1]))
                      #self.flexural_max_load=int(x[1])/9.81
                      self.xlim=int(x[0])
-                     self.ylim=int(x[1])* 9.81
+                     self.ylim=int(x[1])
                               
              else:
                      self.axes.set_xlim(0,int(x[0]))
@@ -2383,16 +2407,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):        
-        if(self.unit_type == "Kgf/mm"):
-            self.line_cnt.set_data(self.arr_p,self.arr_q)
-            return [self.line_cnt]
-            #return self.line_cnt,
-        elif(self.unit_type == "N/mm"):
+        if(self.unit_type == "N/mm"):
             self.line_cnt.set_data(self.arr_p,self.arr_q_n)
             return [self.line_cnt]
-            #return self.line_cnt,
+            #return self.line_cnt,       
         else:    
-           self.line_cnt.set_data(self.arr_p,self.arr_q)
+           self.line_cnt.set_data(self.arr_p,self.arr_q_n)
            return [self.line_cnt]
            #return self.line_cnt,
     
@@ -2474,16 +2494,7 @@ class PlotCanvas_blank(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.plot_blank()        
         
-    def plot_blank(self):               
-        
-#        connection = sqlite3.connect("tyr.db")
-#        connection.commit();
-#        with connection:        
-#                cursor = connection.cursor()                            
-#                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-#        connection.commit();
-#        connection.close()
-        
+    def plot_blank(self):
         self.x=[0,0,0,0,0,0,0,0]
         self.y=[0,0,0,0,0,0,0,0]
         
@@ -2506,8 +2517,8 @@ class PlotCanvas_blank(FigureCanvas):
         for x in results:             
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1]))                               
-                 ax.set_xlabel('Elongation (mm)')
-                 ax.set_ylabel('Load (Kgf) ')             
+                 ax.set_xlabel('Displacement (mm)')
+                 ax.set_ylabel('Load (N) ')             
         connection.close()
                
         for i in range(len(self.x)):
