@@ -1,13 +1,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
-#from TY_00_TEST_TYPES import TY_00_T_Ui_MainWindow
-from TY_03_REPORTS import TY_03_Ui_MainWindow
+
+from RL_01_START_TEST_EXPANSION import RL_01_Ui_MainWindow
+
+#from TY_03_REPORTS import TY_03_Ui_MainWindow
+
 from TY_04_SETTING import TY_04_Ui_MainWindow
 from TY_05_SPECIMEN import TY_05_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
-from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
+#from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
+from RL_02_SP_REPORT_EXPANSION import RL_02_Ui_MainWindow
 
 import sqlite3
 import datetime
@@ -205,7 +208,7 @@ class Ui_MainWindow(object):
         if(self.go_ahead=="Yes"):  
             if(dev_id=='201910:0003'):
                 self.window = QtWidgets.QMainWindow()
-                self.ui=TY_12_LIST_Ui_MainWindow()
+                self.ui=RL_01_Ui_MainWindow()
                 self.ui.setupUi(self.window)           
                 self.window.show()        
             else:
@@ -215,7 +218,7 @@ class Ui_MainWindow(object):
         
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_18_TEST_TYPE_REPORTS_Ui()
+        self.ui=RL_02_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()        
         
