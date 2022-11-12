@@ -35,6 +35,7 @@ class Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         
         self.frame.setObjectName("frame")
+        '''
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(440, 310, 191, 181))
         self.pushButton_5.setText("")
@@ -43,6 +44,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.setIcon(icon)
         self.pushButton_5.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_5.setObjectName("pushButton_5")
+        '''
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(100, 310, 201, 181))
         self.pushButton_4.setText("")
@@ -75,7 +77,8 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(760, 310, 201, 181))
+        #self.pushButton_3.setGeometry(QtCore.QRect(760, 310, 201, 181))
+        self.pushButton_3.setGeometry(QtCore.QRect(440, 310, 191, 181))
         self.pushButton_3.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("images/setting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -86,29 +89,29 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 410, 101))
+        self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 400, 300))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton_3_1.setFont(font)
         self.pushButton_3_1.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./images/logo.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("./images/GIGSYSlogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3_1.setIcon(icon2)
-        self.pushButton_3_1.setIconSize(QtCore.QSize(400, 460))
+        self.pushButton_3_1.setIconSize(QtCore.QSize(800, 900))
         self.pushButton_3_1.setObjectName("pushButton_3_1")
         
         
         
         
-        
+        '''
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setGeometry(QtCore.QRect(830, 420, 191, 181))
         self.label_3.setText("Setting")
         self.label_3.setObjectName("label_3")
-        
+        '''
         self.label_3_1 = QtWidgets.QLabel(self.frame)
         self.label_3_1.setGeometry(QtCore.QRect(530, 420, 191, 181))
-        self.label_3_1.setText("Motor")
+        self.label_3_1.setText("Setting")
         self.label_3_1.setObjectName("label_3_1")
         
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
@@ -161,7 +164,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.open_new_window2)
         self.pushButton_3.clicked.connect(self.open_new_window3)
         self.pushButton_4.clicked.connect(self.open_new_window4)
-        self.pushButton_5.clicked.connect(self.open_new_window5)
+        #self.pushButton_5.clicked.connect(self.open_new_window5)
         
         self.pushButton_6.clicked.connect(self.shutdown_system)
         self.pushButton_7.clicked.connect(self.reboot_system)
