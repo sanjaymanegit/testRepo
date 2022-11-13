@@ -167,6 +167,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.open_new_window2)
         self.pushButton_3.clicked.connect(self.open_new_window3)
         self.pushButton_4.clicked.connect(self.open_new_window4)
+        self.pushButton_4.setDisabled(True)
         #self.pushButton_5.clicked.connect(self.open_new_window5)
         
         self.pushButton_6.clicked.connect(self.shutdown_system)

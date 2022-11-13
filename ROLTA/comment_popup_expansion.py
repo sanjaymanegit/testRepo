@@ -178,7 +178,7 @@ class comment_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT COMMENTS FROM TEST_MST WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
              self.textEdit.setText(str(x[0]))
         connection.close()
@@ -188,7 +188,7 @@ class comment_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
                 cursor = connection.cursor()                
-                cursor.execute("update TEST_MST set COMMENTS='"+self.textEdit.toPlainText()+"' WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)")                 
+                cursor.execute("update TEST_MST_EXPANSION set REMARK='"+self.textEdit.toPlainText()+"' WHERE TEST_ID IN (SELECT EMAIL_TEST_ID FROM GLOBAL_VAR)")                 
         connection.commit()
         connection.close()
         self.label_2.setText("Successfully Saved Comments.")

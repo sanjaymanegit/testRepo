@@ -1,6 +1,6 @@
 
 
-#from TY_34_REPORT_CYCLICK import TY_34_Ui_MainWindow
+from RL_03_REPORT_EXPANSION import RL_03_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import QTableWidgetItem
@@ -845,7 +845,7 @@ class RL_02_Ui_MainWindow(object):
             connection.close() 
         
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_34_Ui_MainWindow()
+        self.ui=RL_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()   
        

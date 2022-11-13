@@ -48,7 +48,7 @@ from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
-class RL_01_Ui_MainWindow(object):
+class RL_03_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1374, 770)
@@ -1923,10 +1923,10 @@ class RL_01_Ui_MainWindow(object):
         self.radioButton_2.clicked.connect(self.graph_type_change)
         
         
-        self.pushButton_5.setDisabled(True)
-        self.pushButton_6.setDisabled(True)
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_8.setDisabled(True)
+#        self.pushButton_5.setDisabled(True)
+#        self.pushButton_6.setDisabled(True)
+#        self.pushButton_7.setDisabled(True)
+#        self.pushButton_8.setDisabled(True)
         
                 
         self.sc_blank =PlotCanvas_blank(self)          
@@ -1936,7 +1936,12 @@ class RL_01_Ui_MainWindow(object):
         self.lcdNumber_3.setProperty("value", 0.0)
         self.graph_type_change()
         self.load_data()
-        
+        self.pushButton_4.hide()
+        self.pushButton_16.hide()
+        self.lcdNumber.hide()
+        self.lcdNumber_2.hide()
+        self.label_13.hide()
+        self.label_14.hide()
     
     
     def graph_type_change(self):
@@ -1973,13 +1978,13 @@ class RL_01_Ui_MainWindow(object):
                         cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
              connection.commit()
              connection.close()
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)   
         
     def load_data(self):
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST_EXPANSION'")       
+        results=connection.execute("select TEST_ID  from GLOBAL_VAR ")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])                 
@@ -1992,7 +1997,7 @@ class RL_01_Ui_MainWindow(object):
                                    "LAST_CAL_DATE_1,EXTENSOMETER_NO,POSITION_SPAN_ON_PDSC,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,PRELOAD_PERC,PRELOAD_PRESSURE__MPA,"
                                    "NEVER_EXCEED_TEST_PRESSURE , EXTENSOMETER_CHAIN_LENGTH ,MAX_EXTENSION,EXTENSION_RATE,THICKNESS_1,THICKNESS_2,THICKNESS_3,"
                                    "THICKNESS_4,THICKNESS_5,THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,IS_TESTED,"
-                                   "D_AV,T_AV,SAMPLE_STATUS,MIN_EXT,MAX_EXT,MAX_PRESSURE_MPA,YEILD_STRENGTH,MODULUS_OF_ELASTICITY,REVIEWED_BY,TEST_DATE,TESTED_BY FROM TEST_MST_TMP")                 
+                                   "D_AV,T_AV,SAMPLE_STATUS,MIN_EXT,MAX_EXT,MAX_PRESSURE_MPA,YEILD_STRENGTH,MODULUS_OF_ELASTICITY,REVIEWED_BY,TEST_DATE,TESTED_BY FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ")                 
         for x in results:
                     #self.label_64.setText(str(x[0]))  #combobox
                     self.lineEdit_9.setText(str(x[1])) #NOMINAL_OUTER_DIA_MM,
@@ -3355,7 +3360,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = RL_01_Ui_MainWindow()
+    ui = RL_03_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
