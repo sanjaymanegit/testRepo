@@ -78,16 +78,34 @@ class RL_01_Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(1050, 490, 81, 31))
+        #self.pushButton_4.setGeometry(QtCore.QRect(1050, 490, 81, 31)) #
+        self.pushButton_4.setGeometry(QtCore.QRect(650, 650, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(0, 180, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
+        
+        
+        self.pushButton_4_1 = QtWidgets.QPushButton(self.frame)
+        #self.pushButton_4.setGeometry(QtCore.QRect(1050, 490, 81, 31)) #
+        self.pushButton_4_1.setGeometry(QtCore.QRect(770, 650, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_4_1.setFont(font)
+        
+        self.pushButton_4_1.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(180, 0, 0);")
+        self.pushButton_4_1.setObjectName("pushButton_4_1")
+       
+        
+        
+        
         self.line = QtWidgets.QFrame(self.frame)
         self.line.setGeometry(QtCore.QRect(0, 240, 1341, 20))
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -1650,6 +1668,8 @@ class RL_01_Ui_MainWindow(object):
         self.radioButton_2.setFont(font)
         self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
+        '''
+
         self.label_23 = QtWidgets.QLabel(self.frame)
         self.label_23.setGeometry(QtCore.QRect(650, 650, 101, 31))
         font = QtGui.QFont()
@@ -1661,6 +1681,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_23.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_23.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_23.setObjectName("label_23")
+        
         self.lcdNumber_3 = QtWidgets.QLCDNumber(self.frame)
         self.lcdNumber_3.setGeometry(QtCore.QRect(770, 650, 91, 41))
         self.lcdNumber_3.setStyleSheet("background-color: rgb(0, 0, 0);\n"
@@ -1672,18 +1693,7 @@ class RL_01_Ui_MainWindow(object):
         self.lcdNumber_3.setObjectName("lcdNumber_3")
         
         
-        '''
-        self.label_140 = QtWidgets.QLabel(self.frame)
-        self.label_140.setGeometry(QtCore.QRect(770, 550, 101, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_140.setFont(font)
-        self.label_140.setStyleSheet("color: rgb(0, 0, 0);")
-        self.label_140.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_140.setObjectName("label_140")
+        
         '''
         
         self.label_141 = QtWidgets.QLabel(self.frame)
@@ -1760,6 +1770,8 @@ class RL_01_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
+        self.pushButton_4_1.setText("Stop")
+        
         self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
@@ -1875,9 +1887,9 @@ class RL_01_Ui_MainWindow(object):
         self.label_127.setText(_translate("MainWindow", "(mm)"))
         self.label_16.setText(_translate("MainWindow", "OK to Test !"))
         self.label_128.setText(_translate("MainWindow", "Y-Axis :"))
-        self.lineEdit_12.setText(_translate("MainWindow", "1000"))
+        self.lineEdit_12.setText(_translate("MainWindow", "0"))
         self.label_129.setText(_translate("MainWindow", "X-Axis :"))
-        self.lineEdit_13.setText(_translate("MainWindow", "100"))
+        self.lineEdit_13.setText(_translate("MainWindow", "0"))
         self.pushButton_16.setText(_translate("MainWindow", "Set Graph"))
         self.label_17.setText(_translate("MainWindow", "Selected Elastic Zone Data Points :"))
         self.label_130.setText(_translate("MainWindow", "Min Ext:"))
@@ -1902,17 +1914,19 @@ class RL_01_Ui_MainWindow(object):
         self.label_18.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d ,%Y")+""))
         self.radioButton.setText(_translate("MainWindow", "Pressure Vs Extension"))
         self.radioButton_2.setText(_translate("MainWindow", "Stress Vs Strain"))
-        self.label_23.setText(_translate("MainWindow", "Pressure(MPa):"))
-        self.label_23.hide()
+        #self.label_23.setText(_translate("MainWindow", "Pressure(MPa):"))
+        #self.label_23.hide()
         #self.label_140.setText(_translate("MainWindow", "Preload  %:"))
         self.label_141.setText(_translate("MainWindow", "Preload Pressure:"))
         self.lineEdit_45.setText(_translate("MainWindow", "13.58"))
         self.label_142.setText(_translate("MainWindow", "(MPa)"))
         self.label_24.setText(_translate("MainWindow", "Report File Name : expansion_test_001.pdf"))
         self.label_24.hide()
-        self.lcdNumber_3.hide()
+        #self.lcdNumber_3.hide()
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.start_test_expansion)
+        self.pushButton_4_1.clicked.connect(self.mannual_stop)
+        
         self.pushButton_16.clicked.connect(self.set_data)
         
         
@@ -1944,7 +1958,7 @@ class RL_01_Ui_MainWindow(object):
 #        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
-        self.lcdNumber_3.setProperty("value", 0.0)
+        #self.lcdNumber_3.setProperty("value", 0.0)
         
         self.load_data()
         self.graph_type_change()
@@ -2119,6 +2133,13 @@ class RL_01_Ui_MainWindow(object):
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])                 
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_1 as Load_Y_axis,GRAPH_SCALE_CELL_2  as length_x_axis FROM SETTING_MST") 
+        for x in results:            
+                self.lineEdit_12.setText(str(float(x[0])))
+                self.lineEdit_13.setText(str(float(x[1])))
         connection.close()
         
         
@@ -2563,7 +2584,14 @@ class RL_01_Ui_MainWindow(object):
                         connection.commit();
                         connection.close()
                         
-                        
+    def mannual_stop(self):
+                self.reset()
+                self.save_graph_data()
+                self.sc_new.save_data_flg=""
+                self.label_21.show()
+                self.label_21.setText("Data Saved Successfully.")
+                
+        
     
     def show_load_cell_val(self):
         
@@ -2605,7 +2633,7 @@ class RL_01_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,X_STRAIN) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(self.sc_new.arr_p_strain[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,X_STRAIN) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"')")
             connection.commit();
             connection.close()
             
@@ -2914,16 +2942,11 @@ class PlotCanvas(FigureCanvas):
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:
             if(self.unit_type == "N/mm"):
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
-                 
-            if(self.unit_type == "Kgf/mm"):
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
-                 
-            else:     
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
+                 #ax.set_xlim(0,int(x[0]))
+                 #ax.set_ylim(0,int(x[1]))
+                    
+                 ax.set_xlim(0,float(x[0]))
+                 ax.set_ylim(0,float(x[1]))
                  
         connection.close()
         
@@ -2954,8 +2977,8 @@ class PlotCanvas(FigureCanvas):
                         ax.set_xlabel('Elongation (mm)')
                         ax.set_ylabel('Pressure (MPa)') 
                         for k in results:        
-                                self.x_num.append(k[0])
-                                self.y_num.append(k[1])
+                                self.x_num.append(float(k[0]))
+                                self.y_num.append(float(k[1]))
                         connection.close()   
             else:
                         connection = sqlite3.connect("tyr.db")
@@ -2963,8 +2986,8 @@ class PlotCanvas(FigureCanvas):
                         ax.set_xlabel('Elongation (mm)')
                         ax.set_ylabel('Pressure (MPa)') 
                         for k in results:        
-                                self.x_num.append(k[0])
-                                self.y_num.append(k[1])
+                                self.x_num.append(float(k[0]))
+                                self.y_num.append(float(k[1]))
                         connection.close() 
                
             
@@ -3127,29 +3150,16 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
         for x in results:
-             if(self.unit_type == "Kgf/mm"):
-                     self.axes.set_xlim(0,int(x[0]))
-                     self.axes.set_ylim(0,int(x[1]))
-                     #self.flexural_max_load=int(x[1])/9.81
-                     self.xlim=int(x[0])
-                     self.ylim=int(x[1])
-            
-             elif(self.unit_type == "N/mm"):
-                     self.axes.set_xlim(0,int(x[0]))
-                     self.axes.set_ylim(0,int(x[1]))
-                     #self.flexural_max_load=int(x[1])/9.81
-                     self.xlim=int(x[0])
-                     self.ylim=int(x[1])
-                              
-             else:
-                     self.axes.set_xlim(0,int(x[0]))
-                     self.axes.set_ylim(0,int(x[1]))
+             
+                  
+                     self.axes.set_xlim(0,float(x[0]))
+                     self.axes.set_ylim(0,float(x[1]))
                      #self.flexural_max_load=int(x[1])
-                     self.xlim=int(x[0])
-                     self.ylim=int(x[1])
+                     self.xlim=float(x[0])
+                     self.ylim=float(x[1])
                       
-             self.auto_rev_time_off=int(x[2])
-             self.break_sence=int(x[3])
+                     self.auto_rev_time_off=int(x[2])
+                     self.break_sence=int(x[3])
         connection.close()
         
         try:
@@ -3492,8 +3502,8 @@ class PlotCanvas_blank(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:             
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))                               
+                 ax.set_xlim(0,float(x[0]))
+                 ax.set_ylim(0,float(x[1]))                               
                  
                  if(self.graph_type == "STRESS_VS_STRAIN"):
                          ax.set_xlabel('Strain (%)')
