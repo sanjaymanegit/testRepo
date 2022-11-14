@@ -621,9 +621,10 @@ class RL_02_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "1212"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.label_7.setText(_translate("MainWindow", "PARTY :"))
+        self.label_7.hide()
         #self.comboBox_3.setItemText(0, _translate("MainWindow", "MRF"))
         self.label_8.setText(_translate("MainWindow", "BATCH ID :"))
-        
+        self.label_8.hide()
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
         self.pushButton_14_1.setText(_translate("MainWindow", "EMAIL"))
         self.pushButton_14_1.hide()
@@ -631,6 +632,8 @@ class RL_02_Ui_MainWindow(object):
         
         self.label_9.setText(_translate("MainWindow", "UNIT    :"))
         self.comboBox_5.addItem("")
+        self.comboBox_3.hide()
+        self.comboBox_4.hide()
         #self.comboBox_5.addItem("")
         self.comboBox_5.setItemText(0, _translate("MainWindow", "N/mm"))
         #self.comboBox_5.setItemText(1, _translate("MainWindow", "MPA"))
@@ -759,12 +762,11 @@ class RL_02_Ui_MainWindow(object):
        
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Specemen. Name','NOMINAL_OUTER_DIA_MM'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Sample Identification No.','Nominal Outer Diameter'])        
          
         connection = sqlite3.connect("tyr.db")  
-        print("SELECT B.ID,B.TEST_DATE,B.SPECIMEN_NAME,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
-       
-        results=connection.execute("SELECT B.ID,B.TEST_DATE,B.SPECIMEN_NAME,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
+        
+        results=connection.execute("SELECT B.ID,B.TEST_DATE,B.SAMPLE_IDENTIFICATION_NO,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

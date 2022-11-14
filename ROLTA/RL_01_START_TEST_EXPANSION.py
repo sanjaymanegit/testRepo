@@ -2281,6 +2281,8 @@ class RL_01_Ui_MainWindow(object):
         else:
                self.goAhead="Yes"
                connection = sqlite3.connect("tyr.db")
+               print("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+               
                results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
                for x in results:           
                  if(int(x[0]) > 0):
@@ -2288,16 +2290,16 @@ class RL_01_Ui_MainWindow(object):
                  else:
                        self.test_id_exist="No"                     
                connection.close() 
-               
+               print("self.test_id_exist:"+str(self.test_id_exist))
                if(self.test_id_exist=="Yes"):
                    ### Update global var
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                            
                             try:
-                                    cursor.execute("UPDATE  TEST_MST_TMP SET TEST_ID='"+str(self.label_12.text())+
+                                    cursor.execute("UPDATE  TEST_MST_TMP SET TEST_ID='"+str(int(self.label_12.text()))+
                                                     "',NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
                                                     "',GREAD='"+str(self.lineEdit_11.text())+
                                                     "', NOMINAL_WALL_THICKNESS_MM='"+str(self.lineEdit_3.text())+
@@ -2336,9 +2338,9 @@ class RL_01_Ui_MainWindow(object):
                                                     "', MIN_EXT='"+str(self.lineEdit_39.text())+
                                                     "', MAX_EXT='"+str(self.lineEdit_40.text())+
                                                     "', MAX_PRESSURE_MPA='"+str(self.lineEdit_41.text())+
-                                                    "', YEILD_STRENGTH='0'"
-                                                    "', MODULUS_OF_ELASTICITY='0'"
-                                                    "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
+                                                    "', YEILD_STRENGTH=0"
+                                                    ", MODULUS_OF_ELASTICITY=0"
+                                                    ", REVIEWED_BY='"+str(self.lineEdit_44.text())+
                                                    # "', TEST_DATE='"+str(self.label_18.text())+
                                                     "', GRAPH_TYPE='"+str(self.graph_type)+
                                                     "' ")
@@ -2349,8 +2351,8 @@ class RL_01_Ui_MainWindow(object):
                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_AREA=( SELECT  (SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 FROM TEST_MST_TMP)")
                                               
                             try:
-                                    cursor.execute("UPDATE  TEST_MST_EXPANSION SET TEST_ID='"+str(self.label_12.text())+
-                                                    "',NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
+                                    cursor.execute("UPDATE  TEST_MST_EXPANSION SET "+
+                                                    "NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
                                                     "',GREAD='"+str(self.lineEdit_11.text())+
                                                     "', NOMINAL_WALL_THICKNESS_MM='"+str(self.lineEdit_3.text())+
                                                     "', SPECIFIED_YEILD_STRENGTH='"+str(self.lineEdit_14.text())+
@@ -2393,7 +2395,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
                                                     #"', TEST_DATE='"+str(self.label_18.text())+
                                                     "', GRAPH_TYPE='"+str(self.graph_type)+
-                                                    "' ")
+                                                    "' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
 
                             except Exception as e:
                                               print("UPDATE SQL Error-TEST_MST_EXPANSION No- 3:"+str(e))
@@ -2405,65 +2407,10 @@ class RL_01_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()                  
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                               try:
                                       
-                                      print("INSERT INTO TEST_MST_EXPANSION (TEST_ID,NOMINAL_OUTER_DIA_MM,GREAD, NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH,"
-                                                    "SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE, "
-                                                    "PRESSURE_TRANDUSER_NO,FORCE_SAPN_ON_PDSC, LAST_CAL_DATE_1,"
-                                                    "EXTENSOMETER_NO,POSITION_SPAN_ON_PDSC,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,"
-                                                    "PRELOAD_PERC,PRELOAD_PRESSURE__MPA,NEVER_EXCEED_TEST_PRESSURE,EXTENSOMETER_CHAIN_LENGTH,MAX_EXTENSION,"
-                                                    "EXTENSION_RATE,THICKNESS_1,THICKNESS_2,THICKNESS_3,THICKNESS_4,THICKNESS_5,"
-                                                    "THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,"
-                                                    "IS_TESTED,D_AV,T_AV,SAMPLE_STATUS,MIN_EXT, MAX_EXT,MAX_PRESSURE_MPA, YEILD_STRENGTH,MODULUS_OF_ELASTICITY, REVIEWED_BY,"
-                                                    "TESTED_BY,GRAPH_TYPE)"
-                                                    "VALUES("
-                                                           "'"+str(self.label_12.text())+"',"   #TEST_ID
-                                                                "'"+str(self.lineEdit_9.text())+"'," #NOMINAL_OUTER_DIA_MM
-                                                                "'"+str(self.lineEdit_11.text())+"'," #GREAD
-                                                                "'"+str(self.lineEdit_3.text())+"'," #NOMINAL_WALL_THICKNESS_MM
-                                                                "'"+str(self.lineEdit_14.text())+"'," #SPECIFIED_YEILD_STRENGTH
-                                                                "'"+str(self.lineEdit_16.text())+"'," #SAMPLE_IDENTIFICATION_NO
-                                                                "'"+str(self.lineEdit_17.text())+"'," #SAMPLE_DESCRIPTION
-                                                                "'"+str(self.lineEdit_18.text())+"'," #MILL_HYDROTEST_PRESSURE
-                                                                "'"+str(self.lineEdit_19.text())+"'," #PRESSURE_TRANDUSER_NO
-                                                                "'"+str(self.lineEdit_20.text())+"'," #FORCE_SAPN_ON_PDSC
-                                                                "'"+str(self.lineEdit_21.text())+"'," #LAST_CAL_DATE_1
-                                                                "'"+str(self.lineEdit_22.text())+"'," #EXTENSOMETER_NO
-                                                                "'"+str(self.lineEdit_23.text())+"'," #POSITION_SPAN_ON_PDSC
-                                                                "'"+str(self.lineEdit_24.text())+"'," #LAST_CAL_DATE_2
-                                                                "'"+str(self.lineEdit_25.text())+"'," #MAX_ELONGATION_PRC
-                                                                "'"+str(self.lineEdit_26.text())+"'," #PRELOAD_PERC
-                                                                "'"+str(self.lineEdit_45.text())+"'," #PRELOAD_PRESSURE__MPA
-                                                                "'"+str(self.lineEdit_27.text())+"'," #NEVER_EXCEED_TEST_PRESSURE
-                                                                "'"+str(self.lineEdit_28.text())+"'," #EXTENSOMETER_CHAIN_LENGTH
-                                                                "'"+str(self.lineEdit_29.text())+"'," #MAX_EXTENSION
-                                                                "'"+str(self.lineEdit_30.text())+"'," #EXTENSION_RATE
-                                                                "'"+str(self.lineEdit_4.text())+"'," #THICKNESS_1
-                                                                "'"+str(self.lineEdit_5.text())+"'," #THICKNESS_2
-                                                                "'"+str(self.lineEdit_6.text())+"'," #THICKNESS_3
-                                                                "'"+str(self.lineEdit_7.text())+"'," #THICKNESS_4
-                                                                "'"+str(self.lineEdit_8.text())+"'," #THICKNESS_5
-                                                                "'"+str(self.lineEdit_10.text())+"'," #THICKNESS_6
-                                                                "'"+str(self.lineEdit_31.text())+"'," #PRELOAD_PRESSURE_MPA
-                                                                "'"+str(self.lineEdit_32.text())+"'," #DIAMETER_1
-                                                                "'"+str(self.lineEdit_33.text())+"'," #DIAMETER_2
-                                                                "'"+str(self.lineEdit_34.text())+"'," #DIAMETER_3
-                                                                "'"+str(self.lineEdit_35.text())+"'," #SAMPLE_WIDTH_MM
-                                                                "'"+str(self.lineEdit_36.text())+"'," #IS_TESTED
-                                                                "'"+str(self.lineEdit_37.text())+"'," #D_AV
-                                                                "'"+str(self.lineEdit_38.text())+"'," #T_AV
-                                                                "'"+str(self.label_16.text())+"'," #SAMPLE_STATUS
-                                                                "'"+str(self.lineEdit_39.text())+"'," #MIN_EXT
-                                                                "'"+str(self.lineEdit_40.text())+"'," #MAX_EXT
-                                                                "'"+str(self.lineEdit_41.text())+"'," #MAX_PRESSURE_MPA
-                                                                "'0',"   
-                                                                "'0',"
-                                                                "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
-                                                                #"'"+str(self.label_18.text())+"'," #TEST_DATE
-                                                                "'"+str(self.lineEdit_15.text())+"'" #TESTED_BY
-                                                                "'"+str(self.graph_type)+"')" #GRAPH_TYPE
-                                                                )
+                                      
                                       
                                       cursor.execute("INSERT INTO TEST_MST_EXPANSION (TEST_ID,NOMINAL_OUTER_DIA_MM,GREAD, NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH,"
                                                     "SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE, "
@@ -2644,7 +2591,7 @@ class RL_01_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_STRAIN) FROM STG_GRAPH_MST WHERE Y_NUM_MPA=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
@@ -2768,21 +2715,21 @@ class RL_01_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_DATE,TESTED_BY,SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT TEST_DATE,TESTED_BY,SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Date: ",str(x[0]),"Tested By: ",str(x[1])],["Test Report File Name : ",str("Report_of_test_"+self.label_12.text()),"Sample Identification #: ",str(x[2])],["Sample Description:  ",str(x[3]),"Mill Hydrotest Pressure(MPa):",str(x[4])]]
             self.remark=str(x[5])        
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT NOMINAL_OUTER_DIA_MM, GREAD,NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT NOMINAL_OUTER_DIA_MM, GREAD,NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data2=[["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])],["Nominal Wall Thickness(mm) : ",str(x[2]),"Specified Yield Strength(MPa)",str(x[3])]]
             #self.remark=str(x[5])        
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT PRESSURE_TRANDUSER_NO,PRELOAD_PERC,FORCE_SAPN_ON_PDSC,PRELOAD_PRESSURE__MPA,LAST_CAL_DATE_1,NEVER_EXCEED_TEST_PRESSURE,EXTENSOMETER_NO,EXTENSOMETER_CHAIN_LENGTH,POSITION_SPAN_ON_PDSC,MAX_EXTENSION,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,EXTENSION_RATE   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT PRESSURE_TRANDUSER_NO,PRELOAD_PERC,FORCE_SAPN_ON_PDSC,PRELOAD_PRESSURE__MPA,LAST_CAL_DATE_1,NEVER_EXCEED_TEST_PRESSURE,EXTENSOMETER_NO,EXTENSOMETER_CHAIN_LENGTH,POSITION_SPAN_ON_PDSC,MAX_EXTENSION,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,EXTENSION_RATE   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data.append(["Pressure Transducer No: ",str(x[0]),"Preload Percentage: ",str(x[1])])
             summary_data.append(["Force Span on PDSC : ",str(x[2]),"x","x"])
@@ -2795,7 +2742,7 @@ class RL_01_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT THICKNESS_1,THICKNESS_2,THICKNESS_3,THICKNESS_4,THICKNESS_5,THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,IS_TESTED,D_AV,T_AV  FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT THICKNESS_1,THICKNESS_2,THICKNESS_3,THICKNESS_4,THICKNESS_5,THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,IS_TESTED,D_AV,T_AV  FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data.append(["Thinckness_1 (mm): ",str(x[0]),"Preload Pressure (MPa): ",str(x[6])])
             summary_data.append(["Thinckness_2 (mm) : ",str(x[1]),"",""])
@@ -2808,7 +2755,7 @@ class RL_01_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT MIN_EXT,printf(\"%.2f\", YEILD_STRENGTH),MAX_EXT,printf(\"%.2f\", MODULUS_OF_ELASTICITY),MAX_PRESSURE_MPA,REVIEWED_BY,TEST_DATE  FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT MIN_EXT,printf(\"%.2f\", YEILD_STRENGTH),MAX_EXT,printf(\"%.2f\", MODULUS_OF_ELASTICITY),MAX_PRESSURE_MPA,REVIEWED_BY,TEST_DATE  FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data2=[["Parameter","Value","Prarameter","Value"]]
             summary_data2.append(["Min Ext.(mm): ",str(x[0]),"0.5 % TE Yeild Strength(MPa): ",str(x[1])])
@@ -2940,11 +2887,7 @@ class PlotCanvas(FigureCanvas):
         ### Univarsal change for  Graphs #####################
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-        for x in results:
-            if(self.unit_type == "N/mm"):
-                 #ax.set_xlim(0,int(x[0]))
-                 #ax.set_ylim(0,int(x[1]))
-                    
+        for x in results:                               
                  ax.set_xlim(0,float(x[0]))
                  ax.set_ylim(0,float(x[1]))
                  
