@@ -65,7 +65,7 @@ class RL_02_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 20, 1331, 691))
+        self.frame.setGeometry(QtCore.QRect(10, 20, 1331, 719))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         self.frame.setFont(font)
@@ -294,7 +294,7 @@ class RL_02_Ui_MainWindow(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 160, 1301, 511))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 160, 1301, 550))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -762,7 +762,8 @@ class RL_02_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Specemen. Name','NOMINAL_OUTER_DIA_MM'])        
          
         connection = sqlite3.connect("tyr.db")  
-        
+        print("SELECT B.ID,B.TEST_DATE,B.SPECIMEN_NAME,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
+       
         results=connection.execute("SELECT B.ID,B.TEST_DATE,B.SPECIMEN_NAME,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
        
         for row_number, row_data in enumerate(results):            

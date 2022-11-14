@@ -279,13 +279,13 @@ class usb_bkp_Ui_MainWindow(object):
         try:
                     os.system("sudo rm -rf report_files.txt")
                     #os.system("sudo cd /home/pi/TYR_2.0_18.5/reports")
-                    os.system("sudo ls /home/pi/TYR_2.0_18.5/reports/Report_of_test*.pdf >> report_files.txt")
+                    os.system("sudo ls /home/pi/Products/ROLTA/reports/Report_of_test*.pdf >> report_files.txt")
                     #os.system("sudo cd")
                     try:
                        self.listWidget.clear() 
                        f = open('report_files.txt','r')
                        for line in f:
-                               line=line.replace("/home/pi/TYR_2.0_18.5/reports/","")
+                               line=line.replace("/home/pi/Products/ROLTA/reports/","")
                                ine=line.replace("\n","")
                                item= QtWidgets.QListWidgetItem(str(line))
                                #item.setBackground(QtGui.QColor("black"))

@@ -57,7 +57,7 @@ class RL_01_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1341, 711))
+        self.frame.setGeometry(QtCore.QRect(10, 20, 1341, 711))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         self.frame.setFont(font)
@@ -1620,7 +1620,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.label_18 = QtWidgets.QLabel(self.frame)
-        self.label_18.setGeometry(QtCore.QRect(1200, 680, 91, 21))
+        self.label_18.setGeometry(QtCore.QRect(1200, 680, 121, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -1898,7 +1898,8 @@ class RL_01_Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "Reviewd  By :"))
         self.lineEdit_44.setText(_translate("MainWindow", "lan Duncan"))
         self.label_10.setText(_translate("MainWindow", "Date :"))
-        self.label_18.setText(_translate("MainWindow", "05 Aug 2020"))
+        #self.label_18.setText(_translate("MainWindow", "05 Aug 2020"))
+        self.label_18.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d ,%Y")+""))
         self.radioButton.setText(_translate("MainWindow", "Pressure Vs Extension"))
         self.radioButton_2.setText(_translate("MainWindow", "Stress Vs Strain"))
         self.label_23.setText(_translate("MainWindow", "Pressure(MPa):"))
@@ -1922,6 +1923,16 @@ class RL_01_Ui_MainWindow(object):
         self.radioButton.clicked.connect(self.graph_type_change)
         self.radioButton_2.clicked.connect(self.graph_type_change)
         
+        self.lineEdit_32.textChanged.connect(self.avg_dia_calc)
+        self.lineEdit_33.textChanged.connect(self.avg_dia_calc)
+        self.lineEdit_34.textChanged.connect(self.avg_dia_calc)
+        
+        self.lineEdit_4.textChanged.connect(self.avg_thickness_calc)
+        self.lineEdit_5.textChanged.connect(self.avg_thickness_calc)
+        self.lineEdit_6.textChanged.connect(self.avg_thickness_calc)
+        self.lineEdit_7.textChanged.connect(self.avg_thickness_calc)
+        self.lineEdit_8.textChanged.connect(self.avg_thickness_calc)
+        self.lineEdit_10.textChanged.connect(self.avg_thickness_calc)
         
         self.pushButton_5.setDisabled(True)
         self.pushButton_6.setDisabled(True)
@@ -1929,16 +1940,133 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_8.setDisabled(True)
         
                 
-        self.sc_blank =PlotCanvas_blank(self)          
-        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+#        self.sc_blank =PlotCanvas_blank(self)          
+#        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
         self.lcdNumber_3.setProperty("value", 0.0)
-        self.graph_type_change()
+        
         self.load_data()
+        self.graph_type_change()
         
     
+    def avg_dia_calc(self):
+        self.d1=""
+        self.d2=""
+        self.d3=""
+        self.av_d=""
+        if(self.lineEdit_32.text() != ""):
+            try:
+                        self.d1=int(self.lineEdit_32.text())
+            except ValueError as e:
+                        try:
+                                self.d1=float(self.lineEdit_32.text())
+                        except ValueError as e:
+                                self.lineEdit_37.setText("0.00")
+            try:
+                        self.d2=int(self.lineEdit_33.text())
+            except ValueError as e:
+                        try:
+                                self.d2=float(self.lineEdit_33.text())
+                        except ValueError as e:
+                                self.lineEdit_37.setText("0.00")
+            try:
+                        self.d3=int(self.lineEdit_34.text())
+            except ValueError as e:
+                        try:
+                                self.d3=float(self.lineEdit_34.text())
+                        except ValueError as e:
+                                self.lineEdit_37.setText("0.00")
+            try:
+                        self.av_d=float(self.d1 + self.d2 + self.d3)/3
+                        self.lineEdit_37.setText(str(round(self.av_d,2)))
+            except ValueError as e:                    
+                    print("Caluculation error1");
+                    self.lineEdit_37.setText(str("0"))
+            except TypeError as e:
+                    print("Caluculation error2");
+                    self.lineEdit_37.setText(str("0"))
+            except:
+                    print("Caluculation error3");
+                    self.lineEdit_37.setText(str("0"))
+        
+        else:
+              self.lineEdit_37.setText("0.00")
     
+    def avg_thickness_calc(self):
+        self.T1=""
+        self.T2=""
+        self.T3=""
+        self.T4=""
+        self.T5=""
+        self.T6=""
+        self.av_T=""
+        if(self.lineEdit_4.text() != ""):
+            try:
+                       #try:
+                        self.T1=int(self.lineEdit_4.text())
+            except ValueError as e:
+                        try:
+                                self.T1=float(self.lineEdit_4.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+            try:
+                        self.T2=int(self.lineEdit_5.text())
+            except ValueError as e:
+                        try:
+                                self.T2=float(self.lineEdit_5.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+            try:
+                        self.T3=int(self.lineEdit_6.text())
+            except ValueError as e:
+                        try:
+                                self.T3=float(self.lineEdit_6.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+                                
+            try:
+                       #try:
+                        self.T4=int(self.lineEdit_7.text())
+            except ValueError as e:
+                        try:
+                                self.T4=float(self.lineEdit_7.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+            try:
+                        self.T5=int(self.lineEdit_8.text())
+            except ValueError as e:
+                        try:
+                                self.T5=float(self.lineEdit_8.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+            try:
+                        self.T6=int(self.lineEdit_10.text())
+            except ValueError as e:
+                        try:
+                                self.T6=float(self.lineEdit_10.text())
+                        except ValueError as e:
+                                self.lineEdit_38.setText("0.00")
+                                
+                                
+            try:
+                        self.av_T=float(self.T1 + self.T2 + self.T3+self.T4 + self.T5 + self.T6)/6
+                        self.lineEdit_38.setText(str(round(self.av_T,2)))
+            except ValueError as e:
+                    #self.lineEdit_3.setText("0.00")
+                    print("Caluculation error1");
+                    self.lineEdit_38.setText(str("0"))
+            except TypeError as e:
+                    print("Caluculation error2");
+                    self.lineEdit_38.setText(str("0"))
+            except:
+                    print("Caluculation error3");
+                    self.lineEdit_38.setText(str("0"))
+        
+        else:
+              self.lineEdit_38.setText("0.00")
+       
+        
     def graph_type_change(self):
         #self.graph_type="STRESS_VS_STRAIN"
         if(self.radioButton_2.isChecked()):
@@ -1973,7 +2101,15 @@ class RL_01_Ui_MainWindow(object):
                         cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
              connection.commit()
              connection.close()
-        self.sc_blank =PlotCanvas_blank(self)          
+        self.sc_blank =PlotCanvas_blank(self)
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+        for x in results:           
+                 if(int(x[0]) > 0):
+                            self.sc_blank =PlotCanvas(self,width=5, height=4, dpi=80) 
+                 else:
+                            self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
+        
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)   
         
     def load_data(self):
@@ -2039,7 +2175,7 @@ class RL_01_Ui_MainWindow(object):
                     self.lineEdit_42.setText("0") #YEILD_STRENGTH
                     self.lineEdit_43.setText("0") #MODULUS_OF_ELASTICITY
                     self.lineEdit_44.setText(str(x[42])) #REVIEWED_BY
-                    self.label_18.setText(str(x[43])) #TEST_DATE
+                    #self.label_18.setText(str(x[43])) #TEST_DATE
                     self.lineEdit_15.setText(str(x[44]))#TESTED_BY
                     
             
@@ -2098,10 +2234,33 @@ class RL_01_Ui_MainWindow(object):
         elif(self.lineEdit_14.text() == ""): #    
                     self.label_21.show()
                     self.label_21.setText("SMYS Should not Empty .")
+        elif(self.lineEdit_35.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("Sample Width Empty .")
+        #elif(self.lineEdit_35.text() != ""): #    
+        elif(float(self.lineEdit_35.text()) ==0):
+                            self.label_21.show()
+                            self.label_21.setText("Sample Width Zero .")           
+        elif(self.lineEdit_37.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("A.Diameter Empty .")
+        #elif(self.lineEdit_37.text() != ""): #    
+        elif(float(self.lineEdit_37.text()) ==0):
+                            self.label_21.show()
+                            self.label_21.setText("A.Diameter Zero .") 
+        
+        elif(self.lineEdit_38.text() == ""): #    
+                    self.label_21.show()
+                    self.label_21.setText("A.Thickness Empty .")        
+        #elif(self.lineEdit_38.text() != ""): #    
+        elif(float(self.lineEdit_38.text()) ==0):
+                            self.label_21.show()
+                            self.label_21.setText("A.Thickness Zero .")             
+                    
         else:
                self.goAhead="Yes"
                connection = sqlite3.connect("tyr.db")
-               results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
+               results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
                for x in results:           
                  if(int(x[0]) > 0):
                        self.test_id_exist="Yes"
@@ -2159,7 +2318,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "', YEILD_STRENGTH='0'"
                                                     "', MODULUS_OF_ELASTICITY='0'"
                                                     "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
-                                                    "', TEST_DATE='"+str(self.label_18.text())+
+                                                   # "', TEST_DATE='"+str(self.label_18.text())+
                                                     "', GRAPH_TYPE='"+str(self.graph_type)+
                                                     "' ")
 
@@ -2211,7 +2370,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "', YEILD_STRENGTH='0"
                                                     "', MODULUS_OF_ELASTICITY='0"
                                                     "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
-                                                    "', TEST_DATE='"+str(self.label_18.text())+
+                                                    #"', TEST_DATE='"+str(self.label_18.text())+
                                                     "', GRAPH_TYPE='"+str(self.graph_type)+
                                                     "' ")
 
@@ -2236,7 +2395,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "EXTENSION_RATE,THICKNESS_1,THICKNESS_2,THICKNESS_3,THICKNESS_4,THICKNESS_5,"
                                                     "THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,"
                                                     "IS_TESTED,D_AV,T_AV,SAMPLE_STATUS,MIN_EXT, MAX_EXT,MAX_PRESSURE_MPA, YEILD_STRENGTH,MODULUS_OF_ELASTICITY, REVIEWED_BY,"
-                                                    "TEST_DATE,GRAPH_TYPE)"
+                                                    "TESTED_BY,GRAPH_TYPE)"
                                                     "VALUES("
                                                            "'"+str(self.label_12.text())+"',"   #TEST_ID
                                                                 "'"+str(self.lineEdit_9.text())+"'," #NOMINAL_OUTER_DIA_MM
@@ -2280,7 +2439,7 @@ class RL_01_Ui_MainWindow(object):
                                                                 "'0',"   
                                                                 "'0',"
                                                                 "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
-                                                                "'"+str(self.label_18.text())+"'," #TEST_DATE
+                                                                #"'"+str(self.label_18.text())+"'," #TEST_DATE
                                                                 "'"+str(self.lineEdit_15.text())+"'" #TESTED_BY
                                                                 "'"+str(self.graph_type)+"')" #GRAPH_TYPE
                                                                 )
@@ -2293,7 +2452,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "EXTENSION_RATE,THICKNESS_1,THICKNESS_2,THICKNESS_3,THICKNESS_4,THICKNESS_5,"
                                                     "THICKNESS_6,PRELOAD_PRESSURE_MPA,DIAMETER_1,DIAMETER_2,DIAMETER_3,SAMPLE_WIDTH_MM,"
                                                     "IS_TESTED,D_AV,T_AV,SAMPLE_STATUS,MIN_EXT, MAX_EXT,MAX_PRESSURE_MPA, YEILD_STRENGTH,MODULUS_OF_ELASTICITY, REVIEWED_BY,"
-                                                    "TEST_DATE,TESTED_BY,GRAPH_TYPE)"
+                                                    "TESTED_BY,GRAPH_TYPE)"
                                                     "VALUES("
                                                            "'"+str(self.label_12.text())+"',"   #TEST_ID
                                                                 "'"+str(self.lineEdit_9.text())+"'," #NOMINAL_OUTER_DIA_MM
@@ -2337,7 +2496,7 @@ class RL_01_Ui_MainWindow(object):
                                                                 "'0',"  
                                                                 "'0'," 
                                                                 "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
-                                                                "'"+str(self.label_18.text())+"'," #TEST_DATE
+                                                                #"'"+str(self.label_18.text())+"'," #TEST_DATE
                                                                 "'"+str(self.lineEdit_15.text())+"'," #TESTED_BY
                                                                 "'"+self.graph_type+"')" #GRAPH_TYPE
                                                                 )
@@ -2391,7 +2550,7 @@ class RL_01_Ui_MainWindow(object):
                                                     "', YEILD_STRENGTH=0"+
                                                     ", MODULUS_OF_ELASTICITY=0"+
                                                     ", REVIEWED_BY='"+str(self.lineEdit_44.text())+
-                                                    "', TEST_DATE='"+str(self.label_18.text())+                                                   
+                                                    #"', TEST_DATE='"+str(self.label_18.text())+                                                   
                                                     "' ")
                                     print("updated  OK ")
 
@@ -2407,8 +2566,13 @@ class RL_01_Ui_MainWindow(object):
                         
     
     def show_load_cell_val(self):
-        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
-        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        
+        if(self.graph_type == "STRESS_VS_STRAIN"):                
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p_strain)))   #length
+        else:    
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length           
         self.label_22.setText("Running.....")
         if(str(self.sc_new.save_data_flg) =="Yes"):            
                 self.reset()
@@ -2441,7 +2605,7 @@ class RL_01_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,X_STRAIN) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(self.sc_new.arr_p_strain[g])+"')")
             connection.commit();
             connection.close()
             
@@ -2455,12 +2619,12 @@ class RL_01_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)") 
-                          cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_NUM_CM) FROM STG_GRAPH_MST WHERE Y_NUM_MPA=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
-                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) * ( SELECT NEW_TEST_AREA/LENGTH_AT_MAX_MPA FROM GLOBAL_VAR))") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_STRAIN) FROM STG_GRAPH_MST WHERE Y_NUM_MPA=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
+                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT LENGTH_AT_MAX_MPA FROM GLOBAL_VAR))") 
                            
 
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
-                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA FROM STG_GRAPH_MST")                  
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_NUM_STRAIN) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_STRAIN FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2736,7 +2900,7 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,TEST_DATE,GRAPH_TYPE,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM  FROM TEST_MST_TMP") 
         for x in results:
-                        ax.set_title('Sample ID :'+str(x[0])+" Test ID :"+str(x[1])+"") 
+                        ax.set_title('Sample ID :'+str(x[0])+" Date:"+str(x[1])+"") 
                         self.graph_type= str(x[2])   
                         self.cs_area=float(x[3])                        
         connection.close()
@@ -2927,7 +3091,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,TEST_DATE ,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM,GRAPH_TYPE FROM TEST_MST_TMP") 
         for x in results:
-                        self.axes.set_title('Sample ID :'+str(x[0])+" Test ID :"+str(x[1])+"")
+                        self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])+"")
                         self.cs_area=float(x[2])
                         self.graph_type=str(x[3])
         connection.close()
@@ -3295,7 +3459,7 @@ class PlotCanvas_Auto(FigureCanvas):
 
 
 class PlotCanvas_blank(FigureCanvas):
-    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         self.unit_type=""

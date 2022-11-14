@@ -57,7 +57,7 @@ class RL_03_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 10, 1341, 711))
+        self.frame.setGeometry(QtCore.QRect(10, 20, 1341, 711))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         self.frame.setFont(font)
@@ -2044,7 +2044,7 @@ class RL_03_Ui_MainWindow(object):
                     self.lineEdit_42.setText("0") #YEILD_STRENGTH
                     self.lineEdit_43.setText("0") #MODULUS_OF_ELASTICITY
                     self.lineEdit_44.setText(str(x[42])) #REVIEWED_BY
-                    self.label_18.setText(str(x[43])) #TEST_DATE
+                    self.label_18.setText(str(x[43][0:10])) #TEST_DATE
                     self.lineEdit_15.setText(str(x[44]))#TESTED_BY
                     
             
