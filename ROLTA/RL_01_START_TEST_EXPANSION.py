@@ -2724,19 +2724,22 @@ class RL_01_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT NOMINAL_OUTER_DIA_MM, GREAD,NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
-            summary_data2=[["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])],["Nominal Wall Thickness(mm) : ",str(x[2]),"Specified Yield Strength(MPa)",str(x[3])]]
-            #self.remark=str(x[5])        
+            #summary_data2=[["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])],["Nominal Wall Thickness(mm) : ",str(x[2]),"Specified Yield Strength(MPa)",str(x[3])]]
+            #self.remark=str(x[5])
+            summary_data.append(["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])])
+            summary_data.append(["Nominal Wall Thickness(mm) : ",str(x[2]),"",""])
+            summary_data.append(["Specified Yield Strength(MPa)",str(x[3]),"",""])
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT PRESSURE_TRANDUSER_NO,PRELOAD_PERC,FORCE_SAPN_ON_PDSC,PRELOAD_PRESSURE__MPA,LAST_CAL_DATE_1,NEVER_EXCEED_TEST_PRESSURE,EXTENSOMETER_NO,EXTENSOMETER_CHAIN_LENGTH,POSITION_SPAN_ON_PDSC,MAX_EXTENSION,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,EXTENSION_RATE   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data.append(["Pressure Transducer No: ",str(x[0]),"Preload Percentage: ",str(x[1])])
-            summary_data.append(["Force Span on PDSC : ",str(x[2]),"x","x"])
-            summary_data.append(["Pre-load Pressure(Mpa): ",str(x[3]),"Last Calibration Date: ",str(x[4])])
+            summary_data.append(["Force Span on PDSC : ",str(x[2])," "," "])
+            summary_data.append(["Pre-load Pressure(Mpa): ",str(x[3]),"Last Calibration Date1: ",str(x[4])])
             summary_data.append(["NEVER EXCEED Test Pressure (MPa) : ",str(x[5]),"Extensometer :",str(x[6])])
             summary_data.append(["Extensometer Chain length(Links): ",str(x[7]),"Position Span On PDSC: ",str(x[8])])
-            summary_data.append(["Max Extension : ",str(x[9]),"Callibration Date :",str(x[10])])
+            summary_data.append(["Max Extension : ",str(x[9]),"Last Calibration Date2 :",str(x[10])])
             summary_data.append(["Extension Rate (mm/min): ",str(x[12]),"Max Elongation Percentage: ",str(x[11])])
         connection.close() 
         
@@ -2749,8 +2752,8 @@ class RL_01_Ui_MainWindow(object):
             summary_data.append(["Thinckness_3 (mm): ",str(x[2]),"Diameter_1(mm): ",str(x[7])])
             summary_data.append(["Thinckness_4 (mm) : ",str(x[3]),"Sample Width (mm) ",str(x[10])])
             summary_data.append(["Thinckness_5 (mm) ",str(x[4]),"Diameter_2(mm): ",str(x[8])])
-            summary_data.append(["Thinckness_6 (mm): ",str(x[9]),"Tested ? :",str(x[11])])
-            summary_data.append(["Thinckness_4 (mm): ",str(x[12]),"Diameter_3(mm): ",str(x[9])])
+            summary_data.append(["Thinckness_6 (mm): ",str(x[5]),"Diameter_3(mm): ",str(x[9])])
+            summary_data.append([" ","","Tested ? : ",str(x[11])])
             summary_data.append(["D_AV (mm) : ",str(x[12]),"T_AV (mm): ",str(x[13])])
         connection.close() 
         
