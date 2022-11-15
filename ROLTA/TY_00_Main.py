@@ -7,8 +7,7 @@ from RL_01_START_TEST_EXPANSION import RL_01_Ui_MainWindow
 #from TY_03_REPORTS import TY_03_Ui_MainWindow
 
 from TY_04_SETTING import TY_04_Ui_MainWindow
-from TY_05_SPECIMEN import TY_05_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
+
 #from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
 from RL_02_SP_REPORT_EXPANSION import RL_02_Ui_MainWindow
 
@@ -166,7 +165,7 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.open_new_window)
         self.pushButton_2.clicked.connect(self.open_new_window2)
         self.pushButton_3.clicked.connect(self.open_new_window3)
-        self.pushButton_4.clicked.connect(self.open_new_window4)
+        #self.pushButton_4.clicked.connect(self.open_new_window4)
         self.pushButton_4.setDisabled(True)
         #self.pushButton_5.clicked.connect(self.open_new_window5)
         
@@ -229,19 +228,10 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-    def open_new_window4(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_05_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
+    
         
         
-    def open_new_window5(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_07_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-        
+    
     def getserial(self):
         # Extract serial from cpuinfo file
         cpuserial = "0000000000000000"

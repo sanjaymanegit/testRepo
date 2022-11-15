@@ -635,7 +635,7 @@ class RL_02_Ui_MainWindow(object):
         self.comboBox_3.hide()
         self.comboBox_4.hide()
         #self.comboBox_5.addItem("")
-        self.comboBox_5.setItemText(0, _translate("MainWindow", "N/mm"))
+        self.comboBox_5.setItemText(0, _translate("MainWindow", "MPa/mm"))
         #self.comboBox_5.setItemText(1, _translate("MainWindow", "MPA"))
         self.label_21.setText(_translate("MainWindow", "No Data Found"))
         self.label_21.hide()
@@ -750,23 +750,25 @@ class RL_02_Ui_MainWindow(object):
         font.setPointSize(11)
         #font.setBold(True)
         #font.setWeight(75)
+        self.tableWidget.setColumnCount(5)
         self.tableWidget.setFont(font)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 150)
-        self.tableWidget.setColumnWidth(2, 200)
-        self.tableWidget.setColumnWidth(3, 200)
+        self.tableWidget.setColumnWidth(2, 400)
+        self.tableWidget.setColumnWidth(3, 250)
+        self.tableWidget.setColumnWidth(4, 300)
        
         
       
        
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Sample Identification No.','Nominal Outer Diameter'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Sample Identification No.','Sample Description','Remark'])        
          
         connection = sqlite3.connect("tyr.db")  
         
-        results=connection.execute("SELECT B.ID,B.TEST_DATE,B.SAMPLE_IDENTIFICATION_NO,B.NOMINAL_OUTER_DIA_MM FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' ")                        
+        results=connection.execute("SELECT B.TEST_ID,B.TEST_DATE,B.SAMPLE_IDENTIFICATION_NO,B.SAMPLE_DESCRIPTION,B.REMARK FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'  and GRAPH_ID != '' ")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -788,14 +790,14 @@ class RL_02_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         
-        connection = sqlite3.connect("tyr.db")          
-        with connection:        
-                cursor = connection.cursor()
-                cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"',SR_UNIT_TYPE='"+str(self.unit_type)+"'")
-                cursor.execute("DELETE FROM TEST_IDS")
-                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='CYCLICK'") 
-        connection.commit();
-        connection.close()
+#        connection = sqlite3.connect("tyr.db")          
+#        with connection:        
+#                cursor = connection.cursor()
+#                cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"',SR_UNIT_TYPE='"+str(self.unit_type)+"'")
+#                cursor.execute("DELETE FROM TEST_IDS")
+#                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='CYCLICK'") 
+#        connection.commit();
+#        connection.close()
         
     
     def delete_all_records(self):
@@ -822,8 +824,8 @@ class RL_02_Ui_MainWindow(object):
                                     connection = sqlite3.connect("tyr.db")
                                     with connection:        
                                             cursor = connection.cursor()                                        
-                                            cursor.execute("delete from TEST_MST WHERE  TEST_ID = '"+str(self.test_id)+"'")
-                                            print("delete from TEST_MST WHERE  TEST_ID = '"+str(self.test_id)+"'")
+                                            cursor.execute("delete from TEST_MST_EXPANSION WHERE  TEST_ID = '"+str(int(self.test_id))+"'")
+                                            print("delete from TEST_MST_EXPANSION WHERE  TEST_ID = '"+str(int(self.test_id))+"'")
                                     connection.commit();
                                     connection.close()
                                     self.select_all_tests()
