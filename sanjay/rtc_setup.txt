@@ -18,6 +18,8 @@ i2c-dev
 i2c-bcm2708 
 rtc-ds1307
 
+
+
 sudo vi /etc/rc.local
 echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 hwclock -s
@@ -45,3 +47,4 @@ pi@raspberrypi:~ $ sudo i2cdetect -y 1
 # date setting command 
 ##############################################
 date -s "28 APR 2019 10:42:00"
+date -s "19 NOV 2022 14:58:00"
