@@ -231,7 +231,7 @@ class usb_bkp_Ui_MainWindow(object):
     def move_to_usb(self):
         i=self.listWidget.currentRow()
         print("Count :"+str(i))
-        if( int(i) > 0):
+        if( int(i) > -1):
             file_name=str(self.listWidget.currentItem().text())
             product_id=self.get_usb_storage_id()
             if(product_id != "ERROR"):
@@ -242,9 +242,9 @@ class usb_bkp_Ui_MainWindow(object):
                                 file_name=file_name.replace("\n","")
                                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")                   
                                
-                                os.system("sudo cd  /home/pi/TYR_2.0_18.5/reports")
+                                os.system("sudo cd  /home/pi/Products/TYR/reports")
                                 print("sudo cp "+file_name+" /media/usb") 
-                                os.system("sudo cp /home/pi/TYR_2.0_18.5/reports/"+file_name+" /media/usb")                            
+                                os.system("sudo cp /home/pi/Products/TYR/reports/"+file_name+" /media/usb")                            
                                 os.system("sudo umount /media/usb")
                                 #os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
                                 self.label_2.show()
@@ -263,8 +263,8 @@ class usb_bkp_Ui_MainWindow(object):
         if(product_id != "ERROR"):                           
                                 
                                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi") 
-                                os.system("sudo cd  /home/pi/TYR_2.0_18.5/reports")                                
-                                os.system("sudo cp /home/pi/TYR_2.0_18.5/reports/*.pdf /media/usb")                            
+                                os.system("sudo cd  /home/pi/Products/TYR/reports")                                
+                                os.system("sudo cp /home/pi/Products/TYR/reports/*.pdf /media/usb")                            
                                 os.system("sudo umount /media/usb")
                                 #os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
                                 self.label_2.show()
@@ -279,13 +279,13 @@ class usb_bkp_Ui_MainWindow(object):
         try:
                     os.system("sudo rm -rf report_files.txt")
                     #os.system("sudo cd /home/pi/TYR_2.0_18.5/reports")
-                    os.system("sudo ls /home/pi/TYR_2.0_18.5/reports/Report_of_test*.pdf >> report_files.txt")
+                    os.system("sudo ls /home/pi/Products/TYR/reports/Report_of_test*.pdf >> report_files.txt")
                     #os.system("sudo cd")
                     try:
                        self.listWidget.clear() 
                        f = open('report_files.txt','r')
                        for line in f:
-                               line=line.replace("/home/pi/TYR_2.0_18.5/reports/","")
+                               line=line.replace("/home/pi/Products/TYR/reports/","")
                                ine=line.replace("\n","")
                                item= QtWidgets.QListWidgetItem(str(line))
                                #item.setBackground(QtGui.QColor("black"))

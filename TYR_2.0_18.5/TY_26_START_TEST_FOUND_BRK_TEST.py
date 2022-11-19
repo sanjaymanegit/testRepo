@@ -1848,7 +1848,7 @@ class TY_26_Ui_MainWindow(object):
     
     def show_load_cell_val(self):      
         
-        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
+        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))        
         self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         
         if(str(self.sc_new.save_data_flg) =="Yes"):            
@@ -2287,17 +2287,17 @@ class PlotCanvas(FigureCanvas):
             if(self.unit_type == "N/mm"):
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1])*9.81)
-                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_xlabel('Distance (mm)')
                  ax.set_ylabel('Load (N)')
             if(self.unit_type == "Kgf/cm"):
                  ax.set_xlim(0,int(x[0])/10)
                  ax.set_ylim(0,int(x[1]))
-                 ax.set_xlabel('Distnace (cm)')
+                 ax.set_xlabel('Distance (cm)')
                  ax.set_ylabel('Load kgf)')
             else:     
                  ax.set_xlim(0,int(x[0]))
                  ax.set_ylim(0,int(x[1])*9.81)
-                 ax.set_xlabel('Distnace (mm)')
+                 ax.set_xlabel('Distance (mm)')
                  ax.set_ylabel('Load (N)')
         connection.close()
         
