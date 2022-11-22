@@ -111,7 +111,7 @@ class TY_32_Ui_MainWindow(object):
         self.label_21.setGeometry(QtCore.QRect(1040, 200, 281, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(10)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.label_21.setFont(font)
@@ -1182,43 +1182,8 @@ class TY_32_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         '''
-        self.tableWidget.setSortingEnabled(True)
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Itr.No"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Max. Length(mm)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Hodling Time (Sec)"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Ult.Shear Stress"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Ult.Shear Strain"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Shear Modulus @ Max Load"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Shear Strain @ Max Load"))
-        item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Max.Load (N)"))
-        item = self.tableWidget.horizontalHeaderItem(8)
-        item.setText(_translate("MainWindow", "Status"))
-        item = self.tableWidget.horizontalHeaderItem(9)
-        item.setText(_translate("MainWindow", "Rec.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
         
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "67"))
-        item = self.tableWidget.item(0, 7)
-        item.setText(_translate("MainWindow", "100"))
-        item = self.tableWidget.item(0, 8)
-        item.setText(_translate("MainWindow", "PASS"))
-        item = self.tableWidget.item(0, 9)
-        item.setText(_translate("MainWindow", "11"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+        
         '''
         
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
@@ -1348,18 +1313,18 @@ class TY_32_Ui_MainWindow(object):
                 if(int(x[2]) == 1):
                         self.lineEdit_11.setText(str(x[0]))
                         self.lineEdit_16.setText(str(x[1]))
-                        self.lineEdit_11.setReadOnly(True)
-                        self.lineEdit_16.setReadOnly(True)
+                        #self.lineEdit_11.setReadOnly(True)
+                        #self.lineEdit_16.setReadOnly(True)
                 elif(int(x[2]) == 2):
                         self.lineEdit_14.setText(str(x[0]))
                         self.lineEdit_15.setText(str(x[1]))
-                        self.lineEdit_14.setReadOnly(True)
-                        self.lineEdit_15.setReadOnly(True)
+                        #self.lineEdit_14.setReadOnly(True)
+                        #self.lineEdit_15.setReadOnly(True)
                 elif(int(x[2]) == 3):
                         self.lineEdit_17.setText(str(x[0]))
                         self.lineEdit_18.setText(str(x[1]))
-                        self.lineEdit_17.setReadOnly(True)
-                        self.lineEdit_18.setReadOnly(True)
+                        #self.lineEdit_17.setReadOnly(True)
+                        #self.lineEdit_18.setReadOnly(True)
                 else:
                         self.lineEdit_11.setText("-0")
                         self.lineEdit_16.setText("-0")
@@ -1731,7 +1696,7 @@ class TY_32_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(9)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain \n @25% Elongation','Shear Modulus \n @25% Elongation','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1843,7 +1808,7 @@ class TY_32_Ui_MainWindow(object):
         self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex == "N/mm"
         if(self.unit_typex == "N/mm"):            
-                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n @25% \n Elongation','Shear Modulus \n @25% \n Elongation','Max Load \n (N)','Max Length  \n (mm)','Status']]
+                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load \n (N)','Max Length  \n (mm)','Status']]
                 connection = sqlite3.connect("tyr.db")                
                 results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", MAX_LENGTH),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:

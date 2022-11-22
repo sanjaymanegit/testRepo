@@ -1761,7 +1761,7 @@ class TY_34_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(9)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain @25% Elongation','Shear Modulus \n @25% Elongation','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain ','Shear Modulus \n ','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1873,7 +1873,7 @@ class TY_34_Ui_MainWindow(object):
         self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex == "N/mm"
         if(self.unit_typex == "N/mm"):            
-                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n @25% \n Elongation','Shear Modulus \n @25% \n Elongation','Max Load \n (N)','Max Length  \n (mm)','Status']]
+                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load \n (N)','Max Length  \n (mm)','Status']]
                 
                 connection = sqlite3.connect("tyr.db")                
                 results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", MAX_LENGTH),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
