@@ -672,11 +672,14 @@ class urmini_07_MainWindow(object):
         
     def open_pdf(self):
         self.create_pdf()
-        os.system("xpdf ./reports/ur_reports.pdf") 
+        os.system("xpdf ./reports/ur_reports.pdf")
+        os.system("cp ./reports/ur_reports.pdf ./reports/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")               
+
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
                 os.system("cp ./reports/ur_reports.pdf /media/usb/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")
+                os.system("cp ./reports/ur_reports.pdf ./reports/"+str(self.test_id)+"_"+str(self.p_r_name)+".pdf")                
                 os.system("sudo umount /media/usb")
         else:
              print("Please connect usb storage device")
