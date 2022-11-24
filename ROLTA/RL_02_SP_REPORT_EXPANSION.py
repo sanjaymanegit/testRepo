@@ -562,6 +562,7 @@ class RL_02_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
+        self.label_20.hide()
         self.pushButton_4.setText(_translate("MainWindow", "SEARCH"))
         self.pushButton_3.setText(_translate("MainWindow", "REMARK"))
         self.pushButton_3.hide()
@@ -768,7 +769,7 @@ class RL_02_Ui_MainWindow(object):
          
         connection = sqlite3.connect("tyr.db")  
         
-        results=connection.execute("SELECT B.TEST_ID,B.TEST_DATE,B.SAMPLE_IDENTIFICATION_NO,B.SAMPLE_DESCRIPTION,B.REMARK FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'  and GRAPH_ID != '' ")                        
+        results=connection.execute("SELECT B.TEST_ID,date(B.TEST_DATE),B.SAMPLE_IDENTIFICATION_NO,B.SAMPLE_DESCRIPTION,B.REMARK FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'  and GRAPH_ID != '' ")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

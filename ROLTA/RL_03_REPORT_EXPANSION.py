@@ -2587,7 +2587,7 @@ class RL_03_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_DATE,TESTED_BY,SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT date(TEST_DATE),TESTED_BY,SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(self.label_12.text())+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Date: ",str(x[0]),"Tested By: ",str(x[1])],["Test Report File Name : ",str("Report_of_test_"+self.label_12.text()),"Sample Identification #: ",str(x[2])],["Sample Description:  ",str(x[3]),"Mill Hydrotest Pressure(MPa):",str(x[4])]]
             self.remark=str(x[5])        
@@ -2702,7 +2702,7 @@ class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         #fig.savefig('ssdsd.png')
-        self.axes = fig.add_subplot(111)        
+        self.axes = fig.add_subplot(211)        
         FigureCanvas.__init__(self, fig)
         #FigureCanvas.setStyleSheet("background-color:red;")
         FigureCanvas.setSizePolicy(self,
@@ -2714,13 +2714,26 @@ class PlotCanvas(FigureCanvas):
         
         
     def plot(self):
-        ax = self.figure.add_subplot(111)
+        ax = self.figure.add_subplot(211)
        
         ax.set_facecolor('#CCFFFF')   
         ax.minorticks_on()
         
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        ax.set_xlabel('Strain (%)')
+        ax.set_ylabel('Stress (MPa)')  
+        
+        ax1 = self.figure.add_subplot(212)
+       
+        ax1.set_facecolor('#CCFFFF')   
+        ax1.minorticks_on()
+        
+        ax1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+        ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        ax1.set_xlabel('Elongation (mm)')
+        ax1.set_ylabel('Pressure (MPa)')
         
         self.s=[]
         self.t=[]
@@ -2734,22 +2747,12 @@ class PlotCanvas(FigureCanvas):
         self.color=['b','r','g','y','k','c','m','b']
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')
 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT PROOF_TEST_BY FROM GLOBAL_VAR") 
-        for x in results:
-            self.proof_test_by=str(x[0])
-            if(self.graph_type=="STRESS_VS_STRAIN"):
-                     ax.set_xlabel('Strain (%)')
-                     ax.set_ylabel('Stress (MPa)')               
-            else:
-                     ax.set_xlabel('Elongation (mm)')
-                     ax.set_ylabel('Pressure (MPa)') 
-        connection.close()
+        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,TEST_DATE,GRAPH_TYPE,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM  FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,CURRENT_TIMESTAMP,GRAPH_TYPE,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM  FROM TEST_MST_TMP") 
         for x in results:
-                        ax.set_title('Sample ID :'+str(x[0])+" Test ID :"+str(x[1])+"") 
+                        ax.set_title('Sample ID :'+str(x[0])+" Date:"+str(x[1])[0:10]+"") 
                         self.graph_type= str(x[2])   
                         self.cs_area=float(x[3])                        
         connection.close()
@@ -2760,19 +2763,19 @@ class PlotCanvas(FigureCanvas):
         self.unit_type="Kgf/mm"
         ### Univarsal change for  Graphs #####################
         connection = sqlite3.connect("tyr.db")
-        #results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-        
-        results=connection.execute("SELECT GRAPH_SCAL_X_LENGTH  as length_x_axis,GRAPH_SCAL_Y_LOAD as Load_Y_axis FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        
-        for x in results:
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))
-                   
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:                               
+                 ax.set_xlim(0,float(x[0]))
+                 ax.set_ylim(0,float(x[1]))
+                 ax1.set_xlim(0,float(x[0]))
+                 ax1.set_ylim(0,float(x[1]))
+                 
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT GRAPH_ID,SAMPLE_IDENTIFICATION_NO,date(TEST_DATE) FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
+             ax.set_title('Sample ID :'+str(x[1])+" Date:"+str(x[2])[0:10]+"") 
              self.graph_ids.append(x[0])             
         connection.close()
         
@@ -2780,46 +2783,39 @@ class PlotCanvas(FigureCanvas):
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
+            self.x1_num=[0.0]
+            self.y1_num=[0.0]
             print(" Unit Type :"+str(self.unit_type))
             
-            if(self.graph_type=="STRESS_VS_STRAIN"):
-                        connection = sqlite3.connect("tyr.db")
-                        results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                        ax.set_xlabel('Strain (%)')
-                        ax.set_ylabel('Stress (MPa)')
-                        for k in results:        
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            ax.set_xlabel('Strain (%)')
+            ax.set_ylabel('Stress (MPa)')
+            for k in results:        
                                 self.x_num.append(float(k[0])/float(self.cs_area))
                                 self.y_num.append(float(k[1]))
-                        connection.close()                        
-            elif(self.graph_type=="LOAD_VS_LENGTH"):
-                        connection = sqlite3.connect("tyr.db")
-                        results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                        ax.set_xlabel('Elongation (mm)')
-                        ax.set_ylabel('Pressure (MPa)') 
-                        for k in results:        
-                                self.x_num.append(k[0])
-                                self.y_num.append(k[1])
-                        connection.close()   
-            else:
-                        connection = sqlite3.connect("tyr.db")
-                        results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                        ax.set_xlabel('Elongation (mm)')
-                        ax.set_ylabel('Pressure (MPa)') 
-                        for k in results:        
-                                self.x_num.append(k[0])
-                                self.y_num.append(k[1])
-                        connection.close() 
-               
+            connection.close() 
             
-            if(g < 8 ):
-                    ax.plot(self.x_num,self.y_num, self.color[g],label="Sample No:"+str(g+1))
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            ax1.set_xlabel('Elongation (mm)')
+            ax1.set_ylabel('Pressure (MPa)') 
+            for k in results:        
+                                self.x1_num.append(float(k[0]))
+                                self.y1_num.append(float(k[1]))
+            connection.close()   
             
-        print("self.test_type:"+str(self.test_type))
+            ax.plot(self.x_num,self.y_num, 'b',label="Sample No:1")
+            ax1.plot(self.x1_num,self.y1_num, 'b',label="Sample No:1")
+            
+            print("self.test_type:"+str(self.test_type))
         
-        ax.legend()        
+        ax.legend()
+        ax1.legend() 
         self.draw()
         self.figure.savefig('last_graph.png',dpi=100)            
         connection.close()
+        
 
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=8, height=5, dpi=100):
