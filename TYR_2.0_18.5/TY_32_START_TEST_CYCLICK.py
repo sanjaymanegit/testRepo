@@ -1745,7 +1745,8 @@ class TY_32_Ui_MainWindow(object):
         self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_CYCLICK() 
         
-        os.system("xpdf ./reports/test_report.pdf")       
+        os.system("xpdf ./reports/test_report.pdf")
+        os.system("cp ./reports/test_report.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
         
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):

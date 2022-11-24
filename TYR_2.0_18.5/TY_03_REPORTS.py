@@ -1266,6 +1266,8 @@ class TY_03_Ui_MainWindow(object):
     def open_pdf(self):        
         os.system("xpdf ./reports/Reportxxx.pdf")        
         #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
+        os.system("cp ./reports/Reportxxx.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
+        
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")

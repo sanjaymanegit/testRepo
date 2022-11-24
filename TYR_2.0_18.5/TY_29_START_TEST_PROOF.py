@@ -1512,7 +1512,8 @@ class ty_29_Ui_MainWindow(object):
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=100) 
         self.create_pdf_PROOF() 
         
-        os.system("xpdf ./reports/test_report.pdf")       
+        os.system("xpdf ./reports/test_report.pdf")
+        os.system("cp ./reports/test_report.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
         
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
@@ -1816,8 +1817,14 @@ class PlotCanvas_Auto(FigureCanvas):
              else:
                      self.axes.set_xlabel('Elongation (mm)')
                      self.axes.set_ylabel('Load (kgf)')
-             
-             self.proof_max_load=int(str(x[7]))
+             try:
+                 self.proof_max_load=int(str(x[7]))
+             except ValueError as e:
+                        try:
+                            self.width=float(str(x[7]))
+                        except ValueError as e:
+                                self.proof_max_load=9999
+                 
              self.proof_max_length=int(str(x[8]))
              self.test_time_sec=int(str(x[9]))
              
