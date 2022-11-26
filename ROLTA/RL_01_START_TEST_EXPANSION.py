@@ -1,4 +1,5 @@
 
+from pop_set_two_graphs import set_two_graphs_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -177,7 +178,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_13.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_13.setObjectName("label_13")
         self.layoutWidget = QtWidgets.QWidget(self.frame)
-        self.layoutWidget.setGeometry(QtCore.QRect(30, 260, 611, 451))
+        self.layoutWidget.setGeometry(QtCore.QRect(30, 260, 611, 431))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -1585,7 +1586,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_138.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_138.setObjectName("label_138")
         self.lineEdit_43 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_43.setGeometry(QtCore.QRect(1200, 600, 61, 31))
+        self.lineEdit_43.setGeometry(QtCore.QRect(1200, 600, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -1648,7 +1649,8 @@ class RL_01_Ui_MainWindow(object):
         self.label_18.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_18.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_18.setObjectName("label_18")
-        self.radioButton = QtWidgets.QRadioButton(self.frame)
+        #self.radioButton = QtWidgets.QRadioButton(self.frame)
+        self.radioButton = QtWidgets.QPushButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(460, 220, 121, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1656,10 +1658,12 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.radioButton.setFont(font)
-        self.radioButton.setChecked(True)
-        self.radioButton.hide()
+        #self.radioButton.setChecked(True)
+        self.radioButton.setStyleSheet("background-color: rgb(90, 90, 134); color: rgb(255, 255, 255);")
+        
         self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
+        #self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
+        self.radioButton_2 = QtWidgets.QPushButton(self.frame)
         self.radioButton_2.setGeometry(QtCore.QRect(330, 220, 121, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1667,7 +1671,8 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.radioButton_2.setFont(font)
-        self.radioButton_2.hide()
+        self.radioButton_2.setStyleSheet("background-color: rgb(90, 90, 134); color: rgb(255, 255, 255);")
+        
         self.radioButton_2.setObjectName("radioButton_2")
         '''
 
@@ -1888,12 +1893,13 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_43.setText(_translate("MainWindow", "209.1"))
         self.label_139.setText(_translate("MainWindow", "(GPa)"))
         self.label_9.setText(_translate("MainWindow", "Reviewd  By :"))
-        self.lineEdit_44.setText(_translate("MainWindow", "lan Duncan"))
+        self.lineEdit_44.setText(_translate("MainWindow", "Dr.John"))
         self.label_10.setText(_translate("MainWindow", "Date :"))
         #self.label_18.setText(_translate("MainWindow", "05 Aug 2020"))
         self.label_18.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d ,%Y")+""))
-        self.radioButton.setText(_translate("MainWindow", "Pressure Vs Extension"))
-        self.radioButton_2.setText(_translate("MainWindow", "Stress Vs Strain"))
+        self.radioButton.setText(_translate("MainWindow", "Stress Vs Strain"))
+        self.radioButton_2.setText(_translate("MainWindow", "Pressure Vs Ext."))
+        self.radioButton_2.hide()
         #self.label_23.setText(_translate("MainWindow", "Pressure(MPa):"))
         #self.label_23.hide()
         #self.label_140.setText(_translate("MainWindow", "Preload  %:"))
@@ -1907,15 +1913,15 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.start_test_expansion)
         self.pushButton_4_1.clicked.connect(self.mannual_stop)
         
-        self.pushButton_16.clicked.connect(self.set_data)
+        self.pushButton_16.clicked.connect(self.pop_graph_scales)
         
         
         self.pushButton_5.clicked.connect(self.open_email_report)    
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
-        self.radioButton.clicked.connect(self.graph_type_change)
-        self.radioButton_2.clicked.connect(self.graph_type_change)
+        self.radioButton.clicked.connect(self.graph_type_strain)
+        self.radioButton_2.clicked.connect(self.graph_type_pressure)
         
         self.lineEdit_32.textChanged.connect(self.avg_dia_calc)
         self.lineEdit_33.textChanged.connect(self.avg_dia_calc)
@@ -1933,6 +1939,12 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_7.setDisabled(True)
         self.pushButton_8.setDisabled(True)
         
+        
+        
+#        self.label_128.hide()
+#        self.label_129.hide()
+#        self.lineEdit_12.hide()
+#        self.lineEdit_13.hide()
                 
 #        self.sc_blank =PlotCanvas_blank(self)          
 #        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1941,7 +1953,7 @@ class RL_01_Ui_MainWindow(object):
         #self.lcdNumber_3.setProperty("value", 0.0)
         
         self.load_data()
-        self.graph_type_change()
+        self.graph_type_pressure()
         
     
     def avg_dia_calc(self):
@@ -2060,41 +2072,14 @@ class RL_01_Ui_MainWindow(object):
         else:
               self.lineEdit_38.setText("0.00")
        
-        
-    def graph_type_change(self):
-        #self.graph_type="STRESS_VS_STRAIN"
-        if(self.radioButton_2.isChecked()):
-             self.graph_type="STRESS_VS_STRAIN"
-             self.label_13.setText("Stress(Mpa)")
-             self.label_14.setText("Strain(%)")
-             connection = sqlite3.connect("tyr.db")        
-             with connection:        
+    def graph_type_strain(self):
+        self.graph_type="STRESS_VS_STRAIN"
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
                         cursor = connection.cursor()                
                         cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
-             connection.commit()
-             connection.close()
-             
-        elif(self.radioButton.isChecked()):
-             self.graph_type="LOAD_VS_LENGTH"
-             self.label_13.setText("Pressure(Mpa):")
-             self.label_14.setText("Elongation(mm):")
-             connection = sqlite3.connect("tyr.db")        
-             with connection:        
-                        cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
-             connection.commit()
-             connection.close()
-        else:     
-             self.graph_type="STRESS_VS_STRAIN"
-             self.label_13.setText("Stress(Mpa)")
-             self.label_14.setText("Strain(%):")
-             
-             connection = sqlite3.connect("tyr.db")        
-             with connection:        
-                        cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
-             connection.commit()
-             connection.close()
+        connection.commit()
+        connection.close()
         self.sc_blank =PlotCanvas_blank(self)
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
@@ -2105,6 +2090,40 @@ class RL_01_Ui_MainWindow(object):
                             self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
         
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)   
+        self.radioButton.hide()
+        self.radioButton_2.show()
+        
+        #self.label_13.setText("Stress(MPa)")
+        #self.label_14.setText("Strain(%)")
+    
+    def graph_type_pressure(self):
+        self.graph_type="PRESSURE_VS_ELONGATION"
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
+        connection.commit()
+        connection.close()
+        self.sc_blank =PlotCanvas_blank(self)
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+        for x in results:           
+                 if(int(x[0]) > 0):
+                            self.sc_blank =PlotCanvas(self,width=5, height=4, dpi=80) 
+                 else:
+                            self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
+        
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.radioButton_2.hide()
+        self.radioButton.show()
+        
+        self.label_13.setText("Pressure(MPa)")
+        self.label_14.setText("Elongation(mm)")
+        
+
+
+        
+   
         
     def load_data(self):
         
@@ -2198,7 +2217,7 @@ class RL_01_Ui_MainWindow(object):
         
         self.label_21.setText("Graph Set Done !")
         self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)          
-        self.ggridLayoutridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
     
     
@@ -2523,10 +2542,10 @@ class RL_01_Ui_MainWindow(object):
     def show_load_cell_val(self):
         
         if(self.graph_type == "STRESS_VS_STRAIN"):                
-                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p_strain)))   #length
         else:    
-                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length           
         self.label_22.setText("Running.....")
         if(str(self.sc_new.save_data_flg) =="Yes"):            
@@ -2542,11 +2561,11 @@ class RL_01_Ui_MainWindow(object):
                 self.pushButton_8.setEnabled(True)
                 
                 if(self.graph_type == "STRESS_VS_STRAIN"):
-                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p_strain)))   #length                        
                     
                 else:    
-                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_mpa)))        
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                         
                 self.label_22.setText("")
@@ -2573,9 +2592,9 @@ class RL_01_Ui_MainWindow(object):
                   try:
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
-                          cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)") 
-                          cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_STRAIN) FROM STG_GRAPH_MST WHERE Y_NUM_MPA=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
-                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT LENGTH_AT_MAX_MPA FROM GLOBAL_VAR))") 
+                          cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_NUM_CM) FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
+                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT (LENGTH_AT_MAX_MPA/NEW_TEST_AREA ) FROM GLOBAL_VAR))") 
                            
 
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
@@ -2683,7 +2702,11 @@ class RL_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
-    
+    def pop_graph_scales(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=set_two_graphs_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
      
     def create_pdf_expansion(self):
         self.remark=""
@@ -2811,7 +2834,7 @@ class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         #fig.savefig('ssdsd.png')
-        self.axes = fig.add_subplot(211)        
+        self.axes = fig.add_subplot(111)        
         FigureCanvas.__init__(self, fig)
         #FigureCanvas.setStyleSheet("background-color:red;")
         FigureCanvas.setSizePolicy(self,
@@ -2823,7 +2846,7 @@ class PlotCanvas(FigureCanvas):
         
         
     def plot(self):
-        ax = self.figure.add_subplot(211)
+        ax = self.figure.add_subplot(111)
        
         ax.set_facecolor('#CCFFFF')   
         ax.minorticks_on()
@@ -2833,16 +2856,16 @@ class PlotCanvas(FigureCanvas):
         ax.set_xlabel('Strain (%)')
         ax.set_ylabel('Stress (MPa)')  
         
-        ax1 = self.figure.add_subplot(212)
-       
-        ax1.set_facecolor('#CCFFFF')   
-        ax1.minorticks_on()
-        
-        ax1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-        
-        ax1.set_xlabel('Elongation (mm)')
-        ax1.set_ylabel('Pressure (MPa)')  
+#        ax1 = self.figure.add_subplot(212)
+#       
+#        ax1.set_facecolor('#CCFFFF')   
+#        ax1.minorticks_on()
+#        
+#        ax1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+#        ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+#        
+#        ax1.set_xlabel('Elongation (mm)')
+#        ax1.set_ylabel('Pressure (MPa)')  
         
         self.s=[]
         self.t=[]
@@ -2871,15 +2894,21 @@ class PlotCanvas(FigureCanvas):
         
         self.unit_type="Kgf/mm"
         ### Univarsal change for  Graphs #####################
+        
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-        for x in results:                               
-                 ax.set_xlim(0,float(x[0]))
-                 ax.set_ylim(0,float(x[1]))
-                 ax1.set_xlim(0,float(x[0]))
-                 ax1.set_ylim(0,float(x[1]))
+        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
+        for x in results:             
                  
+                 if(self.graph_type == "STRESS_VS_STRAIN"):
+                         ax.set_xlim(0,float(x[2]))
+                         ax.set_ylim(0,float(x[3]))
+                 else:
+                         ax.set_xlim(0,float(x[0]))
+                         ax.set_ylim(0,float(x[1]))
+                         
         connection.close()
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_ID,SAMPLE_IDENTIFICATION_NO ,TEST_DATE FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
@@ -2896,31 +2925,34 @@ class PlotCanvas(FigureCanvas):
             self.y1_num=[0.0]
             print(" Unit Type :"+str(self.unit_type))
             
-            connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            ax.set_xlabel('Strain (%)')
-            ax.set_ylabel('Stress (MPa)')
-            for k in results:        
-                                self.x_num.append(float(k[0])/float(self.cs_area))
-                                self.y_num.append(float(k[1]))
-            connection.close() 
             
-            connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            ax1.set_xlabel('Elongation (mm)')
-            ax1.set_ylabel('Pressure (MPa)') 
-            for k in results:        
-                                self.x1_num.append(float(k[0]))
-                                self.y1_num.append(float(k[1]))
-            connection.close()   
+            if(self.graph_type == "STRESS_VS_STRAIN"):
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Strain (%)')
+                    ax.set_ylabel('Stress (MPa)')
+                    for k in results:        
+                                        self.x_num.append(float(k[0])/float(self.cs_area))
+                                        self.y_num.append(float(k[1]))
+                    connection.close() 
+            else:
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel(' Elongation(mm)')
+                    ax.set_ylabel('Pressure (MPa)')
+                    for k in results:        
+                                        self.x_num.append(float(k[0]))
+                                        self.y_num.append(float(k[1]))
+                    connection.close()
+              
             
             ax.plot(self.x_num,self.y_num, 'b',label="Sample No:1")
-            ax1.plot(self.x1_num,self.y1_num, 'b',label="Sample No:1")
+            #ax1.plot(self.x1_num,self.y1_num, 'b',label="Sample No:1")
             
         print("self.test_type:"+str(self.test_type))
         
         ax.legend()
-        ax1.legend() 
+        #ax1.legend() 
         self.draw()
         self.figure.savefig('last_graph.png',dpi=100)            
         connection.close()
@@ -2929,7 +2961,7 @@ class PlotCanvas_Auto(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         
-        self.axes = fig.add_subplot(211)
+        self.axes = fig.add_subplot(111)
         #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
@@ -2937,14 +2969,14 @@ class PlotCanvas_Auto(FigureCanvas):
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         
-        self.axes1 = fig.add_subplot(212)
-        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
-        self.axes1.set_facecolor('#CCFFFF')  
-        self.axes1.minorticks_on()
-        
-        self.axes1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        self.axes1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-        
+#        self.axes1 = fig.add_subplot(212)
+#        
+#        self.axes1.set_facecolor('#CCFFFF')  
+#        self.axes1.minorticks_on()
+#        
+#        self.axes1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
+#        self.axes1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+#        
         
         self.compute_initial_figure()
         FigureCanvas.__init__(self, fig)
@@ -3033,7 +3065,7 @@ class PlotCanvas_Auto(FigureCanvas):
     
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
-        self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
+        #self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                 cursor = connection.cursor()                            
@@ -3048,12 +3080,12 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.cs_area=float(x[2])
                         self.graph_type=str(x[3])
         connection.close()
-        
-        self.axes.set_xlabel('Strain (%)')
-        self.axes.set_ylabel('Stress (MPa)')                
-        
-        self.axes1.set_xlabel('Elongation (mm)')
-        self.axes1.set_ylabel('Pressure (MPa)') 
+        if(self.graph_type=='STRESS_VS_STRAIN'):
+                    self.axes.set_xlabel('Strain (%)')
+                    self.axes.set_ylabel('Stress (MPa)')                
+        else:
+                    self.axes.set_xlabel('Elongation (mm)')
+                    self.axes.set_ylabel('Pressure (MPa)') 
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC from GLOBAL_VAR") 
         for x in results:            
@@ -3079,13 +3111,9 @@ class PlotCanvas_Auto(FigureCanvas):
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
-        for x in results:
-             
-                  
-                     self.axes.set_xlim(0,float(x[0]))
-                     self.axes.set_ylim(0,float(x[1]))
-                     self.axes1.set_xlim(0,float(x[0]))
-                     self.axes1.set_ylim(0,float(x[1]))
+        for x in results:  
+                     #self.axes1.set_xlim(0,float(x[0]))
+                     #self.axes1.set_ylim(0,float(x[1]))
                      #self.flexural_max_load=int(x[1])
                      self.xlim=float(x[0])
                      self.ylim=float(x[1])
@@ -3093,6 +3121,21 @@ class PlotCanvas_Auto(FigureCanvas):
                      self.auto_rev_time_off=int(x[2])
                      self.break_sence=int(x[3])
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
+        for x in results:             
+                 
+                 if(self.graph_type == "STRESS_VS_STRAIN"):
+                         self.axes.set_xlim(0,float(x[2]))
+                         self.axes.set_ylim(0,float(x[3]))
+                 else:
+                         self.axes.set_xlim(0,float(x[0]))
+                         self.axes.set_ylim(0,float(x[1]))
+                         
+        connection.close()
+        
+        
         
         try:
             self.ser = serial.Serial(
@@ -3253,12 +3296,20 @@ class PlotCanvas_Auto(FigureCanvas):
                 else:
                     self.q=abs(float(self.buff[0]))
                 
-                self.t=abs(float(self.buff[3]))
+                
                 if(self.encoder==1):
                     self.p=abs(float(self.buff[4])) #
                 else:
                     self.p=abs(float(self.buff[5]))
-                    
+                 
+                 
+                 
+                 
+                 
+                self.q=abs(float(self.buff[0])) #fix val
+                self.t=abs(float(self.buff[3]))
+                self.p=abs(float(self.buff[4])) #fix val
+                
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
                     #print("self.p :"+str(self.p))
@@ -3269,6 +3320,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=self.p
                     
                 
+                
                 self.p=float(self.p)
                 self.p_cm=float(self.p)/10
                 self.arr_p_cm.append(float(self.p_cm))
@@ -3276,7 +3328,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
-                self.arr_p_strain.append(float(self.p)/float(self.cs_area))
+                self.arr_p_strain.append(float(self.p_cm)/float(self.cs_area))
                 
                 
                 self.q=float(self.q)
@@ -3320,20 +3372,23 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.save_data_flg="Yes"
                 self.on_ani_stop()
         
-    def plot_grah_only(self,i):      
-           self.line_cnt.set_data(self.arr_p_strain,self.arr_q_mpa)
-           return [self.line_cnt]
+    def plot_grah_only(self,i): 
+        if(self.graph_type=='STRESS_VS_STRAIN'):    
+            self.line_cnt.set_data(self.arr_p_strain,self.arr_q)
+        else:
+            self.line_cnt.set_data(self.arr_p,self.arr_q)
+        return [self.line_cnt]
           
     
-    def plot2_grah_only(self,i):      
-           self.line_cnt2.set_data(self.arr_p,self.arr_q_mpa)
-           return [self.line_cnt2]
+#    def plot2_grah_only(self,i):      
+#           self.line_cnt2.set_data(self.arr_p,self.arr_q_mpa)
+#           return [self.line_cnt2]
         
     def on_ani_stop(self):
         self.on_stop()
         if self.playing:
             self.ani._stop()
-            self.ani_2._stop()
+            #self.ani_2._stop()
         else:
              pass
             
@@ -3358,12 +3413,12 @@ class PlotCanvas_Auto(FigureCanvas):
                     )
             print("Done1")
             
-            self.ani_2 = animation.FuncAnimation(
-                self.figure,
-                self.plot2_grah_only,
-                blit=True, interval=10
-                    )
-            print("Done2")
+#            self.ani_2 = animation.FuncAnimation(
+#                self.figure,
+#                self.plot2_grah_only,
+#                blit=True, interval=10
+#                    )
+#            print("Done2")
        
     def validate_speed(self):
         connection = sqlite3.connect("tyr.db")
@@ -3409,7 +3464,7 @@ class PlotCanvas_Auto(FigureCanvas):
 class PlotCanvas_blank(FigureCanvas):
     def __init__(self, parent=None, width=5, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(211)
+        self.axes = fig.add_subplot(111)
         self.unit_type=""
         FigureCanvas.__init__(self, fig)
         #self.setParent(parent)
@@ -3425,8 +3480,8 @@ class PlotCanvas_blank(FigureCanvas):
         
         self.p=list()
         self.q=list()
-        self.test_type="Tensile"
-        ax = self.figure.add_subplot(211)
+        self.graph_type=""
+        ax = self.figure.add_subplot(111)
         ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
@@ -3438,12 +3493,23 @@ class PlotCanvas_blank(FigureCanvas):
                 self.graph_type=str(x[0]) 
         connection.close() 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
         for x in results:             
-                 ax.set_xlim(0,float(x[0]))
-                 ax.set_ylim(0,float(x[1]))
-                 ax.set_xlabel('Strain (%) \n')
-                 ax.set_ylabel('Stress (MPa) ')                  
+                 
+                 if(self.graph_type == "STRESS_VS_STRAIN"):
+                         ax.set_xlabel('Strain (%)')
+                         ax.set_ylabel('Stress (MPa)')
+                         ax.set_xlim(0,float(x[2]))
+                         ax.set_ylim(0,float(x[3]))
+                 else:
+                         ax.set_xlabel('Elongation (mm)')
+                         ax.set_ylabel('Pressure (MPa)')
+                         ax.set_xlim(0,float(x[0]))
+                         ax.set_ylim(0,float(x[1]))
+                         
+
+                         
+                         
                               
         connection.close()
                
@@ -3455,7 +3521,7 @@ class PlotCanvas_blank(FigureCanvas):
         ax.plot(self.x,self.y,'b')
         
         ########
-        
+        '''
        
         self.x1=[0,0,0,0,0,0,0,0]
         self.y1=[0,0,0,0,0,0,0,0]
@@ -3483,7 +3549,7 @@ class PlotCanvas_blank(FigureCanvas):
               self.q1.append(self.y1[i])
         
         ax1.plot(self.x1,self.y1,'b')
-        
+        '''
         self.draw() 
 
 
