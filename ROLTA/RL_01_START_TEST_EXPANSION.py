@@ -2536,9 +2536,30 @@ class RL_01_Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_21.show()
                 self.label_21.setText("Data Saved Successfully.")
-                
+                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
+                self.pushButton_8.setEnabled(True)
+                if(self.graph_type == "STRESS_VS_STRAIN"):
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p_strain)))   #length                        
+                    
+                else:    
+                        self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                        self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                        
+                self.label_22.setText("")
         
-    
+    def reset(self):        
+        if(self.timer3.isActive()): 
+           self.timer3.stop()      
+        
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.timer1.stop()            
+       
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        
     def show_load_cell_val(self):
         
         if(self.graph_type == "STRESS_VS_STRAIN"):                
@@ -2628,11 +2649,7 @@ class RL_01_Ui_MainWindow(object):
                     self.lineEdit_43.setText(str(x[1])) #MODULUS_OF_ELASTICITY    
             connection.close() 
     
-    def reset(self):        
-        if(self.timer3.isActive()): 
-           self.timer3.stop()
-        self.lcdNumber.setProperty("value", 0.0)
-        self.lcdNumber_2.setProperty("value", 0.0)
+    
     
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
