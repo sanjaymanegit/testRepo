@@ -1073,7 +1073,7 @@ class ty_29_Ui_MainWindow(object):
     def click_onRadiobutt(self):
         if(self.radioButton.isChecked()): ### Elongation 
                 self.lineEdit_10.setDisabled(True)
-                self.lineEdit_10.setText("9999")
+                self.lineEdit_10.setText("99999")
                 self.lineEdit_11.setEnabled(True)
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Elongation :"+str(self.lineEdit_11.text())+" (mm)")
@@ -1083,7 +1083,7 @@ class ty_29_Ui_MainWindow(object):
 #                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         elif(self.radioButton_2.isChecked()):### Load
                 self.lineEdit_10.setEnabled(True)
-                self.lineEdit_11.setText("9999")
+                self.lineEdit_11.setText("99999")
                 self.lineEdit_11.setDisabled(True)
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
@@ -1201,7 +1201,10 @@ class ty_29_Ui_MainWindow(object):
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         
     
-    def reset(self):        
+    def reset(self):
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.timer1.stop()
+           
         if(self.timer3.isActive()): 
            self.timer3.stop() 
         
@@ -1823,7 +1826,7 @@ class PlotCanvas_Auto(FigureCanvas):
                         try:
                             self.width=float(str(x[7]))
                         except ValueError as e:
-                                self.proof_max_load=9999
+                                self.proof_max_load=99999
                  
              self.proof_max_length=int(str(x[8]))
              self.test_time_sec=int(str(x[9]))

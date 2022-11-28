@@ -1554,8 +1554,8 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"'")
-                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")
+                            cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                         connection.commit();
                         connection.close()
                         
@@ -1565,7 +1565,7 @@ class TY_32_Ui_MainWindow(object):
                         with connection:        
                           cursor = connection.cursor()                  
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
-                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','CYCLICK','"+str(self.lineEdit_9.text())+"')")
+                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED,GUAGE_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','CYCLICK','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_7.text())+"')")
                         connection.commit();
                         connection.close()
     
@@ -1595,7 +1595,9 @@ class TY_32_Ui_MainWindow(object):
                         self.sc_data =PlotCanvas(self,width=8, height=5, dpi=100)    
                         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
                         print("Stopped all iterations.")
-    def reset(self):        
+    def reset(self):
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.timer1.stop() 
         if(self.timer3.isActive()): 
            self.timer3.stop() 
         
@@ -1842,7 +1844,7 @@ class TY_32_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,A.GUAGE_LENGTH,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
         
         for x in results:
             summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
