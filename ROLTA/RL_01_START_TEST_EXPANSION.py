@@ -2531,6 +2531,7 @@ class RL_01_Ui_MainWindow(object):
                         connection.close()
                         
     def mannual_stop(self):
+                self.sc_new.save_data_flg="Yes"
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
@@ -2552,16 +2553,15 @@ class RL_01_Ui_MainWindow(object):
         
     def reset(self):        
         if(self.timer3.isActive()): 
-           self.timer3.stop()      
+              self.timer3.stop()      
         
         if(self.sc_new.timer1.isActive()): 
-           self.sc_new.timer1.stop()            
+              self.sc_new.timer1.stop()            
        
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
         
-    def show_load_cell_val(self):
-        
+    def show_load_cell_val(self):        
         if(self.graph_type == "STRESS_VS_STRAIN"):                
                         self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p_strain)))   #length

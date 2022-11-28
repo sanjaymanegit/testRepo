@@ -292,13 +292,12 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_10.setFont(font)
         self.pushButton_10.setObjectName("pushButton_10")
         self.label_16 = QtWidgets.QLabel(self.frame)
-        self.label_16.setGeometry(QtCore.QRect(800, 30, 341, 41))
+        self.label_16.setGeometry(QtCore.QRect(20, 30, 341, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.label_16.setFont(font)
-        self.label_16.setStyleSheet("color: rgb(170, 85, 127);\n"
-"")
+        self.label_16.setStyleSheet("color: rgb(170, 85, 127);\n")
         self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_16.setObjectName("label_16")
         self.pushButton_14 = QtWidgets.QPushButton(self.frame)
@@ -478,6 +477,7 @@ class TY_04_Ui_MainWindow(object):
         self.radioButton_2.clicked.connect(self.radio_change)
         self.pushButton_6.clicked.connect(self.wifi_setup_page)
         self.pushButton_9.clicked.connect(self.dt_onclick)
+        self.pushButton_2.clicked.connect(self.reset_date)
         self.pushButton_10.clicked.connect(self.reset_date)
         
         self.calendarWidget.clicked.connect(self.date_dd_click)
@@ -554,7 +554,9 @@ class TY_04_Ui_MainWindow(object):
         
     def set_date(self):
         #print("ok....")
-       
+        #self.label_16.show()
+        #self.label_16.setText("working.")
+        print("working")
         if(self.lineEdit_8.text() != ""):
            self.label_16.setText(str(self.lineEdit_8.text())+" "+str(self.lineEdit_10.currentText())+":"+str(self.lineEdit_11.currentText())+":00")
            self.new_date=str(self.calendarWidget.selectedDate().toString("dd MMM yyyy"))+" "+str(self.lineEdit_10.currentText())+":"+str(self.lineEdit_11.currentText())+":00"
@@ -583,7 +585,7 @@ class TY_04_Ui_MainWindow(object):
         self.lineEdit_10.setCurrentText("00")
         self.lineEdit_11.setCurrentText("00")
         self.lineEdit_8.setText("")
-        self.label_16.hide()
+        self.label_16.setText("")
         
     def  radio_change(self):
          if(self.radioButton.isChecked()):
@@ -605,16 +607,18 @@ class TY_04_Ui_MainWindow(object):
         else:    
             self.graphscal_type="MANNUAL"
         
-        
+        print ("ok1")
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
             cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_2.text()+"'") 
+            print ("ok2")
         connection.commit();
         connection.close() 
-        
-        self.label_16.setText("Saved Successfully !")
         self.label_16.show()
+        self.label_16.setText("Saved Successfully !")
+        print ("ok3")
+        
         
     def wifi_setup_page(self):
         xx=self.lineEdit_7.text()
