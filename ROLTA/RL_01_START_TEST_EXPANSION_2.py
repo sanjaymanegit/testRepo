@@ -1,5 +1,5 @@
 
-
+from pop_set_two_graphs import set_two_graphs_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -1222,11 +1222,12 @@ class Ui_MainWindow(object):
         self.label_156.setText(_translate("MainWindow", " (mm)"))
         self.label_157.setText(_translate("MainWindow", " (mm)"))
         self.display_bank_graphs()
+        #self.load_ops()
 
     def load_ops(self):
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.start_test_expansion)
-        self.pushButton_4_1.clicked.connect(self.mannual_stop)
+        self.pushButton_9.clicked.connect(self.mannual_stop)
         
         self.pushButton_16.clicked.connect(self.pop_graph_scales)
         
@@ -1235,8 +1236,8 @@ class Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
-        self.radioButton.clicked.connect(self.graph_type_strain)
-        self.radioButton_2.clicked.connect(self.graph_type_pressure)
+        self.pushButton_18.clicked.connect(self.graph_type_strain)
+        self.pushButton_17.clicked.connect(self.graph_type_pressure)
         
        
         
@@ -1270,8 +1271,8 @@ class Ui_MainWindow(object):
                             self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
         
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)   
-        self.radioButton.hide()
-        self.radioButton_2.show()
+        self.pushButton_18.hide()
+        self.pushButton_17.show()
         
         #self.label_13.setText("Stress(MPa)")
         #self.label_14.setText("Strain(%)")
@@ -1294,8 +1295,8 @@ class Ui_MainWindow(object):
                             self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
         
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-        self.radioButton_2.hide()
-        self.radioButton.show()
+        self.pushButton_17.hide()
+        self.pushButton_18.show()
         
         self.label_13.setText("Pressure(MPa)")
         self.label_14.setText("Elongation(mm)")
@@ -1326,12 +1327,7 @@ class Ui_MainWindow(object):
                  self.test_id=str(x[0])                 
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_1 as Load_Y_axis,GRAPH_SCALE_CELL_2  as length_x_axis FROM SETTING_MST") 
-        for x in results:            
-                self.lineEdit_12.setText(str(float(x[0])))
-                self.lineEdit_13.setText(str(float(x[1])))
-        connection.close()
+        
         
         
         connection = sqlite3.connect("tyr.db")
@@ -1387,17 +1383,17 @@ class Ui_MainWindow(object):
     def validation(self):
         self.goAhead="No"
         if(self.lineEdit_9.text() == ""): #    
-                    self.label_21.show()
-                    self.label_21.setText("Nominal Outer Dia. Should not Empty.")                    
+                    self.label_22.show()
+                    self.label_22.setText("Nominal Outer Dia. Should not Empty.")                    
         elif(self.lineEdit_11.text() == ""): #    
-                    self.label_21.show()
-                    self.label_21.setText("Gread Should not Empty.")               
+                    self.label_22.show()
+                    self.label_22.setText("Gread Should not Empty.")               
         elif(self.lineEdit_3.text() == ""): #    
-                    self.label_21.show()
-                    self.label_21.setText("Nominal Wall Thickness Should not Empty. ")
+                    self.label_22.show()
+                    self.label_22.setText("Nominal Wall Thickness Should not Empty. ")
         elif(self.lineEdit_14.text() == ""): #    
-                    self.label_21.show()
-                    self.label_21.setText("SMYS Should not Empty .")
+                    self.label_22.show()
+                    self.label_22.setText("SMYS Should not Empty .")
         else:
                self.goAhead="Yes"
                connection = sqlite3.connect("tyr.db")
@@ -1552,8 +1548,8 @@ class Ui_MainWindow(object):
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
-                self.label_21.show()
-                self.label_21.setText("Data Saved Successfully.")
+                self.label_22.show()
+                self.label_22.setText("Data Saved Successfully.")
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
@@ -1591,8 +1587,8 @@ class Ui_MainWindow(object):
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
-                self.label_21.show()
-                self.label_21.setText("Data Saved Successfully.")
+                self.label_22.show()
+                self.label_22.setText("Data Saved Successfully.")
                 #self.go_to_next=self.go_to_next+1
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
@@ -2674,7 +2670,7 @@ class PlotCanvas_blank_P1(FigureCanvas):
 class PlotCanvas_blank_P2(FigureCanvas):
     def __init__(self, parent=None, width=5, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(211)
+        self.axes = fig.add_subplot(112)
         self.unit_type=""
         FigureCanvas.__init__(self, fig)
         #self.setParent(parent)
@@ -2691,7 +2687,7 @@ class PlotCanvas_blank_P2(FigureCanvas):
         self.p=list()
         self.q=list()
         self.graph_type=""
-        ax = self.figure.add_subplot(211)
+        ax = self.figure.add_subplot(112)
         ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
@@ -2728,7 +2724,7 @@ class PlotCanvas_blank_P2(FigureCanvas):
         self.p1=list()
         self.q1=list()
         
-        ax1 = self.figure.add_subplot(212)
+        ax1 = self.figure.add_subplot(121)
         ax1.set_facecolor('#CCFFFF')
         ax1.minorticks_on()
         ax1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
