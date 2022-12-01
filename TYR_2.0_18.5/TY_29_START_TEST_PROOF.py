@@ -48,6 +48,13 @@ from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
+
 class ty_29_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -231,7 +238,7 @@ class ty_29_Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setItem(0, 4, item)
         self.label_9 = QtWidgets.QLabel(self.frame)
-        self.label_9.setGeometry(QtCore.QRect(330, 130, 101, 31))
+        self.label_9.setGeometry(QtCore.QRect(330, 20, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -583,7 +590,7 @@ class ty_29_Ui_MainWindow(object):
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItem("")
         self.label_51 = QtWidgets.QLabel(self.frame)
-        self.label_51.setGeometry(QtCore.QRect(450, 130, 231, 31))
+        self.label_51.setGeometry(QtCore.QRect(450, 20, 231, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -627,6 +634,47 @@ class ty_29_Ui_MainWindow(object):
         self.label_63.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_63.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_63.setObjectName("label_63")
+        ##########
+        self.label_60_1 = QtWidgets.QLabel(self.frame)
+        self.label_60_1.setGeometry(QtCore.QRect(330, 130, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_60_1.setFont(font)
+        self.label_60_1.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_60_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_60_1.setObjectName("label_60_1")
+        self.lineEdit_9_1 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9_1.setValidator(input_validator)
+        self.lineEdit_9_1.setGeometry(QtCore.QRect(430, 130, 70, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_9_1.setFont(font)
+        self.lineEdit_9_1.setObjectName("lineEdit_9_1")
+        self.label_63_1 = QtWidgets.QLabel(self.frame)
+        self.label_63_1.setGeometry(QtCore.QRect(510, 130, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_63_1.setFont(font)
+        self.label_63_1.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_63_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_63_1.setObjectName("label_63_1")
+        
+        
+        
+        
+        
+        #########
         self.line_14 = QtWidgets.QFrame(self.frame)
         self.line_14.setGeometry(QtCore.QRect(1010, 0, 20, 241))
         self.line_14.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -967,6 +1015,10 @@ class ty_29_Ui_MainWindow(object):
         self.label_51.setText(_translate("MainWindow", "MRF INDIA PPVT LTD"))
         self.label_60.setText(_translate("MainWindow", "Speed :"))
         self.label_63.setText(_translate("MainWindow", "(mm / min)"))
+        
+        self.label_60_1.setText("Rev.Speed:")
+        self.label_63_1.setText("mm/min")
+        
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
         self.label_14.setText(_translate("MainWindow", "Elongation: \n"
@@ -1019,7 +1071,7 @@ class ty_29_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(PROOF_MAX_LOAD,0),IFNULL(PROOF_MAX_LENGTH ,0) FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(PROOF_MAX_LOAD,0),IFNULL(PROOF_MAX_LENGTH ,0),IFNULL(NEW_TEST_MOTOR_REV_SPEED ,0) FROM GLOBAL_VAR") 
         for x in results:
             if(self.comboBox_2.currentText() =="N/mm"):
                 self.lineEdit_10.setText(str(x[0]))
@@ -1027,6 +1079,7 @@ class ty_29_Ui_MainWindow(object):
             else:
                 self.lineEdit_10.setText(str(x[0]))
                 self.lineEdit_11.setText(str(x[1]))
+            self.lineEdit_9_1.setText(str(x[2]))
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -1116,6 +1169,13 @@ class ty_29_Ui_MainWindow(object):
         
     def start_test_PROOF(self):
         #elf.label_35.setText("")
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9_1.text())+"'")                                        
+        connection.commit();
+        connection.close()
         
         self.validation()
         if(self.goAhead=="Yes"):               
@@ -1234,7 +1294,7 @@ class ty_29_Ui_MainWindow(object):
                   #print("ok1")
                   try:
                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_MAX_LOAD='"+str(self.lineEdit_10.text())+"',PROOF_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',STATUS='"+str(self.status_str)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9_1.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
@@ -1762,6 +1822,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.speed_val=""
         self.input_speed_val=""
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -1867,7 +1928,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         try:
             self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
+                        port='/dev/ttyUSB1',
                         baudrate=19200,
                         bytesize=serial.EIGHTBITS,
                         parity=serial.PARITY_NONE,
@@ -2145,9 +2206,10 @@ class PlotCanvas_Auto(FigureCanvas):
         self.goahead_flag=0
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) , IFNULL(NEW_TEST_MOTOR_REV_SPEED,0)  from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):
@@ -2167,7 +2229,64 @@ class PlotCanvas_Auto(FigureCanvas):
         else:
             print(" not Ok ")
             #self.label_3.setText("Motor Speed is Required")
-            #self.label_3.show()      
+            #self.label_3.show()
+            
+         
+       
+        
+        v=0
+        try:     
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
+            v=float(self.input_speed_val)
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
+                
+            print("int part :%d"%v)
+            print("decial part:%.2f"%v)
+            #v=v*100
+            
+            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+            print(" write1 :"+str(v))
+        except IOError as e:
+            print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+        
+        print("Forward speed : "+str(v))
+        
+        v=0
+        try:     
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
+            v=float(self.input_rev_speed_val)            
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
+            print("int part :%d"%v)
+            print("decial part:%.2f"%v)         
+            
+            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+            print(" write2 :"+str(v))
+        except IOError as e:
+            print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+        
+        print("Reverse speed : "+str(v))
+        
+                
+            
+            
                
 
 class PlotCanvas_blank(FigureCanvas):
