@@ -1008,7 +1008,7 @@ class Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
        
-        #self.load_data()
+        self.load_data()
         #self.graph_type_pressure()
 
     def graph_type_strain(self):
@@ -1088,41 +1088,31 @@ class Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SPECIMEN_NAME,NOMINAL_OUTER_DIA_MM,GREAD,NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH"
-                                   ",SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,GRAPH_TYPE,PRESSURE_TRANDUSER_NO,FORCE_SAPN_ON_PDSC,"
-                                   "LAST_CAL_DATE_1,EXTENSOMETER_NO,POSITION_SPAN_ON_PDSC,LAST_CAL_DATE_2,YEILD_STRENGTH,MODULUS_OF_ELASTICITY,REVIEWED_BY,TEST_DATE,TESTED_BY FROM TEST_MST_TMP")                 
-        for x in results:
-                    #self.label_64.setText(str(x[0]))  #combobox
-                    self.lineEdit_9.setText(str(x[1])) #NOMINAL_OUTER_DIA_MM,
-                    self.lineEdit_11.setText(str(x[2])) #GREAD
-                    self.lineEdit_3.setText(str(x[3])) #NOMINAL_WALL_THICKNESS_MM
-                    self.lineEdit_14.setText(str(x[4])) #SPECIFIED_YEILD_STRENGTH
-                    self.lineEdit_16.setText(str(x[5])) #SAMPLE_IDENTIFICATION_NO
-                    self.lineEdit_17.setText(str(x[6])) #SAMPLE_DESCRIPTION
-                    self.lineEdit_18.setText(str(x[7])) #MILL_HYDROTEST_PRESSURE
-                    #self.lineEdit_3.setText(str(x[8])) #GRAPH_TYPE                    
-                    
-                    self.lineEdit_19.setText(str(x[9])) #PRESSURE_TRANDUSER_NO
-                    self.lineEdit_20.setText(str(x[10])) #FORCE_SAPN_ON_PDSC
-                    self.lineEdit_21.setText(str(x[11])) #LAST_CAL_DATE_1
-                    self.lineEdit_22.setText(str(x[12])) #EXTENSOMETER_NO
-                    self.lineEdit_23.setText(str(x[13])) #POSITION_SPAN_ON_PDSC
-                    self.lineEdit_24.setText(str(x[14])) #LAST_CAL_DATE_2
-                    
-                    self.lineEdit_42.setText("0") #YEILD_STRENGTH
-                    self.lineEdit_43.setText("0") #MODULUS_OF_ELASTICITY
-                    self.lineEdit_44.setText(str(x[17])) #REVIEWED_BY
-                    #self.label_18.setText(str(x[43])) #TEST_DATE
-                    self.lineEdit_15.setText(str(x[19]))#TESTED_BY
+        results=connection.execute("select SAMPLE_PIPE_NO,SAMPLE_ID,REVIEWED_BY,D_AV,T_AV FROM TEST_MST_TMP")                 
+        for x in results:                    
+                    self.lineEdit_16.setText(str(x[0])) #SAMPLE_PIPE_NO,
+                    self.lineEdit_17.setText(str(x[1])) #SAMPLE_ID
+                    self.lineEdit_44.setText(str(x[2]))
+                    self.lineEdit_46.setText(str(x[3])) #D_AV                    
+                    self.lineEdit_47.setText(str(x[4]))#T_AV
               
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:
+                self.label.setText(str(x[0]))
+                self.label_2.setText(str(x[1]))
+            
+        connection.close()
+        
         
     def start_test_expansion(self):               
         self.validation()              
         if(self.goAhead=="Yes"):              
                         
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
-                        self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)                
+                        self.gridLayout.addWidget(self.sc_new, 0, 0, 1, 1)                
                         connection = sqlite3.connect("tyr.db")
                         results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
                         rows=results.fetchall()
@@ -1132,25 +1122,58 @@ class Ui_MainWindow(object):
                                         self.timer3.timeout.connect(self.show_load_cell_val)
                                         self.timer3.start(1)
                                         
+#                                        self.timer4.setInterval(5000)        
+#                                        self.timer3.timeout.connect(self.show_grid1_val)
+#                                        self.timer3.start(1)
+                                        
         else:            
                     print("validation Error")    
                     
-                    
+#    def show_grid1_val(self):          
+#        self.delete_all_records()        
+#        font = QtGui.QFont()
+#        font.setPointSize(10)
+#        self.tableWidget.setFont(font) 
+#        self.tableWidget.horizontalHeader().setStretchLastSection(True)      
+#        self.tableWidget.setHorizontalHeaderLabels(['Parameter','Value','Time'] )       
+#           
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
+#        for row_number, row_data in enumerate(results):            
+#            self.tableWidget.insertRow(row_number)
+#            for column_number, data in enumerate(row_data):
+#                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+#        connection.close()   
+#        #self.tableWidget.resizeColumnsToContents()
+#        self.tableWidget.resizeRowsToContents()
+#        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+#        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i) 
+        
                     
     def validation(self):
         self.goAhead="No"
-        if(self.lineEdit_9.text() == ""): #    
-                    self.label_22.show()
-                    self.label_22.setText("Nominal Outer Dia. Should not Empty.")                    
-        elif(self.lineEdit_11.text() == ""): #    
-                    self.label_22.show()
-                    self.label_22.setText("Gread Should not Empty.")               
-        elif(self.lineEdit_3.text() == ""): #    
-                    self.label_22.show()
-                    self.label_22.setText("Nominal Wall Thickness Should not Empty. ")
-        elif(self.lineEdit_14.text() == ""): #    
-                    self.label_22.show()
-                    self.label_22.setText("SMYS Should not Empty .")
+        if(self.lineEdit_46.text() == ""): #    
+                    self.label_15.show()
+                    self.label_15.setText(" Dia. Should not Empty.")                    
+        elif(self.lineEdit_47.text() == ""): #    
+                    self.label_15.show()
+                    self.label_15.setText("Thickness Should not Empty.")               
+        elif(self.lineEdit_51.text() == ""): #    
+                    self.label_15.show()
+                    self.label_15.setText("Circumference Should not Empty. ")
+        elif(self.lineEdit_16.text() == ""): #    
+                    self.label_15.show()
+                    self.label_15.setText("Sample Pipe No Should not Empty .")
+        elif(self.lineEdit_17.text() == ""): #    
+                    self.label_15.show()
+                    self.label_15.setText("Sample Id Should not Empty .")
         else:
                self.goAhead="Yes"
                connection = sqlite3.connect("tyr.db")
@@ -1172,23 +1195,12 @@ class Ui_MainWindow(object):
                             cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                            
                             try:
-                                    cursor.execute("UPDATE  TEST_MST_TMP SET TEST_ID='"+str(int(self.label_12.text()))+
-                                                    "',NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
-                                                    "',GREAD='"+str(self.lineEdit_11.text())+
-                                                    "', NOMINAL_WALL_THICKNESS_MM='"+str(self.lineEdit_3.text())+
-                                                    "', SPECIFIED_YEILD_STRENGTH='"+str(self.lineEdit_14.text())+
-                                                    "', SAMPLE_IDENTIFICATION_NO='"+str(self.lineEdit_16.text())+
-                                                    "', SAMPLE_DESCRIPTION='"+str(self.lineEdit_17.text())+
-                                                    "', MILL_HYDROTEST_PRESSURE='"+str(self.lineEdit_18.text())+
-                                                    "', PRESSURE_TRANDUSER_NO='"+str(self.lineEdit_19.text())+
-                                                    "', FORCE_SAPN_ON_PDSC='"+str(self.lineEdit_20.text())+
-                                                    "', LAST_CAL_DATE_1='"+str(self.lineEdit_21.text())+
-                                                    "', EXTENSOMETER_NO='"+str(self.lineEdit_22.text())+
-                                                    "', POSITION_SPAN_ON_PDSC='"+str(self.lineEdit_23.text())+
-                                                    "', LAST_CAL_DATE_2='"+str(self.lineEdit_24.text())+                                                   
-                                                    "', YEILD_STRENGTH=0"
-                                                    ", MODULUS_OF_ELASTICITY=0"
-                                                    ", REVIEWED_BY='"+str(self.lineEdit_44.text())+
+                                    cursor.execute("UPDATE  TEST_MST_TMP SET TEST_ID="+str(int(self.label_12.text()))+
+                                                    ", SAMPLE_PIPE_NO='"+str(self.lineEdit_16.text())+
+                                                    "', SAMPLE_ID='"+str(self.lineEdit_17.text())+                                                   
+                                                    "', D_AV='"+str(self.lineEdit_46.text())+
+                                                    "', T_AV='"+str(self.lineEdit_47.text())+
+                                                    "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
                                                    # "', TEST_DATE='"+str(self.label_18.text())+
                                                     "', GRAPH_TYPE='"+str(self.graph_type)+
                                                     "' ")
@@ -1200,24 +1212,13 @@ class Ui_MainWindow(object):
                                               
                             try:
                                     cursor.execute("UPDATE  TEST_MST_EXPANSION SET "+
-                                                    "NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
-                                                    "',GREAD='"+str(self.lineEdit_11.text())+
-                                                    "', NOMINAL_WALL_THICKNESS_MM='"+str(self.lineEdit_3.text())+
-                                                    "', SPECIFIED_YEILD_STRENGTH='"+str(self.lineEdit_14.text())+
-                                                    "', SAMPLE_IDENTIFICATION_NO='"+str(self.lineEdit_16.text())+
-                                                    "', SAMPLE_DESCRIPTION='"+str(self.lineEdit_17.text())+
-                                                    "', MILL_HYDROTEST_PRESSURE='"+str(self.lineEdit_18.text())+
-                                                    "', PRESSURE_TRANDUSER_NO='"+str(self.lineEdit_19.text())+
-                                                    "', FORCE_SAPN_ON_PDSC='"+str(self.lineEdit_20.text())+
-                                                    "', LAST_CAL_DATE_1='"+str(self.lineEdit_21.text())+
-                                                    "', EXTENSOMETER_NO='"+str(self.lineEdit_22.text())+
-                                                    "', POSITION_SPAN_ON_PDSC='"+str(self.lineEdit_23.text())+
-                                                    "', LAST_CAL_DATE_2='"+str(self.lineEdit_24.text())+                                                  
-                                                    "', YEILD_STRENGTH='0"
-                                                    "', MODULUS_OF_ELASTICITY='0"
+                                                   " SAMPLE_PIPE_NO='"+str(self.lineEdit_16.text())+
+                                                    "', SAMPLE_ID='"+str(self.lineEdit_17.text())+                                                   
+                                                    "', D_AV='"+str(self.lineEdit_46.text())+
+                                                    "', T_AV='"+str(self.lineEdit_47.text())+
                                                     "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
-                                                    #"', TEST_DATE='"+str(self.label_18.text())+
-                                                    "', GRAPH_TYPE='"+str(self.graph_type)+
+                                                   # "', TEST_DATE='"+str(self.label_18.text())+
+                                                    "', GRAPH_TYPE='"+str(self.graph_type)+                                                    
                                                     "' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
 
                             except Exception as e:
@@ -1231,35 +1232,13 @@ class Ui_MainWindow(object):
                         with connection:        
                               cursor = connection.cursor()                  
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
-                              try:
-                                      
-                                      
-                                      
-                                      cursor.execute("INSERT INTO TEST_MST_EXPANSION (TEST_ID,NOMINAL_OUTER_DIA_MM,GREAD, NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH,"
-                                                    "SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE, "
-                                                    "PRESSURE_TRANDUSER_NO,FORCE_SAPN_ON_PDSC, LAST_CAL_DATE_1,"
-                                                    "EXTENSOMETER_NO,POSITION_SPAN_ON_PDSC,LAST_CAL_DATE_2,YEILD_STRENGTH,MODULUS_OF_ELASTICITY, REVIEWED_BY,"
-                                                    "TESTED_BY,GRAPH_TYPE)"
-                                                    "VALUES("
-                                                           "'"+str(self.label_12.text())+"',"   #TEST_ID
-                                                                "'"+str(self.lineEdit_9.text())+"'," #NOMINAL_OUTER_DIA_MM
-                                                                "'"+str(self.lineEdit_11.text())+"'," #GREAD
-                                                                "'"+str(self.lineEdit_3.text())+"'," #NOMINAL_WALL_THICKNESS_MM
-                                                                "'"+str(self.lineEdit_14.text())+"'," #SPECIFIED_YEILD_STRENGTH
-                                                                "'"+str(self.lineEdit_16.text())+"'," #SAMPLE_IDENTIFICATION_NO
-                                                                "'"+str(self.lineEdit_17.text())+"'," #SAMPLE_DESCRIPTION
-                                                                "'"+str(self.lineEdit_18.text())+"'," #MILL_HYDROTEST_PRESSURE
-                                                                "'"+str(self.lineEdit_19.text())+"'," #PRESSURE_TRANDUSER_NO
-                                                                "'"+str(self.lineEdit_20.text())+"'," #FORCE_SAPN_ON_PDSC
-                                                                "'"+str(self.lineEdit_21.text())+"'," #LAST_CAL_DATE_1
-                                                                "'"+str(self.lineEdit_22.text())+"'," #EXTENSOMETER_NO
-                                                                "'"+str(self.lineEdit_23.text())+"'," #POSITION_SPAN_ON_PDSC
-                                                                "'"+str(self.lineEdit_24.text())+"'," #LAST_CAL_DATE_2                                                               
-                                                                "0,"  
-                                                                "0," 
+                              try:     
+                                      cursor.execute("INSERT INTO TEST_MST_EXPANSION (SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV, REVIEWED_BY,TESTED_BY,GRAPH_TYPE)"
+                                                    "VALUES( '"+str(self.lineEdit_16.text())+"'," 
+                                                                "'"+str(self.lineEdit_17.text())+"',"
+                                                                "'"+str(self.lineEdit_46.text())+"'," 
+                                                                "'"+str(self.lineEdit_47.text())+"'," 
                                                                 "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
-                                                                #"'"+str(self.label_18.text())+"'," #TEST_DATE
-                                                                "'"+str(self.lineEdit_15.text())+"'," #TESTED_BY
                                                                 "'"+self.graph_type+"')" #GRAPH_TYPE
                                                                 )
                                       print("inserted OK ")
@@ -1270,25 +1249,16 @@ class Ui_MainWindow(object):
                                               connection.commit();
 
                               try:
-                                    cursor.execute("UPDATE  TEST_MST_TMP SET TEST_ID='"+str(self.label_12.text())+
-                                                    "',NOMINAL_OUTER_DIA_MM='"+str(self.lineEdit_9.text())+
-                                                    "',GREAD='"+str(self.lineEdit_11.text())+
-                                                    "', NOMINAL_WALL_THICKNESS_MM='"+str(self.lineEdit_3.text())+
-                                                    "', SPECIFIED_YEILD_STRENGTH='"+str(self.lineEdit_14.text())+
-                                                    "', SAMPLE_IDENTIFICATION_NO='"+str(self.lineEdit_16.text())+
-                                                    "', SAMPLE_DESCRIPTION='"+str(self.lineEdit_17.text())+
-                                                    "', MILL_HYDROTEST_PRESSURE='"+str(self.lineEdit_18.text())+
-                                                    "', PRESSURE_TRANDUSER_NO='"+str(self.lineEdit_19.text())+
-                                                    "', FORCE_SAPN_ON_PDSC='"+str(self.lineEdit_20.text())+
-                                                    "', LAST_CAL_DATE_1='"+str(self.lineEdit_21.text())+
-                                                    "', EXTENSOMETER_NO='"+str(self.lineEdit_22.text())+
-                                                    "', POSITION_SPAN_ON_PDSC='"+str(self.lineEdit_23.text())+
-                                                    "', LAST_CAL_DATE_2='"+str(self.lineEdit_24.text())+                                                   
-                                                    "', YEILD_STRENGTH=0"+
-                                                    ", MODULUS_OF_ELASTICITY=0"+
-                                                    ", REVIEWED_BY='"+str(self.lineEdit_44.text())+
-                                                    #"', TEST_DATE='"+str(self.label_18.text())+                                                   
-                                                    "' ")
+                                    cursor.execute("UPDATE  TEST_MST_EXPANSION SET "+
+                                                   " SAMPLE_PIPE_NO='"+str(self.lineEdit_16.text())+
+                                                    "', SAMPLE_ID='"+str(self.lineEdit_17.text())+                                                   
+                                                    "', D_AV='"+str(self.lineEdit_46.text())+
+                                                    "', T_AV='"+str(self.lineEdit_47.text())+
+                                                    "', REVIEWED_BY='"+str(self.lineEdit_44.text())+
+                                                   # "', TEST_DATE='"+str(self.label_18.text())+
+                                                    "', GRAPH_TYPE='"+str(self.graph_type)+                                                    
+                                                    "' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+
                                     print("updated  OK ")
 
                               except Exception as e:
@@ -1305,8 +1275,8 @@ class Ui_MainWindow(object):
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
-                self.label_22.show()
-                self.label_22.setText("Data Saved Successfully.")
+                self.label_15.show()
+                self.label_15.setText("Data Saved Successfully.")
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
@@ -1319,7 +1289,7 @@ class Ui_MainWindow(object):
                         self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                         self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                         
-                self.label_22.setText("")
+                self.label_15.setText("")
     
     def reset(self):        
             if(self.timer3.isActive()): 
@@ -1338,13 +1308,13 @@ class Ui_MainWindow(object):
             else:    
                             self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                             self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length           
-            self.label_22.setText("Running.....")
+            self.label_15.setText("Running.....")
             if(str(self.sc_new.save_data_flg) =="Yes"):            
                     self.reset()
                     self.save_graph_data()
                     self.sc_new.save_data_flg=""
-                    self.label_22.show()
-                    self.label_22.setText("Data Saved Successfully.")
+                    self.label_15.show()
+                    self.label_15.setText("Data Saved Successfully.")
                     #self.go_to_next=self.go_to_next+1
                     self.pushButton_5.setEnabled(True)
                     self.pushButton_6.setEnabled(True)
@@ -1359,7 +1329,7 @@ class Ui_MainWindow(object):
                             self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                             self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                             
-                    self.label_22.setText("")    
+                    self.label_15.setText("")    
                     
     def save_graph_data(self):         
          if (len(self.sc_new.arr_p) > 1):            
@@ -1370,7 +1340,7 @@ class Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,X_STRAIN) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,X_STRAIN,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+",'"+str(float(self.sc_new.arr_t[g]))+"')")
             connection.commit();
             connection.close()
             
@@ -1409,12 +1379,7 @@ class Ui_MainWindow(object):
             print("Data Saved Ok in STG_GRAPH_MST")           
             #self.show_grid_data_PROOF()
      
-            connection = sqlite3.connect("tyr.db")
-            results=connection.execute("select printf(\"%.2f\", YEILD_STRENGTH),printf(\"%.2f\", MODULUS_OF_ELASTICITY) FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                 
-            for x in results:                
-                    self.lineEdit_42.setText(str(x[0])) #YEILD_STRENGTH
-                    self.lineEdit_43.setText(str(x[1])) #MODULUS_OF_ELASTICITY    
-            connection.close() 
+           
             
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
@@ -1638,16 +1603,7 @@ class PlotCanvas(FigureCanvas):
         ax.set_xlabel('Strain (%)')
         ax.set_ylabel('Stress (MPa)')  
         
-#        ax1 = self.figure.add_subplot(212)
-#       
-#        ax1.set_facecolor('#CCFFFF')   
-#        ax1.minorticks_on()
-#        
-#        ax1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-#        ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-#        
-#        ax1.set_xlabel('Elongation (mm)')
-#        ax1.set_ylabel('Pressure (MPa)')  
+ 
         
         self.s=[]
         self.t=[]
@@ -1679,16 +1635,10 @@ class PlotCanvas(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
-        for x in results:             
-                 
-                 if(self.graph_type == "STRESS_VS_STRAIN"):
-                         ax.set_xlim(0,float(x[2]))
-                         ax.set_ylim(0,float(x[3]))
-                 else:
+        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
+        for x in results: 
                          ax.set_xlim(0,float(x[0]))
-                         ax.set_ylim(0,float(x[1]))
-                         
+                         ax.set_ylim(0,float(x[1])) 
         connection.close()
         
         
@@ -1752,15 +1702,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         
-#        self.axes1 = fig.add_subplot(212)
-#        
-#        self.axes1.set_facecolor('#CCFFFF')  
-#        self.axes1.minorticks_on()
-#        
-#        self.axes1.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-#        self.axes1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-#        
-        
+      
         self.compute_initial_figure()
         FigureCanvas.__init__(self, fig)
         #self.setParent(parent)        
@@ -1783,7 +1725,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_p_inch=[0.0]
         self.arr_p_strain=[0.0]
         
-        
+        self.arr_t=[0.0]
         self.arr_q=[0.0]
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
@@ -1838,6 +1780,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.unit_type =""
         self.proof_test_by=""
         self.cs_area=0
+        self.d_av=0
+        self.t_av=0
         self.graph_type=""       
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
@@ -1857,18 +1801,19 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,CURRENT_TIMESTAMP ,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,D_AV,T_AV,GRAPH_TYPE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")
-                        self.cs_area=float(x[2])
-                        self.graph_type=str(x[3])
+                        self.d_av=float(x[2])
+                        self.t_av=float(x[3])
+                        self.graph_type=str(x[4])
+                        self.axes.set_xlabel('Time (S)')
+                        self.axes.set_ylabel('Pressure (MPa)')
+                        self.cs_area= float(self.d_av)*0.1*0.1 / (2 * float(self.t_av))
         connection.close()
-        if(self.graph_type=='STRESS_VS_STRAIN'):
-                    self.axes.set_xlabel('Strain (%)')
-                    self.axes.set_ylabel('Stress (MPa)')                
-        else:
-                    self.axes.set_xlabel('Elongation (mm)')
-                    self.axes.set_ylabel('Pressure (MPa)') 
+        
+        
+                   
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC from GLOBAL_VAR") 
         for x in results:            
@@ -1898,24 +1843,18 @@ class PlotCanvas_Auto(FigureCanvas):
                      #self.axes1.set_xlim(0,float(x[0]))
                      #self.axes1.set_ylim(0,float(x[1]))
                      #self.flexural_max_load=int(x[1])
-                     self.xlim=float(x[0])
-                     self.ylim=float(x[1])
+                     #self.xlim=float(x[0])
+                     #self.ylim=float(x[1])
                       
                      self.auto_rev_time_off=int(x[2])
                      self.break_sence=int(x[3])
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
+        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
         for x in results:             
-                 
-                 if(self.graph_type == "STRESS_VS_STRAIN"):
-                         self.axes.set_xlim(0,float(x[2]))
-                         self.axes.set_ylim(0,float(x[3]))
-                 else:
-                         self.axes.set_xlim(0,float(x[0]))
-                         self.axes.set_ylim(0,float(x[1]))
-                         
+                    self.axes.set_xlim(0,float(x[0]))
+                    self.axes.set_ylim(0,float(x[1]))
         connection.close()
         
         
@@ -2089,7 +2028,7 @@ class PlotCanvas_Auto(FigureCanvas):
                  
                  
                  
-                self.q=abs(float(self.buff[0])) #fix val
+                self.q=abs(float(self.buff[1])) #fix val
                 self.t=abs(float(self.buff[3]))
                 self.p=abs(float(self.buff[4])) #fix val
                 
@@ -2113,6 +2052,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.arr_p_strain.append(float(self.p_cm)/float(self.cs_area))
                 
+                self.arr_t.append(float(self.t))
                 
                 self.q=float(self.q)
                 self.q_n=float(self.q)*9.81
@@ -2121,13 +2061,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q_lb=float(self.q)*2.20462
                 self.arr_q_lb.append(float(self.q_lb))
                 
-                if(float(self.cs_area) > 0.0):
-                        self.q_mpa=float((float(self.q)/float(self.cs_area))*0.0980665)
+                if(float(self.t_av) > 0.0):
+                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
                 else:
                         self.q_mpa=0.0
                 
-                self.arr_q_mpa.append(float(self.q_mpa))
-                
+                self.arr_q_mpa.append(float(self.q_mpa))              
                 
                 
                 
@@ -2135,7 +2074,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
@@ -2155,12 +2094,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.save_data_flg="Yes"
                 self.on_ani_stop()
         
-    def plot_grah_only(self,i): 
-        if(self.graph_type=='STRESS_VS_STRAIN'):    
-            self.line_cnt.set_data(self.arr_p_strain,self.arr_q)
-        else:
-            self.line_cnt.set_data(self.arr_p,self.arr_q)
-        return [self.line_cnt]
+    def plot_grah_only(self,i):
+            self.line_cnt.set_data(self.arr_t,self.arr_q)
+            return [self.line_cnt]
           
     
 #    def plot2_grah_only(self,i):      

@@ -1018,7 +1018,7 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="label_153">
      <property name="geometry">
       <rect>
-       <x>1060</x>
+       <x>1050</x>
        <y>620</y>
        <width>41</width>
        <height>31</height>
@@ -1153,9 +1153,9 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="label_15">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>430</x>
        <y>670</y>
-       <width>331</width>
+       <width>321</width>
        <height>31</height>
       </rect>
      </property>
@@ -1250,16 +1250,16 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>1090</x>
+       <x>1080</x>
        <y>670</y>
-       <width>241</width>
+       <width>161</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -1318,7 +1318,7 @@ color: rgb(255, 255, 255);</string>
        <x>20</x>
        <y>470</y>
        <width>441</width>
-       <height>71</height>
+       <height>101</height>
       </rect>
      </property>
      <row>
@@ -1411,7 +1411,7 @@ color: rgb(255, 255, 255);</string>
        <x>460</x>
        <y>470</y>
        <width>441</width>
-       <height>71</height>
+       <height>101</height>
       </rect>
      </property>
      <row>
@@ -1504,7 +1504,7 @@ color: rgb(255, 255, 255);</string>
        <x>900</x>
        <y>470</y>
        <width>431</width>
-       <height>71</height>
+       <height>101</height>
       </rect>
      </property>
      <row>
@@ -1594,9 +1594,9 @@ color: rgb(255, 255, 255);</string>
     <widget class="QPushButton" name="pushButton_17">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>560</y>
-       <width>111</width>
+       <x>150</x>
+       <y>160</y>
+       <width>181</width>
        <height>21</height>
       </rect>
      </property>
@@ -1613,15 +1613,15 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Pressure</string>
+      <string>Pressure Vs  Time</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_18">
      <property name="geometry">
       <rect>
-       <x>600</x>
-       <y>560</y>
-       <width>111</width>
+       <x>570</x>
+       <y>160</y>
+       <width>171</width>
        <height>21</height>
       </rect>
      </property>
@@ -1638,15 +1638,15 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Expansion</string>
+      <string>Expansion Vs Time</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_19">
      <property name="geometry">
       <rect>
-       <x>1060</x>
-       <y>560</y>
-       <width>111</width>
+       <x>1050</x>
+       <y>160</y>
+       <width>161</width>
        <height>21</height>
       </rect>
      </property>
@@ -1663,7 +1663,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Stress</string>
+      <string>Stress Vs Time</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_20">
@@ -1688,16 +1688,16 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Zero</string>
+      <string>View Log</string>
      </property>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>150</y>
+       <y>190</y>
        <width>1311</width>
-       <height>321</height>
+       <height>281</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -1711,6 +1711,130 @@ color: rgb(255, 255, 255);</string>
        <widget class="QGraphicsView" name="graphicsView_3"/>
       </item>
      </layout>
+    </widget>
+    <widget class="QPushButton" name="pushButton_21">
+     <property name="geometry">
+      <rect>
+       <x>1100</x>
+       <y>630</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Graph set -1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_22">
+     <property name="geometry">
+      <rect>
+       <x>1230</x>
+       <y>630</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Graph set -2</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>1188</x>
+       <y>590</y>
+       <width>141</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Stress Vs Strain</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pressure Vs Expansion</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pressure Vs Time</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Expansion Vs Time</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Stress Vs Time</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Strain Vs Time</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>1090</x>
+       <y>590</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
+     <property name="text">
+      <string>Report Graph :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </widget>
   </widget>
