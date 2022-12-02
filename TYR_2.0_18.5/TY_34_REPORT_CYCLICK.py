@@ -1759,24 +1759,20 @@ class TY_34_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(9)
+        self.tableWidget.setColumnCount(5)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain ','Shear Modulus \n ','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Load (N)','Elongation (%)','Tensile \n Stress (N/mm2)','Shear Modulus \n ']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
         self.tableWidget.setColumnWidth(2, 170)
         self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 100)
-        self.tableWidget.setColumnWidth(5, 170)
-        self.tableWidget.setColumnWidth(6, 170)
-        self.tableWidget.setColumnWidth(7, 200)
-        self.tableWidget.setColumnWidth(8, 200)
-        
+       
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),MAX_LOAD,MAX_LENGTH,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1873,34 +1869,34 @@ class TY_34_Ui_MainWindow(object):
         self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex == "N/mm"
         if(self.unit_typex == "N/mm"):            
-                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load \n (N)','Max Length  \n (mm)','Status']]
-                
+                data2= [['ITR.No.','Load(N)','Elongation (%)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n ']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", MAX_LENGTH),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:
                      data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", avg(SHEAR_STRAIN)),printf(\"%.2f\", avg(SHEAR_MODULUS)),printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+       
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", min(SHEAR_STRAIN)),printf(\"%.2f\", min(SHEAR_MODULUS)),printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", max(SHEAR_STRAIN)),printf(\"%.2f\", max(SHEAR_MODULUS)),printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
         else:
              print("create pdf error - invalid unit toe ")
-                
+           
        
         
         y=300
@@ -1910,7 +1906,7 @@ class TY_34_Ui_MainWindow(object):
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:","CYCLIC","CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
             self.remark=str(x[12])        
         connection.close() 
         PAGE_HEIGHT=defaultPageSize[1]

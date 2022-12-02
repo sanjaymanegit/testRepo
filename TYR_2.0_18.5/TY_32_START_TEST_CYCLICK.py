@@ -1341,7 +1341,7 @@ class TY_32_Ui_MainWindow(object):
         self.pushButton_6.setDisabled(True)
         self.pushButton_7.setDisabled(True)
         self.pushButton_8.setDisabled(True)
-        
+        self.pushButton_13.setDisabled(True)
                 
         self.sc_blank =PlotCanvas_blank(self)          
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1435,8 +1435,10 @@ class TY_32_Ui_MainWindow(object):
         
     def start_test_CYCLICK(self):
         #elf.label_35.setText("")
+        self.pushButton_13.setEnabled(True)
         self.itr_no=[]
         self.elongation_per=[]
+        self.elongation_per_val=[]
         self.holding_time=[]
         self.validation()
         self.go_to_next=0
@@ -1444,8 +1446,8 @@ class TY_32_Ui_MainWindow(object):
         self.length_mm=0
         connection = sqlite3.connect("tyr.db")              
         with connection:        
-                                       cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
+                        cursor = connection.cursor()                
+                        cursor.execute("UPDATE  GLOBAL_VAR SET NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'")                                        
         connection.commit();
         connection.close()                            
                         
@@ -1459,13 +1461,14 @@ class TY_32_Ui_MainWindow(object):
                             self.itr_no.append(int(x[0]))
                             self.length_mm=float(float(self.guage_len)*float(x[1]/100))
                             self.elongation_per.append(float(self.length_mm))
+                            self.elongation_per_val.append(float(x[1]))
                             self.holding_time.append(float(x[2]))            
                connection.close()
                if(self.go_to_next==0):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                        cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[0])+"', TEST_TIME_SEC='"+str(self.holding_time[0])+"' ")                                        
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[0])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[0])+"', TEST_TIME_SEC='"+str(self.holding_time[0])+"' ")                                        
                         connection.commit();
                         connection.close()                            
                         self.label_21.setText("Itr No:"+str(self.itr_no[0])+"  Lenngth mm:"+str(self.elongation_per[0])+" Time Sec :"+str(self.holding_time[0]))                        
@@ -1489,6 +1492,12 @@ class TY_32_Ui_MainWindow(object):
                 
     def start_test_CYCLICK2(self):
                 if(self.go_to_next==1):
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                       cursor = connection.cursor()                
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[1])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
+                        connection.commit();
+                        connection.close()
                         self.label_21.setText("ItrNo:"+str(self.itr_no[1])+"  Elon.(mm):"+str(self.elongation_per[1])+"  Time (Sec):"+str(self.holding_time[1]))                        
                         self.label_67.setText("2")                       
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
@@ -1508,7 +1517,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                        cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[2])+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[2])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[2])+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
                         connection.commit();
                         connection.close()                            
                         self.label_21.setText("Itr No:"+str(self.itr_no[2])+"  Elon.(mm):"+str(self.elongation_per[2])+"  Time (Sec):"+str(self.holding_time[2]))                        
@@ -1664,7 +1673,7 @@ class TY_32_Ui_MainWindow(object):
                           
                           
                           
-                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULUS,STATUS,ELONG_PER,HOLDING_TIME_PRC,MAX_LENGTH,MAX_LOAD) SELECT TEST_ID,'CYCLICK',ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULES,STATUS,PROOF_MAX_LENGTH,TEST_TIME_SEC,MAX_LENGTH,MAX_LOAD FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST_CYCLIC(TEST_ID,TEST_METHOD,ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULUS,STATUS,ELONG_PER,HOLDING_TIME_PRC,MAX_LENGTH,MAX_LOAD,ELONG_PER_VAL) SELECT TEST_ID,'CYCLICK',ULT_TENSILE_STRENGTH,SHEAR_STRESS,SHEAR_STRAIN,SHEAR_MODULES,STATUS,PROOF_MAX_LENGTH,TEST_TIME_SEC,MAX_LENGTH,MAX_LOAD,ELONG_PER_VAL FROM GLOBAL_VAR")
                           cursor.execute("UPDATE CYCLES_MST_CYCLIC SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST_CYCLIC SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N FROM STG_GRAPH_MST")                  
@@ -1718,24 +1727,20 @@ class TY_32_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(9)
+        self.tableWidget.setColumnCount(5)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Ult.Tensile \n Strength (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load (N)','Max Length (mm)','Expected \n Elongation \n (mm)','Expected \n Holding \n Time (sec)','Status']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Load (N)','Elongation (%)','Tensile \n Stress (N/mm2)','Shear Modulus \n ']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
         self.tableWidget.setColumnWidth(2, 170)
         self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 100)
-        self.tableWidget.setColumnWidth(5, 170)
-        self.tableWidget.setColumnWidth(6, 170)
-        self.tableWidget.setColumnWidth(7, 200)
-        self.tableWidget.setColumnWidth(8, 200)
-        
+       
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),MAX_LOAD,MAX_LENGTH,printf(\"%.2f\", ELONG_PER),printf(\"%.2f\", HOLDING_TIME_PRC),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1833,27 +1838,28 @@ class TY_32_Ui_MainWindow(object):
         self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex == "N/mm"
         if(self.unit_typex == "N/mm"):            
-                data2= [['ITR.No.','Ult.Tensile \n Strength \n (N/mm2)','Shear \n Strain \n ','Shear Modulus \n ','Max Load \n (N)','Max Length  \n (mm)','Status']]
+                data2= [['ITR.No.','Load(N)','Elongation (%)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n ']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_STRAIN),printf(\"%.2f\", SHEAR_MODULUS),printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", MAX_LENGTH),STATUS FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:
                      data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", avg(SHEAR_STRAIN)),printf(\"%.2f\", avg(SHEAR_MODULUS)),printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+       
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", min(SHEAR_STRAIN)),printf(\"%.2f\", min(SHEAR_MODULUS)),printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\", max(SHEAR_STRAIN)),printf(\"%.2f\", max(SHEAR_MODULUS)),printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(MAX_LENGTH)),'' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
@@ -1869,7 +1875,7 @@ class TY_32_Ui_MainWindow(object):
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,A.GUAGE_LENGTH,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime') ,A.COMMENTS FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID ='"+str(self.label_12.text())+"'")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:","CYCLIC","CS. AREA (mm2):",str(self.label_64.text())],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
             self.remark=str(x[12])        
         connection.close() 
         PAGE_HEIGHT=defaultPageSize[1]
