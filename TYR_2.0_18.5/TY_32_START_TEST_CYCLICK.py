@@ -1178,7 +1178,7 @@ class TY_32_Ui_MainWindow(object):
         #self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
-        self.pushButton_13.setText(_translate("MainWindow", "All"))
+        self.pushButton_13.setText(_translate("MainWindow", "Stop"))
         self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         '''
@@ -1264,6 +1264,7 @@ class TY_32_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
+        self.pushButton_13.clicked.connect(self.mannual_stop)
         
         self.load_data()
     
@@ -1441,6 +1442,13 @@ class TY_32_Ui_MainWindow(object):
         self.go_to_next=0
         self.guage_len=self.lineEdit_7.text()
         self.length_mm=0
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                                       cursor = connection.cursor()                
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
+        connection.commit();
+        connection.close()                            
+                        
         if(self.goAhead=="Yes"):
                ### Get Elongation and Hodel time form each itration and set in the global var
                ##### call in loop
@@ -1481,12 +1489,6 @@ class TY_32_Ui_MainWindow(object):
                 
     def start_test_CYCLICK2(self):
                 if(self.go_to_next==1):
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:        
-                                       cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
-                        connection.commit();
-                        connection.close()                            
                         self.label_21.setText("ItrNo:"+str(self.itr_no[1])+"  Elon.(mm):"+str(self.elongation_per[1])+"  Time (Sec):"+str(self.holding_time[1]))                        
                         self.label_67.setText("2")                       
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
@@ -1585,6 +1587,7 @@ class TY_32_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
+                self.pushButton_13.setEnabled(True)
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_n)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                 if(self.go_to_next==1):
@@ -1595,6 +1598,25 @@ class TY_32_Ui_MainWindow(object):
                         self.sc_data =PlotCanvas(self,width=8, height=5, dpi=100)    
                         self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
                         print("Stopped all iterations.")
+    
+    def mannual_stop(self):
+                self.go_to_next=99
+                self.sc_new.save_data_flg="Yes"
+                self.reset()
+                self.save_graph_data()
+                self.sc_new.save_data_flg=""
+                self.label_15.show()
+                self.label_15.setText("Mannualy Stoped.")
+                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
+                self.pushButton_8.setEnabled(True)
+                   
+                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                        
+                self.label_15.setText("")
+    
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop() 
@@ -1615,7 +1637,7 @@ class TY_32_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(self.sc_new.arr_p_cm[g])+"','"+str(self.sc_new.arr_p_inch[g])+"','"+str(float(self.sc_new.arr_q_n[g]))+"','"+str(self.sc_new.arr_q_lb[g])+"')")
             connection.commit();
             connection.close()
             self.status_str=""
@@ -2431,10 +2453,12 @@ class PlotCanvas_Auto(FigureCanvas):
             if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
+                 print("max speed :"+str(int(self.speed_val)))
+                 print("inptur speed :"+str(int(self.input_speed_val)))
                  self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
+                 print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"_\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")
