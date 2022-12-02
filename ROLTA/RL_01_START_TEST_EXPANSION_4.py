@@ -317,7 +317,7 @@ class Ui_MainWindow(object):
         self.lineEdit_48.setGeometry(QtCore.QRect(310, 620, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_48.setFont(font)
@@ -383,7 +383,7 @@ class Ui_MainWindow(object):
         self.lineEdit_52.setGeometry(QtCore.QRect(430, 620, 51, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_52.setFont(font)
@@ -859,6 +859,8 @@ class Ui_MainWindow(object):
         self.test_id_exist="No"
         self.timer3=QtCore.QTimer()
         self.timer4=QtCore.QTimer()
+        self.timer5=QtCore.QTimer()
+        self.timer6=QtCore.QTimer()
         self.sc_blank=""
         self.cycle_num=0
         self.x_unit='mm'
@@ -902,11 +904,11 @@ class Ui_MainWindow(object):
         self.lineEdit_52.setText(_translate("MainWindow", "355"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.label_149.setText(_translate("MainWindow", "Graph Time :"))
-        self.lineEdit_53.setText(_translate("MainWindow", "12:55"))
+        self.lineEdit_53.setText(_translate("MainWindow", "00"))
         self.label_150.setText(_translate("MainWindow", " (MPa) "))
         self.label_151.setText(_translate("MainWindow", " (mm) "))
         self.label_152.setText(_translate("MainWindow", "(MPa) "))
-        self.label_153.setText(_translate("MainWindow", "MI:SS"))
+        self.label_153.setText(_translate("MainWindow", "(Sec)"))
         self.label_154.setText(_translate("MainWindow", "(%) "))
         self.label_155.setText(_translate("MainWindow", " (mm)"))
         self.label_156.setText(_translate("MainWindow", " (mm)"))
@@ -923,7 +925,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Value"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Timestamp"))
+        item.setText(_translate("MainWindow", "Time(sec)"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -931,7 +933,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget.item(0, 1)
         item.setText(_translate("MainWindow", "233.2"))
         item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+        item.setText(_translate("MainWindow", "2"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         item = self.tableWidget_2.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -940,7 +942,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_2.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Value"))
         item = self.tableWidget_2.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Timestamp"))
+        item.setText(_translate("MainWindow", "Time(sec)"))
         __sortingEnabled = self.tableWidget_2.isSortingEnabled()
         self.tableWidget_2.setSortingEnabled(False)
         item = self.tableWidget_2.item(0, 0)
@@ -948,7 +950,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_2.item(0, 1)
         item.setText(_translate("MainWindow", "233.2"))
         item = self.tableWidget_2.item(0, 2)
-        item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+        item.setText(_translate("MainWindow", "55"))
         self.tableWidget_2.setSortingEnabled(__sortingEnabled)
         item = self.tableWidget_3.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -957,7 +959,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_3.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Value"))
         item = self.tableWidget_3.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Timestamp"))
+        item.setText(_translate("MainWindow", "Time(sec)"))
         __sortingEnabled = self.tableWidget_3.isSortingEnabled()
         self.tableWidget_3.setSortingEnabled(False)
         item = self.tableWidget_3.item(0, 0)
@@ -965,7 +967,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_3.item(0, 1)
         item.setText(_translate("MainWindow", "233.2"))
         item = self.tableWidget_3.item(0, 2)
-        item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+        item.setText(_translate("MainWindow", "55"))
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
@@ -1139,16 +1141,25 @@ class Ui_MainWindow(object):
                         if(int(rows[0][0]) > -2 ):
                                         self.timer3.setInterval(1000)        
                                         self.timer3.timeout.connect(self.show_load_cell_val)
-                                        self.timer3.start(1)
-                                        
-                                        self.timer4.setInterval(5000)        
                                         self.timer3.timeout.connect(self.show_grid1_val_P0)
+                                        self.timer3.timeout.connect(self.show_grid1_val_P1)
+                                        self.timer3.timeout.connect(self.show_grid1_val_P2)
                                         self.timer3.start(1)
+                                        '''
+                                        self.timer4.setInterval(2000)        
+                                        self.timer4.timeout.connect(self.show_grid1_val_P0)
+                                        self.timer4.start(1)
                                         
+                                        self.timer5.setInterval(5000)        
+                                        self.timer5.timeout.connect(self.show_grid1_val_P1)
+                                        self.timer5.start(1)
+                                        '''
         else:            
                     print("validation Error")    
                     
-    def show_grid1_val_P0(self):          
+    def show_grid1_val_P0(self):        
+        self.rev_arr3=[]
+        self.rev_arr4=[]
         self.delete_all_records()        
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -1157,18 +1168,22 @@ class Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)      
         self.tableWidget.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
-        self.sc_new.arr_q.reverse()
-        if(len(self.sc_new.arr_q) > 0):
-                for i in range(len(self.sc_new.arr_q)):
+       
+        self.rev_arr3=self.sc_new.arr_q
+        self.rev_arr4=self.sc_new.arr_t
+        self.rev_arr3.reverse()
+        self.rev_arr4.reverse()
+        if(len(self.rev_arr3) > 0):
+                for i in range(len(self.rev_arr3)):
                         self.tableWidget.insertRow(i)
                         item = QtWidgets.QTableWidgetItem()        
                         item.setText(str("Pressure"))
                         self.tableWidget.setItem(i,0,item) 
                         item2 = QtWidgets.QTableWidgetItem()        
-                        item2.setText(str(self.sc_new.arr_q[i]))
+                        item2.setText(str(self.rev_arr3[i]))
                         self.tableWidget.setItem(i,1,item2)
                         item3 = QtWidgets.QTableWidgetItem()        
-                        item3.setText(str(self.sc_new.arr_t[i]))
+                        item3.setText(str(self.rev_arr4[i]))
                         self.tableWidget.setItem(i,2,item3) 
                 
                 
@@ -1189,13 +1204,119 @@ class Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         
     
+    
+    def show_grid1_val_P1(self):
+        
+        self.rev_arr=[]
+        self.rev_arr2=[]
+        self.delete2_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_2.setFont(font) 
+        self.tableWidget_2.setColumnCount(3)
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)      
+        self.tableWidget_2.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
+        #self.z=[123.00,344.4,24.5,45.77,34,565]
+       
+        self.rev_arr=self.sc_new_P1.arr_p
+        self.rev_arr2=self.sc_new_P1.arr_t
+        self.rev_arr.reverse()
+        self.rev_arr2.reverse()
+        if(len(self.rev_arr) > 0):
+                for i in range(len(self.rev_arr)):
+                        self.tableWidget_2.insertRow(i)
+                        item4 = QtWidgets.QTableWidgetItem()        
+                        item4.setText(str("Expansion"))
+                        self.tableWidget_2.setItem(i,0,item4) 
+                        item5 = QtWidgets.QTableWidgetItem()        
+                        item5.setText(str(self.rev_arr[i]))
+                        self.tableWidget_2.setItem(i,1,item5)
+                        item6 = QtWidgets.QTableWidgetItem()        
+                        item6.setText(str(self.rev_arr2[i]))
+                        self.tableWidget_2.setItem(i,2,item6) 
+                
+                
+        #self.tableWidget.setItem(2,1,str('Param-value2')) 
+        #self.tableWidget.setItem(3,1,str('Param-value2'))         
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_2.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close() 
+        '''        
+        #self.tableWidget_2.resizeColumnsToContents()
+        self.tableWidget_2.resizeRowsToContents()
+        self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    def show_grid1_val_P2(self):
+        
+        self.rev_arr5=[]
+        self.rev_arr6=[]
+        self.delete3_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget_3.setFont(font) 
+        self.tableWidget_3.setColumnCount(3)
+        self.tableWidget_3.horizontalHeader().setStretchLastSection(True)      
+        self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
+        #self.z=[123.00,344.4,24.5,45.77,34,565]
+       
+        self.rev_arr5=self.sc_new_P2.arr_q_mpa
+        self.rev_arr6=self.sc_new_P2.arr_t
+        self.rev_arr5.reverse()
+        self.rev_arr6.reverse()
+        if(len(self.rev_arr5) > 0):
+                for i in range(len(self.rev_arr5)):
+                        self.tableWidget_3.insertRow(i)
+                        item7 = QtWidgets.QTableWidgetItem()        
+                        item7.setText(str("Stress"))
+                        self.tableWidget_3.setItem(i,0,item7) 
+                        item8 = QtWidgets.QTableWidgetItem()        
+                        item8.setText(str(self.rev_arr5[i]))
+                        self.tableWidget_3.setItem(i,1,item8)
+                        item9 = QtWidgets.QTableWidgetItem()        
+                        item9.setText(str(self.rev_arr6[i]))
+                        self.tableWidget_3.setItem(i,2,item9) 
+                
+                
+        #self.tableWidget.setItem(2,1,str('Param-value2')) 
+        #self.tableWidget.setItem(3,1,str('Param-value2'))         
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget_2.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close() 
+        '''        
+        #self.tableWidget_2.resizeColumnsToContents()
+        self.tableWidget_3.resizeRowsToContents()
+        self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_3.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+  
+    
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget.removeRow(i) 
+            self.tableWidget.removeRow(i)
+    
+    def delete2_all_records(self):
+        i = self.tableWidget_2.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget_2.removeRow(i) 
         
-                    
+    def delete3_all_records(self):
+        i = self.tableWidget_3.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget_3.removeRow(i)                 
     def validation(self):
         self.goAhead="No"
         if(self.lineEdit_46.text() == ""): #    
@@ -1365,8 +1486,12 @@ class Ui_MainWindow(object):
             
     def show_load_cell_val(self):       
              
-            self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
-            self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length           
+            self.lcdNumber_2.setProperty("value", str(self.sc_new.q))        
+            self.lcdNumber.setProperty("value",str(self.sc_new.p))   #length  
+            
+            self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
+            self.lineEdit_52.setText(str(max(self.sc_new.arr_p_strain)))   #Strain  
+            self.lineEdit_53.setText(str(self.sc_new.t))
             self.label_15.setText("Running.....")
             if(str(self.sc_new.save_data_flg) =="Yes"):            
                     self.reset()
