@@ -858,6 +858,7 @@ class Ui_MainWindow(object):
         self.goAhead="Yes"
         self.test_id_exist="No"
         self.timer3=QtCore.QTimer()
+        self.timer4=QtCore.QTimer()
         self.sc_blank=""
         self.cycle_num=0
         self.x_unit='mm'
@@ -996,6 +997,7 @@ class Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(self.print_file)
         self.pushButton_18.clicked.connect(self.graph_type_strain)
         self.pushButton_17.clicked.connect(self.graph_type_pressure)
+        self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
         
        
         
@@ -1139,32 +1141,52 @@ class Ui_MainWindow(object):
                                         self.timer3.timeout.connect(self.show_load_cell_val)
                                         self.timer3.start(1)
                                         
-#                                        self.timer4.setInterval(5000)        
-#                                        self.timer3.timeout.connect(self.show_grid1_val)
-#                                        self.timer3.start(1)
+                                        self.timer4.setInterval(5000)        
+                                        self.timer3.timeout.connect(self.show_grid1_val_P0)
+                                        self.timer3.start(1)
                                         
         else:            
                     print("validation Error")    
                     
-#    def show_grid1_val(self):          
-#        self.delete_all_records()        
-#        font = QtGui.QFont()
-#        font.setPointSize(10)
-#        self.tableWidget.setFont(font) 
-#        self.tableWidget.horizontalHeader().setStretchLastSection(True)      
-#        self.tableWidget.setHorizontalHeaderLabels(['Parameter','Value','Time'] )       
-#           
-#        connection = sqlite3.connect("tyr.db")
-#        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
-#        for row_number, row_data in enumerate(results):            
-#            self.tableWidget.insertRow(row_number)
-#            for column_number, data in enumerate(row_data):
-#                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
-#        connection.close()   
-#        #self.tableWidget.resizeColumnsToContents()
-#        self.tableWidget.resizeRowsToContents()
-#        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-#        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+    def show_grid1_val_P0(self):          
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font) 
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)      
+        self.tableWidget.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
+        #self.z=[123.00,344.4,24.5,45.77,34,565]
+        self.sc_new.arr_q.reverse()
+        if(len(self.sc_new.arr_q) > 0):
+                for i in range(len(self.sc_new.arr_q)):
+                        self.tableWidget.insertRow(i)
+                        item = QtWidgets.QTableWidgetItem()        
+                        item.setText(str("Pressure"))
+                        self.tableWidget.setItem(i,0,item) 
+                        item2 = QtWidgets.QTableWidgetItem()        
+                        item2.setText(str(self.sc_new.arr_q[i]))
+                        self.tableWidget.setItem(i,1,item2)
+                        item3 = QtWidgets.QTableWidgetItem()        
+                        item3.setText(str(self.sc_new.arr_t[i]))
+                        self.tableWidget.setItem(i,2,item3) 
+                
+                
+        #self.tableWidget.setItem(2,1,str('Param-value2')) 
+        #self.tableWidget.setItem(3,1,str('Param-value2'))         
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close() 
+        '''        
+        #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         
     
     def delete_all_records(self):
@@ -1333,7 +1355,11 @@ class Ui_MainWindow(object):
                   
                   
             if(self.timer3.isActive()): 
-                  self.timer3.stop()  
+                  self.timer3.stop()
+                  
+            if(self.timer4.isActive()): 
+                  self.timer4.stop()  
+                  
             self.lcdNumber.setProperty("value", 0.0)
             self.lcdNumber_2.setProperty("value", 0.0)
             
@@ -2495,7 +2521,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
     def update_graph(self): 
         self.end_time = datetime.datetime.now()
         self.elapsed_time=self.end_time-self.start_time
-		    
+            
         if(self.IO_error_flg==0):
             '''
             self.ser.flush()
@@ -2989,7 +3015,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
     def update_graph(self): 
         self.end_time = datetime.datetime.now()
         self.elapsed_time=self.end_time-self.start_time
-		    
+            
         if(self.IO_error_flg==0):
             '''
             self.ser.flush()
