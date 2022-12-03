@@ -1,5 +1,5 @@
 
-from pop_set_two_graphs import set_two_graphs_Ui_MainWindow
+from GRAPH_SCALES_ALL import set_two_graphs_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -982,6 +982,9 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Time"))
         self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time"))
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
+        self.pushButton_9.setDisabled(True)
+        self.pushButton_20.setDisabled(True)
+        self.pushButton_21.setDisabled(True)
         self.display_bank_graphs()
         self.load_ops()
 
@@ -995,6 +998,8 @@ class Ui_MainWindow(object):
         
         self.pushButton_5.clicked.connect(self.open_email_report)    
         self.pushButton_7.clicked.connect(self.open_pdf)
+        self.pushButton_20.clicked.connect(self.open_log_pdf)
+        
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
         self.pushButton_18.clicked.connect(self.graph_type_strain)
@@ -1114,9 +1119,32 @@ class Ui_MainWindow(object):
             
         connection.close()
         
+    def disable_all(self):
+        self.pushButton_20.setDisabled(True);
+        self.pushButton_5.setDisabled(True);
+        self.pushButton_6.setDisabled(True);
+        self.pushButton_7.setDisabled(True);
+        self.pushButton_8.setDisabled(True);
+        self.lineEdit_46.setReadOnly(True) #D_AV                    
+        self.lineEdit_47.setReadOnly(True) #T_AV
+        self.lineEdit_51.setReadOnly(True)#CI
         
+    def enable_all(self):
+        self.pushButton_20.setEnabled(True);
+        self.pushButton_5.setEnabled(True);
+        self.pushButton_6.setEnabled(True);
+        self.pushButton_7.setEnabled(True);
+        self.pushButton_8.setEnabled(True);
+        self.lineEdit_46.setReadOnly(False) #D_AV                    
+        self.lineEdit_47.setReadOnly(False) #T_AV
+        self.lineEdit_51.setReadOnly(False)#CI
+        
+                
     def start_test_expansion(self):
+    
         self.validation() 
+        self.disable_all()
+        self.pushButton_9.setEnabled(True)
         connection = sqlite3.connect("tyr.db")              
         with connection:
                             cursor = connection.cursor()                  
@@ -1483,6 +1511,8 @@ class Ui_MainWindow(object):
                   
             self.lcdNumber.setProperty("value", 0.0)
             self.lcdNumber_2.setProperty("value", 0.0)
+            self.enable_all()
+            self.pushButton_9.setDisabled(True)
             
     def show_load_cell_val(self):       
              
@@ -1572,6 +1602,10 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    def open_log_pdf(self):
+        self.create_log_pdf()
+        os.system("xpdf ./reports/log_report.pdf") 
+        
     def open_pdf(self):
         self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_expansion() 
@@ -1650,27 +1684,14 @@ class Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_DATE,TESTED_BY,SAMPLE_IDENTIFICATION_NO,SAMPLE_DESCRIPTION,MILL_HYDROTEST_PRESSURE,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
-            summary_data=[["Parameter","Value","Prarameter","Value"],["Date: ",str(x[0]),"Tested By: ",str(x[1])],["Test Report File Name : ",str("Report_of_test_"+self.label_12.text()),"Sample Identification #: ",str(x[2])],["Sample Description:  ",str(x[3]),"Mill Hydrotest Pressure(MPa):",str(x[4])]]
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Diameter: ",str(x[3])],["Thickness:  ",str(x[4]),"Circumference):",str(x[5])]]
+            summary_data.append([" Reviewed By: ",str(x[6]),"",""])
             self.remark=str(x[5])        
         connection.close() 
-        
-        connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT NOMINAL_OUTER_DIA_MM, GREAD,NOMINAL_WALL_THICKNESS_MM,SPECIFIED_YEILD_STRENGTH   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
-        for x in results:
-            #summary_data2=[["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])],["Nominal Wall Thickness(mm) : ",str(x[2]),"Specified Yield Strength(MPa)",str(x[3])]]
-            #self.remark=str(x[5])
-            summary_data.append(["Nominal Outer Dia.(mm): ",str(x[0]),"Grade: ",str(x[1])])
-            summary_data.append(["Nominal Wall Thickness(mm) : ",str(x[2]),"",""])
-            summary_data.append(["Specified Yield Strength(MPa)",str(x[3]),"",""])
-        connection.close() 
-        
-        connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT PRESSURE_TRANDUSER_NO,PRELOAD_PERC,FORCE_SAPN_ON_PDSC,PRELOAD_PRESSURE__MPA,LAST_CAL_DATE_1,NEVER_EXCEED_TEST_PRESSURE,EXTENSOMETER_NO,EXTENSOMETER_CHAIN_LENGTH,POSITION_SPAN_ON_PDSC,MAX_EXTENSION,LAST_CAL_DATE_2,MAX_ELONGATION_PRC,EXTENSION_RATE   FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
-        for x in results:
-            summary_data.append(["Pressure Transducer No: ",str(x[0]),"Preload Percentage: ",str(x[1])])
-            summary_data.append(["Force Span on PDSC : ",str(x[2])," "," "])
+        '''
+       ary_data.append(["Force Span on PDSC : ",str(x[2])," "," "])
             summary_data.append(["Pre-load Pressure(Mpa): ",str(x[3]),"Last Calibration Date1: ",str(x[4])])
             summary_data.append(["NEVER EXCEED Test Pressure (MPa) : ",str(x[5]),"Extensometer :",str(x[6])])
             summary_data.append(["Extensometer Chain length(Links): ",str(x[7]),"Position Span On PDSC: ",str(x[8])])
@@ -1700,7 +1721,7 @@ class Ui_MainWindow(object):
             summary_data2.append(["Max Ext.(mm) : ",str(x[2]),"Modulud of Elasticity (GPa)",str(x[3])])
             summary_data2.append(["Max Pressure (MPa): ",str(x[4]),"Reviewed By: ",str(x[5])])
         connection.close() 
-        
+        '''
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
@@ -1734,8 +1755,8 @@ class Ui_MainWindow(object):
         f=Table(summary_data)
         f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
          
-        f2=Table(summary_data2)
-        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        #f2=Table(summary_data2)
+        #f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
 #        
 #        f3=Table(summary_data3)
 #        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
@@ -1749,7 +1770,7 @@ class Ui_MainWindow(object):
         
         #Elements=[Title,Title2,Spacer(1,12),f4,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
-        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),pdf_img,Spacer(1,12),footer_2,Spacer(1,12),comments]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
@@ -1758,7 +1779,92 @@ class Ui_MainWindow(object):
                                 leftMargin=20,
                                 topMargin=10,
                                 bottomMargin=10,)
-        doc.build(Elements)    
+        doc.build(Elements) 
+
+
+    def create_log_pdf(self):
+        self.remark=""
+        #self.unit_typex=self.comboBox_2.currentText()
+        self.unit_typex = "N/mm"
+        
+             
+        y=300
+        Elements=[]
+        summary_data=[]
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        for x in results:
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Diameter: ",str(x[3])],["Thickness:  ",str(x[4]),"Circumference):",str(x[5])]]
+            summary_data.append([" Reviewed By: ",str(x[6]),"",""])
+            self.remark=str(x[5])        
+        connection.close() 
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        for x in results:
+                self.graph_id=str(x[0])       
+        connection.close()
+        
+        summary_data2=[["Parameter","Value","Time(sec)"]]
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT Y_NUM as PRESSURE, T_SEC as TIME_SEC  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        for x in results:
+                    summary_data2.append(["Pressure",str(x[0]),str(x[1])])
+        connection.close()
+        
+        summary_data3=[["Parameter","Value","Time(sec)"]]
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT X_NUM as EXPANSION, T_SEC as TIME_SEC  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        for x in results:
+                    summary_data3.append(["Expansion",str(x[0]),str(x[1])])
+        connection.close()
+        
+        
+        
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+          
+        h_line=Paragraph("              _____________________________________________________________________________________________", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        
+        f=Table(summary_data)
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+          
+        f2=Table(summary_data2)
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        f3=Table(summary_data3)
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+                 
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
+        
+        #Elements=[Title,Title2,Spacer(1,12),f4,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),f2,Spacer(1,12),f3,Spacer(1,12)]
+              
+        
+        doc = SimpleDocTemplate('./reports/log_report.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=10,
+                                bottomMargin=10,)
+        doc.build(Elements)            
                         
 
 class PlotCanvas(FigureCanvas):
@@ -1841,25 +1947,18 @@ class PlotCanvas(FigureCanvas):
             self.y1_num=[0.0]
             print(" Unit Type :"+str(self.unit_type))
             
-            
+            self.graph_type="STRESS_VS_STRAIN"
             if(self.graph_type == "STRESS_VS_STRAIN"):
                     connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
                     for k in results:        
-                                        self.x_num.append(float(k[0])/float(self.cs_area))
+                                        self.x_num.append(float(k[0]))
                                         self.y_num.append(float(k[1]))
                     connection.close() 
             else:
-                    connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    ax.set_xlabel(' Elongation(mm)')
-                    ax.set_ylabel('Pressure (MPa)')
-                    for k in results:        
-                                        self.x_num.append(float(k[0]))
-                                        self.y_num.append(float(k[1]))
-                    connection.close()
+                    print("in progrss")
               
             
             ax.plot(self.x_num,self.y_num, 'b',label="Sample No:1")

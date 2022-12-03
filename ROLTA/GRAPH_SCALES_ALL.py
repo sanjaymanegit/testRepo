@@ -517,16 +517,16 @@ class set_two_graphs_Ui_MainWindow(object):
                    self.lineEdit_12.setText(str(x[1]))
        connection.close()
        
-        def save_data(self):
+    def save_data(self):
              connection = sqlite3.connect("tyr.db")
              with connection:        
                         cursor = connection.cursor()                    
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit.text()+"',Y_SCALE_MAX='"+self.lineEdit_2.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'")
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_3.text()+"',Y_SCALE_MAX='"+self.lineEdit_4.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'EXPANSION_VS_TIME'")
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_5.text()+"',Y_SCALE_MAX='"+self.lineEdit_9.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_TIME'")
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_6.text()+"',Y_SCALE_MAX='"+self.lineEdit_10.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'STRAIN_VS_TIME'")
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_7.text()+"',Y_SCALE_MAX='"+self.lineEdit_11.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_EXPANSION'")
-                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_8.text()+"',Y_SCALE_MAX='"+self.lineEdit_12.text()+"' GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_STRAIN'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit.text()+"',Y_SCALE_MAX='"+self.lineEdit_2.text()+"'  WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_3.text()+"',Y_SCALE_MAX='"+self.lineEdit_4.text()+"'  WHERE GRAPH_NAME = 'EXPANSION_VS_TIME'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_5.text()+"',Y_SCALE_MAX='"+self.lineEdit_9.text()+"'  WHERE GRAPH_NAME = 'STRESS_VS_TIME'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_6.text()+"',Y_SCALE_MAX='"+self.lineEdit_10.text()+"'  WHERE GRAPH_NAME = 'STRAIN_VS_TIME'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_7.text()+"',Y_SCALE_MAX='"+self.lineEdit_11.text()+"'  WHERE GRAPH_NAME = 'PRESSURE_VS_EXPANSION'")
+                        cursor.execute("UPDATE GRAPH_SCALES SET  X_SCALE_MAX='"+self.lineEdit_8.text()+"',Y_SCALE_MAX='"+self.lineEdit_12.text()+"'  WHERE GRAPH_NAME = 'STRESS_VS_STRAIN'")
 
              connection.commit();
              connection.close()
