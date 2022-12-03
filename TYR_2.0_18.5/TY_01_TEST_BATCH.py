@@ -191,12 +191,14 @@ class TY_01_Ui_MainWindow(object):
         self.label_12.setFont(font)
         self.label_12.setObjectName("label_12")
         self.gridLayout.addWidget(self.label_12, 3, 2, 1, 2)
+        
         self.label_13 = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
+        
         self.gridLayout.addWidget(self.label_13, 4, 0, 1, 2)
         self.label_14 = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
@@ -206,6 +208,35 @@ class TY_01_Ui_MainWindow(object):
         self.label_14.setObjectName("label_14")
         self.gridLayout.addWidget(self.label_14, 4, 2, 1, 2)
         
+        
+        self.label_13_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_13_1.setFont(font)
+        
+        self.label_13_1.setObjectName("label_13_1")        
+        self.gridLayout.addWidget(self.label_13_1, 5, 0, 1, 2)
+        
+        self.label_14_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_14_1.setFont(font)
+        self.label_14_1.setObjectName("label_14_1")
+        
+        self.gridLayout.addWidget(self.label_14_1, 5, 2, 1, 2)
+        
+        '''
+        self.label_13_1 = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_13_1.setFont(font)
+        self.label_13_1.setObjectName("label_13_1")
+        self.label_13_1.setGeometry(QtCore.QRect(30, 950, 100, 31))
+        self.label_13_1.setText("Rev.Test Speed:")
+        '''
         
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
         self.groupBox_2.setGeometry(QtCore.QRect(50, 200, 511, 121))
@@ -508,7 +539,8 @@ class TY_01_Ui_MainWindow(object):
         self.label_1_1.hide()
         self.label_2_1.setText("Compressive.Length(mm):")
         self.label_2_1.hide()
-        
+        self.label_14_1.setText("34")
+        self.label_13_1.setText("Rev.Motor Speed: ")
         
         
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
@@ -573,7 +605,7 @@ class TY_01_Ui_MainWindow(object):
         
         #print("curr text :"+str(self.comboBox.currentText()))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
+        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
         for x in results:        
            self.label_5.setText(str(x[0]))
            self.label_8.setText(str(x[11]))  #specs
@@ -581,7 +613,7 @@ class TY_01_Ui_MainWindow(object):
            self.label_12.setText(str(x[10])) #motor speed 
            self.label_14.setText(str(x[8])) #guage
            self.label_16.setText(str(x[4])) #cs area
-           
+           self.label_14_1.setText(str(x[12]))
            #if(self.test_type=="Flexural"):
                    #self.lineEdit_1_1.setText(str(x[8]))
 
@@ -638,7 +670,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_8.show()
         self.lineEdit_2.show()                
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
            self.cs_area=int(x[4])        
            self.label_5.setText(x[0])
@@ -654,7 +686,8 @@ class TY_01_Ui_MainWindow(object):
            self.guage_mm=str(x[8])
            self.pre_load=str(x[9])
            self.motor_speed=str(x[10])
-           self.specs=str(x[11])           
+           self.specs=str(x[11])
+           self.label_14_1.setText(str(x[12]))
            
            self.label_8.setText(str(x[11]))  #specs
            self.label_10.setText(str(x[7])) #party
@@ -746,7 +779,7 @@ class TY_01_Ui_MainWindow(object):
                 elif(int(self.lineEdit_2_1.text() ) <=  0):
                     self.label_23.setText(" Compressive Length Should not be 0 ")    
                     self.label_23.show()
-                elif(int(self.lineEdit_2_1.text() ) > int(self.guage_mm)):
+                elif(float(self.lineEdit_2_1.text() ) > float(self.guage_mm)):
                     self.label_23.setText(" Compressive Length Should not be Greater than Guage Length ")    
                     self.label_23.show()                
                 elif(self.lineEdit_1_1.text() == ""):
@@ -779,7 +812,7 @@ class TY_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()

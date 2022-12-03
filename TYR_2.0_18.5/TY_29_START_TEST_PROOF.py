@@ -1115,11 +1115,12 @@ class ty_29_Ui_MainWindow(object):
     
     def onchage_combo(self):                      
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
             self.lineEdit_9.setText(str(x[2])) # SPEED
             self.label_51.setText(str(x[3])) # Party Name
             self.label_61.setText(str(x[7]))
+            self.lineEdit_9_1.setText(str(x[10]))
         connection.close()
         self.click_onRadiobutt()
         
@@ -1928,7 +1929,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         try:
             self.ser = serial.Serial(
-                        port='/dev/ttyUSB1',
+                        port='/dev/ttyUSB0',
                         baudrate=19200,
                         bytesize=serial.EIGHTBITS,
                         parity=serial.PARITY_NONE,
@@ -2213,10 +2214,10 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
@@ -2236,9 +2237,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         v=0
         try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
+            
             v=float(self.input_speed_val)
             v=v*40
             if(float(v) < 1 ):
@@ -2251,7 +2250,9 @@ class PlotCanvas_Auto(FigureCanvas):
             print("int part :%d"%v)
             print("decial part:%.2f"%v)
             #v=v*100
-            
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
             instrument.write_register(4096,v,0) ###self.input_speed_val RPM
             instrument.write_register(4097,0,0) ###self.input_speed_val RPM
             print(" write1 :"+str(v))
@@ -2262,9 +2263,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         v=0
         try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
+            
             v=float(self.input_rev_speed_val)            
             v=v*40
             if(float(v) < 1 ):
@@ -2275,7 +2274,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 v=round(v,0)
             print("int part :%d"%v)
             print("decial part:%.2f"%v)         
-            
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
             instrument.write_register(4098,v,0) ###self.input_speed_val RPM
             instrument.write_register(4099,0,0) ###self.input_speed_val RPM
             print(" write2 :"+str(v))

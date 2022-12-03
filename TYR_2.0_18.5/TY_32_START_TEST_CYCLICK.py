@@ -1468,7 +1468,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                        cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[0])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[0])+"', TEST_TIME_SEC='"+str(self.holding_time[0])+"' ")                                        
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[0])+"',PROOF_MAX_LENGTH='"+str(float(self.elongation_per[0]))+"', TEST_TIME_SEC='"+str(self.holding_time[0])+"' ")                                        
                         connection.commit();
                         connection.close()                            
                         self.label_21.setText("Itr No:"+str(self.itr_no[0])+"  Lenngth mm:"+str(self.elongation_per[0])+" Time Sec :"+str(self.holding_time[0]))                        
@@ -1495,7 +1495,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                        cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[1])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[1])+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[1])+"',PROOF_MAX_LENGTH='"+str(float(self.elongation_per[1]))+"', TEST_TIME_SEC='"+str(self.holding_time[1])+"' ")                                        
                         connection.commit();
                         connection.close()
                         self.label_21.setText("ItrNo:"+str(self.itr_no[1])+"  Elon.(mm):"+str(self.elongation_per[1])+"  Time (Sec):"+str(self.holding_time[1]))                        
@@ -1517,7 +1517,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                        cursor = connection.cursor()                
-                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[2])+"',PROOF_MAX_LENGTH='"+str(self.elongation_per[2])+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
+                                       cursor.execute("UPDATE  GLOBAL_VAR SET ELONG_PER_VAL='"+str(self.elongation_per_val[2])+"',PROOF_MAX_LENGTH='"+str(float(self.elongation_per[2]))+"', TEST_TIME_SEC='"+str(self.holding_time[2])+"' ")                                        
                         connection.commit();
                         connection.close()                            
                         self.label_21.setText("Itr No:"+str(self.itr_no[2])+"  Elon.(mm):"+str(self.elongation_per[2])+"  Time (Sec):"+str(self.holding_time[2]))                        
@@ -1596,7 +1596,7 @@ class TY_32_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
-                self.pushButton_13.setEnabled(True)
+                self.pushButton_13.setDisabled(True)
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_n)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                 if(self.go_to_next==1):
@@ -1620,7 +1620,7 @@ class TY_32_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
-                   
+                self.pushButton_13.setDisabled(True)  
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                         
@@ -1657,11 +1657,12 @@ class TY_32_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   #print("ok1")
                   try:
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_6.text())+"',NEW_TEST_AREA='"+str(self.label_64.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_5.text())+"',STATUS='"+str(self.status_str)+"'")                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST),NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',F_WIDTH='"+str(self.lineEdit_10.text())+"',F_THICKNESS='"+str(self.lineEdit_6.text())+"',NEW_TEST_AREA='"+str(self.label_64.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_5.text())+"',STATUS='"+str(self.status_str)+"'")                          
+                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)") 
                          
-                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LENGTH=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
+                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT PROOF_MAX_LENGTH FROM GLOBAL_VAR))")
+                          cursor.execute("UPDATE GLOBAL_VAR SET MAX_LENGTH=PROOF_MAX_LENGTH")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
                           
@@ -1680,15 +1681,15 @@ class TY_32_Ui_MainWindow(object):
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                    
+                          print("Data Saved Ok in STG_GRAPH_MST") 
                   
                   except Exception as e:
-                          print("SQL Error:"+str(e))
+                          print("Save-data -SQL Error:"+str(e))
                           connection.commit();
            
             connection.commit();
             connection.close()            
-            print("Data Saved Ok in STG_GRAPH_MST")           
+                      
             self.show_grid_data_CYCLICK()
     
      
@@ -1729,7 +1730,7 @@ class TY_32_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(5)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
-        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Load (N)','Elongation (%)','Tensile \n Stress (N/mm2)','Shear Modulus \n ']) 
+        self.tableWidget.setHorizontalHeaderLabels(['ITR.No.','Load (N)','Elongation (%)','Tensile \n Stress (N/mm2)','Shear Modulus \n (N/mm2)']) 
         
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1838,7 +1839,7 @@ class TY_32_Ui_MainWindow(object):
         self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex == "N/mm"
         if(self.unit_typex == "N/mm"):            
-                data2= [['ITR.No.','Load(N)','Elongation (%)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n ']]
+                data2= [['ITR.No.','Load(N)','Elongation (%)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n  (N/mm2)']]
                 connection = sqlite3.connect("tyr.db")                
                 results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:
@@ -2112,6 +2113,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.flexural_max_load=100
         self.unit_type =""
         self.proof_test_by=""
+        self.stop_to_record='N'
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.plot_auto()
@@ -2359,25 +2361,27 @@ class PlotCanvas_Auto(FigureCanvas):
                 else:
                     self.p=self.p
                     
-                
-                self.p=float(self.p)
-                self.p_cm=float(self.p)/10
-                self.arr_p_cm.append(float(self.p_cm))
-                
-                self.p_inch=float(self.p)*0.0393701
-                self.arr_p_inch.append(float(self.p_inch))
-                
-                self.q=float(self.q)
-                self.q_n=float(self.q)*9.81
-                self.arr_q_n.append(float(self.q_n))
-                
-                self.q_lb=float(self.q)*2.20462
-                self.arr_q_lb.append(float(self.q_lb))
-                
-                self.arr_p.append(float(self.p))
-                self.arr_q.append(float(self.q))
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
-                
+                if(int(self.t)== 0  and self.stop_to_record=='N'):
+                        self.p=float(self.p)
+                        self.p_cm=float(self.p)/10
+                        self.arr_p_cm.append(float(self.p_cm))
+                        
+                        self.p_inch=float(self.p)*0.0393701
+                        self.arr_p_inch.append(float(self.p_inch))
+                        
+                        self.q=float(self.q)
+                        self.q_n=float(self.q)*9.81
+                        self.arr_q_n.append(float(self.q_n))
+                        
+                        self.q_lb=float(self.q)*2.20462
+                        self.arr_q_lb.append(float(self.q_lb))
+                        
+                        self.arr_p.append(float(self.p))
+                        self.arr_q.append(float(self.q))
+                        print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                else:
+                        print(" Waiting ...."+str(self.t))
+                        self.stop_to_record='Y'
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                

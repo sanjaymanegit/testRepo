@@ -495,6 +495,33 @@ class TY_05_Ui_MainWindow(object):
         self.label_35.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_35.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_35.setObjectName("label_35")
+        
+        self.label_35_1 = QtWidgets.QLabel(self.frame)
+        self.label_35_1.setGeometry(QtCore.QRect(690, 260, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_35_1.setFont(font)
+        self.label_35_1.setStyleSheet("color: rgb(0, 0, 255);")
+        self.label_35_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_35_1.setObjectName("label_35_1")
+        
+        
+        self.lineEdit_4_1 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_4_1.setGeometry(QtCore.QRect(810, 260, 131, 31))
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4_1)
+        self.lineEdit_4_1.setValidator(input_validator)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.lineEdit_4_1.setFont(font)
+        self.lineEdit_4_1.setObjectName("lineEdit_4_1")
+        
+        
+        
         self.line = QtWidgets.QFrame(self.frame)
         self.line.setGeometry(QtCore.QRect(680, 290, 601, 16))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -605,6 +632,8 @@ class TY_05_Ui_MainWindow(object):
         self.label_35.setText(_translate("MainWindow", "Test Speed. :"))
         self.label_23.setText(_translate("MainWindow", "Spec.ID:"))
         self.label_2.setText(_translate("MainWindow", "0001"))
+        self.lineEdit_4_1.setText("")
+        self.label_35_1.setText("Rev.Test Speed:")
         self.pushButton_9.clicked.connect(MainWindow.close)
         
         self.comboBox_2.currentTextChanged.connect(self.specimen_diamentions)
@@ -743,6 +772,7 @@ class TY_05_Ui_MainWindow(object):
             self.lineEdit_11.setText(str(self.tableWidget.item(row, 11).text())) # out diameter
             self.lineEdit_13.setText(str(self.tableWidget.item(row, 12).text())) # diameter
             self.lineEdit_14.setText(str(self.tableWidget.item(row, 13).text())) # cs area
+            self.lineEdit_4_1.setText(str(self.tableWidget.item(row, 14).text())) # rev.Test Speed
            
            
             
@@ -814,7 +844,7 @@ class TY_05_Ui_MainWindow(object):
                 connection = sqlite3.connect("tyr.db")
                 with connection:        
                         cursor = connection.cursor()
-                        cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA) VALUES('"+self.lineEdit_12.text()+"','"+self.lineEdit_9.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"')")                    
+                        cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED) VALUES('"+self.lineEdit_12.text()+"','"+self.lineEdit_9.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"','"+self.lineEdit_4_1.text()+"')")                    
                 connection.commit();                    
                 connection.close()  
           
@@ -841,7 +871,7 @@ class TY_05_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.lineEdit_9.text()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                    cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.lineEdit_9.text()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_4_1.text()+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
             connection.commit();                    
             connection.close()
             self.label_21.setText("Record Saved Successfully.")       
@@ -867,7 +897,13 @@ class TY_05_Ui_MainWindow(object):
              self.label_21.show() 
         elif(float(self.lineEdit_4.text()) <= 0):
              self.label_21.setText("Test Speed Should not Zero.")
-             self.label_21.show()  
+             self.label_21.show()
+        elif(self.lineEdit_4_1.text() == ""):
+             self.label_21.setText("Rev.Test Speed Should not null.")
+             self.label_21.show() 
+        elif(float(self.lineEdit_4_1.text()) <= 0):
+             self.label_21.setText("Rev.Test Speed Should not Zero.")
+             self.label_21.show() 
         elif(self.lineEdit_14.text()== ""):
              self.label_21.setText("CS.Area is Empty.")
              self.label_21.show()  
@@ -916,12 +952,13 @@ class TY_05_Ui_MainWindow(object):
         self.c_delete_all_records()        
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.tableWidget.setFont(font) 
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(15)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Spec.Name', 'Shape',' Party Name ','Specifications','Test Speed',' Guage(Mm)  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area'] )       
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Spec.Name', 'Shape',' Party Name ','Specifications','Test Speed',' Guage(Mm)  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed'] )       
            
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA FROM SPECIMEN_MST")                        
+        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED  FROM SPECIMEN_MST")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -55,6 +55,13 @@ from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
+
 class TY_02_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -1699,7 +1706,12 @@ class TY_02_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-        
+    def reset(self):
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.timer1.stop()
+           
+        if(self.timer3.isActive()): 
+           self.timer3.stop()     
         
     def show_load_cell_val(self):        
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
@@ -1707,6 +1719,7 @@ class TY_02_Ui_MainWindow(object):
         self.label_40.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         
         if(str(self.sc_new.save_data_flg) =="Yes"):
+                self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
                 self.label_3.setText("Data Saved Successfully.")
@@ -2632,6 +2645,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.speed_val=""
         self.input_speed_val=""
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -3026,16 +3040,17 @@ class PlotCanvas_Auto(FigureCanvas):
        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
@@ -3050,7 +3065,55 @@ class PlotCanvas_Auto(FigureCanvas):
             #self.label_3.setText("Motor Speed is Required")
             #self.label_3.show()            
     
-    
+        v=0
+        try:     
+            
+            v=float(self.input_speed_val)
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
+                
+            print("int part :%d"%v)
+            print("decial part:%.2f"%v)
+            #v=v*100
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
+            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+            print(" write1 :"+str(v))
+        except IOError as e:
+            print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+        
+        print("Forward speed : "+str(v))
+        
+        v=0
+        try:     
+            
+            v=float(self.input_rev_speed_val)            
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
+            print("int part :%d"%v)
+            print("decial part:%.2f"%v)         
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
+            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+            print(" write2 :"+str(v))
+        except IOError as e:
+            print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+        
+        print("Reverse speed : "+str(v))
  
 
 

@@ -292,7 +292,7 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_10.setFont(font)
         self.pushButton_10.setObjectName("pushButton_10")
         self.label_16 = QtWidgets.QLabel(self.frame)
-        self.label_16.setGeometry(QtCore.QRect(800, 30, 341, 41))
+        self.label_16.setGeometry(QtCore.QRect(30, 30, 341, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
