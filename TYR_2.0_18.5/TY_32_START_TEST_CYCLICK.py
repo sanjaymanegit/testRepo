@@ -1259,7 +1259,7 @@ class TY_32_Ui_MainWindow(object):
         self.lineEdit_5.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_8.textChanged.connect(self.cs_area_calculation)
         
-        self.pushButton_13.clicked.connect(self.show_all_specimens)
+        #self.pushButton_13.clicked.connect(self.show_all_specimens)
         self.pushButton_5.clicked.connect(self.open_email_report)    
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
@@ -1614,17 +1614,18 @@ class TY_32_Ui_MainWindow(object):
                 self.reset()
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
-                self.label_15.show()
-                self.label_15.setText("Mannualy Stoped.")
+                self.label_21.show()
+                self.label_21.setText("Mannualy Stoped.")
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
-                self.pushButton_13.setDisabled(True)  
+                #self.pushButton_13.setDisabled(True)  
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                         
-                self.label_15.setText("")
+                #self.label_15.setText("")
+                print("inside mannual stop")
     
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
@@ -1741,7 +1742,7 @@ class TY_32_Ui_MainWindow(object):
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' ('||printf(\"%.2f\", MAX_LENGTH) ||''||' mm)',printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1841,7 +1842,7 @@ class TY_32_Ui_MainWindow(object):
         if(self.unit_typex == "N/mm"):            
                 data2= [['ITR.No.','Load(N)','Elongation (%)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n  (N/mm2)']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL),printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' ('||printf(\"%.2f\", MAX_LENGTH) ||''||' mm)',printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:
                      data2.append(x)
                 connection.close()
