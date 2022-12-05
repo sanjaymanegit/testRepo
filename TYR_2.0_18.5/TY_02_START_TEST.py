@@ -3083,8 +3083,8 @@ class PlotCanvas_Auto(FigureCanvas):
             instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
-            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
             print(" write1 :"+str(v))
         except IOError as e:
             print("Forward-Write Modbus IO Error -Motor start : "+str(e))
@@ -3107,8 +3107,8 @@ class PlotCanvas_Auto(FigureCanvas):
             instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
-            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
             print(" write2 :"+str(v))
         except IOError as e:
             print("Reverse-Write Modbus IO Error -Motor start : "+str(e))

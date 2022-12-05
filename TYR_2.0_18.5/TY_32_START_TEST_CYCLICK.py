@@ -1743,7 +1743,7 @@ class TY_32_Ui_MainWindow(object):
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),printf(\"%.4f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1843,26 +1843,26 @@ class TY_32_Ui_MainWindow(object):
         if(self.unit_typex == "N/mm"):            
                 data2= [['ITR.No.','Load(N)','Elongation (%)- Disp (mm)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n  (N/mm2)']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.2f\", ULT_TENSILE_STRENGTH),printf(\"%.2f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),printf(\"%.4f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
                 for x in results:
                      data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.2f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.4f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
        
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.2f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.4f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.2f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.2f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
+                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.4f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
                 for x in results:
                         data2.append(x)
                 connection.close()

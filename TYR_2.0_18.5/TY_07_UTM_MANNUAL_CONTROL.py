@@ -13,6 +13,13 @@ import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
+
 class TY_07_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -80,10 +87,12 @@ class TY_07_Ui_MainWindow(object):
         
         
         self.lineEdit_7 = QtWidgets.QLineEdit(self.groupBox_3)
-        reg_ex = QRegExp("\d+")
+        #reg_ex = QRegExp("\d+")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
         self.lineEdit_7.setValidator(input_validator)
-        self.lineEdit_7.setMaxLength(4)
+        
+        self.lineEdit_7.setMaxLength(7)
         self.lineEdit_7.setGeometry(QtCore.QRect(330, 90, 231, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -137,6 +146,8 @@ class TY_07_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.rev_speed_val=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -163,20 +174,30 @@ class TY_07_Ui_MainWindow(object):
         for x in results:
              self.speed_val=str(x[0])
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.rev_speed_val=str(x[0])
+        connection.close()
+        
+        
+        
+        
         self.goahead_flag=0
         self.label_9_1.show() 
         self.input_speed_val=str(self.lineEdit_7.text())
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 self.calc_speed=(float(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+"\r")
                  self.command_str="*P%04d"%self.calc_speed+"\r"
                  #self.command_str="*P50.00\r"
                  #print("xcxcx :"+str(self.command_str))
-                 self.display_calc_speed=int(self.calc_speed)/10
+                 self.display_calc_speed=float(self.calc_speed)/10
                  self.label_9_1.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" rpm).")
                  self.label_9_1.show()
                  #print("ok-done")
@@ -186,7 +207,18 @@ class TY_07_Ui_MainWindow(object):
                  self.label_9_1.setText("Speed Should not more than MAX Speed:"+str(self.speed_val))
                  self.label_9_1.show()
         else:
-            self.label_9_1.show() 
+            self.label_9_1.show()
+            
+        
+         
+        
+        
+        
+        
+        
+        
+            
+            
         
     def r_run(self):
         #print("Reverse Run ....")
@@ -220,6 +252,23 @@ class TY_07_Ui_MainWindow(object):
             print("IO Errors")    
         #time.sleep(1)
         
+        v=float(self.input_speed_val)
+        try:     
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600
+            #v=float("1000")
+            print("int part :%d"%v)
+            print("decial part:%.2f"%v)         
+            
+            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+            print(" write2 :"+str(v))
+        except IOError as e:
+            print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+        
+        print("Reverse speed : "+str(v))
+        
     def f_run(self):
         print("Forward Run ....")
         self.validate_speed()
@@ -250,6 +299,17 @@ class TY_07_Ui_MainWindow(object):
         except IOError:
            print("IO Errors")     
         
+        v=float(self.input_speed_val)
+        try:     
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            instrument.serial.timeout = 1
+            instrument.serial.baudrate = 9600 
+            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+            print(" write1 :"+str(v))
+        except IOError as e:
+            print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+        print("Forward speed : "+str(v))
     
     def stop_run(self):
         #print("Forward Run ....")

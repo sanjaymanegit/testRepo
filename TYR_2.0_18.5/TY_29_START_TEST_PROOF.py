@@ -2237,8 +2237,8 @@ class PlotCanvas_Auto(FigureCanvas):
         
         v=0
         try:     
+            v=float(self.input_rev_speed_val) 
             
-            v=float(self.input_speed_val)
             v=v*40
             if(float(v) < 1 ):
                 v=1.0
@@ -2259,12 +2259,13 @@ class PlotCanvas_Auto(FigureCanvas):
         except IOError as e:
             print("Forward-Write Modbus IO Error -Motor start : "+str(e))
         
-        print("Forward speed : "+str(v))
+        print("Reverse speed : "+str(v))
+        
         
         v=0
         try:     
             
-            v=float(self.input_rev_speed_val)            
+            v=float(self.input_speed_val)          
             v=v*40
             if(float(v) < 1 ):
                 v=1.0
@@ -2282,8 +2283,8 @@ class PlotCanvas_Auto(FigureCanvas):
             print(" write2 :"+str(v))
         except IOError as e:
             print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+        print("Forward speed : "+str(v))
         
-        print("Reverse speed : "+str(v))
         
                 
             
