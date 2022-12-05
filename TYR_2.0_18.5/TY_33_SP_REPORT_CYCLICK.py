@@ -760,11 +760,11 @@ class TY_33_Ui_MainWindow(object):
        
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Test No..','Test Date','Specemen. Name','BatchId','Party Name','Test Name'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Test No..','Test Date','Specemen. Name','BatchId','Party Name','Remark'])        
          
         connection = sqlite3.connect("tyr.db")  
         
-        results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.SPECIMEN_NAME,B.BATCH_ID,B.PARTY_NAME,B.TEST_TYPE FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE ='CYCLICK'")                        
+        results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.SPECIMEN_NAME,B.BATCH_ID,B.PARTY_NAME,B.COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE ='CYCLICK'")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
