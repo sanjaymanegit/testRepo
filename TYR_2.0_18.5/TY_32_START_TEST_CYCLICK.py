@@ -1654,6 +1654,7 @@ class TY_32_Ui_MainWindow(object):
             self.status_str=""
             self.update_status()
             self.cycle_num=self.cycle_num+1
+            self.lmbd=0
             connection = sqlite3.connect("tyr.db")              
             with connection:        
                   cursor = connection.cursor()
@@ -1671,7 +1672,12 @@ class TY_32_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=MAX_LOAD/NEW_TEST_AREA")
                           cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRESS=MAX_LOAD/NEW_TEST_AREA")
                           cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRAIN=MAX_LENGTH/NEW_TEST_AREA")
-                          cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=SHEAR_STRESS/SHEAR_STRAIN")
+                          if(self.cycle_num==3):                                    
+                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_VAL=1.0+(ELONG_PER_VAL/100)")
+                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_DENOMI=LMBD_VAL+(1.0/(LMBD_VAL*LMBD_VAL))")                                    
+                                    cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=SHEAR_STRESS/LMBD_DENOMI")
+                          else:
+                                    cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=0")
                           #cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES_AT_MAX_LOAD=10")
                           
                           
@@ -1743,7 +1749,7 @@ class TY_32_Ui_MainWindow(object):
         self.unit_type=self.comboBox_2.currentText()
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),printf(\"%.4f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),CASE SHEAR_MODULUS WHEN 0 THEN 'NA' ELSE printf(\"%.4f\", SHEAR_MODULUS) END G_VAL FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1843,11 +1849,25 @@ class TY_32_Ui_MainWindow(object):
         if(self.unit_typex == "N/mm"):            
                 data2= [['ITR.No.','Load(N)','Elongation (%)- Disp (mm)','Tensile \n Stress \n (N/mm2)','Shear Modulus \n  (N/mm2)']]
                 connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),printf(\"%.4f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),'NA' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' and CYCLE_NUM =1")
                 for x in results:
                      data2.append(x)
                 connection.close()
                 
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),'NA' FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' and CYCLE_NUM =2")
+                for x in results:
+                     data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")                
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", MAX_LOAD),printf(\"%.2f\", ELONG_PER_VAL)||' - '||printf(\"%.2f\", MAX_LENGTH) ,printf(\"%.4f\", ULT_TENSILE_STRENGTH),printf(\"%.4f\", SHEAR_MODULUS) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' and CYCLE_NUM =3")
+                for x in results:
+                     data2.append(x)
+                connection.close()
+                
+                
+                '''
                 connection = sqlite3.connect("tyr.db")                
                 results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.4f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
        
@@ -1866,6 +1886,7 @@ class TY_32_Ui_MainWindow(object):
                 for x in results:
                         data2.append(x)
                 connection.close()
+                '''
         else:
              print("create pdf error - invalid unit toe ")
                 
