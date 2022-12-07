@@ -927,7 +927,9 @@ class RL_01_Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Company Name Pvt. Ltd"))
         self.label_2.setText(_translate("MainWindow", "Blue Star IT PArk ,\n"
 "  MIDC , Thane ,  Mumbai Andhrei  Pin No 400232"))
-        self.label_3.setText(_translate("MainWindow", "29-Nov-2022 11:22:33"))
+        #self.label_3.setText(_translate("MainWindow", "29-Nov-2022 11:22:33"))
+        self.label_3.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
+        
         '''
         
         item = self.tableWidget.verticalHeaderItem(0)
@@ -1877,17 +1879,13 @@ class RL_01_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
-            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Diameter: ",str(x[3])],["Thickness:  ",str(x[4]),"Circumference):",str(x[5])]]
-            summary_data.append([" Reviewed By: ",str(x[6]),"",""])
-            self.remark=str(x[5])        
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
+            summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            self.remark=str(x[8])        
         connection.close() 
-        '''
-       
         
-        
-        '''
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
         
@@ -2094,7 +2092,7 @@ class PlotCanvas(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID,SAMPLE_IDENTIFICATION_NO ,TEST_DATE FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT GRAPH_ID,SAMPLE_ID ,TEST_DATE FROM TEST_MST_EXPANSION WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
              ax.set_title('Sample ID :'+str(x[1])+" Date:"+str(x[2])[0:10]+"") 
              self.graph_ids.append(x[0])             
@@ -2110,36 +2108,36 @@ class PlotCanvas(FigureCanvas):
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc  ")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Pressure (MPa)')            
             elif(self.graph_type == "EXPANSION_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'  order by rec_id asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Expansion (mm)')                     
             elif(self.graph_type == "STRESS_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "STRAIN_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Strain (%)')
             elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
                     ax.set_xlabel('Expansion (mm)')
                     ax.set_ylabel('Pressure (MPa)')
             else:
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             for k in results:        
-                                        self.x_num.append(float(k[0]))
-                                        self.y_num.append(float(k[1]))
+                                        self.y_num.append(float(k[0]))
+                                        self.x_num.append(float(k[1]))
             connection.close() 
             
             

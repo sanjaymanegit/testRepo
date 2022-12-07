@@ -760,16 +760,13 @@ class RL_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 250)
         self.tableWidget.setColumnWidth(4, 300)
        
-        
-      
-       
         #self.tableWidget.setColumnWidth(5, 150)
         #print("whr_sql2 :"+str(self.whr_sql2))
-        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Sample Identification No.','Sample Description','Remark'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Test Date','Sample Identification No.','Sample Pipe No','Remark'])        
          
         connection = sqlite3.connect("tyr.db")  
         
-        results=connection.execute("SELECT B.TEST_ID,date(B.TEST_DATE),B.SAMPLE_IDENTIFICATION_NO,B.SAMPLE_DESCRIPTION,B.REMARK FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'  and GRAPH_ID != '' ")                        
+        results=connection.execute("SELECT B.TEST_ID,date(B.TEST_DATE),B.SAMPLE_ID,B.SAMPLE_PIPE_NO,B.REMARK FROM TEST_MST_EXPANSION B where B.TEST_DATE between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'  and GRAPH_ID != '' ")                        
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
