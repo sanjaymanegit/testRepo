@@ -872,6 +872,13 @@ class RL_01_Ui_MainWindow(object):
         self.status_str=""
         self.graph_type="STRESS_VS_STRAIN"
         self.graph_group_no=1
+        
+        self.rev_arr=[]
+        self.rev_arr2=[]
+        self.rev_arr3=[]
+        self.rev_arr4=[]
+        self.rev_arr5=[]
+        self.rev_arr6=[]
 
         
 
@@ -921,6 +928,8 @@ class RL_01_Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Blue Star IT PArk ,\n"
 "  MIDC , Thane ,  Mumbai Andhrei  Pin No 400232"))
         self.label_3.setText(_translate("MainWindow", "29-Nov-2022 11:22:33"))
+        '''
+        
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -972,18 +981,20 @@ class RL_01_Ui_MainWindow(object):
         item = self.tableWidget_3.item(0, 2)
         item.setText(_translate("MainWindow", "55"))
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
+        '''
+        
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
         self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Time"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Stress Vs Strain"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Pressure Vs Expansion"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Pressure Vs Time"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "Expansion Vs Time"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Time"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "STRESS_VS_STRAIN"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "PRESSURE_VS_EXPANSION"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "PRESSURE_VS_TIME"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "EXPANSION_VS_TIME"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "STRESS_VS_TIME"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "STRAIN_VS_TIME"))
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
@@ -1006,11 +1017,12 @@ class RL_01_Ui_MainWindow(object):
         
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
-        self.pushButton_18.clicked.connect(self.graph_type_strain)
-        self.pushButton_17.clicked.connect(self.graph_type_pressure)
-        self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
+        #self.pushButton_18.clicked.connect(self.graph_type_strain)
+        #self.pushButton_17.clicked.connect(self.graph_type_pressure)
+        #self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
         self.pushButton_21.clicked.connect(self.graph_group1_onclick)
         self.pushButton_22.clicked.connect(self.graph_group2_onclick)
+        self.comboBox.currentTextChanged.connect(self.update_graph_type)
         
         
        
@@ -1046,57 +1058,13 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_22.setEnabled(True)
         self.display_bank_graphs()
         
-    
-    def graph_type_strain(self):
-        self.graph_type="STRESS_VS_STRAIN"
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                        cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
-        connection.commit()
-        connection.close()
-        self.sc_blank =PlotCanvas_blank(self)
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
-        for x in results:           
-                 if(int(x[0]) > 0):
-                            self.sc_blank =PlotCanvas(self,width=5, height=4, dpi=80) 
-                 else:
-                            self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
-        
-        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)   
-        self.pushButton_18.hide()
-        self.pushButton_17.show()
-        
-        #self.label_13.setText("Stress(MPa)")
-        #self.label_14.setText("Strain(%)")
+    '''
+   
         
         
-    def graph_type_pressure(self):
-        self.graph_type="PRESSURE_VS_ELONGATION"
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                        cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.graph_type)+"'")                 
-        connection.commit()
-        connection.close()
-        self.sc_blank =PlotCanvas_blank(self)
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select count(*) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
-        for x in results:           
-                 if(int(x[0]) > 0):
-                            self.sc_blank =PlotCanvas(self,width=5, height=4, dpi=80) 
-                 else:
-                            self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)
+   
         
-        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-        self.pushButton_17.hide()
-        self.pushButton_18.show()
-        
-        self.label_13.setText("Pressure(MPa)")
-        self.label_14.setText("Elongation(mm)")
-        
-
+    '''
 
 
 
@@ -1200,18 +1168,30 @@ class RL_01_Ui_MainWindow(object):
                         
                         self.sc_new_P2 =PlotCanvas_Auto_P2(self,width=5, height=4, dpi=80)
                         self.gridLayout.addWidget(self.sc_new_P2, 0, 2, 1, 1)
-                        
+                        time.sleep(4)
                         connection = sqlite3.connect("tyr.db")
                         results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
                         rows=results.fetchall()
                         connection.close()
                         if(int(rows[0][0]) > -2 ):
-                                        self.timer3.setInterval(1000)        
+                                        self.timer3.setInterval(4000)        
                                         self.timer3.timeout.connect(self.show_load_cell_val)
-                                        self.timer3.timeout.connect(self.show_grid1_val_P0)
+                                        time.sleep(4)
+                                        
                                         self.timer3.timeout.connect(self.show_grid1_val_P1)
                                         self.timer3.timeout.connect(self.show_grid1_val_P2)
+                                        self.timer3.timeout.connect(self.show_grid1_val_P0)
                                         self.timer3.start(1)
+                                        
+                                        
+                                        self.timer4.setInterval(1000)        
+                                        #self.timer3.timeout.connect(self.show_load_cell_val)
+                                        #self.timer4.timeout.connect(self.show_grid1_val_P0)
+                                        #self.timer3.timeout.connect(self.show_grid1_val_P1)
+                                        #self.timer3.timeout.connect(self.show_grid1_val_P2)
+                                        self.timer4.start(1)
+                                        
+                                        
                                         '''
                                         
                                         '''
@@ -1237,29 +1217,28 @@ class RL_01_Ui_MainWindow(object):
         self.rev_arr4=self.sc_new.arr_t
         self.rev_arr3.reverse()
         self.rev_arr4.reverse()
-        if(len(self.rev_arr3) > 0):
+        #i=i+1
+        if(len(self.rev_arr3) > 0):            
                 for i in range(len(self.rev_arr3)):
                         self.tableWidget.insertRow(i)
                         item = QtWidgets.QTableWidgetItem()        
                         item.setText(str("Pressure"))
                         self.tableWidget.setItem(i,0,item) 
                         item2 = QtWidgets.QTableWidgetItem()        
-                        item2.setText(str(round(self.rev_arr3[i],2)))
+                        item2.setText(str(self.rev_arr3[i]))
                         self.tableWidget.setItem(i,1,item2)
                         item3 = QtWidgets.QTableWidgetItem()        
                         item3.setText(str(self.rev_arr4[i]))
-                        self.tableWidget.setItem(i,2,item3) 
+                        self.tableWidget.setItem(i,2,item3)
+                        #print("OK OK1 :"+str(len(self.rev_arr3)))
                 
                 
-        #self.tableWidget.setItem(2,1,str('Param-value2')) 
-        #self.tableWidget.setItem(3,1,str('Param-value2'))         
-        '''
-       
-        '''        
+            
         #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
         
     
     
@@ -1703,6 +1682,9 @@ class RL_01_Ui_MainWindow(object):
             if(self.timer3.isActive()): 
                   self.timer3.stop()
                   
+            if(self.timer4.isActive()): 
+                  self.timer4.stop()
+                  
             self.label_15.show()
             self.label_15.setText("Data Saved Successful")
                   
@@ -1748,7 +1730,7 @@ class RL_01_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"','"+str(float(self.sc_new.arr_t[g]))+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"','"+str(float(self.sc_new.arr_t[g]))+"','"+str(self.sc_new.arr_t_timestamp[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1767,7 +1749,7 @@ class RL_01_Ui_MainWindow(object):
                            
 
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
-                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_NUM_STRAIN,T_SEC) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_STRAIN,T_SEC FROM STG_GRAPH_MST")                  
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_NUM_STRAIN,T_SEC,T_TIMESTAMP) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1795,8 +1777,18 @@ class RL_01_Ui_MainWindow(object):
         self.ui=P_POP_TEST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+        
+    def update_graph_type(self):
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='"+str(self.comboBox.currentText())+"'")                 
+        connection.commit()
+        connection.close()
     
     def open_log_pdf(self):
+        
+        
         self.create_log_pdf()
         os.system("xpdf ./reports/log_report.pdf")
         product_id=self.get_usb_storage_id()
@@ -1980,24 +1972,13 @@ class RL_01_Ui_MainWindow(object):
                 self.graph_id=str(x[0])       
         connection.close()
         
-        summary_data2=[["Parameter","Value","Time(sec)"]]
+        summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Time(sec)","Timestamp"]]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT Y_NUM as PRESSURE, T_SEC as TIME_SEC  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
         for x in results:
-                    summary_data2.append(["Pressure",str(x[0]),str(x[1])])
+                    summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4]),str(x[5])])
         connection.close()
-        
-        summary_data3=[["Parameter","Value","Time(sec)"]]
-        
-        connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT X_NUM as EXPANSION, T_SEC as TIME_SEC  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
-        for x in results:
-                    summary_data3.append(["Expansion",str(x[0]),str(x[1])])
-        connection.close()
-        
-        
-        
         
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
@@ -2023,15 +2004,15 @@ class RL_01_Ui_MainWindow(object):
         f2=Table(summary_data2)
         f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
-        f3=Table(summary_data3)
-        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        #f3=Table(summary_data3)
+        #f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
                  
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
         #Elements=[Title,Title2,Spacer(1,12),f4,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
-        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),f2,Spacer(1,12),f3,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12)]
               
         
         doc = SimpleDocTemplate('./reports/log_report.pdf', rightMargin=10,
@@ -2057,18 +2038,13 @@ class PlotCanvas(FigureCanvas):
         
         
     def plot(self):
-        ax = self.figure.add_subplot(111)
-       
+        ax = self.figure.add_subplot(111)       
         ax.set_facecolor('#CCFFFF')   
-        ax.minorticks_on()
-        
+        ax.minorticks_on()        
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         ax.set_xlabel('Strain (%)')
-        ax.set_ylabel('Stress (MPa)')  
-        
- 
-        
+        ax.set_ylabel('Stress (MPa)')
         self.s=[]
         self.t=[]
         self.graph_ids=[]    
@@ -2085,8 +2061,7 @@ class PlotCanvas(FigureCanvas):
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SAMPLE_IDENTIFICATION_NO,CURRENT_TIMESTAMP,GRAPH_TYPE,(SAMPLE_WIDTH_MM * T_AV)*0.1*0.1 as CS_AREA_CM  FROM TEST_MST_TMP") 
-        for x in results:
-                        
+        for x in results:                        
                         self.graph_type= str(x[2])   
                         self.cs_area=float(x[3])                        
         connection.close()
@@ -2094,15 +2069,27 @@ class PlotCanvas(FigureCanvas):
         
         
         
-        self.unit_type="Kgf/mm"
+        print("xxx graph Type :"+str(self.graph_type))
         ### Univarsal change for  Graphs #####################
-        
-        
+            
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
+        if(self.graph_type == "PRESSURE_VS_TIME"):   
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
+        elif(self.graph_type == "EXPANSION_VS_TIME"):
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'EXPANSION_VS_TIME'") 
+        elif(self.graph_type == "STRESS_VS_TIME"):
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_TIME'") 
+        elif(self.graph_type == "STRAIN_VS_TIME"):
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRAIN_VS_TIME'") 
+        elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_EXPANSION'") 
+        elif(self.graph_type == "STRESS_VS_STRAIN"):
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_STRAIN'") 
+        else:
+                results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
         for x in results: 
-                         ax.set_xlim(0,float(x[0]))
-                         ax.set_ylim(0,float(x[1])) 
+                        ax.set_xlim(0,float(x[0]))
+                        ax.set_ylim(0,float(x[1])) 
         connection.close()
         
         
@@ -2118,27 +2105,48 @@ class PlotCanvas(FigureCanvas):
             self.x_num=[0.0]
             self.y_num=[0.0]
             self.x1_num=[0.0]
-            self.y1_num=[0.0]
-            print(" Unit Type :"+str(self.unit_type))
+            self.y1_num=[0.0]              
+            #self.graph_type="STRESS_VS_STRAIN"           
             
-            self.graph_type="STRESS_VS_STRAIN"
+            connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    connection = sqlite3.connect("tyr.db")
                     results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
-                    for k in results:        
+            elif(self.graph_type == "PRESSURE_VS_TIME"):
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Time (sec)')
+                    ax.set_ylabel('Pressure (MPa)')            
+            elif(self.graph_type == "EXPANSION_VS_TIME"):
+                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Time (sec)')
+                    ax.set_ylabel('Expansion (mm)')                     
+            elif(self.graph_type == "STRESS_VS_TIME"):
+                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Time (sec)')
+                    ax.set_ylabel('Stress (MPa)')
+            elif(self.graph_type == "STRAIN_VS_TIME"):
+                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Time (sec)')
+                    ax.set_ylabel('Strain (%)')
+            elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Expansion (mm)')
+                    ax.set_ylabel('Pressure (MPa)')
+            else:
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    ax.set_xlabel('Strain (%)')
+                    ax.set_ylabel('Stress (MPa)')
+            for k in results:        
                                         self.x_num.append(float(k[0]))
                                         self.y_num.append(float(k[1]))
-                    connection.close() 
-            else:
-                    print("in progrss")
-              
+            connection.close() 
+            
             
             ax.plot(self.x_num,self.y_num, 'b',label="Sample No:1")
             #ax1.plot(self.x1_num,self.y1_num, 'b',label="Sample No:1")
             
-        print("self.test_type:"+str(self.test_type))
+        
         
         ax.legend()
         #ax1.legend() 
@@ -2173,6 +2181,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.q_n =0
         self.q_lb =0
         self.q_mpa =0
+        self.t_timestamp=0
         
         
         
@@ -2187,6 +2196,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
         self.arr_q_mpa=[0.0]
+        self.arr_t_timestamp=[""]
         
         
         
@@ -2493,6 +2503,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q=abs(float(self.buff[1])) #fix val
                 self.t=self.elapsed_time.seconds
                 self.p=abs(float(self.buff[4])) #fix val
+                
+                self.t_timestamp=str(self.end_time)
+                self.arr_t_timestamp.append(self.t_timestamp)
                 
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
@@ -3631,12 +3644,15 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.p =0
         self.q =0
         self.t =170
+        self.t_timestamp=""
         
         self.arr_p=[0.0]
         self.arr_q=[133.0]
         self.arr_t=[0.0]
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
+        self.arr_t_timestamp=[""]
+        
         self.x=0
         self.y=0
         #self.ax = self.figure.add_subplot(111) 
@@ -3957,6 +3973,9 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 self.arr_q.append(float(self.q))
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
+                
+                self.t_timestamp=str(self.end_time)
+                self.arr_t_timestamp.append(self.t_timestamp)
 
                 if(int(self.q) > int(self.ylim)):
                     self.ylim=(int(self.q)+100)
