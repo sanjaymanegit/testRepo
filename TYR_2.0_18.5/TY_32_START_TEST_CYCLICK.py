@@ -1012,7 +1012,8 @@ class TY_32_Ui_MainWindow(object):
         self.line_19.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_19.setObjectName("line_19")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+)")
+        #reg_ex = QRegExp("(\\d+)")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
         self.lineEdit_11.setValidator(input_validator)
         self.lineEdit_11.setGeometry(QtCore.QRect(1080, 600, 51, 21))
@@ -1024,7 +1025,8 @@ class TY_32_Ui_MainWindow(object):
         self.lineEdit_11.setFont(font)
         self.lineEdit_11.setObjectName("lineEdit_11")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+)")
+        #reg_ex = QRegExp("(\\d+)")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
         self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(1080, 641, 51, 20))
@@ -1060,7 +1062,8 @@ class TY_32_Ui_MainWindow(object):
         self.lineEdit_16.setFont(font)
         self.lineEdit_16.setObjectName("lineEdit_16")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+)")
+        #reg_ex = QRegExp("(\\d+)")
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_17)
         self.lineEdit_17.setValidator(input_validator)
         self.lineEdit_17.setGeometry(QtCore.QRect(1080, 680, 51, 21))
@@ -1593,10 +1596,10 @@ class TY_32_Ui_MainWindow(object):
                 self.label_21.show()
                 self.label_21.setText("Data Saved Successfully.")
                 self.go_to_next=self.go_to_next+1
-                self.pushButton_5.setEnabled(True)
+                #self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
-                self.pushButton_8.setEnabled(True)
+                #self.pushButton_8.setEnabled(True)
                 self.pushButton_13.setDisabled(True)
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q_n)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
@@ -1610,21 +1613,22 @@ class TY_32_Ui_MainWindow(object):
                         print("Stopped all iterations.")
     
     def mannual_stop(self):
-                self.go_to_next=99
-                self.sc_new.save_data_flg="Yes"
                 self.reset()
+                self.go_to_next=99                
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
                 self.label_21.show()
                 self.label_21.setText("Mannualy Stoped.")
-                self.pushButton_5.setEnabled(True)
+                #self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
-                self.pushButton_8.setEnabled(True)
-                #self.pushButton_13.setDisabled(True)  
-                self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
-                self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                        
+                #self.pushButton_8.setEnabled(True)
+                self.pushButton_13.setDisabled(True)  
+                self.lcdNumber_2.setProperty("value", str("0"))        
+                self.lcdNumber.setProperty("value",str("0"))   #length
+                self.sc_data =PlotCanvas(self,width=8, height=5, dpi=100)    
+                self.gridLayout.addWidget(self.sc_data, 1, 0, 1, 1)
+                print("Stopped all iterations.")       
                 #self.label_15.setText("")
                 print("inside mannual stop")
     
@@ -1673,8 +1677,8 @@ class TY_32_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRESS=MAX_LOAD/NEW_TEST_AREA")
                           cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_STRAIN=MAX_LENGTH/NEW_TEST_AREA")
                           if(self.cycle_num==3):                                    
-                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_VAL=1.0+(ELONG_PER_VAL/100)")
-                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_DENOMI=LMBD_VAL+(1.0/(LMBD_VAL*LMBD_VAL))")                                    
+                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_VAL=1.0+(cast(ELONG_PER_VAL as real)/100)")
+                                    cursor.execute("UPDATE GLOBAL_VAR SET LMBD_DENOMI=cast(LMBD_VAL as real)-(1.0/(cast(LMBD_VAL as real)* cast(LMBD_VAL as real)))")                                    
                                     cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=SHEAR_STRESS/LMBD_DENOMI")
                           else:
                                     cursor.execute("UPDATE GLOBAL_VAR SET SHEAR_MODULES=0")
@@ -1792,7 +1796,10 @@ class TY_32_Ui_MainWindow(object):
                 os.system("cp ./reports/test_report.pdf /media/usb/Report_of_test_"+str(self.test_id)+".pdf")
                 os.system("sudo umount /media/usb")
         else:
-             print("Please connect usb storage device") 
+             print("Please connect usb storage device")
+        
+        self.pushButton_5.setEnabled(True)
+        self.pushButton_8.setEnabled(True)
         
     def get_usb_storage_id(self):
         os.system("rm -rf lsusb_data.txt")  
@@ -2193,8 +2200,8 @@ class PlotCanvas_Auto(FigureCanvas):
                      self.ylim=int(x[1])
                      
              elif(self.unit_type == "N/mm"):
-                     self.axes.set_xlim(0,int(x[0]))
-                     self.axes.set_ylim(0,int(x[1]))
+                     self.axes.set_xlim(0,float(x[0]))
+                     self.axes.set_ylim(0,float(x[1]))
                      #self.flexural_max_load=int(x[1])/9.81
                      self.xlim=int(x[0])
                      self.ylim=int(x[1])
@@ -2483,12 +2490,12 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 print("max speed :"+str(int(self.speed_val)))
-                 print("inptur speed :"+str(int(self.input_speed_val)))
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 print("max speed :"+str(float(self.speed_val)))
+                 print("inptur speed :"+str(float(self.input_speed_val)))
+                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"_\r"
@@ -2540,8 +2547,8 @@ class PlotCanvas_blank(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
         for x in results:             
-                 ax.set_xlim(0,int(x[0]))
-                 ax.set_ylim(0,int(x[1]))                               
+                 ax.set_xlim(0,float(x[0]))
+                 ax.set_ylim(0,float(x[1]))                               
                  ax.set_xlabel('Displacement (mm)')
                  ax.set_ylabel('Load (N) ')             
         connection.close()

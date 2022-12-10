@@ -959,7 +959,7 @@ class ty_31_Ui_MainWindow(object):
         self.comboBox.setDisabled(True)
         
         self.label_48.setText(_translate("MainWindow", "Batch ID:"))
-        self.label_49.setText(_translate("MainWindow", "REPORTS - PROOF TEST"))
+        self.label_49.setText(_translate("MainWindow", "REPORTS"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
         self.pushButton_6.setText(_translate("MainWindow", "Remark"))
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
@@ -995,7 +995,7 @@ class ty_31_Ui_MainWindow(object):
         self.radioButton.clicked.connect(self.click_onRadiobutt)
         self.radioButton_2.clicked.connect(self.click_onRadiobutt)
         self.lineEdit_10.textChanged.connect(self.click_onRadiobutt)
-        self.lineEdit_11.textChanged.connect(self.click_onRadiobutt)
+        
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
         self.pushButton_5.clicked.connect(self.open_email_report)    
@@ -1003,6 +1003,9 @@ class ty_31_Ui_MainWindow(object):
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
         self.load_data()
+        self.lineEdit_11.hide()
+        self.radioButton.hide()
+        self.label_70.hide()
         
     def load_data(self):
         
@@ -1095,6 +1098,9 @@ class ty_31_Ui_MainWindow(object):
                 #self.label_21.show()
                 #self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
                 self.start_test_by="load"
+                self.lineEdit_11.hide()
+                self.radioButton.hide()
+                self.label_70.hide()
                 #self.label_13.setText("Load \n (Kgf)")
 #                self.sc_blank =PlotCanvas_blank(self)          
 #                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1136,8 +1142,7 @@ class ty_31_Ui_MainWindow(object):
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1)                
-        else:
-                print("validation Error")
+        
     
     def validation(self):
         self.goAhead="No"
@@ -1317,9 +1322,9 @@ class ty_31_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
         if(self.start_test_by=="load"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Elongation(mm)','Status','REC.NO '])  
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Holding Time (sec)','Status','REC.NO '])  
         else:
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Elongation(mm)','Status','REC.NO '])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Holding Time (sec)','Status','REC.NO '])
                 
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1332,11 +1337,11 @@ class ty_31_Ui_MainWindow(object):
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
         if(self.unit_type=="N/mm"): 
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         elif(self.unit_type == "Kgf/mm"):
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         else:
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1404,13 +1409,13 @@ class ty_31_Ui_MainWindow(object):
         
         if(self.start_test_by=="load"):
             if(self.unit_typex == "Kgf/mm"):            
-                data2= [['Spec.No', 'Max.Load(Kgf)', 'Test Time (sec)', 'Status']]
+                data2= [['Spec.No', 'Max.Load(Kgf)', 'Holding Time (sec)', 'Status']]
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.TEST_TIME_SEC),STATUS||' kgf.' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
-                
+                '''
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
@@ -1428,14 +1433,15 @@ class ty_31_Ui_MainWindow(object):
                 for x in results:
                         data2.append(x)
                 connection.close()
+                '''
         else:
-                data2= [['Spec.No', 'Max.Elongation(mm)', 'Test Time (sec)', 'Status']]
+                data2= [['Spec.No', 'Max.Elongation(mm)', 'Holding Time (sec)', 'Status']]
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.TEST_TIME_SEC),STATUS||' kgf.' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
-                
+                '''
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
@@ -1453,6 +1459,7 @@ class ty_31_Ui_MainWindow(object):
                 for x in results:
                         data2.append(x)
                 connection.close()
+                '''
         
         y=300
         Elements=[]

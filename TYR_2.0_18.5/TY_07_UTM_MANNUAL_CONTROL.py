@@ -257,9 +257,14 @@ class TY_07_Ui_MainWindow(object):
             instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
-            #v=float("1000")
-            print("int part :%d"%v)
-            print("decial part:%.2f"%v)         
+            
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
             
             instrument.write_register(4096,v,0) ###self.input_speed_val RPM
             instrument.write_register(4097,0,0) ###self.input_speed_val RPM
@@ -303,7 +308,16 @@ class TY_07_Ui_MainWindow(object):
         try:     
             instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600 
+            instrument.serial.baudrate = 9600
+            
+            v=v*40
+            if(float(v) < 1 ):
+                v=1.0
+            elif(float(v)== 1 ):
+                v=1.0
+            else:
+                v=round(v,0)
+                
             instrument.write_register(4098,v,0) ###self.input_speed_val RPM
             instrument.write_register(4099,0,0) ###self.input_speed_val RPM
             print(" write1 :"+str(v))

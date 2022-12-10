@@ -812,7 +812,7 @@ class ty_29_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_70.setFont(font)
-        self.label_70.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_70.setStyleSheet("color: rgb(133, 0, 0);")
         self.label_70.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_70.setObjectName("label_70")
         self.label_71 = QtWidgets.QLabel(self.frame)
@@ -1142,6 +1142,10 @@ class ty_29_Ui_MainWindow(object):
                 self.label_21.show()
                 self.label_21.setText("Start Test for Max Load :"+str(self.lineEdit_10.text())+" (Kgf)")
                 self.start_test_by="load"
+                #self.lineEdit_10.hide()
+                self.lineEdit_11.hide()
+                self.radioButton.hide()
+                self.label_70.hide()
                 #self.label_13.setText("Load \n (Kgf)")
 #                self.sc_blank =PlotCanvas_blank(self)          
 #                self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1301,7 +1305,7 @@ class ty_29_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST)")
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM=(SELECT X_NUM_CM FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT STG_PEAK_LOAD_KG FROM GLOBAL_VAR))") 
                           #print("ok2")
-                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS) SELECT TEST_ID,'FBST',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS FROM GLOBAL_VAR")
+                          cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,TEST_METHOD,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,LOAD_POINT_1,LOAD_POINT_2,STATUS,TEST_TIME_SEC) SELECT TEST_ID,'PROOF',STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,STATUS,TEST_TIME_SEC FROM GLOBAL_VAR")
                           
                           cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
@@ -1374,9 +1378,9 @@ class ty_29_Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
         if(self.start_test_by=="load"):
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Elongation(mm)','Status','REC.NO '])  
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Holding Time (sec)','Status','REC.NO '])  
         else:
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Elongation(mm)','Status','REC.NO '])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.No.','Max.Load '+str(self.y_unit),'Holding Time (sec)','Status','REC.NO '])
                 
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 170)
@@ -1389,11 +1393,11 @@ class ty_29_Ui_MainWindow(object):
         print(" Grid data :"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
         if(self.unit_type=="N/mm"): 
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         elif(self.unit_type == "Kgf/mm"):
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         else:
-            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),STATUS, CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
+            results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", TEST_TIME_SEC),STATUS||' kgf.', CYCLE_ID FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by CYCLE_NUM Asc")
         
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -1461,55 +1465,57 @@ class ty_29_Ui_MainWindow(object):
         
         if(self.start_test_by=="load"):
             if(self.unit_typex == "Kgf/mm"):            
-                data2= [['Spec.No', 'Max.Load(Kgf)', 'Test Time (sec)', 'Status']]
+                data2= [['Spec.No', 'Max.Load(Kgf)', 'Holding Time (sec)', 'Status']]
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.TEST_TIME_SEC),STATUS||' kgf.' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                '''
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+                '''
         else:
-                data2= [['Spec.No', 'Max.Elongation(mm)', 'Test Time (sec)', 'Status']]
+                data2= [['Spec.No', 'Max.Elongation(mm)', 'Holding Time (sec)', 'Status']]
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),STATUS FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.TEST_TIME_SEC),STATUS||' kgf.' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                '''
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.TEST_TIME_SEC)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
                 for x in results:
                         data2.append(x)
                 connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),'' FROM  CYCLES_MST A WHERE A.TEST_ID ='"+str(self.label_12.text())+"'") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+                '''
         
         y=300
         Elements=[]

@@ -687,7 +687,7 @@ class TY_01_Ui_MainWindow(object):
            self.pre_load=str(x[9])
            self.motor_speed=str(x[10])
            self.specs=str(x[11])
-           self.label_14_1.setText(str(x[12]))
+           self.label_14_1.setText(str(x[12])) #rev .Test Speed
            
            self.label_8.setText(str(x[11]))  #specs
            self.label_10.setText(str(x[7])) #party
