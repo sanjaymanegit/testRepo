@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'TY_07_UTM_MANNUAL_CONTROL.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
 
+from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import serial,time
@@ -120,6 +115,7 @@ class TY_07_Ui_MainWindow(object):
         font.setPointSize(12)
         self.pushButton_6.setFont(font)
         self.pushButton_6.setObjectName("pushButton_6")
+        
         self.pushButton_14 = QtWidgets.QPushButton(self.groupBox_3)
         self.pushButton_14.setGeometry(QtCore.QRect(630, 190, 131, 31))
         font = QtGui.QFont()
@@ -127,6 +123,14 @@ class TY_07_Ui_MainWindow(object):
         font.setPointSize(12)
         self.pushButton_14.setFont(font)
         self.pushButton_14.setObjectName("pushButton_14")
+        
+        self.pushButton_14_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_14_1.setGeometry(QtCore.QRect(20, 35, 231, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        self.pushButton_14_1.setFont(font)       
+        self.pushButton_14_1.setObjectName("pushButton_14_1")
         
         self.toolButton = QtWidgets.QToolButton(self.centralwidget)
         self.toolButton.setGeometry(QtCore.QRect(250, 310, 70, 97))
@@ -162,10 +166,13 @@ class TY_07_Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Reverse"))
         self.pushButton_6.setText(_translate("MainWindow", "Stop"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
+        self.pushButton_14_1.setText("Setup Motor Speed.")
         self.pushButton_14.clicked.connect(MainWindow.close)       
         self.pushButton_2.clicked.connect(self.r_run)
         self.pushButton_5.clicked.connect(self.f_run)
         self.pushButton_6.clicked.connect(self.stop_run)
+        self.pushButton_14_1.clicked.connect(self.open_new_window)
+        
         self.label_9_1.hide()
         
     def validate_speed(self):
@@ -342,7 +349,14 @@ class TY_07_Ui_MainWindow(object):
            self.ser.write(b'*Q\r')
            #time.sleep(1)
         except IOError:
-           print("IO Errors")  
+           print("IO Errors")
+           
+    
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=spped_setup_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
 if __name__ == "__main__":
     import sys
