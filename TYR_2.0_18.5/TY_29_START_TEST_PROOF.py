@@ -86,27 +86,39 @@ class ty_29_Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(650, 560, 81, 41))
+        self.pushButton_4.setGeometry(QtCore.QRect(650, 560, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(0, 180, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_13.setGeometry(QtCore.QRect(650, 630, 81, 41))
+        self.pushButton_13.setGeometry(QtCore.QRect(650, 600, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_13.setFont(font)
-        self.pushButton_13.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);")
+        self.pushButton_13.setStyleSheet("background-color: rgb(90, 90, 134);\n color: rgb(255, 255, 255);")
         self.pushButton_13.setObjectName("pushButton_13")
+        
+        self.pushButton_13_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_13_1.setGeometry(QtCore.QRect(650, 640, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_13_1.setFont(font)
+        #self.pushButton_13_1.setStyleSheet("background-color: rgb(90, 90, 134);\n color: rgb(255, 255, 255);")
+        self.pushButton_13_1.setStyleSheet("color: rgb(255, 255, 255);\n background-color: rgb(180, 0, 0);")       
+        self.pushButton_13_1.setObjectName("pushButton_13_1")
+        
+        
         self.line = QtWidgets.QFrame(self.frame)
         self.line.setGeometry(QtCore.QRect(0, 230, 1341, 20))
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -952,6 +964,7 @@ class ty_29_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.pushButton_4.setText(_translate("MainWindow", "Start"))
         self.pushButton_13.setText(_translate("MainWindow", "All"))
+        self.pushButton_13_1.setText("Stop")
         self.label_21.setText(_translate("MainWindow", ""))
         
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
@@ -1045,10 +1058,12 @@ class ty_29_Ui_MainWindow(object):
         self.lineEdit_11.textChanged.connect(self.click_onRadiobutt)
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_13.clicked.connect(self.show_all_specimens)
+        self.pushButton_13_1.clicked.connect(self.mannaul_stop)
         self.pushButton_5.clicked.connect(self.open_email_report)    
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
+        
         self.tableWidget.doubleClicked.connect(self.delete_cycle)
         self.load_data()
         
@@ -1266,6 +1281,15 @@ class ty_29_Ui_MainWindow(object):
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
         
     
+    def mannaul_stop(self):
+        if(self.timer3.isActive()): 
+                self.sc_new.save_data_flg='Yes'
+                self.sc_new.ser.write(b'*Q\r')
+                if(self.sc_new.timer1.isActive()): 
+                           self.sc_new.timer1.stop()
+                self.timer3.stop() 
+        
+        
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop()
@@ -1848,6 +1872,9 @@ class PlotCanvas_Auto(FigureCanvas):
         self.flexural_max_load=100
         self.unit_type =""
         self.proof_test_by=""
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.plot_auto()
@@ -1902,7 +1929,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
              if(self.unit_type == "Kgf/mm"):
                      self.axes.set_xlim(0,int(x[0]))
@@ -1927,6 +1954,10 @@ class PlotCanvas_Auto(FigureCanvas):
                       
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
+             self.modbus_flag=str(x[4])
+             self.modbus_port=str(x[5])
+             self.non_modbus_port=str(x[6])
+             
         connection.close()
         
         
@@ -1934,15 +1965,50 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+            if(self.modbus_flag == "Y"):
+                if(self.non_modbus_port=="/dev/ttyUSB0"):
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+                    
+                elif(self.non_modbus_port=="/dev/ttyUSB1"):
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB1',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+                    
+                else:
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+                    
+            else:
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -2202,7 +2268,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 ,blit=True
                 ,interval=10
                     )
-            print("Done1")
+            print("Done1xx")
        
     def validate_speed(self):
         connection = sqlite3.connect("tyr.db")
@@ -2238,8 +2304,8 @@ class PlotCanvas_Auto(FigureCanvas):
             #self.label_3.setText("Motor Speed is Required")
             #self.label_3.show()
             
-         
-       
+        
+        
         
         v=0
         try:     
@@ -2256,9 +2322,18 @@ class PlotCanvas_Auto(FigureCanvas):
             print("int part :%d"%v)
             print("decial part:%.2f"%v)
             #v=v*100
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
+             
+            if(self.modbus_flag == "Y"):
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    elif(self.modbus_port=="/dev/ttyUSB1"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                    else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+            else:
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            
+        
             instrument.write_register(4096,v,0) ###self.input_speed_val RPM
             instrument.write_register(4097,0,0) ###self.input_speed_val RPM
             print(" write1 :"+str(v))
@@ -2281,9 +2356,18 @@ class PlotCanvas_Auto(FigureCanvas):
                 v=round(v,0)
             print("int part :%d"%v)
             print("decial part:%.2f"%v)         
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
+             
+            if(self.modbus_flag == "Y"):
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    elif(self.modbus_port=="/dev/ttyUSB1"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                    else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+            else:
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            
+        
             instrument.write_register(4098,v,0) ###self.input_speed_val RPM
             instrument.write_register(4099,0,0) ###self.input_speed_val RPM
             print(" write2 :"+str(v))

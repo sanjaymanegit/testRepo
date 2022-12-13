@@ -1632,10 +1632,12 @@ class TY_32_Ui_MainWindow(object):
                 #self.label_15.setText("")
                 print("inside mannual stop")
     
-    def reset(self):
-        if(self.sc_new.timer1.isActive()): 
-           self.sc_new.timer1.stop() 
-        if(self.timer3.isActive()): 
+    def reset(self):        
+        if(self.timer3.isActive()):            
+           if(self.sc_new.timer1.isActive()): 
+               self.sc_new.timer1.stop()
+               self.sc_new.ser.write(b'*Q\r')
+           
            self.timer3.stop() 
         
         #self.sc_blank =PlotCanvas_blank(self) 

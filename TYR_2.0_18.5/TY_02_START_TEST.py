@@ -672,6 +672,14 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_4.setFont(font)       
         self.pushButton_4_4.setGeometry(QtCore.QRect(620, 495, 131, 31))        
         self.pushButton_4_4.setObjectName("pushButton_4_4")
+        
+        self.pushButton_4_5 = QtWidgets.QPushButton(self.frame)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.pushButton_4_5.setFont(font)        
+        self.pushButton_4_5.setGeometry(QtCore.QRect(520, 495, 70, 31))        
+        self.pushButton_4_5.setObjectName("pushButton_4_5")
          
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -765,6 +773,8 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_3.setText("Email Report")
         self.pushButton_4_3.setDisabled(True)
         self.pushButton_4_4.setText("Comments")
+        self.pushButton_4_5.setText("Stop")
+        self.pushButton_4_5.setDisabled(True)
         self.label_3.hide()
         self.sc_blank =PlotCanvas_blank(self,width=8, height=5,dpi=90)         
         self.gridLayout_2.addWidget(self.sc_blank, 0, 0, 1, 5)
@@ -783,6 +793,7 @@ class TY_02_Ui_MainWindow(object):
         self.pushButton_4_2.clicked.connect(self.print_file)
         self.pushButton_4_3.clicked.connect(self.open_email_report)
         self.pushButton_4_4.clicked.connect(self.open_comment_popup)
+        self.pushButton_4_5.clicked.connect(self.manual_stop)
         
         
         
@@ -1376,7 +1387,8 @@ class TY_02_Ui_MainWindow(object):
                     self.timer3=QtCore.QTimer()
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
-                    self.timer3.start(1) 
+                    self.timer3.start(1)
+                    self.pushButton_4_5.setEnabled(True)
      
     def validation(self):
         self.goAhead="No"
@@ -1706,6 +1718,18 @@ class TY_02_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
+    def manual_stop(self):
+        if(self.timer3.isActive()): 
+                self.sc_new.save_data_flg='Yes'
+                self.sc_new.ser.write(b'*Q\r')
+                if(self.sc_new.timer1.isActive()): 
+                           self.sc_new.timer1.stop()
+                self.timer3.stop()
+        self.pushButton_4_5.setDisabled(True)
+        
+    
+    
+    
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop()
@@ -2664,6 +2688,10 @@ class PlotCanvas_Auto(FigureCanvas):
         self.flexural_max_load=100
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2681,7 +2709,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
              self.axes.set_xlim(0,int(x[0]))
              self.axes.set_ylim(0,int(x[1]))
@@ -2690,6 +2718,9 @@ class PlotCanvas_Auto(FigureCanvas):
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
+             self.modbus_flag=str(x[4])
+             self.modbus_port=str(x[5])
+             self.non_modbus_port=str(x[6])
         connection.close()
         
         
@@ -2709,15 +2740,49 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+            if(self.modbus_flag == "Y"):
+                if(self.non_modbus_port=="/dev/ttyUSB0"):
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+                    
+                elif(self.non_modbus_port=="/dev/ttyUSB1"):
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB1',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+                    
+                else:
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+            else:
+                    self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -3072,13 +3137,12 @@ class PlotCanvas_Auto(FigureCanvas):
             #self.label_3.setText("Motor Speed is Required")
             #self.label_3.show()            
          
-        print("test ytype :"+str(self.test_type)) 
-        if(self.test_type=="Compress"):
+        print("test type :"+str(self.test_type))
+        print("Modbus Flag :"+str(self.modbus_flag))
         
+        if(self.test_type=="Compress"):        
             v=0
-            try:     
-                
-                
+            try:
                 v=float(self.input_rev_speed_val) 
                 v=v*40
                 if(float(v) < 1 ):
@@ -3091,9 +3155,19 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("compress :int part :%d"%v)
                 print("compress :decial part:%.2f"%v)
                 #v=v*100
-                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                instrument.serial.timeout = 1
-                instrument.serial.baudrate = 9600
+                
+                if(str(self.modbus_flag) == "Y"):
+                        if(self.modbus_port=="/dev/ttyUSB0"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                        elif(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                        else:
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                elif(str(self.modbus_flag) == "N"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                        print("Modbus Flag :"+str(self.modbus_flag))
+                else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
                 instrument.write_register(4098,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                 print(" write1 :"+str(v))
@@ -3115,9 +3189,19 @@ class PlotCanvas_Auto(FigureCanvas):
                     v=round(v,0)
                 print("int part :%d"%v)
                 print("decial part:%.2f"%v)         
-                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                instrument.serial.timeout = 1
-                instrument.serial.baudrate = 9600
+                
+                if(str(self.modbus_flag) == "Y"):
+                        if(self.modbus_port=="/dev/ttyUSB0"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                        elif(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                        else:
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                elif(str(self.modbus_flag) == "N"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                        print("Modbus Flag :"+str(self.modbus_flag))
+                else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
                 instrument.write_register(4096,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                 print(" write2 :"+str(v))
@@ -3129,10 +3213,9 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         else:   
-            
+            print("inside tesnsile part .....")
             v=0
-            try:     
-                
+            try:
                 v=float(self.input_speed_val)
                 v=v*40
                 if(float(v) < 1 ):
@@ -3146,9 +3229,19 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("int part :%d"%v)
                 print("decial part:%.2f"%v)
                 #v=v*100
-                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                instrument.serial.timeout = 1
-                instrument.serial.baudrate = 9600
+                
+                if(str(self.modbus_flag) == "Y"):
+                        if(self.modbus_port=="/dev/ttyUSB0"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                        elif(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                        else:
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                elif(str(self.modbus_flag) == "N"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                        print("Modbus Flag :"+str(self.modbus_flag))
+                else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
                 instrument.write_register(4098,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                 print(" write1 :"+str(v))
@@ -3170,9 +3263,19 @@ class PlotCanvas_Auto(FigureCanvas):
                     v=round(v,0)
                 print("int part :%d"%v)
                 print("decial part:%.2f"%v)         
-                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                instrument.serial.timeout = 1
-                instrument.serial.baudrate = 9600
+                
+                if(str(self.modbus_flag) == "Y"):
+                        if(self.modbus_port=="/dev/ttyUSB0"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                        elif(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                        else:
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                elif(str(self.modbus_flag) == "N"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                        print("Modbus Flag :"+str(self.modbus_flag))
+                else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
                 instrument.write_register(4096,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                 print(" write2 :"+str(v))
@@ -3180,6 +3283,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
             
             print("Reverse speed : "+str(v))
+            
  
 
 

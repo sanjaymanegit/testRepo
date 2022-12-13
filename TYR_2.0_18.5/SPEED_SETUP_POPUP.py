@@ -7,6 +7,12 @@ import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
+import sqlite3
+import re
+import datetime
+import time
+import os,sys
+
 import minimalmodbus
 #from minimalmodbus import BYTEORDER_LITTLE_SWAP
 minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
@@ -105,7 +111,7 @@ class spped_setup_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
-        font.setBold(True)
+        #font.setBold(True)
         font.setWeight(75)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setObjectName("pushButton_2")
@@ -117,7 +123,7 @@ class spped_setup_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: rgb(170, 0, 127);")
+        #self.label_5.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_5.setObjectName("label_5")
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_3.setGeometry(QtCore.QRect(610, 280, 91, 41))
@@ -189,6 +195,10 @@ class spped_setup_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.modbus_status_flag="N"
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -207,8 +217,8 @@ class spped_setup_Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Click on \"Set Speed\" to setup speed."))
         self.pushButton_3.setText(_translate("MainWindow", "Close"))
         self.label_6.setText(_translate("MainWindow", "Set up Default Speed of Motor :"))
-        self.checkBox.setText(_translate("MainWindow", "Only Modbus"))
-        self.checkBox.setDisabled(True)
+        self.checkBox.setText(_translate("MainWindow", "Modbus isActive ?"))
+        #self.checkBox.setDisabled(True)
         self.label_7.setText(_translate("MainWindow", "Max.Speed :"))
         self.lineEdit_3.setText(_translate("MainWindow", "0"))
         self.label_8.setText(_translate("MainWindow", "( mm/min )"))
@@ -226,19 +236,34 @@ class spped_setup_Ui_MainWindow(object):
         self.lineEdit_2.setText(str(rows[0][1])) #rev.Speed
         #self.lineEdit_3.setText(str(rows[0][2])) #Max.Speed
         connection.close()
-        
+        self.load_modbus_port()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT MOTOR_MAX_SPEED FROM SETTING_MST")        
+        results=connection.execute("SELECT MOTOR_MAX_SPEED,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT FROM SETTING_MST")        
         rows=results.fetchall()  
         self.lineEdit_3.setText(str(rows[0][0])) #Max.Speed
+        self.modbus_status_flag=str(rows[0][1])
+        self.modbus_port=str(rows[0][2])
+        self.non_modbus_port=str(rows[0][3])        
         connection.close()
         
+        self.label_5.setText("Modbus Port: <font color=blue>"+str(self.modbus_port)+" </font>,  Controller Port :<font color=blue>"+str(self.non_modbus_port)+" </font>")
+        if(self.modbus_status_flag=='Y'):
+              self.checkBox.setChecked(True)
+        else:
+              self.checkBox.setChecked(False)
+        
   
-    def save_data(self):        
+    def save_data(self):
+        
+        if(self.checkBox.isChecked()):
+               self.modbus_status_flag='Y'
+        else:
+               self.modbus_status_flag='N'
+               
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
-            cursor.execute("UPDATE SETTING_MST SET  MOTOR_TEST_SPEED = '"+self.lineEdit.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_3.text()+"'")
+            cursor.execute("UPDATE SETTING_MST SET  MOTOR_TEST_SPEED = '"+self.lineEdit.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_3.text()+"',ISACTIVE_MODBUS='"+str(self.modbus_status_flag)+"'")
             cursor.execute("UPDATE GLOBAL_VAR SET  NEW_TEST_MOTOR_SPEED = '"+self.lineEdit.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+self.lineEdit_2.text()+"'") 
         connection.commit();
         connection.close() 
@@ -320,7 +345,124 @@ class spped_setup_Ui_MainWindow(object):
         print("Forward speed : "+str(v))
         
         
+    def get_USB_0_DEVICE(self):
+        os.system("rm -rf lsusb_USB0.txt")
+        port_type="ERROR"
         
+        ### Check for Controller #######
+        os.system("udevadm info /dev/ttyUSB0 | grep PL2303 >> lsusb_USB0.txt")
+        try:
+           f = open('lsusb_USB0.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("PL2303")) ## For controller Port
+               if cnt > 0 :
+                    port_type="C"
+               else:
+                    port_type="ERROR"  
+                   
+           f.close()
+        except:          
+             port_type="ERROR"     
+        
+        
+        if(port_type == "ERROR"):
+        
+                #### Check For Modbus ########
+                os.system("udevadm info /dev/ttyUSB0 | grep XYZ >> lsusb_USB0.txt")
+                try:
+                   f = open('lsusb_USB0.txt','r')
+                   for line in f:
+                       cnt=0                
+                       cnt=int(line.find("XYZ")) ## For controller Port
+                       if cnt > 0 :
+                            port_type="M"
+                       else:
+                            port_type="ERROR"     
+                   f.close()
+                except:          
+                      port_type="ERROR"
+                   
+         
+        return port_type
+    
+    
+    def get_USB_1_DEVICE(self):
+        os.system("rm -rf lsusb_USB1.txt")
+        port_type="ERROR"
+        
+        ### Check for Controller #######
+        os.system("udevadm info /dev/ttyUSB1 | grep PL2303 >> lsusb_USB1.txt")
+        try:
+           f = open('lsusb_USB1.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("PL2303")) ## For controller Port
+               if cnt > 0 :
+                    port_type="C"
+               else:
+                    port_type="ERROR"  
+                   
+           f.close()
+        except:          
+             port_type="ERROR"     
+        
+        
+        if(port_type == "ERROR"):
+        
+                #### Check For Modbus ########
+                os.system("udevadm info /dev/ttyUSB1 | grep XYZ >> lsusb_USB1.txt")
+                try:
+                   f = open('lsusb_USB1.txt','r')
+                   for line in f:
+                       cnt=0                
+                       cnt=int(line.find("XYZ")) ## For controller Port
+                       if cnt > 0 :
+                            port_type="M"
+                       else:
+                            port_type="ERROR"     
+                   f.close()
+                except:          
+                      port_type="ERROR"
+        return port_type         
+    
+    def load_modbus_port(self):
+        self.modbus_port=""
+        self.non_modbus_port=""
+        self.port=""        
+        connection = sqlite3.connect("tyr.db") 
+        results=connection.execute("SELECT ISACTIVE_MODBUS FROM SETTING_MST") 
+        for x in results:
+                   if(str(x[0]) == 'Y'):                       
+                        self.port=self.get_USB_0_DEVICE()
+                        print("USB0: "+str(self.port))
+                        if(self.port == "C"):
+                             self.non_modbus_port="/dev/ttyUSB0"
+                        elif(self.port == "M"):
+                             self.modbus_port="/dev/ttyUSB0"
+                        else:                             
+                             print("Error 468")  
+                            
+                        
+                        print("USB0: "+str(self.port)+" non_modbus: "+(self.non_modbus_port))     
+                        
+                        self.port=self.get_USB_1_DEVICE()
+                        
+                        if(self.port == "C"):
+                             self.non_modbus_port="/dev/ttyUSB1"
+                        elif(self.port == "M"):
+                             self.modbus_port="/dev/ttyUSB1"
+                        else:
+                             print("Error 480")        
+                   else:
+                         print("Modbus Flag :"+str(x[0]))                       
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE SETTING_MST SET MODBUS_PORT='"+str(self.modbus_port)+"',NON_MODBUS_PORT='"+str(self.non_modbus_port)+"'")            
+        connection.commit();
 
 
 if __name__ == "__main__":
