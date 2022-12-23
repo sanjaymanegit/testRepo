@@ -93,6 +93,7 @@ class TY_02_Ui_MainWindow(object):
         self.goAhead="No"
         self.test_type=""
         self.test_id="1"
+        self.remark=""
         
         
         self.groupBox = QtWidgets.QGroupBox(self.frame)
@@ -1841,7 +1842,8 @@ class TY_02_Ui_MainWindow(object):
         self.radioButton_4.setChecked(True)
  
     
-    def create_pdf_tensile(self):                
+    def create_pdf_tensile(self):
+        self.remark=""
         self.unit_typex="Kg/Cm"
         if (self.shape=="Rectangle"):
             
@@ -2022,9 +2024,10 @@ class TY_02_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
+            self.remark=str(x[12]) 
         connection.close() 
         
         PAGE_HEIGHT=defaultPageSize[1]
@@ -2039,8 +2042,11 @@ class TY_02_Ui_MainWindow(object):
             Title2 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         blank=Paragraph("                                                                                          ", styles["Normal"])
-        comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
-        
+        #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
         footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
@@ -2050,7 +2056,7 @@ class TY_02_Ui_MainWindow(object):
         
         f1=Table(data)
         f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
-        
+        #
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
         f2=Table(data2)

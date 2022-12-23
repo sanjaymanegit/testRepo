@@ -136,7 +136,7 @@ class TY_04_Ui_MainWindow(object):
         
         
         self.label_9_1 = QtWidgets.QLabel(self.frame)
-        self.label_9_1.setGeometry(QtCore.QRect(550,580, 121, 31))
+        self.label_9_1.setGeometry(QtCore.QRect(550,580, 141, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -145,7 +145,7 @@ class TY_04_Ui_MainWindow(object):
         
         
         self.label_9_2 = QtWidgets.QLabel(self.frame)
-        self.label_9_2.setGeometry(QtCore.QRect(620,580, 121, 31))
+        self.label_9_2.setGeometry(QtCore.QRect(700,580, 121, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -352,7 +352,7 @@ class TY_04_Ui_MainWindow(object):
         self.lineEdit_3.setFont(font)
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.label_5 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_5.setGeometry(QtCore.QRect(20, 80, 161, 31))
+        self.label_5.setGeometry(QtCore.QRect(20, 80, 185, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -363,13 +363,13 @@ class TY_04_Ui_MainWindow(object):
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
         self.lineEdit_4.setValidator(input_validator)        
-        self.lineEdit_4.setGeometry(QtCore.QRect(190, 80, 171, 31))
+        self.lineEdit_4.setGeometry(QtCore.QRect(230, 80, 131, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_4.setFont(font)
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.label_7 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_7.setGeometry(QtCore.QRect(20, 130, 161, 31))
+        self.label_7.setGeometry(QtCore.QRect(20, 130, 185, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -380,7 +380,7 @@ class TY_04_Ui_MainWindow(object):
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
         self.lineEdit_5.setValidator(input_validator)        
-        self.lineEdit_5.setGeometry(QtCore.QRect(190, 130, 171, 31))
+        self.lineEdit_5.setGeometry(QtCore.QRect(230, 130, 131, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_5.setFont(font)
@@ -441,7 +441,7 @@ class TY_04_Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Contact. No:"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Graph Scale"))
         self.label_9.setText(_translate("MainWindow", "Load (Y-Axis):"))
-        self.label_9_1.setText(_translate("MainWindow", "Device Id:"))
+        self.label_9_1.setText(_translate("MainWindow", "Rev.Speed(mm/min):"))
         self.label_9_2.setText(_translate("MainWindow", "201909:0002"))
         self.label_10.setText(_translate("MainWindow", "Length (X-Axis):"))
         self.radioButton.setText(_translate("MainWindow", "Auto Scale"))
@@ -467,8 +467,8 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_14_2.setText("Copy PDF reports to USB")
         self.groupBox_2.setTitle(_translate("MainWindow", "Configuration"))
         self.label_4.setText(_translate("MainWindow", "AutoReverse Time(Sec):"))
-        self.label_5.setText(_translate("MainWindow", "Motor Test Speed(RPM):"))
-        self.label_7.setText(_translate("MainWindow", "Motor Max Speed (RPM):"))
+        self.label_5.setText(_translate("MainWindow", "Motor Test Speed(mm/min):"))
+        self.label_7.setText(_translate("MainWindow", "Motor Max Speed (mm/min):"))
         self.label_8.setText(_translate("MainWindow", "Breaking Sense (Kg):"))
         self.pushButton_7.setText(_translate("MainWindow", "Factory Reset"))
         
@@ -515,6 +515,7 @@ class TY_04_Ui_MainWindow(object):
         #self.lineEdit_8.setText(str(rows[0][11])) #NEW_DATE
         #self.lineEdit_10.setText(str(rows[0][3])) #HH
         #self.lineEdit_11.setText(str(rows[0][3]))#MI
+        #self.label_9_2.setText(str(rows[0][13]))
         
         if(rows[0][12]== 'AUTO'):
             self.radioButton.setChecked(True)
@@ -527,7 +528,8 @@ class TY_04_Ui_MainWindow(object):
             self.lineEdit_7.setEnabled(True)
             self.lineEdit_9.setEnabled(True)
              
-        connection.close() 
+        connection.close()
+        
         self.i=0        
         for x in range(24):            
             self.lineEdit_10.addItem("")
@@ -542,6 +544,14 @@ class TY_04_Ui_MainWindow(object):
             self.lineEdit_11.setItemText(self.i,str("%02d"%x))
             #print("i :"+str(x))
             self.i=self.i+1
+        
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select NEW_TEST_MOTOR_REV_SPEED from GLOBAL_VAR") 
+        for x in results:
+            self.label_9_2.setText(str(x[0]))                       
+        connection.close()
         
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
