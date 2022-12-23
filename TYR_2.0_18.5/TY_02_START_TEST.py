@@ -2095,6 +2095,7 @@ class TY_02_Ui_MainWindow(object):
 #            self.unit_typex=x[1]
 #        connection.close()
         self.unit_typex="Kg/Cm"
+        self.remark=""
         if(self.unit_typex == "Kg/Cm"):
             data2= [ ['Spec. \n No', 'CS Area \n (cm2)', 'Force at Peak\n (Kgf)', 'Compression \n (cm)', 'Compressive Strength \n (Kgf/Cm2)',' % Compression \n']]
         else:
@@ -2129,11 +2130,11 @@ class TY_02_Ui_MainWindow(object):
         y=300
         Elements=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         
         for x in results:
             summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
-      
+            self.remark=str(x[12])
         
         connection.close() 
         PAGE_HEIGHT=defaultPageSize[1]
@@ -2147,8 +2148,11 @@ class TY_02_Ui_MainWindow(object):
             Title2 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         blank=Paragraph("                                                                                          ", styles["Normal"])
-        comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
-        
+        #comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
         footer_2= Paragraph("     Authorised and Signed By : _________________.", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
@@ -2181,14 +2185,9 @@ class TY_02_Ui_MainWindow(object):
                                 bottomMargin=30,)
         doc.build(Elements)
     
-    def create_pdf_tear(self):        
-#        connection = sqlite3.connect("tyr.db")
-#        results=connection.execute("SELECT STG_GRAPH_TYPE,STG_UNIT_TYPE FROM GLOBAL_REPORTS_PARAM") 
-#        for x in results:
-#            self.graph_typex=x[0]
-#            self.unit_typex=x[1]
-#        connection.close()
-        
+    def create_pdf_tear(self):
+        self.remark=""
+       
         self.unit_typex="Kg/Cm"
         if(self.unit_typex == "Kg/Cm"):
             data2= [ ['Spec. \n No', 'Thickness \n (cm)', 'Force at Peak\n (Kgf)', 'Tear Strength \n (Kgf/cm)']]
@@ -2227,10 +2226,10 @@ class TY_02_Ui_MainWindow(object):
         Elements=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime')  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine","",""]]
-      
+            self.remark=str(x[12])
         
         connection.close() 
         PAGE_HEIGHT=defaultPageSize[1]
@@ -2244,8 +2243,12 @@ class TY_02_Ui_MainWindow(object):
             Title2 = Paragraph(str(ptext), styles["Title"])
         connection.close()
         blank=Paragraph("                                                                                          ", styles["Normal"])
-        comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        #comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
         
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
         footer_2= Paragraph("     Authorised and Signed By : _________________.", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
