@@ -1569,7 +1569,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',PROOF_TEST_BY='"+str(self.start_test_by)+"',TEST_TIME_SEC='"+str(self.label_67.text())+"'")
                             cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                         connection.commit();
                         connection.close()
@@ -1579,7 +1579,7 @@ class TY_32_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                           cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED,GUAGE_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','CYCLICK','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_7.text())+"')")
                         connection.commit();
                         connection.close()
@@ -1822,7 +1822,7 @@ class TY_32_Ui_MainWindow(object):
     
     def open_email_report(self):
         #self.test_id=(self.tableWidget.item(row, 1).text() )
-        self.test_id=self.label_12.text()
+        self.test_id=int(self.label_12.text())
         print(" test_id :"+str(self.test_id))  
         connection = sqlite3.connect("tyr.db")        
         with connection:        
@@ -1876,25 +1876,7 @@ class TY_32_Ui_MainWindow(object):
                 connection.close()
                 
                 
-                '''
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.4f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-       
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.4f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.4f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-                for x in results:
-                        data2.append(x)
-                connection.close()
+                '''                
                 '''
         else:
              print("create pdf error - invalid unit toe ")

@@ -112,9 +112,10 @@ class factory_reset_Ui_MainWindow(object):
                     cursor = connection.cursor()       
                     cursor.execute("DELETE FROM TEST_MST")
                     cursor.execute("DELETE FROM CYCLES_MST")
+                    cursor.execute("DELETE FROM CYCLES_MST_CYCLIC")
                     cursor.execute("DELETE FROM GRAPH_MST")
                     cursor.execute("DELETE FROM STG_GRAPH_MST")
-                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST')")
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")
                     
             connection.commit();
             connection.close()
