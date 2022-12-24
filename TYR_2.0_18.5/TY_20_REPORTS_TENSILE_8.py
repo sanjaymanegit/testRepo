@@ -40,7 +40,7 @@ import datetime
 
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
 from reportlab.pdfgen.canvas import Canvas
-import pandas as pd
+#import pandas as pd
 from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
 from reportlab.rl_settings import showBoundary
 
