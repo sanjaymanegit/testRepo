@@ -1500,7 +1500,7 @@ class TY_02_Ui_MainWindow(object):
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                   if(self.test_type=="Compress" or self.test_type=="Flexural"):
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
                   else:   
                         if(self.guage_ext_flg=="Y"):
                                 cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")

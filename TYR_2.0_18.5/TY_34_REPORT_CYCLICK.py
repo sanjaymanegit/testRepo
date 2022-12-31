@@ -1182,43 +1182,8 @@ class TY_34_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", ""))
         self.label_6.setText(_translate("MainWindow", "Spec.Name :"))
         '''
-        self.tableWidget.setSortingEnabled(True)
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Itr.No"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Max. Length(mm)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Hodling Time (Sec)"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Ult.Shear Stress"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Ult.Shear Strain"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Shear Modulus @ Max Load"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Shear Strain @ Max Load"))
-        item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Max.Load (N)"))
-        item = self.tableWidget.horizontalHeaderItem(8)
-        item.setText(_translate("MainWindow", "Status"))
-        item = self.tableWidget.horizontalHeaderItem(9)
-        item.setText(_translate("MainWindow", "Rec.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
         
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "67"))
-        item = self.tableWidget.item(0, 7)
-        item.setText(_translate("MainWindow", "100"))
-        item = self.tableWidget.item(0, 8)
-        item.setText(_translate("MainWindow", "PASS"))
-        item = self.tableWidget.item(0, 9)
-        item.setText(_translate("MainWindow", "11"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+        
         '''
         
         self.label_9.setText(_translate("MainWindow", "Party Name :"))
@@ -1876,24 +1841,7 @@ class TY_34_Ui_MainWindow(object):
                      data2.append(x)
                 connection.close()
                 '''
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(MAX_LOAD)),printf(\"%.2f\", avg(ELONG_PER_VAL)),printf(\"%.4f\", avg(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",avg(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-       
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(MAX_LOAD)),printf(\"%.2f\", min(ELONG_PER_VAL)),printf(\"%.4f\", min(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",min(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")                
-                results=connection.execute("SELECT 'Max',printf(\"%.2f\", max(MAX_LOAD)),printf(\"%.2f\", max(ELONG_PER_VAL)),printf(\"%.4f\", max(ULT_TENSILE_STRENGTH)),printf(\"%.4f\",max(SHEAR_MODULUS)) FROM CYCLES_MST_CYCLIC WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' ")
-                for x in results:
-                        data2.append(x)
-                connection.close()
+               
                 '''
         else:
              print("create pdf error - invalid unit toe ")
@@ -1934,11 +1882,7 @@ class TY_34_Ui_MainWindow(object):
         d = Drawing(50, 1)
         d.add(linea_firma)
         
-        #f1=Table(data)
-        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.20, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9)]))       
         
-        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
-        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
         f2=Table(data2)
         f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
          
@@ -1949,8 +1893,15 @@ class TY_34_Ui_MainWindow(object):
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
+        logo_img_path="./images/companylogo.jpg"
+        logo_img= Image(logo_img_path,20,20)        
         
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        chart_style = TableStyle([('ALIGN', (0, 0), (-1, -1), 'LEFT'),  ('VALIGN', (0, 0), (-1, -1), 'TOP')])
+        f4=Table([[logo_img]],20,20, style=chart_style)
+        #f4.TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'),('VALIGN', (0, 0), (-1, -1), 'CENTER')])
+        
+        Elements=[f4,Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),Spacer(1,12),comments,blank,blank,blank,blank,blank,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
