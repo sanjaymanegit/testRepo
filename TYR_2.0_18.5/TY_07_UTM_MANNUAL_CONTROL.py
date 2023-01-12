@@ -46,6 +46,9 @@ class TY_07_Ui_MainWindow(object):
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.label_6 = QtWidgets.QLabel(self.frame)
         self.label_6.setGeometry(QtCore.QRect(430, 40, 351, 71))
         font = QtGui.QFont()
@@ -244,15 +247,27 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
-           self.ser = serial.Serial(
-                port='/dev/ttyUSB0',
-                baudrate=19200,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                xonxoff=False,
-                timeout = 0.25
-            )
+           if(self.non_modbus_port=="dev/ttyUSB0"):
+                   self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+           else:
+                    self.ser = serial.Serial(
+                        port='/dev/ttyUSB1',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+                
            self.ser.flush()
            if(self.goahead_flag==1):
                 b = bytes(self.command_str, 'utf-8')
@@ -267,8 +282,11 @@ class TY_07_Ui_MainWindow(object):
         #time.sleep(1)
         
         v=float(self.input_speed_val)
-        try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+        try:
+            if(self.modbus_port=="dev/ttyUSB1"):
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            else:
+                        instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -298,15 +316,27 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
-           self.ser = serial.Serial(
-                port='/dev/ttyUSB0',
-                baudrate=19200,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                xonxoff=False,
-                timeout = 0.25
-            )           
+           if(self.non_modbus_port=="dev/ttyUSB0"):
+                   self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+           else:
+                   self.ser = serial.Serial(
+                        port='/dev/ttyUSB1',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+                  
            if(self.goahead_flag==1):               
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
@@ -320,7 +350,10 @@ class TY_07_Ui_MainWindow(object):
         
         v=float(self.input_speed_val)
         try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            if(self.modbus_port=="dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            else:
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -344,15 +377,28 @@ class TY_07_Ui_MainWindow(object):
         self.label_9_1.hide()
         self.toolButton.hide()
         try:
-           self.ser = serial.Serial(
-                port='/dev/ttyUSB0',
-                baudrate=19200,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                xonxoff=False,
-                timeout = 0.25
-            )
+           if(self.non_modbus_port=="dev/ttyUSB0"):
+                   self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+           else:
+                  self.ser = serial.Serial(
+                        port='/dev/ttyUSB1',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.25
+                    )
+           
+           
            self.ser.write(b'*Q\r')
            #time.sleep(1)
         except IOError:
@@ -390,12 +436,12 @@ class TY_07_Ui_MainWindow(object):
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB0 | grep XYZ >> lsusb_USB0.txt")
+                os.system("udevadm info /dev/ttyUSB0 | grep Future >> lsusb_USB0.txt")
                 try:
                    f = open('lsusb_USB0.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:
@@ -432,12 +478,12 @@ class TY_07_Ui_MainWindow(object):
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB1 | grep XYZ >> lsusb_USB1.txt")
+                os.system("udevadm info /dev/ttyUSB1 | grep Future >> lsusb_USB1.txt")
                 try:
                    f = open('lsusb_USB1.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:

@@ -602,12 +602,12 @@ class TY_12_LIST_Ui_MainWindow(object):
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB0 | grep XYZ >> lsusb_USB0.txt")
+                os.system("udevadm info /dev/ttyUSB0 | grep Future >> lsusb_USB0.txt")
                 try:
                    f = open('lsusb_USB0.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:
@@ -644,12 +644,12 @@ class TY_12_LIST_Ui_MainWindow(object):
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB1 | grep XYZ >> lsusb_USB1.txt")
+                os.system("udevadm info /dev/ttyUSB1 | grep Future >> lsusb_USB1.txt")
                 try:
                    f = open('lsusb_USB1.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:

@@ -2749,19 +2749,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         try:
-            if(self.modbus_flag == "Y"):
-                if(self.non_modbus_port=="/dev/ttyUSB0"):
-                    self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.05
-                            )
-                    
-                elif(self.non_modbus_port=="/dev/ttyUSB1"):
+            if(self.non_modbus_port=="/dev/ttyUSB0"):
                     self.ser = serial.Serial(
                                 port='/dev/ttyUSB1',
                                 baudrate=19200,
@@ -2771,20 +2759,9 @@ class PlotCanvas_Auto(FigureCanvas):
                                 xonxoff=False,
                                 timeout = 0.05
                             )
-                    
-                else:
-                    self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.05
-                            )
             else:
                     self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
+                                port='/dev/ttyUSB1',
                                 baudrate=19200,
                                 bytesize=serial.EIGHTBITS,
                                 parity=serial.PARITY_NONE,
@@ -2792,6 +2769,7 @@ class PlotCanvas_Auto(FigureCanvas):
                                 xonxoff=False,
                                 timeout = 0.05
                             )
+            
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -3164,19 +3142,13 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("compress :int part :%d"%v)
                 print("compress :decial part:%.2f"%v)
                 #v=v*100
-                
-                if(str(self.modbus_flag) == "Y"):
-                        if(self.modbus_port=="/dev/ttyUSB0"):
+                if(self.modbus_port=="/dev/ttyUSB0"):
                             instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                        elif(self.modbus_port=="/dev/ttyUSB1"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                        else:
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                elif(str(self.modbus_flag) == "N"):
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                        print("Modbus Flag :"+str(self.modbus_flag))
                 else:
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
+                
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 9600 
                 instrument.write_register(4098,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                 print(" write1 :"+str(v))
@@ -3199,18 +3171,15 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("int part :%d"%v)
                 print("decial part:%.2f"%v)         
                 
-                if(str(self.modbus_flag) == "Y"):
-                        if(self.modbus_port=="/dev/ttyUSB0"):
+                if(self.modbus_port=="/dev/ttyUSB0"):
                             instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                        elif(self.modbus_port=="/dev/ttyUSB1"):
+                elif(self.modbus_port=="/dev/ttyUSB1"):
                             instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                        else:
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                elif(str(self.modbus_flag) == "N"):
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                        print("Modbus Flag :"+str(self.modbus_flag))
                 else:
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
+               
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 9600 
                 instrument.write_register(4096,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                 print(" write2 :"+str(v))
@@ -3239,18 +3208,13 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("decial part:%.2f"%v)
                 #v=v*100
                 
-                if(str(self.modbus_flag) == "Y"):
-                        if(self.modbus_port=="/dev/ttyUSB0"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                        elif(self.modbus_port=="/dev/ttyUSB1"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                        else:
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                elif(str(self.modbus_flag) == "N"):
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                        print("Modbus Flag :"+str(self.modbus_flag))
+                if(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
                 else:
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                            
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 9600            
                 instrument.write_register(4098,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                 print(" write1 :"+str(v))
@@ -3272,19 +3236,13 @@ class PlotCanvas_Auto(FigureCanvas):
                     v=round(v,0)
                 print("int part :%d"%v)
                 print("decial part:%.2f"%v)         
-                
-                if(str(self.modbus_flag) == "Y"):
-                        if(self.modbus_port=="/dev/ttyUSB0"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                        elif(self.modbus_port=="/dev/ttyUSB1"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                        else:
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                elif(str(self.modbus_flag) == "N"):
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                        print("Modbus Flag :"+str(self.modbus_flag))
+                print("self.modbus_port:"+str(self.modbus_port))
+                if(self.modbus_port=="/dev/ttyUSB1"):
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
                 else:
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 9600            
                 instrument.write_register(4096,v,0) ###self.input_speed_val RPM
                 instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                 print(" write2 :"+str(v))

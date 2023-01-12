@@ -273,8 +273,11 @@ class spped_setup_Ui_MainWindow(object):
         
         self.input_speed_val=str(self.lineEdit.text())
         v=float(self.input_speed_val)
-        try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+        try:
+            if(self.modbus_port=="dev/ttyUSB1"):
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            else:
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -298,7 +301,11 @@ class spped_setup_Ui_MainWindow(object):
         self.rev_speed_val=str(self.lineEdit_2.text())
         v=float(self.rev_speed_val)
         try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            
+            if(self.modbus_port=="dev/ttyUSB1"):
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            else:
+                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -323,7 +330,10 @@ class spped_setup_Ui_MainWindow(object):
         self.input_speed_val=str(self.lineEdit.text())
         v=float(self.input_speed_val)
         try:     
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            if(self.modbus_port=="dev/ttyUSB1"):
+                  instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+            else:
+                  instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -338,6 +348,8 @@ class spped_setup_Ui_MainWindow(object):
             instrument.write_register(4098,v,0) ###self.input_speed_val RPM
             instrument.write_register(4099,0,0) ###self.input_speed_val RPM
             print(" write2 :"+str(v))
+            self.label_5.setText("Modbus Connection Ok.")
+            self.label_5.show()
         except IOError as e:
             print("Forward-Write Modbus IO Error -Motor start : "+str(e))
             self.label_5.setText("ERROR:"+str(e))
@@ -365,16 +377,16 @@ class spped_setup_Ui_MainWindow(object):
         except:          
              port_type="ERROR"     
         
-        
+        print("Port Type:"+str(port_type))
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB0 | grep XYZ >> lsusb_USB0.txt")
+                os.system("udevadm info /dev/ttyUSB0 | grep Future >> lsusb_USB0.txt")
                 try:
                    f = open('lsusb_USB0.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:
@@ -383,7 +395,7 @@ class spped_setup_Ui_MainWindow(object):
                 except:          
                       port_type="ERROR"
                    
-         
+        print("Port Type2:"+str(port_type)) 
         return port_type
     
     
@@ -411,12 +423,12 @@ class spped_setup_Ui_MainWindow(object):
         if(port_type == "ERROR"):
         
                 #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB1 | grep XYZ >> lsusb_USB1.txt")
+                os.system("udevadm info /dev/ttyUSB1 | grep Future >> lsusb_USB1.txt")
                 try:
                    f = open('lsusb_USB1.txt','r')
                    for line in f:
                        cnt=0                
-                       cnt=int(line.find("XYZ")) ## For controller Port
+                       cnt=int(line.find("Future")) ## For controller Port
                        if cnt > 0 :
                             port_type="M"
                        else:
