@@ -79,7 +79,7 @@ class P_POP_TEST_Ui_MainWindow(object):
                 conn = cups.Connection() 
                 file="./reports/test_report.pdf"
                 printer=str(btn.text())
-                #conn.printFile(printer,file,"Report",{})
+                conn.printFile(printer,file,"Report",{})
                 self.label.setText("Print Started On ( "+str(btn.text())+" )")
                 self.pushButton.setDisabled(True)
                     

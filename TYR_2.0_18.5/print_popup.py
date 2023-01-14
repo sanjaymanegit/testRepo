@@ -77,7 +77,7 @@ class P_POPUi_MainWindow(object):
                 conn = cups.Connection() 
                 file="./reports/Reportxxx.pdf"  
                 printer=str(btn.text())
-                #conn.printFile(printer,file,"Report",{})
+                conn.printFile(printer,file,"Report",{})
                 self.label.setText("Print Started On ( "+str(btn.text())+" )")
                 self.pushButton.setDisabled(True)
     
