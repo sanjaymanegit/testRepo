@@ -200,13 +200,13 @@ class Ui_MainWindow(object):
                self.go_ahead="No"
         connection.close()
         if(self.go_ahead=="Yes"):  
-            if(str(dev_id)[0:11]=='201910:0003'):
+            if(dev_id=='201910:0003'):
                 self.window = QtWidgets.QMainWindow()
                 self.ui=TY_12_LIST_Ui_MainWindow()
                 self.ui.setupUi(self.window)           
                 self.window.show()        
             else:
-                print("dev id :"+str(dev_id)[0:11])   
+                print("dev id :"+str(dev_id))   
         else:
            print("Device Invalid :"+str(serial_no))
         

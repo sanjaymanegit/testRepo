@@ -102,23 +102,7 @@ class P_POP_TEST_Ui_MainWindow(object):
            self.verticalLayout.addWidget(self.b)
            self.radio_buttons.append(self.b)
            #self.radioButton.clicked.connect(self.getPrinter)     
-    '''       
-    def print_pdf(self):                
-        conn = cups.Connection() 
-        file="./reports/test_report.pdf"        
-        print("length of printers :"+str(len(self.printers)))
-        if(len(self.printers) > 0):
-            printer=self.radioButton.text()
-            try:               
-               #conn.printFile(printer,file,"Report",{})
-               print("Printer Name :"+str(printer))
-            except cups.IPPError as e:
-               print ("IPP status is %d" +str("x"))
-            self.label.setText("Print Started !!")
-            print ("Selected printer xxx:"+str(printer))  
-            print ("Done")
-            self.pushButton.setDisabled(True)
-     '''   
+    
         
 if __name__ == "__main__":
     import sys

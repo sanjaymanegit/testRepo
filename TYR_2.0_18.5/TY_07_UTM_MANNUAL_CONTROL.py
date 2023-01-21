@@ -161,6 +161,7 @@ class TY_07_Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         
         self.rev_speed_val=0
+        self.is_active_modbus='N'
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -187,9 +188,10 @@ class TY_07_Ui_MainWindow(object):
         
     def validate_speed(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
+        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),ISACTIVE_MODBUS from SETTING_MST") 
         for x in results:
              self.speed_val=str(x[0])
+             self.is_active_modbus=str(x[1])
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -247,27 +249,40 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
-           if(self.non_modbus_port=="dev/ttyUSB0"):
-                   self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
+           print("rev is_active_modbus :"+str(self.is_active_modbus))
+           if(self.is_active_modbus == 'Y'):
+               print("rev non modbus port :"+str(self.non_modbus_port))
+               if(self.non_modbus_port=="/dev/ttyUSB0"):
+                       self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
+                       print("non modbus port :"+str(self.non_modbus_port))
+               else:
+                        self.ser = serial.Serial(
+                            port='/dev/ttyUSB1',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
            else:
-                    self.ser = serial.Serial(
-                        port='/dev/ttyUSB1',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
-                
+               self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
            self.ser.flush()
            if(self.goahead_flag==1):
                 b = bytes(self.command_str, 'utf-8')
@@ -280,31 +295,31 @@ class TY_07_Ui_MainWindow(object):
         except IOError:
             print("IO Errors")    
         #time.sleep(1)
-        
-        v=float(self.input_speed_val)
-        try:
-            if(self.modbus_port=="dev/ttyUSB1"):
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-            else:
-                        instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
-            
-            v=v*40
-            if(float(v) < 1 ):
-                v=1.0
-            elif(float(v)== 1 ):
-                v=1.0
-            else:
-                v=round(v,0)
-            
-            instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-            instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-            print(" write2 :"+str(v))
-        except IOError as e:
-            print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-        
-        print("Reverse speed : "+str(v))
+        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
+                v=float(self.input_speed_val)
+                try:
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600
+                    
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
         
     def f_run(self):
         print("Forward Run ....")
@@ -316,90 +331,111 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
         try:
-           if(self.non_modbus_port=="dev/ttyUSB0"):
-                   self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
-           else:
-                   self.ser = serial.Serial(
-                        port='/dev/ttyUSB1',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
-                  
-           if(self.goahead_flag==1):               
+            if(self.is_active_modbus == 'Y'): 
+                       if(self.non_modbus_port=="/dev/ttyUSB0"):
+                               self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )
+                       else:
+                               self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )
+            else:
+                       self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )  
+            if(self.goahead_flag==1):               
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
                 self.ser.write(b'*F\r')
-           else:
+            else:
                 print("No go Ahead !!!!!")
           
            #time.sleep(1)
         except IOError:
            print("IO Errors")     
         
-        v=float(self.input_speed_val)
-        try:     
-            if(self.modbus_port=="dev/ttyUSB1"):
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-            else:
-                            instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
-            
-            v=v*40
-            if(float(v) < 1 ):
-                v=1.0
-            elif(float(v)== 1 ):
-                v=1.0
-            else:
-                v=round(v,0)
-                
-            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-            print(" write1 :"+str(v))
-        except IOError as e:
-            print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-        print("Forward speed : "+str(v))
+        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
+                v=float(self.input_speed_val)
+                try:     
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                    else:
+                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600
+                    
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                print("Forward speed : "+str(v))
     
     def stop_run(self):
         #print("Forward Run ....")
         self.label_9_1.hide()
         self.toolButton.hide()
         try:
-           if(self.non_modbus_port=="dev/ttyUSB0"):
-                   self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
-           else:
-                  self.ser = serial.Serial(
-                        port='/dev/ttyUSB1',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.25
-                    )
+            if(self.is_active_modbus == 'Y'):            
+                   if(self.non_modbus_port=="/dev/ttyUSB0"):
+                           self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.25
+                            )
+                   else:
+                          self.ser = serial.Serial(
+                                port='/dev/ttyUSB1',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.25
+                            )
+            else:
+                          self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.25
+                            )
            
-           
-           self.ser.write(b'*Q\r')
+            self.ser.write(b'*Q\r')
            #time.sleep(1)
         except IOError:
            print("IO Errors")

@@ -1772,8 +1772,8 @@ class TY_02_Ui_MainWindow(object):
         if (int(self.label_26.text()) > 0):
             self.label_36.setText(str(round(rows[0][8],2)))
             self.label_38.setText(str(round(rows[0][9],2)))           
-            #self.label_34.setProperty("value", str(rows[0][8]))#load
-            #self.label_40.setProperty("value",str(rows[0][9]))   #length 
+            self.label_34.setProperty("value", str(rows[0][8]))#load
+            self.label_40.setProperty("value",str(rows[0][9]))   #length 
         else:
             self.label_36.setText("NA")
             self.label_38.setText("NA")
@@ -2749,27 +2749,39 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         try:
-            if(self.non_modbus_port=="/dev/ttyUSB1"):
-                    self.ser = serial.Serial(
-                                port='/dev/ttyUSB1',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.05
-                            )
+            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
             else:
-                    self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.05
-                            )
-            
+                       self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -2812,7 +2824,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.ser.write(b)
             else:   
                 self.ser.write(b'*P0050_0010\r')
-                #print("started with default motor speed . Not gohead ")
+                print("started with default motor speed . Not gohead ")
             #self.ser.write(b'*D\r\n')
                 
             #time.sleep(2)
@@ -3126,7 +3138,8 @@ class PlotCanvas_Auto(FigureCanvas):
          
         print("test type :"+str(self.test_type))
         print("Modbus Flag :"+str(self.modbus_flag))
-        if(self.modbus_flag=='Y'):
+        print("Modbus Port :"+str(self.modbus_port))
+        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
             if(self.test_type=="Compress"):        
                 v=0
                 try:
@@ -3204,8 +3217,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     else:
                         v=round(v,0)
                         
-                    print("int part :%d"%v)
-                    print("decial part:%.2f"%v)
+                    #print("int part :%d"%v)
+                    #print("decial part:%.2f"%v)
                     #v=v*100
                     print("self.modbus_port :"+str(self.modbus_port))
                     if(self.modbus_port=="/dev/ttyUSB1"):

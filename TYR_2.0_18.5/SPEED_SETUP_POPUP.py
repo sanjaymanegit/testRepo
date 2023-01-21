@@ -330,10 +330,11 @@ class spped_setup_Ui_MainWindow(object):
         self.input_speed_val=str(self.lineEdit.text())
         v=float(self.input_speed_val)
         try:     
-            if(self.modbus_port=="dev/ttyUSB1"):
+            if(self.modbus_port=="/dev/ttyUSB1"):
                   instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
             else:
                   instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+                  print("self.modbus_port:"+str(self.modbus_port))
             instrument.serial.timeout = 1
             instrument.serial.baudrate = 9600
             
@@ -456,7 +457,7 @@ class spped_setup_Ui_MainWindow(object):
                              print("Error 468")  
                             
                         
-                        print("USB0: "+str(self.port)+" non_modbus: "+(self.non_modbus_port))     
+                        print("USB0: "+str(self.port)+" non_modbus: "+str(self.non_modbus_port)+" modbus: "+str(self.modbus_port))     
                         
                         self.port=self.get_USB_1_DEVICE()
                         
