@@ -24,7 +24,7 @@ class urmini_05_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 591, 421))
+        self.frame.setGeometry(QtCore.QRect(20, 30, 601, 421))
         self.frame.setAutoFillBackground(False)
         self.frame.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "")

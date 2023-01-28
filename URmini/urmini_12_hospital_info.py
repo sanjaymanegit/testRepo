@@ -20,7 +20,7 @@ class urmini_12_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 581, 411))
+        self.frame.setGeometry(QtCore.QRect(20, 30, 601, 421))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.frame.setFont(font)

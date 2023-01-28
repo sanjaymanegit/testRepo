@@ -23,7 +23,7 @@ class urmini_04_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 30, 511, 321))
+        self.frame.setGeometry(QtCore.QRect(30, 40, 511, 321))
         self.frame.setAutoFillBackground(False)
         self.frame.setStyleSheet("background-color: rgb(170, 255, 255);\n"
 "")
@@ -32,7 +32,7 @@ class urmini_04_Ui_MainWindow(object):
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(360, 20, 111, 31))
+        self.label.setGeometry(QtCore.QRect(360, 20, 141, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -125,6 +125,7 @@ class urmini_04_Ui_MainWindow(object):
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
+        self.comboBox_2.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
         
@@ -170,6 +171,7 @@ class urmini_04_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.comboBox_3.setFont(font)
+        self.comboBox_3.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.comboBox_3.setObjectName("comboBox_3")
         
         self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
@@ -181,6 +183,7 @@ class urmini_04_Ui_MainWindow(object):
         font.setWeight(75)
         self.calendarWidget.setFont(font)
         self.calendarWidget.setGridVisible(True)
+        self.calendarWidget.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.calendarWidget.setObjectName("calendarWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)

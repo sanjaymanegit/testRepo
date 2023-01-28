@@ -46,7 +46,7 @@ class urmini_07_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 601, 411))
+        self.frame.setGeometry(QtCore.QRect(20, 30, 601, 421))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
