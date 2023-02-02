@@ -35,7 +35,7 @@ import datetime
 
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
 from reportlab.pdfgen.canvas import Canvas
-import pandas as pd
+#import pandas as pd
 from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
 from reportlab.rl_settings import showBoundary
 
@@ -573,7 +573,7 @@ class mdr_06_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.test_id=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -670,6 +670,7 @@ class mdr_06_Ui_MainWindow(object):
         results=connection.execute("SELECT TEST_ID,BATCH_ID,SHIFT,OPERATOR,METHOD_NAME,SPECIMEN_NUM,TEST_TIME_MIN,TRQ,TEST_TEMP,ARC FROM TEST_MST_MDR WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:            
              self.label_14.setText(str(x[0]).zfill(3))
+             self.test_id=str(x[0])
              self.lineEdit_3.setText(str(x[1]))
              self.comboBox_2.addItem("")
              self.comboBox_2.setItemText(self.i,str(x[2]))
