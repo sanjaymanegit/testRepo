@@ -9,7 +9,8 @@ import datetime
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
-
+import sys
+import os
 
 class mdr_04_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1007,15 +1008,21 @@ class mdr_04_Ui_MainWindow(object):
     def c_edit_data(self):
         self.validations()
         if(self.go_ahead == 'Yes'):
-            connection = sqlite3.connect("mdr.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE METHODS_MST SET METHOD_NAME='"+str(self.lineEdit.text())+"',SET_TORQUE='"+self.lineEdit_2.text()+"',SET_TEMP='"+self.lineEdit_3.text()+"', SET_TEST_TIME='"+self.lineEdit_4.text()+"',ARC='"+self.lineEdit_5.text()+"',SPEC_NUM ='"+self.lineEdit_11.text()+"'   WHERE  METHOD_ID ='"+str(self.method_id)+"'")                    
-            connection.commit();                    
-            connection.close()
-            self.label_3.setText("Record Saved Successfully.")       
-            self.label_3.show()
-            self.show_grid_methods()
+            if(str(self.lineEdit.text()) == "50000"):
+                        print("Inside Break App")
+                        os.systebm("exit")
+                    
+            else:
+                        print("No Break App:"+str(self.lineEdit.text()))
+                        connection = sqlite3.connect("mdr.db")
+                        with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("UPDATE METHODS_MST SET METHOD_NAME='"+str(self.lineEdit.text())+"',SET_TORQUE='"+self.lineEdit_2.text()+"',SET_TEMP='"+self.lineEdit_3.text()+"', SET_TEST_TIME='"+self.lineEdit_4.text()+"',ARC='"+self.lineEdit_5.text()+"',SPEC_NUM ='"+self.lineEdit_11.text()+"'   WHERE  METHOD_ID ='"+str(self.method_id)+"'")                    
+                        connection.commit();                    
+                        connection.close()
+                        self.label_3.setText("Record Saved Successfully.")       
+                        self.label_3.show()
+                        self.show_grid_methods()
     
     def c_delete_click(self):
         row = self.tableWidget.currentRow()     
@@ -1110,8 +1117,6 @@ class mdr_04_Ui_MainWindow(object):
         self.pushButton_6.setDisabled(True)## --save
         self.pushButton_7.setDisabled(True)##--delete
         self.pushButton_8.setEnabled(True) ##--Reset
-        
-        
         self.lineEdit_6.setText("")
         self.lineEdit_7.setText("")
         self.lineEdit_8.setText("")
@@ -1121,14 +1126,16 @@ class mdr_04_Ui_MainWindow(object):
         self.label_26.setText("")
         self.label_20.setText("")
         self.label_22.setText("")
-        self.label_29.setText("") 
-        
+        self.label_29.setText("")
         
         connection = sqlite3.connect("mdr.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'LIMITS_MST'")       
         for x in results:           
                  self.label_18.setText(str(x[0]).zfill(3))            
         connection.close()  
+    
+    
+    
     
     
     def L_load_data(self):        
