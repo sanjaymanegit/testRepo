@@ -532,8 +532,8 @@ class ty_16_Ui_MainWindow(object):
                        
                         # Create secure connection with server and send email 465
             self.context = ssl.create_default_context()           
-            if(self.validation_flg=="TRUE"):
-                    with smtplib.SMTP_SSL(self.smtp_server, 465, context=self.context) as server:
+            if(self.validation_flg=="TRUE"): 
+                    with smtplib.SMTP_SSL(self.smtp_server,465, context=self.context) as server:
                         try:
                             server.login(self.sender_email, self.password)
                             server.sendmail(
