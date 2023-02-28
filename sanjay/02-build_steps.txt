@@ -40,3 +40,5 @@ sudo pyinstaller --onedir --add-data "fci.db:." --add-data "services.db:." --nam
 
 ##### AE #######
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=AE "TY_00_Main.py"
+
+
