@@ -1,0 +1,2 @@
+./reports/emailed/multiple/Report0003.pdf
+./reports/emailed/multiple/Report0008.pdf
