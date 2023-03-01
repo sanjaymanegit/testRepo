@@ -64,7 +64,8 @@ class TY_02f_Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
-        self.frame.setStyleSheet("")
+        #self.frame.setStyleSheet("")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -73,6 +74,7 @@ class TY_02f_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
+        
         self.thickness=0
         self.width=0
         self.inn_dia=0
