@@ -6,6 +6,9 @@ from TY_16_email_setup import ty_16_Ui_MainWindow
 from TY_17_calbration_extentio_mtr import TY_17_Ui_MainWindow
 from usb_bakp import usb_bkp_Ui_MainWindow
 from user_management import users_Ui_MainWindow
+from date_time_set import date_time_set_Ui_MainWindow
+from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
+from change_password import change_pwd_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -20,7 +23,7 @@ class AE_02_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1301, 671))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1301, 700))
         self.frame.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
@@ -349,6 +352,9 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(self.open_new_window4)
         self.pushButton_10.clicked.connect(self.open_new_window5)
         self.pushButton_13.clicked.connect(self.open_new_window6)
+        self.pushButton_3.clicked.connect(self.open_new_window7)
+        self.pushButton_11.clicked.connect(self.open_new_window8)
+        self.pushButton_12.clicked.connect(self.open_new_window9)
         self.frame_2.hide()
         self.pushButton.clicked.connect(self.show_icons)
         self.timer1=QtCore.QTimer()
@@ -435,9 +441,28 @@ class AE_02_Ui_MainWindow(object):
         #self.window=myWindow()
         self.ui=users_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()    
+        self.window.show()
+    
+    def open_new_window7(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=date_time_set_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
-        
+    def open_new_window8(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=spped_setup_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window9(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=change_pwd_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()  
 
 
 if __name__ == "__main__":
