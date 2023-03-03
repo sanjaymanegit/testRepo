@@ -95,6 +95,7 @@ class factory_reset_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Delete Now"))
         self.pushButton_3.setText(_translate("MainWindow", "Close"))
         self.pushButton_3_1.setText(_translate("MainWindow", "Register"))
+        self.pushButton_3_1.hide()
         self.label_4.setText(_translate("MainWindow", "Deleted Data Succefully."))
         self.label_4.hide()
         self.checkBox.setText(_translate("MainWindow", "All Test Data"))

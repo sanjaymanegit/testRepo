@@ -1,4 +1,11 @@
 
+from AE_Register import Register_Ui_MainWindow
+from pop_factory_reset import  factory_reset_Ui_MainWindow
+from TY_15_ADD_EDIT_TEST_TYPE import TY_15_Ui_MainWindow
+from TY_16_email_setup import ty_16_Ui_MainWindow
+from TY_17_calbration_extentio_mtr import TY_17_Ui_MainWindow
+from usb_bakp import usb_bkp_Ui_MainWindow
+from user_management import users_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -336,12 +343,19 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_18.hide()
         #self.pushButton_19.hide()
         self.pushButton_6.clicked.connect(MainWindow.close)
+        self.pushButton_19.clicked.connect(self.open_new_window)
+        self.pushButton_2.clicked.connect(self.open_new_window2)
+        self.pushButton_5.clicked.connect(self.open_new_window3)
+        self.pushButton_8.clicked.connect(self.open_new_window4)
+        self.pushButton_10.clicked.connect(self.open_new_window5)
+        self.pushButton_13.clicked.connect(self.open_new_window6)
         self.frame_2.hide()
         self.pushButton.clicked.connect(self.show_icons)
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
+        self.register_button()
         
         
     def device_date(self):     
@@ -350,6 +364,79 @@ class AE_02_Ui_MainWindow(object):
         
     def show_icons(self):
         self.frame_2.show()
+        
+    
+    def register_button(self):
+        serial_no=self.getserial()
+        #print("current serial No : "+str(serial_no))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select DEVICE_SERIAL_NO from GLOBAL_REPORTS_PARAM") 
+        for x in results:
+           #print("Device Serial No :"+str(x[0]))
+           if(serial_no == str(x[0])):
+               #self.go_ahead="Yes"
+               self.pushButton_19.hide()
+           else:
+               #self.go_ahead="No"
+               self.pushButton_19.show()
+        connection.close()
+        
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+    
+    
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=Register_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+  
+    def open_new_window2(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=TY_15_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+   
+    def open_new_window3(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=factory_reset_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+ 
+    def open_new_window4(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=ty_16_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+  
+    def open_new_window5(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=usb_bkp_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+      
+    def open_new_window6(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=users_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()    
+
         
 
 
