@@ -24,7 +24,7 @@ class spped_setup_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(770, 482)
-        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
+        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -33,6 +33,7 @@ class spped_setup_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
         
         reg_ex = QRegExp("(\\d+\\.\\d+)")
