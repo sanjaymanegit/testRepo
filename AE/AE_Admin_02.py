@@ -9,6 +9,8 @@ from user_management import users_Ui_MainWindow
 from date_time_set import date_time_set_Ui_MainWindow
 from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
 from change_password import change_pwd_Ui_MainWindow
+from AE_MASTER_INFO import Master_info_Ui_MainWindow
+from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -337,10 +339,11 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "USB Reports Backup"))
         self.pushButton_11.setText(_translate("MainWindow", "Speed Setup"))
         self.pushButton_12.setText(_translate("MainWindow", "Change Password"))
+        self.pushButton_14.setText(_translate("MainWindow", "Break App"))
         self.pushButton_13.setText(_translate("MainWindow", "User Management"))
-        self.pushButton_15.setText(_translate("MainWindow", "Load Cell Setup"))
+        self.pushButton_15.setText(_translate("MainWindow", "Load Cell Selection"))
         self.pushButton_19.setText(_translate("MainWindow", "Register"))
-        self.pushButton_14.hide()
+        #self.pushButton_14.hide()
         self.pushButton_16.hide()
         self.pushButton_17.hide()
         self.pushButton_18.hide()
@@ -355,6 +358,10 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.open_new_window7)
         self.pushButton_11.clicked.connect(self.open_new_window8)
         self.pushButton_12.clicked.connect(self.open_new_window9)
+        self.pushButton_4.clicked.connect(self.open_new_window10)
+        self.pushButton_15.clicked.connect(self.open_new_window11)
+        
+        
         self.frame_2.hide()
         self.pushButton.clicked.connect(self.show_icons)
         self.timer1=QtCore.QTimer()
@@ -463,6 +470,20 @@ class AE_02_Ui_MainWindow(object):
         self.ui=change_pwd_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()  
+   
+    def open_new_window10(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=Master_info_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window11(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=load_cell_set_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
 
 
 if __name__ == "__main__":
