@@ -196,7 +196,7 @@ class AE_01_Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Test"))
         self.pushButton_2.setText(_translate("MainWindow", "Reports"))
-        self.pushButton_3.setText(_translate("MainWindow", "Mannual Control"))
+        self.pushButton_3.setText(_translate("MainWindow", "Manual Control"))
         self.pushButton_4.setText(_translate("MainWindow", "Specimens"))
         self.pushButton_5.setText(_translate("MainWindow", "Admin"))
         self.label_2.setText(_translate("MainWindow", "Asian Test Equipments"))

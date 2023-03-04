@@ -43,7 +43,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton.setStyleSheet("background-color: rgb(105, 210, 255);")
         self.pushButton.setObjectName("pushButton")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(540, 10, 121, 51))
+        self.label_2.setGeometry(QtCore.QRect(540, 10, 300, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(24)
@@ -83,6 +83,7 @@ class AE_02_Ui_MainWindow(object):
         font.setPointSize(22)
         self.lineEdit.setFont(font)
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.lineEdit.setText("12345")
         self.lineEdit.setObjectName("lineEdit")
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setGeometry(QtCore.QRect(40, 90, 121, 51))
@@ -325,7 +326,7 @@ class AE_02_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Procced"))
-        self.label_2.setText(_translate("MainWindow", "Admin"))
+        self.label_2.setText(_translate("MainWindow", "Administration"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.label_3.setText(_translate("MainWindow", "Password:"))
@@ -360,6 +361,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_12.clicked.connect(self.open_new_window9)
         self.pushButton_4.clicked.connect(self.open_new_window10)
         self.pushButton_15.clicked.connect(self.open_new_window11)
+        self.pushButton_14.clicked.connect(self.break_app)
         
         
         self.frame_2.hide()
@@ -483,7 +485,12 @@ class AE_02_Ui_MainWindow(object):
         #self.window=myWindow()
         self.ui=load_cell_set_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show() 
+        self.window.show()
+        
+    def break_app(self):
+        os.systbem("edxit")
+        
+        
 
 
 if __name__ == "__main__":

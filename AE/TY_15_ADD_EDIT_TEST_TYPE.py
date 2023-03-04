@@ -31,6 +31,7 @@ class TY_15_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.label_20 = QtWidgets.QLabel(self.frame)
         self.label_20.setGeometry(QtCore.QRect(1050, 20, 221, 41))
         font = QtGui.QFont()

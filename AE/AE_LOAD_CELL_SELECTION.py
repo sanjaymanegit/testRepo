@@ -16,6 +16,7 @@ class load_cell_set_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(2)
         self.frame.setObjectName("frame")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(50, 80, 121, 41))
         font = QtGui.QFont()
