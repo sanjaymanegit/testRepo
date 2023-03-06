@@ -272,6 +272,7 @@ class TY_05_Ui_MainWindow(object):
         self.pushButton_5_1.setFont(font)
         self.pushButton_5_1.setObjectName("pushButton_5_1")
         
+        
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_7.setGeometry(QtCore.QRect(1120, 105, 161, 31))
         font = QtGui.QFont()
@@ -376,11 +377,10 @@ class TY_05_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
+        
+        self.comboBox_2.setStyleSheet("background-color: rgb(215, 255, 252);\n color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        
         self.label_27 = QtWidgets.QLabel(self.frame)
         self.label_27.setGeometry(QtCore.QRect(1010, 400, 101, 31))
         font = QtGui.QFont()
@@ -491,7 +491,7 @@ class TY_05_Ui_MainWindow(object):
         self.label_35.setObjectName("label_35")
         
         self.label_35_1 = QtWidgets.QLabel(self.frame)
-        self.label_35_1.setGeometry(QtCore.QRect(690, 260, 121, 31))
+        self.label_35_1.setGeometry(QtCore.QRect(690, 270, 121, 31))
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(10)
@@ -505,7 +505,7 @@ class TY_05_Ui_MainWindow(object):
         
         
         self.lineEdit_4_1 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_4_1.setGeometry(QtCore.QRect(810, 260, 131, 31))
+        self.lineEdit_4_1.setGeometry(QtCore.QRect(820, 270, 131, 31))
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_4_1)
         self.lineEdit_4_1.setValidator(input_validator)
@@ -517,7 +517,7 @@ class TY_05_Ui_MainWindow(object):
         
         
         self.line = QtWidgets.QFrame(self.frame)
-        self.line.setGeometry(QtCore.QRect(680, 290, 601, 16))
+        self.line.setGeometry(QtCore.QRect(680, 310, 601, 16))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
@@ -564,6 +564,7 @@ class TY_05_Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Add"))
         self.pushButton_3.setText(_translate("MainWindow", "Save"))
         self.pushButton_5_1.setText("Backup/Recovery")
+        self.pushButton_5_1.hide()
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.verticalHeaderItem(1)
@@ -610,6 +611,10 @@ class TY_05_Ui_MainWindow(object):
         self.lineEdit_11.setText(_translate("MainWindow", "4"))
         self.pushButton_9.setText(_translate("MainWindow", "Return"))
         self.lineEdit_12.setText(_translate("MainWindow", "sec name"))
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Rectangle"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Pipe"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "Cylindrical"))

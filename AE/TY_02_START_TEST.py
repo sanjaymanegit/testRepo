@@ -65,7 +65,7 @@ class TY_02_Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
-        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
+        #self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -273,7 +273,7 @@ class TY_02_Ui_MainWindow(object):
         
         
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 530, 1271, 161))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 540, 1271, 161))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(12)
         self.tableWidget.setRowCount(1)
@@ -533,11 +533,12 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton.setFont(font)
-        self.pushButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton.setText("Start")
+        self.pushButton.setStyleSheet("background-color: rgb(255, 180, 188);")
+#        icon = QtGui.QIcon()
+#        icon.addPixmap(QtGui.QPixmap("images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton.setIcon(icon)
+#        self.pushButton.setIconSize(QtCore.QSize(100, 80))
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_2.addWidget(self.pushButton, 1, 0, 1, 1)
         
@@ -580,11 +581,12 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton_5.setFont(font)
-        self.pushButton_5.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("images/show_graphs.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_5.setIcon(icon3)
-        self.pushButton_5.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton_5.setText("All Graphs")
+        self.pushButton_5.setStyleSheet("background-color: rgb(255, 180, 188);")
+#        icon3 = QtGui.QIcon()
+#        icon3.addPixmap(QtGui.QPixmap("images/show_graphs.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton_5.setIcon(icon3)
+#        self.pushButton_5.setIconSize(QtCore.QSize(100, 80))
         self.pushButton_5.setObjectName("pushButton_5")
         self.gridLayout_2.addWidget(self.pushButton_5, 1, 1, 1, 1)
        
@@ -594,11 +596,12 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("images/back.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon4)
-        self.pushButton_4.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton_4.setText("Return")
+        self.pushButton_4.setStyleSheet("background-color: rgb(255, 180, 188);")
+#        icon4 = QtGui.QIcon()
+#        icon4.addPixmap(QtGui.QPixmap("images/back.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton_4.setIcon(icon4)
+#        self.pushButton_4.setIconSize(QtCore.QSize(100, 80))
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayout_2.addWidget(self.pushButton_4, 1, 2, 1, 1)
         
@@ -637,7 +640,7 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_4_1.setFont(font)       
-        self.pushButton_4_1.setGeometry(QtCore.QRect(1130, 495, 131, 31))        
+        self.pushButton_4_1.setGeometry(QtCore.QRect(1130, 500, 131, 31))        
         self.pushButton_4_1.setObjectName("pushButton_4_1")
         
         self.pushButton_4_2 = QtWidgets.QPushButton(self.frame)
@@ -645,7 +648,7 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_4_2.setFont(font)       
-        self.pushButton_4_2.setGeometry(QtCore.QRect(960, 495, 131, 31))        
+        self.pushButton_4_2.setGeometry(QtCore.QRect(960, 500, 131, 31))        
         self.pushButton_4_2.setObjectName("pushButton_4_2")
         
         
@@ -656,7 +659,7 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_4_3.setFont(font)       
-        self.pushButton_4_3.setGeometry(QtCore.QRect(790, 495, 131, 31))        
+        self.pushButton_4_3.setGeometry(QtCore.QRect(790, 500, 131, 31))        
         self.pushButton_4_3.setObjectName("pushButton_4_3")
         
         
@@ -665,7 +668,7 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_4_4.setFont(font)       
-        self.pushButton_4_4.setGeometry(QtCore.QRect(620, 495, 131, 31))        
+        self.pushButton_4_4.setGeometry(QtCore.QRect(620, 500, 131, 31))        
         self.pushButton_4_4.setObjectName("pushButton_4_4")
         
         self.pushButton_4_5 = QtWidgets.QPushButton(self.frame)
@@ -673,7 +676,7 @@ class TY_02_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.pushButton_4_5.setFont(font)        
-        self.pushButton_4_5.setGeometry(QtCore.QRect(520, 495, 70, 31))        
+        self.pushButton_4_5.setGeometry(QtCore.QRect(520, 500, 70, 31))        
         self.pushButton_4_5.setObjectName("pushButton_4_5")
          
         MainWindow.setCentralWidget(self.centralwidget)
@@ -854,9 +857,18 @@ class TY_02_Ui_MainWindow(object):
         except IOError:
             print("IO Errors")
     
+        self.load_login_dtls()
     
     
-    
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()
+        
     def delete_cycle(self):
         if(self.test_type_for_flexural=="Flexural"):
             row = self.tableWidget.currentRow() 
@@ -2020,7 +2032,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", " ","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.login_user_name),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         

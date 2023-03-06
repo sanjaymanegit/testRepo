@@ -11,13 +11,14 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
         MainWindow.setBaseSize(QtCore.QSize(0, 0))
-        MainWindow.setStyleSheet("background-color: rgb(47, 141, 255);\n"
-"border-color: rgb(255, 255, 255);")
+        #MainWindow.setStyleSheet("background-color: rgb(47, 141, 255);\n"
+#"border-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(30, 30, 1291, 711))
-        self.frame.setStyleSheet("color: rgb(255, 255, 255);")
+        #self.frame.setStyleSheet("color: rgb(255, 255, 255);")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
@@ -41,7 +42,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_20.setFont(font)
-        self.label_20.setStyleSheet("color: rgb(255, 255, 255);")
+        #self.label_20.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
@@ -160,7 +161,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color: rgb(85, 255, 255);")
+        #self.label_4.setStyleSheet("color: rgb(85, 255, 255);")
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.label_22 = QtWidgets.QLabel(self.frame)
@@ -292,13 +293,7 @@ class Ui_MainWindow(object):
             self.label_4.setText("Login Id  is Empty.")
             self.label_4.show()
         
-#    def log_audit(self,user_id,event_name,desc_str):
-#        connection = sqlite3.connect("tyr.db")
-#        with connection:        
-#            cursor = connection.cursor()       
-#            cursor.execute("INSERT INTO AUDIT_MST(USER_ID,AUDIT_TYPE,MESSAGE) VALUES(?,?,?)",(user_id,event_name,desc_str))                         
-#        connection.commit();
-#        connection.close()
+
     
     def save_username_role(self,f_name,l_name,u_role,user_id):
         login_user_name = f_name+" "+l_name+" ["+u_role+"]"

@@ -185,6 +185,7 @@ class TY_07_Ui_MainWindow(object):
         
         self.label_9_1.hide()
         self.load_modbus_port()
+        self.load_login_dtls()
         
     def validate_speed(self):
         connection = sqlite3.connect("tyr.db")
@@ -570,6 +571,27 @@ class TY_07_Ui_MainWindow(object):
                     cursor.execute("UPDATE SETTING_MST SET MODBUS_PORT='"+str(self.modbus_port)+"',NON_MODBUS_PORT='"+str(self.non_modbus_port)+"'")            
         connection.commit();
 
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()
+        self.label_221 = QtWidgets.QLabel(self.frame)
+        self.label_221.setGeometry(QtCore.QRect(800, 40, 261, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_221.setFont(font)
+        self.label_221.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_221.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_221.setObjectName("label_221")
+        self.label_221.setText("Login By : "+str(self.login_user_name))
     
 
 if __name__ == "__main__":

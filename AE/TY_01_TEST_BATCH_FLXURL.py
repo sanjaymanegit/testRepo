@@ -538,7 +538,8 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.lineEdit_2_1.textChanged.connect(self.make_zero_on_null)
         self.lineEdit_1_1.textChanged.connect(self.on_change_input_strain)
         self.lineEdit_2_1.textChanged.connect(self.on_change_input_strain)
-        self.load_data() 
+        self.load_data()        
+        self.load_login_dtls()
      
     
     
@@ -851,7 +852,29 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         connection.commit();
         connection.close()     
         
-        
+         
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()
+        self.label_221 = QtWidgets.QLabel(self.frame)
+        self.label_221.setGeometry(QtCore.QRect(1000, 40, 261, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_221.setFont(font)
+        self.label_221.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_221.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_221.setObjectName("label_221")
+        self.label_221.setText("Login By : "+str(self.login_user_name))
+    
 
 
 if __name__ == "__main__":

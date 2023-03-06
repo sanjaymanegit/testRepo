@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'TY_02_START_TEST.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
 
 
 import sys
@@ -65,7 +59,7 @@ class TY_02f_Ui_MainWindow(object):
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
         #self.frame.setStyleSheet("")
-        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
+        #self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -272,7 +266,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 530, 1271, 161))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 540, 1271, 161))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(12)
         self.tableWidget.setRowCount(1)
@@ -558,11 +552,11 @@ class TY_02f_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton.setFont(font)
-        self.pushButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton.setText("Start")
+#        icon = QtGui.QIcon()
+#        icon.addPixmap(QtGui.QPixmap("images/start.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton.setIcon(icon)
+#        self.pushButton.setIconSize(QtCore.QSize(100, 80))
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_2.addWidget(self.pushButton, 1, 0, 1, 1)
         
@@ -605,11 +599,11 @@ class TY_02f_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton_5.setFont(font)
-        self.pushButton_5.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("images/show_graphs.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_5.setIcon(icon3)
-        self.pushButton_5.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton_5.setText("All Graph")
+#        icon3 = QtGui.QIcon()
+#        icon3.addPixmap(QtGui.QPixmap("images/show_graphs.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton_5.setIcon(icon3)
+#        self.pushButton_5.setIconSize(QtCore.QSize(100, 80))
         self.pushButton_5.setObjectName("pushButton_5")
         self.gridLayout_2.addWidget(self.pushButton_5, 1, 1, 1, 1)
        
@@ -619,18 +613,18 @@ class TY_02f_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(12)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("images/back.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon4)
-        self.pushButton_4.setIconSize(QtCore.QSize(100, 80))
+        self.pushButton_4.setText("Return")
+#        icon4 = QtGui.QIcon()
+#        icon4.addPixmap(QtGui.QPixmap("images/back.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.pushButton_4.setIcon(icon4)
+#        self.pushButton_4.setIconSize(QtCore.QSize(100, 80))
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayout_2.addWidget(self.pushButton_4, 1, 2, 1, 1)
         
         
         
         self.radioButton = QtWidgets.QRadioButton(self.frame)
-        self.radioButton.setGeometry(QtCore.QRect(1180, 80, 141, 31))
+        self.radioButton.setGeometry(QtCore.QRect(1180, 80, 111, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -638,7 +632,7 @@ class TY_02f_Ui_MainWindow(object):
         self.radioButton.setChecked(False)
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
-        self.radioButton_2.setGeometry(QtCore.QRect(1180, 120, 141, 31))
+        self.radioButton_2.setGeometry(QtCore.QRect(1180, 120, 111, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -672,7 +666,7 @@ class TY_02f_Ui_MainWindow(object):
         self.lineEdit_3_1.setObjectName("lineEdit_3_1")
         
         self.label_3_2 = QtWidgets.QLabel(self.frame)
-        self.label_3_2.setGeometry(QtCore.QRect(1040, 155, 301, 41))
+        self.label_3_2.setGeometry(QtCore.QRect(1040, 155, 101, 41))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -846,6 +840,18 @@ class TY_02f_Ui_MainWindow(object):
         except IOError:
             print("IO Errors")
     
+        self.load_login_dtls()
+    
+    
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()
+    
     def on_change_input_strain(self):
         self.inut_strain_mm=0
         self.per_strain_mm=0
@@ -949,7 +955,7 @@ class TY_02f_Ui_MainWindow(object):
            
     def flexual_objects(self):
         self.label_3_3= QtWidgets.QLabel(self.frame)
-        self.label_3_3.setGeometry(QtCore.QRect(1010, 490, 80, 31))
+        self.label_3_3.setGeometry(QtCore.QRect(1010, 500, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -962,7 +968,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.lineEdit_3_3 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3_3.setGeometry(QtCore.QRect(1080, 490, 38, 31))
+        self.lineEdit_3_3.setGeometry(QtCore.QRect(1080, 500, 38, 31))
         reg_ex = QRegExp("(\d+(\.\d+)?)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_3_3)
         self.lineEdit_3_3.setValidator(input_validator)        
@@ -977,7 +983,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.pushButton_3_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_3.setGeometry(QtCore.QRect(1130, 490, 40, 31))
+        self.pushButton_3_3.setGeometry(QtCore.QRect(1130, 500, 40, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -992,7 +998,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.pushButton_3_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_4.setGeometry(QtCore.QRect(1185, 490, 40, 31))
+        self.pushButton_3_4.setGeometry(QtCore.QRect(1185, 500, 40, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1006,7 +1012,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.pushButton_3_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_5.setGeometry(QtCore.QRect(1240, 490, 40, 31))
+        self.pushButton_3_5.setGeometry(QtCore.QRect(1240, 500, 40, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1019,7 +1025,7 @@ class TY_02f_Ui_MainWindow(object):
         self.pushButton_3_5.setObjectName("pushButton_3_5")
        
         self.label_3_4= QtWidgets.QLabel(self.frame)
-        self.label_3_4.setGeometry(QtCore.QRect(790, 490, 150, 31))
+        self.label_3_4.setGeometry(QtCore.QRect(790, 500, 150, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1032,7 +1038,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.lineEdit_3_4 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3_4.setGeometry(QtCore.QRect(890, 490, 100, 31))               
+        self.lineEdit_3_4.setGeometry(QtCore.QRect(890, 500, 100, 31))               
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1045,7 +1051,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.label_3_5= QtWidgets.QLabel(self.frame)
-        self.label_3_5.setGeometry(QtCore.QRect(470, 490, 80, 31))
+        self.label_3_5.setGeometry(QtCore.QRect(470, 500, 80, 31))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1058,7 +1064,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.lineEdit_3_5 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3_5.setGeometry(QtCore.QRect(570, 490, 200, 31))               
+        self.lineEdit_3_5.setGeometry(QtCore.QRect(570, 500, 200, 31))               
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
@@ -1629,7 +1635,7 @@ class TY_02f_Ui_MainWindow(object):
         
         if (int(self.label_26.text()) > 0):
             self.label_36.setText(str(rows[0][8]))
-            self.label_38.setText(str(rows[0][9]))
+            self.label_38.setText(str(round(rows[0][9],1)))
             #self.label_34.setProperty("value", str(rows[0][8]))#load
             #self.label_40.setProperty("value",str(rows[0][9]))   #length 
         else:
@@ -1706,7 +1712,7 @@ class TY_02f_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.TEMPERATURE  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", " "," Temp.(C) :",str(x[12])]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.login_user_name)," Temp.(C) :",str(x[12])]]
             self.length=str(x[6])        
         connection.close()
         

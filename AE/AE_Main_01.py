@@ -221,7 +221,7 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.open_new_window_motor)
         self.pushButton_4.clicked.connect(self.open_new_window_specimen)
         #self.pushButton.clicked.connect(self.open_new_window_Tensile)
-        self.pushButton.clicked.connect(self.open_new_test_win)
+        self.pushButton.clicked.connect(self.validate_Register)
         self.pushButton_2.clicked.connect(self.open_new_report_win)
         
         self.listWidget.doubleClicked.connect(self.selected_record)
@@ -247,6 +247,7 @@ class AE_01_Ui_MainWindow(object):
         self.listWidget.setCurrentRow(0)
         self.selected_record()
         #self.load_modbus_port()
+        self.load_login_dtls()
         
         
    
@@ -285,7 +286,45 @@ class AE_01_Ui_MainWindow(object):
         self.window.show()
         
         
-    def open_new_test_win(self):         
+    def validate_Register(self):        
+        f = open("/var/local/devid", "r")
+        dev_id=f.read()
+        f.close()
+        serial_no=self.getserial()
+        #print("current serial No : "+str(serial_no))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select DEVICE_SERIAL_NO from GLOBAL_REPORTS_PARAM") 
+        for x in results:
+           #print("Device Serial No :"+str(x[0]))
+           if(serial_no == str(x[0])):
+               self.go_ahead="Yes"
+           else:
+               self.go_ahead="No"
+        connection.close()
+        if(self.go_ahead=="Yes"):  
+            if(dev_id =='201910:0003'):
+                self.open_new_test_win()       
+            else:
+                #print("dev id :"+str(dev_id))
+                self.label_9021.setText("<font color=black> Registration Problem.</font>")
+        else:
+           print("Device Invalid :"+str(serial_no))    
+        
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+                
+    def open_new_test_win(self):
+        
         if(str(self.test_type_id) == "1"):
             self.save_test_tensile()
             self.open_new_window()
@@ -607,6 +646,88 @@ class AE_01_Ui_MainWindow(object):
         self.ui=TY_33_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+        connection.close()
+        self.label_21 = QtWidgets.QLabel(self.frame)
+        self.label_21.setGeometry(QtCore.QRect(1000, 40, 261, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_21.setFont(font)
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_21.setObjectName("label_21")
+        self.label_21.setText("Login By : "+str(self.login_user_name))
+        
+        
+        
+        self.pushButton_902 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_902.setGeometry(QtCore.QRect(550, 590, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_902.setFont(font)
+        self.pushButton_902.setStyleSheet("color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")
+        
+        self.pushButton_902.setObjectName("pushButton_902")
+        self.pushButton_905 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_905.setGeometry(QtCore.QRect(720, 590, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_905.setFont(font)
+        self.pushButton_905.setStyleSheet("color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
+        self.pushButton_905.setObjectName("pushButton_905")
+        self.label_9021 = QtWidgets.QLabel(self.frame)
+        self.label_9021.setGeometry(QtCore.QRect(880, 580, 331, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_9021.setFont(font)
+        self.label_9021.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_9021.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_9021.setObjectName("label_9021")
+        
+        self.pushButton_902.setText("SHUT DOWN")
+        self.pushButton_905.setText("REBOOT")
+        self.pushButton_902.clicked.connect(self.shutdown_system)
+        self.pushButton_905.clicked.connect(self.reboot_system)
+        self.anydesk_open()
+        
+    
+    def shutdown_system(self):
+        os.system("sudo shutdown -P 0")
+        
+    def reboot_system(self):
+        os.system("sudo reboot")
+        
+    def anydesk_open(self):
+        self.anydesk_id =0
+        os.system("rm -rf anydes_id_f.txt")
+        os.system("anydesk --get-alias >> anydes_id_f.txt")
+        f = open('anydes_id_f.txt','r')
+        for line in f:                 
+                    self.anydesk_id = line[0:29]
+        print("self.anydesk_id:"+str(self.anydesk_id))
+        self.label_9021.setText("<font color=blue> AnyDesk ID:  </font> <font color=green>"+str(self.anydesk_id)+"</font>")
+        f.close()
 
 
 if __name__ == "__main__":

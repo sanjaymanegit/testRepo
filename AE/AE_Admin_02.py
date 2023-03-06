@@ -25,7 +25,7 @@ class AE_02_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 30, 1301, 700))
+        self.frame.setGeometry(QtCore.QRect(30, 40, 1301, 700))
         self.frame.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
@@ -65,7 +65,7 @@ class AE_02_Ui_MainWindow(object):
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1080, 60, 151, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(1080, 80, 151, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -80,10 +80,10 @@ class AE_02_Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(180, 90, 291, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(22)
+        font.setPointSize(32)
         self.lineEdit.setFont(font)
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.lineEdit.setText("12345")
+        #self.lineEdit.setText("12345")
         self.lineEdit.setObjectName("lineEdit")
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setGeometry(QtCore.QRect(40, 90, 121, 51))
@@ -371,6 +371,7 @@ class AE_02_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.register_button()
+        self.load_login_dtls()
         
         
     def device_date(self):     
@@ -378,7 +379,23 @@ class AE_02_Ui_MainWindow(object):
         
         
     def show_icons(self):
-        self.frame_2.show()
+        self.go_ahead="success"     
+        #username=self.lineEdit.text()
+        password=self.lineEdit.text()
+        if(str(password) != ""):            
+            #print(" user name :"+str(username)+" password :"+str(password))
+            connection = sqlite3.connect("tyr.db")            
+            results=connection.execute("select pwd from users_mst where user_id in (select login_user_id from global_var)")        
+            rows=results.fetchall()
+            if(str(password) == str(rows[0][0])):                   
+                  self.frame_2.show()  
+            else :
+                   self.frame_2.hide()
+                   self.go_ahead="No"               
+            connection.close()
+        else:
+           null;
+        
         
     
     def register_button(self):
@@ -490,7 +507,33 @@ class AE_02_Ui_MainWindow(object):
     def break_app(self):
         os.systbem("edxit")
         
-        
+    
+    def load_login_dtls(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
+        for x in results:           
+                 self.login_user_id=str(x[0])
+                 self.login_user_role=str(x[1])
+                 self.login_user_name=str(x[2])
+                 if(str(x[1]) == 'OPERATOR'):
+                       self.pushButton_8.setDisabled(True)
+                       self.pushButton_13.setDisabled(True)
+                       self.pushButton_5.setDisabled(True)
+                 
+        connection.close()
+        self.label_21 = QtWidgets.QLabel(self.frame)
+        self.label_21.setGeometry(QtCore.QRect(1000, 40, 261, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        self.label_21.setFont(font)
+        self.label_21.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_21.setObjectName("label_21")
+        self.label_21.setText("Login By : "+str(self.login_user_name))
 
 
 if __name__ == "__main__":

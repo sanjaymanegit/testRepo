@@ -20,7 +20,7 @@ class TY_06_Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(30, 30, 1331, 705))
-        self.frame.setStyleSheet("")
+        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
         '''
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -28,7 +28,7 @@ class TY_06_Ui_MainWindow(object):
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
-        self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
+        #self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
         
         self.shape=""       
@@ -70,7 +70,7 @@ class TY_06_Ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setGeometry(QtCore.QRect(20, 111, 1291, 411))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setStyleSheet("background-color: rgb(221, 255, 234);")
+        #self.tableWidget.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
         '''
