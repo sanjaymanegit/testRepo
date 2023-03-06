@@ -394,7 +394,7 @@ class AE_02_Ui_MainWindow(object):
                    self.go_ahead="No"               
             connection.close()
         else:
-           null;
+           self.frame_2.hide()
         
         
     
