@@ -11,6 +11,7 @@ from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
 from change_password import change_pwd_Ui_MainWindow
 from AE_MASTER_INFO import Master_info_Ui_MainWindow
 from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
+from callibration_loadcell import callibration_load_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -361,6 +362,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_12.clicked.connect(self.open_new_window9)
         self.pushButton_4.clicked.connect(self.open_new_window10)
         self.pushButton_15.clicked.connect(self.open_new_window11)
+        self.pushButton_9.clicked.connect(self.open_new_window12)
         self.pushButton_14.clicked.connect(self.break_app)
         
         
@@ -501,6 +503,13 @@ class AE_02_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         #self.window=myWindow()
         self.ui=load_cell_set_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window12(self):       
+        self.window = QtWidgets.QMainWindow()
+        #self.window=myWindow()
+        self.ui=callibration_load_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
