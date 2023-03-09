@@ -302,10 +302,10 @@ class AE_01_Ui_MainWindow(object):
                self.go_ahead="No"
         connection.close()
         if(self.go_ahead=="Yes"):  
-            if(dev_id =='201910:0003'):
+            if(str(dev_id)[0:11] =='201910:0003'):
                 self.open_new_test_win()       
             else:
-                #print("dev id :"+str(dev_id))
+                print("dev id :"+str(dev_id)[0:11])
                 self.label_9021.setText("<font color=black> Registration Problem.</font>")
         else:
            print("Device Invalid :"+str(serial_no))    
