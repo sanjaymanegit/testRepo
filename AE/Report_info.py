@@ -2,7 +2,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import datetime
+import sqlite3
+from PyQt5.QtCore import QDate
+import os,sys
 
 class report_info_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -17,7 +20,7 @@ class report_info_Ui_MainWindow(object):
         self.frame_3.setLineWidth(3)
         self.frame_3.setObjectName("frame_3")
         self.label_49 = QtWidgets.QLabel(self.frame_3)
-        self.label_49.setGeometry(QtCore.QRect(20, 40, 81, 31))
+        self.label_49.setGeometry(QtCore.QRect(20, 20, 101, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -59,6 +62,7 @@ class report_info_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox.setFont(font)
         self.comboBox.setObjectName("comboBox")
+        self.comboBox.setStyleSheet(" color: rgb(0, 0, 0);")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.label_3 = QtWidgets.QLabel(self.frame)
@@ -75,6 +79,7 @@ class report_info_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.setStyleSheet(" color: rgb(0, 0, 0);")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
@@ -94,6 +99,7 @@ class report_info_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_5.setFont(font)
         self.comboBox_5.setObjectName("comboBox_5")
+        self.comboBox_5.setStyleSheet(" color: rgb(0, 0, 0);")
         self.comboBox_5.addItem("")
         self.comboBox_5.addItem("")
         self.comboBox_5.addItem("")
@@ -222,6 +228,13 @@ class report_info_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Comment"))
         self.pushButton_5.setText(_translate("MainWindow", "Email Report"))
         self.pushButton_7.clicked.connect(MainWindow.close)
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+    
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
 
 
 if __name__ == "__main__":

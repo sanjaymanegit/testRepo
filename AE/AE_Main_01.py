@@ -15,7 +15,8 @@ from TY_26_START_TEST_FOUND_BRK_TEST import TY_26_Ui_MainWindow
 from TY_29_START_TEST_PROOF import ty_29_Ui_MainWindow
 from TY_32_START_TEST_CYCLICK import TY_32_Ui_MainWindow
 
-from TY_03_REPORTS import TY_03_Ui_MainWindow
+#from TY_03_REPORTS import TY_03_Ui_MainWindow
+from Report_filter import report_filter_Ui_MainWindow
 from TY_21_SP_REPORT_TENSILE_8 import TY_13_T8_Ui_MainWindow
 from TY_24_SP_REPORT_PEELOFF import TY_24_PEEL_OFF_Ui_MainWindow
 from TY_27_SP_REPORT_FOUND_BRK_TEST import TY_27_FBST_Ui_MainWindow
@@ -587,7 +588,7 @@ class AE_01_Ui_MainWindow(object):
     
     def open_report_window(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_03_Ui_MainWindow()
+        self.ui=report_filter_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()    
    
