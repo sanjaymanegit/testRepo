@@ -175,7 +175,7 @@ class report_info_Ui_MainWindow(object):
         self.pushButton_3.setStyleSheet("background-color: rgb(120, 165, 146);")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame_2)
-        self.pushButton_4.setGeometry(QtCore.QRect(20, 150, 141, 41))
+        self.pushButton_4.setGeometry(QtCore.QRect(30, 150, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)

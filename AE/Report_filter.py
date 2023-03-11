@@ -2,6 +2,7 @@
 
 from Report_info import report_info_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QTableWidgetItem
 import datetime
 import sqlite3
 from PyQt5.QtCore import QDate
@@ -104,8 +105,8 @@ class report_filter_Ui_MainWindow(object):
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.setStyleSheet(" color: rgb(0, 0, 0);")
         self.comboBox_2.addItem("")
-        self.label_8 = QtWidgets.QLabel(self.frame_3)
-        self.label_8.setGeometry(QtCore.QRect(350, 20, 91, 31))
+        self.label_8 = QtWidgets.QPushButton(self.frame_3)
+        self.label_8.setGeometry(QtCore.QRect(350, 20, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -129,8 +130,8 @@ class report_filter_Ui_MainWindow(object):
         self.comboBox_4.setFont(font)
         self.comboBox_4.setObjectName("comboBox_4")
         self.comboBox_4.addItem("")
-        self.label_9 = QtWidgets.QLabel(self.frame_3)
-        self.label_9.setGeometry(QtCore.QRect(350, 70, 91, 31))
+        self.label_9 = QtWidgets.QPushButton(self.frame_3)
+        self.label_9.setGeometry(QtCore.QRect(350, 70, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -251,21 +252,25 @@ class report_filter_Ui_MainWindow(object):
         self.line_2.setLineWidth(3)
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setObjectName("line_2")
-        self.frame_2 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_2.setGeometry(QtCore.QRect(300, 420, 1041, 311))
-        self.frame_2.setStyleSheet("background-color: rgb(170, 255, 255);")
-        self.frame_2.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame_2.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_2.setLineWidth(3)
-        self.frame_2.setObjectName("frame_2")
-        self.tableWidget = QtWidgets.QTableWidget(self.frame_2)
-        self.tableWidget.setGeometry(QtCore.QRect(20, 20, 1001, 261))
+        
+#        self.frame_2 = QtWidgets.QFrame(self.centralwidget)
+#        self.frame_2.setGeometry(QtCore.QRect(300, 420, 1041, 311))
+#        self.frame_2.setStyleSheet("background-color: rgb(170, 255, 255);")
+#        self.frame_2.setFrameShape(QtWidgets.QFrame.Box)
+#        self.frame_2.setFrameShadow(QtWidgets.QFrame.Plain)
+#        self.frame_2.setLineWidth(3)
+#        self.frame_2.setObjectName("frame_2")
+        
+        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget.setGeometry(QtCore.QRect(300, 420, 1031, 291))  #1030, 390, 301, 31
         self.tableWidget.setStyleSheet("")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(8)
         self.tableWidget.setRowCount(1)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, item)
+        
+        #item = QtWidgets.QTableWidgetItem()
+        #self.tableWidget.setVerticalHeaderItem(0, item)
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -274,6 +279,8 @@ class report_filter_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(0, item)
+        
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -330,12 +337,14 @@ class report_filter_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(7, item)
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         item.setFont(font)
         self.tableWidget.setItem(0, 0, item)
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -378,6 +387,7 @@ class report_filter_Ui_MainWindow(object):
         font.setPointSize(10)
         item.setFont(font)
         self.tableWidget.setItem(0, 7, item)
+        
         self.calendarWidget_2 = QtWidgets.QCalendarWidget(self.frame)
         self.calendarWidget_2.setGeometry(QtCore.QRect(470, 40, 312, 183))
         font = QtGui.QFont()
@@ -569,6 +579,16 @@ class report_filter_Ui_MainWindow(object):
         self.radioButton_6.clicked.connect(self.search_batch_id_onclick)
         self.radioButton_9.clicked.connect(self.tested_by_onclick)
         self.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
+        self.pushButton_9.clicked.connect(self.select_all_tests)
+        
+        #self.comboBox_2.currentTextChanged.connect(self.party_onchange)
+        #self.comboBox_3.currentTextChanged.connect(self.load_job_names)
+        self.label_8.clicked.connect(self.load_batch_ids)
+        self.label_9.clicked.connect(self.load_job_names)
+        
+        
+        
+        
         
         self.calendarWidget.clicked.connect(self.calendar1_on_click)
         self.calendarWidget_2.clicked.connect(self.calendar2_on_click)
@@ -579,11 +599,20 @@ class report_filter_Ui_MainWindow(object):
         self.lineEdit.setReadOnly(True)
         self.lineEdit_2.setReadOnly(True)
         
+        self.label_8.setDisabled(True)
+        self.comboBox_3.setDisabled(True)
+        self.label_9.setDisabled(True)
+        self.comboBox_4.setDisabled(True)
+        self.comboBox_3.clear()
+        self.comboBox_4.clear()
+        
+        
         self.By_date_range_onclick()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
+        self.select_all_tests()
     
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -649,9 +678,147 @@ class report_filter_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=report_info_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()   
-       
+        self.window.show()
+    
+    def load_parties(self):
+        self.i=0
+        self.comboBox_2.clear()
+          
+        self.from_dt=self.lineEdit.text()
+        self.to_dt=self.lineEdit_2.text()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT DISTINCT B.PARTY_NAME FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+        for x in results:            
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.i,str(x[0]))
+            #print("i :"+str(x[0]))
+            self.i=self.i+1
+            self.label_8.setEnabled(True)
+        connection.close()
+        
+        
+    def load_batch_ids(self):
+        self.i=0
+        self.comboBox_3.clear()        
+        self.from_dt=self.lineEdit.text()
+        self.to_dt=self.lineEdit_2.text()
+        if(self.comboBox_2.currentText() != ""):
+                connection = sqlite3.connect("tyr.db")                
+                print("SELECT DISTINCT B.BATCH_ID FROM TEST_MST B where B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                   
+                results=connection.execute("SELECT DISTINCT B.BATCH_ID FROM TEST_MST B where B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+                for x in results:            
+                    self.comboBox_3.addItem("")
+                    self.comboBox_3.setItemText(self.i,str(x[0]))
+                    #print("i :"+str(x[0]))
+                    self.i=self.i+1
+                    self.label_8.setEnabled(True)
+                    self.label_9.setEnabled(True)
+                    self.comboBox_3.setEnabled(True)            
+                connection.close()
+                print("calledxx")
+                #self.load_job_names()
+        
+    def load_job_names(self):
+        self.comboBox_4.clear()
+        self.i=0        
+        self.from_dt=self.lineEdit.text()
+        self.to_dt=self.lineEdit_2.text()
+        if(self.comboBox_3.currentText() != ""):
+                connection = sqlite3.connect("tyr.db")                
+                print("SELECT DISTINCT B.JOB_NAME FROM TEST_MST B where B.BATCH_ID='"+self.comboBox_3.currentText()+"' and B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                   
+                results=connection.execute("SELECT DISTINCT B.JOB_NAME FROM TEST_MST B where B.BATCH_ID='"+self.comboBox_3.currentText()+"' and B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+                for x in results:            
+                    self.comboBox_4.addItem("")
+                    self.comboBox_4.setItemText(self.i,str(x[0]))
+                    #print("i :"+str(x[0]))
+                    self.i=self.i+1
+                    self.label_9.setEnabled(True)
+                    self.comboBox_4.setEnabled(True)            
+                connection.close()
+                print("batchid-calledxx")   
+        
+        
+        
+        
+    def select_all_tests(self):        
+        #self.pushButton_14_1.setEnabled(True)
+        self.from_dt=self.lineEdit.text()
+        self.to_dt=self.lineEdit_2.text()
+        self.party_name=str(self.comboBox_2.currentText())
+        self.batch_id=str(self.comboBox_3.currentText())
+        self.job_name=str(self.comboBox_4.currentText())
+        #self.unit_type=str(self.comboBox_5.currentText())
+        self.unit_type=""
+        
+        print("frm:"+str(self.from_dt)+"   to:"+str(self.to_dt))
+        self.specimen_shape=""
+        
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        #font.setBold(True)
+        #font.setWeight(75)
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 50)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 300)
+        self.tableWidget.setColumnWidth(6, 150)
+        
       
+       
+        
+        self.tableWidget.setHorizontalHeaderLabels(['Test No.','Batch Name','Job Name','Cycles','Tested By','Created On','Test-Type','Party Name'])        
+         
+        connection = sqlite3.connect("tyr.db")  
+        if(str(self.party_name != "")):
+            results=connection.execute("SELECT B.TEST_ID,B.BATCH_ID,B.JOB_NAME,2,NULL,B.CREATED_ON,B.TEST_TYPE,B.PARTY_NAME FROM TEST_MST B where B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+            print("1")
+            if(str(self.batch_id) != ""):
+                  results=connection.execute("SELECT B.TEST_ID,B.BATCH_ID,B.JOB_NAME,2,NULL,B.CREATED_ON,B.TEST_TYPE,B.PARTY_NAME FROM TEST_MST B where B.BATCH_ID='"+self.comboBox_3.currentText()+"' and B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+                  print("2")
+                  if(str(self.job_name) != ""):
+                          results=connection.execute("SELECT B.TEST_ID,B.BATCH_ID,B.JOB_NAME,2,NULL,B.CREATED_ON,B.TEST_TYPE,B.PARTY_NAME FROM TEST_MST B where B.JOB_NAME = '"+self.comboBox_4.currentText()+"' and B.BATCH_ID='"+self.comboBox_3.currentText()+"' and B.PARTY_NAME='"+self.comboBox_2.currentText()+"' and B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+                          print("3")
+        else:    
+            results=connection.execute("SELECT B.TEST_ID,B.BATCH_ID,B.JOB_NAME,2,NULL,B.CREATED_ON,B.TEST_TYPE,B.PARTY_NAME FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE !='CYCLICK'")                        
+       
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                if(int(column_number) == 0):                  
+                    item = QtWidgets.QTableWidgetItem()
+                    item.setText(str(data))
+                    self.tableWidget.setItem(row_number,column_number,item)                    
+                else:
+                    self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.verticalHeader().hide()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+        connection = sqlite3.connect("tyr.db")          
+        with connection:        
+                cursor = connection.cursor()
+                cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"'")
+                cursor.execute("DELETE FROM TEST_IDS")
+                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"'") 
+        connection.commit();
+        connection.close()
+        self.load_parties()
+    
+    def delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1            
+            self.tableWidget.removeRow(i)
 
 if __name__ == "__main__":
     import sys
