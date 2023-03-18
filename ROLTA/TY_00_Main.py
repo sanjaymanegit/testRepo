@@ -2,7 +2,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from RL_01_START_TEST_EXPANSION import RL_01_Ui_MainWindow
+from RL_01_START_TEST_EXPANSION_5 import RL_01_Ui_MainWindow
 
 #from TY_03_REPORTS import TY_03_Ui_MainWindow
 
@@ -22,49 +22,42 @@ import sys,os
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1367, 768)
+        #MainWindow.resize(1367, 768)
+        #MainWindow.resize(1824, 984)
+        MainWindow.resize(1920, 1080)
         MainWindow.setBaseSize(QtCore.QSize(15, 11))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(100, 70, 1161, 631))
-        '''
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        '''
+        #self.frame.setGeometry(QtCore.QRect(100, 70, 1161, 631))
+        self.frame.setGeometry(QtCore.QRect(30, 20, 1851, 1001))
+        
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         
         self.frame.setObjectName("frame")
-        '''
-        self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(440, 310, 191, 181))
-        self.pushButton_5.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/motor5.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_5.setIcon(icon)
-        self.pushButton_5.setIconSize(QtCore.QSize(200, 160))
-        self.pushButton_5.setObjectName("pushButton_5")
-        '''
+        
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(100, 310, 201, 181))
+        self.pushButton_4.setGeometry(QtCore.QRect(300, 510, 201, 181))
         self.pushButton_4.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("images/sample.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_4.setIcon(icon1)
         self.pushButton_4.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_4.setObjectName("pushButton_4")
+        
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(100, 50, 201, 181))
+        self.pushButton.setGeometry(QtCore.QRect(300, 250, 201, 181))
         self.pushButton.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("images/test.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon2)
         self.pushButton.setIconSize(QtCore.QSize(200, 160))
         self.pushButton.setObjectName("pushButton")
+        
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(440, 50, 191, 181))
+        self.pushButton_2.setGeometry(QtCore.QRect(760, 250, 191, 181))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -80,7 +73,7 @@ class Ui_MainWindow(object):
         
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         #self.pushButton_3.setGeometry(QtCore.QRect(760, 310, 201, 181))
-        self.pushButton_3.setGeometry(QtCore.QRect(440, 310, 191, 181))
+        self.pushButton_3.setGeometry(QtCore.QRect(760, 510, 191, 181))
         self.pushButton_3.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("images/setting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -91,7 +84,7 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 400, 300))
+        self.pushButton_3_1.setGeometry(QtCore.QRect(1210, 250, 400, 300))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton_3_1.setFont(font)
@@ -112,12 +105,12 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         '''
         self.label_3_1 = QtWidgets.QLabel(self.frame)
-        self.label_3_1.setGeometry(QtCore.QRect(530, 420, 191, 181))
+        self.label_3_1.setGeometry(QtCore.QRect(760, 620, 191, 181))
         self.label_3_1.setText("Setting")
         self.label_3_1.setObjectName("label_3_1")
         
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(810, 550, 90, 26))
+        self.pushButton_6.setGeometry(QtCore.QRect(1310, 850, 90, 26))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)        
@@ -126,7 +119,7 @@ class Ui_MainWindow(object):
         self.pushButton_6.setObjectName("pushButton_6")
         
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(910, 550, 90, 26))
+        self.pushButton_7.setGeometry(QtCore.QRect(1410, 850, 90, 26))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)        
@@ -136,7 +129,7 @@ class Ui_MainWindow(object):
         
        
         self.label_4_1 = QtWidgets.QLabel(self.frame)
-        self.label_4_1.setGeometry(QtCore.QRect(810, 590, 361, 126))
+        self.label_4_1.setGeometry(QtCore.QRect(1310, 890, 361, 126))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)
