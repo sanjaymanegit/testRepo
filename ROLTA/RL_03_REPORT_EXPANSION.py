@@ -772,7 +772,7 @@ class RL_03_Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_19.setObjectName("pushButton_19")
         self.pushButton_20 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_20.setGeometry(QtCore.QRect(300, 670, 91, 31))
+        self.pushButton_20.setGeometry(QtCore.QRect(300, 570, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
