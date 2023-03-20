@@ -391,6 +391,8 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_52.setStyleSheet("color: rgb(0, 0, 127);")
         self.lineEdit_52.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_52.setObjectName("lineEdit_52")
+        
+        '''
         self.pushButton_15 = QtWidgets.QPushButton(self.frame)
         self.pushButton_15.setGeometry(QtCore.QRect(910, 30, 121, 31))
         font = QtGui.QFont()
@@ -399,9 +401,30 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_15.setFont(font)
-        self.pushButton_15.setStyleSheet("background-color: rgb(190, 90, 134);\n"
-"color: rgb(255, 255, 255);")
+#        self.pushButton_15.setStyleSheet("border-radius:20px;\n"
+#            " background-color: rgb(190, 90, 134);\n"
+#"color: rgb(255, 255, 255); ")
+        self.pushButton_15.setStyleSheet("border-radius:20px;\n"
+        "background-color: rgb(255, 170, 255);")
+
         self.pushButton_15.setObjectName("pushButton_15")
+        
+        '''
+        
+        self.pushButton_15 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_15.setGeometry(QtCore.QRect(870, 30, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_15.setFont(font)
+        self.pushButton_15.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(255, 170, 255);")
+        self.pushButton_15.setObjectName("pushButton_15")
+        
+        
+        
         self.pushButton = QtWidgets.QPushButton(self.frame)
         self.pushButton.setGeometry(QtCore.QRect(1570, 20, 211, 111))
         self.pushButton.setText("")
@@ -798,25 +821,27 @@ class RL_01_Ui_MainWindow(object):
         self.graphicsView_3.setObjectName("graphicsView_3")
         self.gridLayout.addWidget(self.graphicsView_3, 0, 2, 1, 1)
         self.pushButton_21 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_21.setGeometry(QtCore.QRect(1350, 820, 91, 21))
+        self.pushButton_21.setGeometry(QtCore.QRect(1350, 810, 100, 50))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_21.setFont(font)
-        self.pushButton_21.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+        self.pushButton_21.setStyleSheet("border-radius:20px;\n"
+            "background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_21.setObjectName("pushButton_21")
         self.pushButton_22 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_22.setGeometry(QtCore.QRect(1510, 820, 161, 21))
+        self.pushButton_22.setGeometry(QtCore.QRect(1510, 810, 100, 50))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_22.setFont(font)
-        self.pushButton_22.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+        self.pushButton_22.setStyleSheet("border-radius:20px;\n"
+            "background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_22.setObjectName("pushButton_22")
         self.comboBox = QtWidgets.QComboBox(self.frame)
@@ -1036,7 +1061,7 @@ class RL_01_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
        
-        self.load_data()
+        #self.load_data()
         #self.graph_type_pressure()
     
     def start_test_1_or_2(self):
@@ -1149,7 +1174,9 @@ class RL_01_Ui_MainWindow(object):
         
                 
     def start_test_expansion(self):
-    
+        self.pushButton_21.show()
+        self.pushButton_22.hide()
+        self.pushButton_21.setDisabled(True)
         self.validation() 
         self.disable_all()
         self.pushButton_9.setEnabled(True)
@@ -1343,6 +1370,10 @@ class RL_01_Ui_MainWindow(object):
 
         
     def start2_test_expansion(self):
+        
+        self.pushButton_21.hide()
+        self.pushButton_22.show()
+        self.pushButton_22.setDisabled(True)
     
         self.validation() 
         self.disable_all()
@@ -1672,6 +1703,9 @@ class RL_01_Ui_MainWindow(object):
     
     def reset(self):        
                 
+            self.label_15.show()
+            self.label_15.setText("Data Saving is in progress....wait.")
+            
             
             if(self.sc_new.timer1.isActive()): 
                   self.sc_new.timer1.stop()
@@ -1689,8 +1723,8 @@ class RL_01_Ui_MainWindow(object):
             if(self.timer4.isActive()): 
                   self.timer4.stop()
                   
-            self.label_15.show()
-            self.label_15.setText("Data Saved Successful")
+#            self.label_15.show()
+#            self.label_15.setText("Data Saved Successful")
                   
             self.lcdNumber.setProperty("value", 0.0)
             self.lcdNumber_2.setProperty("value", 0.0)
@@ -1698,7 +1732,6 @@ class RL_01_Ui_MainWindow(object):
             self.pushButton_9.setDisabled(True)
             
     def show_load_cell_val(self):       
-             
             self.lcdNumber_2.setProperty("value", str(self.sc_new.q))        
             self.lcdNumber.setProperty("value",str(self.sc_new.p))   #length  
             

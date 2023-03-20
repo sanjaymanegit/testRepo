@@ -55,6 +55,8 @@ class Ui_MainWindow(object):
         icon2.addPixmap(QtGui.QPixmap("images/test.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon2)
         self.pushButton.setIconSize(QtCore.QSize(200, 160))
+#        self.pushButton.setStyleSheet("border-radius:20px;\n"
+#"background-color: rgb(255, 212, 238);")
         self.pushButton.setObjectName("pushButton")
         
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
@@ -69,6 +71,8 @@ class Ui_MainWindow(object):
         icon3.addPixmap(QtGui.QPixmap("images/report3.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_2.setIcon(icon3)
         self.pushButton_2.setIconSize(QtCore.QSize(200, 160))
+#        self.pushButton_2.setStyleSheet("border-radius:20px;\n"
+#"background-color: rgb(255, 212, 238);")
         self.pushButton_2.setObjectName("pushButton_2")
         
         
@@ -80,6 +84,8 @@ class Ui_MainWindow(object):
         icon4.addPixmap(QtGui.QPixmap("images/setting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3.setIcon(icon4)
         self.pushButton_3.setIconSize(QtCore.QSize(200, 160))
+#        self.pushButton_3.setStyleSheet("border-radius:20px;\n"
+#"background-color: rgb(255, 212, 238);")
         self.pushButton_3.setObjectName("pushButton_3")
         
         
@@ -94,6 +100,8 @@ class Ui_MainWindow(object):
         icon2.addPixmap(QtGui.QPixmap("./images/GIGSYSlogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3_1.setIcon(icon2)
         self.pushButton_3_1.setIconSize(QtCore.QSize(800, 900))
+#        self.pushButton_3_1.setStyleSheet("border-radius:20px;\n"
+#"background-color: rgb(255, 212, 238);")
         self.pushButton_3_1.setObjectName("pushButton_3_1")
         
         
@@ -111,26 +119,30 @@ class Ui_MainWindow(object):
         self.label_3_1.setObjectName("label_3_1")
         
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1210, 650, 90, 26))
+        self.pushButton_6.setGeometry(QtCore.QRect(1210, 640, 120, 50))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)        
         self.pushButton_6.setFont(font)
         self.pushButton_6.setText("Shutdown")
+        self.pushButton_6.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(255, 212, 238);")
         self.pushButton_6.setObjectName("pushButton_6")
         
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(1310, 650, 90, 26))
+        self.pushButton_7.setGeometry(QtCore.QRect(1350, 640, 120, 50))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)        
         self.pushButton_7.setFont(font)
         self.pushButton_7.setText("Reboot")
+        self.pushButton_7.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(255, 212, 238);")
         self.pushButton_7.setObjectName("pushButton_7")
         
        
         self.label_4_1 = QtWidgets.QLabel(self.frame)
-        self.label_4_1.setGeometry(QtCore.QRect(1210, 690, 361, 126))
+        self.label_4_1.setGeometry(QtCore.QRect(1210, 700, 361, 126))
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
         font.setPointSize(8)
