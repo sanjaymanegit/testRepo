@@ -492,7 +492,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_152.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_152.setObjectName("label_152")
         self.label_153 = QtWidgets.QLabel(self.frame)
-        self.label_153.setGeometry(QtCore.QRect(1090, 870, 41, 31))
+        self.label_153.setGeometry(QtCore.QRect(1090, 870, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -938,7 +938,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_52.setText(_translate("MainWindow", "0"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.label_149.setText(_translate("MainWindow", "Elapsed Time :"))
-        self.lineEdit_53.setText(_translate("MainWindow", "12:55"))
+        self.lineEdit_53.setText(_translate("MainWindow", "00:00:00"))
         self.label_150.setText(_translate("MainWindow", " (MPa) "))
         self.label_151.setText(_translate("MainWindow", " (mm) "))
         self.label_152.setText(_translate("MainWindow", "(MPa) "))
@@ -1068,10 +1068,11 @@ class RL_01_Ui_MainWindow(object):
         #self.graph_type_pressure()
     
     def start_test_1_or_2(self):
-           if(self.graph_group_no==1):
+        if(self.graph_group_no==1):
                 self.start_test_expansion()
-           else:
+        else:
                 self.start2_test_expansion()
+        self.pushButton_4.setDisabled(True)
                 
                 
     def graph_group2_onclick(self):
@@ -1691,7 +1692,7 @@ class RL_01_Ui_MainWindow(object):
                 self.save_graph_data()
                 self.sc_new.save_data_flg=""
                 self.label_15.show()
-                self.label_15.setText("Data Saved Successfully.")
+                self.label_15.setText("Logging stopped Successfully.")
                 
                 self.pushButton_5.setEnabled(True)
                 self.pushButton_6.setEnabled(True)
@@ -1702,6 +1703,7 @@ class RL_01_Ui_MainWindow(object):
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
                         
                 #self.label_15.setText("")
+                self.pushButton_4.setEnabled(True)
             else:
                 print("cancled")
                     
@@ -1745,7 +1747,7 @@ class RL_01_Ui_MainWindow(object):
             #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.sc_new.t)
             self.mod=int(self.sc_new.t) % 60 
             self.lineEdit_53.setText(str(int(int(self.sc_new.t)/3600)).zfill(2)+":"+str(int(int(self.sc_new.t)/60)).zfill(2)+":"+str(int(int(self.mod))).zfill(2))
-            self.label_15.setText("Running.....")
+            self.label_15.setText("Test Running.....")
             
             
             if(str(self.sc_new.save_data_flg) =="Yes"):            
@@ -1753,7 +1755,7 @@ class RL_01_Ui_MainWindow(object):
                     self.save_graph_data()
                     self.sc_new.save_data_flg=""
                     self.label_15.show()
-                    self.label_15.setText("Data Saved Successfully.")
+                    self.label_15.setText("Logging Stopped Successfully.")
                     #self.go_to_next=self.go_to_next+1
                     self.pushButton_5.setEnabled(True)
                     self.pushButton_6.setEnabled(True)
@@ -2012,12 +2014,12 @@ class RL_01_Ui_MainWindow(object):
                 self.graph_id=str(x[0])       
         connection.close()
         
-        summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Time(sec)","Timestamp"]]
+        summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Time(HH:MI:SS)"]]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain,  T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
         for x in results:
-                    summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4]),str(x[5])])
+                    summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4])])
         connection.close()
         
         PAGE_HEIGHT=defaultPageSize[1]
