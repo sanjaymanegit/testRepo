@@ -32,7 +32,10 @@ from PyQt5.Qt import QTableWidgetItem
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
+
 import datetime
+import serial
+import time
 
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
 from reportlab.pdfgen.canvas import Canvas
@@ -274,7 +277,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_46.setGeometry(QtCore.QRect(530, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_46.setFont(font)
@@ -296,7 +299,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_47.setGeometry(QtCore.QRect(660, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_47.setFont(font)
@@ -318,7 +321,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_48.setGeometry(QtCore.QRect(300, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_48.setFont(font)
@@ -362,7 +365,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_51.setGeometry(QtCore.QRect(810, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_51.setFont(font)
@@ -384,7 +387,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_52.setGeometry(QtCore.QRect(420, 870, 51, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_52.setFont(font)
@@ -448,7 +451,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_53.setGeometry(QtCore.QRect(970, 870, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(14)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_53.setFont(font)
@@ -922,24 +925,24 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_44.setText(_translate("MainWindow", "Dr.John"))
         self.pushButton_9.setText(_translate("MainWindow", "Stop Logging"))
         self.label_140.setText(_translate("MainWindow", "Diameter:"))
-        self.lineEdit_46.setText(_translate("MainWindow", "355"))
+        self.lineEdit_46.setText(_translate("MainWindow", "0"))
         self.label_143.setText(_translate("MainWindow", "Thickness (mm):"))
-        self.lineEdit_47.setText(_translate("MainWindow", "355"))
+        self.lineEdit_47.setText(_translate("MainWindow", "0"))
         self.label_144.setText(_translate("MainWindow", "Circumference (mm):"))
-        self.lineEdit_48.setText(_translate("MainWindow", "355"))
+        self.lineEdit_48.setText(_translate("MainWindow", "0"))
         self.label_145.setText(_translate("MainWindow", "Pressure :"))
         self.label_146.setText(_translate("MainWindow", "Expansion :"))
         self.label_147.setText(_translate("MainWindow", "Stress :"))
-        self.lineEdit_51.setText(_translate("MainWindow", "355"))
+        self.lineEdit_51.setText(_translate("MainWindow", "0"))
         self.label_148.setText(_translate("MainWindow", "Strain :"))
-        self.lineEdit_52.setText(_translate("MainWindow", "355"))
+        self.lineEdit_52.setText(_translate("MainWindow", "0"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
-        self.label_149.setText(_translate("MainWindow", "Graph Time :"))
+        self.label_149.setText(_translate("MainWindow", "Elapsed Time :"))
         self.lineEdit_53.setText(_translate("MainWindow", "12:55"))
         self.label_150.setText(_translate("MainWindow", " (MPa) "))
         self.label_151.setText(_translate("MainWindow", " (mm) "))
         self.label_152.setText(_translate("MainWindow", "(MPa) "))
-        self.label_153.setText(_translate("MainWindow", "MI:SS"))
+        self.label_153.setText(_translate("MainWindow", "HH:MI:SS"))
         self.label_154.setText(_translate("MainWindow", "(%) "))
         self.label_155.setText(_translate("MainWindow", " (mm)"))
         self.label_156.setText(_translate("MainWindow", " (mm)"))
@@ -1061,7 +1064,7 @@ class RL_01_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
        
-        #self.load_data()
+        self.load_data()
         #self.graph_type_pressure()
     
     def start_test_1_or_2(self):
@@ -1738,8 +1741,10 @@ class RL_01_Ui_MainWindow(object):
             self.lcdNumber.setProperty("value",str(self.sc_new.p))   #length  
             
             self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
-            self.lineEdit_52.setText(str(max(self.sc_new.arr_p_strain)))   #Strain  
-            self.lineEdit_53.setText(str(self.sc_new.t))
+            self.lineEdit_52.setText(str(max(self.sc_new.arr_p_strain)))   #Strain
+            #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.sc_new.t)
+            self.mod=int(self.sc_new.t) % 60 
+            self.lineEdit_53.setText(str(int(int(self.sc_new.t)/3600)).zfill(2)+":"+str(int(int(self.sc_new.t)/60)).zfill(2)+":"+str(int(int(self.mod))).zfill(2))
             self.label_15.setText("Running.....")
             
             
@@ -2319,7 +2324,9 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC,D_AV,T_AV from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=float(x[0])             
+             self.test_guage_mm=float(x[0])
+             
+             self.test_guage_mm=1.0
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
@@ -2540,7 +2547,14 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.p=abs(float(self.buff[4])) #fix val
                 
                 self.t_timestamp=str(self.end_time)
-                self.arr_t_timestamp.append(self.t_timestamp)
+                #self.arr_t_timestamp.append(self.t_timestamp)
+                
+                
+                
+                self.t_mod=int(self.t) % 60 
+                self.t_timestamp=str(self.end_time)
+                self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
+
                 
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
@@ -2781,16 +2795,18 @@ class PlotCanvas_Auto_P1(FigureCanvas):
     
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
-        self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-          
+        try:
+                self.ser = serial.Serial(
+                                port='/dev/ttyUSB0',
+                                baudrate=19200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+        except IOError:
+                print("IO Errors")   
         #self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
         
         '''
@@ -2813,7 +2829,10 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC,D_AV,T_AV from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=float(x[0])             
+             self.test_guage_mm=float(x[0])
+             self.test_guage_mm=1.0
+             print("self.test_guage_mm:"+str(self.test_guage_mm))
+             self.test_guage_mm=1
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
@@ -3195,7 +3214,8 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,PROOF_TEST_BY,PROOF_MAX_LOAD,PROOF_MAX_LENGTH,TEST_TIME_SEC,D_AV,T_AV from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=float(x[0])             
+             self.test_guage_mm=float(x[0])
+             self.test_guage_mm=1.0
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
@@ -3236,20 +3256,18 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                     self.axes.set_xlim(0,float(x[0]))
                     self.axes.set_ylim(0,float(x[1]))
         connection.close()
-        
-        self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-        '''
-       
-        
-        '''
+        try:
+            self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.05
+                        )
+        except IOError:
+                print("IO Errors") 
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
@@ -4001,9 +4019,9 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 self.arr_q.append(float(self.q))
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
-                
+                self.t_mod=int(self.t) % 60 
                 self.t_timestamp=str(self.end_time)
-                self.arr_t_timestamp.append(self.t_timestamp)
+                self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
 
                 if(int(self.q) > int(self.ylim)):
                     self.ylim=(int(self.q)+100)
