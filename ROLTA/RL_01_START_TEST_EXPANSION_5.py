@@ -944,7 +944,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_155.setText(_translate("MainWindow", " (mm)"))
         self.label_156.setText(_translate("MainWindow", " (mm)"))
         self.label_157.setText(_translate("MainWindow", " (mm)"))
-        self.label_15.setText(_translate("MainWindow", "Data Saved Successfully !"))
+        self.label_15.setText(_translate("MainWindow", "Graph-set1 selected."))
         self.label.setText(_translate("MainWindow", "Company Name Pvt. Ltd"))
         self.label_2.setText(_translate("MainWindow", "Blue Star IT PArk ,\n"
 "  MIDC , Thane ,  Mumbai Andhrei  Pin No 400232"))
@@ -1079,6 +1079,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_17.setText("Pressure Vs  Expansion")
         self.pushButton_18.setText("Stress Vs Strain")
         self.pushButton_19.setText("Strain Vs Time")
+        self.label_15.setText("Graph-set2 selected.")
         
     
     def graph_group1_onclick(self):
@@ -1089,6 +1090,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_17.setText("Pressure Vs  Time")
         self.pushButton_18.setText("Expansion Vs Time")
         self.pushButton_19.setText("Stress Vs Time")
+        self.label_15.setText("Graph-set1 selected.")
      
 
 
@@ -3502,16 +3504,9 @@ class PlotCanvas_blank(FigureCanvas):
                 self.graph_type=str(x[0]) 
         connection.close() 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
-        for x in results:             
-                 
-                 if(self.graph_type == "STRESS_VS_STRAIN"):
-                         ax.set_xlabel('Strain (%)')
-                         ax.set_ylabel('Stress (MPa)')
-                         ax.set_xlim(0,float(x[2]))
-                         ax.set_ylim(0,float(x[3]))
-                 else:
-                         ax.set_xlabel('Elongation (mm)')
+        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO  ") 
+        for x in results:
+                         ax.set_xlabel('Time (sec)')
                          ax.set_ylabel('Pressure (MPa)')
                          ax.set_xlim(0,float(x[0]))
                          ax.set_ylim(0,float(x[1]))
