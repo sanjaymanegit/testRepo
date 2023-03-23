@@ -1013,7 +1013,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
-        self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Time"))
+        self.pushButton_19.setText(_translate("MainWindow", "Strain Vs Time"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
@@ -1082,7 +1082,7 @@ class RL_01_Ui_MainWindow(object):
         self.display_bank_graphs2()
         self.pushButton_17.setText("Pressure Vs  Expansion")
         self.pushButton_18.setText("Stress Vs Strain")
-        self.pushButton_19.setText("Strain Vs Time")
+        self.pushButton_19.setText("Stress Vs Time")
         self.label_15.setText("Graph-set2 selected.")
         
     
@@ -1093,7 +1093,7 @@ class RL_01_Ui_MainWindow(object):
         self.display_bank_graphs()
         self.pushButton_17.setText("Pressure Vs  Time")
         self.pushButton_18.setText("Expansion Vs Time")
-        self.pushButton_19.setText("Stress Vs Time")
+        self.pushButton_19.setText("Strain Vs Time")
         self.label_15.setText("Graph-set1 selected.")
      
 
@@ -1326,16 +1326,18 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)      
         self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
-       
-        self.rev_arr5=self.sc_new_P2.arr_q_mpa
+        #self.rev_arr5=[]
+        #self.rev_arr6=[]
+        self.rev_arr5=self.sc_new_P2.arr_p_strain
         self.rev_arr6=self.sc_new_P2.arr_t
+        #print("length-rev_arr5 :"+str(len(self.rev_arr5))+"  length-rev_arr6 :"+str(len(self.rev_arr6)))
         self.rev_arr5.reverse()
         self.rev_arr6.reverse()
         if(len(self.rev_arr5) > 0):
                 for i in range(len(self.rev_arr5)):
                         self.tableWidget_3.insertRow(i)
                         item7 = QtWidgets.QTableWidgetItem()        
-                        item7.setText(str("Stress"))
+                        item7.setText(str("Strain"))
                         self.tableWidget_3.setItem(i,0,item7) 
                         item8 = QtWidgets.QTableWidgetItem()        
                         item8.setText(str(round(self.rev_arr5[i],2)))
@@ -1343,7 +1345,7 @@ class RL_01_Ui_MainWindow(object):
                         item9 = QtWidgets.QTableWidgetItem()        
                         item9.setText(str(self.rev_arr6[i]))
                         self.tableWidget_3.setItem(i,2,item9) 
-                
+                       # print("length-rev_arr5 :"+str(len(self.rev_arr5))+"  length-rev_arr6 :"+str(len(self.rev_arr6)))
                 
         #self.tableWidget.setItem(2,1,str('Param-value2')) 
         #self.tableWidget.setItem(3,1,str('Param-value2'))         
@@ -1424,7 +1426,7 @@ class RL_01_Ui_MainWindow(object):
     def show_grid1_val_P3(self):        
         self.rev_arr3=[]        
         self.rev_arr4=[]
-        self.delete3_all_records()        
+        self.delete3x_all_records()        
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font) 
@@ -1472,7 +1474,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderLabels(['Parameter','Stress(MPa)','Strain (%)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
        
-        self.rev_arr=self.sc_new_P1.arr_q_mpa
+        self.rev_arr=self.sc_new_P1.arr_q
         self.rev_arr2=self.sc_new_P1.arr_p_strain
         self.rev_arr.reverse()
         self.rev_arr2.reverse()
@@ -1483,7 +1485,7 @@ class RL_01_Ui_MainWindow(object):
                         item4.setText(str("Stress Vs Strain"))
                         self.tableWidget_2.setItem(i,0,item4) 
                         item5 = QtWidgets.QTableWidgetItem()        
-                        item5.setText(str(round(self.rev_arr[i],2)))
+                        item5.setText(str(self.rev_arr[i]))
                         self.tableWidget_2.setItem(i,1,item5)
                         item6 = QtWidgets.QTableWidgetItem()        
                         item6.setText(str(self.rev_arr2[i]))
@@ -1506,21 +1508,21 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setFont(font) 
         self.tableWidget_3.setColumnCount(3)
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Strain(%)','Time (sec)'] )
+        self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Stress(MPa)','Time (sec)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
        
-        self.rev_arr5=self.sc_new_P2.arr_p_strain
+        self.rev_arr5=self.sc_new_P2.arr_q
         self.rev_arr6=self.sc_new_P2.arr_t
         self.rev_arr5.reverse()
         self.rev_arr6.reverse()
         if(len(self.rev_arr5) > 0):
-                for i in range(len(self.rev_arr5)):
+                for i in range(len(self.rev_arr6)):
                         self.tableWidget_3.insertRow(i)
                         item7 = QtWidgets.QTableWidgetItem()        
-                        item7.setText(str("Strain Vs Time"))
+                        item7.setText(str("Stress Vs Time"))
                         self.tableWidget_3.setItem(i,0,item7) 
                         item8 = QtWidgets.QTableWidgetItem()        
-                        item8.setText(str(round(self.rev_arr5[i],2)))
+                        item8.setText(str(self.rev_arr5[i]))
                         self.tableWidget_3.setItem(i,1,item8)
                         item9 = QtWidgets.QTableWidgetItem()        
                         item9.setText(str(self.rev_arr6[i]))
@@ -1531,7 +1533,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
   
     
-    def delete3_all_records(self):
+    def delete3x_all_records(self):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
@@ -3206,8 +3208,8 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
-                        self.axes.set_xlabel('Time (S)')
-                        self.axes.set_ylabel('Stress (MPa)')
+                        self.axes.set_xlabel('Time (Sec)')
+                        self.axes.set_ylabel('Strain (%)')
                         self.cs_area= 0
         connection.close()
         
@@ -3253,7 +3255,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_TIME'") 
+        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRAIN_VS_TIME'") 
         for x in results:             
                     self.axes.set_xlim(0,float(x[0]))
                     self.axes.set_ylim(0,float(x[1]))
@@ -3408,7 +3410,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_t,self.arr_q_mpa)
+            self.line_cnt.set_data(self.arr_t,self.arr_p_strain)
             return [self.line_cnt]
           
     
@@ -3518,25 +3520,34 @@ class PlotCanvas_blank(FigureCanvas):
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
        
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+#        for x in results:
+#                self.graph_type=str(x[0]) 
+#        connection.close() 
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO  ") 
+#        for x in results:
+#                        
+#                         ax.set_xlim(0,float(x[0]))
+#                         ax.set_ylim(0,float(x[1]))
+#                         
+#
+#                         
+#                         
+#                              
+#        connection.close()
+        
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_TIME' LIMIT 1") 
         for x in results:
-                self.graph_type=str(x[0]) 
-        connection.close() 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO  ") 
-        for x in results:
-                         ax.set_xlabel('Time (sec)')
-                         ax.set_ylabel('Pressure (MPa)')
-                         ax.set_xlim(0,float(x[0]))
-                         ax.set_ylim(0,float(x[1]))
-                         
-
-                         
-                         
-                              
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
         connection.close()
-               
+        ax.set_xlabel('Time (sec)')
+        ax.set_ylabel('Pressure (MPa)')
+        
         for i in range(len(self.x)):
               self.p.append(self.x[i])
               self.q.append(self.y[i])
@@ -3577,21 +3588,30 @@ class PlotCanvas_blank_P1(FigureCanvas):
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
        
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+#        for x in results:
+#                self.graph_type=str(x[0]) 
+#        connection.close() 
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
+#        for x in results:             
+#                         ax.set_xlabel('Time (sec)')
+#                         ax.set_ylabel('Expansion (mm)')
+#                         ax.set_xlim(0,float(x[0]))
+#                         ax.set_ylim(0,float(x[1]))
+#        
+#        connection.close()
+         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'EXPANSION_VS_TIME' LIMIT 1") 
         for x in results:
-                self.graph_type=str(x[0]) 
-        connection.close() 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
-        for x in results:             
-                         ax.set_xlabel('Time (sec)')
-                         ax.set_ylabel('Expansion (mm)')
-                         ax.set_xlim(0,float(x[0]))
-                         ax.set_ylim(0,float(x[1]))
-        
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
         connection.close()
-               
+        ax.set_xlabel('Time (sec)')
+        ax.set_ylabel('Expansion (mm)')
+        
         for i in range(len(self.x)):
               self.p.append(self.x[i])
               self.q.append(self.y[i])
@@ -3634,21 +3654,30 @@ class PlotCanvas_blank_P2(FigureCanvas):
         ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
        
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+#        for x in results:
+#                self.graph_type=str(x[0]) 
+#        connection.close() 
+#        connection = sqlite3.connect("tyr.db")
+#        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
+#        for x in results:             
+#                         ax.set_xlabel('Time (sec)')
+#                         ax.set_ylabel('Stress (MPa)')
+#                         ax.set_xlim(0,float(x[0]))
+#                         ax.set_ylim(0,float(x[1]))
+#        
+#        connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from TEST_MST_TMP") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRAIN_VS_TIME' LIMIT 1") 
         for x in results:
-                self.graph_type=str(x[0]) 
-        connection.close() 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS,VOLUMN_TIME_X_AXIS, VOLUMN_TIME_Y_AXIS FROM OTER_INFO") 
-        for x in results:             
-                         ax.set_xlabel('Time (sec)')
-                         ax.set_ylabel('Stress (MPa)')
-                         ax.set_xlim(0,float(x[0]))
-                         ax.set_ylim(0,float(x[1]))
-        
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
         connection.close()
-               
+        ax.set_xlabel('Time (sec)')
+        ax.set_ylabel('Strain (%)')
+        
+        
         for i in range(len(self.x)):
               self.p.append(self.x[i])
               self.q.append(self.y[i])
@@ -4707,7 +4736,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
                         self.axes.set_xlabel('Time (Sec)')
-                        self.axes.set_ylabel('Strain (%)')
+                        self.axes.set_ylabel('Stress (MPa)')
                         self.cs_area= 0
         connection.close()
         
@@ -5129,10 +5158,10 @@ class PlotCanvasG2_blank(FigureCanvas):
         ax.plot(self.x,self.y,'b')
         ax.set_ylabel('Pressure (MPa) ')
         ax.set_xlabel('Expansion (mm)')
-        ax2 = ax.twinx()
-        color = 'tab:green'
-        ax2.set_ylabel('Time (Sec)', color = color)
-        ax2.set_ylim(0,500) 
+#        ax2 = ax.twinx()
+#        color = 'tab:green'
+#        ax2.set_ylabel('Time (Sec)', color = color)
+#        ax2.set_ylim(0,500) 
           
         self.draw() 
 
@@ -5184,11 +5213,11 @@ class PlotCanvasG2_blank_P1(FigureCanvas):
         ax.plot(self.x,self.y,'b')
         ax.set_ylabel('Stress (MPa) ')
         ax.set_xlabel('Strain (%)')
-        ax2 = ax.twinx()
-        color = 'tab:green'
-        ax2.set_ylabel('Time (Sec)', color = color)
-        ax2.set_ylim(0,500) 
-          
+#        ax2 = ax.twinx()
+#        color = 'tab:green'
+#        ax2.set_ylabel('Time (Sec)', color = color)
+#        ax2.set_ylim(0,500) 
+#          
         self.draw() 
 
 
@@ -5229,7 +5258,7 @@ class PlotCanvasG2_blank_P2(FigureCanvas):
        
          
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRAIN_VS_TIME' LIMIT 1") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_TIME' LIMIT 1") 
         for x in results:
              ax.set_xlim(0,int(x[0]))
              ax.set_ylim(0,int(x[1]))          
@@ -5240,12 +5269,12 @@ class PlotCanvasG2_blank_P2(FigureCanvas):
               self.q.append(self.y[i])
         
         ax.plot(self.x,self.y,'b')
-        ax.set_ylabel('Strain (%) ')
+        ax.set_ylabel('Stress (Mpa) ')
         ax.set_xlabel('Time (Sec)')
-        ax2 = ax.twinx()
-        color = 'tab:green'
-        ax2.set_ylabel('Time (Sec)', color = color)
-        ax2.set_ylim(0,500) 
+#        ax2 = ax.twinx()
+#        color = 'tab:green'
+#        ax2.set_ylabel('Time (Sec)', color = color)
+#        ax2.set_ylim(0,500) 
           
         self.draw() 
 
