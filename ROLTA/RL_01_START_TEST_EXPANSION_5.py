@@ -1919,6 +1919,29 @@ class RL_01_Ui_MainWindow(object):
         self.remark=""
         #self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex = "N/mm"
+             
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()
+                    if(self.comboBox.currentText() == "Stress Vs Strain"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")                      
+                    elif(self.comboBox.currentText() == "Pressure Vs Expansion"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_EXPANSION'") 
+                    elif(self.comboBox.currentText() == "Pressure Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_TIME'")  
+                    elif(self.comboBox.currentText() == "Expansion Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='EXPANSION_VS_TIME'") 
+                    elif(self.comboBox.currentText() == "Stress Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_TIME'")    
+                    elif(self.comboBox.currentText() == "Strain Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRAIN_VS_TIME'")    
+                    else:
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")  
+                               print("invalid graph type")  
+        connection.commit()
+        connection.close()
+        
+        
         
              
         y=300
@@ -1974,7 +1997,7 @@ class RL_01_Ui_MainWindow(object):
 #        f4=Table(summary_data4)
 #        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
 #        
-         
+        self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
