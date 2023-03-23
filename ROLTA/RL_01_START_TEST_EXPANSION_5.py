@@ -296,6 +296,9 @@ class RL_01_Ui_MainWindow(object):
         self.label_143.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_143.setObjectName("label_143")
         self.lineEdit_47 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_47)
+        self.lineEdit_47.setValidator(input_validator)
         self.lineEdit_47.setGeometry(QtCore.QRect(660, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -317,7 +320,12 @@ class RL_01_Ui_MainWindow(object):
         self.label_144.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_144.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_144.setObjectName("label_144")
+        
         self.lineEdit_48 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_48)
+        self.lineEdit_48.setValidator(input_validator)
+        
         self.lineEdit_48.setGeometry(QtCore.QRect(300, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -325,6 +333,7 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_48.setFont(font)
+        self.lineEdit_48.setReadOnly(True)
         self.lineEdit_48.setStyleSheet("color: rgb(0, 0, 127);")
         self.lineEdit_48.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_48.setObjectName("lineEdit_48")
@@ -362,6 +371,9 @@ class RL_01_Ui_MainWindow(object):
         self.label_147.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_147.setObjectName("label_147")
         self.lineEdit_51 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_51)
+        self.lineEdit_51.setValidator(input_validator)
         self.lineEdit_51.setGeometry(QtCore.QRect(810, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -391,6 +403,7 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_52.setFont(font)
+        self.lineEdit_52.setReadOnly(True)
         self.lineEdit_52.setStyleSheet("color: rgb(0, 0, 127);")
         self.lineEdit_52.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_52.setObjectName("lineEdit_52")
@@ -455,6 +468,7 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_53.setFont(font)
+        self.lineEdit_53.setReadOnly(True)
         self.lineEdit_53.setStyleSheet("color: rgb(0, 0, 127);")
         self.lineEdit_53.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_53.setObjectName("lineEdit_53")
@@ -547,7 +561,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_157.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_157.setObjectName("label_157")
         self.label_15 = QtWidgets.QLabel(self.frame)
-        self.label_15.setGeometry(QtCore.QRect(680, 940, 401, 31))
+        self.label_15.setGeometry(QtCore.QRect(880, 940, 301, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -798,6 +812,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_19.setStyleSheet("background-color: rgb(90, 190, 134);\n"
 "color: rgb(0, 0, 0);")
         self.pushButton_19.setObjectName("pushButton_19")
+        
         self.pushButton_20 = QtWidgets.QPushButton(self.frame)
         self.pushButton_20.setGeometry(QtCore.QRect(470, 940, 161, 31))
         font = QtGui.QFont()
@@ -808,6 +823,21 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_20.setFont(font)
         #self.pushButton_20.setStyleSheet("background-color: rgb(90, 90, 134);\n""color: rgb(255, 255, 255);")
         self.pushButton_20.setObjectName("pushButton_20")
+        
+        
+        self.pushButton_20_1= QtWidgets.QPushButton(self.frame)
+        self.pushButton_20_1.setGeometry(QtCore.QRect(700, 940, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_20_1.setFont(font)
+        #self.pushButton_20.setStyleSheet("background-color: rgb(90, 90, 134);\n""color: rgb(255, 255, 255);")
+        
+        self.pushButton_20_1.setObjectName("pushButton_20_1")
+        
+        
         self.layoutWidget = QtWidgets.QWidget(self.frame)
         self.layoutWidget.setGeometry(QtCore.QRect(20, 210, 1791, 401))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -835,6 +865,7 @@ class RL_01_Ui_MainWindow(object):
             "background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_21.setObjectName("pushButton_21")
+        
         self.pushButton_22 = QtWidgets.QPushButton(self.frame)
         self.pushButton_22.setGeometry(QtCore.QRect(1510, 810, 100, 50))
         font = QtGui.QFont()
@@ -847,6 +878,20 @@ class RL_01_Ui_MainWindow(object):
             "background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_22.setObjectName("pushButton_22")
+        
+        self.pushButton_22_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_22_1.setGeometry(QtCore.QRect(1670, 810, 140, 50))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_22_1.setFont(font)
+        self.pushButton_22_1.setStyleSheet("border-radius:20px;\n"
+            "background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_22_1.setObjectName("pushButton_22_1")
+        
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(1350, 870, 331, 22))
         font = QtGui.QFont()
@@ -1015,8 +1060,10 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
         self.pushButton_19.setText(_translate("MainWindow", "Strain Vs Time"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
+        self.pushButton_20_1.setText(_translate("MainWindow", "Email Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
+        self.pushButton_22_1.setText(_translate("MainWindow", "Reset Graphs"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Stress Vs Strain"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Pressure Vs Expansion"))
         self.comboBox.setItemText(2, _translate("MainWindow", "Pressure Vs Time"))
@@ -1028,6 +1075,9 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_9.setDisabled(True)
         self.pushButton_20.setDisabled(True)
         self.pushButton_21.setDisabled(True)
+        #self.pushButton_4.setDisabled(True)
+        self.pushButton_20_1.setDisabled(True)
+        
         self.display_bank_graphs()
         self.load_ops()
 
@@ -1050,6 +1100,7 @@ class RL_01_Ui_MainWindow(object):
         #self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
         self.pushButton_21.clicked.connect(self.graph_group1_onclick)
         self.pushButton_22.clicked.connect(self.graph_group2_onclick)
+        self.pushButton_22_1.clicked.connect(self.reset_graph_onclick)
         self.comboBox.currentTextChanged.connect(self.update_graph_type)
         
         
@@ -1084,6 +1135,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_18.setText("Stress Vs Strain")
         self.pushButton_19.setText("Stress Vs Time")
         self.label_15.setText("Graph-set2 selected.")
+        self.pushButton_4.setEnabled(True)
         
     
     def graph_group1_onclick(self):
@@ -1095,9 +1147,21 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_18.setText("Expansion Vs Time")
         self.pushButton_19.setText("Strain Vs Time")
         self.label_15.setText("Graph-set1 selected.")
+        self.pushButton_4.setEnabled(True)
      
 
-
+    def reset_graph_onclick(self):
+        self.pushButton_4.setDisabled(True)
+        self.pushButton_20.setDisabled(True)
+        self.pushButton_20_1.setDisabled(True)
+        self.label_15.setText("<font color=red> Please select the graph -Sets </font>")
+        self.pushButton_21.show()
+        self.pushButton_22.show()
+        self.pushButton_21.setEnabled(True)
+        self.pushButton_22.setEnabled(True)
+        
+        
+        
 
     def display_bank_graphs(self):
         self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)          
@@ -1706,6 +1770,7 @@ class RL_01_Ui_MainWindow(object):
                         
                 #self.label_15.setText("")
                 self.pushButton_4.setEnabled(True)
+                self.pushButton_20_1.setEnabled(True)
             else:
                 print("cancled")
                     
@@ -2027,8 +2092,8 @@ class RL_01_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
-            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Diameter: ",str(x[3])],["Thickness:  ",str(x[4]),"Circumference):",str(x[5])]]
-            summary_data.append([" Reviewed By: ",str(x[6]),"",""])
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample.ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
+            summary_data.append([" Circumference: ",str(x[6]),"Reviewed By",str(x[7])])
             self.remark=str(x[5])        
         connection.close() 
         
