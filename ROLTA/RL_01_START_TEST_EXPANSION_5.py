@@ -39,7 +39,7 @@ import time
 
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
 from reportlab.pdfgen.canvas import Canvas
-import pandas as pd
+#import pandas as pd
 from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
 from reportlab.rl_settings import showBoundary
 
@@ -1063,13 +1063,13 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_20_1.setText(_translate("MainWindow", "Email Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
-        self.pushButton_22_1.setText(_translate("MainWindow", "Reset Graphs"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Stress Vs Strain"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Pressure Vs Expansion"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Pressure Vs Time"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "Expansion Vs Time"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Time"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time"))
+        self.pushButton_22_1.setText(_translate("MainWindow", "Reset Graphs"))        
+        self.comboBox.setItemText(0, _translate("MainWindow", "Pressure Vs Time"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Expansion Vs Time"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time")) 
+        self.comboBox.setItemText(3, _translate("MainWindow", "Pressure Vs Expansion"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Strain"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Stress Vs Time"))
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
@@ -1121,8 +1121,10 @@ class RL_01_Ui_MainWindow(object):
     def start_test_1_or_2(self):
         if(self.graph_group_no==1):
                 self.start_test_expansion()
-        else:
+        elif(self.graph_group_no==2):
                 self.start2_test_expansion()
+        else:
+                print("invalid Graph group")
         self.pushButton_4.setDisabled(True)
                 
                 
@@ -1254,6 +1256,7 @@ class RL_01_Ui_MainWindow(object):
         with connection:
                             cursor = connection.cursor()                  
                             cursor.execute("UPDATE GLOBAL_VAR SET D_AV='"+str(self.lineEdit_46.text())+"',T_AV='"+str(self.lineEdit_47.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_51.text())+"'")
+                            cursor.execute("DELETE FROM STG_GRAPH_MST ")  
         connection.commit();
         connection.close();        
         if(self.goAhead=="Yes"):              
@@ -1272,9 +1275,9 @@ class RL_01_Ui_MainWindow(object):
                         rows=results.fetchall()
                         connection.close()
                         if(int(rows[0][0]) > -2 ):
-                                        self.timer3.setInterval(4000)        
+                                        self.timer3.setInterval(1000)        
                                         self.timer3.timeout.connect(self.show_load_cell_val)
-                                        time.sleep(4)
+                                        #time.sleep(2)
                                         
                                         self.timer3.timeout.connect(self.show_grid1_val_P1)
                                         self.timer3.timeout.connect(self.show_grid1_val_P2)
@@ -1282,12 +1285,12 @@ class RL_01_Ui_MainWindow(object):
                                         self.timer3.start(1)
                                         
                                         
-                                        self.timer4.setInterval(1000)        
+                                        #self.timer4.setInterval(1000)        
                                         #self.timer3.timeout.connect(self.show_load_cell_val)
                                         #self.timer4.timeout.connect(self.show_grid1_val_P0)
                                         #self.timer3.timeout.connect(self.show_grid1_val_P1)
                                         #self.timer3.timeout.connect(self.show_grid1_val_P2)
-                                        self.timer4.start(1)
+                                        #self.timer4.start(1)
                                         
                                         
                                         '''
@@ -1329,8 +1332,8 @@ class RL_01_Ui_MainWindow(object):
                 
                 
             
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         
@@ -1373,8 +1376,8 @@ class RL_01_Ui_MainWindow(object):
         '''
        
         '''        
-        #self.tableWidget_2.resizeColumnsToContents()
-        self.tableWidget_2.resizeRowsToContents()
+        self.tableWidget_2.resizeColumnsToContents()
+        #self.tableWidget_2.resizeRowsToContents()
         self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         
@@ -1416,8 +1419,8 @@ class RL_01_Ui_MainWindow(object):
         '''
        
         '''        
-        #self.tableWidget_2.resizeColumnsToContents()
-        self.tableWidget_3.resizeRowsToContents()
+        self.tableWidget_3.resizeColumnsToContents()
+        #self.tableWidget_3.resizeRowsToContents()
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_3.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
   
@@ -1442,7 +1445,7 @@ class RL_01_Ui_MainWindow(object):
 
         
     def start2_test_expansion(self):
-        
+        print("Group2 started")
         self.pushButton_21.hide()
         self.pushButton_22.show()
         self.pushButton_22.setDisabled(True)
@@ -1454,6 +1457,7 @@ class RL_01_Ui_MainWindow(object):
         with connection:
                             cursor = connection.cursor()                  
                             cursor.execute("UPDATE GLOBAL_VAR SET D_AV='"+str(self.lineEdit_46.text())+"',T_AV='"+str(self.lineEdit_47.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_51.text())+"'")
+                            cursor.execute("DELETE FROM STG_GRAPH_MST ")  
         connection.commit();
         connection.close();        
         if(self.goAhead=="Yes"):              
@@ -1592,7 +1596,8 @@ class RL_01_Ui_MainWindow(object):
                         item9.setText(str(self.rev_arr6[i]))
                         self.tableWidget_3.setItem(i,2,item9) 
                        
-        self.tableWidget_3.resizeRowsToContents()
+        self.tableWidget_3.resizeColumnsToContents()
+        #self.tableWidget_3.resizeRowsToContents()
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_3.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
   
@@ -1777,9 +1782,9 @@ class RL_01_Ui_MainWindow(object):
     
     def reset(self):        
                 
-            self.label_15.show()
-            self.label_15.setText("Data Saving is in progress....wait.")
-            
+#             self.label_15.show()
+#             self.label_15.setText("Data Saving is in progress....wait.")
+#             
             
             if(self.sc_new.timer1.isActive()): 
                   self.sc_new.timer1.stop()
@@ -1817,7 +1822,8 @@ class RL_01_Ui_MainWindow(object):
             self.label_15.setText("Test Running.....")
             
             
-            if(str(self.sc_new.save_data_flg) =="Yes"):            
+            if(str(self.sc_new.save_data_flg) =="Yes"):
+                    
                     self.reset()
                     self.save_graph_data()
                     self.sc_new.save_data_flg=""
@@ -1838,12 +1844,13 @@ class RL_01_Ui_MainWindow(object):
          if (len(self.sc_new.arr_p) > 1):            
             
             #self.cycle_num=int(str(self.label_67.text()))+1
-            
+            print("Data saved fun called ....xssxsxsx")
+            print("length_p:"+str(len(self.sc_new.arr_p))+" length_t:"+str(len(self.sc_new.arr_t)))
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"','"+str(float(self.sc_new.arr_t[g]))+"','"+str(self.sc_new.arr_t_timestamp[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"','"+str(self.sc_new.arr_key_id[g])+"','"+str(self.sc_new.arr_t_timestamp[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1913,7 +1920,6 @@ class RL_01_Ui_MainWindow(object):
              print("Please connect usb storage device")
         
     def open_pdf(self):
-        self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_expansion() 
         
         os.system("xpdf ./reports/test_report.pdf")       
@@ -2006,6 +2012,7 @@ class RL_01_Ui_MainWindow(object):
         connection.commit()
         connection.close()
         
+        #self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         
         
              
@@ -2104,12 +2111,12 @@ class RL_01_Ui_MainWindow(object):
                 self.graph_id=str(x[0])       
         connection.close()
         
-        summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Time(HH:MI:SS)"]]
+        summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Sec","Time(HH:MI:SS)"]]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain,  T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
         for x in results:
-                    summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4])])
+                    summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4]),str(x[5])])
         connection.close()
         
         PAGE_HEIGHT=defaultPageSize[1]
@@ -2220,7 +2227,7 @@ class PlotCanvas(FigureCanvas):
         else:
                 results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
         for x in results: 
-                        ax.set_xlim(0,float(x[0]))
+                        ax.set_xlim(0,int(x[0]))
                         ax.set_ylim(0,float(x[1])) 
         connection.close()
         
@@ -2234,44 +2241,44 @@ class PlotCanvas(FigureCanvas):
         
         
         for g in range(len(self.graph_ids)):
-            self.x_num=[0.0]
-            self.y_num=[0.0]
-            self.x1_num=[0.0]
-            self.y1_num=[0.0]              
+            self.x_num=[0]
+            self.y_num=[0]
+            self.x1_num=[0]
+            self.y1_num=[0]              
             #self.graph_type="STRESS_VS_STRAIN"           
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc     ")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc  ")
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc  ")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Pressure (MPa)')            
             elif(self.graph_type == "EXPANSION_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'  order by rec_id asc")
+                    results=connection.execute("SELECT X_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'  order by T_SEC asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Expansion (mm)')                     
             elif(self.graph_type == "STRESS_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
+                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "STRAIN_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
+                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Strain (%)')
             elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
                     ax.set_xlabel('Expansion (mm)')
                     ax.set_ylabel('Pressure (MPa)')
             else:
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             for k in results:        
-                                        self.x_num.append(float(k[0]))
-                                        self.y_num.append(float(k[1]))
+                                        self.y_num.append(float(k[0]))
+                                        self.x_num.append(int(k[1]))
             connection.close() 
             
             
@@ -2314,6 +2321,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.q_lb =0
         self.q_mpa =0
         self.t_timestamp=0
+        self.key_id="P0"
         
         
         
@@ -2322,8 +2330,9 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_p_cm=[0.0]
         self.arr_p_inch=[0.0]
         self.arr_p_strain=[0.0]
+        self.arr_key_id=[""]
         
-        self.arr_t=[0.0]
+        self.arr_t=[0]
         self.arr_q=[0.0]
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
@@ -2386,6 +2395,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
+        self.real_sec=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2394,12 +2404,12 @@ class PlotCanvas_Auto(FigureCanvas):
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
         #self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
+#         connection = sqlite3.connect("tyr.db")              
+#         with connection:        
+#                 cursor = connection.cursor()                            
+#                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#         connection.commit();
+#         connection.close()
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
@@ -2646,8 +2656,21 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.t_mod=int(self.t) % 60 
                 self.t_timestamp=str(self.end_time)
                 self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
-
+                self.real_sec=int(self.t)
                 
+#                 if(int(self.t) > 0):                    
+#                      if(self.flgx=='N'):
+#                             self.real_sec=int(self.t_mod)                            
+#                      elif(int(self.t_mod) == 0):
+#                             self.real_sec=int("60")+int(self.real_sec)
+#                             self.flgx='Y'
+#                      elif(self.flgx=='Y'):
+#                             self.real_sec=self.real_sec+
+#                      else:
+
+                            
+                
+                   
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
                     #print("self.p :"+str(self.p))
@@ -2668,7 +2691,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
                 
-                self.arr_t.append(float(self.t))
+                self.arr_t.append(int(self.t))
                 
                 self.q=float(self.q)
                 self.q_n=float(self.q)*9.81
@@ -2686,8 +2709,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" (P0) P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                
+                print(" (P0) P:"+str(self.p)+" q:"+str(self.q)+" real_sec:"+str(self.real_sec))
+                self.arr_key_id.append(self.real_sec)
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -2809,7 +2832,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         self.q_n =0
         self.q_lb =0
         self.q_mpa =0
-        
+        self.key_id="P1"
         
         
         
@@ -2823,6 +2846,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
         self.arr_q_mpa=[0.0]
+        self.arr_key_id=[""]
         
         
         
@@ -3088,7 +3112,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 print(" (P1) :P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                
+                self.arr_key_id.append(self.key_id)
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -3205,7 +3229,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         self.q_n =0
         self.q_lb =0
         self.q_mpa =0
-        
+        self.key_id="P2"
         
         
         
@@ -3213,6 +3237,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         self.arr_p_cm=[0.0]
         self.arr_p_inch=[0.0]
         self.arr_p_strain=[0.0]
+        self.arr_key_id=[""]
         
         self.arr_t=[0.0]
         self.arr_q=[0.0]
@@ -3284,12 +3309,12 @@ class PlotCanvas_Auto_P2(FigureCanvas):
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
         #self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
+#         connection = sqlite3.connect("tyr.db")              
+#         with connection:        
+#                 cursor = connection.cursor()                            
+#                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#         connection.commit();
+#         connection.close()
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
@@ -3478,7 +3503,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 print(" (P2) P:"+str(self.p)+" q_mpa:"+str(self.q_mpa)+" t:"+str(self.t))
-                
+                self.arr_key_id.append(self.key_id)
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -3881,12 +3906,12 @@ class PlotCanvasG2_Auto(FigureCanvas):
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
         #self.line_cnt2, = self.axes2.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
+#         connection = sqlite3.connect("tyr.db")              
+#         with connection:        
+#                 cursor = connection.cursor()                            
+#                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#         connection.commit();
+#         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
@@ -4340,12 +4365,12 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
     def plot_auto(self):
         self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
         #self.line_cnt2, = self.axes2.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
+#         connection = sqlite3.connect("tyr.db")              
+#         with connection:        
+#                 cursor = connection.cursor()                            
+#                 cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+#         connection.commit();
+#         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
