@@ -2270,8 +2270,8 @@ class PlotCanvas(FigureCanvas):
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             for k in results:        
-                                        self.y_num.append(float(k[0]))
-                                        self.x_num.append(float(k[1]))
+                                        self.x_num.append(float(k[0]))
+                                        self.y_num.append(float(k[1]))
             connection.close() 
             
             
