@@ -20,14 +20,15 @@ from reportlab.lib.pagesizes import landscape, letter,inch,A4
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.QtGui import QIcon
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+# from matplotlib.figure import Figure
+# import matplotlib.pyplot as plt
 import random
 import serial,time
 from PyQt5.QtCore import QDate
 import datetime
-
+import sqlite3
+'''
 #from reportlab.lib import colors
 #from reportlab.lib.pagesizes import letter, inch , A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, BaseDocTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, PageTemplate
@@ -37,7 +38,7 @@ from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, save
 from reportlab.rl_settings import showBoundary
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sqlite3
+
 
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
 from reportlab.platypus import *
@@ -48,7 +49,7 @@ from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
-
+'''
 
 
 
