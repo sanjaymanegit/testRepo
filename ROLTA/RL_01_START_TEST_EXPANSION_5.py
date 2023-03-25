@@ -9,6 +9,7 @@ import os
 
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
+from email_popup_log_report import popup_email_log_Ui_MainWindow
 from comment_popup_expansion import comment_Ui_MainWindow
 
 
@@ -396,7 +397,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_148.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_148.setObjectName("label_148")
         self.lineEdit_52 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_52.setGeometry(QtCore.QRect(420, 870, 51, 41))
+        self.lineEdit_52.setGeometry(QtCore.QRect(420, 870, 61, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1066,10 +1067,10 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_22_1.setText(_translate("MainWindow", "Reset Graphs"))        
         self.comboBox.setItemText(0, _translate("MainWindow", "Pressure Vs Time"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Expansion Vs Time"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time")) 
+        self.comboBox.setItemText(2, _translate("MainWindow", "Strain Vs Time")) 
         self.comboBox.setItemText(3, _translate("MainWindow", "Pressure Vs Expansion"))
         self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Strain"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Stress Vs Time"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "Stress Vs Time"))
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
@@ -1092,6 +1093,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.open_email_report)    
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_20.clicked.connect(self.open_log_pdf)
+        self.pushButton_20_1.clicked.connect(self.open_log_email)
         
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
@@ -1126,7 +1128,7 @@ class RL_01_Ui_MainWindow(object):
         else:
                 print("invalid Graph group")
         self.pushButton_4.setDisabled(True)
-                
+        self.pushButton_15.setDisabled(True)        
                 
     def graph_group2_onclick(self):
         self.graph_group_no=2
@@ -1769,6 +1771,7 @@ class RL_01_Ui_MainWindow(object):
                 self.pushButton_6.setEnabled(True)
                 self.pushButton_7.setEnabled(True)
                 self.pushButton_8.setEnabled(True)
+                self.pushButton_15.setEnabled(True)
                    
                 self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
                 self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #length
@@ -1815,7 +1818,7 @@ class RL_01_Ui_MainWindow(object):
             self.lcdNumber.setProperty("value",str(self.sc_new.p))   #length  
             
             self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
-            self.lineEdit_52.setText(str(max(self.sc_new.arr_p_strain)))   #Strain
+            self.lineEdit_52.setText(str(round(self.sc_new.p_strain,0)))   #Strain
             #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.sc_new.t)
             self.mod=int(self.sc_new.t) % 60 
             self.lineEdit_53.setText(str(int(int(self.sc_new.t)/3600)).zfill(2)+":"+str(int(int(self.sc_new.t)/60)).zfill(2)+":"+str(int(int(self.mod))).zfill(2))
@@ -1911,6 +1914,8 @@ class RL_01_Ui_MainWindow(object):
         
         self.create_log_pdf()
         os.system("xpdf ./reports/log_report.pdf")
+        os.system("cp ./reports/log_report.pdf ./reports/Report_of_log_"+str(self.test_id)+".pdf")
+        
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
@@ -1920,9 +1925,33 @@ class RL_01_Ui_MainWindow(object):
              print("Please connect usb storage device")
         
     def open_pdf(self):
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()
+                    if(self.comboBox.currentText() == "Stress Vs Strain"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")                      
+                    elif(self.comboBox.currentText() == "Pressure Vs Expansion"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_EXPANSION'") 
+                    elif(self.comboBox.currentText() == "Pressure Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_TIME'")  
+                    elif(self.comboBox.currentText() == "Expansion Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='EXPANSION_VS_TIME'") 
+                    elif(self.comboBox.currentText() == "Stress Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_TIME'")    
+                    elif(self.comboBox.currentText() == "Strain Vs Time"):
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRAIN_VS_TIME'")    
+                    else:
+                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")  
+                               print("invalid graph type")  
+        connection.commit()
+        connection.close()
+        
+        self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_expansion() 
         
-        os.system("xpdf ./reports/test_report.pdf")       
+        os.system("xpdf ./reports/test_report.pdf")
+        os.system("cp ./reports/test_report.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
+       
         
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
@@ -1965,6 +1994,22 @@ class RL_01_Ui_MainWindow(object):
         self.ui=popup_email_test_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_log_email(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.test_id=self.label_12.text()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID='"+str(self.test_id)+"'")                 
+        connection.commit()
+        connection.close()
+        
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_log_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def open_comment_popup(self):        
         #print(" test_id :"+str(self.test_id))  
@@ -1990,29 +2035,6 @@ class RL_01_Ui_MainWindow(object):
         self.remark=""
         #self.unit_typex=self.comboBox_2.currentText()
         self.unit_typex = "N/mm"
-             
-        connection = sqlite3.connect("tyr.db")        
-        with connection:        
-                    cursor = connection.cursor()
-                    if(self.comboBox.currentText() == "Stress Vs Strain"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")                      
-                    elif(self.comboBox.currentText() == "Pressure Vs Expansion"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_EXPANSION'") 
-                    elif(self.comboBox.currentText() == "Pressure Vs Time"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_TIME'")  
-                    elif(self.comboBox.currentText() == "Expansion Vs Time"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='EXPANSION_VS_TIME'") 
-                    elif(self.comboBox.currentText() == "Stress Vs Time"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_TIME'")    
-                    elif(self.comboBox.currentText() == "Strain Vs Time"):
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRAIN_VS_TIME'")    
-                    else:
-                               cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")  
-                               print("invalid graph type")  
-        connection.commit()
-        connection.close()
-        
-        #self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         
         
              
@@ -2069,7 +2091,7 @@ class RL_01_Ui_MainWindow(object):
 #        f4=Table(summary_data4)
 #        f4.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
 #        
-        self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
+        #self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4 * inch)
         
@@ -2227,7 +2249,7 @@ class PlotCanvas(FigureCanvas):
         else:
                 results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
         for x in results: 
-                        ax.set_xlim(0,int(x[0]))
+                        ax.set_xlim(0,float(x[0]))
                         ax.set_ylim(0,float(x[1])) 
         connection.close()
         
@@ -2249,36 +2271,36 @@ class PlotCanvas(FigureCanvas):
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc     ")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc  ")
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc  ")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Pressure (MPa)')            
             elif(self.graph_type == "EXPANSION_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'  order by T_SEC asc")
+                    results=connection.execute("SELECT X_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'  order by REC_ID asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Expansion (mm)')                     
             elif(self.graph_type == "STRESS_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "STRAIN_VS_TIME"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
+                    results=connection.execute("SELECT X_NUM_STRAIN,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Strain (%)')
             elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
+                    results=connection.execute("SELECT Y_NUM,X_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
                     ax.set_xlabel('Expansion (mm)')
                     ax.set_ylabel('Pressure (MPa)')
             else:
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by T_SEC asc")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             for k in results:        
                                         self.y_num.append(float(k[0]))
-                                        self.x_num.append(int(k[1]))
+                                        self.x_num.append(float(k[1]))
             connection.close() 
             
             
@@ -2322,6 +2344,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.q_mpa =0
         self.t_timestamp=0
         self.key_id="P0"
+        self.real_sec=0.0
+        self.p_strain=0.0
         
         
         
@@ -2330,7 +2354,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_p_cm=[0.0]
         self.arr_p_inch=[0.0]
         self.arr_p_strain=[0.0]
-        self.arr_key_id=[""]
+        self.arr_key_id=[0.0]
         
         self.arr_t=[0]
         self.arr_q=[0.0]
@@ -2395,7 +2419,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
-        self.real_sec=0
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2656,7 +2680,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.t_mod=int(self.t) % 60 
                 self.t_timestamp=str(self.end_time)
                 self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
-                self.real_sec=int(self.t)
+                self.real_sec=float(self.t)
                 
 #                 if(int(self.t) > 0):                    
 #                      if(self.flgx=='N'):
@@ -2688,7 +2712,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
-                
+                self.p_strain=float(self.p)*100/float(self.test_guage_mm)
                 self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
                 
                 self.arr_t.append(int(self.t))
@@ -2710,7 +2734,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 print(" (P0) P:"+str(self.p)+" q:"+str(self.q)+" real_sec:"+str(self.real_sec))
-                self.arr_key_id.append(self.real_sec)
+                self.arr_key_id.append(float(self.real_sec))
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -3835,6 +3859,8 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.q =0
         self.t =170
         self.t_timestamp=""
+        self.p_strain=0.0
+        self.real_sec=0.0
         
         self.arr_p=[0.0]
         self.arr_q=[133.0]
@@ -3842,6 +3868,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
         self.arr_t_timestamp=[""]
+        self.arr_key_id=[0.0]
         
         self.x=0
         self.y=0
@@ -3975,7 +4002,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.test_guage_mm=609
         self.max_load=0
         self.cof_max_length=100
-        print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        #print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
         
         
         try:
@@ -4077,7 +4104,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
             '''
             try:
                 self.line = self.ser.readline()
-                print("Timer Job o/p:"+str(self.line))
+                #print("Timer Job o/p:"+str(self.line))
                 self.ser.flush()
                 self.ser.write(b'*D\r')
             except IOError:
@@ -4161,11 +4188,15 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 self.arr_t.append(float(self.t))
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                
                 
                 self.t_mod=int(self.t) % 60 
                 self.t_timestamp=str(self.end_time)
                 self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
+                self.real_sec=float(self.t)                
+                self.arr_key_id.append(float(self.real_sec))
+                print(" [G2 P0 ] P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                
 
                 if(int(self.q) > int(self.ylim)):
                     self.ylim=(int(self.q)+100)
@@ -4275,8 +4306,8 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
         self.test_type="tyr"
-        self.axes.set_xlabel('Expansion (mm)')
-        self.axes.set_ylabel('Pressure (MPa)')
+#         self.axes.set_xlabel('Expansion (mm)')
+#         self.axes.set_ylabel('Pressure (MPa)')
         self.axes.grid(which='major', linestyle='-', linewidth='0.50', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
@@ -4378,8 +4409,8 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
-                        self.axes.set_xlabel('Strain (%)')
-                        self.axes.set_ylabel('Stress (MPa)')
+                        self.axes.set_ylabel('Strain (%)')
+                        self.axes.set_xlabel('Stress (MPa)')
                         self.cs_area= 0
         connection.close()
         
@@ -4421,7 +4452,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_EXPANSION' LIMIT 1") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_STRAIN' LIMIT 1") 
         for x in results:
              self.axes.set_xlim(0,float(x[0]))
              self.axes.set_ylim(0,float(x[1]))          
@@ -4631,8 +4662,10 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 self.arr_t.append(float(self.t))
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                #print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                print(" [G2 P1 ] P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
+
 
                 if(int(self.q) > int(self.ylim)):
                     self.ylim=(int(self.q)+100)
@@ -4651,9 +4684,9 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
-        self.x1.append(self.p_strain)
-        self.y1.append(self.q_mpa)
-        self.x2.append(self.p_strain)
+        self.x1.append(self.p)
+        self.y1.append(self.q)
+        self.x2.append(self.p)
         self.y2.append(self.t)
 
         self.xlist = [self.x1, self.x2]
@@ -4891,7 +4924,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_EXPANSION' LIMIT 1") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_TIME' LIMIT 1") 
         for x in results:
              self.axes.set_xlim(0,float(x[0]))
              self.axes.set_ylim(0,float(x[1]))          
@@ -4904,7 +4937,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         self.test_guage_mm=609
         self.max_load=0
         self.cof_max_length=100
-        print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        #print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
         
         self.ser = serial.Serial(
                         port='/dev/ttyUSB0',
@@ -5000,10 +5033,10 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         self.x2,self.y2 = [],[]
         self.lines = []
         lobj = self.axes.plot([],[],lw=2)[0]
-        lobj2 = self.axes2.plot([],[],lw=2)[0]
+        #lobj2 = self.axes2.plot([],[],lw=2)[0]
         
         self.lines.append(lobj)
-        self.lines.append(lobj2)
+        #self.lines.append(lobj2)
         self.on_ani_start()
         
         
@@ -5016,7 +5049,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
             '''
             try:
                 self.line = self.ser.readline()
-                print("Timer Job o/p:"+str(self.line))
+                #print("Timer Job o/p:"+str(self.line))
                 self.ser.flush()
                 self.ser.write(b'*D\r')
             except IOError:
@@ -5100,7 +5133,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                 self.arr_t.append(float(self.t))
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                print(" [G2 P2] P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
 
                 if(int(self.q) > int(self.ylim)):
@@ -5121,7 +5154,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                    
     def plot_grah_only(self,i):
         self.x1.append(self.t)
-        self.y1.append(self.q_mpa)
+        self.y1.append(self.q)
         self.x2.append(self.t)
         self.y2.append(self.t)
 

@@ -2027,8 +2027,8 @@ class RL_03_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
-            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Diameter: ",str(x[3])],["Thickness:  ",str(x[4]),"Circumference):",str(x[5])]]
-            summary_data.append([" Reviewed By: ",str(x[6]),"",""])
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter :  ",str(x[4]),"Thickness:",str(x[5])]]
+            summary_data.append([" Circumference: ",str(x[6]),"Reviewed By :",str(x[7])])
             self.remark=str(x[5])        
         connection.close() 
         
@@ -2081,6 +2081,12 @@ class RL_03_Ui_MainWindow(object):
         
         Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12)]
               
+#         self.pdf_test_id=str(int(self.label_12.text()))
+#         doc = SimpleDocTemplate('./reports/log_report_'+str(self.pdf_test_id)+'.pdf', rightMargin=10,
+#                                 leftMargin=20,
+#                                 topMargin=10,
+#                                 bottomMargin=10,)
+        
         
         doc = SimpleDocTemplate('./reports/log_report.pdf', rightMargin=10,
                                 leftMargin=20,

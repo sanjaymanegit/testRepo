@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'print_popup.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import cups
@@ -23,9 +15,9 @@ class P_POP_TEST_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(160, 10, 231, 31))
+        self.label.setGeometry(QtCore.QRect(100, 10, 431, 31))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)
@@ -61,7 +53,8 @@ class P_POP_TEST_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.i=0 
+        self.i=0
+        self.radio_buttons = []
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -72,8 +65,24 @@ class P_POP_TEST_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Print"))
         self.pushButton_2.setText(_translate("MainWindow", "Close"))        
         self.pushButton_2.clicked.connect(MainWindow.close)
-        self.pushButton.clicked.connect(self.print_pdf)
+        #self.pushButton.clicked.connect(self.print_pdf)
         self.load_data()
+        #self.b.toggled.connect(self.show_printer_name)
+        #radioBtn.toggled.connect
+        self.pushButton.clicked.connect(self.show_printer_name)
+    
+    def show_printer_name(self):
+        print("Arry Length:"+str(self.verticalLayout.count()))                
+        for btn in self.radio_buttons:
+            if btn.isChecked():
+                print(btn.text())
+                conn = cups.Connection() 
+                file="./reports/test_report.pdf"
+                printer=str(btn.text())
+                conn.printFile(printer,file,"Report",{})
+                self.label.setText("Print Started On ( "+str(btn.text())+" )")
+                self.pushButton.setDisabled(True)
+                    
         
     def load_data(self):
        conn = cups.Connection ()
@@ -81,17 +90,19 @@ class P_POP_TEST_Ui_MainWindow(object):
        file="./reports/test_report.pdf"       
        for printer in self.printers:
            self.i=self.i+1           
-           self.radioButton = QtWidgets.QRadioButton(self.widget)
+           self.b = QtWidgets.QRadioButton(self.widget)
            font = QtGui.QFont()
            font.setPointSize(10)
            font.setBold(True)
            font.setWeight(75)
-           self.radioButton.setFont(font)
-           self.radioButton.setObjectName("radioButton_")
-           self.radioButton.setText(printer)
-           self.verticalLayout.addWidget(self.radioButton)
+           self.b.setFont(font)
+           self.b.setObjectName("b")
+           self.b.setText(printer)
+           self.b.setAccessibleName(str(self.i))
+           self.verticalLayout.addWidget(self.b)
+           self.radio_buttons.append(self.b)
            #self.radioButton.clicked.connect(self.getPrinter)     
-           
+    '''       
     def print_pdf(self):                
         conn = cups.Connection() 
         file="./reports/test_report.pdf"        
@@ -99,14 +110,15 @@ class P_POP_TEST_Ui_MainWindow(object):
         if(len(self.printers) > 0):
             printer=self.radioButton.text()
             try:               
-               conn.printFile(printer,file,"Report",{})        
+               #conn.printFile(printer,file,"Report",{})
+               print("Printer Name :"+str(printer))
             except cups.IPPError as e:
                print ("IPP status is %d" +str("x"))
             self.label.setText("Print Started !!")
             print ("Selected printer xxx:"+str(printer))  
             print ("Done")
             self.pushButton.setDisabled(True)
-        
+     '''   
         
 if __name__ == "__main__":
     import sys
@@ -116,3 +128,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
