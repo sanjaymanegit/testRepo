@@ -945,7 +945,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_155.setText(_translate("MainWindow", " (mm)"))
         self.label_156.setText(_translate("MainWindow", " (mm)"))
         self.label_157.setText(_translate("MainWindow", " (mm)"))
-        self.label_15.setText(_translate("MainWindow", "Data Saved Successfully !"))
+        self.label_15.setText(_translate("MainWindow", ""))
         self.label.setText(_translate("MainWindow", "Company Name Pvt. Ltd"))
         self.label_2.setText(_translate("MainWindow", "Blue Star IT PArk ,\n"
 "  MIDC , Thane ,  Mumbai Andhrei  Pin No 400232"))
@@ -2895,7 +2895,9 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                                 timeout = 0.05
                             )
         except IOError:
-                print("IO Errors")   
+                print("IO Errors")
+                self.ser=""
+                self.IO_error_flg=1
         #self.line_cnt2, = self.axes1.plot([0,0], [0,0], lw=2)
         
         '''
@@ -2977,7 +2979,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=self.end_time-self.start_time
             
-        if(self.IO_error_flg==0):
+        if(self.IO_error_flg==0 and str(self.ser) != "" ):
             '''
             
             '''
@@ -3357,7 +3359,8 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                             timeout = 0.05
                         )
         except IOError:
-                print("IO Errors") 
+                print("IO Errors")
+                self.IO_error_flg=1
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
