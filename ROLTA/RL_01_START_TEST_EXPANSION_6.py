@@ -923,17 +923,17 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_44.setText(_translate("MainWindow", "Dr.John"))
         self.pushButton_9.setText(_translate("MainWindow", "Stop Logging"))
         self.label_140.setText(_translate("MainWindow", "Diameter:"))
-        self.lineEdit_46.setText(_translate("MainWindow", "355"))
+        self.lineEdit_46.setText(_translate("MainWindow", "0"))
         self.label_143.setText(_translate("MainWindow", "Thickness (mm):"))
-        self.lineEdit_47.setText(_translate("MainWindow", "355"))
+        self.lineEdit_47.setText(_translate("MainWindow", "0"))
         self.label_144.setText(_translate("MainWindow", "Circumference (mm):"))
-        self.lineEdit_48.setText(_translate("MainWindow", "355"))
+        self.lineEdit_48.setText(_translate("MainWindow", "0"))
         self.label_145.setText(_translate("MainWindow", "Pressure :"))
         self.label_146.setText(_translate("MainWindow", "Expansion :"))
         self.label_147.setText(_translate("MainWindow", "Stress :"))
-        self.lineEdit_51.setText(_translate("MainWindow", "355"))
+        self.lineEdit_51.setText(_translate("MainWindow", "0"))
         self.label_148.setText(_translate("MainWindow", "Strain :"))
-        self.lineEdit_52.setText(_translate("MainWindow", "355"))
+        self.lineEdit_52.setText(_translate("MainWindow", "0"))
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.label_149.setText(_translate("MainWindow", "Elapsed Time:"))
         self.lineEdit_53.setText(_translate("MainWindow", "00:00:00"))
@@ -4418,17 +4418,19 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.max_load=0
         self.cof_max_length=100
         print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
-        
-        self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-       
+        try:
+            self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.05
+                        )
+        except IOError:
+                 self.ser=""
+                 self.IO_error_flg=1
         '''
         try:
 
@@ -4890,16 +4892,20 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         self.max_load=0
         self.cof_max_length=100
         #print("434Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+        try:
+            self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.05
+                        )
+        except IOError:
+                 self.ser=""
+                 self.IO_error_flg=1
         
-        self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
         '''
         try:
         
