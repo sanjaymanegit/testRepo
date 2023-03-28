@@ -15,7 +15,7 @@ sudo pyinstaller --clean --onedir --add-data "wt.db:." --add-data "services.db:.
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.py"
 
 ###ROLTA #####
-sudo pyinstaller --clean --onedir --add-data "tyr.db:." --ROLTA "TY_00_Main.py"
+sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=ROLTA "TY_00_Main.py"
 
 ### MDR #####
 sudo pyinstaller --clean --onedir --add-data "mdr.db:." --name=MDR "MDR_01_START_TEST.py"
