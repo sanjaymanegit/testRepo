@@ -51,7 +51,8 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(252, 210, 255);
-border-radius:20px;</string>
+border-radius:20px;
+border-color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>Start</string>
@@ -186,30 +187,31 @@ background-color: rgb(255, 152, 183);</string>
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>20</y>
+       <y>30</y>
        <width>101</width>
-       <height>61</height>
+       <height>41</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>images/nms.png</pixmap>
+      <pixmap>../images/nms.png</pixmap>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>290</x>
        <y>30</y>
-       <width>121</width>
-       <height>31</height>
+       <width>141</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
+       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -222,6 +224,32 @@ background-color: rgb(255, 152, 183);</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>Started !!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
