@@ -1,4 +1,5 @@
 
+from setting_01 import B_01_Ui_MainWindow
 from print_popup import P_POPUi_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -166,8 +167,24 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.stop_test)
         self.pushButton_5.clicked.connect(self.reset_test)
         self.pushButton_3.clicked.connect(self.print_file)
+        self.pushButton_6.clicked.connect(self.open_win_setting)
+      
+        
         
         self.pushButton_2.setDisabled(True)
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+
+    def device_date(self):     
+        self.label_2.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def open_win_setting(self):       
+        self.window = QtWidgets.QMainWindow()        
+        self.ui=B_01_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def start_test(self):         
         #print ("self.radioButton_5.isChecked :"+str(self.radioButton_5.isChecked()))
@@ -183,7 +200,7 @@ class Ui_MainWindow(object):
            else:
                self.go_ahead="No"
         connection.close()       
-        if(self.go_ahead !="Yes"):     
+        if(self.go_ahead =="Yes"):     
             
             self.pushButton.setDisabled(True)
             self.pushButton_2.setEnabled(True)
@@ -467,9 +484,9 @@ class Ui_MainWindow(object):
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,current_timestamp FROM PATIENT_MST WHERE P_ID IN (SELECT P_ID FROM GLOBAL_VAR_TEST)")
         for x in results:
-            summary_data.append(["Patient Name : ",str(x[0]),"Age: ",str(x[2])])
+            summary_data.append(["Patient Name : ","                        ","Age: ","   "])
             self.p_name=str(x[0])
-            summary_data.append(["Doctors Name:",str(self.dr_name),"Gender:",str(x[1])])
+            summary_data.append(["Doctors Name:","                              ","Gender:","   "])
             #summary_data.append(["Report Date: ",str(x[3])[0:10],"",""])
             self.report_date=str(x[3])[0:16]
         
@@ -534,7 +551,7 @@ class Ui_MainWindow(object):
            
         comments = Paragraph(str(ptext)+" ------------------------------------------------------------------------------------------------------------------------------- -\n", styles["Normal"])
         
-        footer_2= Paragraph("\n Ark medico software division", styles["Normal"])
+        footer_2= Paragraph("\n ........................", styles["Normal"])
         
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
@@ -574,7 +591,8 @@ class Ui_MainWindow(object):
         
     def open_pdf(self):
         self.create_pdf()
-        #os.system("xpdf ./reports/ur_reports.pdf") 
+        #os.system("xpdf ./reports/ur_reports.pdf")
+        os.system("cp ./reports/ur_reports.pdf ./reports/reports_"+str(self.test_id)+".pdf")
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
@@ -918,6 +936,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.x2lim=0
         self.y2lim=0
         try:
+            
             self.ser = serial.Serial(
                                 port='/dev/ttyAMA0',
                                 baudrate=115200,
@@ -927,7 +946,17 @@ class PlotCanvas_Auto(FigureCanvas):
                                 xonxoff=False,
                                 timeout = 0.05
                             )
-        
+            '''
+            self.ser = serial.Serial(
+                port='/dev/ttyUSB0',
+                baudrate=19200,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                xonxoff=False,
+                timeout = 0.25
+            )
+            '''
             self.ser.flush()
            
             #=======
