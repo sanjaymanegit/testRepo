@@ -1384,6 +1384,7 @@ class TY_02_Ui_MainWindow(object):
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1)
                     self.pushButton_4_5.setEnabled(True)
+                    self.pushButton_4.setDisabled(True)
      
     def validation(self):
         self.goAhead="No"
@@ -1715,12 +1716,17 @@ class TY_02_Ui_MainWindow(object):
         
     def manual_stop(self):
         if(self.timer3.isActive()): 
-                self.sc_new.save_data_flg='Yes'
-                self.sc_new.ser.write(b'*Q\r')
-                if(self.sc_new.timer1.isActive()): 
+                self.sc_new.save_data_flg='Yes'                
+                if(self.sc_new.timer1.isActive()):
+                           try:
+                               self.sc_new.ser.write(b'*Q\r')
+                           except:
+                               print("IO Error.")
                            self.sc_new.timer1.stop()
+                           self.sc_new.on_ani_stop()
                 self.timer3.stop()
         self.pushButton_4_5.setDisabled(True)
+        self.pushButton_4.setEnabled(True)
         
     
     
@@ -1728,6 +1734,7 @@ class TY_02_Ui_MainWindow(object):
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop()
+           #self.sc_new.on_ani_stop()
            
         if(self.timer3.isActive()): 
            self.timer3.stop()     
@@ -1743,6 +1750,7 @@ class TY_02_Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_3.setText("Data Saved Successfully.")
                 self.label_3.show()
+                self.manual_stop()
 
     def load_data(self):        
         #self.pushButton_2.setDisabled(True) ### Stop
