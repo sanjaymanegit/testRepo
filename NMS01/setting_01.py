@@ -1,7 +1,16 @@
 
 from register import register_Ui_MainWindow
 from loadcelll_status import loadcell_status_Ui_MainWindow
+from date_time_set import date_time_set_Ui_MainWindow
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
+import datetime
+import time
+from PyQt5.QtCore import QDate
+import sys,os
+import sqlite3
 
 
 class B_01_Ui_MainWindow(object):
@@ -142,6 +151,9 @@ class B_01_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(MainWindow.close)
         self.pushButton_6.clicked.connect(self.open_win_reg)
         self.pushButton.clicked.connect(self.open_win_loadcell)
+        self.pushButton_5.clicked.connect(self.open_win_date_time)
+        self.pushButton_3.clicked.connect(self.break_app)
+        self.register_button()
     
     def open_win_reg(self):       
         self.window = QtWidgets.QMainWindow()        
@@ -154,6 +166,50 @@ class B_01_Ui_MainWindow(object):
         self.ui=loadcell_status_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_win_date_time(self):       
+        self.window = QtWidgets.QMainWindow()        
+        self.ui=date_time_set_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def register_button(self):
+        serial_no=self.getserial()
+        #print("current serial No : "+str(serial_no))
+        connection = sqlite3.connect("services.db")
+        results=connection.execute("select DEVICE_SERIAL_NO from DAT_MST") 
+        for x in results:
+           #print("Device Serial No :"+str(x[0]))
+           if(serial_no == str(x[0])):
+               #self.go_ahead="Yes"
+               self.pushButton_6.hide()
+           else:
+               #self.go_ahead="No"
+               self.pushButton_6.show()
+        connection.close()
+    
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           f = open('/proc/cpuinfo','r')
+           for line in f:
+                if line[0:6]=='Serial':
+                   cpuserial = line[10:26]
+           f.close()
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial
+
+    def break_app(self):
+        close = QMessageBox()
+        close.setText("Confirm Again to Break !!")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:
+                os.systbem("edxit")
+        else:
+                print("Not break application....")
 
 
 if __name__ == "__main__":
