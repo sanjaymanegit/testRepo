@@ -2,6 +2,8 @@
 from register import register_Ui_MainWindow
 from loadcelll_status import loadcell_status_Ui_MainWindow
 from date_time_set import date_time_set_Ui_MainWindow
+from graph_scales import graph_scales_Ui_MainWindow
+from factory_reset import factory_reset_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -152,6 +154,8 @@ class B_01_Ui_MainWindow(object):
         self.pushButton_6.clicked.connect(self.open_win_reg)
         self.pushButton.clicked.connect(self.open_win_loadcell)
         self.pushButton_5.clicked.connect(self.open_win_date_time)
+        self.pushButton_4.clicked.connect(self.open_win_graph_scales)
+        self.pushButton_2.clicked.connect(self.open_win_factory_reset)
         self.pushButton_3.clicked.connect(self.break_app)
         self.register_button()
     
@@ -172,6 +176,19 @@ class B_01_Ui_MainWindow(object):
         self.ui=date_time_set_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_win_graph_scales(self):       
+        self.window = QtWidgets.QMainWindow()        
+        self.ui=graph_scales_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_win_factory_reset(self):       
+        self.window = QtWidgets.QMainWindow()        
+        self.ui=factory_reset_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     
     def register_button(self):
         serial_no=self.getserial()
