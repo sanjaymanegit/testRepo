@@ -1,6 +1,7 @@
 
 from setting_01 import B_01_Ui_MainWindow
 from print_popup import P_POPUi_MainWindow
+from calibration_Page import calibration_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -168,6 +169,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.reset_test)
         self.pushButton_3.clicked.connect(self.print_file)
         self.pushButton_6.clicked.connect(self.open_win_setting)
+        self.pushButton_4.clicked.connect(self.open_win_calibration)
       
         
         
@@ -185,6 +187,14 @@ class Ui_MainWindow(object):
         self.ui=B_01_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_win_calibration(self):       
+        self.window = QtWidgets.QMainWindow()        
+        self.ui=calibration_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
         
     def start_test(self):         
         #print ("self.radioButton_5.isChecked :"+str(self.radioButton_5.isChecked()))
