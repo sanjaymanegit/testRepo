@@ -156,6 +156,14 @@ class B_01_Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.open_win_factory_reset)
         self.pushButton_3.clicked.connect(self.break_app)
         self.register_button()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+
+    def device_date(self):     
+        self.label_2.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
     
     def open_win_reg(self):       
         self.window = QtWidgets.QMainWindow()        
