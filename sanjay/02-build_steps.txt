@@ -47,4 +47,7 @@ sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=AE "TY_00_Main.py
 #### NMS_01 ###### 3.5 inch ####
 sudo pyinstaller --clean --onedir --add-data "ur.db:." --add-data "services.db:." --name=NMS_01 "B_00.py"
 
+#### NMS_02 ###### 5 inch ####
+sudo pyinstaller --clean --onedir --add-data "ur.db:." --add-data "services.db:." --name=NMS_02 "B_00.py"
+
 
