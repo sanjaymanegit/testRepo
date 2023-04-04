@@ -147,6 +147,23 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.t_var=0.001
+        self.voiding_time=""
+        self.voiding_time_dev=""        
+        self.voided_vol=""        
+        self.time_to_max_flow=""
+        self.time_to_max_flow_dev=""        
+        self.flow_at_2_sec=""
+        self.accel=""
+        self.total_vol="0"        
+        self.max_flow=""
+        self.max_flow_dev=""        
+        self.avg_flow_dev=""
+        self.flow_time=""
+        self.hesitancy_time="" #Hesitancy Time – Time of initiation of urination process to the start of the urine stream
+        self.second_min_flow_val=""
+        self.et=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -220,6 +237,10 @@ class Ui_MainWindow(object):
             
             self.label_3.setText("Running.")
             self.label_3.show()
+            self.timer3=QtCore.QTimer()
+            self.timer3.setInterval(1000)        
+            self.timer3.timeout.connect(self.show_progress_bar)
+            self.timer3.start(1)
         else:
                  self.label_3.setText("Registration.")
                  self.label_3.show()
@@ -237,13 +258,18 @@ class Ui_MainWindow(object):
            cpuserial = "ERROR000000000"
         return cpuserial
     
+    
+    
     def stop_test(self):
         self.pushButton.setEnabled(True)        
         self.label_3.setText("Stopped.")
         self.label_3.show()
         self.start_plot.on_stop()
-        self.save_test_data_tmp()
-        self.save_data()
+        if(self.timer3.isActive()): 
+                   self.timer3.stop()                                                                                                      
+                   print("Time 3 has been stopped ")
+                   self.save_test_data_tmp()
+                   self.save_data()
         
     def reset_test(self):
         self.pushButton.setEnabled(True)
@@ -282,7 +308,50 @@ class Ui_MainWindow(object):
         else:
             print("Arrays are not yet populated.")
             
-    
+    def show_progress_bar(self):
+        #print(" inside progress bar  length of arr_p:"+str(len(self.start_plot.arr_p)))        
+        if(len(self.start_plot.arr_p) > 0):
+                if(int(self.start_plot.curr_vol) > 0 ):
+                    per_val=(int(self.start_plot.curr_vol)/1000)*100
+                    #self.progressBar.setValue(per_val)
+#                     self.lcdNumber.setProperty("value", int(self.start_plot.flow_val))
+#                     self.lcdNumber_2.setProperty("value",int(self.start_plot.curr_vol))                     
+                else:
+                    #self.progressBar.setValue(0)
+#                     self.lcdNumber.setProperty("value", 0)
+#                     self.lcdNumber_2.setProperty("value",0)
+                    print("no ok")
+                    
+                self.test_start_date=self.start_plot.start_time
+                #self.elap_time=datetime.datetime.now()-self.start_plot.start_time
+                self.test_end_date=datetime.datetime.now()
+                '''
+                if(float(len(self.start_plot.arr_q)) > 0):
+                    #if(round(float(max(self.start_plot.arr_p))) > 0):
+                        self.avg_flow=str(round(float(max(self.start_plot.arr_q2)))/round(float(max(self.start_plot.arr_p))))
+                    #else:
+                        #self.avg_flow=0
+                else:
+                    self.avg_flow=0
+                '''
+                self.et=str(self.start_plot.elap_time)
+                self.hesitancy_time=str(self.start_plot.h_time) 
+                
+                
+                if(len(self.start_plot.arr_q2) > 0):
+                    self.max_flow=str(round(float(max(self.start_plot.arr_q2))))
+                    #self.max_flow=str(self.label_2.text())            
+                else:
+                    #self.label_2.setText("0")
+                    self.max_flow=0
+                
+                
+                if(len(self.start_plot.arr_q) > 0):
+                    self.voided_vol=str(round(float(max(self.start_plot.arr_q))))
+                else:
+                    #self.label_2.setText("0")
+                    self.voided_vol=0
+                
     def test_calcs(self):
         self.test_id="1"
         connection = sqlite3.connect("ur.db")
@@ -453,7 +522,7 @@ class Ui_MainWindow(object):
         connection = sqlite3.connect("ur.db")              
         with connection:        
                 cursor = connection.cursor()                                
-                cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_ID='"+str(self.test_id)+"',ELAPSED_TIME='"+str(self.label_6_1.text())+"',MAX_FLOW='"+str(self.max_flow)+"'")
+                cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_ID='"+str(self.test_id)+"',ELAPSED_TIME='"+str(self.et)+"',MAX_FLOW='"+str(self.max_flow)+"'")
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.avg_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 #cursor.execute("UPDATE GLOBAL_VAR_TEST SET TEST_START_ON='"+str(self.test_start_date)+"',TEST_END_ON='"+str(self.test_end_date)+"', AVG_FLOW='"+str(self.time_to_max_flow)+"' ,VOIDING_TIME='"+str(self.voiding_time)+"' ")
                 cursor.execute("UPDATE GLOBAL_VAR_TEST SET FLOW_TIME='"+str(self.flow_time)+"',TIME_TO_MAX_FLOW='"+str(self.time_to_max_flow)+"', VOIDED_VOL='"+str(self.voided_vol)+"' , FLOW_AT_2_SEC='"+str(self.flow_at_2_sec)+"' ,ACCEL='"+str(self.accel)+"', TOTAL_VOLUMN='"+str(self.total_vol)+"'")                  
@@ -483,24 +552,27 @@ class Ui_MainWindow(object):
         summary_data=[]
         test_data=[]
         connection = sqlite3.connect("ur.db")        
-        results=connection.execute("SELECT TEST_ID,TEST_START_ON,DR_NAME FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1 ")
+        results=connection.execute("SELECT TEST_ID,TEST_START_ON,DR_NAME,current_timestamp FROM TEST_MST ORDER BY TEST_ID DESC LIMIT 1 ")
         for x in results:
             summary_data=[["Test No:        ",str(x[0]).zfill(6),"Tested Date:        ",str(x[1])[0:10]]]
             self.test_id=str(x[0])
             self.dr_name=str(x[2])
-        connection.close()
-        
-        
-        connection = sqlite3.connect("ur.db")        
-        results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,current_timestamp FROM PATIENT_MST WHERE P_ID IN (SELECT P_ID FROM GLOBAL_VAR_TEST)")
-        for x in results:
-            summary_data.append(["Patient Name : ","                        ","Age: ","   "])
-            self.p_name=str(x[0])
+            summary_data.append(["Patient Name : ","                        ","Age: ","   "])           
             summary_data.append(["Doctors Name:","                              ","Gender:","   "])
-            #summary_data.append(["Report Date: ",str(x[3])[0:10],"",""])
             self.report_date=str(x[3])[0:16]
-        
         connection.close()
+        
+        
+#         connection = sqlite3.connect("ur.db")        
+#         results=connection.execute("SELECT NAME_INITIALS||' '||F_NAME||' '||M_NAME||' '||L_NAME,GENDER,AGE,current_timestamp FROM PATIENT_MST WHERE P_ID IN (SELECT P_ID FROM GLOBAL_VAR_TEST)")
+#         for x in results:
+#             summary_data.append(["Patient Name : ","                        ","Age: ","   "])
+#             self.p_name=str(x[0])
+#             summary_data.append(["Doctors Name:","                              ","Gender:","   "])
+#             #summary_data.append(["Report Date: ",str(x[3])[0:10],"",""])
+#             
+#         
+#         connection.close()
         test_data=[["  Parameters      ","        Value      ","          Standard Deviation %                   "]]
         connection = sqlite3.connect("ur.db")        
         results=connection.execute("SELECT round(MAX_FLOW,2),round(MAX_FLOW_DEV,2),round(AVG_FLOW,2),round(AVG_FLOW_DEV,2),round(VOIDING_TIME,2),"+
@@ -579,7 +651,7 @@ class Ui_MainWindow(object):
             pdf_img= Image(report_gr_img, 7 * inch, 5 * inch)
             
             
-            Elements=[Title3,Title,Title2,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),comments,blank,footer_2,Spacer(1,12)]
+            Elements=[Title3,line,Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f4,Spacer(1,12),comments,blank,Spacer(1,12),footer_2,Spacer(1,12)]
             
             
             
@@ -773,7 +845,7 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()  
         
         
-        ax.set_title('Uroflowmetry Report of '+str(self.p_name))
+        ax.set_title('Uroflowmetry Report')
         #ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
         ax.grid(which='major', linestyle='-', linewidth='0.2', color='red')
