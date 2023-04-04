@@ -132,7 +132,7 @@ class Ui_MainWindow(object):
         self.label_3.setGeometry(QtCore.QRect(50, 30, 191, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
+        font.setPointSize(16)
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
@@ -248,6 +248,7 @@ class Ui_MainWindow(object):
     def reset_test(self):
         self.pushButton.setEnabled(True)
         self.pushButton_2.setDisabled(True)
+        self.label_3.hide()
     
     def save_test_data_tmp(self):
         if(len(self.start_plot.arr_p) > 0 ):            
