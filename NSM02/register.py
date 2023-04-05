@@ -180,7 +180,7 @@ class register_Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Procced"))
         self.pushButton_7.setText(_translate("MainWindow", "Reset"))
         self.label_3.setText(_translate("MainWindow", "Password :"))
-        self.lineEdit.setText(_translate("MainWindow", "507171903"))
+        #self.lineEdit.setText(_translate("MainWindow", "507171903"))
         self.pushButton_8.setText(_translate("MainWindow", "Close"))
         self.label_4.setText(_translate("MainWindow", "Register"))
         self.pushButton_9.setText(_translate("MainWindow", "Check Registration"))

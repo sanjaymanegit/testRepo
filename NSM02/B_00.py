@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(50, 30, 191, 41))
+        self.label_3.setGeometry(QtCore.QRect(20, 30, 231, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -147,7 +147,7 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        
+        self.test_id="1"
         self.t_var=0.001
         self.voiding_time=""
         self.voiding_time_dev=""        
@@ -189,6 +189,7 @@ class Ui_MainWindow(object):
       
         
         
+        
         self.pushButton_2.setDisabled(True)
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -212,7 +213,13 @@ class Ui_MainWindow(object):
         
         
         
-    def start_test(self):         
+    def start_test(self):
+        connection = sqlite3.connect("ur.db")
+        results=connection.execute("select seq+1 from sqlite_sequence where name = 'TEST_MST'")
+        for x in results:           
+                 #self.label_2.setText(str(x[0]).zfill(3))
+                 self.test_id=str(x[0]).zfill(3)
+        connection.close()
         #print ("self.radioButton_5.isChecked :"+str(self.radioButton_5.isChecked()))
         serial_no=self.getserial()
         self.go_ahead="No"
@@ -235,7 +242,7 @@ class Ui_MainWindow(object):
             #self.gridLayout.addWidget(self.start_plot, 0, 0, 1, 1)           
            
             
-            self.label_3.setText("Running.")
+            self.label_3.setText("[Test ID:"+str(self.test_id)+"] Running.")
             self.label_3.show()
             self.timer3=QtCore.QTimer()
             self.timer3.setInterval(1000)        
@@ -352,14 +359,7 @@ class Ui_MainWindow(object):
                     #self.label_2.setText("0")
                     self.voided_vol=0
                 
-    def test_calcs(self):
-        self.test_id="1"
-        connection = sqlite3.connect("ur.db")
-        results=connection.execute("select seq+1 from sqlite_sequence where name = 'TEST_MST'")
-        for x in results:           
-                 #self.label_2.setText(str(x[0]).zfill(3))
-                 self.test_id=str(x[0]).zfill(7)
-        connection.close()
+    def test_calcs(self):       
         
          
         
@@ -557,8 +557,8 @@ class Ui_MainWindow(object):
             summary_data=[["Test No:        ",str(x[0]).zfill(6),"Tested Date:        ",str(x[1])[0:10]]]
             self.test_id=str(x[0])
             self.dr_name=str(x[2])
-            summary_data.append(["Patient Name : ","                        ","Age: ","   "])           
-            summary_data.append(["Doctors Name:","                              ","Gender:","   "])
+            summary_data.append(["Patient Name : ","                                                       ","Age: ","   "])           
+            summary_data.append(["Doctors Name:","                                                         ","Gender:","   "])
             self.report_date=str(x[3])[0:16]
         connection.close()
         

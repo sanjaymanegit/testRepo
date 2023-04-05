@@ -181,7 +181,7 @@ class date_time_set_Ui_MainWindow(object):
 #         self.comboBox_3.addItem("")
 #         self.comboBox_3.addItem("")
         self.calendarWidget = QtWidgets.QCalendarWidget(self.frame)
-        self.calendarWidget.setGeometry(QtCore.QRect(10, 60, 361, 241))
+        self.calendarWidget.setGeometry(QtCore.QRect(10, 60, 381, 261))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -189,6 +189,8 @@ class date_time_set_Ui_MainWindow(object):
         font.setWeight(75)
         self.calendarWidget.setFont(font)
         self.calendarWidget.setGridVisible(True)
+        self.calendarWidget.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")        
+        
         self.calendarWidget.setObjectName("calendarWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)

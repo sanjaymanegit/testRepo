@@ -4,8 +4,6 @@ import datetime
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
-
-
 class graph_scales_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -48,7 +46,7 @@ class graph_scales_Ui_MainWindow(object):
         self.pushButton_8.setFlat(False)
         self.pushButton_8.setObjectName("pushButton_8")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(50, 20, 151, 41))
+        self.label_2.setGeometry(QtCore.QRect(260, 10, 151, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -85,7 +83,7 @@ class graph_scales_Ui_MainWindow(object):
         self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_2.setObjectName("line_2")
         self.label_3 = QtWidgets.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(260, 70, 71, 31))
+        self.label_3.setGeometry(QtCore.QRect(60, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -95,7 +93,7 @@ class graph_scales_Ui_MainWindow(object):
         self.label_3.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.frame)
-        self.label_4.setGeometry(QtCore.QRect(620, 70, 101, 31))
+        self.label_4.setGeometry(QtCore.QRect(460, 60, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -116,40 +114,8 @@ class graph_scales_Ui_MainWindow(object):
         self.line_5.setLineWidth(3)
         self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_5.setObjectName("line_5")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(260, 120, 111, 51))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(620, 190, 91, 51))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_3.setGeometry(QtCore.QRect(260, 190, 111, 51))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_4.setGeometry(QtCore.QRect(620, 120, 91, 51))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_4.setFont(font)
-        self.lineEdit_4.setObjectName("lineEdit_4")
         self.label_5 = QtWidgets.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(40, 120, 191, 51))
+        self.label_5.setGeometry(QtCore.QRect(50, 100, 191, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -159,7 +125,7 @@ class graph_scales_Ui_MainWindow(object):
         self.label_5.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.frame)
-        self.label_6.setGeometry(QtCore.QRect(60, 190, 171, 51))
+        self.label_6.setGeometry(QtCore.QRect(50, 200, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -169,7 +135,7 @@ class graph_scales_Ui_MainWindow(object):
         self.label_6.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.frame)
-        self.label_7.setGeometry(QtCore.QRect(460, 130, 151, 41))
+        self.label_7.setGeometry(QtCore.QRect(450, 110, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -179,7 +145,7 @@ class graph_scales_Ui_MainWindow(object):
         self.label_7.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_7.setObjectName("label_7")
         self.label_8 = QtWidgets.QLabel(self.frame)
-        self.label_8.setGeometry(QtCore.QRect(440, 190, 171, 41))
+        self.label_8.setGeometry(QtCore.QRect(440, 200, 161, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -204,7 +170,7 @@ class graph_scales_Ui_MainWindow(object):
         self.pushButton_9.setFlat(False)
         self.pushButton_9.setObjectName("pushButton_9")
         self.label_9 = QtWidgets.QLabel(self.frame)
-        self.label_9.setGeometry(QtCore.QRect(390, 320, 341, 51))
+        self.label_9.setGeometry(QtCore.QRect(390, 310, 341, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -213,6 +179,42 @@ class graph_scales_Ui_MainWindow(object):
         self.label_9.setFont(font)
         self.label_9.setStyleSheet("color: rgb(0, 170, 127);")
         self.label_9.setObjectName("label_9")
+        self.spinBox = QtWidgets.QSpinBox(self.frame)
+        self.spinBox.setGeometry(QtCore.QRect(260, 90, 121, 81))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.spinBox.setFont(font)
+        self.spinBox.setMaximum(100)
+        self.spinBox.setSingleStep(1)
+        self.spinBox.setProperty("value", 60)
+        self.spinBox.setObjectName("spinBox")
+        self.spinBox_2 = QtWidgets.QSpinBox(self.frame)
+        self.spinBox_2.setGeometry(QtCore.QRect(260, 190, 121, 71))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.spinBox_2.setFont(font)
+        self.spinBox_2.setMaximum(600)
+        self.spinBox_2.setSingleStep(1)
+        self.spinBox_2.setProperty("value", 60)
+        self.spinBox_2.setObjectName("spinBox_2")
+        self.spinBox_3 = QtWidgets.QSpinBox(self.frame)
+        self.spinBox_3.setGeometry(QtCore.QRect(610, 190, 111, 71))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.spinBox_3.setFont(font)
+        self.spinBox_3.setMaximum(600)
+        self.spinBox_3.setSingleStep(1)
+        self.spinBox_3.setProperty("value", 60)
+        self.spinBox_3.setObjectName("spinBox_3")
+        self.spinBox_4 = QtWidgets.QSpinBox(self.frame)
+        self.spinBox_4.setGeometry(QtCore.QRect(610, 90, 111, 81))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.spinBox_4.setFont(font)
+        self.spinBox_4.setMaximum(2000)
+        self.spinBox_4.setSingleStep(10)
+        self.spinBox_4.setProperty("value", 1000)
+        self.spinBox_4.setObjectName("spinBox_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -254,10 +256,10 @@ class graph_scales_Ui_MainWindow(object):
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     def reset_fun(self):
-        self.lineEdit.setText(str("50"))
-        self.lineEdit_3.setText(str("60"))
-        self.lineEdit_4.setText(str("1000"))
-        self.lineEdit_2.setText(str("60"))
+        self.spinBox.setText(str("50"))
+        self.spinBox_2.setText(str("60"))
+        self.spinBox_4.setText(str("1000"))
+        self.spinBox_3.setText(str("60"))
         self.label_9.hide()
     
     def load_data(self):
@@ -265,64 +267,63 @@ class graph_scales_Ui_MainWindow(object):
        results=connection.execute("SELECT VOLUMN_TIME_X_AXIS,VOLUMN_TIME_Y_AXIS,FLOW_TIME_X_AXIS,FLOW_TIME_Y_AXIS FROM OTER_INFO")
        rows=results.fetchall()     
        
-       self.lineEdit_2.setText(str(rows[0][0]))
-       self.lineEdit_4.setText(str(rows[0][1]))
+       self.spinBox_3.setValue(int(rows[0][0]))
+       self.spinBox_4.setValue(int(rows[0][1]))
        
-       self.lineEdit_3.setText(str(rows[0][2]))
-       self.lineEdit.setText(str(rows[0][3]))
+       self.spinBox_2.setValue(int(rows[0][2]))
+       self.spinBox.setValue(int(rows[0][3]))
        '''
        self.lineEdit.setText(str("lineEdit"))          
        
-       self.lineEdit_3.setText(str("lineEdit_3"))
-       self.lineEdit_4.setText(str("lineEdit_4"))
-       self.lineEdit_2.setText(str("lineEdit_2"))    
+       self.spinBox_2.setText(str("lineEdit_3"))
+       self.spinBox_4.setText(str("lineEdit_4"))
+       self.spinBox_3.setText(str("lineEdit_2"))    
        '''
      
        connection.close()
        
     def save_data(self):
        self.label_9.hide()
-       if(self.lineEdit.text() == ""):
+       if(self.spinBox.text() == ""):
                    self.label_9.setText("Max Flow is Empty")
                    self.label_9.show()
-       elif(int(self.lineEdit.text()) <= 0):
+       elif(int(self.spinBox.text()) <= 0):
                    self.label_9.setText("Max Flow should > 0")
                    self.label_9.show()           
-       elif(self.lineEdit_2.text() == ""):
+       elif(self.spinBox_3.text() == ""):
                    self.label_9.setText("Max-Time(Vol) is Empty")
                    self.label_9.show()
-       elif(int(self.lineEdit_2.text()) <= 0):
+       elif(int(self.spinBox_3.text()) <= 0):
                    self.label_9.setText("Max-Time(Vol) should > 0")
                    self.label_9.show() 
-       elif(self.lineEdit_3.text() == ""):
+       elif(self.spinBox_2.text() == ""):
                    self.label_9.setText("Max Time(Flow) is Empty")
                    self.label_9.show()
-       elif(int(self.lineEdit_3.text())  <= 0):
+       elif(int(self.spinBox_2.text())  <= 0):
                    self.label_9.setText("Max Time(Flow) should > 0")
                    self.label_9.show()
-       elif(self.lineEdit_4.text() == ""):
+       elif(self.spinBox_4.text() == ""):
                    self.label_9.setText("Max-Vol is Empty")
                    self.label_9.show()
-       elif(int(self.lineEdit_4.text()) <= 0):
+       elif(int(self.spinBox_4.text()) <= 0):
                    self.label_9.setText("Max-Vol should > 0")
                    self.label_9.show()
        else:
            '''
-           print("vvvv2: "+str(self.lineEdit_2.text()))
-           print("vvvv4: "+str(self.lineEdit_4.text()))
-           print("vvvv3: "+str(self.lineEdit_3.text()))
-           print("vvvv: "+str(self.lineEdit.text()))
+           print("vvvv2: "+str(self.spinBox_3.text()))
+           print("vvvv4: "+str(self.spinBox_4.text()))
+           print("vvvv3: "+str(self.spinBox_2.text()))
+           print("vvvv: "+str(self.spinBox.text()))
            '''
            connection = sqlite3.connect("ur.db")
            #print("insed saved")  
            with connection:        
                     cursor = connection.cursor()                    
-                    cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.lineEdit_2.text()+"',VOLUMN_TIME_Y_AXIS='"+self.lineEdit_4.text()+"',FLOW_TIME_X_AXIS='"+self.lineEdit_3.text()+"',FLOW_TIME_Y_AXIS='"+self.lineEdit.text()+"'")
+                    cursor.execute("UPDATE OTER_INFO SET  VOLUMN_TIME_X_AXIS='"+self.spinBox_3.text()+"',VOLUMN_TIME_Y_AXIS='"+self.spinBox_4.text()+"',FLOW_TIME_X_AXIS='"+self.spinBox_2.text()+"',FLOW_TIME_Y_AXIS='"+self.spinBox.text()+"'")
            connection.commit();
            connection.close()
            self.label_9.setText("saved successfully.")
            self.label_9.show()
-
 
 
 if __name__ == "__main__":
@@ -333,3 +334,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
