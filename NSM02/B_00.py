@@ -191,6 +191,7 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_2.setDisabled(True)
+        self.pushButton_5.setDisabled(True)
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
@@ -237,6 +238,7 @@ class Ui_MainWindow(object):
             
             self.pushButton.setDisabled(True)
             self.pushButton_2.setEnabled(True)
+            self.pushButton_5.setEnabled(True)
             
             self.start_plot =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
             #self.gridLayout.addWidget(self.start_plot, 0, 0, 1, 1)           

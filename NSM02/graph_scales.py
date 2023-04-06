@@ -256,10 +256,10 @@ class graph_scales_Ui_MainWindow(object):
         self.label.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         
     def reset_fun(self):
-        self.spinBox.setText(str("50"))
-        self.spinBox_2.setText(str("60"))
-        self.spinBox_4.setText(str("1000"))
-        self.spinBox_3.setText(str("60"))
+        self.spinBox.setValue(int("50"))
+        self.spinBox_2.setValue(int("60"))
+        self.spinBox_4.setValue(int("1000"))
+        self.spinBox_3.setValue(int("60"))
         self.label_9.hide()
     
     def load_data(self):
