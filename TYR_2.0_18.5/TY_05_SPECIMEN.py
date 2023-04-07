@@ -558,6 +558,7 @@ class TY_05_Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.go_ahead="No"
+        self.dup_spec_name_flag="N"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -839,20 +840,25 @@ class TY_05_Ui_MainWindow(object):
         
     def c_add_data(self):
         self.validations()
-        if(self.label_2.text() != ""):            
-            if(self.go_ahead=="Yes"):
-                connection = sqlite3.connect("tyr.db")
-                with connection:        
-                        cursor = connection.cursor()
-                        cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED) VALUES('"+self.lineEdit_12.text()+"','"+self.lineEdit_9.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"','"+self.lineEdit_4_1.text()+"')")                    
-                connection.commit();                    
-                connection.close()  
-          
-                self.label_21.setText("Record Added Successfully.")           
+        self.check_for_dup_spec_name_add()
+        if(self.dup_spec_name_flag == "Y"):
+              self.label_21.setText("Spec. Name is already exist.")           
+              self.label_21.show()
+        else:                
+            if(self.label_2.text() != ""):            
+                if(self.go_ahead=="Yes"):
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED) VALUES('"+self.lineEdit_12.text()+"','"+self.lineEdit_9.text()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"','"+self.lineEdit_4_1.text()+"')")                    
+                    connection.commit();                    
+                    connection.close()  
+              
+                    self.label_21.setText("Record Added Successfully.")           
+                    self.label_21.show()
+            else :
+                self.label_21.setText("Id is Empty.")
                 self.label_21.show()
-        else :
-            self.label_21.setText("Id is Empty.")
-            self.label_21.show()
             
         self.c_select_all_data()
     
@@ -867,16 +873,21 @@ class TY_05_Ui_MainWindow(object):
     
     def c_edit_data(self):
         self.validations()
-        if(self.label_2.text() != "" and self.go_ahead == 'Yes'):
-            connection = sqlite3.connect("tyr.db")
-            with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.lineEdit_9.text()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_4_1.text()+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
-            connection.commit();                    
-            connection.close()
-            self.label_21.setText("Record Saved Successfully.")       
-            self.label_21.show()
-            self.c_select_all_data()
+        self.check_for_dup_spec_name_upd()
+        if(self.dup_spec_name_flag == "Y"):
+              self.label_21.setText("Spec. Name is already exist.")           
+              self.label_21.show()
+        else:
+              if(self.label_2.text() != "" and self.go_ahead == 'Yes'):
+                connection = sqlite3.connect("tyr.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.lineEdit_9.text()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_4_1.text()+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                connection.commit();                    
+                connection.close()
+                self.label_21.setText("Record Saved Successfully.")       
+                self.label_21.show()
+                self.c_select_all_data()
     
     def validations(self):        
         self.go_ahead="No"
@@ -910,9 +921,41 @@ class TY_05_Ui_MainWindow(object):
         elif(float(self.lineEdit_14.text()) <= 0):
              self.label_21.setText("CS.Area should be greater than zero.")
              self.label_21.show()      
-        else:
+        else:            
              self.go_ahead="Yes"
         
+    def check_for_dup_spec_name_add(self):
+        self.dup_spec_name_flag="N"
+        if(self.lineEdit_12.text() != ""):
+             connection = sqlite3.connect("tyr.db")
+             results=connection.execute("select count(*) from SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.lineEdit_12.text())+"'")       
+             for x in results:           
+                     if(int(x[0]) > 0):
+                          self.dup_spec_name_flag="Y"
+                     else:
+                          self.dup_spec_name_flag="N"                         
+             connection.close()
+        else:
+             print("Spec Name is Empty.")
+    
+    
+    def check_for_dup_spec_name_upd(self):
+        self.dup_spec_name_flag="N"
+        if(self.lineEdit_12.text() != ""):
+             connection = sqlite3.connect("tyr.db")
+             print("select count(*) from SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.lineEdit_12.text())+"' and SPECIMEN_ID !='"+str(self.dr_id)+"'") 
+             results=connection.execute("select count(*) from SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.lineEdit_12.text())+"' and SPECIMEN_ID !='"+str(self.dr_id)+"'")       
+             for x in results:           
+                     if(int(x[0]) > 0):
+                          self.dup_spec_name_flag="Y"
+                     else:
+                          self.dup_spec_name_flag="N"                         
+             connection.close()
+        else:
+             print("Spec Name is Empty.")
+        
+        
+    
     def c_delete_click(self):
         row = self.tableWidget.currentRow()     
         if(row != -1 ):
