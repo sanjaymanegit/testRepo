@@ -89,7 +89,7 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.lcdNumber_2.setFont(font)
         self.lcdNumber_2.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 0, 0);")
+"color: rgb(255, 0, 0); \n")
         self.lcdNumber_2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.lcdNumber_2.setLineWidth(3)
         self.lcdNumber_2.setDigitCount(3)
@@ -104,7 +104,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setStyleSheet("background-color: rgb(85, 170, 0);\n"
-"border-radius:20px;")
+"border-radius:20px; \n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_2.setAutoDefault(True)
         self.pushButton_2.setDefault(True)
         self.pushButton_2.setFlat(False)
@@ -118,7 +121,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("border-radius:20px;\n"
-"background-color: rgb(255, 85, 0);")
+"background-color: rgb(255, 85, 0);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_3.setAutoDefault(True)
         self.pushButton_3.setDefault(True)
         self.pushButton_3.setFlat(False)
@@ -132,7 +138,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("background-color: rgb(203, 203, 203);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_4.setAutoDefault(True)
         self.pushButton_4.setDefault(True)
         self.pushButton_4.setFlat(False)
@@ -146,7 +155,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setStyleSheet("background-color: rgb(203, 203, 203);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_5.setAutoDefault(True)
         self.pushButton_5.setDefault(True)
         self.pushButton_5.setFlat(False)
@@ -160,7 +172,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_6.setFont(font)
         self.pushButton_6.setStyleSheet("background-color: rgb(231, 154, 115);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_6.setAutoDefault(True)
         self.pushButton_6.setDefault(True)
         self.pushButton_6.setFlat(False)
@@ -194,7 +209,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_7.setFont(font)
         self.pushButton_7.setStyleSheet("background-color: rgb(203, 203, 203);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_7.setAutoDefault(True)
         self.pushButton_7.setDefault(True)
         self.pushButton_7.setFlat(False)
@@ -240,7 +258,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_8.setFont(font)
         self.pushButton_8.setStyleSheet("background-color: rgb(231, 154, 115);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_8.setAutoDefault(True)
         self.pushButton_8.setDefault(True)
         self.pushButton_8.setFlat(False)
@@ -254,7 +275,10 @@ class Urmini_01_MainWindow(object):
         font.setWeight(75)
         self.pushButton_9.setFont(font)
         self.pushButton_9.setStyleSheet("background-color: rgb(231, 154, 115);\n"
-"border-radius:20px;")
+"border-radius:20px;"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_9.setAutoDefault(True)
         self.pushButton_9.setDefault(True)
         self.pushButton_9.setFlat(False)
