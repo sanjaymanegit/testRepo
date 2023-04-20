@@ -46,15 +46,15 @@ class Ui_MainWindow(object):
         self.label_20.setAlignment(QtCore.Qt.AlignCenter)
         self.label_20.setObjectName("label_20")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(480, 590, 121, 41))
+        self.pushButton_2.setGeometry(QtCore.QRect(480, 590, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")
-        
+        self.pushButton_2.setStyleSheet("border-radius:20px;\n"
+        "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")        
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(650, 590, 121, 41))
@@ -64,7 +64,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_5.setFont(font)
-        self.pushButton_5.setStyleSheet("color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
+        self.pushButton_5.setStyleSheet("border-radius:20px;\n"
+        "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
         self.pushButton_5.setObjectName("pushButton_5")
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(810, 580, 331, 51))
@@ -138,7 +139,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_3.setFont(font)
-        self.pushButton_3.setStyleSheet("background-color: rgb(255, 200, 158);\n"
+        self.pushButton_3.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(255, 200, 158);\n"
 "color: rgb(0, 0, 0);")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame_2)
@@ -149,7 +151,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("background-color: rgb(255, 200, 158);\n"
+        self.pushButton_4.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(255, 200, 158);\n"
 "color: rgb(0, 0, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label_4 = QtWidgets.QLabel(self.frame)

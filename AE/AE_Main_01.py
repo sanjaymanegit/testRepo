@@ -15,8 +15,7 @@ from TY_26_START_TEST_FOUND_BRK_TEST import TY_26_Ui_MainWindow
 from TY_29_START_TEST_PROOF import ty_29_Ui_MainWindow
 from TY_32_START_TEST_CYCLICK import TY_32_Ui_MainWindow
 
-#from TY_03_REPORTS import TY_03_Ui_MainWindow
-from Report_filter import report_filter_Ui_MainWindow
+from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_21_SP_REPORT_TENSILE_8 import TY_13_T8_Ui_MainWindow
 from TY_24_SP_REPORT_PEELOFF import TY_24_PEEL_OFF_Ui_MainWindow
 from TY_27_SP_REPORT_FOUND_BRK_TEST import TY_27_FBST_Ui_MainWindow
@@ -165,7 +164,8 @@ class AE_01_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_6.setFont(font)
         self.pushButton_6.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.pushButton_6.setStyleSheet("background-color: rgb(159, 170, 166);")
+        self.pushButton_6.setStyleSheet("border-radius:20px;\n"
+        "background-color: rgb(159, 170, 166);")
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.line = QtWidgets.QFrame(self.frame)
@@ -588,7 +588,7 @@ class AE_01_Ui_MainWindow(object):
     
     def open_report_window(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=report_filter_Ui_MainWindow()
+        self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()    
    
@@ -680,7 +680,8 @@ class AE_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_902.setFont(font)
-        self.pushButton_902.setStyleSheet("color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")
+        self.pushButton_902.setStyleSheet("border-radius:20px;\n"
+    "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")
         
         self.pushButton_902.setObjectName("pushButton_902")
         self.pushButton_905 = QtWidgets.QPushButton(self.frame)
@@ -691,7 +692,8 @@ class AE_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_905.setFont(font)
-        self.pushButton_905.setStyleSheet("color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
+        self.pushButton_905.setStyleSheet("border-radius:20px;\n"
+    "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
         self.pushButton_905.setObjectName("pushButton_905")
         self.label_9021 = QtWidgets.QLabel(self.frame)
         self.label_9021.setGeometry(QtCore.QRect(880, 580, 331, 51))
