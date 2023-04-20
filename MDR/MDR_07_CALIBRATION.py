@@ -319,6 +319,38 @@ class mdr_07_Ui_MainWindow(object):
         self.pushButton_16.setStyleSheet("background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_16.setObjectName("pushButton_16")
+        
+        
+        
+        
+        self.pushButton_15_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_15_1.setGeometry(QtCore.QRect(200, 550, 141, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_15_1.setFont(font)
+        self.pushButton_15_1.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_15_1.setObjectName("pushButton_15_1")
+        self.pushButton_16_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_16_1.setGeometry(QtCore.QRect(50, 550, 141, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_16_1.setFont(font)
+        self.pushButton_16_1.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_16_1.setObjectName("pushButton_16_1")
+        
+        
+        
+        
+        
+        
         self.label_27 = QtWidgets.QLabel(self.frame)
         self.label_27.setGeometry(QtCore.QRect(580, 510, 541, 31))
         font = QtGui.QFont()
@@ -398,21 +430,35 @@ class mdr_07_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Close"))
         self.pushButton_15.setText(_translate("MainWindow", "Stop Motor"))
         self.pushButton_16.setText(_translate("MainWindow", "Print Calibration Certificate"))
+        
+        self.pushButton_15_1.setText(_translate("MainWindow", "Disconnect"))
+        self.pushButton_16_1.setText(_translate("MainWindow", "Connect"))
         self.label_27.setText(_translate("MainWindow", "Please Set the Toqtue Proper."))
         self.pushButton_14.clicked.connect(MainWindow.close)
+        
+        self.pushButton_15_1.clicked.connect(self.disconnect)
+        self.pushButton_16_1.clicked.connect(self.connect)
+         
         self.timer2=QtCore.QTimer()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
-        
-        
-       
-        self.start_reading()        
        
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+        
+    def connect(self):
+        self.start_reading()
+        self.pushButton_14.setDisabled(True)
+        
+    
+    def disconnect(self):
+        self.pushButton_14.setEnabled(True)
+        if( self.timer2.isActive()):
+               self.timer2.stop()
+               print("Stopped !!")
         
         
     def start_reading(self):
