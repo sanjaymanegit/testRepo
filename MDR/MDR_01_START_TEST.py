@@ -1201,12 +1201,12 @@ class MDR_01_Ui_MainWindow(object):
         connection.close()
         
         if(self.go_ahead =="Yes"):  
-            if(dev_id=='201910:0003'):
+            if(str(dev_id)[0:11]=='201910:0003'):
                 #self.label_51.setText("Start Test")
                 print("dev id ok :"+str(dev_id))
                 
             else:
-                print("dev id Error :"+str(dev_id))   
+                print("dev id Error :"+str(dev_id)[0:11])   
         else:
            print("Device Invalid :call 9773540255")
         
@@ -1369,7 +1369,11 @@ class MDR_01_Ui_MainWindow(object):
                 
     def reset(self):        
         if(self.timer3.isActive()): 
-           self.timer3.stop() 
+           self.timer3.stop()
+        
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.timer1.stop()
+           #self.sc_new.on_ani_stop()
         
         #self.sc_blank =PlotCanvas_blank(self) 
         #self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
