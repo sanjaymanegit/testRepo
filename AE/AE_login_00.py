@@ -54,7 +54,10 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setStyleSheet("border-radius:20px;\n"
-        "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")        
+        "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);"
+        "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")        
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(650, 590, 121, 41))
@@ -65,7 +68,10 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_5.setFont(font)
         self.pushButton_5.setStyleSheet("border-radius:20px;\n"
-        "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
+        "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);"
+        "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_5.setObjectName("pushButton_5")
         self.label_21 = QtWidgets.QLabel(self.frame)
         self.label_21.setGeometry(QtCore.QRect(810, 580, 331, 51))
@@ -141,7 +147,10 @@ class Ui_MainWindow(object):
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("border-radius:20px;\n"
 "background-color: rgb(255, 200, 158);\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(0, 0, 0);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame_2)
         self.pushButton_4.setGeometry(QtCore.QRect(380, 240, 121, 51))
@@ -153,7 +162,10 @@ class Ui_MainWindow(object):
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("border-radius:20px;\n"
 "background-color: rgb(255, 200, 158);\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(0, 0, 0);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label_4 = QtWidgets.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(400, 130, 351, 41))
