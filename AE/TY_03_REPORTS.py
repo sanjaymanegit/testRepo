@@ -933,7 +933,9 @@ class TY_03_Ui_MainWindow(object):
         
         self.i=0
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT  TEST_ID FROM TEST_MST WHERE BATCH_ID = '"+str(self.firstbatchid)+"' AND STATUS != 'PENDING GRAPH'  ORDER BY TEST_ID DESC ") 
+        results=connection.execute("SELECT  TEST_ID FROM TEST_MST WHERE BATCH_ID = '"+str(self.firstbatchid)+"' AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) AND STATUS != 'PENDING GRAPH'  ORDER BY TEST_ID DESC ") 
+        #print("SELECT  TEST_ID FROM TEST_MST WHERE BATCH_ID = '"+str(self.firstbatchid)+"' AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) AND STATUS != 'PENDING GRAPH'  ORDER BY TEST_ID DESC ") 
+        
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))            
@@ -943,7 +945,7 @@ class TY_03_Ui_MainWindow(object):
        
         self.i=0
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE STATUS != 'PENDING GRAPH' ORDER BY TEST_ID DESC") 
+        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE STATUS != 'PENDING GRAPH' AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR)  ORDER BY TEST_ID DESC") 
         for x in results:            
             self.comboBox_3.addItem("")
             self.comboBox_3.setItemText(self.i,str(x[0]))            
@@ -1440,10 +1442,16 @@ class TY_03_Ui_MainWindow(object):
         
         if(self.radioButton_3.isChecked()):
             results=connection.execute("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")
+            #print("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")
+   
         elif(self.radioButton_4.isChecked()):
             results=connection.execute("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"'  AND PARTY_NAME = '"+str(self.comboBox_3.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")            
+            #print("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"'  AND PARTY_NAME = '"+str(self.comboBox_3.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")            
+        
         elif(self.radioButton_5.isChecked()):
             results=connection.execute("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"' AND  TEST_ID = '"+str(self.comboBox_4.currentText())+"' AND BATCH_ID= '"+str(self.comboBox_5.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")    
+            #print("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where strftime('%Y-%m-%d',CREATED_ON) BETWEEN '"+str(self.from_date)+"' and '"+str(self.to_date)+"' AND  TEST_ID = '"+str(self.comboBox_4.currentText())+"' AND BATCH_ID= '"+str(self.comboBox_5.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")    
+        
         else:              
             results=connection.execute("SELECT BATCH_ID,TEST_ID,PARTY_NAME,(select SHAPE FROM SPECIMEN_MST WHERE SPECIMEN_MST.SPECIMEN_NAME=TEST_MST.SPECIMEN_NAME ) as SHAPE,(SELECT COUNT(*) FROM CYCLES_MST WHERE CYCLES_MST.TEST_ID=TEST_MST.TEST_ID) as CN,GUAGE_LENGTH,CREATED_ON FROM TEST_MST where TEST_ID = '"+str(self.comboBox_4.currentText())+"' AND BATCH_ID= '"+str(self.comboBox_5.currentText())+"' AND TEST_ID IN (SELECT TEST_ID FROM CYCLES_MST) AND TEST_TYPE IN (SELECT NEW_TEST_NAME  FROM GLOBAL_VAR) order by TEST_ID DESC ")
         
