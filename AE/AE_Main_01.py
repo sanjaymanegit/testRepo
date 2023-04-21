@@ -165,7 +165,10 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_6.setFont(font)
         self.pushButton_6.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.pushButton_6.setStyleSheet("border-radius:20px;\n"
-        "background-color: rgb(159, 170, 166);")
+        "background-color: rgb(159, 170, 166);"
+        "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;"                                )
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.line = QtWidgets.QFrame(self.frame)
@@ -681,7 +684,10 @@ class AE_01_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_902.setFont(font)
         self.pushButton_902.setStyleSheet("border-radius:20px;\n"
-    "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);")
+    "color: rgb(244, 244, 0); background-color: rgb(170, 0, 0);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         
         self.pushButton_902.setObjectName("pushButton_902")
         self.pushButton_905 = QtWidgets.QPushButton(self.frame)
@@ -693,7 +699,10 @@ class AE_01_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_905.setFont(font)
         self.pushButton_905.setStyleSheet("border-radius:20px;\n"
-    "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);")
+    "color: rgb(244, 244, 0);  background-color: rgb(170, 0, 0);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_905.setObjectName("pushButton_905")
         self.label_9021 = QtWidgets.QLabel(self.frame)
         self.label_9021.setGeometry(QtCore.QRect(880, 580, 331, 51))
