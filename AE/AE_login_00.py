@@ -216,7 +216,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Login"))
         self.pushButton_4.setText(_translate("MainWindow", "Reset"))
         self.label_4.setText(_translate("MainWindow", "Failed to Login !"))
-        self.label_22.setText(_translate("MainWindow", "Assistance:9773540255"))
+        self.label_22.setText(_translate("MainWindow", "<font color=blue> Assistance: </font><font color=red> 9773540255 </font>"))
         
         self.label_4.hide()
         self.anydesk_open()
