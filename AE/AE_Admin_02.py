@@ -42,7 +42,10 @@ class AE_02_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("border-radius:20px;\n"
-                                      "background-color: rgb(105, 210, 255);")
+                                      "background-color: rgb(105, 210, 255);"
+                                      "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton.setObjectName("pushButton")
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(540, 10, 300, 51))
@@ -76,7 +79,10 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_6.setFont(font)
         self.pushButton_6.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.pushButton_6.setStyleSheet("border-radius:20px;\n"
-                                        "background-color: rgb(159, 170, 166);")
+                                        "background-color: rgb(159, 170, 166);"
+                                        "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
@@ -107,7 +113,10 @@ class AE_02_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_7.setFont(font)
         self.pushButton_7.setStyleSheet("border-radius:20px;\n"
-                                        "background-color: rgb(255, 180, 188);")
+                                        "background-color: rgb(255, 180, 188);"
+                                        "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_7.setObjectName("pushButton_7")
         self.line = QtWidgets.QFrame(self.frame)
         self.line.setGeometry(QtCore.QRect(30, 190, 1221, 16))
@@ -130,7 +139,10 @@ class AE_02_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("background-color: rgb(91, 113, 127);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 255, 255);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame_2)
         self.pushButton_2.setGeometry(QtCore.QRect(350, 30, 241, 51))
