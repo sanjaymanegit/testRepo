@@ -2,6 +2,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sqlite3
+
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
 
 
 class load_cell_set_Ui_MainWindow(object):
@@ -28,6 +32,9 @@ class load_cell_set_Ui_MainWindow(object):
         self.radioButton.setChecked(True)
         self.radioButton.setObjectName("radioButton")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(220, 80, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -57,6 +64,9 @@ class load_cell_set_Ui_MainWindow(object):
         self.radioButton_2.setChecked(False)
         self.radioButton_2.setObjectName("radioButton_2")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
         self.lineEdit_5.setGeometry(QtCore.QRect(220, 160, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -76,6 +86,9 @@ class load_cell_set_Ui_MainWindow(object):
         self.radioButton_3.setChecked(False)
         self.radioButton_3.setObjectName("radioButton_3")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
         self.lineEdit_6.setGeometry(QtCore.QRect(220, 240, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -85,6 +98,9 @@ class load_cell_set_Ui_MainWindow(object):
         self.lineEdit_6.setFont(font)
         self.lineEdit_6.setObjectName("lineEdit_6")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
         self.lineEdit_7.setGeometry(QtCore.QRect(220, 320, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -114,6 +130,9 @@ class load_cell_set_Ui_MainWindow(object):
         self.radioButton_5.setChecked(False)
         self.radioButton_5.setObjectName("radioButton_5")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
         self.lineEdit_8.setGeometry(QtCore.QRect(220, 390, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -283,12 +302,105 @@ class load_cell_set_Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Close"))
         self.pushButton_7.setText(_translate("MainWindow", "Save"))
         self.label_48.setText(_translate("MainWindow", "Saved Successfully !!!!"))
+        self.label_48.hide()
         self.label_2.setText(_translate("MainWindow", "Kg."))
         self.label_3.setText(_translate("MainWindow", "Kg."))
         self.label_4.setText(_translate("MainWindow", "Kg."))
         self.label_5.setText(_translate("MainWindow", "Kg."))
         self.label_8.setText(_translate("MainWindow", "Kg."))
         self.pushButton_6.clicked.connect(MainWindow.close)
+        self.pushButton_7.clicked.connect(self.save_data)
+        self.load_data()
+        
+    def load_data(self):
+        connection = sqlite3.connect("tyr.db") 
+        results=connection.execute("SELECT ID,CAPACITY,STATUS from LOAD_CELL_MST") 
+        for x in results:
+            if(int(x[0])==1):
+                self.lineEdit_4.setText(str(x[1]))
+                if(str(x[2]) == "ACTIVE"):
+                    self.radioButton.setChecked(True)                    
+                else:
+                    self.radioButton.setChecked(False)                  
+                
+            elif(int(x[0])==2):
+                self.lineEdit_5.setText(str(x[1]))
+                if(str(x[2]) == "ACTIVE"):
+                    self.radioButton_2.setChecked(True)                    
+                else:
+                    self.radioButton_2.setChecked(False)  
+                
+            elif(int(x[0])==3):
+                self.lineEdit_6.setText(str(x[1]))
+                if(str(x[2]) == "ACTIVE"):
+                    self.radioButton_3.setChecked(True)                    
+                else:
+                    self.radioButton_3.setChecked(False)  
+                
+            elif(int(x[0])==4):
+                self.lineEdit_7.setText(str(x[1]))
+                if(str(x[2]) == "ACTIVE"):
+                    self.radioButton_4.setChecked(True)                    
+                else:
+                    self.radioButton_4.setChecked(False)  
+                
+            elif(int(x[0])==5):
+                self.lineEdit_8.setText(str(x[1]))
+                if(str(x[2]) == "ACTIVE"):
+                    self.radioButton_5.setChecked(True)                    
+                else:
+                    self.radioButton_5.setChecked(False) 
+                
+            else:
+                print("Invalid Load cell No.")
+            
+            
+        connection.close()
+    
+    def save_data(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    if(self.radioButton.isChecked()):
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='ACTIVE' WHERE ID='1'")
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='INACTIVE' WHERE ID !='1'")
+                                    print("inside 1")
+                    elif(self.radioButton_2.isChecked()):
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='ACTIVE' WHERE ID='2'")
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='INACTIVE' WHERE ID !='2'")
+                                    print("inside 2")
+                    elif(self.radioButton_3.isChecked()):
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='ACTIVE' WHERE ID='3'")
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='INACTIVE' WHERE ID !='3'")
+                                    print("inside 3")
+                    elif(self.radioButton_4.isChecked()):
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='ACTIVE' WHERE ID='4'")
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='INACTIVE' WHERE ID !='4'")
+                                    
+                                    print("inside 4")
+                    elif(self.radioButton_5.isChecked()):
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='ACTIVE' WHERE ID='5'")
+                                    cursor.execute("UPDATE LOAD_CELL_MST SET STATUS='INACTIVE' WHERE ID !='5'")
+                                    print("inside 5")
+                    else:
+                                    print("invalide status")
+                                     
+                        
+        connection.commit();
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_4.text())+"' WHERE ID='1'")
+                    cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_5.text())+"' WHERE ID='2'")
+                    cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_6.text())+"' WHERE ID='3'")
+                    cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_7.text())+"' WHERE ID='4'")
+                    cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_8.text())+"' WHERE ID='5'")
+        connection.commit();
+        self.load_data()
+        
+        self.label_48.show()
+        self.label_48.setText("Saved Successfully.")
 
 
 if __name__ == "__main__":
