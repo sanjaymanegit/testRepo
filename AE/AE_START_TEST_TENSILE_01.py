@@ -1051,9 +1051,19 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.lineEdit_10.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
         self.pushButton_8.clicked.connect(self.open_frame3)
+        self.pushButton_6.clicked.connect(MainWindow.close)
+        self.pushButton_9.clicked.connect(self.load_data)
         
-        self.frame_3.hide()
+        
         self.load_data()
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+    
+    def device_date(self):     
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+    
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
@@ -1074,6 +1084,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             self.i=self.i+1
         connection.close()
         self.onchage_combo()
+        self.frame_3.hide()
     
     def validations(self):        
         self.go_ahead="No"
