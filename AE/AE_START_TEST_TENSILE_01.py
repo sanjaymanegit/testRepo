@@ -19,6 +19,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
 
+import re
+
 
 
 
@@ -199,6 +201,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_33.setStyleSheet("")
         self.label_33.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
+        
         self.buttongroup = QtWidgets.QButtonGroup()
         self.buttongroup_2 = QtWidgets.QButtonGroup()
         
@@ -985,6 +988,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.test_type=""
         self.test_id="1"
         self.remark=""
+        self.timer4=QtCore.QTimer()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1096,7 +1100,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
         
-        
+        self.test_method=""                             
+        self.failure_mod=""
+        self.tmperature=""
+        self.test_type_for_flexural=""
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1139,6 +1146,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         self.onchage_combo()
         self.frame_3.hide()
+        #print("Timer4 Status :"+str(self.timer4.isActive()))
+        if(self.timer4.isActive()): 
+                               self.timer4.stop()
+                               print("Timer4 Stopped.")
     
     def validations(self):        
         self.go_ahead="No"
@@ -1156,8 +1167,41 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         elif(self.lineEdit_7.text()== ""):
              self.msg="Guage Length is Empty."
         else:
-              self.msg="Confirm to start Test."
-              self.go_ahead="Yes"
+               self.msg="Confirm to start Test."
+               self.go_ahead="Yes"
+               connection = sqlite3.connect("tyr.db")
+               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+               for x in results:           
+                 if(int(x[0]) > 0):
+                       self.test_id_exist="Yes"
+                 else:
+                       self.test_id_exist="No"                     
+               connection.close() 
+               
+               if(self.test_id_exist=="Yes"):
+                   
+                     ### Update global var
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor()                  
+                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
+                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
+                        connection.commit();
+                        connection.close()
+                        
+               else:        
+                        ### INSERT 
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                              cursor = connection.cursor()
+                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_14.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+            
+                        connection.commit();
+                        connection.close()
+       
     
     def open_frame3(self):
         self.validations()        
@@ -1181,7 +1225,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                                             xonxoff=False,
                                                             timeout = 0.05
                                                         )
-                                self.timer4=QtCore.QTimer()
+                               
                                 self.timer4.setInterval(5000)        
                                 self.timer4.timeout.connect(self.loadcell_encoder_status)
                                 self.timer4.start(1)
@@ -1190,6 +1234,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                         
                  else:
                          self.frame_3.hide()
+                         
     
     
     def loadcell_encoder_status(self):         
@@ -1197,7 +1242,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             self.serial_3.flush()
             self.serial_3.write(b'*D\r')
             self.line_3 = self.serial_3.readline()
-            print("encoder_status:o/p:"+str(self.line_3))
+            #print("encoder_status:o/p:"+str(self.line_3))
         except IOError:
             print("IO Errors")    
                 
@@ -1213,8 +1258,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         #print("length of array :"+str(len(self.buff)))
         if(int(len(self.buff)) > 8 ):          
-            print("Load Cell No... :"+str(self.buff[7]))
-            print("Encoder No.. :"+str(self.buff[6]))
+            #print("Load Cell No... :"+str(self.buff[7]))
+            #print("Encoder No.. :"+str(self.buff[6]))
             if(str(self.buff[6])=="2"):
                 self.load_cell_hi=0
                 self.load_cell_lo=1
@@ -1233,11 +1278,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             
             
             if(self.load_cell_hi==1):
+                #print("Load Cell: Hi")
                 self.radioButton.setChecked(True)
                 self.radioButton_2.setDisabled(True)
                 self.radioButton_2.setChecked(False)
                 self.radioButton.setEnabled(True)
             elif(self.load_cell_lo==1):
+                #print("Load Cell: Low")
                 self.radioButton_2.setChecked(True)
                 self.radioButton.setDisabled(True)
                 self.radioButton.setChecked(False)
@@ -1245,11 +1292,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
          
         
             if(self.extiometer==1):
+                #print("Proxy: Extentiometer")
                 self.radioButton_4.setChecked(True)
                 self.radioButton_3.setDisabled(True)
                 self.radioButton_3.setChecked(False)
                 self.radioButton_4.setEnabled(True)            
             elif(self.encoder==1):
+                #print("Proxy: Encoder")
                 self.radioButton_3.setChecked(True)
                 self.radioButton_4.setDisabled(True)
                 self.radioButton_4.setChecked(False)
@@ -1443,12 +1492,14 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop()
            
-        if(self.timer3.isActive()): 
-           self.timer3.stop()     
+        if(self.timer4.isActive()): 
+           self.timer4.stop()     
 
     def start_test(self):
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
+        
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
         rows=results.fetchall()
@@ -1476,28 +1527,21 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
 
 
+
 class PlotCanvas_Auto(FigureCanvas):     
-    def __init__(self, parent=None, width=8, height=5, dpi=100):
+    def __init__(self, parent=None, width=5, height=4, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
         
         self.axes = fig.add_subplot(111)
         #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
-        self.test_type="Tensile"
+        self.test_type="FBST"
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME from GLOBAL_VAR") 
-        for x in results:
-            self.test_type=str(x[0])
-        connection.close()
         
-        if(self.test_type=="Compress"):
-            self.axes.set_xlabel('Compression (mm)')        
-        else:        
-            self.axes.set_xlabel('Elongation (mm)')
-          
-        self.axes.set_ylabel('Load (Kgf)') 
+       
+        
+        
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         self.compute_initial_figure()
@@ -1506,10 +1550,25 @@ class PlotCanvas_Auto(FigureCanvas):
         ###
         self.playing = False
         self.p =0
+        self.p_cm =0
+        self.p_inch =0
+        
         self.q =0
-        self.p_old=0
+        self.q_n =0
+        self.q_lb =0
+        
+        
+        
+        
         self.arr_p=[0.0]
+        self.arr_p_cm=[0.0]
+        self.arr_p_inch=[0.0]
+        
+        
         self.arr_q=[0.0]
+        self.arr_q_n=[0.0]
+        self.arr_q_lb=[0.0]
+        
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
         self.x=0
@@ -1530,13 +1589,13 @@ class PlotCanvas_Auto(FigureCanvas):
         self.check_R=""
         self.check_S=""
         self.IO_error_flg=0
+        
         self.timer1=QtCore.QTimer()
        
        
         
         self.speed_val=""
         self.input_speed_val=""
-        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -1553,12 +1612,9 @@ class PlotCanvas_Auto(FigureCanvas):
         self.max_load=0
         self.max_length=0
         self.flexural_max_load=100
+        self.unit_type =""
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
-        self.modbus_flag=""
-        self.modbus_port=""
-        self.non_modbus_port=""
-        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -1575,77 +1631,74 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.commit();
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
-        for x in results:
-             self.axes.set_xlim(0,int(x[0]))
-             self.axes.set_ylim(0,int(x[1]))
-             self.flexural_max_load=int(x[1])
-             self.xlim=int(x[0])
-             self.ylim=int(x[1])
-             self.auto_rev_time_off=int(x[2])
-             self.break_sence=int(x[3])
-             self.modbus_flag=str(x[4])
-             self.modbus_port=str(x[5])
-             self.non_modbus_port=str(x[6])
-        connection.close()
-        
-        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=int(x[0])
-             self.test_type=str(x[1])
+             self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[0])-float(x[3]))
+             self.flex_max_length=float(x[3])
+             self.cof_max_length=float(x[4])
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
              #self.max_length=float(x[3])
-             print("Max Load :"+str(self.max_load).zfill(5)+" Max length :"+str(int(self.max_length)).zfill(5))
+             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+             self.unit_type=str(x[5])
+        connection.close()
+        print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        for x in results:
+             if(self.unit_type == "Kgf/cm"):
+                     self.axes.set_xlim(0,int(x[0])/10)
+                     self.axes.set_ylim(0,int(x[1]))
+                     #self.flexural_max_load=int(x[1])/9.81
+                     self.xlim=int(x[0])/10
+                     self.ylim=int(x[1])
+                     self.axes.set_xlabel('Distance (cm)')
+                     self.axes.set_ylabel('Load (Kgf)')
+             elif(self.unit_type == "N/mm"):
+                     self.axes.set_xlim(0,int(x[0]))
+                     self.axes.set_ylim(0,int(x[1])*9.81)
+                     #self.flexural_max_load=int(x[1])/9.81
+                     self.xlim=int(x[0])
+                     self.ylim=int(x[1])* 9.81
+                     self.axes.set_xlabel('Distance (mm)')
+                     self.axes.set_ylabel('Load (N)')         
+             else:
+                     self.axes.set_xlim(0,int(x[0]))
+                     self.axes.set_ylim(0,int(x[1]))
+                     #self.flexural_max_load=int(x[1])
+                     self.xlim=int(x[0])/10
+                     self.ylim=int(x[1])
+                     self.axes.set_xlabel('Distance (xxmm)')
+                     self.axes.set_ylabel('Load (xN)') 
+             self.auto_rev_time_off=int(x[2])
+             self.break_sence=int(x[3])
         connection.close()
         
+        
+        
+        
+        
         try:
-            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
-            if(self.modbus_flag == 'Y'):
-                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
-                if(self.non_modbus_port=="/dev/ttyUSB1"):
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB1',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-                else:
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-            else:
-                       self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                ) 
+            self.ser = serial.Serial(
+                        port='/dev/ttyUSB0',
+                        baudrate=19200,
+                        bytesize=serial.EIGHTBITS,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        xonxoff=False,
+                        timeout = 0.05
+                    )
           
             self.ser.flush()
             self.ser.write(b'*D\r')
             self.yline = self.ser.readline()
             print("Check for Load Cel o/p:"+str(self.yline))
-            ystr3=str(self.yline)        
+            ystr3=str(self.yline)
             ystr3=ystr3[1:int(len(ystr3)-1)]
             ystr2=ystr3.replace("'\\r","")        
             #print("replace3('\r):"+str(xstr2))
@@ -1659,12 +1712,16 @@ class PlotCanvas_Auto(FigureCanvas):
          
             #==== Guage Length Setting before staret =====
             self.ser.flush()
+            
             if(self.test_type=="Flexural"):
-                self.test_guage_mm=0
-                self.command_str="*G0.00\r"
-            else:
+                #self.test_guage_mm=0
+                #self.command_str="*G0.00\r"
                 self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            else:
+                self.command_str="*G000.0\r"
+                
             print("Guage Length Command : "+str(self.command_str))
+            
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
             #time.sleep(2)
@@ -1682,39 +1739,20 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.ser.write(b)
             else:   
                 self.ser.write(b'*P0050_0010\r')
-                print("started with default motor speed . Not gohead ")
+                #print("started with default motor speed . Not gohead ")
             #self.ser.write(b'*D\r\n')
                 
             #time.sleep(2)
             #========Final Motor start Command =========    
             self.ser.flush()
             if(self.test_type=="Compress"):
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
-                    else:
-                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
-                    
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b)                 
-                else:
-                    print("Compress test not started ")               
-                               
+                 print("Compress")                  
             elif(self.test_type=="Flexural"):
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                            #self.ser.write(b'*S2E0599 200\r')
-                            self.command_str="*S2E%04d"%self.flexural_max_load+" 0000\r"
-                    else:
-                            self.command_str="*S1E%04d"%self.flexural_max_load+" 0000\r"
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b)
-                    print("fluexural test started ")
-                else:
-                    print("fluexural test not started ")
+                print("Flexural")    
+            elif(self.test_type=="COF"):
+                print("COF")
             else:
+                print("len(self.ybuff) :"+str(len(self.ybuff)))
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
                         self.ser.write(b'*S2T000.0 000.0\r')
@@ -1728,19 +1766,12 @@ class PlotCanvas_Auto(FigureCanvas):
         except IOError:
             #print("IO Errors")
             self.IO_error_flg=1
-            
         
-        
-        #self.axes.set_autoscale_on(False)
-        #self.axes.autoscale(tight=True)
-        #self.axes.autoscale(True, 'both', True)
-        #self.axes.plot(self.arr_p,self.arr_q)
-        #Create Timer here          
         
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
-       
+        
         self.on_ani_start()
     
     def update_graph(self):       
@@ -1750,7 +1781,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.write(b'*D\r')
             self.line = self.ser.readline()
             print("With Readline Timer Job o/p:"+str(self.line))
-            #print("Running")
+            #print("")
             '''
             try:
                 self.line = self.ser.readline()
@@ -1760,7 +1791,7 @@ class PlotCanvas_Auto(FigureCanvas):
             except IOError:
                 print("IO Errors")    
                 
-            xstr3=str(self.line)        
+            xstr3=str(self.line)
             xstr3=xstr3[1:int(len(xstr3)-1)]
             xstr2=xstr3.replace("'\\r","")        
             #print("replace3('\r):"+str(xstr2))
@@ -1769,7 +1800,6 @@ class PlotCanvas_Auto(FigureCanvas):
             xstr=xstr1.replace("\\r","")
             #print("replace1(\r):"+str(xstr))        
             self.buff=xstr.split("_")
-        
         #print("length of array :"+str(len(self.buff)))
         if(int(len(self.buff)) > 8 ):
             #print("length of array :"+str(len(self.buff)))
@@ -1808,48 +1838,43 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[4])) #
                 else:
                     self.p=abs(float(self.buff[5]))
-                    
-                    
+                
                 if(self.test_type=="Compress"):
-                    #self.p=int(self.test_guage_mm)-self.p                    
-                    if(float(self.test_guage_mm) > float(self.p)):
-                        self.p=float(self.test_guage_mm) - float(self.p)
-                    else:
-                         self.p=self.p-float(self.test_guage_mm)
-                    #self.p=self.p-int(self.test_guage_mm)
-                    #print("actual self.p :"+str(self.p))
+                    self.p=int(self.test_guage_mm)-self.p
+                    #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
+                    #self.p=self.p
+                    self.p=int(self.test_guage_mm)-self.p
+                else:
                     self.p=self.p
-                else:                    
-                    self.p=self.p-int(self.test_guage_mm)
-                    if(self.p_old > self.p):
-                         self.p=self.p_old                                            
-                    self.p_old=self.p
-                    #self.p_new=self.p-int(self.test_guage_mm)
-                    
                     #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p   
-                    
-                '''
-                elif(self.test_type=="Tensile"):
-                    self.p=self.p-int(self.test_guage_mm)
-                    if(int(len(self.arr_p)) > 0):
-                        self.p=float(max(self.arr_p))
-                        print("ARRY-P      : XXX "+str(self.arr_p))
-                        print("MAX-P      : XXX "+str(self.p))
-                        
-                        #self.p=float(int(self.p)-int(self.test_guage_mm))
-                        print("Length : XXX  "+str(int(len(self.arr_p))))
-                        print("P      : XXX "+str(self.p))
-                    else:
-                        self.p=self.p-int(self.test_guage_mm)
-                '''   
+                    #self.p=self.p
                 
+#                if(self.unit_type == "N/mm"):    
+#                        self.q=float(self.q)*9.81
+#                elif(self.unit_type == "Kgf/cm"):
+#                        self.p=float(self.p)/10
+#                else:
+#                        self.p=float(self.p)
+#                        self.q=float(self.q)
+
+
+                self.p_cm=float(self.p)/10
+                self.arr_p_cm.append(float(self.p_cm))
                 
-                self.arr_p.append(self.p)
-                self.arr_q.append(self.q)
+                self.p_inch=float(self.p)*0.0393701
+                self.arr_p_inch.append(float(self.p_inch))
+                
+                self.q_n=float(self.q)*9.81
+                self.arr_q_n.append(float(self.q_n))
+                
+                self.q_lb=float(self.q)*2.20462
+                self.arr_q_lb.append(float(self.q_lb))
+                
+                self.arr_p.append(float(self.p))
+                self.arr_q.append(float(self.q))
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
-                print("final P :::"+str(self.p)+", guage lengt :"+str(int(self.test_guage_mm)))
+               
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
                
@@ -1857,74 +1882,36 @@ class PlotCanvas_Auto(FigureCanvas):
                 #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
 
                 if(int(self.q) > int(self.ylim)):
-                   self.ylim=(int(self.q)+100)
-                   self.ylim_update='YES'                   
+                    self.ylim=(int(self.q)+100)
+                    self.ylim_update='YES'                   
                    #print(" self.ylim:"+str(self.ylim))
                 
                 #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
                               
                 if(self.p > self.xlim):
                    self.xlim=(int(self.p)+100)
-                   self.xlim_update='YES'
-                   
-                   
-                   
-                   
-                   
-                #time.sleep(1) 
+                   self.xlim_update='YES'                   
+                #time.sleep(1)
+                self.save_data_flg="No"
             else:                
-                if(self.test_type=="Compress"):
-                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    #self.p=int(self.test_guage_mm)-self.p
-                    if(float(self.test_guage_mm) > float(self.p)):
-                        self.p=float(self.test_guage_mm) - float(self.p)
-                    else:
-                         self.p=self.p-float(self.test_guage_mm)
-                    #print("final P :::"+str(self.p)+", guage lengt :"+str(int(self.test_guage_mm)))
-                    self.arr_p.append(self.p)
-                    self.arr_q.append(self.q)
-                    self.save_data_flg="Yes"
-                    #self.on_ani_stop()
-                elif(self.test_type=="Flexural"):
-                    self.p=abs(float(self.buff[4])) #+random.randint(0,50)
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    #self.p=int(self.test_guage_mm)-self.p
-                    print("final P :::"+str(self.p))
-                    self.arr_p.append(self.p)
-                    self.arr_q.append(self.q)
-                    self.save_data_flg="Yes"
-                
-                else:
-                
-                    self.save_data_flg="Yes"
-                
-       
-                    
-                
                
-     
-          
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
+            
+                   
     def plot_grah_only(self,i):        
-        #self.arr_p1.append(self.p)
-        #self.arr_q1.append(self.q)
-        #print("Animation :"+str(i))
-        #print(" ANI _P:"+str(self.p)+" q:"+str(self.q))
-        #print("data :"+str(self.arr_p1[0]))
-        '''
-        if(self.xlim_update=='YES'):
-             self.axes.set_xlim(0,int(self.xlim))
-             self.xlim_update='NO'
-             self.axes.relim()
-             #time.sleep(1)
-        if(self.ylim_update=='YES'): 
-             self.axes.set_ylim(0,int(self.ylim))
-             self.ylim_update='NO'
-             self.axes.relim()
-        '''
-        self.line_cnt.set_data(self.arr_p,self.arr_q)
-        return [self.line_cnt]
-        #return self.line_cnt,
+        if(self.unit_type == "Kgf/cm"):
+            self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
+            return [self.line_cnt]
+            #return self.line_cnt,
+        elif(self.unit_type == "N/mm"):
+            self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+            return [self.line_cnt]
+            #return self.line_cnt,
+        else:    
+           self.line_cnt.set_data(self.arr_p,self.arr_q)
+           return [self.line_cnt]
+           #return self.line_cnt,
     
     
     def on_ani_stop(self):
@@ -1933,14 +1920,10 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ani._stop()
         else:
              pass
-    
+            
     def on_stop(self):
         if(self.timer1.isActive()): 
-           self.timer1.stop()                                                                                      
-           #print("Time 1 has been stopped ")
-        #if(self.timer3.isActive()): 
-           #self.timer3.stop()                                                                                      
-           #print("Time 2 has been stopped ")
+           self.timer1.stop()
            
     def init(self):
         self.line_cnt.set_data([], [])
@@ -1966,24 +1949,22 @@ class PlotCanvas_Auto(FigureCanvas):
              self.speed_val=str(x[0])
         connection.close()
         self.goahead_flag=0
-       
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
-             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):
-            if(float(self.input_speed_val) <= float(self.speed_val)):
+            if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
+                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))                 
+                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")
                  #self.label_9_1.show()
@@ -1993,138 +1974,8 @@ class PlotCanvas_Auto(FigureCanvas):
             print(" not Ok ")
             #self.label_3.setText("Motor Speed is Required")
             #self.label_3.show()            
-         
-        print("test type :"+str(self.test_type))
-        print("Modbus Flag :"+str(self.modbus_flag))
-        print("Modbus Port :"+str(self.modbus_port))
-        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compress"):        
-                v=0
-                try:
-                    v=float(self.input_rev_speed_val) 
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    print("compress :int part :%d"%v)
-                    print("compress :decial part:%.2f"%v)
-                    #v=v*100
-                    if(self.modbus_port=="/dev/ttyUSB0"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
-                    
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600 
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    print(" write1 :"+str(v))
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
                 
-                print("Forward speed : "+str(v))
-            
-                v=0
-                try:     
-                    v=float(self.input_speed_val)
-                    #v=float(self.input_rev_speed_val)            
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    print("int part :%d"%v)
-                    print("decial part:%.2f"%v)         
-                    print("self.modbus_port :"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB0"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    elif(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
-                   
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600 
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    print(" write2 :"+str(v))
-                except IOError as e:
-                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Reverse speed : "+str(v))
-            
-            
-            
-            else:   
-                print("inside tesnsile part .....")
-                v=0
-                try:
-                    v=float(self.input_speed_val)
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    #print("int part :%d"%v)
-                    #print("decial part:%.2f"%v)
-                    #v=v*100
-                    print("self.modbus_port :"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                                
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600            
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    print(" write1 :"+str(v))
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Forward speed : "+str(v))
-            
-                v=0
-                try:     
-                    
-                    v=float(self.input_rev_speed_val)            
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    print("int part :%d"%v)
-                    print("decial part:%.2f"%v)         
-                    print("self.modbus_port:"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600            
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    print(" write2 :"+str(v))
-                except IOError as e:
-                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Reverse speed : "+str(v))
-            
- 
-
-    
+   
  
         
 class PlotCanvas_blank(FigureCanvas):
