@@ -676,7 +676,7 @@ class AE_01_Ui_MainWindow(object):
         
         
         self.pushButton_902 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_902.setGeometry(QtCore.QRect(550, 590, 121, 41))
+        self.pushButton_902.setGeometry(QtCore.QRect(550, 590, 171, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -691,7 +691,7 @@ class AE_01_Ui_MainWindow(object):
         
         self.pushButton_902.setObjectName("pushButton_902")
         self.pushButton_905 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_905.setGeometry(QtCore.QRect(720, 590, 121, 41))
+        self.pushButton_905.setGeometry(QtCore.QRect(770, 590, 171, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -705,7 +705,7 @@ class AE_01_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_905.setObjectName("pushButton_905")
         self.label_9021 = QtWidgets.QLabel(self.frame)
-        self.label_9021.setGeometry(QtCore.QRect(880, 580, 331, 51))
+        self.label_9021.setGeometry(QtCore.QRect(1000, 580, 201, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)

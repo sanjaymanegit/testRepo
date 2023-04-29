@@ -1004,7 +1004,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.test_type=""
         self.test_id="1"
         self.remark=""
-        self.timer4=QtCore.QTimer()
+        self.timer3=QtCore.QTimer()
         self.cycle_num=0
 
         self.retranslateUi(MainWindow)
@@ -1115,6 +1115,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     def new_test_reset(self):
         self.frame_3.hide()
         self.load_data()
+        if(self.timer3.isActive()): 
+                        self.timer3.stop()
+                        print("Timer3 Stopped.")
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
@@ -1122,7 +1125,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
-                 self.lineEdit_15.setText("Job_Name__"+str(x[0]).zfill(3))
+                 self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
         self.i=0
@@ -1153,10 +1156,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_15.setDisabled(True)
         self.pushButton_16.setDisabled(True)
         
-        if(self.timer4.isActive()): 
-                               self.timer4.stop()
-                               print("Timer4 Stopped.")
-    
+       
     
     
     def validations(self):        
@@ -1225,18 +1225,18 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          
                          try:
                                 self.serial_3 = serial.Serial(
-                                                            port='/dev/ttyUSB0',
-                                                            baudrate=19200,
-                                                            bytesize=serial.EIGHTBITS,
-                                                            parity=serial.PARITY_NONE,
-                                                            stopbits=serial.STOPBITS_ONE,
-                                                            xonxoff=False,
-                                                            timeout = 0.05
-                                                        )
-                               
-                                #self.timer4.setInterval(5000)        
-                                #self.timer4.timeout.connect(self.loadcell_encoder_status)
-                                #self.timer4.start(1)
+                                                    port='/dev/ttyUSB0',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                                )                               
+                                self.timer3.setInterval(5000)        
+                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                self.timer3.start(1)
+                                
                          except IOError:
                                     print("IO Errors") 
                         
@@ -1361,9 +1361,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     self.label_23.hide()
                     self.lineEdit_10.hide()
                     self.label_25.hide()
-                    self.lineEdit_10.hide()
+                    self.lineEdit_11.hide()
                     self.label_24.hide()
                     self.label_26.hide()
+                    self.lineEdit_12.setText(str(x[0]))# CS_AREA  
             else:
                     #self.label_21.setText("Invalid:"+str(x[7]))
                     print("Invalid ....")
@@ -1465,8 +1466,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 except:
                     print("Caluculation error9");
                     self.lineEdit_12.setText(str("0"))
+        elif(self.shape== "DirectValue"):
+                print("No Change")
         else:
-            self.lineEdit_12.setText(str("0"))
+                self.lineEdit_12.setText(str("0"))
         
     def set_graph_scale(self):
         self.x_axis_val="0.0"
@@ -1819,7 +1822,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak (Kgf) ',' Disp. at Peak (Mm)','% Displacement','Tensile Strength (Kgf/Cm2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length (mm)','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,GUAGE100,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,GUAGE100,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2591,7 +2594,7 @@ class PlotCanvas(FigureCanvas):
         if(str(self.test_type)=="Compress"):
             ax.set_xlabel('Compression (mm)')        
         else:
-            ax.set_xlabel('Elongation (mm)')
+            ax.set_xlabel('Displacement (mm)')
         ax.set_ylabel('Load (Kgf)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
