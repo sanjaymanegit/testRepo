@@ -26,8 +26,17 @@ import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
 import re
 
-#### 
-
+#### PDF creation Libs ########
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
+from reportlab.platypus import *
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Line, Drawing
+import sys
+import os
 
 
 
@@ -1018,40 +1027,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Low-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
-        
-        '''
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Spec.No."))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Max.Load"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "CS.Area"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Displacement."))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "% Displacement."))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Tensile Strength"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Cycle.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "12"))
-        item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "123.8"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 4)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 5)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 6)
-        item.setText(_translate("MainWindow", "1"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
-        '''
+       
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
         self.label_40.setText(_translate("MainWindow", "Displacement:"))
@@ -1107,7 +1083,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
         self.pushButton_8.clicked.connect(self.open_frame3)
         self.pushButton_6.clicked.connect(MainWindow.close)
-        self.pushButton_9.clicked.connect(self.load_data)
+        self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
         self.tableWidget.doubleClicked.connect(self.delete_cycle)
@@ -1116,6 +1092,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_16.clicked.connect(self.print_file)
         self.pushButton_14.clicked.connect(self.open_email_report)
         self.pushButton_15.clicked.connect(self.open_comment_popup)
+        self.pushButton_12.clicked.connect(self.show_all_specimens)
+        self.pushButton_12.clicked.connect(self.show_all_specimens)
+        
         
         self.test_method=""                             
         self.failure_mod=""
@@ -1133,6 +1112,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
+    def new_test_reset(self):
+        self.frame_3.hide()
+        self.load_data()
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
@@ -1166,6 +1148,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.onchage_combo()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
+        self.pushButton_13.setDisabled(True)
+        self.pushButton_14.setDisabled(True)
+        self.pushButton_15.setDisabled(True)
+        self.pushButton_16.setDisabled(True)
+        
         if(self.timer4.isActive()): 
                                self.timer4.stop()
                                print("Timer4 Stopped.")
@@ -1512,8 +1499,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.timer1.stop()
            
-        if(self.timer4.isActive()): 
-           self.timer4.stop()     
+        if(self.timer3.isActive()): 
+           self.timer3.stop()
+           
+        
 
     def start_test(self):
         self.label_49.setText("Running Test ........")
@@ -1534,7 +1523,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     
     def show_load_cell_val(self): 
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length       
+        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
         self.pushButton_11.setDisabled(True)
         self.pushButton_7.setEnabled(True)
         if(str(self.sc_new.save_data_flg) =="Yes"):
@@ -1545,6 +1535,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.label_49.show()
                 self.pushButton_7.setDisabled(True)
                 self.pushButton_11.setEnabled(True)
+                self.label_38.setText(str(self.cycle_num))
+                self.pushButton_13.setEnabled(True)
+                self.pushButton_14.setEnabled(True)
+                self.pushButton_15.setEnabled(True)
+                self.pushButton_16.setEnabled(True)
         
     def save_graph_data(self):                
         
@@ -1682,7 +1677,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.show_grid_data_tensile()
     
     def open_pdf(self):
-        self.sc_data =Kg_Cm_PlotCanvas(self,width=8, height=5,dpi=90) 
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
         #self.pushButton_4_2.setEnabled(True)
         #self.pushButton_4_3.setEnabled(True)
         connection = sqlite3.connect("tyr.db")
@@ -1766,7 +1761,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
           
-         
+     
+    def show_all_specimens(self):        
+        #self.pushButton_3.setDisabled(True) ### save
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
+        self.gridLayout.addWidget(self.sc_data, 1,0,1,1)
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
@@ -1818,20 +1817,21 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak \n (Kgf) ',' Displacement at Peak (Mm)','Shape', 'Guage Length \n (mm)','Tensile Strength \n (Kgf/Cm2)','Modulus @100 %','Modulus @200 %','Modulus @300%','% Displacement','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Force at Peak (Kgf) ',' Disp. at Peak (Mm)','% Displacement','Tensile Strength (Kgf/Cm2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length (mm)','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,GUAGE100,cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
         self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
+        #self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
         
     def create_pdf_tensile(self):
         self.remark=""
+        self.login_user_name=""
         self.unit_typex="Kg/Cm"
         if (self.shape=="Rectangle"):
             
@@ -2054,7 +2054,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
         #self.show_all_specimens()
-        report_gr_img="last_graph_kg_cm.png"        
+        report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
@@ -2087,7 +2087,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
-        self.test_type="FBST"
+        self.test_type="Tensile"
         
         
        
@@ -2516,7 +2516,92 @@ class PlotCanvas_Auto(FigureCanvas):
                 
    
  
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        #fig.savefig('ssdsd.png')
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #FigureCanvas.setStyleSheet("background-color:red;")
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)       
         
+        self.plot()        
+        
+        
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[0.0]
+        self.test_type="Tensile"
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID,TEST_ID,SHAPE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+             self.graph_ids.append(x[0])             
+        connection.close()
+        
+        ### Univarsal change for  Graphs #####################
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+        for x in results:
+             ax.set_xlim(0,int(x[0]))
+             ax.set_ylim(0,int(x[1]))          
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR") 
+        for x in results:
+             self.test_type=str(x[0])            
+        connection.close()
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+        
+            connection = sqlite3.connect("tyr.db")
+            if(self.test_type=="Compress" or self.test_type=="Flexural"):
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:   
+                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                self.x_num.append(k[0])
+                self.y_num.append(k[1])
+            connection.close() 
+        
+            if(g < 8 ):
+                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+        
+        print("self.test_type:"+str(self.test_type))
+        if(str(self.test_type)=="Compress"):
+            ax.set_xlabel('Compression (mm)')        
+        else:
+            ax.set_xlabel('Elongation (mm)')
+        ax.set_ylabel('Load (Kgf)')
+        #self.connect('motion_notify_event', mouse_move)
+        ax.legend()        
+        self.draw()
+        self.figure.savefig('last_graph.png',dpi=100)
+        
+        #ax.connect('motion_notify_event', mouse_move)
+    
+            
+
 class PlotCanvas_blank(FigureCanvas):
     def __init__(self, parent=None, width=1, height=0.1, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
