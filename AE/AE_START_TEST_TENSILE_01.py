@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.Qt import QTableWidgetItem
 
+### ##### This Lib is for General Purpose.
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
@@ -12,14 +13,15 @@ import serial,time
 import array  as arr
 import numpy as np
 
+### This lib is for Graph only 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
-
 import re
+
+#### 
 
 
 
@@ -989,6 +991,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.test_id="1"
         self.remark=""
         self.timer4=QtCore.QTimer()
+        self.cycle_num=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1050,13 +1053,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
         self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement."))
         self.comboBox_4.setItemText(1, _translate("MainWindow", "Stress Vs Strain"))
-        self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
+        self.label_49.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "Reset"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Speciment Name:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXXXXXXXXXX"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXX"))
         self.label_14.setText(_translate("MainWindow", "Party Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
@@ -1110,6 +1113,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
+        self.frame_3.hide()
     
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1145,11 +1149,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
         self.onchage_combo()
-        self.frame_3.hide()
+        #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
         if(self.timer4.isActive()): 
                                self.timer4.stop()
                                print("Timer4 Stopped.")
+    
+    
     
     def validations(self):        
         self.go_ahead="No"
@@ -1226,9 +1232,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                                             timeout = 0.05
                                                         )
                                
-                                self.timer4.setInterval(5000)        
-                                self.timer4.timeout.connect(self.loadcell_encoder_status)
-                                self.timer4.start(1)
+                                #self.timer4.setInterval(5000)        
+                                #self.timer4.timeout.connect(self.loadcell_encoder_status)
+                                #self.timer4.start(1)
                          except IOError:
                                     print("IO Errors") 
                         
@@ -1482,8 +1488,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         with connection:        
            cursor = connection.cursor()
            cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_2='"+str(self.x_axis_val)+"', GRAPH_SCALE_CELL_1='"+str(self.y_axis_val)+"'")
-           print("Graph Scale set Ok !!")
-           print("x:"+str(self.x_axis_val)+" y:"+str(self.y_axis_val))
+           print("Graph Scale set Ok !!")           
            self.frame_3.hide()
         connection.commit();
         connection.close()
@@ -1496,37 +1501,169 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
            self.timer4.stop()     
 
     def start_test(self):
+        self.label_49.setText("Running Test ........")
+        self.label_49.show()
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
-        
-        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
         rows=results.fetchall()
         connection.close()               
-        print("Test Strated.")       
-        #self.label_4.setText(str(rows[0][0]))
-        #print("count of stg records :"+str(rows[0][0]))
+        print("Test Strated.")
         if(int(rows[0][0]) > -2 ):
                     self.timer3=QtCore.QTimer()
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1)
-                    #self.pushButton_4_5.setEnabled(True)
+                    
     
-    def show_load_cell_val(self):        
-        #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
+    def show_load_cell_val(self): 
         self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length        
+        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length       
+        self.pushButton_11.setDisabled(True)
+        self.pushButton_7.setEnabled(True)
         if(str(self.sc_new.save_data_flg) =="Yes"):
                 self.reset()
-                #self.save_graph_data()
+                self.save_graph_data()
                 self.sc_new.save_data_flg=""
                 self.label_49.setText("Data Saved Successfully.")
                 self.label_49.show()
+                self.pushButton_7.setDisabled(True)
+                self.pushButton_11.setEnabled(True)
         
-
-
+    def save_graph_data(self):                
+        
+        self.load100_guage=0
+        self.load200_guage=0
+        self.load300_guage=0
+        self.def_flg="N"
+        if (len(self.sc_new.arr_p) > 1):            
+            #### Get Guage length
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,IS_METAL FROM GLOBAL_VAR")                 
+            for x in results:
+                self.guage_length_mm=int(x[0])
+                self.test_type=str(x[1])
+                self.def_flg=str(x[2])            
+            connection.close()                                  
+            
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.sc_new.arr_p)):
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+            connection.commit();
+            connection.close()
+            
+            for g in range(len(self.sc_new.arr_p)):
+                 if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
+                        self.load100_guage=float(self.sc_new.arr_q[g])
+                        break;            
+            for g in range(len(self.sc_new.arr_p)):    
+                 if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
+                        self.load200_guage=float(self.sc_new.arr_q[g])
+                        break;
+            for g in range(len(self.sc_new.arr_p)):                                
+                 if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
+                        self.load300_guage=float(self.sc_new.arr_q[g])
+                        break;
+          
+        
+        if (len(self.sc_new.arr_p) > 1):            
+            self.cycle_num=self.cycle_num+1
+            connection = sqlite3.connect("tyr.db")              
+            with connection:                
+                  cursor = connection.cursor()              
+                  #print("ok1")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
+                  #print("ok2")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
+                  #print("ok3") 
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #STG_E_AT_PEAK_LOAD_MM
+                  #print("ok4")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))*100") #STG_TENSILE_STRENGTH
+                   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_SET_LOW=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_SET_LOW              
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_KG=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_TENSILE_STRENGTH
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3)") 
+                  
+                  #print("ok5")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD100_GUAGE='"+str(self.load100_guage)+"'")
+                                       
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=((cast(STG_LOAD100_GUAGE as real)/cast(NEW_TEST_AREA as real))*100)")
+                  
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD200_GUAGE='"+str(self.load200_guage)+"'")
+                  
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_200=((cast(STG_LOAD200_GUAGE as real)/cast(NEW_TEST_AREA as real))*100)")
+                  
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD300_GUAGE='"+str(self.load300_guage)+"'")              
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_300=((cast(STG_LOAD300_GUAGE as real)/cast(NEW_TEST_AREA as real))*100)")
+                 
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
+                  print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
+                 
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM) SELECT X_NUM,Y_NUM FROM STG_GRAPH_MST")
+                  
+              
+                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK= (((E_AT_PEAK_LOAD_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK=(PRC_E_AT_BREAK-100)   WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK=(PRC_E_AT_PEAK-100)  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET SPAN=(SELECT max(NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR) WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH=(round(((3*PEAK_LOAD_KG*(SELECT NEW_TEST_MAX_LOAD FROM GLOBAL_VAR))/(2*WIDTH*THINCKNESS*THINCKNESS)),2))  WHERE GRAPH_ID IS NULL")
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_KG_CM=(round(((3*PEAK_LOAD_KG*(SELECT NEW_TEST_MAX_LOAD*0.1 FROM GLOBAL_VAR))/(2*WIDTH*0.1*THINCKNESS*0.1*THINCKNESS*0.1)),2))  WHERE GRAPH_ID IS NULL")
+                  #self.kg_to_lb=float(2.20462)
+                  #self.mm_to_inch=float(0.0393701)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_LB_INCH=((3*round((PEAK_LOAD_KG*2.20462),2)*(SELECT round((NEW_TEST_MAX_LOAD*0.0393701),2) FROM GLOBAL_VAR))/(2*round((WIDTH*0.0393701),2)*round((THINCKNESS*0.0393701),2)*round((THINCKNESS*0.0393701),2)))  WHERE GRAPH_ID IS NULL")
+                  #self.kg_to_Newton=float(9.81)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_N_MM=(3*round((PEAK_LOAD_KG*9.81),2)*(SELECT round(NEW_TEST_MAX_LOAD,2) FROM GLOBAL_VAR))/(2*WIDTH*THINCKNESS*THINCKNESS)  WHERE GRAPH_ID IS NULL")
+                  
+                  #self.kgCm2_toMPA=float(0.0980665)
+                  cursor.execute("UPDATE CYCLES_MST SET FLEXURAL_STRENGTH_MPA=round((FLEXURAL_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL")
+                  
+                  
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_KG_CM=(SELECT ((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))*100 FROM GLOBAL_VAR)   WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
+                  #self.kg_to_lb=float(2.20462)
+                  #self.mm_to_inch=float(0.0393701)
+                  cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_LB_INCH=(SELECT (((cast(STG_PEAK_LOAD_KG as real)*2.20462)/(IFNULL(cast(NEW_TEST_AREA as real),1)*0.0393701*0.0393701))) FROM GLOBAL_VAR )   WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
+                  
+                  #self.kg_to_Newton=float(9.81)
+                  cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_N_MM=(SELECT ((cast(STG_PEAK_LOAD_KG as real)*9.81/IFNULL(cast(NEW_TEST_AREA as real),1))) FROM GLOBAL_VAR)    WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
+                  
+                  #self.kgCm2_toMPA=float(0.0980665)
+                  cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_MPA=round((STG_TENSILE_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
+                
+                  
+                  
+                  
+                  
+                  cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                  
+                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
+                  cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  #cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  print("data saved.")                  
+            
+            connection.commit();
+            connection.close()            
+        
+        #self.load_data()
+        print("Save completed")
 
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
