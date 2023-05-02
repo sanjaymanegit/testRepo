@@ -1023,8 +1023,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         self.label_33.setText(_translate("MainWindow", "Show Graph :"))
-        self.radioButton.setText(_translate("MainWindow", "Hi-Load cell"))
-        self.radioButton_2.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton.setText(_translate("MainWindow", "Loadcell:1"))
+        self.radioButton_2.setText(_translate("MainWindow", "Loadcell:2"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
        
@@ -1081,7 +1081,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.lineEdit_10.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
-        self.pushButton_8.clicked.connect(self.open_frame3)
+        self.pushButton_8.clicked.connect(self.go_for_test)
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
@@ -1092,8 +1092,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_16.clicked.connect(self.print_file)
         self.pushButton_14.clicked.connect(self.open_email_report)
         self.pushButton_15.clicked.connect(self.open_comment_popup)
-        self.pushButton_12.clicked.connect(self.show_all_specimens)
-        self.pushButton_12.clicked.connect(self.show_all_specimens)
+        self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
         
         
@@ -1115,11 +1114,14 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
     def new_test_reset(self):
+        self.pushButton_8.setEnabled(True)
+        self.pushButton_6.setEnabled(True)
         self.frame_3.hide()
         self.load_data()
+        print("Timer3 status: "+str(self.timer3.isActive()))
         if(self.timer3.isActive()): 
                         self.timer3.stop()
-                        print("Timer3 Stopped.")
+                        print("Timer3 Stopped......Timer3 status: "+str(self.timer3.isActive()))
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
@@ -1151,6 +1153,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
         self.onchage_combo()
+        self.label_49.setText("Start Test Please.")
+        self.label_49.show()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
         self.pushButton_13.setDisabled(True)
@@ -1160,7 +1164,14 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText() ))
+        self.lcdNumber.setProperty("value", 0.0)     #load
+        self.lcdNumber_2.setProperty("value",0.0)  #length
+        self.lcdNumber_3.setProperty("value",0.0)  #speed
         
+        self.pushButton_7.setDisabled(True)
+        self.pushButton_11.setEnabled(True)
+        self.show_grid_data_tensile()
+        print("Data Loaded OK !!")
        
     
     
@@ -1216,7 +1227,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                         connection.close()
        
     
-    def open_frame3(self):
+    def go_for_test(self):
         self.validations()        
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
@@ -1242,6 +1253,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                 self.timer3.setInterval(5000)        
                                 self.timer3.timeout.connect(self.loadcell_encoder_status)
                                 self.timer3.start(1)
+                                self.pushButton_8.setDisabled(True)
+                                self.pushButton_6.setDisabled(True)
                                 
                          except IOError:
                                     print("IO Errors") 
@@ -1250,9 +1263,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        self.show_grid_data_tensile()
+        #self.show_grid_data_tensile()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
+        
         
     def save_units(self):
         connection = sqlite3.connect("tyr.db")
@@ -1523,7 +1537,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
+           self.sc_new.on_ani_stop()
            self.sc_new.timer1.stop()
+           
            
         if(self.timer3.isActive()): 
            self.timer3.stop()
@@ -1541,18 +1557,47 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         connection.close()               
         print("Test Strated.")
         if(int(rows[0][0]) > -2 ):
-                    self.timer3=QtCore.QTimer()
+                    #self.timer3=QtCore.QTimer()
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1)
                     
     
-    def show_load_cell_val(self): 
-        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-        self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
+    def show_load_cell_val(self):
+        if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+        elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length   
+        else:
+                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
+                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
         self.pushButton_11.setDisabled(True)
         self.pushButton_7.setEnabled(True)
+        #print("lcd printing .......")
         if(str(self.sc_new.save_data_flg) =="Yes"):
                 self.reset()
                 self.save_graph_data()
@@ -1566,6 +1611,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.pushButton_14.setEnabled(True)
                 self.pushButton_15.setEnabled(True)
                 self.pushButton_16.setEnabled(True)
+               
+                
         
     def save_graph_data(self):                
         
@@ -1670,7 +1717,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                   print("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE FROM GLOBAL_VAR")
                  
                   cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
-                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA FROM STG_GRAPH_MST")
+                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB FROM STG_GRAPH_MST")
                   
               
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
@@ -1849,7 +1896,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length (Mm)','Cycle Id'])        
        
         results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,GUAGE100,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
@@ -2003,14 +2050,22 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
 
     def manual_stop(self):
         if(self.timer3.isActive()): 
-                self.sc_new.save_data_flg='Yes'
+                #self.sc_new.save_data_flg='Yes'
                 self.sc_new.ser.write(b'*Q\r')
-                if(self.sc_new.timer1.isActive()): 
+                if(self.sc_new.timer1.isActive()):
+                           self.sc_new.on_ani_stop()
                            self.sc_new.timer1.stop()
+                           self.sc_new.arr_p=[0.0]
+                           self.sc_new.arr_q=[0.0]
+                           self.sc_new.arr_speed=[0.0]
                 self.timer3.stop()
                 self.label_49.setText("Mannual Stopped.")
                 self.label_49.show()
+                print("Mannual Stopped.")
         self.pushButton_7.setDisabled(True)
+        self.lcdNumber.setProperty("value", 0.0)     #load
+        self.lcdNumber_2.setProperty("value",0.0)  #length
+        self.lcdNumber_3.setProperty("value",0.0)  #speed
 
 
 class PlotCanvas_Auto(FigureCanvas):     
@@ -2037,6 +2092,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.q_n =0
         self.q_lb =0
         
+        self.speed=500
+        
         
         
         
@@ -2048,6 +2105,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_q=[0.0]
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
+        
+        self.arr_speed=[0.0]
         
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
@@ -2140,7 +2199,7 @@ class PlotCanvas_Auto(FigureCanvas):
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
-                 #print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit  ))
+                 print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
                  if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
                                  self.axes.set_xlabel('Displacement (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
@@ -2367,6 +2426,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q_lb=float(self.q)*2.20462
                 self.arr_q_lb.append(float(self.q_lb))
                 
+                self.arr_speed.append(float(self.speed))
+                
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 
@@ -2397,17 +2458,42 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
-                if(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                            self.line_cnt.set_data(self.arr_p,self.arr_q)
+                            return [self.line_cnt]
+                elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
                             self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
+                            return [self.line_cnt]
+                elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
                             return [self.line_cnt]
                 elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
                             self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
                             return [self.line_cnt]
+                elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                            print("Lb/Cm ...")
+                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
+                            return [self.line_cnt]
+                elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                            self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
+                            return [self.line_cnt]
                 elif(self.load_unit=="N" and self.disp_unit=="Mm"):
                             self.line_cnt.set_data(self.arr_p,self.arr_q_n)
                             return [self.line_cnt]
+                elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
+                            return [self.line_cnt]
+                elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
+                            return [self.line_cnt]
                 elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
                             self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+                            return [self.line_cnt]
+                elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
+                            return [self.line_cnt]
+                elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
                             return [self.line_cnt]
                 else:    
                             self.line_cnt.set_data(self.arr_p,self.arr_q)
@@ -2542,10 +2628,33 @@ class PlotCanvas(FigureCanvas):
             self.y_num=[0.0]
         
             connection = sqlite3.connect("tyr.db")
-            if(self.test_type=="Compress" or self.test_type=="Flexural"):
-                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            else:   
-                results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                            results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
+                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
+                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
+                            results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
+                            results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
+                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
+                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                            results=connection.execute("SELECT X_NUM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
+                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
+                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:    
+                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+           
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])
