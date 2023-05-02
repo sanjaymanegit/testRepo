@@ -1114,6 +1114,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
     def new_test_reset(self):
+        self.readWrite_fields()
         self.pushButton_8.setEnabled(True)
         self.pushButton_6.setEnabled(True)
         self.frame_3.hide()
@@ -1157,6 +1158,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_49.show()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
+        self.pushButton_12.setDisabled(True)
         self.pushButton_13.setDisabled(True)
         self.pushButton_14.setDisabled(True)
         self.pushButton_15.setDisabled(True)
@@ -1227,6 +1229,37 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                         connection.close()
        
     
+    def readonly_fields(self):
+        self.comboBox.setDisabled(True)
+        self.lineEdit_15.setReadOnly(True)
+        self.lineEdit_16.setReadOnly(True)
+        self.lineEdit_8.setReadOnly(True)
+        self.lineEdit_9.setReadOnly(True)
+        self.comboBox_2.setDisabled(True)
+        self.comboBox_3.setDisabled(True)
+        self.lineEdit_10.setReadOnly(True)
+        self.lineEdit_11.setReadOnly(True)
+        self.lineEdit_12.setReadOnly(True)
+        self.lineEdit_7.setReadOnly(True)
+        self.lineEdit_13.setReadOnly(True)
+        self.lineEdit_14.setReadOnly(True)
+    
+    def readWrite_fields(self):
+        self.comboBox.setEnabled(True)
+        self.lineEdit_15.setReadOnly(False)
+        self.lineEdit_16.setReadOnly(False)
+        self.lineEdit_8.setReadOnly(False)
+        self.lineEdit_9.setReadOnly(False)
+        self.comboBox_2.setEnabled(True)
+        self.comboBox_3.setEnabled(True)
+        self.lineEdit_10.setReadOnly(False)
+        self.lineEdit_11.setReadOnly(False)
+        self.lineEdit_12.setReadOnly(False)
+        self.lineEdit_7.setReadOnly(False)
+        self.lineEdit_13.setReadOnly(False)
+        self.lineEdit_14.setReadOnly(False)
+        
+    
     def go_for_test(self):
         self.validations()        
         close = QMessageBox()
@@ -1255,6 +1288,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
                                 self.pushButton_6.setDisabled(True)
+                                self.readonly_fields()
+                                
                                 
                          except IOError:
                                     print("IO Errors") 
@@ -1544,6 +1579,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         if(self.timer3.isActive()): 
            self.timer3.stop()
            
+    #def frame_1_read_only(self):
+        
         
 
     def start_test(self):
@@ -1557,7 +1594,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         connection.close()               
         print("Test Strated.")
         if(int(rows[0][0]) > -2 ):
-                    #self.timer3=QtCore.QTimer()
+                    self.timer3=QtCore.QTimer()
                     self.timer3.setInterval(1000)        
                     self.timer3.timeout.connect(self.show_load_cell_val)
                     self.timer3.start(1)
@@ -1607,6 +1644,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.pushButton_7.setDisabled(True)
                 self.pushButton_11.setEnabled(True)
                 self.label_38.setText(str(self.cycle_num))
+                self.pushButton_12.setEnabled(True)
                 self.pushButton_13.setEnabled(True)
                 self.pushButton_14.setEnabled(True)
                 self.pushButton_15.setEnabled(True)
