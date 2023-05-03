@@ -3,6 +3,7 @@ from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 
+import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -1005,7 +1006,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.test_id="1"
         self.remark=""
         self.timer3=QtCore.QTimer()
+        self.timer31=QtCore.QTimer()
         self.cycle_num=0
+        self.show_lcd_vals="N"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1116,11 +1119,14 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
     def new_test_reset(self):
+        self.cycle_num=0
+        self.label_38.setText(str(self.cycle_num))
         self.readWrite_fields()
+        self.load_data()
         self.pushButton_8.setEnabled(True)
         self.pushButton_6.setEnabled(True)
         self.frame_3.hide()
-        self.load_data()
+        
         print("Timer3 status: "+str(self.timer3.isActive()))
         if(self.timer3.isActive()): 
                         self.timer3.stop()
@@ -1263,6 +1269,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
     
     def go_for_test(self):
+        print("Old object status :"+str(self.timer31.isActive()))
         self.validations()        
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
@@ -1291,6 +1298,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                 self.pushButton_8.setDisabled(True)
                                 self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
+                                self.show_lcd_vals="N"
+                                
                                 
                                 
                          except IOError:
@@ -1571,10 +1580,37 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
+    
+    
+    def manual_stop(self):
+        self.sc_new.ser.write(b'*Q\r')
+        self.reset()
+        self.save_graph_data()
+        self.sc_new.save_data_flg=""
+        self.label_49.setText("Mannual stopped new.")
+        self.label_49.show()
+        self.pushButton_7.setDisabled(True)
+        self.pushButton_11.setEnabled(True)
+        self.label_38.setText(str(self.cycle_num))
+        self.pushButton_12.setEnabled(True)
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.sc_new.arr_p=[0.0]
+        self.sc_new.arr_q=[0.0]
+        self.sc_new.arr_speed=[0.0]
+        self.lcdNumber.setProperty("value", 0.0)     #load
+        self.lcdNumber_2.setProperty("value",0.0)  #length
+        self.lcdNumber_3.setProperty("value",0.0)  #speed
+                
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.on_ani_stop()
            self.sc_new.timer1.stop()
+           self.sc_new.arr_p=[0.0]
+           self.sc_new.arr_q=[0.0]
+           self.sc_new.arr_speed=[0.0]
            
            
         if(self.timer3.isActive()): 
@@ -1585,8 +1621,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
 
     def start_test(self):
+        self.show_lcd_vals="Y"
         self.label_49.setText("Running Test ........")
         self.label_49.show()
+        self.pushButton_11.setDisabled(True)
+        self.pushButton_7.setEnabled(True)
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
         connection = sqlite3.connect("tyr.db")
@@ -1602,55 +1641,60 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     
     
     def show_load_cell_val(self):
-        if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-        elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
-        elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
-        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
-        elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
-        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
-        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
-        elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length   
+        if(self.show_lcd_vals=="Y"):
+                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length   
+                    else:
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    self.pushButton_11.setDisabled(True)
+                    self.pushButton_7.setEnabled(True)
+                    print("lcd printing .......")
+                    if(str(self.sc_new.save_data_flg) =="Yes"):
+                            self.reset()
+                            self.save_graph_data()
+                            self.sc_new.save_data_flg=""
+                            self.label_49.setText("Data Saved Successfully.")
+                            self.label_49.show()
+                            self.pushButton_7.setDisabled(True)
+                            self.pushButton_11.setEnabled(True)
+                            self.label_38.setText(str(self.cycle_num))
+                            self.pushButton_12.setEnabled(True)
+                            self.pushButton_13.setEnabled(True)
+                            self.pushButton_14.setEnabled(True)
+                            self.pushButton_15.setEnabled(True)
+                            self.pushButton_16.setEnabled(True)
         else:
-                        self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-                        self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-        self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
-        self.pushButton_11.setDisabled(True)
-        self.pushButton_7.setEnabled(True)
-        #print("lcd printing .......")
-        if(str(self.sc_new.save_data_flg) =="Yes"):
-                self.reset()
-                self.save_graph_data()
-                self.sc_new.save_data_flg=""
-                self.label_49.setText("Data Saved Successfully.")
-                self.label_49.show()
-                self.pushButton_7.setDisabled(True)
-                self.pushButton_11.setEnabled(True)
-                self.label_38.setText(str(self.cycle_num))
-                self.pushButton_12.setEnabled(True)
-                self.pushButton_13.setEnabled(True)
-                self.pushButton_14.setEnabled(True)
-                self.pushButton_15.setEnabled(True)
-                self.pushButton_16.setEnabled(True)
-               
+                           self.lcdNumber.setProperty("value", 0.0)     #load
+                           self.lcdNumber_2.setProperty("value",0.0)  #length
+                           self.lcdNumber_3.setProperty("value",0.0)  #speed
+                
                 
         
     def save_graph_data(self):                
@@ -1882,6 +1926,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
      
     def show_all_specimens(self):        
         #self.pushButton_3.setDisabled(True) ### save
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
+        connection.commit();
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
         self.gridLayout.addWidget(self.sc_data, 1,0,1,1)
     
@@ -2087,24 +2136,27 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         #print("Done")
 
 
-    def manual_stop(self):
-        if(self.timer3.isActive()): 
-                #self.sc_new.save_data_flg='Yes'
-                self.sc_new.ser.write(b'*Q\r')
-                if(self.sc_new.timer1.isActive()):
-                           self.sc_new.on_ani_stop()
-                           self.sc_new.timer1.stop()
-                           self.sc_new.arr_p=[0.0]
-                           self.sc_new.arr_q=[0.0]
-                           self.sc_new.arr_speed=[0.0]
-                self.timer3.stop()
-                self.label_49.setText("Mannual Stopped.")
-                self.label_49.show()
-                print("Mannual Stopped.")
-        self.pushButton_7.setDisabled(True)
-        self.lcdNumber.setProperty("value", 0.0)     #load
-        self.lcdNumber_2.setProperty("value",0.0)  #length
-        self.lcdNumber_3.setProperty("value",0.0)  #speed
+#     def manual_stop_old(self):
+#         if(self.timer3.isActive()): 
+#                 #self.sc_new.save_data_flg='Yes'
+#                 self.sc_new.ser.write(b'*Q\r')
+#                 if(self.sc_new.timer1.isActive()):
+#                            self.sc_new.on_ani_stop()
+#                            self.sc_new.timer1.stop()
+#                            self.sc_new.arr_p=[0.0]
+#                            self.sc_new.arr_q=[0.0]
+#                            self.sc_new.arr_speed=[0.0]
+#                 self.timer3.stop()
+#                 self.label_49.setText("Mannual Stopped.")
+#                 self.label_49.show()
+#                 print("Mannual Stopped.")
+#         self.pushButton_7.setDisabled(True)
+#         self.lcdNumber.setProperty("value", 0.0)     #load
+#         self.lcdNumber_2.setProperty("value",0.0)  #length
+#         self.lcdNumber_3.setProperty("value",0.0)  #speed
+        
+    
+   
         
     
     def show_graph(self):
@@ -2684,6 +2736,10 @@ class PlotCanvas(FigureCanvas):
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
+            
+            
+            
+            
            
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type=="Load Vs Displacement"):
@@ -2714,14 +2770,24 @@ class PlotCanvas(FigureCanvas):
                     else:    
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             elif(self.graph_type=="Stress Vs Strain"):
-                    results=connection.execute("SELECT X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR),Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                    print("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                     
             else:
                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])
-            connection.close() 
+            connection.close()
+            
+            if(self.graph_type=="Stress Vs Strain"):
+                 connection = sqlite3.connect("tyr.db")
+                 results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
+                 for x in results:
+                        ax.set_xlim(0,float(x[0]))
+                        ax.set_ylim(0,float(x[1]))
+                 connection.close()
+                 
         
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
