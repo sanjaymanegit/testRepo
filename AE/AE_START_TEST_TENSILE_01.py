@@ -1035,7 +1035,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Mm"))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement."))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement"))
         self.comboBox_4.setItemText(1, _translate("MainWindow", "Stress Vs Strain"))
         self.label_49.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
@@ -1079,6 +1079,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_38.setText(_translate("MainWindow", "0"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.comboBox_4.currentTextChanged.connect(self.show_graph)
+        
         self.lineEdit_10.textChanged.connect(self.cs_area_calculation)
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
         self.pushButton_8.clicked.connect(self.go_for_test)
@@ -1383,8 +1385,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.radioButton_3.setEnabled(True)
                                    
     
-    
-    def onchage_combo(self):                      
+    def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
@@ -2104,6 +2105,16 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)     #load
         self.lcdNumber_2.setProperty("value",0.0)  #length
         self.lcdNumber_3.setProperty("value",0.0)  #speed
+        
+    
+    def show_graph(self):
+        print("Show graph function called.")
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
+        connection.commit();
+        self.show_all_specimens()
 
 
 class PlotCanvas_Auto(FigureCanvas):     
@@ -2617,6 +2628,9 @@ class PlotCanvas(FigureCanvas):
         self.plot()
         self.last_load_unit=""
         self.last_disp_unit=""
+        self.graph_type=""
+        self.cs_area_mm="1"       
+        self.guage_length_mm="1"
         
         
     def plot(self):
@@ -2640,7 +2654,7 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
-              self.graph_ids.append(x[0])
+              self.graph_ids.append(x[0])            
              
         connection.close()
         
@@ -2659,40 +2673,51 @@ class PlotCanvas(FigureCanvas):
               self.last_disp_unit=str(x[1])  
         connection.close()
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
+        for x in results:
+              self.graph_type=str(x[0])  
+        connection.close()
+        
         
         
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
-        
-            connection = sqlite3.connect("tyr.db")
-            if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
-                            results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
-                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
-                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
-                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                            results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                            results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
-                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
-                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                            results=connection.execute("SELECT X_NUM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
-                            results=connection.execute("SELECT X_NUM_CM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
-                            results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            else:    
-                            results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
            
+            connection = sqlite3.connect("tyr.db")
+            if(self.graph_type=="Load Vs Displacement"):
+                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    else:    
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.graph_type=="Stress Vs Strain"):
+                    results=connection.execute("SELECT X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR),Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                    
+            else:
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])
@@ -2700,10 +2725,13 @@ class PlotCanvas(FigureCanvas):
         
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
-        
-       
-        ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+')')
-        ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        print("self.graph_type :"+str(self.graph_type))
+        if(self.graph_type=="Load Vs Displacement"):
+                ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        else:
+                ax.set_xlabel('Strain %')
+                ax.set_ylabel('Stress')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
