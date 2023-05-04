@@ -1113,7 +1113,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.frame_3.hide()
         self.show_grid_data_tensile()
         self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
-       
+        self.pushButton_9.setDisabled(True)
     def load_unit_onchange(self):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
@@ -1643,6 +1643,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_49.show()
         self.pushButton_11.setDisabled(True)
         self.pushButton_7.setEnabled(True)
+        self.pushButton_9.setEnabled(True)
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
         connection = sqlite3.connect("tyr.db")
@@ -1685,7 +1686,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length   
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="KN") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_kn)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="MPa") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_mpa)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
                     else:
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
@@ -1707,6 +1714,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                             self.pushButton_14.setEnabled(True)
                             self.pushButton_15.setEnabled(True)
                             self.pushButton_16.setEnabled(True)
+                            self.pushButton_6.setEnabled(True)
         else:
                            self.lcdNumber.setProperty("value", 0.0)     #load
                            self.lcdNumber_2.setProperty("value",0.0)  #length
@@ -1751,7 +1759,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"')")
                    
             connection.commit();
             connection.close()
@@ -1780,7 +1788,33 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     for g in range(len(self.sc_new.arr_p)):                                
                          if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
                                 self.load300_guage=float(self.sc_new.arr_q_n[g])
+                                break;
+            elif(str(self.comboBox_2.currentText()) =="KN"):
+                    for g in range(len(self.sc_new.arr_p)):
+                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
+                                self.load100_guage=float(self.sc_new.arr_q_kn[g])
                                 break;            
+                    for g in range(len(self.sc_new.arr_p)):    
+                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
+                                self.load200_guage=float(self.sc_new.arr_q_kn[g])
+                                break;
+                    for g in range(len(self.sc_new.arr_p)):                                
+                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
+                                self.load300_guage=float(self.sc_new.arr_q_kn[g])
+                                break;
+            elif(str(self.comboBox_2.currentText()) =="MPa"):
+                    for g in range(len(self.sc_new.arr_p)):
+                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
+                                self.load100_guage=float(self.sc_new.arr_q_mpa[g])
+                                break;            
+                    for g in range(len(self.sc_new.arr_p)):    
+                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
+                                self.load200_guage=float(self.sc_new.arr_q_mpa[g])
+                                break;
+                    for g in range(len(self.sc_new.arr_p)):                                
+                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
+                                self.load300_guage=float(self.sc_new.arr_q_mpa[g])
+                                break;  
             else:
                     for g in range(len(self.sc_new.arr_p)):
                          if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
@@ -1807,7 +1841,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                   if( str(self.comboBox_2.currentText()) =="Lb"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###    
                   elif( str(self.comboBox_2.currentText()) =="N"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###   
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
+                  elif( str(self.comboBox_2.currentText()) =="KN"):
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
+                  elif( str(self.comboBox_2.currentText()) =="MPa"):
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
                   else:    
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 
                   
@@ -1855,7 +1893,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                   
                    
                   cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
-                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB FROM STG_GRAPH_MST")
+                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN FROM STG_GRAPH_MST")
                   
               
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
@@ -2196,6 +2234,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.q =0
         self.q_n =0
         self.q_lb =0
+        self.q_kn =0
+        self.q_mpa =0
         
         self.speed=500
         
@@ -2210,6 +2250,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_q=[0.0]
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
+        self.arr_q_kn=[0.0]
+        self.arr_q_mpa=[0.0]
         
         self.arr_speed=[0.0]
         
@@ -2221,6 +2263,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.xlim=0
         self.ylim=10
         self.line_cnt=0
+        self.kg_cm2=0
         self.xlim_update='NO'
         self.ylim_update='NO'
         ##############
@@ -2259,6 +2302,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.unit_type =""
         self.load_unit=""
         self.disp_unit=""
+        self.cs_area_cm=""
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.plot_auto()
@@ -2286,7 +2330,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()                
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
@@ -2297,6 +2341,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
+             self.cs_area_cm=str(x[6])
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
@@ -2531,6 +2576,14 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q_lb=float(self.q)*2.20462
                 self.arr_q_lb.append(float(self.q_lb))
                 
+                self.q_kn=float(self.q_n)/1000
+                self.arr_q_kn.append(float(self.q_kn))
+                
+                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
+                self.q_mpa=float(self.kg_cm2)*0.0980665
+                self.arr_q_mpa.append(float(self.q_mpa))
+                
+                
                 self.arr_speed.append(float(self.speed))
                 
                 self.arr_p.append(float(self.p))
@@ -2592,13 +2645,16 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
                             return [self.line_cnt]
                 elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+                            self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
                             return [self.line_cnt]
                 elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
+                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
                             return [self.line_cnt]
                 elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
+                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
+                            return [self.line_cnt]
+                elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
+                            self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
                             return [self.line_cnt]
                 else:    
                             self.line_cnt.set_data(self.arr_p,self.arr_q)
@@ -2766,11 +2822,13 @@ class PlotCanvas(FigureCanvas):
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT X_NUM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N/1000 FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     else:    
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             elif(self.graph_type=="Stress Vs Strain"):
@@ -2801,7 +2859,13 @@ class PlotCanvas(FigureCanvas):
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT (X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
-                  
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                            
+                    elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    print("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                          
                     else:    
                                     results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
@@ -2844,6 +2908,12 @@ class PlotCanvas(FigureCanvas):
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                    
+                    elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    print("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                   
                     else:    
                                     results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
