@@ -1068,7 +1068,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "Mpa"))
+        self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
@@ -1099,9 +1099,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_comment_popup)
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
-        
-        
-        
+        self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         self.test_method=""                             
         self.failure_mod=""
         self.tmperature=""
@@ -1114,7 +1112,18 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_tensile()
-    
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
+       
+    def load_unit_onchange(self):
+        self.i=0        
+        if(str(self.comboBox_2.currentText())=="KN"):        
+              self.comboBox_3.setCurrentText(str("Mm"))
+        elif(str(self.comboBox_2.currentText())=="MPa"):
+              self.comboBox_3.setCurrentText(str("Mm"))
+        else:
+              print("No change in combo3")
+        
+        
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
@@ -1199,7 +1208,15 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         elif(self.lineEdit_12.text()== ""):
              self.msg="CS Area is Empty."             
         elif(self.lineEdit_7.text()== ""):
-             self.msg="Guage Length is Empty."
+             self.msg="Guage Length is Empty."        
+        elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
+            self.msg="Unity Type : KN/CM incorrect."
+        elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Inch"):
+            self.msg="Unity Type : KN/Inch incorrect."
+        elif(str(self.comboBox_2.currentText())== "MPa"  and str(self.comboBox_3.currentText())== "Cm"):
+            self.msg="Unity Type : MPa/Cm incorrect."
+        elif(str(self.comboBox_2.currentText())== "MPa"  and str(self.comboBox_3.currentText())== "Inch"):
+            self.msg="Unity Type : MPa/Inch incorrect."
         else:
                self.msg="Confirm to start Test."
                self.go_ahead="Yes"
@@ -1675,7 +1692,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
                     self.pushButton_11.setDisabled(True)
                     self.pushButton_7.setEnabled(True)
-                    print("lcd printing .......")
+                    #print("lcd printing .......")
                     if(str(self.sc_new.save_data_flg) =="Yes"):
                             self.reset()
                             self.save_graph_data()
@@ -1995,7 +2012,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,GUAGE100,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),SHAPE,printf(\"%.2f\", GUAGE100),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
