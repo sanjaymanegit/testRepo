@@ -1861,8 +1861,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                   
                   
                   
-                  
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
+                  if( str(self.comboBox_2.currentText()) =="MPa"):
+                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
+                  else:
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
                   
                   
                   if( str(self.comboBox_3.currentText()) =="Cm"):
@@ -2015,7 +2017,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                     #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
                     connection.commit();
                     connection.close()
-                    self.load_data()
+                    #self.load_data()
+                    self.show_grid_data_tensile()
         
     
     
@@ -2385,7 +2388,10 @@ class PlotCanvas_Auto(FigureCanvas):
                                  self.axes.set_ylabel('Load (KN)')                                 
                  elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
                                  self.axes.set_xlabel('Displacement (Inch)')
-                                 self.axes.set_ylabel('Load (KN)')  
+                                 self.axes.set_ylabel('Load (KN)')
+                 elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
+                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_ylabel('Load (MPa)') 
                  else:    
                                  self.axes.set_xlabel('Displacement (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
@@ -2863,9 +2869,9 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    print("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                          
+                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    print("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    
                     else:    
                                     results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
@@ -2912,9 +2918,9 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                     
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    print("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_MPA/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                  
+                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    print("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    
                     else:    
                                     results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
                 
