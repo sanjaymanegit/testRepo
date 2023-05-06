@@ -1,5 +1,7 @@
 from AE_REPORTS_TENSILE_03 import AE_03_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
 
 import sqlite3
 from PyQt5.QtCore import QRegExp
@@ -556,7 +558,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Double Click on record to see detail report"))
         self.checkBox.setText(_translate("MainWindow", "Select All"))
         self.checkBox.hide()
-        self.pushButton_10.setText(_translate("MainWindow", "Other Reports"))
+        self.pushButton_10.setText(_translate("MainWindow", " Delete "))
 
         
         #### Default setting ######
@@ -578,7 +580,7 @@ class AE_02_SP_Ui_MainWindow(object):
         
         
         
-        self.pushButton_10.setDisabled(True)
+        #self.pushButton_10.setDisabled(True)
         
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.radioButton.clicked.connect(self.date_range_radiobutt_on_click)
@@ -600,6 +602,8 @@ class AE_02_SP_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(self.list_tests)
         
         self.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
+        self.pushButton_10.clicked.connect(self.delete_tests)
+        
         
         
         
@@ -806,7 +810,7 @@ class AE_02_SP_Ui_MainWindow(object):
                     #print("data-column_number :"+str(column_number))
                     item = QtWidgets.QTableWidgetItem()
                     item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-                    #item.setCheckState(QtCore.Qt.Unchecked)
+                    item.setCheckState(QtCore.Qt.Unchecked)
                     item.setText(str(data))
                     self.tableWidget.setItem(row_number,column_number,item)
                     #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
@@ -818,13 +822,29 @@ class AE_02_SP_Ui_MainWindow(object):
         #self.tableWidget.resizeRowsToContents()
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        
+        self.label_48.setText("")                   
+        self.label_48.show()
         connection = sqlite3.connect("tyr.db")          
         with connection:        
                 cursor = connection.cursor()
                 #cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"'")
                 cursor.execute("DELETE FROM TEST_IDS")
-                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile'") 
+                if(self.radioButton.isChecked()):
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
+                elif(self.radioButton_2.isChecked()): # party Name
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' ") 
+                elif(self.radioButton_3.isChecked()): #batch id
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' ") 
+                elif(self.radioButton_4.isChecked()): #test id
+                             if(self.lineEdit_17.text() != ""):
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  and B.TEST_ID='"+str(self.comboBox_3.currentText())+"'") 
+                             else:
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  and B.TEST_ID='"+str(self.comboBox_3.currentText())+"'") 
+                       
+                else:
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
+               
+                    
         connection.commit();
         connection.close()
         
@@ -852,7 +872,52 @@ class AE_02_SP_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=AE_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()   
+        self.window.show()
+    
+    def delete_tests(self):
+        close = QMessageBox()
+        close.setText("Confirm Deleteing TEST ID.")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        close = close.exec()
+        if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE from GRAPH_MST WHERE GRAPH_ID in (SELECT GRAPH_ID FROM  CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS))") 
+                            cursor.execute("DELETE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")  
+                            cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")
+                            print(" Few Test Deleted.")
+                           
+                    connection.commit();                    
+                    connection.close()                    
+                    self.label_48.setText("Record Deleted Successfully.")                   
+                    self.label_48.show()
+                    
+        
+    
+    def del_uncheked(self):
+        i = self.tableWidget.rowCount()       
+        while (i > 0):
+            i=i-1
+            item = self.tableWidget.item(i, 0)
+            #print("test id  :"+str(item.text()))
+            currentState = item.checkState()
+            if(currentState == QtCore.Qt.Checked):
+                    print("Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()                            
+                            cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B WHERE B.TEST_ID='"+str(item.text())+"' AND B.TEST_ID NOT IN (SELECT TEST_ID FROM TEST_IDS)") 
+                    connection.commit();
+                    connection.close()                    
+            else:
+                    print("Un-Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM TEST_IDS WHERE TEST_ID = '"+str(item.text())+"'")                             
+                    connection.commit();
+                    connection.close()
        
                 
 
