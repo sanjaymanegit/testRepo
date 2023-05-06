@@ -1,4 +1,4 @@
-
+from AE_REPORTS_TENSILE_03 import AE_03_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import sqlite3
@@ -14,7 +14,7 @@ import array  as arr
 import numpy as np
 
 
-class AE_02_Ui_MainWindow(object):
+class AE_02_SP_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 769)
@@ -111,7 +111,7 @@ class AE_02_Ui_MainWindow(object):
         self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_3.setObjectName("line_3")
         self.radioButton = QtWidgets.QRadioButton(self.frame)
-        self.radioButton.setGeometry(QtCore.QRect(220, 10, 141, 41))
+        self.radioButton.setGeometry(QtCore.QRect(220, 10, 200, 41))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -125,7 +125,7 @@ class AE_02_Ui_MainWindow(object):
         self.frame_2.setLineWidth(2)
         self.frame_2.setObjectName("frame_2")
         self.lineEdit_15 = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit_15.setGeometry(QtCore.QRect(150, 30, 151, 41))
+        self.lineEdit_15.setGeometry(QtCore.QRect(150, 30, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -167,7 +167,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_11.setFlat(False)
         self.pushButton_11.setObjectName("pushButton_11")
         self.lineEdit_16 = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit_16.setGeometry(QtCore.QRect(460, 30, 151, 41))
+        self.lineEdit_16.setGeometry(QtCore.QRect(460, 30, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -358,7 +358,7 @@ class AE_02_Ui_MainWindow(object):
         self.radioButton_4.setFont(font)
         self.radioButton_4.setObjectName("radioButton_4")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(730, 10, 211, 41))
+        self.label_11.setGeometry(QtCore.QRect(700, 10, 311, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -537,7 +537,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_8.setText(_translate("MainWindow", "Search"))
         self.label_48.setText(_translate("MainWindow", " ")) #message ..................
-        self.radioButton.setText(_translate("MainWindow", "By Date Range"))
+        self.radioButton.setText(_translate("MainWindow", "By Date Range [Tensile Test] "))
         self.pushButton_9.setText(_translate("MainWindow", "From Date :"))
         self.pushButton_11.setText(_translate("MainWindow", "To Date.:"))
         self.label_14.setText(_translate("MainWindow", "Party Name:"))
@@ -553,34 +553,11 @@ class AE_02_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "Test ID:"))
         self.label_21.setText(_translate("MainWindow", "Party Name:"))
         self.radioButton_4.setText(_translate("MainWindow", "By Test ID / Serial No :"))
-        self.label_11.setText(_translate("MainWindow", "[ Tensile Test ]"))
+        self.label_11.setText(_translate("MainWindow", "Double Click on record to see detail report"))
         self.checkBox.setText(_translate("MainWindow", "Select All"))
+        self.checkBox.hide()
         self.pushButton_10.setText(_translate("MainWindow", "Other Reports"))
-#         item = self.tableWidget.verticalHeaderItem(0)
-#         item.setText(_translate("MainWindow", "1"))
-#         item = self.tableWidget.horizontalHeaderItem(0)
-#         item.setText(_translate("MainWindow", "Test ID."))
-#         item = self.tableWidget.horizontalHeaderItem(1)
-#         item.setText(_translate("MainWindow", "Party Name"))
-#         item = self.tableWidget.horizontalHeaderItem(2)
-#         item.setText(_translate("MainWindow", "Batch ID."))
-#         item = self.tableWidget.horizontalHeaderItem(3)
-#         item.setText(_translate("MainWindow", "Spec.Name"))
-#         item = self.tableWidget.horizontalHeaderItem(4)
-#         item.setText(_translate("MainWindow", "Comments"))
-#         __sortingEnabled = self.tableWidget.isSortingEnabled()
-#         self.tableWidget.setSortingEnabled(False)
-#         item = self.tableWidget.item(0, 0)
-#         item.setText(_translate("MainWindow", "120"))
-#         item = self.tableWidget.item(0, 1)
-#         item.setText(_translate("MainWindow", "MRF"))
-#         item = self.tableWidget.item(0, 2)
-#         item.setText(_translate("MainWindow", "B0012"))
-#         item = self.tableWidget.item(0, 3)
-#         item.setText(_translate("MainWindow", "Rubber01"))
-#         item = self.tableWidget.item(0, 4)
-#         item.setText(_translate("MainWindow", "Tensile test"))
-#         self.tableWidget.setSortingEnabled(__sortingEnabled)
+
         
         #### Default setting ######
         self.calendarWidget.hide()
@@ -622,9 +599,15 @@ class AE_02_Ui_MainWindow(object):
         
         self.pushButton_8.clicked.connect(self.list_tests)
         
+        self.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
+        
         
         
         self.load_party_names_1()
+        self.load_party_names_2()
+        
+        self.load_batchids_2()
+        
         self.list_tests()
         
         
@@ -715,6 +698,17 @@ class AE_02_Ui_MainWindow(object):
             self.comboBox.setItemText(self.i,str(x[0]))           
             self.i=self.i+1
         connection.close()
+    
+    def load_party_names_2(self):
+        self.i=0
+        self.comboBox_4.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile'") 
+        for x in results:            
+            self.comboBox_4.addItem("")
+            self.comboBox_4.setItemText(self.i,str(x[0]))           
+            self.i=self.i+1
+        connection.close()
         
     def load_batchids_1(self):
         self.j=0
@@ -726,6 +720,18 @@ class AE_02_Ui_MainWindow(object):
         for x in results:            
             self.comboBox_2.addItem("")
             self.comboBox_2.setItemText(self.j,str(x[0]))           
+            self.j=self.j+1
+        connection.close()
+        
+    def load_batchids_2(self):
+        self.j=0
+        self.comboBox_6.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'")
+          
+        for x in results:            
+            self.comboBox_6.addItem("")
+            self.comboBox_6.setItemText(self.j,str(x[0]))           
             self.j=self.j+1
         connection.close()
         
@@ -772,9 +778,27 @@ class AE_02_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Party Name','Spec.Counts','Batch ID.','Spec.Name','Comments'])
         
          
-        connection = sqlite3.connect("tyr.db")  
-        results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
-       
+        connection = sqlite3.connect("tyr.db")
+        if(self.radioButton.isChecked()):
+                print("date Range -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+        elif(self.radioButton_2.isChecked()):
+                print("by party name -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' ")                        
+        elif(self.radioButton_3.isChecked()):
+                print("by batch id -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' ")                        
+        elif(self.radioButton_4.isChecked()):
+                if(self.lineEdit_17.text() != ""):
+                    print("by Test Id / Serial No -select")
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' ")                        
+                else:
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile'")                        
+            
+        else:
+                print("by else part-select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+      
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -782,7 +806,7 @@ class AE_02_Ui_MainWindow(object):
                     #print("data-column_number :"+str(column_number))
                     item = QtWidgets.QTableWidgetItem()
                     item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-                    item.setCheckState(QtCore.Qt.Checked)
+                    #item.setCheckState(QtCore.Qt.Unchecked)
                     item.setText(str(data))
                     self.tableWidget.setItem(row_number,column_number,item)
                     #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
@@ -798,9 +822,9 @@ class AE_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")          
         with connection:        
                 cursor = connection.cursor()
-                cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"',SR_UNIT_TYPE='"+str(self.unit_type)+"'")
+                #cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"'")
                 cursor.execute("DELETE FROM TEST_IDS")
-                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and SPECIMEN_NAME='COF_SPECIMEN'") 
+                cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile'") 
         connection.commit();
         connection.close()
         
@@ -809,14 +833,35 @@ class AE_02_Ui_MainWindow(object):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1            
-            self.tableWidget.removeRow(i)        
+            self.tableWidget.removeRow(i)
+    
+    
+    def open_doubleClick_report(self):
+        row = self.tableWidget.currentRow()
+        if(row != -1 ):
+            self.test_id=(self.tableWidget.item(row, 0).text() )
+            print(" test_id :"+str(self.test_id))        
+        
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+                  cursor = connection.cursor()                                        
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = '"+str(self.test_id)+"'")              
+            connection.commit();
+            connection.close() 
+        
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_03_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()   
+       
+                
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = AE_02_Ui_MainWindow()
+    ui = AE_02_SP_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

@@ -139,10 +139,7 @@ class AE_02_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("background-color: rgb(91, 113, 127);\n"
-"color: rgb(255, 255, 255);"
-    "border-color: rgb(0, 0, 0);\n"
-"border-style:outset;\n"
-"border-width:4px;")
+"color: rgb(255, 255, 255);" )
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame_2)
         self.pushButton_2.setGeometry(QtCore.QRect(350, 30, 241, 51))

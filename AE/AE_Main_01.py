@@ -2,6 +2,7 @@
 
 from AE_Admin_02 import AE_02_Ui_MainWindow
 from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
+from AE_02_SP_Tensile_01 import AE_02_SP_Ui_MainWindow
 
 from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
 from TY_05_SPECIMEN import TY_05_Ui_MainWindow
@@ -374,7 +375,7 @@ class AE_01_Ui_MainWindow(object):
         
         if(str(self.test_type_id) == "1"):
             self.save_test_tensile()
-            self.open_report_window()
+            self.AE_REPORTS_TENSILE_01()
         elif(str(self.test_type_id) == "2"):
             self.save_test_compress()
             self.open_report_window()
@@ -539,6 +540,12 @@ class AE_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()    
     
+    
+    def AE_REPORTS_TENSILE_01(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_02_SP_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show() 
     
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
