@@ -785,10 +785,11 @@ class AE_02_SP_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 print("date Range -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                
         elif(self.radioButton_2.isChecked()):
                 print("by party name -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' ")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox_4.currentText())+"' ")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' ")                        
@@ -830,9 +831,9 @@ class AE_02_SP_Ui_MainWindow(object):
                 #cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"'")
                 cursor.execute("DELETE FROM TEST_IDS")
                 if(self.radioButton.isChecked()):
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
                 elif(self.radioButton_2.isChecked()): # party Name
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' ") 
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox_4.currentText())+"' ") 
                 elif(self.radioButton_3.isChecked()): #batch id
                                   cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' ") 
                 elif(self.radioButton_4.isChecked()): #test id
@@ -842,7 +843,7 @@ class AE_02_SP_Ui_MainWindow(object):
                                   cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  and B.TEST_ID='"+str(self.comboBox_3.currentText())+"'") 
                        
                 else:
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
                
                     
         connection.commit();
@@ -885,13 +886,13 @@ class AE_02_SP_Ui_MainWindow(object):
                             cursor = connection.cursor()
                             cursor.execute("DELETE from GRAPH_MST WHERE GRAPH_ID in (SELECT GRAPH_ID FROM  CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS))") 
                             cursor.execute("DELETE FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")  
-                            cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")
-                            print(" Few Test Deleted.")
+                            cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)")                           
+                            self.label_48.setText("Record(s) Deleted Successfully.")                   
+                            self.label_48.show()
                            
                     connection.commit();                    
                     connection.close()                    
-                    self.label_48.setText("Record Deleted Successfully.")                   
-                    self.label_48.show()
+                    
                     
         
     
