@@ -49,7 +49,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 30, 1321, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1307, 709))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -77,7 +77,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignCenter)
         self.label_10.setObjectName("label_10")
         self.label_47 = QtWidgets.QLabel(self.frame)
-        self.label_47.setGeometry(QtCore.QRect(1170, 10, 141, 41))
+        self.label_47.setGeometry(QtCore.QRect(1165, 10, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -89,7 +89,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1170, 70, 131, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(1165, 70, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -105,7 +105,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.frame_3 = QtWidgets.QFrame(self.frame)
-        self.frame_3.setGeometry(QtCore.QRect(10, 210, 1301, 471))
+        self.frame_3.setGeometry(QtCore.QRect(10, 210, 1281, 471))
         self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_3.setLineWidth(1)
@@ -244,7 +244,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.buttongroup_2.addButton(self.radioButton_4, 2)
         
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
-        self.tableWidget.setGeometry(QtCore.QRect(20, 380, 1261, 81))
+        self.tableWidget.setGeometry(QtCore.QRect(20, 380, 1241, 81))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(10)
         self.tableWidget.setRowCount(1)
@@ -378,7 +378,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
 "background-color: rgb(0, 0, 0);")
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_41 = QtWidgets.QLabel(self.frame_3)
-        self.label_41.setGeometry(QtCore.QRect(1230, 90, 41, 31))
+        self.label_41.setGeometry(QtCore.QRect(1200, 90, 41, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -394,7 +394,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
 "background-color: rgb(0, 0, 0);")
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.label_42 = QtWidgets.QLabel(self.frame_3)
-        self.label_42.setGeometry(QtCore.QRect(1230, 180, 51, 31))
+        self.label_42.setGeometry(QtCore.QRect(1200, 180, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -421,7 +421,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
 "background-color: rgb(0, 0, 0);")
         self.lcdNumber_3.setObjectName("lcdNumber_3")
         self.label_44 = QtWidgets.QLabel(self.frame_3)
-        self.label_44.setGeometry(QtCore.QRect(1220, 260, 61, 31))
+        self.label_44.setGeometry(QtCore.QRect(1200, 260, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -432,7 +432,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_44.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_44.setObjectName("label_44")
         self.comboBox_4 = QtWidgets.QComboBox(self.frame_3)
-        self.comboBox_4.setGeometry(QtCore.QRect(1050, 330, 231, 31))
+        self.comboBox_4.setGeometry(QtCore.QRect(1050, 330, 201, 31))
         self.comboBox_4.setObjectName("comboBox_4")
         self.comboBox_4.addItem("")
         self.comboBox_4.addItem("")
@@ -458,7 +458,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.graphicsView.setObjectName("graphicsView")
         self.gridLayout.addWidget(self.graphicsView, 1, 0, 1, 1)
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(1170, 140, 131, 41))
+        self.pushButton_8.setGeometry(QtCore.QRect(1165, 140, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1313,7 +1313,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                 self.timer3.timeout.connect(self.loadcell_encoder_status)
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
-                                self.pushButton_6.setDisabled(True)
+                                #self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
                                 
@@ -1594,6 +1594,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
            cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_2='"+str(self.x_axis_val)+"', GRAPH_SCALE_CELL_1='"+str(self.y_axis_val)+"'")
            print("Graph Scale set Ok !!")           
            self.frame_3.hide()
+           self.pushButton_8.setEnabled(True)
+           self.pushButton_9.setEnabled(True)
         connection.commit();
         connection.close()
         
@@ -1699,6 +1701,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
                     self.pushButton_11.setDisabled(True)
                     self.pushButton_7.setEnabled(True)
+                    self.pushButton_6.setDisabled(True)
                     #print("lcd printing .......")
                     if(str(self.sc_new.save_data_flg) =="Yes"):
                             self.reset()
@@ -1715,6 +1718,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                             self.pushButton_15.setEnabled(True)
                             self.pushButton_16.setEnabled(True)
                             self.pushButton_6.setEnabled(True)
+                            
         else:
                            self.lcdNumber.setProperty("value", 0.0)     #load
                            self.lcdNumber_2.setProperty("value",0.0)  #length
@@ -1960,6 +1964,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     
     def open_email_report(self):
         #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_tensile()
         print(" test_id :"+str(self.test_id))  
         connection = sqlite3.connect("tyr.db")        
         with connection:        
@@ -2839,7 +2845,7 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             elif(self.graph_type=="Stress Vs Strain"):
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                                     results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                     results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
@@ -2854,10 +2860,10 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
@@ -2866,14 +2872,13 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT (X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    print("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                                     
                     else:    
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     
                 
@@ -2888,7 +2893,7 @@ class PlotCanvas(FigureCanvas):
             if(self.graph_type=="Stress Vs Strain"):
                     connection = sqlite3.connect("tyr.db")
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                                     results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                     results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
@@ -2903,10 +2908,10 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
@@ -2915,14 +2920,13 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                     
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    print("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                         
                     else:    
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
                 
                     for x in results:
                             ax.set_xlim(0,float(x[0])*2)
