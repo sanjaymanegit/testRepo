@@ -195,6 +195,7 @@ class AE_02_SP_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox.setFont(font)
+        self.comboBox.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -216,6 +217,7 @@ class AE_02_SP_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
+        self.comboBox_2.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
         self.label_16 = QtWidgets.QLabel(self.frame_2)
         self.label_16.setGeometry(QtCore.QRect(380, 160, 91, 31))
@@ -234,6 +236,7 @@ class AE_02_SP_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_3.setFont(font)
+        self.comboBox_3.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_3.setObjectName("comboBox_3")
         self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_2.setGeometry(QtCore.QRect(80, 310, 141, 41))
@@ -266,6 +269,7 @@ class AE_02_SP_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_4.setFont(font)
+        self.comboBox_4.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_4.setObjectName("comboBox_4")
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_3.setGeometry(QtCore.QRect(80, 490, 121, 51))
@@ -341,6 +345,7 @@ class AE_02_SP_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_8.setFont(font)
+        self.comboBox_8.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_8.setObjectName("comboBox_8")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame_6)
         self.lineEdit_17.setGeometry(QtCore.QRect(120, 40, 111, 41))
@@ -548,8 +553,8 @@ class AE_02_SP_Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
         self.label_15.setText(_translate("MainWindow", "Batch.Id:"))
         self.label_16.setText(_translate("MainWindow", "Job Name:"))
-        self.radioButton_2.setText(_translate("MainWindow", "By Party Name "))
-        self.label_17.setText(_translate("MainWindow", "Party Name:"))
+        self.radioButton_2.setText(_translate("MainWindow", "By Tested By "))
+        self.label_17.setText(_translate("MainWindow", "Tested By:"))
         self.radioButton_3.setText(_translate("MainWindow", "By Batch Id."))
         self.label_19.setText(_translate("MainWindow", "Batch ID:"))
         self.label_20.setText(_translate("MainWindow", "Test ID:"))
@@ -707,7 +712,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.i=0
         self.comboBox_4.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile'") 
+        results=connection.execute("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='Tensile'") 
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))           
@@ -789,7 +794,7 @@ class AE_02_SP_Ui_MainWindow(object):
                 
         elif(self.radioButton_2.isChecked()):
                 print("by party name -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox_4.currentText())+"' ")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' ")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' ")                        
@@ -825,6 +830,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         self.label_48.setText("")                   
         self.label_48.show()
+        '''
         connection = sqlite3.connect("tyr.db")          
         with connection:        
                 cursor = connection.cursor()
@@ -833,7 +839,7 @@ class AE_02_SP_Ui_MainWindow(object):
                 if(self.radioButton.isChecked()):
                                   cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
                 elif(self.radioButton_2.isChecked()): # party Name
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox_4.currentText())+"' ") 
+                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' ") 
                 elif(self.radioButton_3.isChecked()): #batch id
                                   cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' ") 
                 elif(self.radioButton_4.isChecked()): #test id
@@ -848,7 +854,7 @@ class AE_02_SP_Ui_MainWindow(object):
                     
         connection.commit();
         connection.close()
-        
+        '''
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -876,6 +882,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.window.show()
     
     def delete_tests(self):
+        self.del_uncheked()
         close = QMessageBox()
         close.setText("Confirm Deleteing TEST ID.")
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)

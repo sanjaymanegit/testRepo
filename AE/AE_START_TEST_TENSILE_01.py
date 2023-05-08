@@ -1250,6 +1250,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                               cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                              cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                         connection.commit();
                         connection.close()
        
@@ -2073,13 +2074,15 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
+        self.tested_by=""
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
               self.test_id=str(x[2])
+              self.tested_by=str(x[3])
         connection.close()
         data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Force at Peak \n ('+str(self.last_load_unit)+')' ,'E@Peak \n ('+str(self.last_disp_unit)+')','% E@Peak \n','E@Break \n ('+str(self.last_disp_unit)+')','%E@Break \n']]
         
@@ -2147,7 +2150,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.login_user_name),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -2782,19 +2785,21 @@ class PlotCanvas(FigureCanvas):
              
         connection.close()
         
-        ### Univarsal change for  Graphs #####################
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-        for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
-        connection.close()
+#         ### Univarsal change for  Graphs #####################
+#         connection = sqlite3.connect("tyr.db")
+#         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+#         for x in results:
+#              ax.set_xlim(0,int(x[0]))
+#              ax.set_ylim(0,int(x[1]))          
+#         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
-              self.last_disp_unit=str(x[1])  
+              self.last_disp_unit=str(x[1])
+              ax.set_xlim(0,int(x[2]))
+              ax.set_ylim(0,int(x[3]))  
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
