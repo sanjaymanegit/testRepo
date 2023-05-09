@@ -296,13 +296,16 @@ class AE_02_SP_Ui_MainWindow(object):
         self.label_19.setStyleSheet("")
         self.label_19.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_19.setObjectName("label_19")
+        
         self.comboBox_6 = QtWidgets.QComboBox(self.frame_5)
         self.comboBox_6.setGeometry(QtCore.QRect(120, 30, 211, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_6.setFont(font)
+        self.comboBox_6.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_6.setObjectName("comboBox_6")
+        
         self.frame_6 = QtWidgets.QFrame(self.frame)
         self.frame_6.setGeometry(QtCore.QRect(420, 360, 261, 121))
         self.frame_6.setStyleSheet("background-color: rgb(255, 238, 244);")
@@ -348,6 +351,9 @@ class AE_02_SP_Ui_MainWindow(object):
         self.comboBox_8.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_8.setObjectName("comboBox_8")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame_6)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_17)
+        self.lineEdit_17.setValidator(input_validator)
         self.lineEdit_17.setGeometry(QtCore.QRect(120, 40, 111, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -701,7 +707,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile'") 
+        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))           
@@ -712,7 +718,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.i=0
         self.comboBox_4.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='Tensile'") 
+        results=connection.execute("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC") 
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))           
@@ -723,7 +729,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.j=0
         self.comboBox_2.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")
         #print("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'") 
         
         for x in results:            
@@ -736,7 +742,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.j=0
         self.comboBox_6.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC")
           
         for x in results:            
             self.comboBox_6.addItem("")
@@ -748,7 +754,7 @@ class AE_02_SP_Ui_MainWindow(object):
         self.k=0
         self.comboBox_3.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"'")         
+        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC")         
         #print("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"'")         
         for x in results:            
             self.comboBox_3.addItem("")
@@ -790,20 +796,20 @@ class AE_02_SP_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 print("date Range -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
                 print("by party name -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' ")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' ")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' order by TEST_ID DESC ")                        
         elif(self.radioButton_4.isChecked()):
                 if(self.lineEdit_17.text() != ""):
                     print("by Test Id / Serial No -select")
-                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' ")                        
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' order by TEST_ID DESC")                        
                 else:
-                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile'")                        
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='Tensile' order by TEST_ID DESC")                        
             
         else:
                 print("by else part-select")

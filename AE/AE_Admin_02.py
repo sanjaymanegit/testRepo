@@ -376,6 +376,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_new_window11)
         self.pushButton_9.clicked.connect(self.open_new_window12)
         self.pushButton_14.clicked.connect(self.break_app)
+        self.pushButton_7.clicked.connect(self.reset_pwd)
         
         
         self.frame_2.hide()
@@ -405,7 +406,8 @@ class AE_02_Ui_MainWindow(object):
                   self.frame_2.show()  
             else :
                    self.frame_2.hide()
-                   self.go_ahead="No"               
+                   self.go_ahead="No"
+                   self.label_21.setText("Invalid PWd.")
             connection.close()
         else:
            self.frame_2.hide()
@@ -555,6 +557,11 @@ class AE_02_Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.label_21.setText("Login By : "+str(self.login_user_name))
+    
+    def reset_pwd(self):
+        self.lineEdit.setText("")
+        self.label_21.setText("Login By : "+str(self.login_user_name))
+        self.frame_2.hide()
 
 
 if __name__ == "__main__":

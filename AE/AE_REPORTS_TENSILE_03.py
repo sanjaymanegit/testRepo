@@ -1122,6 +1122,7 @@ class AE_03_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
         self.pushButton_9.setDisabled(True)
         self.report_fun_1()
+        
     
     
     def report_fun_1(self):
@@ -1152,7 +1153,8 @@ class AE_03_Ui_MainWindow(object):
         self.show_graph()
         self.pushButton_11.setDisabled(True)
         
-        ## Changed load_data function also
+        ## Read Only Fields 
+        self.readonly_fields()
         
         
     
@@ -1181,8 +1183,7 @@ class AE_03_Ui_MainWindow(object):
         self.load_data()
         self.pushButton_8.setEnabled(True)
         self.pushButton_6.setEnabled(True)
-        self.frame_3.hide()
-        
+        self.frame_3.hide()       
         print("Timer3 status: "+str(self.timer3.isActive()))
         if(self.timer3.isActive()): 
                         self.timer3.stop()
