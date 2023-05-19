@@ -1,15 +1,15 @@
 ./reports/Report_of_test_0001.pdf
 ./reports/Report_of_test_0004.pdf
 ./reports/Report_of_test_0005.pdf
-./reports/Report_of_test_0007.pdf
 ./reports/Report_of_test_0009.pdf
 ./reports/Report_of_test_0012.pdf
-./reports/Report_of_test_0013.pdf
 ./reports/Report_of_test_0014.pdf
-./reports/Report_of_test_0019.pdf
-./reports/Report_of_test_0020.pdf
+./reports/Report_of_test_0025.pdf
+./reports/Report_of_test_0084.pdf
 ./reports/Report_of_test_0087.pdf
 ./reports/Report_of_test_0088.pdf
+./reports/Report_of_test_0092.pdf
+./reports/Report_of_test_0102.pdf
 ./reports/Report_of_test_0209.pdf
 ./reports/Report_of_test_0227.pdf
 ./reports/Report_of_test_0235.pdf
@@ -33,7 +33,6 @@
 ./reports/Report_of_test_181.pdf
 ./reports/Report_of_test_182.pdf
 ./reports/Report_of_test_183.pdf
-./reports/Report_of_test_18.pdf
 ./reports/Report_of_test_190.pdf
 ./reports/Report_of_test_19.pdf
 ./reports/Report_of_test_209.pdf
@@ -47,7 +46,9 @@
 ./reports/Report_of_test_251.pdf
 ./reports/Report_of_test_253.pdf
 ./reports/Report_of_test_259.pdf
+./reports/Report_of_test_25.pdf
 ./reports/Report_of_test_267.pdf
+./reports/Report_of_test_26.pdf
 ./reports/Report_of_test_270.pdf
 ./reports/Report_of_test_284.pdf
 ./reports/Report_of_test_285.pdf
@@ -60,5 +61,6 @@
 ./reports/Report_of_test_51.pdf
 ./reports/Report_of_test_53.pdf
 ./reports/Report_of_test_5.pdf
+./reports/Report_of_test_82.pdf
 ./reports/Report_of_test_88.pdf
 ./reports/Report_of_test_8.pdf

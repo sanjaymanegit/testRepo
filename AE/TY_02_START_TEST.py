@@ -1343,7 +1343,7 @@ class TY_02_Ui_MainWindow(object):
                 ### Update Flexural parameters
                 
             
-                print("test_type :"+str(self.test_type_for_flexural))
+                print("xxtest_type :"+str(self.test_type_for_flexural))
                 if(self.test_type_for_flexural == 'Flexural'):
                       self.test_method=""        
                       self.test_method=str(self.lineEdit_3_5.text())
@@ -1626,19 +1626,12 @@ class TY_02_Ui_MainWindow(object):
                   #self.kgCm2_toMPA=float(0.0980665)
                   cursor.execute("UPDATE CYCLES_MST SET STG_TENSILE_STRENGTH_MPA=round((STG_TENSILE_STRENGTH_KG_CM*0.0980665),2) WHERE GRAPH_ID IS NULL") #STG_TENSILE_STRENGTH
                 
-                  
-                  
-                  
-                  
                   cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                   
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                  
-        
-                  
-                                                          
+                                                         
             connection.commit();
             connection.close()
             #self.pushButton_3.setDisabled(True) ### save

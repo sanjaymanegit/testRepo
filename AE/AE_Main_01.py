@@ -4,6 +4,8 @@ from AE_Admin_02 import AE_02_Ui_MainWindow
 from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
 from AE_02_SP_Tensile_01 import AE_02_SP_Ui_MainWindow
 
+from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
+
 from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
 from TY_05_SPECIMEN import TY_05_Ui_MainWindow
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
@@ -337,7 +339,7 @@ class AE_01_Ui_MainWindow(object):
             self.open_AE_Tesnsile_01()
         elif(str(self.test_type_id) == "2"):
             self.save_test_compress()
-            self.open_new_window()
+            self.open_AE_Compress_02()
         elif(str(self.test_type_id) == "3"):
             self.save_test_tear()
             self.open_new_window()
@@ -527,6 +529,23 @@ class AE_01_Ui_MainWindow(object):
         connection.close()    
         
         
+    
+    
+    
+    
+    def open_AE_Tesnsile_01(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_START_TEST_TENSILE_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_AE_Compress_02(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_START_TEST_COMPR_02_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+        
     def open_new_window_FBST(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_26_Ui_MainWindow()
@@ -538,14 +557,7 @@ class AE_01_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_23_PEELOFF_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()    
-    
-    
-    def AE_REPORTS_TENSILE_01(self):                
-        self.window = QtWidgets.QMainWindow()
-        self.ui=AE_02_SP_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show() 
+        self.window.show()       
     
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()
@@ -598,17 +610,23 @@ class AE_01_Ui_MainWindow(object):
         
     #===== Reports ========================
     
+    
+    
+    
+    def AE_REPORTS_TENSILE_01(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_02_SP_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     def open_report_window(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()    
     
-    def open_AE_Tesnsile_01(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui=AE_START_TEST_TENSILE_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()  
+    
+        
        
 
     def open_report_window_qlss(self):                
