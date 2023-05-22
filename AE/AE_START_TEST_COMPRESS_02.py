@@ -1234,7 +1234,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
-        self.show_grid_data_tensile()
+        self.show_grid_data_compress()
         self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Comprassion ('+str(self.comboBox_3.currentText())+')','% Compression','Compressive Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
@@ -1327,7 +1327,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         
         self.pushButton_7.setDisabled(True)
         self.pushButton_11.setEnabled(True)
-        self.show_grid_data_tensile()
+        self.show_grid_data_compress()
         print("Data Loaded OK !!")
        
     
@@ -1390,7 +1390,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
                               cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD='"+str(int(self.lineEdit_17.text()))+"',MAX_LENGTH='"+str(int(self.lineEdit_18.text()))+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1475,7 +1475,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_tensile()
+        #self.show_grid_data_compress()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
@@ -2080,13 +2080,13 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         
         #self.load_data()
         print("Save completed")
-        self.show_grid_data_tensile()
+        self.show_grid_data_compress()
     
     def open_pdf(self):
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
         #self.pushButton_4_2.setEnabled(True)
         #self.pushButton_4_3.setEnabled(True)
-        self.create_pdf_tensile()        
+        self.create_pdf_compress()        
         os.system("xpdf ./reports/test_report.pdf")        
         #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
         product_id=self.get_usb_storage_id()
@@ -2124,7 +2124,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
     def open_email_report(self):
         #self.test_id=(self.tableWidget.item(row, 1).text() )
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
-        self.create_pdf_tensile()
+        self.create_pdf_compress()
         print(" test_id :"+str(self.test_id))  
         connection = sqlite3.connect("tyr.db")        
         with connection:        
@@ -2183,7 +2183,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                     connection.commit();
                     connection.close()
                     #self.load_data()
-                    self.show_grid_data_tensile()
+                    self.show_grid_data_compress()
         
     
     
@@ -2195,7 +2195,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)
             
-    def show_grid_data_tensile(self):
+    def show_grid_data_compress(self):
         self.delete_all_records()
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -2227,7 +2227,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()
         
-    def create_pdf_tensile(self):
+    def create_pdf_compress(self):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
@@ -2241,64 +2241,35 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
         connection.close()
-        data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Force at Peak \n ('+str(self.last_load_unit)+')' ,'E@Peak \n ('+str(self.last_disp_unit)+')','% E@Peak \n','E@Break \n ('+str(self.last_disp_unit)+')','%E@Break \n']]
         
+        
+        data2= [ ['Spec. \n No', 'CS Area \n ('+str(self.last_disp_unit)+'2)', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Compression \n ('+str(self.last_disp_unit)+')', 'Compressive Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)',' % Compression \n']]
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM*0.1),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", E_AT_BREAK_MM*0.1),printf(\"%.2f\", PRC_E_AT_BREAK)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.CS_AREA*0.1*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_BREAK_MM*0.1),printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.PRC_E_AT_BREAK) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
-                data.append(x)
-        connection.close()        
-        
-        
-        connection = sqlite3.connect("tyr.db")            
-        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(CS_AREA)),printf(\"%.2f\", avg(PEAK_LOAD_KG)),printf(\"%.2f\", avg(E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", avg(PRC_E_AT_PEAK)),printf(\"%.2f\", avg(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
-        for x in results:
-                data.append(x)
+                data2.append(x)
         connection.close()
-            
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(CS_AREA)),printf(\"%.2f\", max(PEAK_LOAD_KG)),printf(\"%.2f\", max(E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", max(PRC_E_AT_PEAK)),printf(\"%.2f\", max(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(A.TENSILE_STRENGTH)),printf(\"%.2f\", avg(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
-                data.append(x)
-        connection.close()
-            
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(CS_AREA)),printf(\"%.2f\", min(PEAK_LOAD_KG)),printf(\"%.2f\", min(E_AT_PEAK_LOAD_MM*0.1)),printf(\"%.2f\", min(PRC_E_AT_PEAK)),printf(\"%.2f\", min(E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
-        for x in results:
-                data.append(x)
+                data2.append(x)
         connection.close()
         
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(A.TENSILE_STRENGTH)),printf(\"%.2f\", max(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(A.TENSILE_STRENGTH)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
         
-           
+        
        
-        data2= [ ['Spec. \n No', 'TensileStrength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@100% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@200% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@300% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)']]
-        
-                  
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select CYCLE_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_100),printf(\"%.2f\", A.MODULUS_200) ,printf(\"%.2f\", A.MODULUS_300)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
-        for x in results:
-            data2.append(x)
-        connection.close()  
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select 'AVG' as SPECIMEN_NUM,printf(\"%.2f\", avg(A.TENSILE_STRENGTH)),printf(\"%.2f\", avg(A.MODULUS_100)),printf(\"%.2f\", avg(A.MODULUS_200)) ,printf(\"%.2f\", avg(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
-        for x in results:
-            data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select 'MAX' as SPECIMEN_NUM,printf(\"%.2f\", max(A.TENSILE_STRENGTH)),printf(\"%.2f\", max(A.MODULUS_100)),printf(\"%.2f\", max(A.MODULUS_200)) ,printf(\"%.2f\", max(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
-        for x in results:
-            data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select 'MIN' as SPECIMEN_NUM,printf(\"%.2f\", min(A.TENSILE_STRENGTH)),printf(\"%.2f\", min(A.MODULUS_100)),printf(\"%.2f\", min(A.MODULUS_200)) ,printf(\"%.2f\", min(A.MODULUS_300))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
-        for x in results:
-            data2.append(x)
-        connection.close() 
-        
         
         y=300
         Elements=[]
@@ -2335,9 +2306,9 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         d.add(linea_firma)
        
         
-        f1=Table(data)
-        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
-        #
+#         f1=Table(data)
+#         f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+#         #
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
         f2=Table(data2)
@@ -2351,7 +2322,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f1,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))

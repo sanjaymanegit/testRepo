@@ -2,7 +2,7 @@
 
 from AE_Admin_02 import AE_02_Ui_MainWindow
 from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
-from AE_02_SP_Tensile_01 import AE_02_SP_Ui_MainWindow
+from AE_02_LIST_REPORT import AE_02_LIST_Ui_MainWindow
 
 from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
 
@@ -380,7 +380,7 @@ class AE_01_Ui_MainWindow(object):
             self.AE_REPORTS_TENSILE_01()
         elif(str(self.test_type_id) == "2"):
             self.save_test_compress()
-            self.open_report_window()
+            self.AE_REPORTS_TENSILE_01()
         elif(str(self.test_type_id) == "3"):
             self.save_test_tear()
             self.open_report_window()
@@ -615,7 +615,7 @@ class AE_01_Ui_MainWindow(object):
     
     def AE_REPORTS_TENSILE_01(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=AE_02_SP_Ui_MainWindow()
+        self.ui=AE_02_LIST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
