@@ -126,6 +126,7 @@ class AE_03_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_7.setFlat(False)
         self.pushButton_7.setObjectName("pushButton_7")
+        
         self.pushButton_11 = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_11.setGeometry(QtCore.QRect(670, 20, 101, 41))
         font = QtGui.QFont()
@@ -142,6 +143,7 @@ class AE_03_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_11.setFlat(False)
         self.pushButton_11.setObjectName("pushButton_11")
+        
         self.pushButton_12 = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_12.setGeometry(QtCore.QRect(670, 140, 101, 41))
         font = QtGui.QFont()

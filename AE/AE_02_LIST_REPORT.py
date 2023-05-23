@@ -621,6 +621,15 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
         self.pushButton_10.clicked.connect(self.delete_tests)
         
+        self.new_test_name=""
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR")         
+        for x in results:
+                self.new_test_name=str(x[0])
+                self.radioButton.setText("By Date Range ["+str(self.new_test_name)+" Test] ")
+        connection.close()
+        
+        
         
         
         
@@ -636,13 +645,6 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
-        self.new_test_name=""
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_NAME FROM GLOBAL_VAR")         
-        for x in results:
-                self.new_test_name=str(x[0])
-                self.radioButton.setText("By Date Range ["+str(self.new_test_name)+" Test] ")
-        connection.close()
         
         
     def device_date(self):     
@@ -720,7 +722,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC") 
+        results=connection.execute("SELECT DISTINCT PARTY_NAME FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))           
@@ -731,7 +733,9 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.i=0
         self.comboBox_4.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC") 
+        results=connection.execute("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")
+        print("SELECT DISTINCT TESTED_BY FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC") 
+       
         for x in results:            
             self.comboBox_4.addItem("")
             self.comboBox_4.setItemText(self.i,str(x[0]))           
@@ -742,7 +746,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.j=0
         self.comboBox_2.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' and PARTY_NAME='"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")
         #print("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'") 
         
         for x in results:            
@@ -755,7 +759,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.j=0
         self.comboBox_6.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' order by TEST_ID DESC")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")
           
         for x in results:            
             self.comboBox_6.addItem("")
@@ -767,7 +771,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.k=0
         self.comboBox_3.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC")         
+        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC")         
         #print("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"'")         
         for x in results:            
             self.comboBox_3.addItem("")
@@ -849,31 +853,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         self.label_48.setText("")                   
         self.label_48.show()
-        '''
-        connection = sqlite3.connect("tyr.db")          
-        with connection:        
-                cursor = connection.cursor()
-                #cursor.execute("UPDATE GLOBAL_VAR SET SR_FROM_DT='"+str(self.from_dt)+"', SR_TO_DT='"+str(self.to_dt)+"', SR_PARTY_NAME='"+str(self.party_name)+"',SR_SPECIMENT_NAME='"+str(self.specimen_name)+"'")
-                cursor.execute("DELETE FROM TEST_IDS")
-                if(self.radioButton.isChecked()):
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
-                elif(self.radioButton_2.isChecked()): # party Name
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' ") 
-                elif(self.radioButton_3.isChecked()): #batch id
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' ") 
-                elif(self.radioButton_4.isChecked()): #test id
-                             if(self.lineEdit_17.text() != ""):
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  and B.TEST_ID='"+str(self.comboBox_3.currentText())+"'") 
-                             else:
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where TEST_TYPE='Tensile' and  and B.TEST_ID='"+str(self.comboBox_3.currentText())+"'") 
-                       
-                else:
-                                  cursor.execute("INSERT INTO TEST_IDS SELECT B.TEST_ID,B.TEST_TYPE  FROM TEST_MST B  where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and TEST_TYPE='Tensile' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'") 
-               
-                    
-        connection.commit();
-        connection.close()
-        '''
+       
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -933,7 +913,8 @@ class AE_02_LIST_Ui_MainWindow(object):
                             self.label_48.show()
                            
                     connection.commit();                    
-                    connection.close()                    
+                    connection.close()
+                    self.list_tests()
                     
                     
         

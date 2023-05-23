@@ -134,9 +134,8 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_11.setFont(font)
         self.pushButton_11.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.pushButton_11.setStyleSheet("border-radius:20px;\n"
-"color: rgb(0, 0, 0);\n"
-"background-color: rgb(148, 255, 166);\n"
+        self.pushButton_11.setStyleSheet("background-color: rgb(148, 255, 166);\n"
+"border-radius:20px;\n"
 "border-color: rgb(0, 0, 0);\n"
 "border-style:outset;\n"
 "border-width:4px;")
@@ -1103,7 +1102,7 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "Compression Test"))
+        self.label_10.setText(_translate("MainWindow", "Compression Report"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
@@ -1228,6 +1227,16 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
         self.tmperature=""
         self.test_type_for_flexural=""
         
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
         self.load_data()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
@@ -1306,7 +1315,7 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])                
@@ -1327,6 +1336,10 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
                  self.lineEdit_13.setText(str(x[9]))
                  self.comboBox_2.setCurrentText(str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
+                 
+                 self.lineEdit_17.setText(str(x[12]))
+                 self.lineEdit_18.setText(str(x[13]))
+                 
                  
         connection.close()
         self.onchage_combo()
