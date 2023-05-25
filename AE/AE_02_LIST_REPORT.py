@@ -1,5 +1,7 @@
 from AE_REPORTS_TENSILE_03 import AE_03_Ui_MainWindow
 from AE_REPORTS_COMPRESS_02 import AE_REPORT_COMPR_02_Ui_MainWindow
+from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
+
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -879,6 +881,8 @@ class AE_02_LIST_Ui_MainWindow(object):
                             self.open_report_tensile()
             elif(str(self.new_test_name) == "Compress"):
                             self.open_report_compress()
+            elif(str(self.new_test_name) == "Tear"):               
+                            self.open_report_tear()
             else:
                             self.open_report_tensile()
             
@@ -895,6 +899,14 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.ui=AE_REPORT_COMPR_02_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+    
+    def open_report_tear(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_REPORT_TEAR_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    
     
     def delete_tests(self):
         self.del_uncheked()
