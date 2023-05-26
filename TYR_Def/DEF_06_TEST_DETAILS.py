@@ -291,7 +291,11 @@ class def_06_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7.setFont(font)
-        self.pushButton_7.setStyleSheet("background-color: rgb(132, 132, 132);")
+        self.pushButton_7.setStyleSheet("background-color: rgb(132, 132, 132);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_7.setObjectName("pushButton_7")
         
         
@@ -304,7 +308,11 @@ class def_06_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7_1.setFont(font)
-        self.pushButton_7_1.setStyleSheet("background-color: rgb(132, 132, 132);")
+        self.pushButton_7_1.setStyleSheet("background-color: rgb(132, 132, 132);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_7_1.setObjectName("pushButton_7_1")
         
         
