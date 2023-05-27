@@ -1307,7 +1307,7 @@ class TY_28_Ui_MainWindow(object):
         self.comboBox.setItemText(3, _translate("MainWindow", "New Item"))
         self.comboBox.setItemText(4, _translate("MainWindow", "New Item"))
         self.label_48.setText(_translate("MainWindow", "BatchID:"))
-        self.label_49.setText(_translate("MainWindow", "FOUNDATION BREAKING TEST"))
+        self.label_49.setText(_translate("MainWindow", "FABRIC BREAKING TEST"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
         self.pushButton_6.setText(_translate("MainWindow", "Remark"))
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
