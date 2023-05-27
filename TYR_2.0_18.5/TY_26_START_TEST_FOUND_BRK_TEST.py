@@ -1829,7 +1829,8 @@ class TY_26_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                             cursor = connection.cursor()                  
-                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'")
+                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
                             cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_3.text())+"',PARTY_NAME='"+str(self.label_51.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(self.label_12.text())+"'")
                         connection.commit();
                         connection.close()
@@ -1839,7 +1840,9 @@ class TY_26_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                           cursor = connection.cursor()                  
-                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(self.label_12.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'")
+                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
+                          
                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_3.text())+"','"+str(self.label_51.text())+"','FBST','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_9.text())+"')")
                         connection.commit();
                         connection.close()
@@ -2449,10 +2452,10 @@ class PlotCanvas_Auto(FigureCanvas):
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
              #self.max_length=float(x[3])
-             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+             #print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
         connection.close()
-        print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
+        #print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
         for x in results:
@@ -2502,7 +2505,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.flush()
             self.ser.write(b'*D\r')
             self.yline = self.ser.readline()
-            print("Check for Load Cel o/p:"+str(self.yline))
+            #print("Check for Load Cel o/p:"+str(self.yline))
             ystr3=str(self.yline)
             ystr3=ystr3[1:int(len(ystr3)-1)]
             ystr2=ystr3.replace("'\\r","")        
@@ -2512,7 +2515,7 @@ class PlotCanvas_Auto(FigureCanvas):
             ystr=ystr1.replace("\\r","")
             #print("replace1(\r):"+str(xstr))        
             self.ybuff=ystr.split("_")
-            print("Length of Array :"+str(len(self.ybuff)))
+            #print("Length of Array :"+str(len(self.ybuff)))
                 
          
             #==== Guage Length Setting before staret =====
@@ -2525,7 +2528,7 @@ class PlotCanvas_Auto(FigureCanvas):
             else:
                 self.command_str="*G000.0\r"
                 
-            print("Guage Length Command : "+str(self.command_str))
+            print("1) Guage Length Command : "+str(self.command_str))
             
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
@@ -2533,7 +2536,8 @@ class PlotCanvas_Auto(FigureCanvas):
             #===== Auto Reverse Time Off =====
             self.ser.flush()
             self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
-            print("Auto reve. Time off Command : "+str(self.command_str))
+            
+            print("2) Auto reve. Time off Command : "+str(self.command_str))
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
             #time.sleep(2)
@@ -2545,6 +2549,8 @@ class PlotCanvas_Auto(FigureCanvas):
             else:   
                 self.ser.write(b'*P0050_0010\r')
                 #print("started with default motor speed . Not gohead ")
+            
+            print("3) Motor Speed and Breaking Sence Command : "+str(self.command_str))
             #self.ser.write(b'*D\r\n')
                 
             #time.sleep(2)
@@ -2557,14 +2563,14 @@ class PlotCanvas_Auto(FigureCanvas):
             elif(self.test_type=="COF"):
                 print("COF")
             else:
-                print("len(self.ybuff) :"+str(len(self.ybuff)))
+                #print("len(self.ybuff) :"+str(len(self.ybuff)))
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
                         self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
+                        print("4) Start Command :*S2T000.0 000.0\r")
                     else:
                         self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
+                        print("4) Start Command:*S1T000.0 000.0\r")
                 else:
                     print("Error :Serial O/P is not getting ")
             
@@ -2759,6 +2765,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+             print("Test Motor Speed :"+str(self.input_speed_val)+"  MAx Motor Speed :"+str(self.speed_val))
         connection.close()
         
         if(self.input_speed_val != ""):
@@ -2769,7 +2776,7 @@ class PlotCanvas_Auto(FigureCanvas):
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
+                 #print("Morot Speed Perc and Breaking Sence Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")
                  #self.label_9_1.show()
