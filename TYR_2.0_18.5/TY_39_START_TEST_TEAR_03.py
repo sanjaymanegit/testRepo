@@ -1112,7 +1112,9 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_Tear()
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+        #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','cycle_id'])        
+        
         self.pushButton_9.setDisabled(True)
     def load_unit_onchange(self):
         self.i=0        
@@ -1247,7 +1249,7 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tear','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','DOT_TEAR_TEST','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2009,7 +2011,7 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 10).text())
+            self.cycle_id=str(self.tableWidget.item(row, 2).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -2042,15 +2044,14 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])        
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','cycle_id'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 400)
-        self.tableWidget.setColumnWidth(4, 50)
+        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),cycle_id FROM CYCLES_MST WHERE TEST_ID = '"+self.test_id+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2075,28 +2076,28 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Thickness \n ('+str(self.last_disp_unit)+')', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Tear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')']]
+        data2= [ ['Spec. \n No', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Tear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2856,40 +2857,40 @@ class PlotCanvas(FigureCanvas):
             if(self.graph_type=="Stress Vs Strain"):
                     connection = sqlite3.connect("tyr.db")
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                                     results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                     results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                     
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                                          
                     else:    
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='60'")
                 
                     for x in results:
                             ax.set_xlim(0,float(x[0])*2)

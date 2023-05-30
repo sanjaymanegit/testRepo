@@ -4,7 +4,7 @@ from AE_REPORTS_COMPRESS_02 import AE_REPORT_COMPR_02_Ui_MainWindow
 from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
 '''
 from TY_36_REPORTS_COMPRESS_02 import TY_36_REPORT_COMPR_02_Ui_MainWindow
-
+from TY_38_REPORTS_TEAR_03 import TY_38_REPORT_TEAR_Ui_MainWindow
 
 
 
@@ -124,7 +124,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.line_3.setObjectName("line_3")
         
         self.radioButton = QtWidgets.QRadioButton(self.frame)
-        self.radioButton.setGeometry(QtCore.QRect(220, 10, 250, 41))
+        self.radioButton.setGeometry(QtCore.QRect(220, 10, 350, 41))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -376,7 +376,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.lineEdit_17.setText("")
         self.lineEdit_17.setObjectName("lineEdit_17")
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
-        self.radioButton_4.setGeometry(QtCore.QRect(470, 310, 181, 51))
+        self.radioButton_4.setGeometry(QtCore.QRect(470, 310, 211, 51))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -886,8 +886,8 @@ class TY_35_LIST_Ui_MainWindow(object):
                             self.open_report_tensile()
             elif(str(self.new_test_name) == "COMPRESS_2"):
                             self.open_report_compress()
-            elif(str(self.new_test_name) == "Tear"):               
-                            self.open_report_tear()
+            elif(str(self.new_test_name) == "DOT_TEAR_TEST"):               
+                            self.open_report_dot_tear_test()
             else:
                             self.open_report_tensile()
             
@@ -900,13 +900,13 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.ui=TY_36_REPORT_COMPR_02_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    '''
-    def open_report_tear(self):
+    
+    def open_report_dot_tear_test(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui=AE_REPORT_TEAR_Ui_MainWindow()
+        self.ui=TY_38_REPORT_TEAR_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    
+    ''' 
      def open_report_tensile(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=AE_03_Ui_MainWindow()

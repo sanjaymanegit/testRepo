@@ -13,7 +13,8 @@ from TY_24_SP_REPORT_PEELOFF import TY_24_PEEL_OFF_Ui_MainWindow
 from TY_27_SP_REPORT_FOUND_BRK_TEST import TY_27_FBST_Ui_MainWindow
 from TY_30_SP_REPORT_PROOF import TY_30_Ui_MainWindow
 from TY_33_SP_REPORT_CYCLICK import TY_33_Ui_MainWindow
-from TY_35_LIST_REPORT import TY_35_LIST_Ui_MainWindow 
+from TY_35_LIST_REPORT import TY_35_LIST_Ui_MainWindow
+
 
 
 import sqlite3
@@ -128,7 +129,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(610, 140, 101, 31))
+        self.label_11.setGeometry(QtCore.QRect(610, 140, 201, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -391,11 +392,24 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_CYCLICK()
         elif(str(self.test_type_id) == "18"):
             self.save_test_COMPRESS_2()
+        elif(str(self.test_type_id) == "19"):
+            self.save_test_dot_tear_test()
         else:
             print("Invalid Test ID")
             
+    def save_test_dot_tear_test(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='DOT_TEAR_TEST'")                    
+        connection.commit();
+        connection.close()        
         
+        self.open_new_window_LIST_NEW()    
+    
+         
         
+    
     def save_test_tensile(self):                     
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -582,6 +596,12 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
     def open_new_window_LIST_NEW(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_35_LIST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window_DOT_TEAR_TEST(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_38_REPORT_TEAR_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
 
