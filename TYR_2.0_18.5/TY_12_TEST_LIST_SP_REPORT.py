@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_10_SPECIAL_REPORT import TY_10_Ui_MainWindow
 from TY_13_SP_REPORT_COF import TY_13_Ui_MainWindow
+from TY_36_REPORTS_COMPRESS_02 import TY_36_REPORT_COMPR_02_Ui_MainWindow
 
 import sqlite3
 import re
@@ -264,7 +265,10 @@ class TY_12_SP_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "6"):
             self.save_test_ilss()
         elif(str(self.test_type_id) == "7"):
-            self.save_test_qlss ()    
+            self.save_test_qlss ()
+        elif(str(self.test_type_id) == "18"):
+            self.save_test_qlss ()
+            save_test_COMPRESS_2
         else:
             print("Invalid Test ID")
             
@@ -333,6 +337,15 @@ class TY_12_SP_LIST_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         self.open_new_window_cof()
+    
+    def save_test_COMPRESS_2(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='COF'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_COMPRESS_2()
         
 
     
@@ -351,6 +364,12 @@ class TY_12_SP_LIST_Ui_MainWindow(object):
    
   
     def open_new_window_cof(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_13_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+   
+    def open_new_window_COMPRESS_2(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_13_Ui_MainWindow()
         self.ui.setupUi(self.window)           
