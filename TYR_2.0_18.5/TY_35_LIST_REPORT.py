@@ -5,6 +5,7 @@ from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
 '''
 from TY_36_REPORTS_COMPRESS_02 import TY_36_REPORT_COMPR_02_Ui_MainWindow
 from TY_38_REPORTS_TEAR_03 import TY_38_REPORT_TEAR_Ui_MainWindow
+from TY_41_REPORTS_WEBBING import TY_41_Ui_MainWindow
 
 
 
@@ -882,8 +883,8 @@ class TY_35_LIST_Ui_MainWindow(object):
             connection.commit();
             connection.close()            
             
-            if(str(self.new_test_name) == "Tensile"):
-                            self.open_report_tensile()
+            if(str(self.new_test_name) == "Webbing"):
+                            self.open_report_webbing()
             elif(str(self.new_test_name) == "COMPRESS_2"):
                             self.open_report_compress()
             elif(str(self.new_test_name) == "DOT_TEAR_TEST"):               
@@ -906,13 +907,13 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.ui=TY_38_REPORT_TEAR_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    ''' 
-     def open_report_tensile(self):
+    
+    def open_report_webbing(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui=AE_03_Ui_MainWindow()
+        self.ui=TY_41_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-    '''
+    
     
     
     def delete_tests(self):
