@@ -15,6 +15,7 @@ from TY_32_START_TEST_CYCLICK import TY_32_Ui_MainWindow
 from TY_37_START_TEST_COMPRESS_02 import TY_37_Ui_MainWindow
 from TY_39_START_TEST_TEAR_03 import TY_39_START_TEST_TEAR_Ui_MainWindow
 from TY_40_START_TEST_WEBBING import TY_40_START_TEST_WEBBING_Ui_MainWindow
+from TY_43_START_TEST_SHEAR_STRENGTH import TY_43_START_TEST_SHEAR_Ui_MainWindow
 
 import sqlite3
 import re
@@ -401,12 +402,22 @@ class TY_12_LIST_Ui_MainWindow(object):
             self.save_test_compress_2()
         elif(str(self.test_type_id) == "19"):    
             self.save_test_dot_tear_test()
+        elif(str(self.test_type_id) == "21"):    
+            self.save_shear_strength_test()
         elif(str(self.test_type_id) == "22"):    
             self.save_test_webbing()
         else:
             print("Invalid Test ID"+str(self.test_type_id))
             
-        
+    def save_shear_strength_test(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='Shear Strength'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_shear_strength()    
+    
     def save_test_webbing(self):                     
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -551,7 +562,13 @@ class TY_12_LIST_Ui_MainWindow(object):
         
 
 
- 
+   
+    def open_new_window_shear_strength(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_43_START_TEST_SHEAR_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()    
+    
         
     def open_new_window_FBST(self):                
         self.window = QtWidgets.QMainWindow()
