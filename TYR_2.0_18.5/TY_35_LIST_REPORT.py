@@ -7,6 +7,7 @@ from TY_36_REPORTS_COMPRESS_02 import TY_36_REPORT_COMPR_02_Ui_MainWindow
 from TY_38_REPORTS_TEAR_03 import TY_38_REPORT_TEAR_Ui_MainWindow
 from TY_41_REPORTS_WEBBING import TY_41_Ui_MainWindow
 from TY_42_REPORTS_SHEAR_STRENGTH import TY_42_Ui_MainWindow
+from TY_44_REPORTS_PEEL_STRENGTH import TY_44_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -890,7 +891,9 @@ class TY_35_LIST_Ui_MainWindow(object):
             elif(str(self.new_test_name) == "DOT_TEAR_TEST"):               
                             self.open_report_dot_tear_test()
             elif(str(self.new_test_name) == "Shear Strength"):               
-                            self.open_report_shear_strength()                            
+                            self.open_report_shear_strength()
+            elif(str(self.new_test_name) == "Peel Strength"):               
+                            self.open_report_peel_strength() 
             else:
                             self.open_report_tensile()
             
@@ -919,6 +922,12 @@ class TY_35_LIST_Ui_MainWindow(object):
     def open_report_shear_strength(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_42_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_report_peel_strength(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_44_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
