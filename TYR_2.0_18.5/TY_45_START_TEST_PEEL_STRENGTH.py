@@ -819,11 +819,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.comboBox_2 = QtWidgets.QComboBox(self.frame)
         self.comboBox_2.setGeometry(QtCore.QRect(670, 100, 61, 31))
         self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")       
         self.label_30 = QtWidgets.QLabel(self.frame)
         self.label_30.setGeometry(QtCore.QRect(510, 150, 141, 31))
         font = QtGui.QFont()
@@ -839,8 +835,8 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.comboBox_3.setGeometry(QtCore.QRect(670, 150, 61, 31))
         self.comboBox_3.setObjectName("comboBox_3")
         self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
+#         self.comboBox_3.addItem("")
+#         self.comboBox_3.addItem("")
         self.line_7 = QtWidgets.QFrame(self.frame)
         self.line_7.setGeometry(QtCore.QRect(1140, 0, 20, 201))
         self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -1064,15 +1060,15 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.label_27.setText(_translate("MainWindow", "CS.Area:"))
         self.label_28.setText(_translate("MainWindow", "(mm2)"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "N"))
+#         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
+#         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
+#         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
+#         self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
-        self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
+#         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
+#         self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
@@ -1841,7 +1837,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
             with connection:                
                   cursor = connection.cursor()              
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_7.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
                  
                   if( str(self.comboBox_2.currentText()) =="Lb"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
@@ -1879,11 +1875,13 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
                   
                   
-                  
+                  #### We are Calculating PEEL Strength here are storing in the STG_TENSILE_STRENGTH 
                   if( str(self.comboBox_2.currentText()) =="MPa"):
-                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
+                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(COF_AVG_FORCE as real)") #PEEL Strength                           
                   else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(COF_AVG_FORCE as real)/IFNULL(cast(NEW_TEST_WIDTH as real),1)))") #PEEL Strength
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(COF_AVG_FORCE  as real)*0.2248089431/IFNULL(cast(NEW_TEST_WIDTH as real)*0.0393701,1)))") #PEEL Strength LB inch
+                          
                   
                   
                   if( str(self.comboBox_3.currentText()) =="Cm"):
@@ -1913,7 +1911,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   
                    
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,AVG_FORCE,MAX_FORCE,MIN_FORCE) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,COF_AVG_FORCE,COF_MAX_FORCE,MIN_FORCE FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,AVG_FORCE,MAX_FORCE,MIN_FORCE,UTL_SHEAR_STRENGTH) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,COF_AVG_FORCE,COF_MAX_FORCE,MIN_FORCE,ULT_TENSILE_STRENGTH FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN FROM STG_GRAPH_MST")
                   
               
@@ -2070,7 +2068,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", TENSILE_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", UTL_SHEAR_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2098,26 +2096,26 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Peel Strength \n (Lb/Inch) ' ]]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", TENSILE_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", UTL_SHEAR_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
                 data.append(x)
         connection.close()        
         
         
         connection = sqlite3.connect("tyr.db")            
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(MAX_FORCE)),printf(\"%.2f\", avg(MIN_FORCE)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(TENSILE_STRENGTH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(MAX_FORCE)),printf(\"%.2f\", avg(MIN_FORCE)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(UTL_SHEAR_STRENGTH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(MAX_FORCE)),printf(\"%.2f\", max(MIN_FORCE)),printf(\"%.2f\", max(TENSILE_STRENGTH)),printf(\"%.2f\", max(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(MAX_FORCE)),printf(\"%.2f\", max(MIN_FORCE)),printf(\"%.2f\", max(TENSILE_STRENGTH)),printf(\"%.2f\", max(UTL_SHEAR_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(AVG_FORCE)),printf(\"%.2f\", min(MAX_FORCE)),printf(\"%.2f\", min(MIN_FORCE)),printf(\"%.2f\", min(TENSILE_STRENGTH)),printf(\"%.2f\", min(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(AVG_FORCE)),printf(\"%.2f\", min(MAX_FORCE)),printf(\"%.2f\", min(MIN_FORCE)),printf(\"%.2f\", min(TENSILE_STRENGTH)),printf(\"%.2f\", min(UTL_SHEAR_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()

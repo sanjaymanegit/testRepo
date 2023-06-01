@@ -2090,7 +2090,7 @@ class TY_44_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", TENSILE_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", UTL_SHEAR_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2117,26 +2117,26 @@ class TY_44_Ui_MainWindow(object):
         data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Peel Strength \n (Lb/Inch) ' ]]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", TENSILE_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", UTL_SHEAR_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
                 data.append(x)
         connection.close()        
         
         
         connection = sqlite3.connect("tyr.db")            
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(MAX_FORCE)),printf(\"%.2f\", avg(MIN_FORCE)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(TENSILE_STRENGTH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(AVG_FORCE)),printf(\"%.2f\", avg(MAX_FORCE)),printf(\"%.2f\", avg(MIN_FORCE)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(UTL_SHEAR_STRENGTH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(MAX_FORCE)),printf(\"%.2f\", max(MIN_FORCE)),printf(\"%.2f\", max(TENSILE_STRENGTH)),printf(\"%.2f\", max(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(AVG_FORCE)),printf(\"%.2f\", max(MAX_FORCE)),printf(\"%.2f\", max(MIN_FORCE)),printf(\"%.2f\", max(TENSILE_STRENGTH)),printf(\"%.2f\", max(UTL_SHEAR_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(AVG_FORCE)),printf(\"%.2f\", min(MAX_FORCE)),printf(\"%.2f\", min(MIN_FORCE)),printf(\"%.2f\", min(TENSILE_STRENGTH)),printf(\"%.2f\", min(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(AVG_FORCE)),printf(\"%.2f\", min(MAX_FORCE)),printf(\"%.2f\", min(MIN_FORCE)),printf(\"%.2f\", min(TENSILE_STRENGTH)),printf(\"%.2f\", min(UTL_SHEAR_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()       
