@@ -151,6 +151,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_4.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
+        
         self.label_5 = QtWidgets.QLabel(self.frame)
         self.label_5.setGeometry(QtCore.QRect(490, 20, 431, 51))
         font = QtGui.QFont()
@@ -162,6 +163,36 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_5.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
+        
+        self.label_5_1 = QtWidgets.QLabel(self.frame)
+        self.label_5_1.setGeometry(QtCore.QRect(10, 20, 231, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_5_1.setFont(font)
+        self.label_5_1.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_5_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_5_1.setObjectName("label_5_1")
+        
+        
+        
+        self.lineEdit = QtWidgets.QLineEdit(self.frame)        
+        self.lineEdit.setGeometry(QtCore.QRect(200, 22, 220, 41))
+        #self.lineEdit.setMaxLength(6)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setText("SU")
+        self.lineEdit.setStyleSheet("color: rgb(0, 120, 200);")
+        self.lineEdit.setObjectName("lineEdit")
+       
+        
+        
         self.pushButton_15 = QtWidgets.QPushButton(self.frame)
         self.pushButton_15.setGeometry(QtCore.QRect(610, 340, 401, 241))
         font = QtGui.QFont()
@@ -260,6 +291,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Tensile "))
         self.label_4.setText(_translate("MainWindow", "Select Test :"))
         self.label_5.setText(_translate("MainWindow", " TESTS TYPES ( NEW TEST )"))
+        self.label_5_1.setText(_translate("MainWindow", " User Name:"))
         self.pushButton_15.setText(_translate("MainWindow", "IMAGE"))
         self.radioButton.setText(_translate("MainWindow", "Non -Metal"))
         self.radioButton_2.setText(_translate("MainWindow", "Metal"))
@@ -273,6 +305,13 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.listWidget.clicked.connect(self.selected_record)
         self.radioButton.clicked.connect(self.show_extiometer_setting)
         self.radioButton_2.clicked.connect(self.show_extiometer_setting)
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT  LOGIN_USER_NAME FROM GLOBAL_VAR") 
+        for x in results:
+            self.lineEdit.setText(str(x[0]))
+        connection.close()
+        
         self.load_data()
         
         self.timer1=QtCore.QTimer()
@@ -372,7 +411,12 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection.close()
         
         
-        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET LOGIN_USER_NAME='"+str(self.lineEdit.text())+"'")
+        connection.commit();
+        connection.close()
         
         
         if(str(self.test_type_id) == "1"):

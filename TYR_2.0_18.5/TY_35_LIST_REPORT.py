@@ -816,7 +816,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 200)
        
         
-        self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Party Name','Spec.Counts','Batch ID.','Spec.Name','Comments'])
+        self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Party Name','Spec.Counts','Batch ID.','Product Name','Comments'])
         
          
         connection = sqlite3.connect("tyr.db")

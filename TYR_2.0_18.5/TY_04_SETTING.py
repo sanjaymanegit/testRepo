@@ -434,6 +434,7 @@ class TY_04_Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Reset"))
         self.pushButton_5.setText(_translate("MainWindow", "Save"))
         self.pushButton_5_1.setText(_translate("MainWindow", "Callibration"))
+        self.pushButton_5_1.setDisabled(True)
         self.label_6.setText(_translate("MainWindow", "System Setting"))
         self.groupBox.setTitle(_translate("MainWindow", "Company Details"))
         self.label.setText(_translate("MainWindow", "Company Name:"))
