@@ -1038,7 +1038,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.label_34.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
         self.label_51 = QtWidgets.QLabel(self.frame)
-        self.label_51.setGeometry(QtCore.QRect(250, 210, 41, 31))
+        self.label_51.setGeometry(QtCore.QRect(210, 210, 41, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1102,7 +1102,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "Compression Report"))
+        self.label_10.setText(_translate("MainWindow", "Webbing Test"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
@@ -1121,11 +1121,11 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Peak.Load (Kg)"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Compression @Peak Load (mm)"))
+        item.setText(_translate("MainWindow", "Elongation @Peak Load (mm)"))
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Compressive Strength (Kg/cm2)"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "% Compression"))
+        item.setText(_translate("MainWindow", "% Elongation"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Guage Length (mm)"))
         item = self.tableWidget.horizontalHeaderItem(6)
@@ -1149,12 +1149,12 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
-        self.label_40.setText(_translate("MainWindow", "Compression:"))
+        self.label_40.setText(_translate("MainWindow", "Elongation:"))
         self.label_41.setText(_translate("MainWindow", "Kg"))
         self.label_42.setText(_translate("MainWindow", "Mm"))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Compression"))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Elongation"))
         self.comboBox_4.setItemText(1, _translate("MainWindow", "Stress Vs Strain"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
@@ -1162,7 +1162,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Product Name:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXXXXXXXXXX"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Specimen 1 XXXXXXXXXXXXXX"))
         self.label_14.setText(_translate("MainWindow", "Party Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
@@ -1185,7 +1185,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
         self.comboBox_2.setItemText(4, _translate("MainWindow", "Mpa"))
-        self.label_30.setText(_translate("MainWindow", "Compression.  Unit:"))
+        self.label_30.setText(_translate("MainWindow", "Elongation.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
         self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
@@ -1197,10 +1197,13 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
         self.label_38.setText(_translate("MainWindow", "0"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
-        self.label_46.setText(_translate("MainWindow", "Maximum Load:"))
+        self.label_46.setText(_translate("MainWindow", "Get E @ Load:"))
         self.label_50.setText(_translate("MainWindow", "Max.Compressive Length :"))
+        self.label_50.hide()
         self.label_34.setText(_translate("MainWindow", "(mm)"))
+        self.label_34.hide()
         self.label_51.setText(_translate("MainWindow", "(mm)"))
+        self.lineEdit_18.hide()
         self.label_52.setText(_translate("MainWindow", ""))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.comboBox_4.currentTextChanged.connect(self.show_graph)
@@ -1244,7 +1247,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_compress()
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Comprassion ('+str(self.comboBox_3.currentText())+')','% Compression','Compressive Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
         self.label_51.setText("("+self.comboBox_2.currentText()+")")
@@ -1422,8 +1425,9 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
+                              cursor.execute("UPDATE GLOBAL_VAR2 SET GET_E_AT_LOAD='"+str(self.lineEdit_17.text())+"'")
                               cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD='"+str(int(self.lineEdit_17.text()))+"',MAX_LENGTH='"+str(int(self.lineEdit_18.text()))+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Webbing','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2035,7 +2039,8 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
                  
                   if( str(self.comboBox_2.currentText()) =="Lb"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###    
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")  ###
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_LB < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2)  and REC_ID < (SELECT REC_ID FROM STG_GRAPH_MST WHERE Y_NUM = (select max(Y_NUM) FROM STG_GRAPH_MST) ))")   #
                   elif( str(self.comboBox_2.currentText()) =="N"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
                   elif( str(self.comboBox_2.currentText()) =="KN"):
@@ -2245,11 +2250,8 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Compression ('+str(self.comboBox_3.currentText())+')','% Compression','Compressive Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
-       
-        #results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", GUAGE100) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),(SELECT printf(\"%.2f\", E_AT_LOAD) FROM GLOBAL_VAR2) as E_AT_SPECIFIC_LOAD ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -2276,27 +2278,28 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         connection.close()
         
         
-        data2= [ ['Spec. \n No', 'CS Area \n ('+str(self.last_disp_unit)+'2)', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Compression \n ('+str(self.last_disp_unit)+')', 'Compressive Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)',' % Compression \n']]
+        data2= [ ['Spec. \n No','Width ('+str(self.last_disp_unit)+')','CS Area \n ('+str(self.last_disp_unit)+'2)', 'Load @ Break\n ('+str(self.last_load_unit)+')', 'Elongation @ Break \n ('+str(self.last_disp_unit)+')',' % Elongation \n','E @ Load '+str(self.lineEdit_17.text())+' \n ('+str(self.last_load_unit)+')']]
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", A.CS_AREA*0.1*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_BREAK_MM*0.1),printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.PRC_E_AT_BREAK) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.GUAGE100), printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.PRC_E_AT_PEAK),(SELECT printf(\"%.2f\", E_AT_LOAD) FROM GLOBAL_VAR2) as E_AT_SPECIFIC_LOAD  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", avg(A.TENSILE_STRENGTH)),printf(\"%.2f\", avg(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", avg(A.CS_AREA)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),(SELECT printf(\"%.2f\", E_AT_LOAD) FROM GLOBAL_VAR2) as E_AT_SPECIFIC_LOAD FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", max(A.TENSILE_STRENGTH)),printf(\"%.2f\", max(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", max(A.CS_AREA)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),(SELECT printf(\"%.2f\", E_AT_LOAD) FROM GLOBAL_VAR2) as E_AT_SPECIFIC_LOAD FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(A.CS_AREA*0.1*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_BREAK_MM*0.1)),printf(\"%.2f\", min(A.TENSILE_STRENGTH)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", min(A.CS_AREA)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)),(SELECT printf(\"%.2f\", E_AT_LOAD) FROM GLOBAL_VAR2) as E_AT_SPECIFIC_LOAD  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2311,7 +2314,7 @@ class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"",""],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3])," "," "],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -2524,7 +2527,7 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.break_sence=int(x[3])
                  print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
                  if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
+                                 self.axes.set_xlabel('Elongation (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
                  elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
                                  self.axes.set_xlabel('Compression (Inch)')
@@ -2989,7 +2992,7 @@ class PlotCanvas(FigureCanvas):
             
            
             connection = sqlite3.connect("tyr.db")
-            if(self.graph_type=="Load Vs Compression"):
+            if(self.graph_type=="Load Vs Elongation"):
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
@@ -3114,8 +3117,8 @@ class PlotCanvas(FigureCanvas):
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
-        if(self.graph_type=="Load Vs Compression"):
-                ax.set_xlabel('Compression ('+str(self.last_disp_unit)+')')
+        if(self.graph_type=="Load Vs Elongation"):
+                ax.set_xlabel('Elongation ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         else:
                 ax.set_xlabel('Strain %')
@@ -3185,7 +3188,7 @@ class PlotCanvas_blank(FigureCanvas):
               
         ax.plot(self.x,self.y,'b')
         ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-        ax.set_xlabel(' Compression ('+str(self.last_disp_unit)+')')
+        ax.set_xlabel(' Elongation ('+str(self.last_disp_unit)+')')
         
         
         self.draw()   

@@ -2010,20 +2010,20 @@ class TY_37_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
                  
                   if( str(self.comboBox_2.currentText()) =="Lb"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_LB < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2))")   #
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")  ###
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_LB < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2)  and REC_ID < (SELECT REC_ID FROM STG_GRAPH_MST WHERE Y_NUM = (select max(Y_NUM) FROM STG_GRAPH_MST) ))")   #
                   elif( str(self.comboBox_2.currentText()) =="N"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_N < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2))")   #
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_N < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2) and REC_ID < (SELECT REC_ID FROM STG_GRAPH_MST WHERE Y_NUM = (select max(Y_NUM) FROM STG_GRAPH_MST) ))")   #
                   elif( str(self.comboBox_2.currentText()) =="KN"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_KN < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2))")   #
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM_KN < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2) and REC_ID < (SELECT REC_ID FROM STG_GRAPH_MST WHERE Y_NUM = (select max(Y_NUM) FROM STG_GRAPH_MST) ))")   #
                   elif( str(self.comboBox_2.currentText()) =="MPa"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")  ###
                           
                   else:    
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2))")   #
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")      ### STG_PEAK_LOAD_KG
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=(SELECT MAX(X_NUM) FROM STG_GRAPH_MST WHERE Y_NUM < (SELECT GET_E_AT_LOAD FROM GLOBAL_VAR2) and REC_ID < (SELECT REC_ID FROM STG_GRAPH_MST WHERE Y_NUM = (select max(Y_NUM) FROM STG_GRAPH_MST) ))")   #
                   
                   if( str(self.comboBox_3.currentText()) =="Cm"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
