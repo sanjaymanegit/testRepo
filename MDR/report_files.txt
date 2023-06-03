@@ -2,5 +2,6 @@
 /home/pi/MDR/reports/Report_of_test_0019.pdf
 /home/pi/MDR/reports/Report_of_test_0031.pdf
 /home/pi/MDR/reports/Report_of_test_0032.pdf
+/home/pi/MDR/reports/Report_of_test_0054.pdf
 /home/pi/MDR/reports/Report_of_test_0055.pdf
 /home/pi/MDR/reports/Report_of_test_0060.pdf

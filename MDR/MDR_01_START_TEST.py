@@ -1330,7 +1330,22 @@ class MDR_01_Ui_MainWindow(object):
         close = close.exec()
         if close == QMessageBox.Yes:  
                
-               print("Stop Test Here")
+                print("Stop Test Here")
+                self.sc_new.ser.write(b'*Q\r')
+                self.reset()
+                self.save_graph_data()
+                self.sc_new.save_data_flg=""
+                self.label_50.setText("Mannual stopped new.")
+                self.label_50.show()
+                self.pushButton_5.setEnabled(True)
+                self.pushButton_6.setEnabled(True)
+                self.pushButton_7.setEnabled(True)
+                self.pushButton_8.setEnabled(True)
+                self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))        
+                self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                self.label_33.setText(str(int(max(self.sc_new.arr_p))))
+                self.lcdNumber_3.setProperty("value",str(int(max(self.sc_new.arr_r)))) 
+                   
                 
         else:
                 print("validation Error")
