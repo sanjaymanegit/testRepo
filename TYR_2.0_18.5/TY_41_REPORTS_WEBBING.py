@@ -41,7 +41,7 @@ import sys
 import os
 
 
-class TY_36_REPORT_COMPR_02_Ui_MainWindow(object):
+class TY_41_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 772)
@@ -3199,7 +3199,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_36_REPORT_COMPR_02_Ui_MainWindow()
+    ui = TY_41_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

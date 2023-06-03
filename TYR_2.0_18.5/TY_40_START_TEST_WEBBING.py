@@ -41,7 +41,7 @@ import sys
 import os
 
 
-class TY_37_Ui_MainWindow(object):
+class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 772)
@@ -3178,7 +3178,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_37_Ui_MainWindow()
+    ui = TY_40_START_TEST_WEBBING_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
