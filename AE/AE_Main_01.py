@@ -10,7 +10,9 @@ from AE_02_LIST_REPORT import AE_02_LIST_Ui_MainWindow
 
 
 from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
-from TY_05_SPECIMEN import TY_05_Ui_MainWindow
+#from TY_05_SPECIMEN import TY_05_Ui_MainWindow
+from AE_05_SPECIMEN import AE_05_Ui_MainWindow
+
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 #from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
@@ -287,7 +289,7 @@ class AE_01_Ui_MainWindow(object):
     
     def open_new_window_specimen(self):       
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_05_Ui_MainWindow()
+        self.ui=AE_05_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
