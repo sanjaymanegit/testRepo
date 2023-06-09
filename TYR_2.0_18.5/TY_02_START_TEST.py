@@ -1741,8 +1741,12 @@ class TY_02_Ui_MainWindow(object):
         
     def show_load_cell_val(self):        
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
+        #self.label_36.setText(str(max(self.sc_new.arr_q)))
+        #self.label_38.setText(str(max(self.sc_new.arr_p)))      
         self.label_34.setProperty("value", str(max(self.sc_new.arr_q)))
         self.label_40.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        #self.label_34.setProperty("value", str(self.sc_new.arr_q))
+        #self.label_40.setProperty("value",str(self.sc_new.arr_p))   #lengt
         
         if(str(self.sc_new.save_data_flg) =="Yes"):
                 self.reset()
@@ -1771,11 +1775,12 @@ class TY_02_Ui_MainWindow(object):
         self.label_24.setText(str(rows[0][13])) ##batch id
         
         
-        if (int(self.label_26.text()) > 0):
-            self.label_36.setText(str(round(rows[0][8],2)))
-            self.label_38.setText(str(round(rows[0][9],2)))           
-            self.label_34.setProperty("value", str(rows[0][8]))#load
-            self.label_40.setProperty("value",str(rows[0][9]))   #length 
+        if (int(self.label_26.text()) > 0):            
+                    self.label_36.setText(str(round(rows[0][8],2)))
+                    self.label_38.setText(str(round(rows[0][9],2)))           
+                    #self.label_34.setProperty("value", str(rows[0][8]))#load
+                    #self.label_40.setProperty("value",str(rows[0][9]))   #length
+            
         else:
             self.label_36.setText("NA")
             self.label_38.setText("NA")
@@ -3164,8 +3169,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600 
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                     print(" write1 :"+str(v))
                 except IOError as e:
                     print("Forward-Write Modbus IO Error -Motor start : "+str(e))
@@ -3195,8 +3200,8 @@ class PlotCanvas_Auto(FigureCanvas):
                    
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600 
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                     print(" write2 :"+str(v))
                 except IOError as e:
                     print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
@@ -3230,8 +3235,12 @@ class PlotCanvas_Auto(FigureCanvas):
                                 
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600            
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    
+
                     print(" write1 :"+str(v))
                 except IOError as e:
                     print("Forward-Write Modbus IO Error -Motor start : "+str(e))
@@ -3258,8 +3267,10 @@ class PlotCanvas_Auto(FigureCanvas):
                                 instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600            
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                     print(" write2 :"+str(v))
                 except IOError as e:
                     print("Reverse-Write Modbus IO Error -Motor start : "+str(e))

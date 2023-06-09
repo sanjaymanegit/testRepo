@@ -556,6 +556,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
                     self.inut_strain_mm=float((int(self.per_strain_mm)/100)*int(self.span))
                     self.label_22_2.setText(str(round(self.inut_strain_mm,2))+" mm ")
                     self.max_length=str(round(self.inut_strain_mm,2))
+                    print("self.max_length: "+str(self.max_length))
         
     
     def make_zero_on_null(self):

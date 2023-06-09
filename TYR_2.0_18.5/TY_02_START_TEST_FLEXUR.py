@@ -1598,6 +1598,8 @@ class TY_02f_Ui_MainWindow(object):
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
         self.label_34.setProperty("value", str(max(self.sc_new.arr_q)))
         self.label_40.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        #self.label_34.setProperty("value", str(self.sc_new.q))
+        #self.label_40.setProperty("value",str(self.sc_new.p))   #length
         
         if(str(self.sc_new.save_data_flg) =="Yes"):
                 self.save_graph_data()
@@ -1627,7 +1629,7 @@ class TY_02f_Ui_MainWindow(object):
         
         if (int(self.label_26.text()) > 0):
             self.label_36.setText(str(rows[0][8]))
-            self.label_38.setText(str(rows[0][9]))
+            self.label_38.setText(str(round(rows[0][9],1)))
             #self.label_34.setProperty("value", str(rows[0][8]))#load
             #self.label_40.setProperty("value",str(rows[0][9]))   #length 
         else:
@@ -1998,6 +2000,11 @@ class PlotCanvas_Auto(FigureCanvas):
         self.flexural_max_load=100
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2020,6 +2027,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.axes.set_xlim(0,int(x[0]))
              self.axes.set_ylim(0,int(x[1]))
              self.flexural_max_load=int(x[1])
+             print("inside setting mst ...self.flexural_max_load : "+str(self.flexural_max_load))
              self.xlim=int(x[0])
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
@@ -2039,7 +2047,10 @@ class PlotCanvas_Auto(FigureCanvas):
              self.max_load=int(x[2])
              #self.max_load=100
              #self.max_length=float(float(x[0])-float(x[3]))
-             self.max_length=float(float(x[3]) - float(x[0]))
+             if(float(x[3]) > float(x[0])):
+                  self.max_length=float(float(x[3]) - float(x[0]))
+             else:
+                  self.max_length=float(float(x[0]) - float(x[3]))
              self.flex_max_length=float(x[3])
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
@@ -2133,6 +2144,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     b = bytes(self.command_str, 'utf-8')
                     self.ser.write(b)
                     print("fluexural test started ")
+                    rint("self.flexural_max_load: "+str(self.flexural_max_load))
                 else:
                     print("fluexural test not started ")
             else:
@@ -2232,16 +2244,17 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress"):
-                    #self.p=int(self.test_guage_mm)-self.p
-                    self.p=self.p-int(self.test_guage_mm)
+                    self.p=int(self.test_guage_mm)-self.p
+                    #self.p=self.p-int(self.test_guage_mm)
+                    self.p=self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
-                    #self.p=self.p
+                    self.p=self.p
                     self.p=int(self.test_guage_mm)-self.p
                 else:
                     self.p=self.p-int(self.test_guage_mm)
                     #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p
+                    self.p=self.p
                 
                 self.arr_p.append(self.p)
                 self.arr_q.append(self.q)
@@ -2268,9 +2281,11 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.test_type=="Compress"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    #self.p=int(self.test_guage_mm)-self.p
-                    self.p=self.p-int(self.test_guage_mm)
-                    print("final P :::"+str(self.p))
+                    if(int(self.test_guage_mm) > int(self.p)):
+                            self.p=int(self.test_guage_mm)-int(self.p)
+                    else:
+                            self.p=int(self.p)-int(self.test_guage_mm)
+                    print("final P Compress :::"+str(self.p))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
                     self.save_data_flg="Yes"
@@ -2278,8 +2293,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 elif(self.test_type=="Flexural"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                    self.p=self.p-int(self.test_guage_mm)
                     #self.p=int(self.test_guage_mm)-self.p
-                    print("final P :::"+str(self.p))
+                    print("final P  Flexural:::"+str(self.p))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
                     self.save_data_flg="Yes"
@@ -2379,7 +2395,135 @@ class PlotCanvas_Auto(FigureCanvas):
         else:
             print(" not Ok ")
             #self.label_3.setText("Motor Speed is Required")
-            #self.label_3.show()            
+            #self.label_3.show()
+       
+        print("test type :"+str(self.test_type))
+        print("Modbus Flag :"+str(self.modbus_flag))
+        print("Modbus Port :"+str(self.modbus_port))
+        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
+            if(self.test_type=="Compress"):        
+                v=0
+                try:
+                    v=float(self.input_rev_speed_val) 
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    print("compress :int part :%d"%v)
+                    print("compress :decial part:%.2f"%v)
+                    #v=v*100
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
+                    
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    v=float(self.input_speed_val)
+                    #v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    elif(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
+                   
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
+            
+            
+            
+            else:   
+                print("inside tesnsile part .....")
+                v=0
+                try:
+                    v=float(self.input_speed_val)
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    #print("int part :%d"%v)
+                    #print("decial part:%.2f"%v)
+                    #v=v*100
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                                
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    
+                    v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port:"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
     
 
  
