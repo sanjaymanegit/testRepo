@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'TY_01_TEST_BATCH.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_02_START_TEST import TY_02_Ui_MainWindow
@@ -508,7 +500,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "Specs XXXXXXX"))
         self.label_10.setText(_translate("MainWindow", "MRF"))
         self.label_9.setText(_translate("MainWindow", "Party:"))
-        self.label_11.setText(_translate("MainWindow", "Test Speed (RPM):"))
+        self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
         self.label_12.setText(_translate("MainWindow", "200"))
         self.label_13.setText(_translate("MainWindow", "Guage Length(mm) :"))
         self.label_14.setText(_translate("MainWindow", "60"))
@@ -540,7 +532,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_2_1.setText("Compressive.Length(mm):")
         self.label_2_1.hide()
         self.label_14_1.setText("34")
-        self.label_13_1.setText("Rev.Motor Speed: ")
+        self.label_13_1.setText("Rev.Speed (mm/min): ")
         
         
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
@@ -613,7 +605,7 @@ class TY_01_Ui_MainWindow(object):
            self.label_12.setText(str(x[10])) #motor speed 
            self.label_14.setText(str(x[8])) #guage
            self.label_16.setText(str(x[4])) #cs area
-           self.label_14_1.setText(str(x[12]))
+           
            #if(self.test_type=="Flexural"):
                    #self.lineEdit_1_1.setText(str(x[8]))
 
@@ -627,9 +619,23 @@ class TY_01_Ui_MainWindow(object):
            self.party_name=str(x[7])
            self.guage_mm=str(x[8])
            self.pre_load=str(x[9])
-           self.motor_speed=str(x[10])
+          
            self.specs=str(x[11])           
            #print(" cccc:"+str(x[0]))
+           
+           if(self.test_type=="Compress"):
+                self.label_14_1.setText(str(x[10]))
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           elif(self.test_type=="Flexural"):
+                self.label_14_1.setText(str(x[10]))                
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           else:
+                self.label_14_1.setText(str(x[12]))
+                self.motor_speed=str(x[10])
+                self.label_12.setText(str(x[10]))
+           
            if (x[0]=="Rectangle"):
                self.label_17.setText("Thickness(mm):")
                self.label_18.setText(str(x[1]))
@@ -651,6 +657,12 @@ class TY_01_Ui_MainWindow(object):
                self.label_18.setText(str(x[4]))
                self.label_19.hide()
                self.label_20.hide()
+           else:
+               print("invalid shape")
+               
+            
+           
+               
                
         connection.close()
         self.reset_job()
@@ -673,8 +685,8 @@ class TY_01_Ui_MainWindow(object):
         results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
            self.cs_area=int(x[4])        
-           self.label_5.setText(x[0])
            
+               
            self.shape=str(x[0])
            self.thickness=str(x[1])
            self.width=str(x[2])
@@ -685,9 +697,9 @@ class TY_01_Ui_MainWindow(object):
            self.party_name=str(x[7])
            self.guage_mm=str(x[8])
            self.pre_load=str(x[9])
-           self.motor_speed=str(x[10])
+           #self.motor_speed=str(x[10])
            self.specs=str(x[11])
-           self.label_14_1.setText(str(x[12])) #rev .Test Speed
+           #self.label_14_1.setText(str(x[12])) #rev .Test Speed
            
            self.label_8.setText(str(x[11]))  #specs
            self.label_10.setText(str(x[7])) #party
@@ -695,8 +707,18 @@ class TY_01_Ui_MainWindow(object):
            self.label_14.setText(str(x[8])) #guag
            self.label_16.setText(str(x[4])) #cs area
            
-           #if(self.test_type=="Flexural"):
-                       #self.lineEdit_1_1.setText(str(x[8]))
+           if(str(self.test_type) == "Compress"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           elif(str(self.test_type) == "Flexural"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           else:
+               self.label_14_1.setText(str(x[12]))
+               self.motor_speed=str(x[10])
+               self.label_12.setText(str(x[10]))
            
            self.label_15.show()
            self.label_16.show()

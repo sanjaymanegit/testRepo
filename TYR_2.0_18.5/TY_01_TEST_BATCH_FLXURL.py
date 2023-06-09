@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'TY_01_TEST_BATCH.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_02_START_TEST import TY_02_Ui_MainWindow
@@ -205,6 +197,26 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_14.setFont(font)
         self.label_14.setObjectName("label_14")
         self.gridLayout.addWidget(self.label_14, 4, 2, 1, 2)
+        
+        
+        
+        self.label_13_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_13_1.setFont(font)
+        
+        self.label_13_1.setObjectName("label_13_1")        
+        self.gridLayout.addWidget(self.label_13_1, 5, 0, 1, 2)
+        
+        self.label_14_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_14_1.setFont(font)
+        self.label_14_1.setObjectName("label_14_1")
+        
+        self.gridLayout.addWidget(self.label_14_1, 5, 2, 1, 2)
         
         
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
@@ -498,8 +510,8 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "Specs XXXXXXX"))
         self.label_10.setText(_translate("MainWindow", "MRF"))
         self.label_9.setText(_translate("MainWindow", "Party:"))
-        self.label_11.setText(_translate("MainWindow", "Test Speed (RPM):"))
-        self.label_12.setText(_translate("MainWindow", "200"))
+        self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
+        self.label_12.setText(_translate("MainWindow", "-0"))
         self.label_13.setText(_translate("MainWindow", "Guage Length(mm) :"))
         self.label_14.setText(_translate("MainWindow", "60"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Specimen Diamentions"))
@@ -529,6 +541,10 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_1_1.hide()
         self.label_2_1.setText("Compressive.Length(mm):")
         self.label_2_1.hide()
+        
+        self.label_14_1.setText("0")
+        self.label_13_1.setText("Rev.Speed (mm/min): ")
+        
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.pushButton_7.clicked.connect(self.reset_job)
         self.pushButton_3.clicked.connect(self.open_window)
@@ -537,6 +553,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.lineEdit_2_1.textChanged.connect(self.make_zero_on_null)
         self.lineEdit_1_1.textChanged.connect(self.on_change_input_strain)
         self.lineEdit_2_1.textChanged.connect(self.on_change_input_strain)
+        
         self.load_data() 
      
     
@@ -613,7 +630,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         
         #print("curr text :"+str(self.comboBox.currentText()))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
+        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
         for x in results:        
            self.label_5.setText(str(x[0]))
            self.label_8.setText(str(x[11]))  #specs
@@ -635,9 +652,25 @@ class TY_01_fluxurl_Ui_MainWindow(object):
            self.party_name=str(x[7])
            self.guage_mm=str(x[8])
            self.pre_load=str(x[9])
-           self.motor_speed=str(x[10])
+           #self.motor_speed=str(x[10])
            self.specs=str(x[11])           
            #print(" cccc:"+str(x[0]))
+           
+
+           
+           if(self.test_type=="Compress"):
+                self.label_14_1.setText(str(x[10]))
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           elif(self.test_type=="Flexural"):
+                self.label_14_1.setText(str(x[10]))                
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           else:
+                self.label_14_1.setText(str(x[12]))
+                self.motor_speed=str(x[10])
+                self.label_12.setText(str(x[10]))
+           
            if (x[0]=="Rectangle"):
                self.label_17.setText("Thickness(mm):")
                self.label_18.setText(str(x[1]))
@@ -677,7 +710,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_8.show()
         self.lineEdit_2.show()                
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
            self.cs_area=int(x[4])        
            self.label_5.setText(x[0])
@@ -701,8 +734,18 @@ class TY_01_fluxurl_Ui_MainWindow(object):
            self.label_14.setText(str(x[8])) #guag
            self.label_16.setText(str(x[4])) #cs area
            
-           #if(self.test_type=="Flexural"):
-                       #self.lineEdit_1_1.setText(str(x[8]))
+           if(str(self.test_type) == "Compress"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           elif(str(self.test_type) == "Flexural"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           else:
+               self.label_14_1.setText(str(x[12]))
+               self.motor_speed=str(x[10])
+               self.label_12.setText(str(x[10]))
            
            self.label_15.show()
            self.label_16.show()
@@ -818,7 +861,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()

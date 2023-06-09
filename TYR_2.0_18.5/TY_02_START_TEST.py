@@ -3147,7 +3147,7 @@ class PlotCanvas_Auto(FigureCanvas):
         print("Modbus Flag :"+str(self.modbus_flag))
         print("Modbus Port :"+str(self.modbus_port))
         if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compress"):        
+            if(self.test_type=="Compressxx"):        
                 v=0
                 try:
                     v=float(self.input_rev_speed_val) 

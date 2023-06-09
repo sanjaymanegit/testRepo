@@ -54,6 +54,11 @@ from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
+import minimalmodbus
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
 
 class TY_02f_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -721,9 +726,13 @@ class TY_02f_Ui_MainWindow(object):
         self.label_29.setText(_translate("MainWindow", "Thickness(mm):"))
         self.label_30.setText(_translate("MainWindow", "Width(mm):    "))
         self.label_35.setText(_translate("MainWindow", "Force at Peak (Kgf):"))
+        self.label_35.hide()
         self.label_36.setText(_translate("MainWindow", "100"))
+        self.label_36.hide()
         self.label_37.setText(_translate("MainWindow", "Length at Peak(mm):   "))
+        self.label_37.hide()
         self.label_38.setText(_translate("MainWindow", "220"))
+        self.label_38.hide()
         self.label_33.setText(_translate("MainWindow", " Force (Kgf):   "))
         #self.label_34.setText(_translate("MainWindow", "120"))
         self.label_39.setText(_translate("MainWindow", "Displacement (mm):"))
@@ -1445,7 +1454,7 @@ class TY_02f_Ui_MainWindow(object):
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                   if(self.test_type=="Compress" or self.test_type=="Flexural"):
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"')")
                   else:   
                         cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM) VALUES ('"+str(int(self.sc_new.arr_p[g]))+"','"+str(self.sc_new.arr_q[g])+"')")
             connection.commit();
@@ -1981,7 +1990,8 @@ class PlotCanvas_Auto(FigureCanvas):
        
         
         self.speed_val=""
-        self.input_speed_val=""
+        self.input_speed_val=""        
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2022,7 +2032,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
              self.axes.set_xlim(0,int(x[0]))
              self.axes.set_ylim(0,int(x[1]))
@@ -2032,6 +2042,9 @@ class PlotCanvas_Auto(FigureCanvas):
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
+             self.modbus_flag=str(x[4])
+             self.modbus_port=str(x[5])
+             self.non_modbus_port=str(x[6])
         connection.close()
         
         
@@ -2051,6 +2064,8 @@ class PlotCanvas_Auto(FigureCanvas):
                   self.max_length=float(float(x[3]) - float(x[0]))
              else:
                   self.max_length=float(float(x[0]) - float(x[3]))
+             
+             
              self.flex_max_length=float(x[3])
              #self.max_load=str(self.max_load).zfill(5)
              #self.max_length=str(int(self.max_length)).zfill(5)
@@ -2059,15 +2074,39 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -2120,11 +2159,11 @@ class PlotCanvas_Auto(FigureCanvas):
             if(self.test_type=="Compress"):
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.flex_max_length+"\r"
                     else:
-                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.flex_max_length+"\r"
                     
-                    print("self.command_str:"+str(self.command_str))
+                    print("self.command_str-Compress:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')
                     self.ser.write(b)                 
                 else:
@@ -2140,7 +2179,7 @@ class PlotCanvas_Auto(FigureCanvas):
                             #self.command_str="*S1E%04d"%self.flexural_max_load+" 0000\r"
                             self.command_str="*S1C%04d"%self.flexural_max_load+" %04d"%self.flexural_max_load+"\r"
                             
-                    print("self.command_str:"+str(self.command_str))
+                    print("self.command_str-Flexural:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')
                     self.ser.write(b)
                     print("fluexural test started ")
@@ -2244,20 +2283,25 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress"):
-                    self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p-int(self.test_guage_mm)
-                    self.p=self.p
+                    if(int(self.test_guage_mm) > int(self.p)):
+                                self.p=int(self.test_guage_mm)-self.p
+                    else:
+                                self.p=self.p-int(self.test_guage_mm)
+                    #self.p=self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
-                    self.p=self.p
-                    self.p=int(self.test_guage_mm)-self.p
+                    if(int(self.test_guage_mm) > int(self.p)):
+                                self.p=int(self.test_guage_mm)-self.p
+                    else:
+                                self.p=self.p-int(self.test_guage_mm)
                 else:
-                    self.p=self.p-int(self.test_guage_mm)
-                    #self.p=int(self.test_guage_mm)-self.p
-                    self.p=self.p
+                    if(int(self.test_guage_mm) > int(self.p)):
+                                self.p=int(self.test_guage_mm)-self.p
+                    else:
+                                self.p=self.p-int(self.test_guage_mm)
                 
-                self.arr_p.append(self.p)
-                self.arr_q.append(self.q)
+                self.arr_p.append(float(self.p))
+                self.arr_q.append(float(self.q))
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
                
                 #print(" Array P:"+str(self.arr_p))
@@ -2373,9 +2417,10 @@ class PlotCanvas_Auto(FigureCanvas):
        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0),IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):
@@ -2401,7 +2446,7 @@ class PlotCanvas_Auto(FigureCanvas):
         print("Modbus Flag :"+str(self.modbus_flag))
         print("Modbus Port :"+str(self.modbus_port))
         if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compress"):        
+            if(self.test_type=="Compressxx"):        
                 v=0
                 try:
                     v=float(self.input_rev_speed_val) 
