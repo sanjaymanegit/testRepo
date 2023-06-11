@@ -838,7 +838,7 @@ class TY_05_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "CS.Area:"))
         self.lineEdit_14.setText(_translate("MainWindow", "6"))
         self.label_26.setText(_translate("MainWindow", "Details:"))
-        self.label_35.setText(_translate("MainWindow", "Test Speed:"))
+        self.label_35.setText(_translate("MainWindow", "Fwd.Speed:"))
         self.label_23.setText(_translate("MainWindow", "Spect.ID:"))
         self.label_2.setText(_translate("MainWindow", "0001"))
         self.label_28.setText(_translate("MainWindow", "(mm/min)"))

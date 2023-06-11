@@ -748,7 +748,7 @@ class TY_02f_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Shape"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Guage Length \n (mm)"))
+        item.setText(_translate("MainWindow", "Sample Length \n (mm)"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Tensile Strength \n (Kgf/Cm2)"))
         item = self.tableWidget.horizontalHeaderItem(6)
@@ -1607,6 +1607,7 @@ class TY_02f_Ui_MainWindow(object):
         #self.label_34.setText(str(max(self.sc_new.arr_q)))   #load
         self.label_34.setProperty("value", str(max(self.sc_new.arr_q)))
         self.label_40.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+        self.label_40.setProperty("value",str(float(self.sc_new.p1)))   #length
         #self.label_34.setProperty("value", str(self.sc_new.q))
         #self.label_40.setProperty("value",str(self.sc_new.p))   #length
         
@@ -1679,10 +1680,13 @@ class TY_02f_Ui_MainWindow(object):
            self.label_29.hide()
            self.lineEdit_3.hide()
            self.label_30.hide()
-           self.lineEdit_4.hide()            
+           self.lineEdit_4.hide()
+        else:
+           print("Invalid Shape")
         
         if(str(rows[0][14])=="Compress"):
-            self.show_grid_data_compress()            
+            #self.show_grid_data_compress()
+            self.show_grid_data_flexure()
         elif(str(rows[0][14])=="Tear"):
             self.show_grid_data_tear()
             self.test_type="Tear"
@@ -1713,9 +1717,9 @@ class TY_02f_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.TEMPERATURE  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,(select NEW_TEST_MOTOR_SPEED from global_var) as test_speed,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.TEMPERATURE  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Motor Speed :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "Stech engineers testing machine"," Temp.(C) :",str(x[12])]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "  "," Temp.(C) :",str(x[12])]]
             self.length=str(x[6])        
         connection.close()
         
@@ -1951,7 +1955,7 @@ class PlotCanvas_Auto(FigureCanvas):
         if(self.test_type=="Compress"):
             self.axes.set_xlabel('Compression (mm)')        
         else:        
-            self.axes.set_xlabel('Elongation (mm)')
+            self.axes.set_xlabel('Displacement (mm)')
           
         self.axes.set_ylabel('Load (Kgf)') 
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
@@ -1961,6 +1965,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.setParent(parent)        
         ###
         self.playing = False
+        self.p1 =0
         self.p =0
         self.q =0
         self.arr_p=[0.0]
@@ -2128,10 +2133,13 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.flush()
             if(self.test_type=="Flexural"):
                 #self.test_guage_mm=0
+                self.command_str="*G0.00\r"
+                #self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+            else:
                 #self.command_str="*G0.00\r"
                 self.command_str="*G%.2f"%self.test_guage_mm+"\r"
-            else:
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+                #self.command_str="*G%.2f"%self.flex_max_length+"\r"
+                
             print("Guage Length Command : "+str(self.command_str))
             b = bytes(self.command_str, 'utf-8')
             self.ser.write(b)
@@ -2159,9 +2167,9 @@ class PlotCanvas_Auto(FigureCanvas):
             if(self.test_type=="Compress"):
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.flex_max_length+"\r"
+                          self.command_str="*S2E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
                     else:
-                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.flex_max_length+"\r"
+                          self.command_str="*S1E%04d"%self.flexural_max_load+" %04d"%self.max_length+"\r"
                     
                     print("self.command_str-Compress:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')
@@ -2283,22 +2291,30 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                 if(self.test_type=="Compress"):
-                    if(int(self.test_guage_mm) > int(self.p)):
+                     if(int(self.test_guage_mm) > int(self.p)):
+                                self.p1=int(self.test_guage_mm)-self.p
                                 self.p=int(self.test_guage_mm)-self.p
-                    else:
+                     else:
+                                self.p1=self.p-int(self.test_guage_mm)
                                 self.p=self.p-int(self.test_guage_mm)
-                    #self.p=self.p
+                    #self.p=float(self.p)
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
-                    if(int(self.test_guage_mm) > int(self.p)):
+                     if(int(self.test_guage_mm) > int(self.p)):
+                                self.p1=int(self.test_guage_mm)-self.p
                                 self.p=int(self.test_guage_mm)-self.p
-                    else:
+                     else:
+                                self.p1=self.p-int(self.test_guage_mm)
                                 self.p=self.p-int(self.test_guage_mm)
+                     #self.p=float(self.p)
                 else:
-                    if(int(self.test_guage_mm) > int(self.p)):
+                     if(int(self.test_guage_mm) > int(self.p)):
+                                self.p1=int(self.test_guage_mm)-self.p
                                 self.p=int(self.test_guage_mm)-self.p
-                    else:
+                     else:
+                                self.p1=self.p-int(self.test_guage_mm)
                                 self.p=self.p-int(self.test_guage_mm)
+                     #self.p=float(self.p)
                 
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
@@ -2325,10 +2341,10 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.test_type=="Compress"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    if(int(self.test_guage_mm) > int(self.p)):
-                            self.p=int(self.test_guage_mm)-int(self.p)
-                    else:
-                            self.p=int(self.p)-int(self.test_guage_mm)
+#                     if(int(self.test_guage_mm) > int(self.p)):
+#                             self.p=int(self.test_guage_mm)-int(self.p)
+#                     else:
+#                             self.p=int(self.p)-int(self.test_guage_mm)
                     print("final P Compress :::"+str(self.p))
                     self.arr_p.append(self.p)
                     self.arr_q.append(self.q)
@@ -2337,7 +2353,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 elif(self.test_type=="Flexural"):
                     self.p=abs(float(self.buff[4])) #+random.randint(0,50)
                     self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                    self.p=self.p-int(self.test_guage_mm)
+                    #self.p=self.p-int(self.test_guage_mm)
                     #self.p=int(self.test_guage_mm)-self.p
                     print("final P  Flexural:::"+str(self.p))
                     self.arr_p.append(self.p)
@@ -2424,10 +2440,10 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
@@ -2446,7 +2462,7 @@ class PlotCanvas_Auto(FigureCanvas):
         print("Modbus Flag :"+str(self.modbus_flag))
         print("Modbus Port :"+str(self.modbus_port))
         if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compressxx"):        
+            if(self.test_type=="Compress"):        
                 v=0
                 try:
                     v=float(self.input_rev_speed_val) 
@@ -2468,8 +2484,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600 
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                     print(" write1 :"+str(v))
                 except IOError as e:
                     print("Forward-Write Modbus IO Error -Motor start : "+str(e))
@@ -2499,8 +2515,8 @@ class PlotCanvas_Auto(FigureCanvas):
                    
                     instrument.serial.timeout = 1
                     instrument.serial.baudrate = 9600 
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                     print(" write2 :"+str(v))
                 except IOError as e:
                     print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
@@ -2654,7 +2670,7 @@ class PlotCanvas(FigureCanvas):
         if(str(self.test_type)=="Compress"):
             ax.set_xlabel('Compression (mm)')        
         else:
-            ax.set_xlabel('Elongation (mm)')
+            ax.set_xlabel('Displacement (mm)')
         ax.set_ylabel('Load (Kgf)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
@@ -2725,7 +2741,7 @@ class PlotCanvas_blank(FigureCanvas):
         if(self.test_type=="Compress"):
             ax.set_xlabel('Compression (mm)')       
         else:
-            ax.set_xlabel('Elongation (mm)')
+            ax.set_xlabel('Displacement (mm)')
         self.draw() 
 
 
@@ -2804,7 +2820,7 @@ class Kg_Cm_PlotCanvas(FigureCanvas):
         if(str(self.test_type)=="Compress"):
             ax.set_xlabel('Compression (Cm)')        
         else:
-            ax.set_xlabel('Elongation (Cm)')
+            ax.set_xlabel('Displacement (Cm)')
         ax.set_ylabel('Load (Kgf)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
