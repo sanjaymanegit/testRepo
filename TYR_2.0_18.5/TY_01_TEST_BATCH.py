@@ -358,6 +358,7 @@ class TY_01_Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.layoutWidget3)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2.setObjectName("gridLayout_2")
+        
         self.label_2 = QtWidgets.QLabel(self.layoutWidget3)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -365,6 +366,8 @@ class TY_01_Ui_MainWindow(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.gridLayout_2.addWidget(self.label_2, 0, 0, 1, 1)
+        
+        
         self.label_3 = QtWidgets.QLabel(self.layoutWidget3)
         font = QtGui.QFont()
         font.setFamily("MS Sans Serif")
@@ -446,6 +449,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_22_1.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_22_1.setObjectName("label_22_1")
         self.gridLayout_4_1.addWidget(self.label_22_1, 1, 0, 1, 1)
+        
         self.lineEdit_2_1_1 = QtWidgets.QLineEdit(self.layoutWidget2_1)
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_2_1_1)
@@ -457,7 +461,27 @@ class TY_01_Ui_MainWindow(object):
         self.lineEdit_2_1_1.setObjectName("lineEdit_2_1_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_2_1_1, 1, 1, 1, 1)
         
+        self.label_6_1 = QtWidgets.QLabel(self.frame)
+        self.label_6_1.setGeometry(QtCore.QRect(50, 660, 90, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.label_6_1.setFont(font)
+        self.label_6_1.setText("Test Method :")
+        self.label_6_1.setStyleSheet("color: rgb(0, 85, 255);")
+        self.label_6_1.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_6_1.setObjectName("label_6_1")
         
+        
+        self.lineEdit_6_2 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_6_2.setGeometry(QtCore.QRect(150, 655, 180, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.lineEdit_6_2.setFont(font)
+        self.lineEdit_6_2.setObjectName("lineEdit_6_2")
+        
+       
         
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -494,15 +518,15 @@ class TY_01_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "GO TO TEST"))
         self.pushButton_7.setText(_translate("MainWindow", "RESET"))
         self.groupBox.setTitle(_translate("MainWindow", "Specimen Details"))
-        self.label_4.setText(_translate("MainWindow", "Speciment Shape:"))
+        self.label_4.setText(_translate("MainWindow", "Shape:"))
         self.label_5.setText(_translate("MainWindow", "Rectangle"))
-        self.label_7.setText(_translate("MainWindow", "Spec.  Specifications"))
+        self.label_7.setText(_translate("MainWindow", "Spec.  Details"))
         self.label_8.setText(_translate("MainWindow", "Specs XXXXXXX"))
         self.label_10.setText(_translate("MainWindow", "MRF"))
         self.label_9.setText(_translate("MainWindow", "Party:"))
         self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
         self.label_12.setText(_translate("MainWindow", "200"))
-        self.label_13.setText(_translate("MainWindow", "Guage Length(mm) :"))
+        self.label_13.setText(_translate("MainWindow", "Product Length(mm) :"))
         self.label_14.setText(_translate("MainWindow", "60"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Specimen Diamentions"))
         self.label_15.setText(_translate("MainWindow", "CS.Area(mm2):"))
@@ -834,7 +858,7 @@ class TY_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")          
             with connection:        
                 cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_2_1.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_BREAK='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"',TEST_METHOD='"+str(self.lineEdit_6_2.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()
@@ -851,7 +875,7 @@ class TY_01_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
               cursor = connection.cursor()                                
-              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG FROM GLOBAL_VAR")                                
+              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,MOTOR_SPEED,MOTOR_REV_SPEED,TEST_METHOD) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED,TEST_METHOD FROM GLOBAL_VAR")                                
         connection.commit();
         connection.close()  
         
