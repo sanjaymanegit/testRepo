@@ -187,6 +187,7 @@ class TY_07_Ui_MainWindow(object):
         self.load_modbus_port()
         
     def validate_speed(self):
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),ISACTIVE_MODBUS from SETTING_MST") 
         for x in results:
@@ -219,7 +220,7 @@ class TY_07_Ui_MainWindow(object):
                  self.display_calc_speed=float(self.calc_speed)/10
                  self.label_9_1.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" rpm).")
                  self.label_9_1.show()
-                 #print("ok-done")
+                 print("Validation of Speed Successfull")
             else:
                  #print(" not Ok ")
                  #self.label_9_1.show()
@@ -240,7 +241,7 @@ class TY_07_Ui_MainWindow(object):
             
         
     def r_run(self):
-        #print("Reverse Run ....")
+        print("Reverse Run started ....")
         self.validate_speed()
         #self.label_9_1.hide()
         self.toolButton.show()
@@ -248,10 +249,58 @@ class TY_07_Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap("./images/down.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
+        
+        ###################################################################################       
+        #####  self.is_active_modbus : this status us detected in validate_speed function.
+        #####  self.modbus_port : this status us detected in load_modbus_port function.        
+        ###################################################################################
+        
+        #print("self.is_active_modbus:"+str(self.is_active_modbus)+"  self.modbus_port:"+str(self.modbus_port))
+        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
+                v=float(self.input_speed_val)                
+                try:
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+                    
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600
+                    
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    #print(" write2 :"+str(v))
+                    print("Reverse speed : "+str(v)+" is set successfully in the PLC via Modbus.")
+                except IOError as e:
+                    print("Set Speed Error 02 - Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+        else:
+            print("Set Speed Error 01 : Modbus is not active or modbus port is not detected.")
+        
+        
+        ######################################################################       
+        #####  
+        #####  Above is the setting of speed if PLC is connected
+        ###### Reverse Run the Motor Below
+        ###### self.command_str : This is detected in validate_speed function
+        ######
+        #######################################################################
+        
+        time.sleep(1)
+        
+        
         try:
-           print("rev is_active_modbus :"+str(self.is_active_modbus))
+           #print("is_active_modbus [Reverse] :"+str(self.is_active_modbus))
            if(self.is_active_modbus == 'Y'):
-               print("rev non modbus port :"+str(self.non_modbus_port))
+               #print("rev non modbus port :"+str(self.non_modbus_port))
                if(self.non_modbus_port=="/dev/ttyUSB0"):
                        self.ser = serial.Serial(
                             port='/dev/ttyUSB0',
@@ -262,7 +311,7 @@ class TY_07_Ui_MainWindow(object):
                             xonxoff=False,
                             timeout = 0.25
                         )
-                       print("non modbus port :"+str(self.non_modbus_port))
+                       #print("non modbus port :"+str(self.non_modbus_port))
                else:
                         self.ser = serial.Serial(
                             port='/dev/ttyUSB1',
@@ -283,43 +332,18 @@ class TY_07_Ui_MainWindow(object):
                             xonxoff=False,
                             timeout = 0.25
                         )
+            
            self.ser.flush()
            if(self.goahead_flag==1):
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
                 self.ser.write(b'*R\r')
+                print("Reverse command Started.")
            else:
-                print("No go Ahead !!!!!")
-           
-           
+                print("Reverse command not Started. Please Check.")
         except IOError:
-            print("IO Errors")    
-        #time.sleep(1)
-        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
-                v=float(self.input_speed_val)
-                try:
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600
-                    
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    print(" write2 :"+str(v))
-                except IOError as e:
-                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Reverse speed : "+str(v))
+            print(print("IO Errors(Reverse): Please check motor connection is active ?")    )  
+       
         
     def f_run(self):
         print("Forward Run ....")
@@ -330,6 +354,48 @@ class TY_07_Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap("./images/up1.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.toolButton.setIcon(icon)
         self.toolButton.setIconSize(QtCore.QSize(70, 141))
+        ######################################################################       
+        #####  self.is_active_modbus : this status us detected in validate_speed function.
+        #####  self.modbus_port : this status us detected in load_modbus_port function.
+        ###################################################################################
+        
+        #print("self.is_active_modbus:"+str(self.is_active_modbus)+"  self.modbus_port:"+str(self.modbus_port))
+        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
+                v=float(self.input_speed_val)
+                try:     
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                    else:
+                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600
+                    
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    #print(" write1 :"+str(v))
+                    print("Forword speed : "+str(v)+" is set successfully in the PLC via Modbus.")
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error 02  -Motor start : "+str(e))
+                #print("Forward speed : "+str(v))
+        else:
+            print("Set Speed Error 01 : Modbus is not active or modbus port is not detected.")
+        ######################################################################       
+        #####  
+        #####  Above is the setting of speed if PLC is connected
+        ###### Forword Run the Motor Below
+        ###### self.command_str : This is detected in validate_speed function
+        ######
+        #######################################################################
+        
+        time.sleep(1)
         try:
             if(self.is_active_modbus == 'Y'): 
                        if(self.non_modbus_port=="/dev/ttyUSB0"):
@@ -362,41 +428,18 @@ class TY_07_Ui_MainWindow(object):
                                     xonxoff=False,
                                     timeout = 0.25
                                 )  
+           
             if(self.goahead_flag==1):               
                 b = bytes(self.command_str, 'utf-8')
                 self.ser.write(b)
                 self.ser.write(b'*F\r')
+                print("Forword command executed. ")
             else:
-                print("No go Ahead !!!!!")
-          
-           #time.sleep(1)
+                print("Forword command not Started. Please Check.")
+         
         except IOError:
-           print("IO Errors")     
-        
-        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
-                v=float(self.input_speed_val)
-                try:     
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                    else:
-                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600
-                    
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    print(" write1 :"+str(v))
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-                print("Forward speed : "+str(v))
+           print("IO Errors(Forward): Please check motor connection is active ?")    
+                
     
     def stop_run(self):
         #print("Forward Run ....")
@@ -436,7 +479,8 @@ class TY_07_Ui_MainWindow(object):
                             )
            
             self.ser.write(b'*Q\r')
-           #time.sleep(1)
+            #time.sleep(1)
+            print("Stop command executed. ")
         except IOError:
            print("IO Errors")
            

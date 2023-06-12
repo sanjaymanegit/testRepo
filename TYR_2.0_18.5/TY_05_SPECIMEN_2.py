@@ -827,7 +827,7 @@ class TY_05_Ui_MainWindow(object):
         self.lineEdit_12.setText(_translate("MainWindow", "sec name"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Rectangle"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Pipe"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "Cylindical"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Cylindrical"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "DirectValue"))
         self.label_27.setText(_translate("MainWindow", "Width:"))
         self.lineEdit_6.setText(_translate("MainWindow", "2"))
