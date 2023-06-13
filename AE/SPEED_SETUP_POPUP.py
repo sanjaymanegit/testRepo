@@ -219,7 +219,7 @@ class spped_setup_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Close"))
         self.label_6.setText(_translate("MainWindow", "Set up Default Speed of Motor :"))
         self.checkBox.setText(_translate("MainWindow", "Modbus isActive ?"))
-        #self.checkBox.setDisabled(True)
+        self.checkBox.setDisabled(True)
         self.label_7.setText(_translate("MainWindow", "Max.Speed :"))
         self.lineEdit_3.setText(_translate("MainWindow", "0"))
         self.label_8.setText(_translate("MainWindow", "( mm/min )"))
