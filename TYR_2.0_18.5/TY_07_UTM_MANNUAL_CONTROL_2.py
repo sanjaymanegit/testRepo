@@ -28,7 +28,8 @@ class  TY_07_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(30, 20, 1321, 691))
+        #self.frame.setGeometry(QtCore.QRect(30, 20, 1321, 691))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
@@ -48,6 +49,9 @@ class  TY_07_Ui_MainWindow(object):
         self.toolButton_2.setIconSize(QtCore.QSize(500, 1000))
         self.toolButton_2.setObjectName("toolButton_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(480, 190, 241, 101))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -156,6 +160,14 @@ class  TY_07_Ui_MainWindow(object):
         
         self.rev_speed_val=0
         self.is_active_modbus='N'
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        self.modbus_port=""
+        self.non_modbus_port=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -209,7 +221,7 @@ class  TY_07_Ui_MainWindow(object):
                  #self.command_str="*P50.00\r"
                  #print("xcxcx :"+str(self.command_str))
                  self.display_calc_speed=float(self.calc_speed)/10
-                 self.label_2.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" (mm/min)).")
+                 self.label_2.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed :"+str(self.speed_val)+" (mm/min).")
                  self.label_2.show()
                  print("Validation of Speed Successfull")
             else:
