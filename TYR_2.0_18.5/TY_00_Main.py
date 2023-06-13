@@ -6,7 +6,7 @@ from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
 from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_04_SETTING import TY_04_Ui_MainWindow
 from TY_05_SPECIMEN_2 import TY_05_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL import TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
 
 import sqlite3
