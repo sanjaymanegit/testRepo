@@ -506,7 +506,7 @@ class TY_01_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)       
         self.comboBox_2.addItem("Kg")
-        #self.comboBox_2.addItem("MPa")
+        self.comboBox_2.addItem("MPa")
         self.comboBox_2.setObjectName("comboBox_2")
         
         self.label_6_3 = QtWidgets.QLabel(self.frame)
