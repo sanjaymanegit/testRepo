@@ -1,6 +1,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_02_START_TEST import TY_02_Ui_MainWindow
+from TY_02_START_TEST_2 import TY_02_Ui_MainWindow
 #from TY_01_TEST_BATCH_FLEXU import TY_02f_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
@@ -612,6 +612,7 @@ class TY_01_Ui_MainWindow(object):
         
         
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.comboBox_2.currentTextChanged.connect(self.onchage_combo2)
         self.pushButton_7.clicked.connect(self.reset_job)
         self.pushButton_3.clicked.connect(self.open_window)
         self.pushButton_8.clicked.connect(MainWindow.close)
@@ -755,6 +756,33 @@ class TY_01_Ui_MainWindow(object):
            self.lineEdit_2_1.setText(str(x[1]))
         connection.close()     
         print("inside")
+        
+    def onchage_combo2(self):
+        if(self.comboBox_2.currentText() == "MPa"):
+            self.label_21_1.setText("Max. Load ( N ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+            self.label_1_1.setText("Comp.Max.Load (N):")           
+            self.label_2_1.setText("Compressive.Length(mm):")
+            self.comboBox_3.setCurrentText("Mm")            
+        elif(self.comboBox_2.currentText() == "N"):
+            self.label_21_1.setText("Max. Load ( N ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+            self.label_1_1.setText("Comp.Max.Load (N):")           
+            self.label_2_1.setText("Compressive.Length(mm):")
+            self.comboBox_3.setCurrentText("Mm")
+        elif(self.comboBox_2.currentText() == "Lb"):
+            self.label_21_1.setText("Max. Load ( Lb ):")
+            self.label_22_1.setText("Max. Elongation ( Inch ):")  
+            self.label_1_1.setText("Comp.Max.Load (Lb):")           
+            self.label_2_1.setText("Compressive.Length(Inch):")
+            self.comboBox_3.setCurrentText("Inch")
+        else:
+            self.label_21_1.setText("Max. Load ( Kg ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+            self.label_1_1.setText("Comp.Max.Load (Kgf):")           
+            self.label_2_1.setText("Compressive.Length(mm):")
+            self.comboBox_3.setCurrentText("Mm")
+        
         
     def onchage_combo(self):
         self.label_8.show()
