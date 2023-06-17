@@ -1,7 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_02_START_TEST import TY_02_Ui_MainWindow
-from TY_02_START_TEST_FLEXUR import TY_02f_Ui_MainWindow
+from TY_02_START_TEST_FLEXUR_2 import TY_02f_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
@@ -486,7 +486,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         font.setPointSize(10)
         self.comboBox_2.setFont(font)       
         self.comboBox_2.addItem("Kg")
-        #self.comboBox_2.addItem("MPa")
+        self.comboBox_2.addItem("MPa")
         self.comboBox_2.setObjectName("comboBox_2")
         
         self.label_6_3 = QtWidgets.QLabel(self.frame)
@@ -986,7 +986,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
                 cursor = connection.cursor()
                 cursor.execute("UPDATE GLOBAL_VAR2 SET LAST_LOAD_UNIT='"+str(str(self.comboBox_2.currentText()))+"', LAST_DISP_UNIT='"+str(self.comboBox_3.currentText())+"'")         
                 cursor.execute("UPDATE SPECIMEN_MST SET LAST_UNIT_LOAD='"+str(str(self.comboBox_2.currentText()))+"', LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'   where SPECIMEN_NAME = '"+str(self.comboBox.currentText())+"'")
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"',TEST_METHOD='"+str(self.lineEdit_6_2.text())+"'") 
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()

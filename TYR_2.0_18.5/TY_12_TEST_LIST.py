@@ -5,7 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
-from TY_01_TEST_BATCH_FLXURL import TY_01_fluxurl_Ui_MainWindow
+from TY_01_TEST_BATCH_FLXURL2 import TY_01_fluxurl_Ui_MainWindow
 from TY_11_START_TEST_COF import TY_11_Ui_MainWindow
 from TY_22_TEST_BATCH_TENSILE_8 import TY_01_T8_Ui_MainWindow
 from TY_23_START_TEST_PEELOFF import TY_23_PEELOFF_Ui_MainWindow

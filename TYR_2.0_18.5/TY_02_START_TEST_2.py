@@ -1937,10 +1937,8 @@ class TY_02_Ui_MainWindow(object):
             '''
             self.label_30.hide()           
             self.lineEdit_3.hide()
-            self.lineEdit_2.hide()
-            
-        elif(str(rows[0][14])=="Flexural"):            
-            self.show_grid_data_flexure()
+            self.lineEdit_2.hide()            
+       
             
         else:
             if(str(rows[0][15])=="Y"):
@@ -2902,8 +2900,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.modbus_port=str(x[5])
              self.non_modbus_port=str(x[6])
         connection.close()
-        
-        
+                
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(NEW_TEST_AREA*0.1*0.1,0)  from GLOBAL_VAR") 
@@ -3951,7 +3948,7 @@ class Ext_PlotCanvas_Auto(FigureCanvas):
  
 
 
-
+'''
 
 class Kg_Cm_PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
@@ -4048,7 +4045,7 @@ class Kg_Cm_PlotCanvas(FigureCanvas):
         
         #ax.connect('motion_notify_event', mouse_move)
     
-
+'''
 
 
 class PlotCanvas(FigureCanvas):
