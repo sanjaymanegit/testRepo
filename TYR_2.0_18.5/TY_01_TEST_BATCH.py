@@ -441,7 +441,7 @@ class TY_01_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.lineEdit_1.setFont(font)
-        self.lineEdit_1.setText("")
+        self.lineEdit_1.setText("0")
         self.lineEdit_1.setObjectName("lineEdit_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_1, 0, 1, 1, 1)
         self.label_22_1 = QtWidgets.QLabel(self.layoutWidget2_1)
@@ -461,6 +461,7 @@ class TY_01_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.lineEdit_2_1_1.setFont(font)
+        self.lineEdit_2_1_1.setText("0")
         self.lineEdit_2_1_1.setObjectName("lineEdit_2_1_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_2_1_1, 1, 1, 1, 1)
         
@@ -559,6 +560,14 @@ class TY_01_Ui_MainWindow(object):
         self.specs=0        
         self.test_type=""
         
+        self.graph_scal_y_load_kg=0.0
+        self.graph_scal_y_load_n=0.0
+        self.graph_scal_y_load_lb=0.0          
+        self.graph_scal_x_length_mm=0.0
+        self.graph_scal_x_length_cm=0.0
+        self.graph_scal_x_length_inch=0.0
+            
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -618,7 +627,8 @@ class TY_01_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(MainWindow.close)
         self.lineEdit_1_1.textChanged.connect(self.make_zero_on_null)
         self.lineEdit_2_1.textChanged.connect(self.make_zero_on_null)
-        self.load_data() 
+        self.load_data()
+        self.onchage_combo2()
      
     def make_zero_on_null(self):
         if(str(self.lineEdit_1_1.text()) == ""):
@@ -763,25 +773,60 @@ class TY_01_Ui_MainWindow(object):
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
             self.label_1_1.setText("Comp.Max.Load (N):")           
             self.label_2_1.setText("Compressive.Length(mm):")
-            self.comboBox_3.setCurrentText("Mm")            
+            self.comboBox_3.setCurrentText("Mm")
+            print("  self.lineEdit_1.text: "+str(self.lineEdit_1.text()))
+            self.graph_scal_y_load_n=int(self.lineEdit_1.text())   ### Input as Newton
+            #self.graph_scal_y_load_n=2000
+            self.graph_scal_y_load_lb=float(self.graph_scal_y_load_n)*0.225  ### Newton to LB Conversion
+            self.graph_scal_y_load_kg=float(self.graph_scal_y_load_n)* 0.1019  #### Newton to Kg conversion
+            
+            self.graph_scal_x_length_mm=int(self.lineEdit_2_1_1.text())
+            self.graph_scal_x_length_cm=float(self.graph_scal_x_length_mm)*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=float(self.graph_scal_x_length_mm)*0.0393701 ### Mm to Inch conversion           
+            
         elif(self.comboBox_2.currentText() == "N"):
             self.label_21_1.setText("Max. Load ( N ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
             self.label_1_1.setText("Comp.Max.Load (N):")           
-            self.label_2_1.setText("Compressive.Length(mm):")
+            self.label_2_1.setText("Compressive.Length(mm):")            
             self.comboBox_3.setCurrentText("Mm")
+            self.graph_scal_y_load_n=str(self.lineEdit_1.text())   ### Input as Newton
+            self.graph_scal_y_load_lb=int(self.graph_scal_y_load_n)*0.225  ### Newton to LB Conversion
+            self.graph_scal_y_load_kg=int(self.graph_scal_y_load_n)* 0.1019  #### Newton to Kg conversion
+            
+            self.graph_scal_x_length_mm=str(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=self.graph_scal_x_length_mm*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=self.graph_scal_x_length_mm*0.0393701 ### Mm to Inch conversion
         elif(self.comboBox_2.currentText() == "Lb"):
             self.label_21_1.setText("Max. Load ( Lb ):")
             self.label_22_1.setText("Max. Elongation ( Inch ):")  
             self.label_1_1.setText("Comp.Max.Load (Lb):")           
             self.label_2_1.setText("Compressive.Length(Inch):")
             self.comboBox_3.setCurrentText("Inch")
+            self.graph_scal_y_load_lb=str(self.lineEdit_1.text())   ### Input as LB
+            self.graph_scal_y_load_n=int(self.graph_scal_y_load_lb)*4.4482216  ### LB to Newton Conversion
+            self.graph_scal_y_load_kg=int(self.graph_scal_y_load_lb)* 0.453592  #### LB to Kg conversion
+            
+            self.graph_scal_x_length_mm=str(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=self.graph_scal_x_length_mm*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=self.graph_scal_x_length_mm*0.0393701 ### Mm to Inch conversion
+            
         else:
             self.label_21_1.setText("Max. Load ( Kg ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
             self.label_1_1.setText("Comp.Max.Load (Kgf):")           
             self.label_2_1.setText("Compressive.Length(mm):")
             self.comboBox_3.setCurrentText("Mm")
+            self.graph_scal_y_load_kg=int(self.lineEdit_1.text())
+            self.graph_scal_y_load_n=float(self.graph_scal_y_load_kg)*9.81  ## Kg to Newton Conversion
+            self.graph_scal_y_load_lb=float(self.graph_scal_y_load_kg)*2.20462  ##3 Kg to Lb conversion
+            
+            self.graph_scal_x_length_mm=int(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=float(self.graph_scal_x_length_mm)*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=float(self.graph_scal_x_length_mm)*0.0393701 ### Mm to Inch conversion
+        
+        print("self.graph_scal_y_load_kg:"+str(self.graph_scal_y_load_kg)+"  graph_scal_y_load_n:"+str(self.graph_scal_y_load_n)+"  graph_scal_y_load_lb:"+str(self.graph_scal_y_load_lb))
+        print("self.graph_scal_x_length_mm:"+str(self.graph_scal_x_length_mm)+"  graph_scal_x_length_cm:"+str(self.graph_scal_x_length_cm)+"  graph_scal_x_length_inch:"+str(self.graph_scal_x_length_inch))
         
         
     def onchage_combo(self):
@@ -958,11 +1003,11 @@ class TY_01_Ui_MainWindow(object):
             self.window.show()       
          
     def load_test_data(self):
-        
+        self.onchage_combo2()
         connection = sqlite3.connect("tyr.db")              
         with connection:        
               cursor = connection.cursor()                                
-              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,MOTOR_SPEED,MOTOR_REV_SPEED,TEST_METHOD) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED,TEST_METHOD FROM GLOBAL_VAR")                                
+              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,MOTOR_SPEED,MOTOR_REV_SPEED,TEST_METHOD,TESTED_BY) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED,TEST_METHOD,LOGIN_USER_NAME FROM GLOBAL_VAR")                                
         connection.commit();
         connection.close()  
         
@@ -972,7 +1017,8 @@ class TY_01_Ui_MainWindow(object):
               cursor = connection.cursor()                                        
               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT IFNULL(MAX(TEST_ID),1) FROM TEST_MST)")
               cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+self.lineEdit_1.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_2_1_1.text()+"'")
-              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_1.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_2_1_1.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+str(self.graph_scal_y_load_kg)+"',GRAPH_SCAL_X_LENGTH='"+str(self.graph_scal_x_length_mm)+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_N='"+str(self.graph_scal_y_load_n)+"',GRAPH_SCAL_Y_LOAD_LB='"+str(self.graph_scal_y_load_lb)+"',GRAPH_SCAL_X_LENGTH_CM='"+str(self.graph_scal_x_length_cm)+"',GRAPH_SCAL_X_LENGTH_INCH='"+str(self.graph_scal_x_length_inch)+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
               cursor.execute("DELETE FROM STG_GRAPH_MST")
         connection.commit();
         connection.close()     
