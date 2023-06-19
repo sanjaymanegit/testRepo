@@ -649,6 +649,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         rows=results.fetchall()        
         self.label_3.setText(rows[0][0])
         self.test_type=str(rows[0][0])
+        print("test type:"+str(self.test_type))
         if(str(rows[0][0])=="Compress"):
              self.label_1_1.show()
              self.lineEdit_1_1.show()
@@ -767,8 +768,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         if(self.comboBox_2.currentText() == "MPa"):
             self.label_21_1.setText("Max. Load ( N ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (N):")           
-            self.label_2_1.setText("Compressive.Length(mm):")
+
             self.comboBox_3.setCurrentText("Mm")
             print("  self.lineEdit_1.text: "+str(self.lineEdit_1.text()))
             self.graph_scal_y_load_n=int(self.lineEdit_1.text())   ### Input as Newton
@@ -783,8 +783,8 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         elif(self.comboBox_2.currentText() == "N"):
             self.label_21_1.setText("Max. Load ( N ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (N):")           
-            self.label_2_1.setText("Compressive.Length(mm):")            
+#             self.label_1_1.setText("Comp.Max.Load (N):")           
+#             self.label_2_1.setText("Compressive.Length(mm):")            
             self.comboBox_3.setCurrentText("Mm")
             self.graph_scal_y_load_n=str(self.lineEdit_1.text())   ### Input as Newton
             self.graph_scal_y_load_lb=int(self.graph_scal_y_load_n)*0.225  ### Newton to LB Conversion
@@ -796,8 +796,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         elif(self.comboBox_2.currentText() == "Lb"):
             self.label_21_1.setText("Max. Load ( Lb ):")
             self.label_22_1.setText("Max. Elongation ( Inch ):")  
-            self.label_1_1.setText("Comp.Max.Load (Lb):")           
-            self.label_2_1.setText("Compressive.Length(Inch):")
+
             self.comboBox_3.setCurrentText("Inch")
             self.graph_scal_y_load_lb=str(self.lineEdit_1.text())   ### Input as LB
             self.graph_scal_y_load_n=int(self.graph_scal_y_load_lb)*4.4482216  ### LB to Newton Conversion
@@ -810,8 +809,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         else:
             self.label_21_1.setText("Max. Load ( Kg ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (Kgf):")           
-            self.label_2_1.setText("Compressive.Length(mm):")
+
             self.comboBox_3.setCurrentText("Mm")
             self.graph_scal_y_load_kg=int(self.lineEdit_1.text())
             self.graph_scal_y_load_n=float(self.graph_scal_y_load_kg)*9.81  ## Kg to Newton Conversion
