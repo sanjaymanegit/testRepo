@@ -863,7 +863,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Load Radius(mm):"))
         self.label_32.setText(_translate("MainWindow", "J11"))
         self.label_21.setText(_translate("MainWindow", "Span(mm) :"))
-        self.label_25.setText(_translate("MainWindow", "Speed(rpm).:"))
+        self.label_25.setText(_translate("MainWindow", "Speed(mm/min).:"))
         self.label_22.setText(_translate("MainWindow", "90"))
         self.label_26.setText(_translate("MainWindow", "1"))
         self.lineEdit_3_1.setText("5") #% Strain at Break
@@ -1860,8 +1860,8 @@ class TY_02f_Ui_MainWindow(object):
         if(self.last_load_unit == "MPa" and self.last_disp_unit=="Mm"):
              data2= [ ['Spec. \n No', 'Length \n (Mm)','Thickness  \n (Mm)','Width  \n (Mm)','Support \n Span  \n (Mm)','Max.\n Displ. \n (Mm)', 'Force  \n @  Peak\n (N)', 'Flexural \n Strength \n (MPa)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
         elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):
-             self.length=float(int(self.length)*0.1)
-             data2= [ ['Spec. \n No', 'Length \n (cm)','Thickness  \n (cm)','Width  \n (cm)','Support \n Span  \n (cm)','Max.\n Displ. \n (cm)', 'Force  \n @  Peak\n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
+             self.length=float(int(self.length))
+             data2= [ ['Spec. \n No', 'Length \n (Mm)','Thickness  \n (Mm)','Width  \n (Mm)','Support \n Span  \n (Mm)','Max.\n Displ. \n (Mm)', 'Force  \n @  Peak\n (Kgf)', 'Flexural \n Strength \n (Kgf/cm2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
         else:    
              data2= [ ['Spec. \n No', 'Length \n ('+str(self.last_disp_unit)+')','Thickness  \n ('+str(self.last_disp_unit)+')','Width  \n ('+str(self.last_disp_unit)+')','Support \n Span  \n ('+str(self.last_disp_unit)+')','Max.\n Displ. \n ('+str(self.last_disp_unit)+')', 'Force  \n @  Peak\n ('+str(self.last_load_unit)+')', 'Flexural \n Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Flexural \n Modulus \n','Flexural \n Strain \n at Break (%)','Flexural \n Strain \n at Input (%)']]
         
@@ -1896,25 +1896,25 @@ class TY_02f_Ui_MainWindow(object):
             
         elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,"+str(self.length)+",printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.WIDTH*0.1),printf(\"%.2f\", A.SPAN*0.1),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM*0.1),printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.FLEXURAL_STRENGTH*100),printf(\"%.2f\", A.flexural_mod_kg_cm),printf(\"%.2f\", A.per_strain_at_break),printf(\"%.2f\", A.per_strain_at_input) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT CYCLE_NUM,"+str(self.length)+",printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.2f\", A.SPAN),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.4f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.FLEXURAL_STRENGTH*100),printf(\"%.2f\", A.flexural_mod_kg_cm),printf(\"%.2f\", A.per_strain_at_break),printf(\"%.2f\", A.per_strain_at_input) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',"+str(self.length)+",printf(\"%.2f\", avg(A.THINCKNESS)*0.1),printf(\"%.2f\", avg(A.WIDTH)*0.1),printf(\"%.2f\", avg(A.SPAN)*0.1),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", avg(A.flexural_mod_kg_cm)),printf(\"%.2f\", avg(A.per_strain_at_break)),printf(\"%.2f\", avg(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'AVG',"+str(self.length)+",printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.WIDTH)),printf(\"%.2f\", avg(A.SPAN)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.4f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", avg(A.flexural_mod_kg_cm)),printf(\"%.2f\", avg(A.per_strain_at_break)),printf(\"%.2f\", avg(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',"+str(self.length)+",printf(\"%.2f\", max(A.THINCKNESS)*0.1),printf(\"%.2f\", max(A.WIDTH)*0.1),printf(\"%.2f\", max(A.SPAN)*0.1),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", max(A.flexural_mod_kg_cm)),printf(\"%.2f\", max(A.per_strain_at_break)),printf(\"%.2f\", max(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MAX',"+str(self.length)+",printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.WIDTH)),printf(\"%.2f\", max(A.SPAN)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.4f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", max(A.flexural_mod_kg_cm)),printf(\"%.2f\", max(A.per_strain_at_break)),printf(\"%.2f\", max(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',"+str(self.length)+",printf(\"%.2f\", min(A.THINCKNESS)*0.1),printf(\"%.2f\", min(A.WIDTH)*0.1),printf(\"%.2f\", min(A.SPAN)*0.1),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)*0.1),printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", min(A.flexural_mod_kg_cm)),printf(\"%.2f\", min(A.per_strain_at_break)),printf(\"%.2f\", min(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MIN',"+str(self.length)+",printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.WIDTH)),printf(\"%.2f\", min(A.SPAN)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.4f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.FLEXURAL_STRENGTH*100)),printf(\"%.2f\", min(A.flexural_mod_kg_cm)),printf(\"%.2f\", min(A.per_strain_at_break)),printf(\"%.2f\", min(A.per_strain_at_input)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
@@ -1977,27 +1977,27 @@ class TY_02f_Ui_MainWindow(object):
             
         elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):   
         
-                data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (cm)','Support Radious \n (cm)','Failure \n Mode','Test \n Method']]        
+                data3= [ ['Spec. \n No', 'Test Speed \n (mm/min)', 'Load Radious \n (Mm)','Support Radious \n (Mm)','Failure \n Mode','Test \n Method']]        
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.speed_rpm),printf(\"%.2f\", A.load_radious*0.1),printf(\"%.2f\", A.support_radious*0.1),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.speed_rpm),printf(\"%.2f\", A.load_radious),printf(\"%.2f\", A.support_radious),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data3.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.speed_rpm)),printf(\"%.2f\", avg(A.load_radious)*0.1),printf(\"%.2f\", avg(A.support_radious)*0.1),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.speed_rpm)),printf(\"%.2f\", avg(A.load_radious)),printf(\"%.2f\", avg(A.support_radious)),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data3.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.speed_rpm)),printf(\"%.2f\", max(A.load_radious)*0.1),printf(\"%.2f\", max(A.support_radious)*0.1),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.speed_rpm)),printf(\"%.2f\", max(A.load_radious)),printf(\"%.2f\", max(A.support_radious)),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data3.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.speed_rpm)),printf(\"%.2f\", min(A.load_radious)*0.1),printf(\"%.2f\", min(A.support_radious)*0.1),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.speed_rpm)),printf(\"%.2f\", min(A.load_radious)),printf(\"%.2f\", min(A.support_radious)),A.BREAK_MODE,A.TEST_METHOD FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data3.append(x)
                 connection.close()
@@ -3037,7 +3037,10 @@ class PlotCanvas(FigureCanvas):
         
         
         ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+')')
-        ax.set_ylabel('Load ('+str(self.last_load_unit)+')')     
+        if(str(self.last_load_unit) == 'MPa'):
+             ax.set_ylabel('Load (N)')
+        else:
+             ax.set_ylabel('Load ('+str(self.last_load_unit)+')')   
         
         
         

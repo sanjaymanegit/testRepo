@@ -8,7 +8,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_02_START_TEST import TY_02_Ui_MainWindow
+#from TY_02_START_TEST import TY_02_Ui_MainWindow
+from TY_02_START_TEST_2 import TY_02_Ui_MainWindow
 from TY_19_START_TEST_TENSILE_8 import TY_19_Ui_MainWindow
 
 import sqlite3
