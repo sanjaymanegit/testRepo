@@ -1,14 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'TY_01_TEST_BATCH.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.3
-#
-# WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from TY_02_START_TEST import TY_02_Ui_MainWindow
+#from TY_02_START_TEST import TY_02_Ui_MainWindow
 from TY_02_START_TEST_FLEXUR import TY_02f_Ui_MainWindow
 import sqlite3
 from PyQt5.QtCore import QRegExp
@@ -19,7 +11,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
         MainWindow.setBaseSize(QtCore.QSize(15, 11))
-        #MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
+        MainWindow.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -32,8 +24,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
-        #self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
-        self.frame.setStyleSheet("background-color: rgb(215, 255, 252);")
+        self.frame.setStyleSheet("background-color: rgb(221, 255, 234);")
         self.frame.setObjectName("frame")
         
         self.label_6 = QtWidgets.QLabel(self.frame)
@@ -206,6 +197,26 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_14.setFont(font)
         self.label_14.setObjectName("label_14")
         self.gridLayout.addWidget(self.label_14, 4, 2, 1, 2)
+        
+        
+        
+        self.label_13_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_13_1.setFont(font)
+        
+        self.label_13_1.setObjectName("label_13_1")        
+        self.gridLayout.addWidget(self.label_13_1, 5, 0, 1, 2)
+        
+        self.label_14_1 = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(12)
+        self.label_14_1.setFont(font)
+        self.label_14_1.setObjectName("label_14_1")
+        
+        self.gridLayout.addWidget(self.label_14_1, 5, 2, 1, 2)
         
         
         self.groupBox_2 = QtWidgets.QGroupBox(self.frame)
@@ -415,7 +426,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.lineEdit_1.setFont(font)
-        self.lineEdit_1.setText("")
+        self.lineEdit_1.setText("0")
         self.lineEdit_1.setObjectName("lineEdit_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_1, 0, 1, 1, 1)
         self.label_22_1 = QtWidgets.QLabel(self.layoutWidget2_1)
@@ -435,6 +446,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         font.setFamily("MS Sans Serif")
         font.setPointSize(10)
         self.lineEdit_2_1_1.setFont(font)
+        self.lineEdit_2_1_1.setText("0")
         self.lineEdit_2_1_1.setObjectName("lineEdit_2_1_1")
         self.gridLayout_4_1.addWidget(self.lineEdit_2_1_1, 1, 1, 1, 1)
         
@@ -451,6 +463,52 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_22_2.setText("4mm")
         self.label_22_2.setObjectName("label_22_2")
         #elf.gridLayout_4_1.addWidget(self.label_22_2, 1, 0, 1, 1)
+        
+        
+        
+        ###### Units Type ######
+        self.label_6_2 = QtWidgets.QLabel(self.frame)
+        self.label_6_2.setGeometry(QtCore.QRect(1000, 565, 90, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.label_6_2.setFont(font)
+        self.label_6_2.setText("Load Unit :")
+        self.label_6_2.setStyleSheet("color: rgb(0, 85, 255);")
+        self.label_6_2.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_6_2.setObjectName("label_6_2")
+       
+        self.comboBox_2 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2.setGeometry(QtCore.QRect(1100, 560, 90, 31))
+        self.comboBox_2.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.comboBox_2.setFont(font)       
+        self.comboBox_2.addItem("Kg")
+        self.comboBox_2.addItem("MPa")
+        self.comboBox_2.setObjectName("comboBox_2")
+        
+        self.label_6_3 = QtWidgets.QLabel(self.frame)
+        self.label_6_3.setGeometry(QtCore.QRect(980, 615, 120, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.label_6_3.setFont(font)
+        self.label_6_3.setText("Elongation Unit :")
+        self.label_6_3.setStyleSheet("color: rgb(0, 85, 255);")
+        self.label_6_3.setAlignment(QtCore.Qt.AlignLeft)
+        self.label_6_3.setObjectName("label_6_3")
+       
+        self.comboBox_3 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_3.setGeometry(QtCore.QRect(1100, 610, 90, 31))
+        self.comboBox_3.setStyleSheet("background-color: rgb(221, 255, 234) ; color: rgb(0, 0, 0);")
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.comboBox_3.setFont(font)       
+        self.comboBox_3.addItem("Mm")        
+        self.comboBox_3.setObjectName("comboBox_3")
         
         
         MainWindow.setCentralWidget(self.centralwidget)
@@ -481,7 +539,12 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.per_strain_mm=0
         self.span=0
         self.max_length=0
-        
+        self.graph_scal_y_load_kg=0.0
+        self.graph_scal_y_load_n=0.0
+        self.graph_scal_y_load_lb=0.0          
+        self.graph_scal_x_length_mm=0.0
+        self.graph_scal_x_length_cm=0.0
+        self.graph_scal_x_length_inch=0.0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -493,15 +556,15 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "GO TO TEST"))
         self.pushButton_7.setText(_translate("MainWindow", "RESET"))
         self.groupBox.setTitle(_translate("MainWindow", "Specimen Details"))
-        self.label_4.setText(_translate("MainWindow", "Speciment Shape:"))
+        self.label_4.setText(_translate("MainWindow", " Shape:"))
         self.label_5.setText(_translate("MainWindow", "Rectangle"))
-        self.label_7.setText(_translate("MainWindow", "Spec.  Specifications"))
+        self.label_7.setText(_translate("MainWindow", "Spec.  Details"))
         self.label_8.setText(_translate("MainWindow", "Specs XXXXXXX"))
         self.label_10.setText(_translate("MainWindow", "MRF"))
         self.label_9.setText(_translate("MainWindow", "Party:"))
-        self.label_11.setText(_translate("MainWindow", "Test Speed (RPM):"))
-        self.label_12.setText(_translate("MainWindow", "200"))
-        self.label_13.setText(_translate("MainWindow", "Guage Length(mm) :"))
+        self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
+        self.label_12.setText(_translate("MainWindow", "-0"))
+        self.label_13.setText(_translate("MainWindow", "Product Length(mm) :"))
         self.label_14.setText(_translate("MainWindow", "60"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Specimen Diamentions"))
         self.label_15.setText(_translate("MainWindow", "CS.Area(mm2):"))
@@ -530,7 +593,12 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_1_1.hide()
         self.label_2_1.setText("Compressive.Length(mm):")
         self.label_2_1.hide()
+        
+        self.label_14_1.setText("0")
+        self.label_13_1.setText("Rev.Speed (mm/min): ")
+        
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        self.comboBox_2.currentTextChanged.connect(self.onchage_combo2)
         self.pushButton_7.clicked.connect(self.reset_job)
         self.pushButton_3.clicked.connect(self.open_window)
         self.pushButton_8.clicked.connect(MainWindow.close)
@@ -538,8 +606,9 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.lineEdit_2_1.textChanged.connect(self.make_zero_on_null)
         self.lineEdit_1_1.textChanged.connect(self.on_change_input_strain)
         self.lineEdit_2_1.textChanged.connect(self.on_change_input_strain)
-        self.load_data()        
-        self.load_login_dtls()
+        
+        self.load_data() 
+        self.onchage_combo2()
      
     
     
@@ -558,6 +627,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
                     self.inut_strain_mm=float((int(self.per_strain_mm)/100)*int(self.span))
                     self.label_22_2.setText(str(round(self.inut_strain_mm,2))+" mm ")
                     self.max_length=str(round(self.inut_strain_mm,2))
+                    print("self.max_length: "+str(self.max_length))
         
     
     def make_zero_on_null(self):
@@ -579,6 +649,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         rows=results.fetchall()        
         self.label_3.setText(rows[0][0])
         self.test_type=str(rows[0][0])
+        print("test type:"+str(self.test_type))
         if(str(rows[0][0])=="Compress"):
              self.label_1_1.show()
              self.lineEdit_1_1.show()
@@ -614,7 +685,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         
         #print("curr text :"+str(self.comboBox.currentText()))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
+        results=connection.execute("SELECT SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP  FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")         
         for x in results:        
            self.label_5.setText(str(x[0]))
            self.label_8.setText(str(x[11]))  #specs
@@ -636,9 +707,26 @@ class TY_01_fluxurl_Ui_MainWindow(object):
            self.party_name=str(x[7])
            self.guage_mm=str(x[8])
            self.pre_load=str(x[9])
-           self.motor_speed=str(x[10])
+           #self.motor_speed=str(x[10])
            self.specs=str(x[11])           
            #print(" cccc:"+str(x[0]))
+           
+           self.comboBox_2.setCurrentText(str(x[13])) #UNIT_LOAD
+           self.comboBox_3.setCurrentText(str(x[14])) #UNIT_Compression
+           
+           if(self.test_type=="Compress"):
+                self.label_14_1.setText(str(x[10]))
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           elif(self.test_type=="Flexural"):
+                self.label_14_1.setText(str(x[10]))                
+                self.motor_speed=str(x[12])
+                self.label_12.setText(str(x[12]))
+           else:
+                self.label_14_1.setText(str(x[12]))
+                self.motor_speed=str(x[10])
+                self.label_12.setText(str(x[10]))
+           
            if (x[0]=="Rectangle"):
                self.label_17.setText("Thickness(mm):")
                self.label_18.setText(str(x[1]))
@@ -660,6 +748,8 @@ class TY_01_fluxurl_Ui_MainWindow(object):
                self.label_18.setText(str(x[4]))
                self.label_19.hide()
                self.label_20.hide()
+           else:
+               print("invalid shape")
                
         connection.close()
         self.reset_job()
@@ -674,11 +764,70 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         connection.close()     
         print("inside")
         
+    def onchage_combo2(self):
+        if(self.comboBox_2.currentText() == "MPa"):
+            self.label_21_1.setText("Max. Load ( N ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+
+            self.comboBox_3.setCurrentText("Mm")
+            print("  self.lineEdit_1.text: "+str(self.lineEdit_1.text()))
+            self.graph_scal_y_load_n=int(self.lineEdit_1.text())   ### Input as Newton
+            #self.graph_scal_y_load_n=2000
+            self.graph_scal_y_load_lb=float(self.graph_scal_y_load_n)*0.225  ### Newton to LB Conversion
+            self.graph_scal_y_load_kg=float(self.graph_scal_y_load_n)* 0.1019  #### Newton to Kg conversion
+            
+            self.graph_scal_x_length_mm=int(self.lineEdit_2_1_1.text())
+            self.graph_scal_x_length_cm=float(self.graph_scal_x_length_mm)*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=float(self.graph_scal_x_length_mm)*0.0393701 ### Mm to Inch conversion           
+            
+        elif(self.comboBox_2.currentText() == "N"):
+            self.label_21_1.setText("Max. Load ( N ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+#             self.label_1_1.setText("Comp.Max.Load (N):")           
+#             self.label_2_1.setText("Compressive.Length(mm):")            
+            self.comboBox_3.setCurrentText("Mm")
+            self.graph_scal_y_load_n=str(self.lineEdit_1.text())   ### Input as Newton
+            self.graph_scal_y_load_lb=int(self.graph_scal_y_load_n)*0.225  ### Newton to LB Conversion
+            self.graph_scal_y_load_kg=int(self.graph_scal_y_load_n)* 0.1019  #### Newton to Kg conversion
+            
+            self.graph_scal_x_length_mm=str(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=self.graph_scal_x_length_mm*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=self.graph_scal_x_length_mm*0.0393701 ### Mm to Inch conversion
+        elif(self.comboBox_2.currentText() == "Lb"):
+            self.label_21_1.setText("Max. Load ( Lb ):")
+            self.label_22_1.setText("Max. Elongation ( Inch ):")  
+
+            self.comboBox_3.setCurrentText("Inch")
+            self.graph_scal_y_load_lb=str(self.lineEdit_1.text())   ### Input as LB
+            self.graph_scal_y_load_n=int(self.graph_scal_y_load_lb)*4.4482216  ### LB to Newton Conversion
+            self.graph_scal_y_load_kg=int(self.graph_scal_y_load_lb)* 0.453592  #### LB to Kg conversion
+            
+            self.graph_scal_x_length_mm=str(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=self.graph_scal_x_length_mm*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=self.graph_scal_x_length_mm*0.0393701 ### Mm to Inch conversion
+            
+        else:
+            self.label_21_1.setText("Max. Load ( Kg ):")
+            self.label_22_1.setText("Max. Elongation ( Mm ):")  
+
+            self.comboBox_3.setCurrentText("Mm")
+            self.graph_scal_y_load_kg=int(self.lineEdit_1.text())
+            self.graph_scal_y_load_n=float(self.graph_scal_y_load_kg)*9.81  ## Kg to Newton Conversion
+            self.graph_scal_y_load_lb=float(self.graph_scal_y_load_kg)*2.20462  ##3 Kg to Lb conversion
+            
+            self.graph_scal_x_length_mm=int(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_cm=float(self.graph_scal_x_length_mm)*0.1 ### MM to CM conversion
+            self.graph_scal_x_length_inch=float(self.graph_scal_x_length_mm)*0.0393701 ### Mm to Inch conversion
+        
+        print("self.graph_scal_y_load_kg:"+str(self.graph_scal_y_load_kg)+"  graph_scal_y_load_n:"+str(self.graph_scal_y_load_n)+"  graph_scal_y_load_lb:"+str(self.graph_scal_y_load_lb))
+        print("self.graph_scal_x_length_mm:"+str(self.graph_scal_x_length_mm)+"  graph_scal_x_length_cm:"+str(self.graph_scal_x_length_cm)+"  graph_scal_x_length_inch:"+str(self.graph_scal_x_length_inch))
+        
+        
     def onchage_combo(self):
         self.label_8.show()
         self.lineEdit_2.show()                
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select SHAPE,THICKNESS,WIDTH,DIAMETER,round(C_A_AREA,2),IN_DIAMETER_MM,OUTER_DIAMETER_MM,PARTY_NAME,GUAGE_LENGTH_MM,PRE_LOAD,MOTOR_SPEED,SPECIMEN_SPECS,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP  FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
            self.cs_area=int(x[4])        
            self.label_5.setText(x[0])
@@ -702,8 +851,21 @@ class TY_01_fluxurl_Ui_MainWindow(object):
            self.label_14.setText(str(x[8])) #guag
            self.label_16.setText(str(x[4])) #cs area
            
-           #if(self.test_type=="Flexural"):
-                       #self.lineEdit_1_1.setText(str(x[8]))
+           self.comboBox_2.setCurrentText(str(x[13])) #UNIT_LOAD
+           self.comboBox_3.setCurrentText(str(x[14])) #UNIT_Compression
+           
+           if(str(self.test_type) == "Compress"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           elif(str(self.test_type) == "Flexural"):
+               self.label_14_1.setText(str(x[10]))
+               self.motor_speed=str(x[12])
+               self.label_12.setText(str(x[12]))
+           else:
+               self.label_14_1.setText(str(x[12]))
+               self.motor_speed=str(x[10])
+               self.label_12.setText(str(x[10]))
            
            self.label_15.show()
            self.label_16.show()
@@ -786,7 +948,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
                 elif(int(self.lineEdit_2_1.text() ) <=  0):
                     self.label_23.setText(" Compressive Length Should not be 0 ")    
                     self.label_23.show()
-                elif(int(self.lineEdit_2_1.text() ) > int(self.guage_mm)):
+                elif(int(self.lineEdit_2_1.text() ) > float(self.guage_mm)):
                     self.label_23.setText(" Compressive Length Should not be Greater than Guage Length ")    
                     self.label_23.show()                
                 elif(self.lineEdit_1_1.text() == ""):
@@ -814,12 +976,16 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         #print("Thickness :"+str(self.thickness))
         #print("Width :"+str(self.width))
         #print("cs area :"+str(self.cs_area))
+        
         self.validation()                   
         if(self.goAhead=="Yes"):        
             connection = sqlite3.connect("tyr.db")          
             with connection:        
-                cursor = connection.cursor()                    
-                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"'") 
+                cursor = connection.cursor()
+                cursor.execute("UPDATE GLOBAL_VAR2 SET LAST_LOAD_UNIT='"+str(str(self.comboBox_2.currentText()))+"', LAST_DISP_UNIT='"+str(self.comboBox_3.currentText())+"'")         
+                cursor.execute("UPDATE SPECIMEN_MST SET LAST_UNIT_LOAD='"+str(str(self.comboBox_2.currentText()))+"', LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'   where SPECIMEN_NAME = '"+str(self.comboBox.currentText())+"'")
+                
+                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.max_length)+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+self.shape+"', NEW_TEST_THICKNESS='"+self.thickness+"',NEW_TEST_WIDTH='"+self.width+"',NEW_TEST_DIAMETER='"+self.diameter+"',NEW_TEST_INN_DIAMETER='"+self.inn_dia+"',NEW_TEST_OUTER_DIAMETER='"+self.out_dia+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_PARTY_NAME='"+str(self.party_name)+"',NEW_TEST_MOTOR_SPEED='"+str(self.motor_speed)+"',NEW_TEST_PER_LOAD='"+str(self.pre_load)+"',NEW_TEST_GUAGE_MM='"+str(self.guage_mm)+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_2.text()+"',PER_STRAIN_AT_INPUT='"+str(self.lineEdit_2_1.text())+"',SPAN='"+str(self.lineEdit_1_1.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.label_14_1.text())+"'") 
             connection.commit();
             connection.close()   
             self.load_test_data()
@@ -827,16 +993,18 @@ class TY_01_fluxurl_Ui_MainWindow(object):
             if(self.test_type=='Flexural'):
                     self.ui=TY_02f_Ui_MainWindow()
             else:
+                    
                     self.ui=TY_02_Ui_MainWindow()
+                    
             self.ui.setupUi(self.window)           
             self.window.show()       
          
     def load_test_data(self):
-        
+        self.onchage_combo2()
         connection = sqlite3.connect("tyr.db")              
         with connection:        
               cursor = connection.cursor()                                
-              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR")                                
+              cursor.execute("INSERT INTO TEST_MST(TEST_TYPE,SPECIMEN_NAME,JOB_NAME,BATCH_ID,GUAGE_LENGTH,PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,MOTOR_SPEED,MOTOR_REV_SPEED,TESTED_BY) SELECT NEW_TEST_NAME,NEW_TEST_SPECIMEN_NAME,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID,NEW_TEST_GUAGE_MM,NEW_TEST_PARTY_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DEF_FLG,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED,LOGIN_USER_NAME FROM GLOBAL_VAR")                                
         connection.commit();
         connection.close()  
         
@@ -846,35 +1014,13 @@ class TY_01_fluxurl_Ui_MainWindow(object):
               cursor = connection.cursor()                                        
               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = (SELECT IFNULL(MAX(TEST_ID),1) FROM TEST_MST)")
               cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+self.lineEdit_1.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_2_1_1.text()+"'")
-              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_1.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_2_1_1.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-             
+              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+str(self.graph_scal_y_load_kg)+"',GRAPH_SCAL_X_LENGTH='"+str(self.graph_scal_x_length_mm)+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_N='"+str(self.graph_scal_y_load_n)+"',GRAPH_SCAL_Y_LOAD_LB='"+str(self.graph_scal_y_load_lb)+"',GRAPH_SCAL_X_LENGTH_CM='"+str(self.graph_scal_x_length_cm)+"',GRAPH_SCAL_X_LENGTH_INCH='"+str(self.graph_scal_x_length_inch)+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
               cursor.execute("DELETE FROM STG_GRAPH_MST")
         connection.commit();
         connection.close()     
         
-         
-    def load_login_dtls(self):
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select login_user_id,login_user_role,login_user_name from global_var")       
-        for x in results:           
-                 self.login_user_id=str(x[0])
-                 self.login_user_role=str(x[1])
-                 self.login_user_name=str(x[2])
-        connection.close()
-        self.label_221 = QtWidgets.QLabel(self.frame)
-        self.label_221.setGeometry(QtCore.QRect(1000, 40, 261, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
-        self.label_221.setFont(font)
-        self.label_221.setStyleSheet("color: rgb(0, 170, 0);")
-        self.label_221.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_221.setObjectName("label_221")
-        self.label_221.setText("Login By : "+str(self.login_user_name))
-    
+        
 
 
 if __name__ == "__main__":
