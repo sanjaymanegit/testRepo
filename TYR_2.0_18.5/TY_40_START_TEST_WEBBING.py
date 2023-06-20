@@ -1113,8 +1113,8 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         self.label_33.setText(_translate("MainWindow", "Show Graph :"))
-        self.radioButton.setText(_translate("MainWindow", "Hi-Load cell"))
-        self.radioButton_2.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton.setText(_translate("MainWindow", "Low -Load cell"))
+        self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -2713,16 +2713,22 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                 
                 if(self.test_type=="Webbing"):
-                    self.p=int(self.test_guage_mm)-self.p
+                    if(int(self.p) > int(self.test_guage_mm)):
+                         self.p=self.p-int(self.test_guage_mm)
+                    else:
+                         self.p=int(self.test_guage_mm)-self.p
                     #self.p=self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
-                    #self.p=self.p
-                    self.p=int(self.test_guage_mm)-self.p
+                    if(int(self.p) > int(self.test_guage_mm)):
+                         self.p=self.p-int(self.test_guage_mm)
+                    else:
+                         self.p=int(self.test_guage_mm)-self.p
                 else:
-                    self.p=self.p
-                    #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p
+                    if(int(self.p) > int(self.test_guage_mm)):
+                         self.p=self.p-int(self.test_guage_mm)
+                    else:
+                         self.p=int(self.test_guage_mm)-self.p
                 
 #                if(self.unit_type == "N/mm"):    
 #                        self.q=float(self.q)*9.81

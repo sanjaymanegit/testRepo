@@ -835,7 +835,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.comboBox_3.setGeometry(QtCore.QRect(670, 150, 61, 31))
         self.comboBox_3.setObjectName("comboBox_3")
         self.comboBox_3.addItem("")
-#         self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
 #         self.comboBox_3.addItem("")
         self.line_7 = QtWidgets.QFrame(self.frame)
         self.line_7.setGeometry(QtCore.QRect(1140, 0, 20, 201))
@@ -1067,7 +1067,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
 #         self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
-#         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
+        self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
 #         self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
@@ -1115,6 +1115,8 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
               self.comboBox_3.setCurrentText(str("Mm"))
+        elif(str(self.comboBox_2.currentText())=="N"):        
+              self.comboBox_3.setCurrentText(str("Cm"))
         elif(str(self.comboBox_2.currentText())=="MPa"):
               self.comboBox_3.setCurrentText(str("Mm"))
         else:

@@ -771,7 +771,7 @@ class TY_01_Ui_MainWindow(object):
         if(self.comboBox_2.currentText() == "MPa"):
             self.label_21_1.setText("Max. Load ( N ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (N):")           
+            self.label_1_1.setText("Comp.Max.Load (Kg):")           
             self.label_2_1.setText("Compressive.Length(mm):")
             self.comboBox_3.setCurrentText("Mm")
             print("  self.lineEdit_1.text: "+str(self.lineEdit_1.text()))
@@ -787,7 +787,7 @@ class TY_01_Ui_MainWindow(object):
         elif(self.comboBox_2.currentText() == "N"):
             self.label_21_1.setText("Max. Load ( N ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (N):")           
+            self.label_1_1.setText("Comp.Max.Load (Kg):")           
             self.label_2_1.setText("Compressive.Length(mm):")            
             self.comboBox_3.setCurrentText("Mm")
             self.graph_scal_y_load_n=str(self.lineEdit_1.text())   ### Input as Newton
@@ -800,7 +800,7 @@ class TY_01_Ui_MainWindow(object):
         elif(self.comboBox_2.currentText() == "Lb"):
             self.label_21_1.setText("Max. Load ( Lb ):")
             self.label_22_1.setText("Max. Elongation ( Inch ):")  
-            self.label_1_1.setText("Comp.Max.Load (Lb):")           
+            self.label_1_1.setText("Comp.Max.Load (Kg):")           
             self.label_2_1.setText("Compressive.Length(Inch):")
             self.comboBox_3.setCurrentText("Inch")
             self.graph_scal_y_load_lb=str(self.lineEdit_1.text())   ### Input as LB
@@ -814,7 +814,7 @@ class TY_01_Ui_MainWindow(object):
         else:
             self.label_21_1.setText("Max. Load ( Kg ):")
             self.label_22_1.setText("Max. Elongation ( Mm ):")  
-            self.label_1_1.setText("Comp.Max.Load (Kgf):")           
+            self.label_1_1.setText("Comp.Max.Load (Kg):")           
             self.label_2_1.setText("Compressive.Length(mm):")
             self.comboBox_3.setCurrentText("Mm")
             self.graph_scal_y_load_kg=int(self.lineEdit_1.text())
