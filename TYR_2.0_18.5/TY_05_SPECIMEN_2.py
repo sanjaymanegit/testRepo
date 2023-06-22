@@ -1,4 +1,5 @@
-from specimen_bakup import specimen_bkp_Ui_MainWindow
+from TY_46_EXPORT_SPEC import TY_46_Ui_MainWindow
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -909,7 +910,7 @@ class TY_05_Ui_MainWindow(object):
         self.label_46.setText(_translate("MainWindow", "(mm2)"))
         
         self.pushButton_6.setText(_translate("MainWindow", "Export"))
-        self.pushButton_6.setDisabled(True)
+        #self.pushButton_6.setDisabled(True)
         self.pushButton_7.setText(_translate("MainWindow", "Import"))
         self.pushButton_7.setDisabled(True)
         
@@ -936,11 +937,13 @@ class TY_05_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.c_edit_click)       
         self.pushButton_4.clicked.connect(self.c_delete_click)
         self.pushButton_5.clicked.connect(self.c_rest_fun)
-        #self.pushButton_5_1.clicked.connect(self.open_new_window)
+        self.pushButton_6.clicked.connect(self.open_new_window)
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
        
+    
+    
     
     def specimen_diamentions(self):              
         if (self.comboBox_2.currentText() == 'Rectangle'):     
@@ -1300,7 +1303,13 @@ class TY_05_Ui_MainWindow(object):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget.removeRow(i)           
+            self.tableWidget.removeRow(i)
+    
+    def open_new_window(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_46_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
   
 
 

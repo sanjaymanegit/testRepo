@@ -15,6 +15,7 @@ import datetime
 import time
 from PyQt5.QtCore import QDate
 import sys,os
+import csv
 
 
 class Ui_MainWindow(object):
@@ -247,6 +248,8 @@ class Ui_MainWindow(object):
         except:
            cpuserial = "ERROR000000000"
         return cpuserial
+    
+    
             
         
 
