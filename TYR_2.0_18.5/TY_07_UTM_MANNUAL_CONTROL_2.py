@@ -159,13 +159,15 @@ class  TY_07_Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         
         self.rev_speed_val=0
-        self.is_active_modbus='N'
+        
         
         self.speed_val=""
         self.input_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
+        
+        self.is_active_modbus='N'
         self.modbus_port=""
         self.non_modbus_port=""
 
@@ -246,12 +248,7 @@ class  TY_07_Ui_MainWindow(object):
     def r_run(self):
         print("Reverse Run started ....")
         self.validate_speed()
-        #self.label_2.hide()
-#         self.toolButton.show()
-#         icon = QtGui.QIcon()
-#         icon.addPixmap(QtGui.QPixmap("./images/down.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-#         self.toolButton.setIcon(icon)
-#         self.toolButton.setIconSize(QtCore.QSize(70, 141))
+
         
         ###################################################################################       
         #####  self.is_active_modbus : this status us detected in validate_speed function.

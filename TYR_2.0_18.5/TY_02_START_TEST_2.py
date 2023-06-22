@@ -74,20 +74,6 @@ class TY_02_Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(3)
         self.frame.setObjectName("frame")
-        self.thickness=0
-        self.width=0
-        self.inn_dia=0
-        self.out_dia=0
-        self.diameter=0
-        self.cs_area=0
-        self.load100_guage=0
-        self.load200_guage=0
-        self.load300_guage=0
-        self.guage_length_mm=0
-        self.goAhead="No"
-        self.test_type=""
-        self.test_id="1"
-        self.remark=""
         
         
         self.groupBox = QtWidgets.QGroupBox(self.frame)
@@ -751,9 +737,38 @@ class TY_02_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.thickness=0
+        self.width=0
+        self.inn_dia=0
+        self.out_dia=0
+        self.diameter=0
+        self.cs_area=0
+        self.load100_guage=0
+        self.load200_guage=0
+        self.load300_guage=0
+        self.guage_length_mm=0
+        self.goAhead="No"
+        self.test_type=""
+        self.test_id="1"
+        self.remark=""
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.cycle_num=0
         self.guage_ext_flg='N'
         
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0
+        self.cycle_id=0
+        self.test_method=""       
+                      
+        self.failure_mod=""        
+                      
+        self.tmperature=""
         self.last_load_unit=""
         self.last_disp_unit=""
              
@@ -855,16 +870,7 @@ class TY_02_Ui_MainWindow(object):
         #self.lineEdit_3.setText("3")
         #self.lineEdit_4.setText("4")  
         self.load_data()
-        self.load_cell_hi=0
-        self.load_cell_lo=0
-        self.extiometer=0
-        self.encoder=0
-        self.cycle_id=0
-        self.test_method=""       
-                      
-        self.failure_mod=""        
-                      
-        self.tmperature=""
+       
         self.pushButton_4_1.setDisabled(True)
         self.test_type_for_flexural=""
         connection = sqlite3.connect("tyr.db")
@@ -888,16 +894,61 @@ class TY_02_Ui_MainWindow(object):
         else:
             pass
             
-        try:
-            self.serial_3 = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+        try:            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
+            for x in results:
+                 self.modbus_flag=str(x[4])
+                 self.modbus_port=str(x[5])
+                 self.non_modbus_port=str(x[6])
+            connection.close()
+            
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
+            
+            
+            
+            
+            
+#             self.serial_3 = serial.Serial(
+#                         port='/dev/ttyUSB0',
+#                         baudrate=19200,
+#                         bytesize=serial.EIGHTBITS,
+#                         parity=serial.PARITY_NONE,
+#                         stopbits=serial.STOPBITS_ONE,
+#                         xonxoff=False,
+#                         timeout = 0.05
+#                     )
             if(self.guage_ext_flg=='Y'):
                 self.extiometer=1
                 self.radioButton.setChecked(True)

@@ -950,7 +950,7 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_8.setDisabled(True)   # inn diam
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
-           self.lineEdit_14.setDisabled(True)  #cs area
+           self.lineEdit_14.setReadOnly(True)  #cs area
         elif  (self.comboBox_2.currentText() == 'Cylindrical'):     
            self.shape="Cylindrical"
            self.lineEdit_3.setDisabled(True)    #Thickness 
@@ -958,7 +958,7 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_8.setDisabled(True)   # inn diam
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setEnabled(True)   # diameter
-           self.lineEdit_14.setDisabled(True)  #cs area
+           self.lineEdit_14.setReadOnly(True)  #cs area
         elif  (self.comboBox_2.currentText() == 'Pipe'):     
            self.shape="Pipe"
            self.lineEdit_3.setDisabled(True)    #Thickness 
@@ -966,7 +966,7 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_8.setEnabled(True)   # inn diam
            self.lineEdit_11.setEnabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
-           self.lineEdit_14.setDisabled(True)  #cs area      
+           self.lineEdit_14.setReadOnly(True)  #cs area      
         elif  (self.comboBox_2.currentText() == 'DirectValue'):     
            self.shape="Direct Value"
            self.lineEdit_3.setDisabled(True)    #Thickness 
@@ -974,7 +974,7 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_8.setDisabled(True)   # inn diam
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
-           self.lineEdit_14.setEnabled(True)  #cs area  
+           self.lineEdit_14.setReadOnly(True)  #cs area  
     
     def width_onchange(self):
         if(str(self.lineEdit_3.text()) != ""):

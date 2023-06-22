@@ -787,6 +787,18 @@ class TY_02f_Ui_MainWindow(object):
         self.cycle_num=0
         self.guage_ext_flg='N'
         
+        self.load_cell_hi=0
+        self.load_cell_lo=0
+        self.extiometer=0
+        self.encoder=0
+        self.cycle_id=0
+        self.test_method=""       
+                      
+        self.failure_mod=""        
+                      
+        self.tmperature=""
+        self.test_type_for_flexural=""
+        
         self.last_load_unit=""
         self.last_disp_unit=""
              
@@ -918,18 +930,7 @@ class TY_02f_Ui_MainWindow(object):
         #self.lineEdit_2.setText("2")
         #self.lineEdit_3.setText("3")
         #self.lineEdit_4.setText("4")  
-        #self.load_data()
-        self.load_cell_hi=0
-        self.load_cell_lo=0
-        self.extiometer=0
-        self.encoder=0
-        self.cycle_id=0
-        self.test_method=""       
-                      
-        self.failure_mod=""        
-                      
-        self.tmperature=""
-        self.test_type_for_flexural=""
+        #self.load_data()       
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select NEW_TEST_NAME FROM GLOBAL_VAR")                 
         for x in results:                
@@ -941,16 +942,56 @@ class TY_02f_Ui_MainWindow(object):
             pass
             
         try:
-            self.serial_3 = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
+            for x in results:
+                 self.modbus_flag=str(x[4])
+                 self.modbus_port=str(x[5])
+                 self.non_modbus_port=str(x[6])
+            connection.close()
             
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
+#             self.serial_3 = serial.Serial(
+#                         port='/dev/ttyUSB0',
+#                         baudrate=19200,
+#                         bytesize=serial.EIGHTBITS,
+#                         parity=serial.PARITY_NONE,
+#                         stopbits=serial.STOPBITS_ONE,
+#                         xonxoff=False,
+#                         timeout = 0.05
+#                     )
+#             
             self.timer3=QtCore.QTimer()
             self.timer3.setInterval(5000)        
             self.timer3.timeout.connect(self.loadcell_encoder_status)
