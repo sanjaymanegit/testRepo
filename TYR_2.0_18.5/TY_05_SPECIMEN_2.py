@@ -1073,6 +1073,7 @@ class TY_05_Ui_MainWindow(object):
         self.lineEdit_7.setText("")
        
         self.lineEdit_4.setText("")
+        self.lineEdit_5.setText("") #Rev Speed.
         self.lineEdit_10.setText("")
             
         self.lineEdit.setText("")
