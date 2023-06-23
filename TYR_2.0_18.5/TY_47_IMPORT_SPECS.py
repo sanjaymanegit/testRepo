@@ -267,6 +267,7 @@ class TY_47_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Refresh USB "))
         self.pushButton_9.setText(_translate("MainWindow", "Close"))
         self.pushButton_6.setText(_translate("MainWindow", "Import"))
+        self.pushButton_6.setDisabled(True)
         self.label_22.setText(_translate("MainWindow", "USB Connection Status:"))
         self.label_23.setText(_translate("MainWindow", "Connected !"))
         self.checkBox.setText(_translate("MainWindow", "Check All"))
@@ -386,13 +387,15 @@ class TY_47_Ui_MainWindow(object):
            self.label_21.setText("USB Error.")             
         return product_id
         
-    def validation(self):        
+    def validation(self):
+        self.pushButton_6.setEnabled(True)
         connection = sqlite3.connect("tyr.db")
         with connection:        
                      cursor = connection.cursor()
                      cursor.execute("DELETE FROM STG_SPECIMEN_MST")                    
         connection.commit();                    
-        connection.close()        
+        connection.close()
+        
         print("Import Process started !!")
         conn = sqlite3.connect('tyr.db')
         cursor = conn.cursor()
@@ -410,7 +413,7 @@ class TY_47_Ui_MainWindow(object):
         ########################
         #### Validation ########
         ########################       
-        self.del_uncheked()
+        
         self.ERR_MSG="ok"
         self.spec_id_arr=[]
         self.error_msg_arr=[]
@@ -482,6 +485,7 @@ class TY_47_Ui_MainWindow(object):
         
         
     def actual_import(self):
+        self.del_uncheked()
         print("Import Started !!")
         ####### Clean Data copy to main tables #########
         connection = sqlite3.connect("tyr.db")
@@ -496,6 +500,8 @@ class TY_47_Ui_MainWindow(object):
         connection.commit();                    
         connection.close()        
         print("Import Process Completed !!")
+        self.pushButton_6.setDisabled(True)
+        
           
     def check_uncheck_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -518,14 +524,15 @@ class TY_47_Ui_MainWindow(object):
         while (i > 0):
             i=i-1
             item = self.tableWidget.item(i, 0)
-            #print("test id  :"+str(item.text()))
+            print("spec id :"+str(item.text()))
             currentState = item.checkState()
             if(currentState == QtCore.Qt.Checked):
                     print("Checked Spec.ID:"+str(item.text()))
                     connection = sqlite3.connect("tyr.db")          
                     with connection:        
                             cursor = connection.cursor()                            
-                            cursor.execute("INSERT INTO TEST_IDS SELECT B.SPECIMEN_ID,B.PARTY_NAME  FROM SPECIMEN_MST B WHERE B.SPECIMEN_ID='"+str(item.text())+"' AND B.SPECIMEN_ID NOT IN (SELECT TEST_ID FROM TEST_IDS)") 
+                            cursor.execute("INSERT INTO TEST_IDS SELECT B.SPECIMEN_ID,''   FROM STG_SPECIMEN_MST B WHERE B.SPECIMEN_ID='"+str(item.text())+"' AND B.SPECIMEN_ID NOT IN (SELECT TEST_ID FROM TEST_IDS)") 
+                            print("Inserted Records :"+str(cursor.rowcount))
                     connection.commit();
                     connection.close()                    
             else:
@@ -534,6 +541,7 @@ class TY_47_Ui_MainWindow(object):
                     with connection:        
                             cursor = connection.cursor()
                             cursor.execute("DELETE FROM TEST_IDS WHERE TEST_ID = '"+str(item.text())+"'")                             
+                            print("Deleted Records :"+str(cursor.rowcount))
                     connection.commit();
                     connection.close()
         
