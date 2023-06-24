@@ -1,4 +1,5 @@
-
+from TY_46_EXPORT_SPEC import TY_46_Ui_MainWindow
+from TY_47_IMPORT_SPECS import TY_47_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -91,7 +92,7 @@ class AE_05_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setColumnCount(15)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -159,14 +160,68 @@ class AE_05_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(7, item)
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(9, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(10, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(11, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(12, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(13, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(14, item)
         
         
         item = QtWidgets.QTableWidgetItem()
@@ -819,7 +874,7 @@ class AE_05_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Pre. Load:"))
         self.label_33.setText(_translate("MainWindow", "Party:"))
         self.lineEdit_4.setText(_translate("MainWindow", "200"))
-        self.label_34.setText(_translate("MainWindow", "Product Width:"))
+        self.label_34.setText(_translate("MainWindow", "Product Length:"))
         self.lineEdit_10.setText(_translate("MainWindow", "0.1"))
         self.label_38.setText(_translate("MainWindow", "Outer.Diameter :"))
         self.lineEdit_11.setText(_translate("MainWindow", "4"))
@@ -838,7 +893,7 @@ class AE_05_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "CS.Area:"))
         self.lineEdit_14.setText(_translate("MainWindow", "6"))
         self.label_26.setText(_translate("MainWindow", "Details:"))
-        self.label_35.setText(_translate("MainWindow", "Test Speed:"))
+        self.label_35.setText(_translate("MainWindow", "Fwd.Speed:"))
         self.label_23.setText(_translate("MainWindow", "Spect.ID:"))
         self.label_2.setText(_translate("MainWindow", "0001"))
         self.label_28.setText(_translate("MainWindow", "(mm/min)"))
@@ -855,9 +910,9 @@ class AE_05_Ui_MainWindow(object):
         self.label_46.setText(_translate("MainWindow", "(mm2)"))
         
         self.pushButton_6.setText(_translate("MainWindow", "Export"))
-        self.pushButton_6.setDisabled(True)
+        #self.pushButton_6.setDisabled(True)
         self.pushButton_7.setText(_translate("MainWindow", "Import"))
-        self.pushButton_7.setDisabled(True)
+        #self.pushButton_7.setDisabled(True)
         
         self.lineEdit_5.setText("")
         #self.label_35_1.setText("Rev.Test Speed:")
@@ -882,7 +937,8 @@ class AE_05_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.c_edit_click)       
         self.pushButton_4.clicked.connect(self.c_delete_click)
         self.pushButton_5.clicked.connect(self.c_rest_fun)
-        #self.pushButton_5_1.clicked.connect(self.open_new_window)
+        self.pushButton_6.clicked.connect(self.open_new_window)
+        self.pushButton_7.clicked.connect(self.open_new_window2)
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1224,7 +1280,7 @@ class AE_05_Ui_MainWindow(object):
         self.tableWidget.setColumnCount(15)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Details','Test Speed',' Product Width(Mm)  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed'] )       
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Details','Test Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed'] )       
            
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED  FROM SPECIMEN_MST")                        
@@ -1245,7 +1301,21 @@ class AE_05_Ui_MainWindow(object):
         i = self.tableWidget.rowCount()       
         while (i>0):             
             i=i-1
-            self.tableWidget.removeRow(i)           
+            self.tableWidget.removeRow(i)
+            
+    
+    def open_new_window(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_46_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window2(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_47_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+  
   
 
 
@@ -1257,3 +1327,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+
