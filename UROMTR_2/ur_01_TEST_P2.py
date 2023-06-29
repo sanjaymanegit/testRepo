@@ -282,7 +282,7 @@ class ur_01_Ui_MainWindow(object):
         self.pushButton_6_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6_3.setGeometry(QtCore.QRect(980, 15, 200, 100))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/ARK LOGO.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./images/ARK LOGO.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_6_3.setIcon(icon)
         self.pushButton_6_3.setIconSize(QtCore.QSize(230, 210))
         self.pushButton_6_3.setFont(font)        
