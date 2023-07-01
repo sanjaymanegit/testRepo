@@ -1121,7 +1121,7 @@ class AE_REPORT_TEAR_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_Tear()
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
+        #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
         self.pushButton_9.setDisabled(True)
         self.report_fun_1()
         
