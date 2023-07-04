@@ -353,7 +353,7 @@ class TY_47_Ui_MainWindow(object):
                        self.label_23.setText("Connected !")
                        self.label_21.show()
                        self.label_21.setText("Double click on the file to verify Specimens data.")
-                       self.pushButton_6.setEnabled(True)
+                       #self.pushButton_6.setEnabled(True)
                     except:                       
                        self.label_21.show()
                        self.label_21.setText("USB Error.") 
@@ -366,7 +366,7 @@ class TY_47_Ui_MainWindow(object):
              self.label_21.show()
              self.label_21.setText("USB Error.")
              self.label_23.setText("NA")
-             self.pushButton_6.setDisabled(True)
+             #self.pushButton_6.setDisabled(True)
         
     def get_usb_storage_id(self):
         os.system("rm -rf lsusb_data_db_bkp.txt")  

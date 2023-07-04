@@ -1108,7 +1108,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_tensile()
-        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+'2)','Max.Load('+str(self.comboBox_2.currentText())+'2)','Min.Load('+str(self.comboBox_2.currentText())+'2)', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+'2)','Max.Load('+str(self.comboBox_2.currentText())+'2)','Min.Load('+str(self.comboBox_2.currentText())+'2)', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Peel Strength Lb/inch','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
     def load_unit_onchange(self):
@@ -1134,6 +1134,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         self.pushButton_8.setEnabled(True)
         self.pushButton_6.setEnabled(True)
         self.frame_3.hide()
+        self.comboBox.setEnabled(True)
         
         print("Timer3 status: "+str(self.timer3.isActive()))
         if(self.timer3.isActive()): 
@@ -1697,7 +1698,8 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
                     else:
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                    self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    #self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
                     self.pushButton_11.setDisabled(True)
                     self.pushButton_7.setEnabled(True)
                     self.pushButton_6.setDisabled(True)
@@ -1839,7 +1841,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
             with connection:                
                   cursor = connection.cursor()              
                   #print("ok1")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_7.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
                  
                   if( str(self.comboBox_2.currentText()) =="Lb"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
@@ -1881,7 +1883,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
                   if( str(self.comboBox_2.currentText()) =="MPa"):
                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(COF_AVG_FORCE as real)") #PEEL Strength                           
                   else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(COF_AVG_FORCE as real)/IFNULL(cast(NEW_TEST_WIDTH as real),1)))") #PEEL Strength
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(COF_AVG_FORCE as real)/IFNULL(cast(NEW_TEST_WIDTH as real),1)*10))") #PEEL Strength
                           cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(COF_AVG_FORCE  as real)*0.2248089431/IFNULL(cast(NEW_TEST_WIDTH as real)*0.0393701,1)))") #PEEL Strength LB inch
                           
                   
@@ -2068,7 +2070,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Peel Strength Lb/inch','Cycle Id'])        
        
         results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", UTL_SHEAR_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
@@ -2095,7 +2097,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Peel Strength \n (Lb/Inch) ' ]]
+        data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')','Peel Strength \n (Lb/Inch) ' ]]
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", UTL_SHEAR_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")

@@ -1701,7 +1701,8 @@ class TY_39_START_TEST_TEAR_Ui_MainWindow(object):
                     else:
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                    self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    #self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
                     self.pushButton_11.setDisabled(True)
                     self.pushButton_7.setEnabled(True)
                     self.pushButton_6.setDisabled(True)
