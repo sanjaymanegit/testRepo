@@ -1,0 +1,9 @@
+SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,THICKNESS,WIDTH,DIAMETER,C_A_AREA,MOTOR_SPEED,PARTY_NAME,PRE_LOAD,GUAGE_LENGTH_MM,IN_DIAMETER_MM,OUTER_DIAMETER_MM,CREATED_ON,TESTED_BY,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP
+Rubber-Tensile,Rubber,Rectangle,1.2,8,,9.6,500,MRF Ltd,2,60,,,2022-09-09 11:40:02,,500,MPa,Mm
+Compression-Product,Compression Products,Rectangle,3.4,6.2,,21.08,500,Compressed-Material LTd,2,50,,,2022-12-08 11:03:50,,50,Kg,Mm
+Flexural-Product,erer,Rectangle,2,3,,6,500,Flex Ltd,3,80,,,2023-06-05 10:21:39,,5,MPa,Mm
+ret,retert,Rectangle,2,2,,4,25,reter,1,44,,,2023-06-11 04:53:55,,444,MPa,Mm
+dfdsf,sdf,Rectangle,1,2,,2,33,dsfdsfdsf,3,44,,,2023-06-11 06:30:48,,33,Kg,Mm
+Rubber PT,Rubber PT,Rectangle,1.9,6,,11.4,500,Global,1,25,,,2023-06-21 08:46:46,,200,MPa,Mm
+Rubber PT 02,Rubber PT 02,Rectangle,4,6,,24,300,Global,1,48,,,2023-06-21 10:18:22,,200,MPa,Mm
+Tiles,Construction ,Rectangle,300,280,,84000,500,Construction ,1,8.3,,,2023-06-21 11:32:08,,1,MPa,Mm
