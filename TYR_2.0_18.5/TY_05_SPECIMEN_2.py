@@ -964,7 +964,7 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setEnabled(True)   # diameter
            self.lineEdit_14.setReadOnly(True)  #cs area
-        elif  (self.comboBox_2.currentText() == 'Pipe'):     
+        elif(self.comboBox_2.currentText() == 'Pipe'):     
            self.shape="Pipe"
            self.lineEdit_3.setDisabled(True)    #Thickness 
            self.lineEdit_6.setDisabled(True)    #width       
@@ -972,14 +972,17 @@ class TY_05_Ui_MainWindow(object):
            self.lineEdit_11.setEnabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
            self.lineEdit_14.setReadOnly(True)  #cs area      
-        elif  (self.comboBox_2.currentText() == 'DirectValue'):     
-           self.shape="Direct Value"
+        elif(self.comboBox_2.currentText() == 'DirectValue'):     
+           self.shape="DirectValue"
            self.lineEdit_3.setDisabled(True)    #Thickness 
            self.lineEdit_6.setDisabled(True)    #width       
            self.lineEdit_8.setDisabled(True)   # inn diam
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
-           self.lineEdit_14.setReadOnly(True)  #cs area  
+           self.lineEdit_14.setEnabled(True)  #cs area
+           self.lineEdit_14.setReadOnly(False)
+           #print("inside direct value")
+           
     
     def width_onchange(self):
         if(str(self.lineEdit_3.text()) != ""):
