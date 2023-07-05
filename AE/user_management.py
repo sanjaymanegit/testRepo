@@ -603,7 +603,7 @@ class users_Ui_MainWindow(object):
        
         connection = sqlite3.connect("tyr.db")
         if(str(self.login_user_role) ==  'SUPER_ADMIN'):
-                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST where ROLE != 'SUPER_ADMIN'")
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,NULL from USERS_MST where ROLE != 'SUPER_ADMIN'")
                 self.comboBox.setEnabled(True)
                 self.pushButton_2.setDisabled(True) #delete           
                 self.pushButton_6.setEnabled(True) #reset
@@ -615,7 +615,7 @@ class users_Ui_MainWindow(object):
                 self.comboBox.addItem("")
                 self.comboBox.setItemText(1, "SUPERVISOR")                
             
-                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,NULL from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM ADMINS_USER_IDS_VW)")
         elif(str(self.login_user_role) ==  'SUPERVISOR'):
                 self.comboBox.clear()
                 self.comboBox.addItem("")
@@ -623,9 +623,9 @@ class users_Ui_MainWindow(object):
                
                 
                 
-                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,NULL from USERS_MST WHERE USER_ID IN (SELECT USER_ID FROM SUPERVISORS_USER_IDS_VW)")
         else:
-                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,PWD from USERS_MST WHERE USER_ID='"+str(self.login_user_id)+"'")
+                results=connection.execute("select USER_ID,FIRST_NAME,LAST_NAME,ROLE,LOGIN_ID,PHONE_NO,EMAIL_ID,NULL from USERS_MST WHERE USER_ID='"+str(self.login_user_id)+"'")
                 self.comboBox.setDisabled(True)
                 self.pushButton_2.setDisabled(True) #delete           
                 self.pushButton_6.setDisabled(True) #reset

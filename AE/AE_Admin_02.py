@@ -353,6 +353,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "USB Reports Backup"))
         self.pushButton_11.setText(_translate("MainWindow", "Speed Setup"))
         self.pushButton_12.setText(_translate("MainWindow", "Change Password"))
+        self.pushButton_12.hide()
         self.pushButton_14.setText(_translate("MainWindow", "Break App"))
         self.pushButton_13.setText(_translate("MainWindow", "User Management"))
         self.pushButton_15.setText(_translate("MainWindow", "Load Cell Selection"))
@@ -540,7 +541,7 @@ class AE_02_Ui_MainWindow(object):
                  self.login_user_name=str(x[2])
                  if(str(x[1]) == 'OPERATOR'):
                        self.pushButton_8.setDisabled(True)
-                       self.pushButton_13.setDisabled(True)
+                       #self.pushButton_13.setDisabled(True)
                        self.pushButton_5.setDisabled(True)
                  
         connection.close()
