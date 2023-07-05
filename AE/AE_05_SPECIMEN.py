@@ -979,7 +979,9 @@ class AE_05_Ui_MainWindow(object):
            self.lineEdit_8.setDisabled(True)   # inn diam
            self.lineEdit_11.setDisabled(True)  # out diameter
            self.lineEdit_13.setDisabled(True)   # diameter
-           self.lineEdit_14.setEnabled(True)  #cs area  
+           self.lineEdit_14.setEnabled(True)  #cs area
+           self.lineEdit_14.setReadOnly(False)
+           
     
     def width_onchange(self):
         if(str(self.lineEdit_3.text()) != ""):
