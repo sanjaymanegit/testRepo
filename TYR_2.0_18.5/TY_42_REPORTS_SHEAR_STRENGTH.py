@@ -1077,7 +1077,7 @@ class TY_42_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
-        self.label_35.setText(_translate("MainWindow", "Job Name:"))
+        self.label_35.setText(_translate("MainWindow", "Test Details:"))
         self.label_36.setText(_translate("MainWindow", "Batch ID:"))
         self.label_37.setText(_translate("MainWindow", "  Spec.Count:"))
         self.label_38.setText(_translate("MainWindow", "0"))
@@ -1244,7 +1244,7 @@ class TY_42_Ui_MainWindow(object):
         self.go_ahead="No"
         self.msg=""
         if(self.lineEdit_15.text() == ""):
-             self.msg="Job Name is Empty."            
+             self.msg="Test Details is Empty."            
         elif(self.lineEdit_16.text()== ""):
              self.msg="Batch ID is Empty."             
         elif(self.lineEdit_8.text()== ""):
@@ -1904,7 +1904,9 @@ class TY_42_Ui_MainWindow(object):
                   if( str(self.comboBox_2.currentText()) =="MPa"):
                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
                   else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH
+                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)*2.20462/IFNULL(cast(NEW_TEST_AREA_INCH as real)*0.393701*0.393701,1)))") ### Shear Strength Lb /Inch 
+                          
                   
                   
                   if( str(self.comboBox_3.currentText()) =="Cm"):
@@ -2044,7 +2046,7 @@ class TY_42_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 10).text())
+            self.cycle_id=str(self.tableWidget.item(row, 3).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -2077,20 +2079,20 @@ class TY_42_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setColumnCount(4)
         #self.tableWidget.horizontalHeader().setStretchLastSection(True)        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 200)
         self.tableWidget.setColumnWidth(2, 200)
-       
+        self.tableWidget.setColumnWidth(3, 200)
         
         
         connection = sqlite3.connect("tyr.db")
         #print("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),SHAPE,GUAGE100,printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", MODULUS_100),printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", PRC_E_AT_BREAK),CREATED_ON FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
         #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
-        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', 'Shear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', 'Shear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Shear Strength (Lb/Inch2)','Cycle Id'])        
        
-        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", TENSILE_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", STG_TENSILE_STRENGTH_LB_INCH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2104,6 +2106,7 @@ class TY_42_Ui_MainWindow(object):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
+        self.tested_by=""
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
@@ -2114,29 +2117,29 @@ class TY_42_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Shear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)',]]
+        data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Shear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Shear Strength \n (Lb/Inch2)']]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", TENSILE_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", STG_TENSILE_STRENGTH_LB_INCH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
                 data.append(x)
         connection.close()        
         
         
         connection = sqlite3.connect("tyr.db")            
-        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(CS_AREA)),printf(\"%.2f\", avg(TENSILE_STRENGTH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(CS_AREA)),printf(\"%.2f\", avg(TENSILE_STRENGTH)),printf(\"%.2f\", avg(STG_TENSILE_STRENGTH_LB_INCH)) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(CS_AREA)),printf(\"%.2f\", max(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(CS_AREA)),printf(\"%.2f\", max(TENSILE_STRENGTH)),printf(\"%.2f\", max(STG_TENSILE_STRENGTH_LB_INCH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
             
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(CS_AREA)),printf(\"%.2f\", min(TENSILE_STRENGTH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+        results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(CS_AREA)),printf(\"%.2f\", min(TENSILE_STRENGTH)),printf(\"%.2f\", min(STG_TENSILE_STRENGTH_LB_INCH))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
         for x in results:
                 data.append(x)
         connection.close()
@@ -2153,9 +2156,9 @@ class TY_42_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,A.GUAGE_LENGTH,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3])," ",""],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Test Details : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method ",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
