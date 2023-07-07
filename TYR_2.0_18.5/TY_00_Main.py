@@ -5,7 +5,7 @@ from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
 #from TY_00_TEST_TYPES import TY_00_T_Ui_MainWindow
 from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_04_SETTING import TY_04_Ui_MainWindow
-from TY_05_SPECIMEN_2 import TY_05_Ui_MainWindow
+from TY_50_TEST_LIST_SPECS import TY_50_LIST_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
 
@@ -225,7 +225,7 @@ class Ui_MainWindow(object):
         
     def open_new_window4(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_05_Ui_MainWindow()
+        self.ui=TY_50_LIST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
