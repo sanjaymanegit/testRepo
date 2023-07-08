@@ -245,7 +245,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
         self.tableWidget.setGeometry(QtCore.QRect(20, 340, 641, 91))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(5)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -1117,37 +1117,9 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Spec.No."))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Peak.Load (Kg)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Elongation @Peak Load (mm)"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Compressive Strength (Kg/cm2)"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "% Elongation"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Guage Length (mm)"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Cycle.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "12"))
-        item = self.tableWidget.item(0, 2)
-        item.setText(_translate("MainWindow", "123.8"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 4)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 5)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 6)
-        item.setText(_translate("MainWindow", "1"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+        '''
+        
+        '''
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
         self.label_40.setText(_translate("MainWindow", "Elongation:"))
@@ -1164,7 +1136,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Product Name:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Specimen 1 XXXXXXXXXXXXXX"))
-        self.label_14.setText(_translate("MainWindow", "Party Name:"))
+        self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
         self.label_16.setText(_translate("MainWindow", "Rectangular"))
@@ -1193,7 +1165,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
-        self.label_35.setText(_translate("MainWindow", "Job Name:"))
+        self.label_35.setText(_translate("MainWindow", "Test Details:"))
         self.label_36.setText(_translate("MainWindow", "Batch ID:"))
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
         self.label_38.setText(_translate("MainWindow", "0"))
@@ -1238,7 +1210,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_compress()
-        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
         self.label_51.setText("("+self.comboBox_2.currentText()+")")
@@ -1339,7 +1311,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         self.go_ahead="No"
         self.msg=""
         if(self.lineEdit_15.text() == ""):
-             self.msg="Job Name is Empty."             
+             self.msg="Test Details is Empty."             
         elif(self.lineEdit_16.text()== ""):
              self.msg="Batch ID is Empty."             
         elif(self.lineEdit_8.text()== ""):
@@ -1580,7 +1552,7 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         for x in results:
             self.lineEdit_7.setText(str(x[1])) # GUAGE LENGTH
             self.lineEdit_8.setText(str(x[2])) # SPEED
-            self.label_48.setText(str(x[3])) # Party Name
+            self.label_48.setText(str(x[3])) # Customer Name
             self.label_16.setText(str(x[7])) #shape
             self.shape=str(x[7])
             self.lineEdit_9.setText(str(x[10])) #rev. speed
@@ -2028,11 +2000,11 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
                   if( str(self.comboBox_3.currentText()) =="Cm"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_CM) FROM STG_GRAPH_MST)") #
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=E_AT_LOAD|*0.1") #
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=E_AT_LOAD*0.1") #
                   elif( str(self.comboBox_3.currentText()) =="Inch"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_INCH FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_INCH) FROM STG_GRAPH_MST)") #
-                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=E_AT_LOAD|*0.0393701") #
+                          cursor.execute("UPDATE GLOBAL_VAR2 SET E_AT_LOAD=E_AT_LOAD*0.0393701") #
                   else:
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #STG_E_AT_PEAK_LOAD_MM
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
@@ -2215,20 +2187,19 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(5)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 200)
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 250)
-        self.tableWidget.setColumnWidth(5, 280)
-        self.tableWidget.setColumnWidth(6, 250)    
+       
         
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK), printf(\"%.2f\", DEF_YEILD_STRG),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Cycle Id'])        
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -2255,15 +2226,15 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         connection.close()
         
         
-        data2= [ ['Spec. \n No','Width ('+str(self.last_disp_unit)+')','CS Area \n ('+str(self.last_disp_unit)+'2)', 'Load @ Break\n ('+str(self.last_load_unit)+')', 'Elongation @ Break \n ('+str(self.last_disp_unit)+')',' % Elongation \n','E @ Load '+str(self.lineEdit_17.text())+' \n ('+str(self.last_disp_unit)+')']]
+        data2= [ ['Spec. \n No','Width ('+str(self.last_disp_unit)+')', 'Load @ Break\n ('+str(self.last_load_unit)+')', 'Elongation @ Break \n ('+str(self.last_disp_unit)+')',' % Elongation ']]
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.GUAGE100), printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.PRC_E_AT_PEAK),printf(\"%.2f\", A.DEF_YEILD_STRG)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.GUAGE100), printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.PRC_E_AT_PEAK)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", avg(A.CS_AREA)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),printf(\"%.2f\", avg(A.DEF_YEILD_STRG)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2271,12 +2242,12 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", max(A.CS_AREA)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),printf(\"%.2f\", max(A.DEF_YEILD_STRG)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", min(A.CS_AREA)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)),printf(\"%.2f\", min(A.DEF_YEILD_STRG))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2289,9 +2260,9 @@ class TY_40_START_TEST_WEBBING_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,A.GUAGE_LENGTH,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3])," "," "],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Test Details : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         

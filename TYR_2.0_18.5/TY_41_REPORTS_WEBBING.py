@@ -1163,7 +1163,7 @@ class TY_41_Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Product Name:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Specimen 1 XXXXXXXXXXXXXX"))
-        self.label_14.setText(_translate("MainWindow", "Party Name:"))
+        self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
         self.label_16.setText(_translate("MainWindow", "Rectangular"))
@@ -1192,7 +1192,7 @@ class TY_41_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
-        self.label_35.setText(_translate("MainWindow", "Job Name:"))
+        self.label_35.setText(_translate("MainWindow", "Test Details:"))
         self.label_36.setText(_translate("MainWindow", "Batch ID:"))
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
         self.label_38.setText(_translate("MainWindow", "0"))
@@ -1247,7 +1247,7 @@ class TY_41_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_compress()
-        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
+        #self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
         self.label_51.setText("("+self.comboBox_2.currentText()+")")
@@ -1372,7 +1372,7 @@ class TY_41_Ui_MainWindow(object):
         self.go_ahead="No"
         self.msg=""
         if(self.lineEdit_15.text() == ""):
-             self.msg="Job Name is Empty."             
+             self.msg="Test Details is Empty."             
         elif(self.lineEdit_16.text()== ""):
              self.msg="Batch ID is Empty."             
         elif(self.lineEdit_8.text()== ""):
@@ -1613,7 +1613,7 @@ class TY_41_Ui_MainWindow(object):
         for x in results:
             self.lineEdit_7.setText(str(x[1])) # GUAGE LENGTH
             self.lineEdit_8.setText(str(x[2])) # SPEED
-            self.label_48.setText(str(x[3])) # Party Name
+            self.label_48.setText(str(x[3])) # Customer Name
             self.label_16.setText(str(x[7])) #shape
             self.shape=str(x[7])
             self.lineEdit_9.setText(str(x[10])) #rev. speed
@@ -2205,7 +2205,7 @@ class TY_41_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 6).text())
+            self.cycle_id=str(self.tableWidget.item(row, 4).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -2238,20 +2238,19 @@ class TY_41_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(5)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 200)
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.setColumnWidth(3, 200)
         self.tableWidget.setColumnWidth(4, 250)
-        self.tableWidget.setColumnWidth(5, 280)
-        self.tableWidget.setColumnWidth(6, 250)    
+      
         
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')','CS Area('+str(self.comboBox_3.currentText())+'2)', ' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Elongation @ Load '+str(self.lineEdit_17.text())+' '+str(self.comboBox_3.currentText())+'','Cycle Id'])        
-        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", DEF_YEILD_STRG) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        self.tableWidget.setHorizontalHeaderLabels(['Width('+str(self.comboBox_3.currentText())+')',' Load @ Break('+str(self.comboBox_2.currentText())+') ',' Elongation @ Break ('+str(self.comboBox_3.currentText())+')','% Elongation','Cycle Id'])        
+        results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -2278,15 +2277,15 @@ class TY_41_Ui_MainWindow(object):
         connection.close()
         
         
-        data2= [ ['Spec. \n No','Width ('+str(self.last_disp_unit)+')','CS Area \n ('+str(self.last_disp_unit)+'2)', 'Load @ Break\n ('+str(self.last_load_unit)+')', 'Elongation @ Break \n ('+str(self.last_disp_unit)+')',' % Elongation \n','E @ Load '+str(self.lineEdit_17.text())+' \n ('+str(self.last_disp_unit)+')']]
+        data2= [ ['Spec. \n No','Width ('+str(self.last_disp_unit)+')', 'Load @ Break\n ('+str(self.last_load_unit)+')', 'Elongation @ Break \n ('+str(self.last_disp_unit)+')',' % Elongation \n']]
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.GUAGE100), printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.PRC_E_AT_PEAK),printf(\"%.2f\", A.DEF_YEILD_STRG)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.GUAGE100), printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\", A.E_AT_PEAK_LOAD_MM),printf(\"%.2f\", A.PRC_E_AT_PEAK)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", avg(A.CS_AREA)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)),printf(\"%.2f\", avg(A.DEF_YEILD_STRG)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(A.PRC_E_AT_PEAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2294,12 +2293,12 @@ class TY_41_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")
         
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", max(A.CS_AREA)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)),printf(\"%.2f\", max(A.DEF_YEILD_STRG)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(A.PRC_E_AT_PEAK)) FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.4f\", min(A.CS_AREA)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK)),printf(\"%.2f\", min(A.DEF_YEILD_STRG))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", avg(A.GUAGE100)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min(A.E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(A.PRC_E_AT_BREAK))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2312,9 +2311,9 @@ class TY_41_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,A.GUAGE_LENGTH,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3])," "," "],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Test Details : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Width(mm):",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -3100,10 +3099,10 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                             
                     elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                     
                     elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
+                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA/1.0) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
                                          
                     else:    
                                     results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='60'")
