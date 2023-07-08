@@ -1048,7 +1048,7 @@ class TY_42_Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Product Name:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXX"))
-        self.label_14.setText(_translate("MainWindow", "Party Name:"))
+        self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
         self.label_16.setText(_translate("MainWindow", "Rectangular"))

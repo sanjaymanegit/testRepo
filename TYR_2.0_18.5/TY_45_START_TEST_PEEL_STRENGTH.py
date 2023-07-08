@@ -2025,7 +2025,7 @@ class TY_45_START_TEST_PEEL_STR_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 3).text())
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
