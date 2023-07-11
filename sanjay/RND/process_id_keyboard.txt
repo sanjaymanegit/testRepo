@@ -1,0 +1,2 @@
+pi        1684  1649  0 14:32 ?        00:00:00 sh -c ps -ef | grep matchbox-keyboard >> process_id_keyboard.txt
+pi        1686  1684  0 14:32 ?        00:00:00 grep matchbox-keyboard
