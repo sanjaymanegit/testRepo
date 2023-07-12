@@ -1121,7 +1121,7 @@ class TY_44_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_tensile()
-        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Peel Strength (Lb/inch)','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
         self.report_fun_1()
@@ -2088,7 +2088,7 @@ class TY_44_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Peel Strength Lb/inch','Cycle Id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Avg.Load('+str(self.comboBox_2.currentText())+')','Max.Load('+str(self.comboBox_2.currentText())+')','Min.Load('+str(self.comboBox_2.currentText())+')', 'Peel Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+')','Peel Strength (Lb/inch)','Cycle Id'])        
        
         results=connection.execute("SELECT printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH) ,printf(\"%.2f\", UTL_SHEAR_STRENGTH) ,cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
@@ -2114,7 +2114,7 @@ class TY_44_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Peel Strength \n (Lb/Inch) ' ]]
+        data= [['Spec. \n No.', 'Avg. Load ('+str(self.last_load_unit)+')','Max. Load ('+str(self.last_load_unit)+')','Min. Load ('+str(self.last_load_unit)+')','Peel Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')','Peel Strength \n (Lb/Inch) ' ]]
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", AVG_FORCE),printf(\"%.2f\", MAX_FORCE),printf(\"%.2f\", MIN_FORCE),printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", UTL_SHEAR_STRENGTH)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")

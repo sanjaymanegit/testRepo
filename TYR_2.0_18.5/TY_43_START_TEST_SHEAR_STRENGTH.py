@@ -1869,9 +1869,12 @@ class TY_43_START_TEST_SHEAR_Ui_MainWindow(object):
                   
                   if( str(self.comboBox_2.currentText()) =="MPa"):
                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH             this is actual shear strength                
+                  elif( str(self.comboBox_2.currentText()) =="N"):
+                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH
+                         cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)*0.2248090795/IFNULL(cast(NEW_TEST_AREA as real)*0.393701*0.393701,1)))") ### Shear Strength Lb /Inch 
                   else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH
-                          cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)*2.20462/IFNULL(cast(NEW_TEST_AREA_INCH as real)*0.393701*0.393701,1)))") ### Shear Strength Lb /Inch 
+                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH
+                         cursor.execute("UPDATE GLOBAL_VAR SET ULT_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)*0.2248090795/IFNULL(cast(NEW_TEST_AREA as real)*0.393701*0.393701,1)))") ### Shear Strength Lb /Inch 
                           
                   
                   
