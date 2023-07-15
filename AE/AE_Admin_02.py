@@ -357,6 +357,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Break App"))
         self.pushButton_13.setText(_translate("MainWindow", "User Management"))
         self.pushButton_15.setText(_translate("MainWindow", "Load Cell Selection"))
+        self.pushButton_15.hide()
         self.pushButton_19.setText(_translate("MainWindow", "Register"))
         #self.pushButton_14.hide()
         self.pushButton_16.hide()

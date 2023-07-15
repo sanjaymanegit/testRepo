@@ -4,6 +4,7 @@ from AE_Admin_02 import AE_02_Ui_MainWindow
 from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
 from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
 from AE_START_TEST_TEAR_03 import AE_START_TEST_TEAR_Ui_MainWindow
+from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
 
 from AE_02_LIST_REPORT import AE_02_LIST_Ui_MainWindow
 
@@ -215,19 +216,7 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Admin"))
         self.label_2.setText(_translate("MainWindow", "Asian Test Equipments"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
-        '''
-        __sortingEnabled = self.listWidget.isSortingEnabled()
-        self.listWidget.setSortingEnabled(False)
-        item = self.listWidget.item(0)
-        item.setText(_translate("MainWindow", "Tensile (01)"))
-        item = self.listWidget.item(1)
-        item.setText(_translate("MainWindow", "Compression(02)"))
-        item = self.listWidget.item(2)
-        item.setText(_translate("MainWindow", "Tear(03)"))
-        item = self.listWidget.item(3)
-        item.setText(_translate("MainWindow", "Flexural(04)"))
-        self.listWidget.setSortingEnabled(__sortingEnabled)
-        '''
+        
         self.label_50.setText(_translate("MainWindow", "Test List :"))
         self.pushButton_6.setText(_translate("MainWindow", "Log Out"))
         self.pushButton_6.clicked.connect(MainWindow.close)
@@ -634,7 +623,13 @@ class AE_01_Ui_MainWindow(object):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_03_Ui_MainWindow()
         self.ui.setupUi(self.window)           
-        self.window.show()    
+        self.window.show()
+    
+    def open_loadcell_window(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=load_cell_set_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     
         
@@ -734,6 +729,7 @@ class AE_01_Ui_MainWindow(object):
 "border-width:4px;")
         
         self.pushButton_902.setObjectName("pushButton_902")
+        
         self.pushButton_905 = QtWidgets.QPushButton(self.frame)
         self.pushButton_905.setGeometry(QtCore.QRect(770, 590, 171, 41))
         font = QtGui.QFont()
@@ -748,6 +744,24 @@ class AE_01_Ui_MainWindow(object):
 "border-style:outset;\n"
 "border-width:4px;")
         self.pushButton_905.setObjectName("pushButton_905")
+        
+        self.pushButton_906 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_906.setGeometry(QtCore.QRect(90, 650, 201, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_906.setFont(font)
+        self.pushButton_906.setStyleSheet("border-radius:20px;\n"
+    "color: rgb(256, 256, 256); background-color: rgb(169, 202, 255);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        #self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
+        self.pushButton_906.setObjectName("pushButton_906")
+        
+        
         self.label_9021 = QtWidgets.QLabel(self.frame)
         self.label_9021.setGeometry(QtCore.QRect(1000, 580, 201, 51))
         font = QtGui.QFont()
@@ -763,8 +777,11 @@ class AE_01_Ui_MainWindow(object):
         
         self.pushButton_902.setText("SHUT DOWN")
         self.pushButton_905.setText("REBOOT")
+        self.pushButton_906.setText("Check LoadCell")
         self.pushButton_902.clicked.connect(self.shutdown_system)
         self.pushButton_905.clicked.connect(self.reboot_system)
+        self.pushButton_906.clicked.connect(self.open_loadcell_window)
+        
         self.anydesk_open()
         
     

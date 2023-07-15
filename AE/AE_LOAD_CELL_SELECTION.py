@@ -297,6 +297,7 @@ class load_cell_set_Ui_MainWindow(object):
         self.radioButton_3.setText(_translate("MainWindow", "Load Cell -3"))
         self.radioButton_4.setText(_translate("MainWindow", "Load Cell -4"))
         self.radioButton_5.setText(_translate("MainWindow", "Load Cell -5"))
+        self.radioButton_5.setDisabled(True)
         self.label_6.setText(_translate("MainWindow", "Capacity"))
         self.label_7.setText(_translate("MainWindow", "Load Cell No"))
         self.pushButton_6.setText(_translate("MainWindow", "Close"))
@@ -346,6 +347,7 @@ class load_cell_set_Ui_MainWindow(object):
                 
             elif(int(x[0])==5):
                 self.lineEdit_8.setText(str(x[1]))
+                self.lineEdit_8.setDisabled(True)
                 if(str(x[2]) == "ACTIVE"):
                     self.radioButton_5.setChecked(True)                    
                 else:
