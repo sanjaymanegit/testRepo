@@ -821,6 +821,9 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.label_47.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
+        
+        self.buttongroup = QtWidgets.QButtonGroup()
+        self.buttongroup_2 = QtWidgets.QButtonGroup()
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(1130, 290, 81, 31))
         font = QtGui.QFont()
@@ -836,6 +839,11 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_2.setFont(font)
         self.radioButton_2.setObjectName("radioButton_2")
+        
+        
+        self.buttongroup.addButton(self.radioButton, 1)
+        self.buttongroup.addButton(self.radioButton_2, 2)
+        
         self.line_4 = QtWidgets.QFrame(self.frame)
         self.line_4.setGeometry(QtCore.QRect(680, 620, 621, 16))
         font = QtGui.QFont()
@@ -863,7 +871,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.radioButton_3.setFont(font)
-        self.radioButton_3.setChecked(False)
+        self.radioButton_3.setChecked(True)
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_4.setGeometry(QtCore.QRect(1170, 670, 111, 31))
@@ -872,6 +880,11 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         font.setPointSize(10)
         self.radioButton_4.setFont(font)
         self.radioButton_4.setObjectName("radioButton_4")
+        
+        
+        self.buttongroup_2.addButton(self.radioButton_3, 1)
+        self.buttongroup_2.addButton(self.radioButton_4, 2)
+        
         self.label_49 = QtWidgets.QLabel(self.frame)
         self.label_49.setGeometry(QtCore.QRect(680, 650, 81, 31))
         font = QtGui.QFont()
@@ -899,6 +912,8 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.test_mode="Tensile"
+        self.length_device="Extentiometer"  
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -906,7 +921,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Specimen Information (4)"))
+        self.label.setText(_translate("MainWindow", "Specimen Information(4)"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_2.setText(_translate("MainWindow", "Add"))
         self.pushButton_3.setText(_translate("MainWindow", "Save"))
@@ -1158,14 +1173,40 @@ class TY_05_SPECI_4_ui_MainWindow(object):
             self.lineEdit_13.setText(str(self.tableWidget.item(row, 12).text())) # diameter
             self.lineEdit_14.setText(str(self.tableWidget.item(row, 13).text())) # cs area
             self.lineEdit_5.setText(str(self.tableWidget.item(row, 14).text())) # rev.Test Speed
-           
+            self.lineEdit_9.setText(str(self.tableWidget.item(row, 15).text())) # Load Cell
+            
+            if(str(self.tableWidget.item(row, 16).text()) == "Tensile"):
+                self.radioButton.setChecked(True)
+                self.radioButton_2.setChecked(False)
+                self.test_mode="Tensile"                
+            elif(str(self.tableWidget.item(row, 16).text()) == "Compression"): 
+                self.radioButton_2.setChecked(True)
+                self.radioButton.setChecked(False)
+                self.test_mode="Compression"
+            else:    
+                self.radioButton.setChecked(True)
+                self.radioButton_2.setChecked(False)
+                self.test_mode="Tensile"
+            
+            if(str(self.tableWidget.item(row, 17).text()) == "Encoder"):
+                self.radioButton_3.setChecked(True)
+                self.radioButton_4.setChecked(False)
+                self.length_device="Extentiometer"
+            elif(str(self.tableWidget.item(row, 17).text()) == "Extentiometer"):
+                self.radioButton_4.setChecked(True)
+                self.radioButton_3.setChecked(False)
+                self.length_device="Encoder"
+            else:
+                self.radioButton_3.setChecked(True)
+                self.radioButton_4.setChecked(False)
+                self.length_device="Extentiometer"              
            
             
             self.pushButton_2.setDisabled(True) #add
             self.pushButton_3.setEnabled(True)  #save
             self.pushButton_4.setEnabled(True) #delete           
             #self.pushButton_5.setEnabled(True) #reset
-            
+             
         else:    
             self.label_2.setText("Please Select the record.")
             self.label_2.show()
@@ -1235,7 +1276,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
                     connection = sqlite3.connect("tyr.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED) VALUES('"+self.lineEdit_12.text()+"','"+self.textEdit.toPlainText()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"','"+self.lineEdit_5.text()+"')")                    
+                            cursor.execute("INSERT INTO SPECIMEN_MST(SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,PARTY_NAME,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE) VALUES('"+self.lineEdit_12.text()+"','"+self.textEdit.toPlainText()+"','"+self.comboBox_2.currentText()+"','"+self.lineEdit_7.text()+"','"+self.lineEdit_4.text()+"','"+self.lineEdit_10.text()+"','"+self.lineEdit.text()+"','"+self.lineEdit_3.text()+"','"+self.lineEdit_6.text()+"','"+self.lineEdit_8.text()+"','"+self.lineEdit_11.text()+"','"+self.lineEdit_13.text()+"','"+self.lineEdit_14.text()+"','"+self.lineEdit_5.text()+"','"+str(self.lineEdit_9.text())+"','"+str(self.test_mode)+"','"+str(self.length_device)+"')")                    
                     connection.commit();                    
                     connection.close()  
               
@@ -1259,6 +1300,13 @@ class TY_05_SPECI_4_ui_MainWindow(object):
     def c_edit_data(self):
         self.validations()
         self.check_for_dup_spec_name_upd()
+        
+        
+        
+        
+        
+        
+        
         if(self.dup_spec_name_flag == "Y"):
               self.label_21.setText("Spec. Name is already exist.")           
               self.label_21.show()
@@ -1267,7 +1315,9 @@ class TY_05_SPECI_4_ui_MainWindow(object):
                 connection = sqlite3.connect("tyr.db")
                 with connection:        
                         cursor = connection.cursor()
-                        cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.textEdit.toPlainText()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_5.text()+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                        print("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.textEdit.toPlainText()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_5.text()+"',LOAD_CELL='"+str(self.lineEdit_9.text())+"',TEST_MODE='"+str(self.test_mode)+"',LENGTH_DEVICE='"+str(self.length_device)+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+              
+                        cursor.execute("UPDATE SPECIMEN_MST SET SPECIMEN_NAME='"+str(self.lineEdit_12.text())+"',SPECIMEN_SPECS='"+self.textEdit.toPlainText()+"',SHAPE='"+self.comboBox_2.currentText()+"', PARTY_NAME='"+self.lineEdit_7.text()+"',MOTOR_SPEED='"+self.lineEdit_4.text()+"',GUAGE_LENGTH_MM ='"+self.lineEdit_10.text()+"',PRE_LOAD='"+self.lineEdit.text()+"' ,THICKNESS='"+self.lineEdit_3.text()+"', WIDTH='"+self.lineEdit_6.text()+"' , IN_DIAMETER_MM='"+self.lineEdit_8.text()+"' ,OUTER_DIAMETER_MM='"+self.lineEdit_11.text()+"', DIAMETER='"+self.lineEdit_13.text()+"' ,C_A_AREA='"+self.lineEdit_14.text()+"',REV_MOTOR_SPEED='"+self.lineEdit_5.text()+"',LOAD_CELL='"+str(self.lineEdit_9.text())+"',TEST_MODE='"+str(self.test_mode)+"',LENGTH_DEVICE='"+str(self.length_device)+"'   WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
                 connection.commit();                    
                 connection.close()
                 self.label_21.setText("Record Saved Successfully.")       
@@ -1306,8 +1356,24 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         elif(float(self.lineEdit_14.text()) <= 0):
              self.label_21.setText("CS.Area should be greater than zero.")
              self.label_21.show()      
-        else:            
-             self.go_ahead="Yes"
+        else:
+            ##test_mode  
+            if(self.radioButton.isChecked()):
+                 self.test_mode="Tensile"   
+            elif(self.radioButton_2.isChecked()):
+                 self.test_mode="Compression"   
+            else:
+                 self.test_mode="Tensile"
+                 
+            ##length_device
+            if(self.radioButton_3.isChecked()):
+                 self.length_device="Encoder"   
+            elif(self.radioButton_4.isChecked()):
+                 self.length_device="Extentiometer"   
+            else:
+                 self.length_device="Encoder"
+            
+            self.go_ahead="Yes"
         
     def check_for_dup_spec_name_add(self):
         self.dup_spec_name_flag="N"
@@ -1381,13 +1447,13 @@ class TY_05_SPECI_4_ui_MainWindow(object):
 #         font.setBold(True)
 #         font.setWeight(75)        
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(15)
+        self.tableWidget.setColumnCount(18)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Test Method','Test Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed'] )       
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Test Method','Test Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed','Load Cell','Test Mode','Length Device'] )       
            
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED  FROM SPECIMEN_MST")                        
+        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE  FROM SPECIMEN_MST")                        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -862,7 +862,7 @@ class TY_05_SPECI_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Specimen Information"))
+        self.label.setText(_translate("MainWindow", "Specimen Information(3)"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
         self.pushButton_2.setText(_translate("MainWindow", "Add"))
         self.pushButton_3.setText(_translate("MainWindow", "Save"))

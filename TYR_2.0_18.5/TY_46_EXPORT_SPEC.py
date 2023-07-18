@@ -367,7 +367,7 @@ class TY_46_Ui_MainWindow(object):
         print("Exporte Started ........")
         conn = sqlite3.connect('tyr.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT SPECIMEN_ID,SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,THICKNESS,WIDTH,DIAMETER,C_A_AREA,MOTOR_SPEED,PARTY_NAME,PRE_LOAD,GUAGE_LENGTH_MM,IN_DIAMETER_MM,OUTER_DIAMETER_MM,CREATED_ON,TESTED_BY,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM SPECIMEN_MST WHERE SPECIMEN_ID IN (SELECT TEST_ID FROM TEST_IDS)")
+        cursor.execute("SELECT SPECIMEN_ID,SPECIMEN_NAME,SPECIMEN_SPECS,SHAPE,THICKNESS,WIDTH,DIAMETER,C_A_AREA,MOTOR_SPEED,PARTY_NAME,PRE_LOAD,GUAGE_LENGTH_MM,IN_DIAMETER_MM,OUTER_DIAMETER_MM,CREATED_ON,TESTED_BY,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL,TEST_MODE,LENGTH_DEVICE FROM SPECIMEN_MST WHERE SPECIMEN_ID IN (SELECT TEST_ID FROM TEST_IDS)")
         with open("./reports/specimens.csv", 'w',newline='') as csv_file:                
                 csv_writer = csv.writer(csv_file)               
                 csv_writer.writerow([i[0] for i in cursor.description]) 
