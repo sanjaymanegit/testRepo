@@ -216,7 +216,7 @@ class TY_50_LIST_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_20.setText(_translate("MainWindow", "05 Aug 2020 12:45:00"))
-        self.pushButton_4.setText(_translate("MainWindow", "GO FOR TEST"))
+        self.pushButton_4.setText(_translate("MainWindow", "ADD/EDIT Specimens"))
         self.pushButton_14.setText(_translate("MainWindow", "RETURN"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
