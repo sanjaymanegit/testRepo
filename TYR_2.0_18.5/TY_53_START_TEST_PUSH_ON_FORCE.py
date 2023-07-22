@@ -45,7 +45,7 @@ class TY_53_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 20, 1321, 701))
+        self.frame.setGeometry(QtCore.QRect(20, 10, 1321, 701))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -61,7 +61,7 @@ class TY_53_Ui_MainWindow(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
         self.label_10 = QtWidgets.QLabel(self.frame)
-        self.label_10.setGeometry(QtCore.QRect(750, 190, 211, 41))
+        self.label_10.setGeometry(QtCore.QRect(1160, 50, 151, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -269,6 +269,12 @@ class TY_53_Ui_MainWindow(object):
         font.setPointSize(10)
         item.setFont(font)
         self.tableWidget.setItem(0, 0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 1, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -630,7 +636,7 @@ class TY_53_Ui_MainWindow(object):
         self.comboBox_3 = QtWidgets.QComboBox(self.frame)
         self.comboBox_3.setGeometry(QtCore.QRect(900, 70, 61, 31))
         self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItem("")        
+        self.comboBox_3.addItem("")      
         self.line_7 = QtWidgets.QFrame(self.frame)
         self.line_7.setGeometry(QtCore.QRect(1140, 0, 20, 251))
         self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -801,7 +807,7 @@ class TY_53_Ui_MainWindow(object):
         self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_5.setObjectName("line_5")
         self.label_50 = QtWidgets.QLabel(self.frame)
-        self.label_50.setGeometry(QtCore.QRect(510, 200, 181, 31))
+        self.label_50.setGeometry(QtCore.QRect(520, 190, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -824,9 +830,6 @@ class TY_53_Ui_MainWindow(object):
         self.label_23.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_23.setObjectName("label_23")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
-        self.lineEdit_10.setValidator(input_validator)
         self.lineEdit_10.setGeometry(QtCore.QRect(620, 140, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -847,7 +850,7 @@ class TY_53_Ui_MainWindow(object):
         self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
         self.label_25 = QtWidgets.QLabel(self.frame)
-        self.label_25.setGeometry(QtCore.QRect(760, 140, 101, 31))
+        self.label_25.setGeometry(QtCore.QRect(725, 140, 141, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -880,6 +883,40 @@ class TY_53_Ui_MainWindow(object):
         self.label_26.setStyleSheet("")
         self.label_26.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_26.setObjectName("label_26")
+        self.label_27 = QtWidgets.QLabel(self.frame)
+        self.label_27.setGeometry(QtCore.QRect(760, 190, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_27.setFont(font)
+        self.label_27.setStyleSheet("")
+        self.label_27.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_27.setObjectName("label_27")
+        self.lineEdit_12 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_12)
+        self.lineEdit_12.setValidator(input_validator)
+        self.lineEdit_12.setGeometry(QtCore.QRect(870, 190, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_12.setFont(font)
+        self.lineEdit_12.setObjectName("lineEdit_12")
+        self.label_28 = QtWidgets.QLabel(self.frame)
+        self.label_28.setGeometry(QtCore.QRect(940, 190, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_28.setFont(font)
+        self.label_28.setStyleSheet("")
+        self.label_28.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_28.setObjectName("label_28")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -908,7 +945,7 @@ class TY_53_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "PUSH ON FORCE TEST"))
+        self.label_10.setText(_translate("MainWindow", "PUSH ON FORCE"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
@@ -921,7 +958,7 @@ class TY_53_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
         self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
-        self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
+        self.radioButton_4.setText(_translate("MainWindow", "Extentiometer"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Spec.No."))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -942,10 +979,10 @@ class TY_53_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Mm."))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement."))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
-        self.pushButton_9.setText(_translate("MainWindow", "Reset"))
+        self.pushButton_9.setText(_translate("MainWindow", "New Test"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Speciment Name:"))
@@ -960,10 +997,10 @@ class TY_53_Ui_MainWindow(object):
         self.label_22.setText(_translate("MainWindow", "(mm/min)"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "gm"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "KN"))
+        self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
+        self.comboBox_2.setItemText(4, _translate("MainWindow", "Lb"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))       
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
@@ -979,8 +1016,10 @@ class TY_53_Ui_MainWindow(object):
         self.label_50.setText(_translate("MainWindow", ""))
         self.label_23.setText(_translate("MainWindow", "Max .Load :"))
         self.label_24.setText(_translate("MainWindow", "Kg."))
-        self.label_25.setText(_translate("MainWindow", "Max. Length :"))
+        self.label_25.setText(_translate("MainWindow", "Compress. Length :"))
         self.label_26.setText(_translate("MainWindow", "Mm."))
+        self.label_27.setText(_translate("MainWindow", "Guage. Length :"))
+        self.label_28.setText(_translate("MainWindow", "Mm."))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
@@ -1121,6 +1160,10 @@ class TY_53_Ui_MainWindow(object):
              self.msg="Max. Length is Empty"
         elif(int(self.lineEdit_11.text()) == 0):
              self.msg="Max. Length should not zero"
+        elif(self.lineEdit_12.text() == ""):
+             self.msg="Guage. Length is Empty"
+        elif(int(self.lineEdit_12.text()) == 0):
+             self.msg="Guage. Length should not zero"
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Inch"):
@@ -1147,8 +1190,8 @@ class TY_53_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                                 cursor = connection.cursor()                  
-                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='1'")
-                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
+                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_12.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                         connection.commit();
                         connection.close()
                         
@@ -1158,8 +1201,8 @@ class TY_53_Ui_MainWindow(object):
                         with connection:        
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PULL_ON_FORCE','','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"','')")
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1327,7 +1370,7 @@ class TY_53_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
-            #self.lineEdit_7.setText(str(x[1])) # GUAGE LENGTH
+            self.lineEdit_12.setText(str(x[1])) # GUAGE LENGTH
             self.lineEdit_8.setText(str(x[2])) # SPEED
             self.label_48.setText(str(x[3])) # Customer Name
             self.label_16.setText(str(x[13])) #shape
@@ -1621,7 +1664,7 @@ class TY_53_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
                   elif( str(self.comboBox_2.currentText()) =="KN"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="MPa"):
+                  elif( str(self.comboBox_2.currentText()) =="gm"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
                   else:    
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 
@@ -2079,7 +2122,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.max_length=float(float(x[3]))
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
-            
+             self.max_length=float(float(x[0])-float(x[3]))
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
@@ -2168,8 +2211,9 @@ class PlotCanvas_Auto(FigureCanvas):
          
             #==== Guage Length Setting before staret =====
             self.ser.flush()
+            self.test_type="Compression"
             
-            if(self.test_type=="Flexural"):
+            if(self.test_type=="Compression"):
                 #self.test_guage_mm=0
                 #self.command_str="*G0.00\r"
                 self.command_str="*G%.2f"%self.test_guage_mm+"\r"
@@ -2197,13 +2241,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.ser.write(b'*P0050_0010\r')
                 #print("started with default motor speed . Not gohead ")
             #self.ser.write(b'*D\r\n')
-            self.test_type="Compression"
+            
             #time.sleep(2)
             #========Final Motor start Command =========    
             self.ser.flush()
             if(self.test_type=="Compression"):
-                 print("Compress")
-                 print("Compress")
+                 print("Compression")                 
                  if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
                           self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
@@ -2299,8 +2342,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[4])) #
                 else:
                     self.p=abs(float(self.buff[5]))
-                
-                if(self.test_type=="Compress"):
+                #print("self.test_typexx: "+str(self.test_type))
+                if(self.test_type=="Compression"):
                     self.p=int(self.test_guage_mm)-self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
@@ -2372,6 +2415,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+                #print("self.load_unit :"+str(self.load_unit)+" self.disp_unit : "+str(self.disp_unit))
                 if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
                             self.line_cnt.set_data(self.arr_p,self.arr_q)
                             return [self.line_cnt]
@@ -2392,6 +2436,7 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
                             return [self.line_cnt]
                 elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                            #print("Inside N/mm plot") 
                             self.line_cnt.set_data(self.arr_p,self.arr_q_n)
                             return [self.line_cnt]
                 elif(self.load_unit=="N" and self.disp_unit=="Cm"):
