@@ -1207,12 +1207,16 @@ class TY_44_Ui_MainWindow(object):
                  self.lineEdit_16.setText(str(x[4]))
                  
                  self.lineEdit_8.setText(str(x[5]))
+                 self.lineEdit_8.setReadOnly(True)
                  self.lineEdit_9.setText(str(x[6]))
+                 self.lineEdit_9.setReadOnly(True)
                  
                  self.lineEdit_7.setText(str(x[7]))
                  
                  self.lineEdit_14.setText(str(x[8]))
+                 self.lineEdit_14.setReadOnly(True)
                  self.lineEdit_13.setText(str(x[9]))
+                 self.lineEdit_13.setReadOnly(True)
                  self.comboBox_2.setCurrentText(str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
                  

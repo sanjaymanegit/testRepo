@@ -8,6 +8,8 @@ from TY_38_REPORTS_TEAR_03 import TY_38_REPORT_TEAR_Ui_MainWindow
 from TY_41_REPORTS_WEBBING import TY_41_Ui_MainWindow
 from TY_42_REPORTS_SHEAR_STRENGTH import TY_42_Ui_MainWindow
 from TY_44_REPORTS_PEEL_STRENGTH import TY_44_Ui_MainWindow
+from TY_52_REPORT_PULL_ON_FORCE import TY_52_Ui_MainWindow
+from TY_54_REPORT_PUSH_ON_FORCE import TY_54_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -893,13 +895,26 @@ class TY_35_LIST_Ui_MainWindow(object):
             elif(str(self.new_test_name) == "Shear Strength"):               
                             self.open_report_shear_strength()
             elif(str(self.new_test_name) == "Peel Strength"):               
-                            self.open_report_peel_strength() 
+                            self.open_report_peel_strength()
+            elif(str(self.new_test_name) == "PULL_ON_FORCE"):               
+                            self.open_report_pull_on_force()
+            elif(str(self.new_test_name) == "PUSH_ON_FORCE"):               
+                            self.open_report_push_on_force() 
             else:
                             self.open_report_tensile()
             
         
-        
-   
+    def open_report_pull_on_force(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_52_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_report_push_on_force(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_54_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def open_report_compress(self):
         self.window = QtWidgets.QMainWindow()

@@ -400,8 +400,32 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_shear_strength()
         elif(str(self.test_type_id) == "22"):
             self.save_test_webbing()
+        elif(str(self.test_type_id) == "23"):
+            self.save_test_pull_on_force()
+        elif(str(self.test_type_id) == "24"):
+            self.save_test_push_on_force()
         else:
             print("Invalid Test ID")
+    
+    def save_test_pull_on_force(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PULL_ON_FORCE'")                    
+        connection.commit();
+        connection.close()       
+        
+        self.open_new_window_LIST_NEW()
+    
+    def save_test_push_on_force(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PUSH_ON_FORCE'")                    
+        connection.commit();
+        connection.close()       
+        
+        self.open_new_window_LIST_NEW()
             
     def save_test_peel_strength(self):                     
         connection = sqlite3.connect("tyr.db")              
