@@ -1136,7 +1136,7 @@ class TY_02_Ui_MainWindow(object):
             self.serial_3.flush()
             self.serial_3.write(b'*D\r')
             self.line_3 = self.serial_3.readline()
-            print("xxencoder_status:o/p:"+str(self.line_3))
+            #print("xxencoder_status:o/p:"+str(self.line_3))
         except IOError:
             print("IO Errors")    
                 
@@ -1152,8 +1152,8 @@ class TY_02_Ui_MainWindow(object):
         
         #print("length of array :"+str(len(self.buff)))
         if(int(len(self.buff)) > 8 ):          
-            print("Load Cell No... :"+str(self.buff[7]))
-            print("Encoder No.. :"+str(self.buff[6]))
+            #print("Load Cell No... :"+str(self.buff[7]))
+            #print("Encoder No.. :"+str(self.buff[6]))
             if(str(self.buff[6])=="2"):
                 self.load_cell_hi=0
                 self.load_cell_lo=1
@@ -1394,35 +1394,7 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()     
     
-#     def show_grid_data_flexure(self):        
-#         #print("inside tear list.....")
-#         self.delete_all_records()
-#         font = QtGui.QFont()
-#         font.setPointSize(10)
-#         self.tableWidget.setFont(font)
-#         self.tableWidget.setColumnCount(10)
-#         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-#         self.tableWidget.setHorizontalHeaderLabels(['Length \n (mm)','Force at Peak \n (Kgf)',' Displacement \n (mm) ','Support Span  \n(mm)','Width \n (mm)','Thickness \n (mm)','Flexural \n Strength (Kgf/cm2)','Failure \n Mode','Test  \n Method','Cycle ID'])        
-#         self.tableWidget.setColumnWidth(0, 150)
-#         self.tableWidget.setColumnWidth(1, 150)
-#         self.tableWidget.setColumnWidth(2, 150)
-#         self.tableWidget.setColumnWidth(3, 100)
-#         self.tableWidget.setColumnWidth(4, 100)
-#         self.tableWidget.setColumnWidth(5, 100)
-#         self.tableWidget.setColumnWidth(6, 250)
-#         self.tableWidget.setColumnWidth(7, 100)
-#         self.tableWidget.setColumnWidth(8, 100)
-#         self.tableWidget.setColumnWidth(9, 50)
-#         connection = sqlite3.connect("tyr.db")
-#         results=connection.execute("SELECT printf(\"%.2f\", GUAGE100),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\", E_AT_BREAK_MM),(SELECT printf(\"%.2f\", NEW_TEST_MAX_LOAD) FROM GLOBAL_VAR),printf(\"%.2f\", WIDTH),printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", FLEXURAL_STRENGTH_KG_CM) ,BREAK_MODE,TEST_METHOD,CYCLE_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID ")
-#         for row_number, row_data in enumerate(results):            
-#             self.tableWidget.insertRow(row_number)
-#             for column_number, data in enumerate(row_data):
-#                 self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-#         #self.tableWidget.resizeColumnsToContents()
-#         self.tableWidget.resizeRowsToContents()
-#         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-#         connection.close()
+
        
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
@@ -1457,8 +1429,9 @@ class TY_02_Ui_MainWindow(object):
             self.cs_area=str(self.lineEdit_2.text())
         elif(self.shape=="DirectValue"):
             self.cs_area=str(self.lineEdit_2.text())
-        
+        print("Test Started ")
         self.validation()
+        print("self.goAhead :"+str(self.goAhead))
         if(self.goAhead=="Yes"):                
                 ### Update Flexural parameters
                 
@@ -1591,7 +1564,8 @@ class TY_02_Ui_MainWindow(object):
             else:
                 self.label_3.setText("Specimen Parameter(s) empty.")
                 self.label_3.show()
-        
+        else:
+            print("Invalid shape")
         
     def save_graph_data(self):                 
         ### LOAD_CYCLE_MST

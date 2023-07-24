@@ -45,7 +45,7 @@ class TY_53_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 10, 1321, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1009,7 +1009,7 @@ class TY_53_Ui_MainWindow(object):
         self.label_35.setText(_translate("MainWindow", "Job Name:"))
         self.label_36.setText(_translate("MainWindow", "Batch ID:"))
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
-        self.label_38.setText(_translate("MainWindow", "4"))
+        self.label_38.setText(_translate("MainWindow", "0"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.label_17.setText(_translate("MainWindow", "Testing Mode:"))
         self.label_18.setText(_translate("MainWindow", "Compression"))
@@ -1202,7 +1202,8 @@ class TY_53_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"','')")
+                              
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1557,7 +1558,7 @@ class TY_53_Ui_MainWindow(object):
                        self.lineEdit_12.setText("error")
                        self.cs_area="0.0"
         
-        
+        print("1561 check........")  
         if( str(self.comboBox_3.currentText()) =="Cm"):         
                 self.cs_area=self.cs_area*0.1*0.1       
         elif( str(self.comboBox_3.currentText()) =="Inch"):
@@ -1565,6 +1566,7 @@ class TY_53_Ui_MainWindow(object):
         else:                
                 self.cs_area=1
         
+        print("len of arr........"+str(len(self.sc_new.arr_p))) 
         if (len(self.sc_new.arr_p) > 1):            
             #### Get Guage length
             connection = sqlite3.connect("tyr.db")
@@ -1583,6 +1585,7 @@ class TY_53_Ui_MainWindow(object):
                    
             connection.commit();
             connection.close()
+            print("1587 check........")  
             if(str(self.comboBox_2.currentText()) =="Lb"):                   
                     for g in range(len(self.sc_new.arr_p)):
                          if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
@@ -1622,7 +1625,7 @@ class TY_53_Ui_MainWindow(object):
                          if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
                                 self.load300_guage=float(self.sc_new.arr_q_kn[g])
                                 break;
-            elif(str(self.comboBox_2.currentText()) =="MPa"):
+            elif(str(self.comboBox_2.currentText()) =="gm"):
                     for g in range(len(self.sc_new.arr_p)):
                          if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
                                 self.load100_guage=float(self.sc_new.arr_q_mpa[g])
@@ -1653,7 +1656,8 @@ class TY_53_Ui_MainWindow(object):
         if (len(self.sc_new.arr_p) > 1):            
             self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
-            with connection:                
+            with connection:
+                  print("0 Data saved........")  
                   cursor = connection.cursor()              
                   #print("ok1")
                   #cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
@@ -1680,7 +1684,7 @@ class TY_53_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
                   
                   
-                  
+                  print("1 Data saved........") 
                   if( str(self.comboBox_2.currentText()) =="MPa"):
                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
                   else:
@@ -1712,7 +1716,7 @@ class TY_53_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD300_GUAGE='"+str(self.load300_guage)+"'")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_300=((cast(STG_LOAD300_GUAGE as real)/cast(NEW_TEST_AREA as real)))")                 
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
-                  
+                  print("1 Data saved........")  
                    
                   cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN FROM STG_GRAPH_MST")
@@ -1730,13 +1734,13 @@ class TY_53_Ui_MainWindow(object):
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   #cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                  print("data saved.")                  
+                  print("Data saved........")                  
             
             connection.commit();
             connection.close()            
         
         #self.load_data()
-        print("Save completed")
+        #print("Save completed")
         self.show_grid_data_Tear()
         
         
@@ -2599,11 +2603,6 @@ class PlotCanvas(FigureCanvas):
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
-            
-            
-            
-            
-           
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type=="Load Vs Displacement"):
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):

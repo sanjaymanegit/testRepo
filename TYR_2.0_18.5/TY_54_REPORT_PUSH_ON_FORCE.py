@@ -1009,7 +1009,7 @@ class TY_54_Ui_MainWindow(object):
         self.label_35.setText(_translate("MainWindow", "Job Name:"))
         self.label_36.setText(_translate("MainWindow", "Batch ID:"))
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
-        self.label_38.setText(_translate("MainWindow", "4"))
+        self.label_38.setText(_translate("MainWindow", "0"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.label_17.setText(_translate("MainWindow", "Testing Mode:"))
         self.label_18.setText(_translate("MainWindow", "Compression"))
@@ -1037,7 +1037,7 @@ class TY_54_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_comment_popup)
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
-        self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
+        #self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         self.test_method=""                             
         self.failure_mod=""
         self.tmperature=""
@@ -1125,7 +1125,7 @@ class TY_54_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])                
@@ -1146,9 +1146,11 @@ class TY_54_Ui_MainWindow(object):
                  self.lineEdit_13.setText(str(x[9]))
                  self.comboBox_2.setCurrentText(str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
+                 self.lineEdit_10.setText(str(x[12]))
+                 self.lineEdit_11.setText(str(x[13]))
                  
         connection.close()
-        self.onchage_combo()
+        #self.onchage_combo()
         
 
        

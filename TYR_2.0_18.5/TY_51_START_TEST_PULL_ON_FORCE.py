@@ -756,7 +756,7 @@ class TY_51_Ui_MainWindow(object):
         self.lineEdit_16.setFont(font)
         self.lineEdit_16.setObjectName("lineEdit_16")
         self.label_37 = QtWidgets.QLabel(self.frame)
-        self.label_37.setGeometry(QtCore.QRect(0, 60, 81, 31))
+        self.label_37.setGeometry(QtCore.QRect(4, 60, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1539,7 +1539,7 @@ class TY_51_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
                   elif( str(self.comboBox_2.currentText()) =="KN"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="MPa"):
+                  elif( str(self.comboBox_2.currentText()) =="gm"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
                   else:    
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 

@@ -742,7 +742,7 @@ class TY_52_Ui_MainWindow(object):
         self.lineEdit_16.setFont(font)
         self.lineEdit_16.setObjectName("lineEdit_16")
         self.label_37 = QtWidgets.QLabel(self.frame)
-        self.label_37.setGeometry(QtCore.QRect(0, 60, 81, 31))
+        self.label_37.setGeometry(QtCore.QRect(4, 60, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -916,7 +916,7 @@ class TY_52_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_comment_popup)
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
-        self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
+        #self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         self.test_method=""                             
         self.failure_mod=""
         self.tmperature=""
@@ -980,7 +980,11 @@ class TY_52_Ui_MainWindow(object):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
               self.comboBox_3.setCurrentText(str("Mm"))
-        elif(str(self.comboBox_2.currentText())=="MPa"):
+        elif(str(self.comboBox_2.currentText())=="Kg"):
+              self.comboBox_3.setCurrentText(str("Mm"))
+        elif(str(self.comboBox_2.currentText())=="N"):
+              self.comboBox_3.setCurrentText(str("Mm"))
+        elif(str(self.comboBox_2.currentText())=="gm"):
               self.comboBox_3.setCurrentText(str("Mm"))
         else:
               print("No change in combo3")
@@ -1008,7 +1012,8 @@ class TY_52_Ui_MainWindow(object):
         results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
-                 self.test_id=str(x[0])                
+                 self.test_id=str(x[0])
+                 print("test id :"+str(self.test_id))
                  self.comboBox.setCurrentText(str(x[1]))
                  self.comboBox.setDisabled(True)
                  print("spec name "+str(x[1]))
@@ -1025,10 +1030,11 @@ class TY_52_Ui_MainWindow(object):
                  self.lineEdit_14.setText(str(x[8]))
                  self.lineEdit_13.setText(str(x[9]))
                  self.comboBox_2.setCurrentText(str(x[10]))
+                 print("load unit to set :"+str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
                  
         connection.close()
-        self.onchage_combo()
+        #self.onchage_combo()
         
         
 #         connection = sqlite3.connect("tyr.db")
@@ -1041,7 +1047,7 @@ class TY_52_Ui_MainWindow(object):
         self.sc_blank =PlotCanvas(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
-        self.onchage_combo()
+        #self.onchage_combo()
         self.label_49.setText("")
         self.label_49.show()
         #self.frame_3.hide()
