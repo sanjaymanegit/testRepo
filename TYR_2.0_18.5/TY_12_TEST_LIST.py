@@ -19,6 +19,7 @@ from TY_43_START_TEST_SHEAR_STRENGTH import TY_43_START_TEST_SHEAR_Ui_MainWindow
 from TY_45_START_TEST_PEEL_STRENGTH import TY_45_START_TEST_PEEL_STR_Ui_MainWindow
 from TY_51_START_TEST_PULL_ON_FORCE import TY_51_Ui_MainWindow
 from TY_53_START_TEST_PUSH_ON_FORCE import TY_53_Ui_MainWindow
+from TY_55_START_TEST_TRUNKLIDSEAL import TY_55_Ui_MainWindow
 
 import sqlite3
 import re
@@ -132,7 +133,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.label_11 = QtWidgets.QLabel(self.frame)
-        self.label_11.setGeometry(QtCore.QRect(610, 140, 201, 31))
+        self.label_11.setGeometry(QtCore.QRect(610, 140, 281, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -458,11 +459,21 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "23"):    
             self.save_test_pull_on_force_test()    
         elif(str(self.test_type_id) == "24"):    
-            self.save_test_push_on_force_test()    
+            self.save_test_push_on_force_test()
+        elif(str(self.test_type_id) == "28"):    
+            self.save_cld_test() 
             
         else:
             print("Invalid Test ID"+str(self.test_type_id))
             
+    def save_cld_test(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='VWSK_TRUNKLIDSEAL_CLD'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_CLD()
     
     def save_peel_strength_test(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -645,7 +656,12 @@ class TY_12_LIST_Ui_MainWindow(object):
 
 
    
-    
+    def open_new_window_CLD(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_55_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def open_new_window_peel_strength(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_45_START_TEST_PEEL_STR_Ui_MainWindow()
