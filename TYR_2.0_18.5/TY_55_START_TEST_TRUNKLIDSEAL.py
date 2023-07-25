@@ -46,7 +46,7 @@ class TY_55_Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 10, 1321, 701))
+        self.frame.setGeometry(QtCore.QRect(30, 30, 1321, 709))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -243,7 +243,7 @@ class TY_55_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
         self.tableWidget.setGeometry(QtCore.QRect(810, 320, 471, 101))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -945,25 +945,11 @@ class TY_55_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         self.label_33.setText(_translate("MainWindow", "Show Graph :"))
-        self.radioButton.setText(_translate("MainWindow", "Hi-Load cell"))
-        self.radioButton_2.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Spec.No."))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Load @ Disp_1  (Kg)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Load @ Disp_2  (Kg)"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Cycle.No"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 3)
-        item.setText(_translate("MainWindow", "1"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+        
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
         self.label_40.setText(_translate("MainWindow", "Displacement:"))
@@ -971,8 +957,8 @@ class TY_55_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Mm."))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement."))
-        self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement"))
+        self.label_49.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "Reset"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
@@ -1005,7 +991,7 @@ class TY_55_Ui_MainWindow(object):
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.label_17.setText(_translate("MainWindow", "Testing Mode:"))
         self.label_18.setText(_translate("MainWindow", "Compression"))
-        self.label_50.setText(_translate("MainWindow", "Graph Set Successfully."))
+        self.label_50.setText(_translate("MainWindow", ""))
         self.label_23.setText(_translate("MainWindow", "Displacement_1 :"))
         self.label_24.setText(_translate("MainWindow", "Mm"))
         self.label_25.setText(_translate("MainWindow", "Displacement_2 :"))
@@ -1044,7 +1030,7 @@ class TY_55_Ui_MainWindow(object):
         self.frame_3.hide()
         self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Load @ DISP 1 \n ('+str(self.comboBox_2.currentText())+')','Load @ DISP 2 \n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
     def load_unit_onchange(self):
@@ -1101,7 +1087,7 @@ class TY_55_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2 FROM GLOBAL_VAR") 
         for x in results:            
             self.lineEdit_10.setText(str(x[0]))
             self.lineEdit_11.setText(str(x[1]))
@@ -1146,17 +1132,21 @@ class TY_55_Ui_MainWindow(object):
         elif(self.lineEdit_9.text() == ""):
              self.msg="Rev.Speed is Empty"
         elif(self.lineEdit_10.text() == ""):
-             self.msg="Max. Load is Empty"
+             self.msg="Disp_1 is Empty"
         elif(int(self.lineEdit_10.text()) == 0):
-             self.msg="Max. Load should not zero"
+             self.msg="Disp_1 should not zero"
         elif(self.lineEdit_11.text() == ""):
-             self.msg="Max. Length is Empty"
+             self.msg="Disp_2 is Empty"
         elif(int(self.lineEdit_11.text()) == 0):
-             self.msg="Max. Length should not zero"
+             self.msg="Disp_2 should not zero"
+        elif(int(self.lineEdit_11.text()) <  int(self.lineEdit_10.text())):
+             self.msg="Disp_2 should be greater than Disp_1"
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
         elif(int(self.lineEdit_12.text()) == 0):
              self.msg="Guage. Length should not zero"
+        elif(int(self.lineEdit_12.text()) < int(self.lineEdit_11.text()) ):
+             self.msg="Guage. Length should Should not less than Disp_2."             
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Inch"):
@@ -1193,9 +1183,8 @@ class TY_55_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
-                              
+                              cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='99999',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
                               cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1656,15 +1645,27 @@ class TY_55_Ui_MainWindow(object):
                   #cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
                  
                   if( str(self.comboBox_2.currentText()) =="Lb"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###    
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_2=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_2 FROM GLOBAL_VAR))")   ### 
                   elif( str(self.comboBox_2.currentText()) =="N"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_2=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_2 FROM GLOBAL_VAR))")   ### 
                   elif( str(self.comboBox_2.currentText()) =="KN"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_2=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_2 FROM GLOBAL_VAR))")   ### 
                   elif( str(self.comboBox_2.currentText()) =="gm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_2=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_2 FROM GLOBAL_VAR))")   ### 
+                          
                   else:    
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 
+                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
+                          cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_2=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_2 FROM GLOBAL_VAR))")   ### 
+                         
                   
                   if( str(self.comboBox_3.currentText()) =="Cm"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
@@ -1711,7 +1712,7 @@ class TY_55_Ui_MainWindow(object):
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
                   print("1 Data saved........")  
                    
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,LOAD_POINT_1,LOAD_POINT_2) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG,LOAD_POINT_1,LOAD_POINT_2 FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN FROM STG_GRAPH_MST")
                   
               
@@ -1855,14 +1856,14 @@ class TY_55_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(2)
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setHorizontalHeaderLabels([' Load ('+str(self.comboBox_2.currentText())+') @ DISP 1 ',' Load ('+str(self.comboBox_2.currentText())+') @ DISP 2 ','cycle_id'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),cycle_id FROM CYCLES_MST WHERE TEST_ID = '"+self.test_id+"' order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", LOAD_POINT_1),printf(\"%.2f\", LOAD_POINT_2),cycle_id FROM CYCLES_MST WHERE TEST_ID = '"+self.test_id+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -1887,28 +1888,28 @@ class TY_55_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Force at Peak\n ('+str(self.last_load_unit)+')']]
+        data2= [ ['Spec. \n No', 'Load @ DISP 1 \n ('+str(self.last_load_unit)+')', 'Load @ DISP 2 \n ('+str(self.last_load_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.PEAK_LOAD_KG) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.LOAD_POINT_1),printf(\"%.2f\", A.LOAD_POINT_2) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD_POINT_1)),printf(\"%.2f\", avg(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD_POINT_1)),printf(\"%.2f\", max(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD_POINT_1)),printf(\"%.2f\", min(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
