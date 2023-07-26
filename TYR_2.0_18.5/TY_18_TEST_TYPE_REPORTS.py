@@ -404,11 +404,24 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_pull_on_force()
         elif(str(self.test_type_id) == "24"):
             self.save_test_push_on_force()
+        elif(str(self.test_type_id) == "26"):
+            self.save_test_tear_peak_load()
         elif(str(self.test_type_id) == "28"):
             self.save_test_CLD()
         else:
             print("Invalid Test ID")
     
+    
+    def save_test_tear_peak_load(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='TEAR_PEAK_LOAD'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_LIST_NEW()
+        
     def save_test_CLD(self):                     
         connection = sqlite3.connect("tyr.db")              
         with connection:        
