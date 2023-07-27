@@ -478,44 +478,70 @@ class MDR_01_Ui_MainWindow(object):
         self.toolButton_4.setIconSize(QtCore.QSize(250, 150))
         self.toolButton_4.setObjectName("toolButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_5.setGeometry(QtCore.QRect(800, 20, 121, 41))
+        self.pushButton_5.setGeometry(QtCore.QRect(790, 20, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_5.setFont(font)
-        self.pushButton_5.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        #self.pushButton_5.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        self.pushButton_5.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(0, 0, 180);"
+"color: rgb(255, 255, 255);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        
+        
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(940, 20, 121, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(940, 20, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_6.setFont(font)
-        self.pushButton_6.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        #self.pushButton_6.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        self.pushButton_6.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(0, 0, 180);"
+"color: rgb(255, 255, 255);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_7.setGeometry(QtCore.QRect(940, 70, 121, 41))
+        self.pushButton_7.setGeometry(QtCore.QRect(940, 70, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7.setFont(font)
-        self.pushButton_7.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        #self.pushButton_7.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        self.pushButton_7.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(0, 0, 180);"
+"color: rgb(255, 255, 255);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_8.setGeometry(QtCore.QRect(800, 70, 121, 41))
+        self.pushButton_8.setGeometry(QtCore.QRect(790, 70, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_8.setFont(font)
-        self.pushButton_8.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        #self.pushButton_8.setStyleSheet("color: rgb(255, 255, 255);\n""background-color: rgb(0, 0, 180);")
+        self.pushButton_8.setStyleSheet("border-radius:20px;\n"
+"background-color: rgb(0, 0, 180);"
+"color: rgb(255, 255, 255);"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_8.setObjectName("pushButton_8")
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(1100, 140, 191, 31))
@@ -778,7 +804,13 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
-        self.pushButton_9.setStyleSheet("background-color: rgb(85, 170, 255);")
+        #self.pushButton_9.setStyleSheet("background-color: rgb(85, 170, 255);")
+        self.pushButton_9.setStyleSheet("border-radius:20px;\n"
+                                      "background-color: rgb(85, 170, 255);"
+                                      "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        
         self.pushButton_9.setObjectName("pushButton_9")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame)
         self.pushButton_11.setGeometry(QtCore.QRect(920, 550, 121, 41))
@@ -788,7 +820,12 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_11.setFont(font)
-        self.pushButton_11.setStyleSheet("background-color: rgb(255, 85, 127);\n ")
+        #self.pushButton_11.setStyleSheet("background-color: rgb(255, 85, 127);\n ")
+        self.pushButton_11.setStyleSheet("border-radius:20px;\n"
+                                      "background-color: rgb(255, 85, 127);"
+                                      "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
         self.pushButton_11.setObjectName("pushButton_11")
         
         self.pushButton_11_1 = QtWidgets.QPushButton(self.frame)
@@ -799,7 +836,12 @@ class MDR_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_11_1.setFont(font)
-        self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
+        #self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
+        self.pushButton_11_1.setStyleSheet("border-radius:20px;\n"
+                                      "background-color: rgb(170, 170, 255);"
+                                      "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")    
         self.pushButton_11_1.setObjectName("pushButton_11_1")
         
         
