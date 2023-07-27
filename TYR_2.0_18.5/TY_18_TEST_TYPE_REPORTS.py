@@ -13,7 +13,7 @@ from TY_24_SP_REPORT_PEELOFF import TY_24_PEEL_OFF_Ui_MainWindow
 from TY_27_SP_REPORT_FOUND_BRK_TEST import TY_27_FBST_Ui_MainWindow
 from TY_30_SP_REPORT_PROOF import TY_30_Ui_MainWindow
 from TY_33_SP_REPORT_CYCLICK import TY_33_Ui_MainWindow
-from TY_35_LIST_REPORT import TY_35_LIST_Ui_MainWindow
+from TY_35_LIST_REPORT_2 import TY_35_LIST_Ui_MainWindow
 
 
 
