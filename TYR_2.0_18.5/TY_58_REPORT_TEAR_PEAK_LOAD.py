@@ -1034,12 +1034,12 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
        
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
-        self.label_40.setText(_translate("MainWindow", "Displacement:"))
+        self.label_40.setText(_translate("MainWindow", "Travel:"))
         self.label_41.setText(_translate("MainWindow", "Kg"))
         self.label_42.setText(_translate("MainWindow", "Mm"))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement"))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
         self.comboBox_4.setItemText(1, _translate("MainWindow", "Stress Vs Strain"))
         self.label_49.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
@@ -1070,7 +1070,7 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
         self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
-        self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
+        self.label_30.setText(_translate("MainWindow", "Travel.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
         self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
@@ -1121,7 +1121,7 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.show_grid_data_Tear()
-        #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
+        #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Travel','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
         self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Peak Load (Kg)','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
@@ -2356,46 +2356,46 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.break_sence=int(x[3])
                  print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
                  if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
                  elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Displacement (Inch)')
+                                 self.axes.set_xlabel('Travel (Inch)')
                                  self.axes.set_ylabel('Load (Kg)')
                  elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Displacement (Cm)')
+                                 self.axes.set_xlabel('Travel (Cm)')
                                  self.axes.set_ylabel('Load (Kg)')                                                               
                  elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (Lb)')
                  elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Displacement (Cm)')
+                                 self.axes.set_xlabel('Travel (Cm)')
                                  self.axes.set_ylabel('Load (Lb)') 
                  elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Displacement (Inch)')
+                                 self.axes.set_xlabel('Travel (Inch)')
                                  self.axes.set_ylabel('Load (Lb)')                                                         
                  elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (N)')                                                         
                  elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Displacement (Cm)')
+                                 self.axes.set_xlabel('Travel (Cm)')
                                  self.axes.set_ylabel('Load (N)')                                 
                  elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Displacement (Inch)')
+                                 self.axes.set_xlabel('Travel (Inch)')
                                  self.axes.set_ylabel('Load (N)')
                  elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (KN)')                                                         
                  elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Displacement (Cm)')
+                                 self.axes.set_xlabel('Travel (Cm)')
                                  self.axes.set_ylabel('Load (KN)')                                 
                  elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Displacement (Inch)')
+                                 self.axes.set_xlabel('Travel (Inch)')
                                  self.axes.set_ylabel('Load (KN)')
                  elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (MPa)') 
                  else:    
-                                 self.axes.set_xlabel('Displacement (Mm)')
+                                 self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
                                         
                  
@@ -2812,7 +2812,7 @@ class PlotCanvas(FigureCanvas):
             
            
             connection = sqlite3.connect("tyr.db")
-            if(self.graph_type=="Load Vs Displacement"):
+            if(self.graph_type=="Load Vs Travel"):
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
@@ -2936,8 +2936,8 @@ class PlotCanvas(FigureCanvas):
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
-        if(self.graph_type=="Load Vs Displacement"):
-                ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+')')
+        if(self.graph_type=="Load Vs Travel"):
+                ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         else:
                 ax.set_xlabel('Strain %')
@@ -3007,7 +3007,7 @@ class PlotCanvas_blank(FigureCanvas):
               
         ax.plot(self.x,self.y,'b')
         ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-        ax.set_xlabel(' Displacement ('+str(self.last_disp_unit)+')')
+        ax.set_xlabel(' Travel ('+str(self.last_disp_unit)+')')
         
         
         self.draw()       
