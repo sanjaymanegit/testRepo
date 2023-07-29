@@ -387,7 +387,8 @@ class TY_51_Ui_MainWindow(object):
         self.comboBox_4 = QtWidgets.QComboBox(self.frame_3)
         self.comboBox_4.setGeometry(QtCore.QRect(1050, 330, 231, 31))
         self.comboBox_4.setObjectName("comboBox_4")
-        self.comboBox_4.addItem("")     
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("") 
         self.layoutWidget = QtWidgets.QWidget(self.frame_3)
         self.layoutWidget.setGeometry(QtCore.QRect(20, 10, 641, 361))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -878,7 +879,8 @@ class TY_51_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Mm."))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))      
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
+        self.comboBox_4.setItemText(1, _translate("MainWindow", "Load Vs Time"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
@@ -1457,7 +1459,7 @@ class TY_51_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(self.sc_new.arr_t[g])+"')")
                    
             connection.commit();
             connection.close()
@@ -1892,12 +1894,14 @@ class PlotCanvas_Auto(FigureCanvas):
         self.p =0
         self.p_cm =0
         self.p_inch =0
+        self.t=0
         
         self.q =0
         self.q_n =0
         self.q_lb =0
         self.q_kn =0
         self.q_mpa =0
+        self.t_timestamp=0
         
         self.speed=500
         
@@ -1908,12 +1912,13 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_p_cm=[0.0]
         self.arr_p_inch=[0.0]
         
-        
+        self.arr_t=[0.0]
         self.arr_q=[0.0]
         self.arr_q_n=[0.0]
         self.arr_q_lb=[0.0]
         self.arr_q_kn=[0.0]
         self.arr_q_mpa=[0.0]
+        self.arr_t_timestamp=[""]
         
         self.arr_speed=[0.0]
         
@@ -1962,11 +1967,14 @@ class PlotCanvas_Auto(FigureCanvas):
         self.max_length=0
         self.flexural_max_load=100
         self.unit_type =""
+        self.graph_type=""
         self.load_unit=""
         self.disp_unit=""
-        self.cs_area_cm="1"
+        self.cs_area_cm="1"       
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        self.elapsed_time=0
+        self.elapsed_time_show=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -1983,6 +1991,11 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.commit();
         connection.close()
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
+        for x in results:
+              self.graph_type=str(x[0])  
+        connection.close()
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2") 
@@ -2011,50 +2024,53 @@ class PlotCanvas_Auto(FigureCanvas):
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
-                 print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
-                 if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Travel (Inch)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Travel (Cm)')
-                                 self.axes.set_ylabel('Load (Kg)')                                                               
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (Lb)')
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Travel (Cm)')
-                                 self.axes.set_ylabel('Load (Lb)') 
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Travel (Inch)')
-                                 self.axes.set_ylabel('Load (Lb)')                                                         
-                 elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (N)')                                                         
-                 elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Travel (Cm)')
-                                 self.axes.set_ylabel('Load (N)')                                 
-                 elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Travel (Inch)')
-                                 self.axes.set_ylabel('Load (N)')
-                 elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (KN)')                                                         
-                 elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Travel (Cm)')
-                                 self.axes.set_ylabel('Load (KN)')                                 
-                 elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Travel (Inch)')
-                                 self.axes.set_ylabel('Load (KN)')
-                 elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (gm)') 
-                 else:    
-                                 self.axes.set_xlabel('Travel (Mm)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                                        
+                 if(self.graph_type=="Load Vs Travel"):
+                         print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
+                         if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (Kg)')                                                               
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Lb)')
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (Lb)') 
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (Lb)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (N)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (N)')                                 
+                         elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (N)')
+                         elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (KN)')                                                         
+                         elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (KN)')                                 
+                         elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (KN)')
+                         elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (gm)') 
+                         else:    
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                 elif(self.graph_type=="Load Vs Time"):
+                         self.axes.set_xlabel('Time (Sec)')
+                         self.axes.set_ylabel('Load (Kg)')
                  
                  self.axes.set_xlim(0,int(x[0]))
                  self.axes.set_ylim(0,int(x[1]))  
@@ -2151,7 +2167,9 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.on_ani_start()
     
-    def update_graph(self):       
+    def update_graph(self):
+        self.end_time = datetime.datetime.now()
+        self.elapsed_time=self.end_time-self.start_time
         if(self.IO_error_flg==0):            
             try:
                 self.line = self.ser.readline()
@@ -2254,6 +2272,11 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 
+                self.t=self.elapsed_time.seconds
+                self.t_timestamp=str(self.end_time)
+                self.arr_t_timestamp.append(self.t_timestamp)
+                self.arr_t.append(float(self.t))
+                
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q))
                
                 #print(" Array P:"+str(self.arr_p))
@@ -2281,50 +2304,56 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
-                if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q)
+                if(self.graph_type=="Load Vs Travel"):
+                            if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                                        print("Lb/Cm ...")
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
+                                        return [self.line_cnt]
+                            else:    
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q)
+                                        return [self.line_cnt]
+                                        #return self.line_cnt,
+                elif(self.graph_type=="Load Vs Time"):
+                            self.line_cnt.set_data(self.arr_t,self.arr_q_mpa)
                             return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                            print("Lb/Cm ...")
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
-                            return [self.line_cnt]
-                else:    
-                            self.line_cnt.set_data(self.arr_p,self.arr_q)
-                            return [self.line_cnt]
-                            #return self.line_cnt,
+                else:
+                            print("Invalida Graph Type")
                        
        
         
@@ -2498,6 +2527,9 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     else:    
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            
+            elif(self.graph_type=="Load Vs Time"):
+                    results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             else:
                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
@@ -2511,6 +2543,9 @@ class PlotCanvas(FigureCanvas):
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        elif(self.graph_type=="Load Vs Time"):
+                ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Time (sec)')
         else:
                 ax.set_xlabel('Strain %')
                 ax.set_ylabel('Stress')
@@ -2536,6 +2571,7 @@ class PlotCanvas_blank(FigureCanvas):
         self.plot_blank()
         self.last_load_unit=""
         self.last_disp_unit=""
+        self.graph_type=""
         
     def plot_blank(self):                
         
@@ -2567,6 +2603,12 @@ class PlotCanvas_blank(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
+        for x in results:
+              self.graph_type=str(x[0])  
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2") 
         for x in results:
              self.last_load_unit=str(x[0])
@@ -2578,9 +2620,13 @@ class PlotCanvas_blank(FigureCanvas):
               self.q.append(self.y[i])  
               
         ax.plot(self.x,self.y,'b')
-        ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-        ax.set_xlabel(' Travel ('+str(self.last_disp_unit)+')')
         
+        if(self.graph_type=="Load Vs Travel"):
+                ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
+                ax.set_xlabel(' Travel ('+str(self.last_disp_unit)+')')
+        else:
+                ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
+                ax.set_xlabel(' Time (Sec)')
         
         self.draw()       
     
