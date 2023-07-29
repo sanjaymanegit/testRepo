@@ -183,7 +183,7 @@ class  TY_07_Ui_MainWindow(object):
         self.toolButton_3.setText(_translate("MainWindow", "..."))
         self.label_2.setText(_translate("MainWindow", "Empty Or Invalid speed !!."))        
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
-        self.pushButton_2.setText(_translate("MainWindow", "Return"))
+        self.pushButton_2.setText(_translate("MainWindow", "Close"))
         self.label_3.setText(_translate("MainWindow", "(mm/min) "))
         self.label_4.setText(_translate("MainWindow", "Manual Control of Motor"))
         self.pushButton_2.clicked.connect(MainWindow.close)       

@@ -281,7 +281,7 @@ class TY_07_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
-        self.pushButton_2.setText(_translate("MainWindow", "Return"))
+        self.pushButton_2.setText(_translate("MainWindow", "Close"))
         self.label_4.setText(_translate("MainWindow", "Manual Control "))
         self.toolButton_2.setText(_translate("MainWindow", "..."))
         self.toolButton_3.setText(_translate("MainWindow", "..."))

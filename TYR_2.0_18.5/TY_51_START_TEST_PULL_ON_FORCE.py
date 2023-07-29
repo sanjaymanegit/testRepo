@@ -1292,7 +1292,10 @@ class TY_51_Ui_MainWindow(object):
     
     
     def manual_stop(self):
-        self.sc_new.ser.write(b'*Q\r')
+        try:
+            self.sc_new.ser.write(b'*Q\r')
+        except IOError:
+            print("IO Errors")    
         self.reset()
         self.save_graph_data()
         self.sc_new.save_data_flg=""
