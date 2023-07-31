@@ -1040,7 +1040,7 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
         self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
-        self.comboBox_4.setItemText(1, _translate("MainWindow", "Stress Vs Strain"))
+        self.comboBox_4.setItemText(1, _translate("MainWindow", "Load Vs Time"))
         self.label_49.setText(_translate("MainWindow", ""))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
@@ -1221,6 +1221,16 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.onchage_combo()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID ='"+str(self.test_id)+"'") 
+        for x in results:            
+            self.label_38.setText(str(x[0]))           
+        connection.close()
+        
+        
+        
         self.pushButton_12.setDisabled(True)
         self.pushButton_13.setDisabled(True)
         self.pushButton_14.setDisabled(True)
@@ -2841,46 +2851,9 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     else:    
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-            elif(self.graph_type=="Stress Vs Strain"):
-                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                                     results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT (X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR)),(Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT (X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT ((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT (X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT (X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                              
-                    elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT ((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                                  
-                    else:    
-                                    results=connection.execute("SELECT (X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR)),(Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR)) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    
-                
-                
+            elif(self.graph_type=="Load Vs Time"):
+                    #print("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")     
             else:
                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
@@ -2888,49 +2861,7 @@ class PlotCanvas(FigureCanvas):
                 self.y_num.append(k[1])
             connection.close()
             
-            if(self.graph_type=="Stress Vs Strain"):
-                    connection = sqlite3.connect("tyr.db")
-                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
-                                     results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(((Y_NUM/1.0)/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                     print("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(((Y_NUM/1.0)/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                     
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE  GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM*0.1 from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max((X_NUM/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_LB/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
-                                    results=connection.execute("SELECT max((X_NUM_CM/(select NEW_TEST_GUAGE_MM * 0.1 from GLOBAL_VAR))),max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
-                                    results=connection.execute("SELECT max((X_NUM_INCH/(select NEW_TEST_GUAGE_MM*0.0393701 from GLOBAL_VAR))), max((Y_NUM_N/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                            
-                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM_KN/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    
-                    elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max(Y_NUM_MPA) FROM GRAPH_MST WHERE   GRAPH_ID='"+str(self.graph_ids[g])+"'")         
-                                    
-                    else:    
-                                    results=connection.execute("SELECT max(((X_NUM/1.0)/(select NEW_TEST_GUAGE_MM from GLOBAL_VAR))),max((Y_NUM/(select NEW_TEST_AREA from GLOBAL_VAR))) FROM GRAPH_MST WHERE   GRAPH_ID='60'")
-                
-                    for x in results:
-                            ax.set_xlim(0,float(x[0])*2)
-                            ax.set_ylim(0,float(x[1])*2)
-                    connection.close()
+          
                  
         
             if(g < 8 ):
@@ -2938,7 +2869,10 @@ class PlotCanvas(FigureCanvas):
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
-                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')        
+        elif(self.graph_type=="Load Vs Time"):
+                ax.set_xlabel('Time (sec)')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')') 
         else:
                 ax.set_xlabel('Strain %')
                 ax.set_ylabel('Stress')

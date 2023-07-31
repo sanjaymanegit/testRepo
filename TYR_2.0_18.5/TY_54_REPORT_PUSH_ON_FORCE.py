@@ -382,6 +382,7 @@ class TY_54_Ui_MainWindow(object):
         self.comboBox_4.setGeometry(QtCore.QRect(120, 370, 191, 31))
         self.comboBox_4.setObjectName("comboBox_4")
         self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
         self.layoutWidget = QtWidgets.QWidget(self.frame_3)
         self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 641, 331))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -980,6 +981,7 @@ class TY_54_Ui_MainWindow(object):
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
         self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
+        self.comboBox_4.setItemText(1, _translate("MainWindow", "Load Vs Time"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
@@ -1151,6 +1153,13 @@ class TY_54_Ui_MainWindow(object):
                  
         connection.close()
         #self.onchage_combo()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID ='"+str(self.test_id)+"'") 
+        for x in results:            
+            self.label_38.setText(str(x[0]))           
+        connection.close()
         
 
        
@@ -2674,6 +2683,9 @@ class PlotCanvas(FigureCanvas):
                                     results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     else:    
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            elif(self.graph_type=="Load Vs Time"):
+                    #print("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             else:
                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
             for k in results:        
@@ -2686,6 +2698,9 @@ class PlotCanvas(FigureCanvas):
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        elif(self.graph_type=="Load Vs Time"):
+                ax.set_xlabel('Time (sec)')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         else:
                 ax.set_xlabel('Strain %')
