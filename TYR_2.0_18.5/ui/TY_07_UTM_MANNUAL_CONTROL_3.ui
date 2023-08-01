@@ -129,7 +129,7 @@ background-color: rgb(255, 231, 254);</string>
       <rect>
        <x>60</x>
        <y>110</y>
-       <width>1171</width>
+       <width>1201</width>
        <height>481</height>
       </rect>
      </property>
@@ -152,9 +152,9 @@ background-color: rgb(255, 231, 254);</string>
       <property name="geometry">
        <rect>
         <x>270</x>
-        <y>230</y>
+        <y>280</y>
         <width>121</width>
-        <height>161</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="text">
@@ -176,9 +176,9 @@ background-color: rgb(255, 231, 254);</string>
       <property name="geometry">
        <rect>
         <x>470</x>
-        <y>240</y>
+        <y>280</y>
         <width>201</width>
-        <height>161</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -208,9 +208,9 @@ background-color: rgb(247, 255, 226);</string>
       <property name="geometry">
        <rect>
         <x>750</x>
-        <y>240</y>
+        <y>280</y>
         <width>131</width>
-        <height>161</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="text">
@@ -231,10 +231,10 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>150</y>
-        <width>621</width>
-        <height>51</height>
+        <x>260</x>
+        <y>190</y>
+        <width>611</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
@@ -258,9 +258,9 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLineEdit" name="lineEdit">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>140</x>
         <y>50</y>
-        <width>161</width>
+        <width>131</width>
         <height>71</height>
        </rect>
       </property>
@@ -279,9 +279,9 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>20</x>
         <y>60</y>
-        <width>161</width>
+        <width>121</width>
         <height>41</height>
        </rect>
       </property>
@@ -294,10 +294,10 @@ background-color: rgb(247, 255, 226);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(170, 0, 127);</string>
+       <string notr="true">color: rgb(170, 0, 255);</string>
       </property>
       <property name="text">
-       <string>Enter Speed :</string>
+       <string> Speed :</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -306,7 +306,7 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>280</x>
         <y>60</y>
         <width>101</width>
         <height>41</height>
@@ -333,9 +333,9 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>700</x>
+        <x>410</x>
         <y>60</y>
-        <width>231</width>
+        <width>161</width>
         <height>41</height>
        </rect>
       </property>
@@ -348,10 +348,10 @@ background-color: rgb(247, 255, 226);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(170, 0, 127);</string>
+       <string notr="true">color: rgb(0, 85, 0);</string>
       </property>
       <property name="text">
-       <string>Enter Displacement :</string>
+       <string>Displacement :</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -360,7 +360,7 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLineEdit" name="lineEdit_2">
       <property name="geometry">
        <rect>
-        <x>940</x>
+        <x>580</x>
         <y>50</y>
         <width>111</width>
         <height>71</height>
@@ -381,7 +381,7 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>1060</x>
+        <x>710</x>
         <y>60</y>
         <width>71</width>
         <height>41</height>
@@ -408,8 +408,8 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>400</y>
+        <x>280</x>
+        <y>430</y>
         <width>101</width>
         <height>41</height>
        </rect>
@@ -435,8 +435,8 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>770</x>
-        <y>410</y>
+        <x>760</x>
+        <y>430</y>
         <width>101</width>
         <height>41</height>
        </rect>
@@ -462,8 +462,8 @@ background-color: rgb(247, 255, 226);</string>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>530</x>
-        <y>410</y>
+        <x>520</x>
+        <y>430</y>
         <width>101</width>
         <height>41</height>
        </rect>
@@ -484,6 +484,141 @@ background-color: rgb(247, 255, 226);</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_3">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>50</y>
+        <width>111</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>26</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 170, 0);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>1050</x>
+        <y>60</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(170, 0, 127);</string>
+      </property>
+      <property name="text">
+       <string>(Kg) </string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>810</x>
+        <y>60</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 85, 255);</string>
+      </property>
+      <property name="text">
+       <string>Load:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>140</y>
+        <width>1201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>3</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>383</x>
+        <y>0</y>
+        <width>20</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>3</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line_3">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>0</y>
+        <width>20</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>3</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
      </widget>
     </widget>
@@ -564,9 +699,9 @@ background-color: rgb(255, 231, 254);</string>
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>790</x>
+       <x>680</x>
        <y>620</y>
-       <width>431</width>
+       <width>541</width>
        <height>51</height>
       </rect>
      </property>
