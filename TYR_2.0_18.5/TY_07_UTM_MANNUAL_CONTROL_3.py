@@ -1,4 +1,4 @@
-
+from PyQt5 import QtCore, QtGui, QtWidgets
 from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -76,7 +76,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.frame_2 = QtWidgets.QFrame(self.frame)
-        self.frame_2.setGeometry(QtCore.QRect(60, 110, 1171, 481))
+        self.frame_2.setGeometry(QtCore.QRect(60, 110, 1201, 481))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -86,14 +86,14 @@ class TY_07_Ui_MainWindow(object):
         self.frame_2.setLineWidth(3)
         self.frame_2.setObjectName("frame_2")
         self.toolButton_2 = QtWidgets.QToolButton(self.frame_2)
-        self.toolButton_2.setGeometry(QtCore.QRect(270, 230, 121, 161))
+        self.toolButton_2.setGeometry(QtCore.QRect(270, 280, 121, 141))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./images/up1.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.toolButton_2.setIcon(icon)
         self.toolButton_2.setIconSize(QtCore.QSize(500, 1000))
         self.toolButton_2.setObjectName("toolButton_2")
         self.toolButton_3 = QtWidgets.QToolButton(self.frame_2)
-        self.toolButton_3.setGeometry(QtCore.QRect(470, 240, 201, 161))
+        self.toolButton_3.setGeometry(QtCore.QRect(470, 280, 201, 141))
         self.toolButton_3.setStyleSheet("border-style:outset;\n"
 "border-color: rgb(0, 0, 0);\n"
 "border-width:4px;\n"
@@ -106,14 +106,14 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton_3.setIconSize(QtCore.QSize(500, 1000))
         self.toolButton_3.setObjectName("toolButton_3")
         self.toolButton = QtWidgets.QToolButton(self.frame_2)
-        self.toolButton.setGeometry(QtCore.QRect(750, 240, 131, 161))
+        self.toolButton.setGeometry(QtCore.QRect(750, 280, 131, 141))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./images/down.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.toolButton.setIcon(icon2)
         self.toolButton.setIconSize(QtCore.QSize(500, 1000))
         self.toolButton.setObjectName("toolButton")
         self.label_2 = QtWidgets.QLabel(self.frame_2)
-        self.label_2.setGeometry(QtCore.QRect(270, 150, 621, 51))
+        self.label_2.setGeometry(QtCore.QRect(260, 190, 611, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -124,7 +124,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit.setGeometry(QtCore.QRect(210, 50, 161, 71))
+        self.lineEdit.setGeometry(QtCore.QRect(140, 50, 131, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(26)
@@ -134,18 +134,18 @@ class TY_07_Ui_MainWindow(object):
         self.lineEdit.setStyleSheet("color: rgb(0, 170, 0);")
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.frame_2)
-        self.label.setGeometry(QtCore.QRect(50, 60, 161, 41))
+        self.label.setGeometry(QtCore.QRect(20, 60, 121, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label.setStyleSheet("color: rgb(170, 0, 255);")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_3 = QtWidgets.QLabel(self.frame_2)
-        self.label_3.setGeometry(QtCore.QRect(380, 60, 101, 41))
+        self.label_3.setGeometry(QtCore.QRect(280, 60, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -156,18 +156,18 @@ class TY_07_Ui_MainWindow(object):
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.label_5 = QtWidgets.QLabel(self.frame_2)
-        self.label_5.setGeometry(QtCore.QRect(700, 60, 231, 41))
+        self.label_5.setGeometry(QtCore.QRect(410, 60, 161, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_5.setStyleSheet("color: rgb(0, 85, 0);")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit_2.setGeometry(QtCore.QRect(940, 50, 111, 71))
+        self.lineEdit_2.setGeometry(QtCore.QRect(580, 50, 111, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(26)
@@ -177,7 +177,7 @@ class TY_07_Ui_MainWindow(object):
         self.lineEdit_2.setStyleSheet("color: rgb(0, 170, 0);")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_6 = QtWidgets.QLabel(self.frame_2)
-        self.label_6.setGeometry(QtCore.QRect(1060, 60, 71, 41))
+        self.label_6.setGeometry(QtCore.QRect(710, 60, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -188,7 +188,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.frame_2)
-        self.label_7.setGeometry(QtCore.QRect(290, 400, 101, 41))
+        self.label_7.setGeometry(QtCore.QRect(280, 430, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -199,7 +199,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
         self.label_8 = QtWidgets.QLabel(self.frame_2)
-        self.label_8.setGeometry(QtCore.QRect(770, 410, 101, 41))
+        self.label_8.setGeometry(QtCore.QRect(760, 430, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -210,7 +210,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
         self.label_9 = QtWidgets.QLabel(self.frame_2)
-        self.label_9.setGeometry(QtCore.QRect(530, 410, 101, 41))
+        self.label_9.setGeometry(QtCore.QRect(520, 430, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -220,6 +220,57 @@ class TY_07_Ui_MainWindow(object):
         self.label_9.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.frame_2)
+        self.lineEdit_3.setGeometry(QtCore.QRect(920, 50, 111, 71))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(26)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_3.setFont(font)
+        self.lineEdit_3.setStyleSheet("color: rgb(0, 170, 0);")
+        self.lineEdit_3.setText("")
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.label_11 = QtWidgets.QLabel(self.frame_2)
+        self.label_11.setGeometry(QtCore.QRect(1050, 60, 71, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_11.setFont(font)
+        self.label_11.setStyleSheet("color: rgb(170, 0, 127);")
+        self.label_11.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_11.setObjectName("label_11")
+        self.label_12 = QtWidgets.QLabel(self.frame_2)
+        self.label_12.setGeometry(QtCore.QRect(810, 60, 101, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_12.setFont(font)
+        self.label_12.setStyleSheet("color: rgb(0, 85, 255);")
+        self.label_12.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_12.setObjectName("label_12")
+        self.line = QtWidgets.QFrame(self.frame_2)
+        self.line.setGeometry(QtCore.QRect(0, 140, 1201, 41))
+        self.line.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line.setLineWidth(3)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setObjectName("line")
+        self.line_2 = QtWidgets.QFrame(self.frame_2)
+        self.line_2.setGeometry(QtCore.QRect(383, 0, 20, 161))
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_2.setLineWidth(3)
+        self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_2.setObjectName("line_2")
+        self.line_3 = QtWidgets.QFrame(self.frame_2)
+        self.line_3.setGeometry(QtCore.QRect(790, 0, 20, 161))
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_3.setLineWidth(3)
+        self.line_3.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_3.setObjectName("line_3")
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(60, 620, 131, 41))
         font = QtGui.QFont()
@@ -255,7 +306,7 @@ class TY_07_Ui_MainWindow(object):
 "background-color: rgb(255, 231, 254);")
         self.pushButton_3.setObjectName("pushButton_3")
         self.label_10 = QtWidgets.QLabel(self.frame)
-        self.label_10.setGeometry(QtCore.QRect(790, 620, 431, 51))
+        self.label_10.setGeometry(QtCore.QRect(680, 620, 541, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -273,6 +324,22 @@ class TY_07_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.rev_speed_val=0
+        
+        
+        self.speed_val=""
+        self.input_speed_val=""
+        self.goahead_flag=0
+        self.calc_speed=0
+        self.command_str=""
+        
+        self.is_active_modbus='N'
+        self.modbus_port=""
+        self.non_modbus_port=""
+        self.follow_me_active=0
+        self.follow_me_inactive=0
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -287,64 +354,110 @@ class TY_07_Ui_MainWindow(object):
         self.toolButton_3.setText(_translate("MainWindow", "..."))
         self.toolButton.setText(_translate("MainWindow", "..."))
         self.label_2.setText(_translate("MainWindow", "Running with 40 % speed of maximum speed 500 ( mm/min)"))
-        self.label.setText(_translate("MainWindow", "Enter Speed :"))
+        self.label.setText(_translate("MainWindow", " Speed :"))
         self.label_3.setText(_translate("MainWindow", "(mm/min) "))
-        self.label_5.setText(_translate("MainWindow", "Enter Displacement :"))
+        self.label_5.setText(_translate("MainWindow", "Displacement :"))
         self.label_6.setText(_translate("MainWindow", "(mm) "))
         self.label_7.setText(_translate("MainWindow", "(UP) "))
         self.label_8.setText(_translate("MainWindow", "(DOWN) "))
         self.label_9.setText(_translate("MainWindow", "(STOP) "))
+        self.label_11.setText(_translate("MainWindow", "(Kg) "))
+        self.label_12.setText(_translate("MainWindow", "Load:"))
         self.radioButton.setText(_translate("MainWindow", "Active"))
         self.radioButton_2.setText(_translate("MainWindow", "Inactive"))
         self.pushButton_3.setText(_translate("MainWindow", "Set  Follow Me"))
-        self.label_10.setText(_translate("MainWindow", "Follow me speed will be 50 % speed of maximum speed 500 ( mm/min)"))
+        self.label_10.setText(_translate("MainWindow", ""))
         self.pushButton_2.clicked.connect(MainWindow.close)       
         self.toolButton.clicked.connect(self.r_run)   #down
         self.toolButton_2.clicked.connect(self.f_run) #up
         self.toolButton_3.clicked.connect(self.stop_run)
         self.pushButton.clicked.connect(self.open_new_window)
+        self.pushButton_3.clicked.connect(self.set_follow_me)
+        self.lineEdit_3.setDisabled(True)
+        self.pushButton_3.setDisabled(True)
+        self.radioButton.setDisabled(True)
+        self.radioButton_2.setDisabled(True)
         
         self.label_2.hide()
         self.load_modbus_port()
     
-    def validate_speed(self):        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),ISACTIVE_MODBUS from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-             self.is_active_modbus=str(x[1])
+    
+    def set_follow_me(self):
+        self.follow_me_flg=0       
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    if(self.radioButton.isChecked()):                        
+                        self.follow_me_flg=1
+                        self.frame_2.setDisabled(True)
+                    elif(self.radioButton_2.isChecked()):                        
+                        self.follow_me_flg=0
+                        self.frame_2.setEnabled(True)    
+                    else:
+                        print(" invalid flag")
+                    cursor.execute("UPDATE SETTING_MST SET FOLLOW_ME_FLAG='"+str(self.follow_me_flg)+"'")   
+                    self.label_2.setText("Done ...with Follow me.")
+                    self.label_2.show()   
+        connection.commit();
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.rev_speed_val=str(x[0])
-        connection.close() 
         
-        self.goahead_flag=0
-        self.label_2.show() 
-        self.input_speed_val=str(self.lineEdit.text())
-        if(self.input_speed_val != ""):
-            if(float(self.input_speed_val) <= float(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(float(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+"\r")
-                 self.command_str="*P%04d"%self.calc_speed+"\r"
-                 #self.command_str="*P50.00\r"
-                 #print("xcxcx :"+str(self.command_str))
-                 self.display_calc_speed=float(self.calc_speed)/10
-                 self.label_2.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed :"+str(self.speed_val)+" (mm/min).")
-                 self.label_2.show()
-                 print("Validation of Speed Successfull")
-            else:
-                 #print(" not Ok ")
-                 #self.label_2.show()
-                 self.label_2.setText("Speed Should not more than MAX Speed:"+str(self.speed_val))
-                 self.label_2.show()
+    
+    def validate_speed(self):
+        if(str(self.lineEdit.text()) == ""):
+             self.goahead_flag=0
+             self.label_2.setText("Speed is Empty.")
+             self.label_2.show()
+        elif(str(self.lineEdit_2.text()) == ""):
+             self.goahead_flag=0
+             self.label_2.setText("Displacement is Empty.")
+             self.label_2.show()
+#         elif(str(self.lineEdit_3.text()) == ""):
+#              self.goahead_flag=0
+#              self.label_2.setText("Load is Empty.")
+#              self.label_2.show()
         else:
-            self.label_2.show()
+            self.goahead_flag=1
+        
+        
+        if(self.goahead_flag==1):
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),ISACTIVE_MODBUS from SETTING_MST") 
+                    for x in results:
+                         self.speed_val=str(x[0])
+                         self.is_active_modbus=str(x[1])
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+                    for x in results:
+                         self.rev_speed_val=str(x[0])
+                    connection.close() 
+                    
+                    self.goahead_flag=0
+                    self.label_2.show() 
+                    self.input_speed_val=str(self.lineEdit.text())
+                    if(self.input_speed_val != ""):
+                        if(float(self.input_speed_val) <= float(self.speed_val)):
+                             #print(" Ok ")
+                             self.goahead_flag=1
+                             self.calc_speed=(float(self.input_speed_val)/int(self.speed_val))*1000                 
+                             #print(" calc Speed : "+str(self.calc_speed))
+                             #print(" command: *P"+str(self.calc_speed)+"\r")
+                             self.command_str="*P%04d"%self.calc_speed+"\r"
+                             #self.command_str="*P50.00\r"
+                             #print("xcxcx :"+str(self.command_str))
+                             self.display_calc_speed=float(self.calc_speed)/10
+                             self.label_2.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed :"+str(self.speed_val)+" (mm/min).")
+                             self.label_2.show()
+                             print("Validation of Speed Successfull")
+                        else:
+                             #print(" not Ok ")
+                             #self.label_2.show()
+                             self.label_2.setText("Speed Should not more than MAX Speed:"+str(self.speed_val))
+                             self.label_2.show()
+                    else:
+                        self.label_2.show()
             
         
          
@@ -725,6 +838,7 @@ class TY_07_Ui_MainWindow(object):
                     cursor = connection.cursor()
                     cursor.execute("UPDATE SETTING_MST SET MODBUS_PORT='"+str(self.modbus_port)+"',NON_MODBUS_PORT='"+str(self.non_modbus_port)+"'")            
         connection.commit();
+
 
 
 if __name__ == "__main__":
