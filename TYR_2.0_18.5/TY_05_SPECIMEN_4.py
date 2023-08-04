@@ -470,6 +470,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.lineEdit_12.setObjectName("lineEdit_12")
         self.comboBox_2 = QtWidgets.QComboBox(self.frame)
         self.comboBox_2.setGeometry(QtCore.QRect(810, 400, 151, 31))
+        self.comboBox_2.setStyleSheet("color: rgb(0, 0, 0);")
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)

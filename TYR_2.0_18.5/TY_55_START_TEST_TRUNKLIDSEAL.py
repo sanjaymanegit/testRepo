@@ -2049,7 +2049,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.p =0
         self.p_cm =0
         self.p_inch =0
-        self.t=0
+        self.t=0.0
         
         self.q =0
         self.q_n =0
@@ -2335,7 +2335,9 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.on_ani_start()
     
-    def update_graph(self):       
+    def update_graph(self):
+        self.end_time = datetime.datetime.now()
+        self.elapsed_time=self.end_time-self.start_time
         if(self.IO_error_flg==0):            
             try:
                 self.line = self.ser.readline()
@@ -2441,7 +2443,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 
-                self.t=self.elapsed_time.total_seconds()
+                self.t=float(self.elapsed_time.total_seconds())
                 self.t_timestamp=str(self.end_time)
                 self.arr_t_timestamp.append(self.t_timestamp)
                 self.arr_t.append(float(self.t))

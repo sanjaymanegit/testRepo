@@ -6,7 +6,7 @@ from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
 from TY_03_REPORTS import TY_03_Ui_MainWindow
 from TY_04_SETTING import TY_04_Ui_MainWindow
 from TY_50_TEST_LIST_SPECS import TY_50_LIST_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import TY_07_Ui_MainWindow
 from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
 
 import sqlite3
@@ -87,7 +87,8 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 410, 101))
+        self.pushButton_3_1.setGeometry(QtCore.QRect(950, 30, 160, 161))   #This is for STARR Logo only
+        #self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 410, 101))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton_3_1.setFont(font)
@@ -95,7 +96,8 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./images/logo.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3_1.setIcon(icon2)
-        self.pushButton_3_1.setIconSize(QtCore.QSize(400, 460))
+        self.pushButton_3_1.setIconSize(QtCore.QSize(500, 260)) #This is for STARR Logo only
+        #self.pushButton_3_1.setIconSize(QtCore.QSize(400, 460))
         self.pushButton_3_1.setObjectName("pushButton_3_1")
         
         
