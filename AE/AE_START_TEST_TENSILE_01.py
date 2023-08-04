@@ -39,6 +39,13 @@ from reportlab.graphics.shapes import Line, Drawing
 import sys
 import os
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
+  
 
 
 
@@ -1301,6 +1308,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                          
                          try:
+                                '''
                                 self.serial_3 = serial.Serial(
                                                     port='/dev/ttyUSB0',
                                                     baudrate=19200,
@@ -1309,9 +1317,20 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                                     stopbits=serial.STOPBITS_ONE,
                                                     xonxoff=False,
                                                     timeout = 0.05
-                                                                )                               
+                                                                )
+                                '''
+                                self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyACM0',
+                                                    baudrate=115200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                                )
                                 self.timer3.setInterval(5000)        
-                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                #self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                self.timer3.timeout.connect(self.modbus_read_reg)                                
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
@@ -1343,7 +1362,18 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-    
+    def modbus_read_reg(self):
+        self.data=0.0
+        instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+        instrument.serial.timeout = 1
+        instrument.serial.baudrate = 115200
+        self.data=instrument.read_float(3,4,2)
+        print("Read Data "+str(self.data))
+        
+        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
+        
+        
+        
     def loadcell_encoder_status(self):         
         try:                
             self.serial_3.flush()
