@@ -1308,7 +1308,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                          
                          try:
-                                '''
+                                
                                 self.serial_3 = serial.Serial(
                                                     port='/dev/ttyUSB0',
                                                     baudrate=19200,
@@ -1328,9 +1328,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                                     xonxoff=False,
                                                     timeout = 0.05
                                                                 )
+                                '''
                                 self.timer3.setInterval(5000)        
-                                #self.timer3.timeout.connect(self.loadcell_encoder_status)
-                                self.timer3.timeout.connect(self.modbus_read_reg)                                
+                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                #self.timer3.timeout.connect(self.modbus_read_reg)                                
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)

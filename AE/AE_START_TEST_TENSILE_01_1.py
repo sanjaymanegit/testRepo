@@ -2468,27 +2468,32 @@ class PlotCanvas_Auto(FigureCanvas):
         ###### Set Modbus register for Test   ##########
         self.test_method=1
         self.load_cell_no=2
-        self.guage_length=100
-        self.max_load=200
-        self.max_length=40
+        self.guage_length=100.00
+        self.max_load=200.00
+        self.max_length=40.00
             
         try:
                 #instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)        
                 instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
                 instrument.serial.timeout = 1
                 instrument.serial.baudrate = 115200
-                instrument.write_register(1,self.test_method,0,3)
+                time.sleep(5)
+                instrument.write_register(1,self.test_method,0)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-                instrument.write_register(2,self.load_cell_no,0,3)
+                time.sleep(5)
+                instrument.write_register(2,self.load_cell_no,0)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                instrument.write_register(3,self.guage_length,0,3)
-                instrument.write_register(4,0,0,3)                
+                time.sleep(5)
+                instrument.write_register(3,self.guage_length,0)
+                instrument.write_register(4,0,0)                
                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Guage Length :"+str(self.guage_length),self.login_user_role)
-                instrument.write_register(5,self.max_load,0,3)
-                instrument.write_register(5,0,0,3)
+                time.sleep(5)
+                instrument.write_register(5,self.max_load,0)
+                instrument.write_register(6,0,0)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
-                instrument.write_register(7,self.max_length,0,3)
-                instrument.write_register(0,0,0,3)                
+                time.sleep(5)
+                instrument.write_register(7,self.max_length,0)
+                instrument.write_register(8,0,0)                
                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Length :"+str(self.max_length),self.login_user_role)
                 
         except IOError:
@@ -2502,22 +2507,29 @@ class PlotCanvas_Auto(FigureCanvas):
         self.max_load=-1
         self.max_length=-1
             
-            
+          
         ###### Validate all set ragister Again ##########
         try:
                 ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
+                ##read_register Register number, number of decimals, function code
                 instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
                 instrument.serial.timeout = 1
                 instrument.serial.baudrate = 115200
-                self.test_method=instrument.read_float(1,3,1)
+                time.sleep(5)
+                self.test_method=instrument.read_register(1,0,3)
+                time.sleep(5)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-                self.load_cell_no=instrument.read_float(2,3,1)
-                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                self.guage_length=instrument.read_float(3,3,2)
+                self.load_cell_no=instrument.read_register(2,0,3)
+                time.sleep(5)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
+                self.guage_length=instrument.read_float(3,4,2)
+                time.sleep(5)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Guage Length :"+str(self.guage_length),self.login_user_role)
-                self.max_load=instrument.read_float(5,3,2)
+                self.max_load=instrument.read_float(5,4,2)
+                time.sleep(5)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Load :"+str(self.max_load),self.login_user_role)
-                self.max_length=instrument.read_float(7,3,2)
+                self.max_length=instrument.read_float(7,4,2)
+                time.sleep(5)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Length :"+str(self.max_length),self.login_user_role)
                 
         except IOError:
@@ -2530,9 +2542,10 @@ class PlotCanvas_Auto(FigureCanvas):
                 instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
                 instrument.serial.timeout = 1
                 instrument.serial.baudrate = 115200
-                instrument.write_register(1,1,0,1)                
-                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Length :"+str(self.max_length),self.login_user_role)
-        
+                time.sleep(5)
+                instrument.write_register(1,1,0)                
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Start : 1",self.login_user_role)
+                self.IO_error_flg=0
         except IOError:
                 print("IO Errors- Start Test .......")
                 self.IO_error_flg=1
@@ -2554,6 +2567,26 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.load_cell_number=1
                 self.extiometer=1
                 self.encoder=0
+                self.p=-1
+                self.q=-1
+                self.is_stopped=-1
+                try:
+                    ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
+                    # read_register Register number, number of decimals, function code
+                    instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 115200                   
+                    self.p=instrument.read_float(7,3,2)
+                    self.q=instrument.read_float(3,3,2)
+                    self.is_stopped=instrument.read_register(2,0,3)
+                    print("self.p= :"+str(self.p)+" self.q :"+str(self.q)+"  self.is_stopped  :"+str(self.is_stopped))
+                except IOError:
+                    print("IO Errors- Reading Input Register......update graph")
+                    self.IO_error_flg=1
+                
+                
+                
+                
                 self.p=0 ## Its current Displacement value
                 self.q=0 ## Its current load value
                 self.is_stopped=0 #### Read the Stop Flag.
