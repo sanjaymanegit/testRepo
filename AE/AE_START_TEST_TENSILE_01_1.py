@@ -1318,7 +1318,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                          
                          try:
-                                '''
+                                
                                 self.serial_3 = serial.Serial(
                                                     port='/dev/ttyUSB0',
                                                     baudrate=19200,
@@ -1338,9 +1338,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                                                     xonxoff=False,
                                                     timeout = 0.05
                                                                 )
+                                '''
                                 self.timer3.setInterval(5000)        
-                                #self.timer3.timeout.connect(self.loadcell_encoder_status)
-                                self.timer3.timeout.connect(self.modbus_read_reg)                                
+                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                #self.timer3.timeout.connect(self.modbus_read_reg)                                
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
@@ -2463,47 +2464,86 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.axes.set_ylim(0,int(x[1]))  
         connection.close()
         
-        try:
-            ###### Set Modbus register for Test   ##########
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method .",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell No.",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Speed",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Breaking Sence",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Guage Length",self.login_user_role)
-             
-       
-            ###### Validate all set ragister Again ##########
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method .",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell No.",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Speed",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Breaking Sence",self.login_user_role)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Guage Length",self.login_user_role)
-        except IOError:
-            #print("IO Errors")
-            self.IO_error_flg=1     
-       
-            ####### Start Test ############
-          
-        try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
         
-            print(" Ok ....!")
+        ###### Set Modbus register for Test   ##########
+        self.test_method=1
+        self.load_cell_no=2
+        self.guage_length=100
+        self.max_load=200
+        self.max_length=40
+            
+        try:
+                #instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)        
+                instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 115200
+                instrument.write_register(1,self.test_method,0,3)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                instrument.write_register(2,self.load_cell_no,0,3)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                instrument.write_register(3,self.guage_length,0,3)
+                instrument.write_register(4,0,0,3)                
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Guage Length :"+str(self.guage_length),self.login_user_role)
+                instrument.write_register(5,self.max_load,0,3)
+                instrument.write_register(5,0,0,3)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
+                instrument.write_register(7,self.max_length,0,3)
+                instrument.write_register(0,0,0,3)                
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Length :"+str(self.max_length),self.login_user_role)
+                
         except IOError:
-            #print("IO Errors")
-            self.IO_error_flg=1
+                print("IO Errors- Set of Setting Register......")
+                self.IO_error_flg=1
+            
+        time.sleep(5)
+        self.test_method=-1
+        self.load_cell_no=-1
+        self.guage_length=-1
+        self.max_load=-1
+        self.max_length=-1
+            
+            
+        ###### Validate all set ragister Again ##########
+        try:
+                ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
+                instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 115200
+                self.test_method=instrument.read_float(1,3,1)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                self.load_cell_no=instrument.read_float(2,3,1)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                self.guage_length=instrument.read_float(3,3,2)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Guage Length :"+str(self.guage_length),self.login_user_role)
+                self.max_load=instrument.read_float(5,3,2)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Load :"+str(self.max_load),self.login_user_role)
+                self.max_length=instrument.read_float(7,3,2)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Length :"+str(self.max_length),self.login_user_role)
+                
+        except IOError:
+                print("IO Errors- GET Verification of Test Setting .......")
+                self.IO_error_flg=1
         
-        self.save_data_flg="No"
-        self.timer1.setInterval(1000)     
-        self.timer1.timeout.connect(self.update_graph)
-        self.timer1.start(1)
+        ####### Start Test ############
+        try:
+                #instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)     
+                instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                instrument.serial.timeout = 1
+                instrument.serial.baudrate = 115200
+                instrument.write_register(1,1,0,1)                
+                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Length :"+str(self.max_length),self.login_user_role)
+        
+        except IOError:
+                print("IO Errors- Start Test .......")
+                self.IO_error_flg=1
+        
+        if(self.IO_error_flg==1):       
+                print("Could not Start Test Beacuse of IO Error.......")
+        else:
+                self.save_data_flg="No"
+                self.timer1.setInterval(1000)     
+                self.timer1.timeout.connect(self.update_graph)
+                self.timer1.start(1)
         
         self.on_ani_start()
     
