@@ -2623,7 +2623,7 @@ class PlotCanvas_Auto(FigureCanvas):
                  
             ####### Start Test-Read Coil Register. ############
             try:
-                print("\n\n\n\n##### GET  : COIL start_bit ######")
+                print("\n\n\n\n##### GET -VERIFY CURENT STATUS : COIL start_bit ######")
                 #read_bit(registeraddress: int, functioncode: int = 2) → int
                 self.start_bit=self.instrument.read_bit(0,1)
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
@@ -2764,7 +2764,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         with connection:        
             cursor = connection.cursor()
-            #print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))
+            print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))
             cursor.execute("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))                         
         connection.commit();
         connection.close()
