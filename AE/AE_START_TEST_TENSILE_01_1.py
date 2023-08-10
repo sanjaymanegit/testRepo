@@ -2467,10 +2467,10 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()        
         
         ###### Set Modbus register for Test   ##########
-        self.test_method=2
-        self.load_cell_no=1
+        self.test_method=1
+        self.load_cell_no=3
         self.guage_length=10.20
-        self.max_load=50.40
+        self.max_load=60.10
         self.max_length=66.03
         
         try:
@@ -2484,75 +2484,77 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("IO Errors- Connection to Modbus......:"+str(e))
                 self.IO_error_flg=1
         
-        try:
-            print("\n\n\n\n##### SET : TEST_METHOD ######")
-            instrument.write_register(0,int(self.test_method),0,6)                    
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- Test Method..:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-           
-        try:
-            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
-            instrument.write_register(1,int(self.load_cell_no),0,6)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-           
-        try:
-            print("\n\n\n\n##### SET : MAX LOAD ######")
-            instrument.write_float(4,float(self.max_load),2)
-            #instrument.write_register(6,0,0)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- self.max_load.:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
-                time.sleep(5)
-        
-        
-        #time.sleep(50)
-        self.test_method=-1
-        self.load_cell_no=-1
-        self.guage_length=-1
-        self.max_load=-1
-        self.max_length=-1
-        try:
-            print("\n\n\n\n##### GET  : TEST_METHOD ######")
-            self.test_method=instrument.read_register(1,0,3)                              
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- Get Test Method.:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-                time.sleep(5)
-        
-        try:
-            print("\n\n\n\n##### GET  : LOAD CELL NUMBER ######")
-            self.load_cell_no=instrument.read_register(2,0,3)                               
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- Get Load Cell Number.:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
-                time.sleep(5)
-                
-        
-        try:
-            print("\n\n\n\n##### GET  : MAX LOAD ######")
-            ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-            self.max_load=instrument.read_float(5,4,2)
-            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)
-            #time.sleep(5)
-        except IOError as e:
-                print("Ignore-Modbus Error- Get max_load.:"+str(e))
-                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)                
-                time.sleep(5)
-        
-        self.IO_error_flg=0
+        if(self.IO_error_flg==0):
+                    try:
+                        print("\n\n\n\n##### SET : TEST_METHOD ######")
+                        instrument.write_register(0,int(self.test_method),0,6)                    
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Test Method..:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                       
+                    try:
+                        print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
+                        instrument.write_register(1,int(self.load_cell_no),0,6)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                       
+                    try:
+                        print("\n\n\n\n##### SET : MAX LOAD ######")
+                        instrument.write_float(4,float(self.max_load),2)
+                        #instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.max_load.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
+                            time.sleep(5)
+                    
+                    
+                    time.sleep(12)
+                    self.test_method=-1
+                    self.load_cell_no=-1
+                    self.guage_length=-1
+                    self.max_load=-1
+                    self.max_length=-1
+                    try:
+                        print("\n\n\n\n##### GET  : TEST_METHOD ######")
+                        self.test_method=instrument.read_register(0,0,3)                              
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get Test Method.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : LOAD CELL NUMBER ######")
+                        self.load_cell_no=instrument.read_register(1,0,3)                               
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get Load Cell Number.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : MAX LOAD ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.max_load=instrument.read_float(4,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get max_load.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)                
+                            time.sleep(5)
+                    
+        else:
+            print("Modbus Communication Error.... ")
                
         
         
