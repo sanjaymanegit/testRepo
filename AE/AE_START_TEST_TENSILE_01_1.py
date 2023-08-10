@@ -1379,9 +1379,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     def modbus_read_reg(self):
         self.data=0.0
         instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
-        instrument.serial.timeout = 1
-        instrument.serial.baudrate = 115200
-        self.data=instrument.read_float(3,4,2)
+        self.instrument.serial.timeout = 1
+        self.instrument.serial.baudrate = 115200
+        self.data=self.instrument.read_float(3,4,2)
         print("Read Data "+str(self.data))
         
         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
@@ -2332,7 +2332,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.check_R=""
         self.check_S=""
-        self.IO_error_flg=0
+        self.IO_error_flg=1
         
         self.timer1=QtCore.QTimer()
        
@@ -2363,6 +2363,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.cs_area_cm=""
         self.cycle_num=""
         self.login_user_role=""
+        self.instrument =""        
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
         self.plot_auto()
@@ -2406,6 +2407,11 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_id=str(x[7])
              self.cycle_num=str(x[8])
              self.login_user_role=str(x[9])
+             self.test_method=1
+             self.load_cell_no=1
+             self.guage_length=self.test_guage_mm
+             #self.max_load=61.10
+             #self.max_length=67.03
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
@@ -2467,17 +2473,17 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()        
         
         ###### Set Modbus register for Test   ##########
-        self.test_method=1
-        self.load_cell_no=3
-        self.guage_length=10.20
-        self.max_load=60.10
-        self.max_length=66.03
+#         self.test_method=1
+#         self.load_cell_no=1
+#         self.guage_length=11.20
+#         self.max_load=61.10
+#         self.max_length=67.03
         
         try:
-                #instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)        
-                instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)
-                instrument.serial.timeout = 1
-                instrument.serial.baudrate = 115200
+                #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                self.instrument.serial.timeout = 1
+                self.instrument.serial.baudrate = 115200
                 #time.sleep(5)
                 self.IO_error_flg=0
         except IOError as e:
@@ -2486,8 +2492,9 @@ class PlotCanvas_Auto(FigureCanvas):
         
         if(self.IO_error_flg==0):
                     try:
+                        #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
                         print("\n\n\n\n##### SET : TEST_METHOD ######")
-                        instrument.write_register(0,int(self.test_method),0,6)                    
+                        self.instrument.write_register(0,int(self.test_method),0,6)                    
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2496,157 +2503,174 @@ class PlotCanvas_Auto(FigureCanvas):
                        
                     try:
                         print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
-                        instrument.write_register(1,int(self.load_cell_no),0,6)
+                        self.instrument.write_register(1,int(self.load_cell_no),0,6)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
                        
+                    
+                    try:
+                        print("\n\n\n\n##### SET : guage_length ######")
+                        self.instrument.write_float(2,float(self.guage_length),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.guage_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                            time.sleep(5)
+                    
                     try:
                         print("\n\n\n\n##### SET : MAX LOAD ######")
-                        instrument.write_float(4,float(self.max_load),2)
-                        #instrument.write_register(6,0,0)
+                        self.instrument.write_float(4,float(self.max_load),2)
+                        #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- self.max_load.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
                             time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### SET : max_length ######")
+                        self.instrument.write_float(6,float(self.max_length),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.max_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
+                            time.sleep(5)
                     
                     
-                    time.sleep(12)
+                    time.sleep(1)
                     self.test_method=-1
                     self.load_cell_no=-1
                     self.guage_length=-1
                     self.max_load=-1
                     self.max_length=-1
                     try:
+                        ##read_register( Register number, number of decimals, function code)
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
                         print("\n\n\n\n##### GET  : TEST_METHOD ######")
-                        self.test_method=instrument.read_register(0,0,3)                              
+                        self.test_method=self.instrument.read_register(0,0,3)                              
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-                        #time.sleep(5)
+                        #time.sleep(5)                        
                     except IOError as e:
                             print("Ignore-Modbus Error- Get Test Method.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                            self.IO_error_flg=1
                             time.sleep(5)
                     
                     try:
                         print("\n\n\n\n##### GET  : LOAD CELL NUMBER ######")
-                        self.load_cell_no=instrument.read_register(1,0,3)                               
+                        self.load_cell_no=self.instrument.read_register(1,0,3)                               
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- Get Load Cell Number.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
+                            self.IO_error_flg=1
                             time.sleep(5)
                             
                     
                     try:
+                        print("\n\n\n\n##### GET  : guage_length ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.guage_length=self.instrument.read_float(2,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get guage_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    try:
                         print("\n\n\n\n##### GET  : MAX LOAD ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.max_load=instrument.read_float(4,3,2)
+                        self.max_load=self.instrument.read_float(4,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- Get max_load.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : max_length ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.max_length=self.instrument.read_float(6,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get max_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)                
+                            self.IO_error_flg=1
                             time.sleep(5)
                     
         else:
             print("Modbus Communication Error.... ")
-               
-        
-        
-        
-        
-        
-        
-#         if(self.IO_error_flg==0):    
-#             #try:
-#                     instrument.write_register(0,int(self.test_method),0,6)                    
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-#                     time.sleep(5)
-#                     
-#                     instrument.write_register(1,1,0,6)
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-#                     #time.sleep(5)
-#                     
-#                     '''
-#                     #instrument.functioncode = 16
-#                     #instrument.write_float(2,self.guage_length,2)
-#                     instrument.write_register(2,10.20,2)                
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Guage Length :"+str(self.guage_length),self.login_user_role)
-#                     time.sleep(5)
-#                     
-#                     instrument.functioncode = 16
-#                     instrument.write_float(4,self.max_load,2)
-#                     #instrument.write_register(6,0,0)
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
-#                     time.sleep(5)
-#                     instrument.functioncode = 16
-#                     instrument.write_float(6,self.max_length,2)
-#                     #instrument.write_register(8,0,0)                
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Length :"+str(self.max_length),self.login_user_role)
-#                     '''
-# #             except IOError as e:
-# #                     print("IO Errors- Set of Setting Register......:"+str(e))
-# #                     self.IO_error_flg=1
-            
-           
+         
+        time.sleep(1)
+        self.start_bit=0   #Default value 
+        if(self.IO_error_flg==0):   
+                 
+            ####### Start Test-Read Coil Register. ############
+            try:
+                print("\n\n\n\n##### GET  : COIL start_bit ######")
+                #read_bit(registeraddress: int, functioncode: int = 2) → int
+                self.start_bit=self.instrument.read_bit(0,1)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                #time.sleep(5)                
+            except IOError as e:                    
+                print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                self.IO_error_flg=1
+            if(self.start_bit==1):     
+                        ####### Start Test-Write in Coil Register. ############
+                        try:
+                             #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                             print("\n\n\n\n##### SET :COIL start_bit ######")
+                             self.instrument.write_bit(0,1,5)                    
+                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                              #time.sleep(5)
+                        except IOError as e:
+                             print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                             self.IO_error_flg=1                       
+             
+                        ####### Start Test-Read Coil Register. ############
+                        try:
+                            print("\n\n\n\n##### GET  : COIL start_bit ######")
+                            #read_bit(registeraddress: int, functioncode: int = 2) → int
+                            self.start_bit=self.instrument.read_bit(0,1)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                            #time.sleep(5)                
+                        except IOError as e:                    
+                            print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                            self.IO_error_flg=1
+            else:
+                 print("Test is already running......")
                 
-           
-#             ###### Validate all set ragister Again ##########
-#             try:
-#                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
-#                     ##read_register Register number, number of decimals, function code
-#                     #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
-#                     #instrument.serial.timeout = 1
-#                     #instrument.serial.baudrate = 115200                
-#                     '''
-#                     time.sleep(5)
-#                     self.test_method=instrument.read_registers(1,0,3)                              
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-#                      
-#                     time.sleep(50) 
-#                     self.load_cell_no=instrument.read_register(2,0,3)                               
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
-#                    
-#                     self.guage_length=instrument.read_float(2,3,2)
-#                     time.sleep(5)                
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Guage Length :"+str(self.guage_length),self.login_user_role)
-#                     
-#                     self.max_load=instrument.read_float(5,4,2)
-#                     time.sleep(5)
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Load :"+str(self.max_load),self.login_user_role)
-#                     self.max_length=instrument.read_float(7,4,2)
-#                     time.sleep(5)
-#                     self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET MAX. Length :"+str(self.max_length),self.login_user_role)
-#                     ''' 
-#             except IOError as e:
-#                     print("IO Errors- GET Verification of Test Setting ......."+str(e))
-#                     self.IO_error_flg=1
-#             '''
-#             ####### Start Test ############
-#             try:
-#                     #instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)     
-#                     instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
-#                     instrument.serial.timeout = 1
-#                     instrument.serial.baudrate = 115200
-#                     time.sleep(5)
-#                     #instrument.write_register(1,1,0)                
-#                     #self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Start : 1",self.login_user_role)
-#                     self.IO_error_flg=0
-#             except IOError as e:
-#                     print("IO Errors- Start Test ......."+str(e))
-#                 
+ 
+        else:
+                  print("Test Not Started.")
         if(self.IO_error_flg==1):       
-                    print("Could not Start Test Beacuse of IO Error.......")
+                    print("Could not Start Test Beacuse of MODBUS IO Error.......")
         else:
                     self.save_data_flg="No"
-                    #self.timer1.setInterval(1000)     
-                    #self.timer1.timeout.connect(self.update_graph)
-                    #self.timer1.start(1)
+                    print("Started Test ....call read. input register.")
+                    self.timer1.setInterval(1000)     
+                    self.timer1.timeout.connect(self.update_graph)
+                    self.timer1.start(1)
+                    self.on_ani_start()
          
     
     def update_graph(self):        
@@ -2660,15 +2684,15 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q=-1
                 self.is_stopped=-1
                 try:
-                    ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
-                    # read_register Register number, number of decimals, function code
-                    instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 115200                   
-                    self.p=instrument.read_float(7,3,2)
-                    self.q=instrument.read_float(3,3,2)
-                    self.is_stopped=instrument.read_register(2,0,3)
-                    print("self.p= :"+str(self.p)+" self.q :"+str(self.q)+"  self.is_stopped  :"+str(self.is_stopped))
+                    ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
+                    self.p=self.instrument.read_float(7,4,2)
+                    self.p=round(self.p,2)
+                    self.q=self.instrument.read_float(3,4,2)
+                    self.q=round(self.q,2)
+                    ##read_register( Register number, number of decimals, function code)
+                    self.is_stopped=self.instrument.read_register(1,0,4)
+                    self.is_stopped=round(self.is_stopped,0)
+                    print("self.p= :"+str(round(self.p,2))+" self.q :"+str(round(self.q,2))+"  self.is_stopped  :"+str(self.is_stopped))
                 except IOError:
                     print("IO Errors- Reading Input Register......update graph")
                     self.IO_error_flg=1
@@ -2676,9 +2700,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 
                 
-                self.p=0 ## Its current Displacement value
-                self.q=0 ## Its current load value
-                self.is_stopped=0 #### Read the Stop Flag.
+#                 self.p=0 ## Its current Displacement value
+#                 self.q=0 ## Its current load value
+#                 self.is_stopped=0 #### Read the Stop Flag.
                 
                 self.p_cm=float(self.p)/10
                 self.arr_p_cm.append(float(self.p_cm))
@@ -2725,8 +2749,8 @@ class PlotCanvas_Auto(FigureCanvas):
                    self.xlim_update='YES'                   
                 #time.sleep(1)
                
-                self.is_stopped=0 ### Read stop flag
-                if(self.is_stopped==1):                    
+                #self.is_stopped=0 ### Read stop flag
+                if(int(self.is_stopped) > 1):                    
                     self.save_data_flg="Yes"
                     self.on_ani_stop()                
             except IOError:
@@ -2740,8 +2764,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         with connection:        
             cursor = connection.cursor()
-            print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))                         
-       
+            #print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))
             cursor.execute("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))                         
         connection.commit();
         connection.close()
