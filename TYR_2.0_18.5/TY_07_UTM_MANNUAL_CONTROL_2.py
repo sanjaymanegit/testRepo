@@ -275,8 +275,8 @@ class  TY_07_Ui_MainWindow(object):
                     else:
                         v=round(v,0)
                     
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
                     #print(" write2 :"+str(v))
                     print("Reverse speed : "+str(v)+" is set successfully in the PLC via Modbus.")
                 except IOError as e:
@@ -378,8 +378,8 @@ class  TY_07_Ui_MainWindow(object):
                     else:
                         v=round(v,0)
                         
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
                     #print(" write1 :"+str(v))
                     print("Forword speed : "+str(v)+" is set successfully in the PLC via Modbus.")
                 except IOError as e:
