@@ -3,6 +3,8 @@ from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 
+from AE_UTM_MANNUAL_CONTROL import AE_MANUAL_CONTROL_Ui_MainWindow
+
 import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -98,8 +100,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_47.setStyleSheet("color: rgb(170, 0, 255);")
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
+        
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1165, 70, 131, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(1165, 40, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -114,6 +117,25 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
+        
+        self.pushButton_6_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_6_1.setGeometry(QtCore.QRect(1165, 90, 131, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_6_1.setFont(font)
+        self.pushButton_6_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_6_1.setStyleSheet("background-color: rgb(255, 85, 127);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        self.pushButton_6_1.setFlat(False)
+        self.pushButton_6_1.setObjectName("pushButton_6")
+        
+        
         self.frame_3 = QtWidgets.QFrame(self.frame)
         self.frame_3.setGeometry(QtCore.QRect(10, 210, 1281, 471))
         self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
@@ -229,18 +251,23 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         
-        self.buttongroup = QtWidgets.QButtonGroup()
+        
         self.buttongroup_2 = QtWidgets.QButtonGroup()
         
-        self.radioButton = QtWidgets.QRadioButton(self.frame_3)
+        #self.buttongroup = QtWidgets.QButtonGroup()
+        #self.radioButton = QtWidgets.QRadioButton(self.frame_3)
+        self.radioButton = QtWidgets.QLabel(self.frame_3)
         self.radioButton.setGeometry(QtCore.QRect(840, 20, 101, 31))
         self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self.frame_3)
+        
+        self.radioButton_2 = QtWidgets.QLabel(self.frame_3)
         self.radioButton_2.setGeometry(QtCore.QRect(960, 20, 101, 31))
         self.radioButton_2.setObjectName("radioButton_2")
         
-        self.buttongroup.addButton(self.radioButton, 1)
-        self.buttongroup.addButton(self.radioButton_2, 2)
+        #self.buttongroup.addButton(self.radioButton, 1)
+        #self.buttongroup.addButton(self.radioButton_2, 2)
+        
+        
         
         
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame_3)
@@ -1029,6 +1056,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Tensile Test"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
+        self.pushButton_6_1.setText(_translate("MainWindow", "Set Sample"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
         self.pushButton_11.setText(_translate("MainWindow", "Start"))
         self.pushButton_12.setText(_translate("MainWindow", "All Graphs"))
@@ -1036,8 +1064,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         self.label_33.setText(_translate("MainWindow", "Show Graph :"))
-        self.radioButton.setText(_translate("MainWindow", "Loadcell:1"))
-        self.radioButton_2.setText(_translate("MainWindow", "Loadcell:2"))
+        self.radioButton.setText(_translate("MainWindow", "LoadCell No:1"))
+        self.radioButton_2.setText(_translate("MainWindow", "Set Low:2"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
         self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
        
@@ -1098,6 +1126,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
         self.pushButton_8.clicked.connect(self.go_for_test)
         self.pushButton_6.clicked.connect(MainWindow.close)
+        self.pushButton_6_1.clicked.connect(self.open_new_window_motor)
+        
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
@@ -1170,6 +1200,14 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             self.comboBox.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+        for x in results:            
+            self.radioButton.setText("LoadCell No:"+str(x[0]))
+            self.radioButton_2.setText("Set Low :"+str(x[1]))
+        connection.close()
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
@@ -1427,7 +1465,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 
            
             
-            
+            '''
             if(self.load_cell_hi==1):
                 #print("Load Cell: Hi")
                 self.radioButton.setChecked(True)
@@ -1440,7 +1478,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.radioButton.setDisabled(True)
                 self.radioButton.setChecked(False)
                 self.radioButton_2.setEnabled(True)
-         
+            '''
         
             if(self.extiometer==1):
                 #print("Proxy: Extentiometer")
@@ -2041,7 +2079,12 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
           
-     
+    def open_new_window_motor(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_MANUAL_CONTROL_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def show_all_specimens(self):        
         #self.pushButton_3.setDisabled(True) ### save
         connection = sqlite3.connect("tyr.db")              
@@ -2618,21 +2661,22 @@ class PlotCanvas_Auto(FigureCanvas):
             print("Modbus Communication Error.... ")
          
         time.sleep(1)
-        self.start_bit=0   #Default value 
-        if(self.IO_error_flg==0):   
-                 
+        self.start_bit=0   #Default value
+        self.is_stopped=-1
+        if(self.IO_error_flg==0):
             ####### Start Test-Read Coil Register. ############
             try:
                 print("\n\n\n\n##### GET -VERIFY CURENT STATUS : COIL start_bit ######")
                 #read_bit(registeraddress: int, functioncode: int = 2) → int
-                self.start_bit=self.instrument.read_bit(0,1)
-                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                self.is_stopped=self.instrument.read_register(1,0,4)
+                self.is_stopped=round(self.is_stopped,0)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
                 #time.sleep(5)                
             except IOError as e:                    
                 print("Ignore-Modbus Error- Get start_bit.:"+str(e))
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
                 self.IO_error_flg=1
-            if(self.start_bit==1):     
+            if((self.is_stopped == 0) or (self.is_stopped == 3)):     
                         ####### Start Test-Write in Coil Register. ############
                         try:
                              #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
@@ -2657,7 +2701,7 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
                             self.IO_error_flg=1
             else:
-                 print("Test is already running......")
+                print("Test is already running......")
                 
  
         else:
@@ -2691,71 +2735,65 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.q=round(self.q,2)
                     ##read_register( Register number, number of decimals, function code)
                     self.is_stopped=self.instrument.read_register(1,0,4)
-                    self.is_stopped=round(self.is_stopped,0)
+                    round(self.is_stopped,0)
                     print("self.p= :"+str(round(self.p,2))+" self.q :"+str(round(self.q,2))+"  self.is_stopped  :"+str(self.is_stopped))
                 except IOError:
                     print("IO Errors- Reading Input Register......update graph")
                     self.IO_error_flg=1
                 
-                
-                
-                
-#                 self.p=0 ## Its current Displacement value
-#                 self.q=0 ## Its current load value
-#                 self.is_stopped=0 #### Read the Stop Flag.
-                
-                self.p_cm=float(self.p)/10
-                self.arr_p_cm.append(float(self.p_cm))
-                
-                self.p_inch=float(self.p)*0.0393701
-                self.arr_p_inch.append(float(self.p_inch))
-                
-                self.q_n=float(self.q)*9.81
-                self.arr_q_n.append(float(self.q_n))
-                
-                self.q_lb=float(self.q)*2.20462
-                self.arr_q_lb.append(float(self.q_lb))
-                
-                self.q_kn=float(self.q_n)/1000
-                self.arr_q_kn.append(float(self.q_kn))
-                
-                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
-                self.q_mpa=float(self.kg_cm2)*0.0980665
-                self.arr_q_mpa.append(float(self.q_mpa))
-                
-                
-                self.arr_speed.append(float(self.speed))
-                
-                self.arr_p.append(float(self.p))
-                self.arr_q.append(float(self.q))
-                
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
-               
-                #print(" Array P:"+str(self.arr_p))
-                #print(" Array Q:"+str(self.arr_q))
-               
-                
-                #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
+                if(self.is_stopped==1): # Running
+                        self.p_cm=float(self.p)/10
+                        self.arr_p_cm.append(float(self.p_cm))
+                        
+                        self.p_inch=float(self.p)*0.0393701
+                        self.arr_p_inch.append(float(self.p_inch))
+                        
+                        self.q_n=float(self.q)*9.81
+                        self.arr_q_n.append(float(self.q_n))
+                        
+                        self.q_lb=float(self.q)*2.20462
+                        self.arr_q_lb.append(float(self.q_lb))
+                        
+                        self.q_kn=float(self.q_n)/1000
+                        self.arr_q_kn.append(float(self.q_kn))
+                        
+                        self.kg_cm2=float(self.q)/float(self.cs_area_cm)
+                        self.q_mpa=float(self.kg_cm2)*0.0980665
+                        self.arr_q_mpa.append(float(self.q_mpa))
+                        
+                        
+                        self.arr_speed.append(float(self.speed))
+                        
+                        self.arr_p.append(float(self.p))
+                        self.arr_q.append(float(self.q))
+                        
+                        print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                       
+                        #print(" Array P:"+str(self.arr_p))
+                        #print(" Array Q:"+str(self.arr_q))
+                       
+                        
+                        #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
 
-                if(int(self.q) > int(self.ylim)):
-                    self.ylim=(int(self.q)+100)
-                    self.ylim_update='YES'                   
-                   #print(" self.ylim:"+str(self.ylim))
-                
-                #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
-                              
-                if(self.p > self.xlim):
-                   self.xlim=(int(self.p)+100)
-                   self.xlim_update='YES'                   
-                #time.sleep(1)
-               
-                #self.is_stopped=0 ### Read stop flag
-                if(int(self.is_stopped) > 1):                    
-                    self.save_data_flg="Yes"
-                    self.on_ani_stop()                
+                        if(int(self.q) > int(self.ylim)):
+                            self.ylim=(int(self.q)+100)
+                            self.ylim_update='YES'                   
+                           #print(" self.ylim:"+str(self.ylim))
+                        
+                        #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
+                                      
+                        if(self.p > self.xlim):
+                           self.xlim=(int(self.p)+100)
+                           self.xlim_update='YES'                   
+                        #time.sleep(1)
+                else:          
+                        #self.is_stopped=0 ### Read stop flag
+                        if(int(self.is_stopped) == 3):                    
+                            self.save_data_flg="Yes"
+                            self.on_ani_stop()                
             except IOError:
                 print("Stopped !!!!!!")
-                if(self.is_stopped==1):                    
+                if(self.is_stopped==3):                    
                     self.save_data_flg="Yes"
                     self.on_ani_stop()
                 
