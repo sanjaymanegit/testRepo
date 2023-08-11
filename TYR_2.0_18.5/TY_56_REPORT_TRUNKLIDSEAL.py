@@ -1042,7 +1042,8 @@ class TY_56_Ui_MainWindow(object):
         self.frame_3.hide()
         self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
-        self.tableWidget.setHorizontalHeaderLabels(['Load @ DISP 1 \n ('+str(self.comboBox_2.currentText())+')','Load @ DISP 2 \n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
+        #self.tableWidget.setHorizontalHeaderLabels(['Load @ DISP 1 \n ('+str(self.comboBox_2.currentText())+')','Load @ DISP 2 \n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Load @ '+str(self.lineEdit_10.text())+' mm \n ('+str(self.comboBox_2.currentText())+' )','Load @ '+str(self.lineEdit_11.text())+' mm\n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
         self.report_fun_1()
@@ -1909,7 +1910,9 @@ class TY_56_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(3)
-        self.tableWidget.setHorizontalHeaderLabels([' Load ('+str(self.comboBox_2.currentText())+') @ DISP 1 ',' Load ('+str(self.comboBox_2.currentText())+') @ DISP 2 ','cycle_id'])        
+        #self.tableWidget.setHorizontalHeaderLabels([' Load ('+str(self.comboBox_2.currentText())+') @ DISP 1 ',' Load ('+str(self.comboBox_2.currentText())+') @ DISP 2 ','cycle_id'])        
+        self.tableWidget.setHorizontalHeaderLabels(['Load @ '+str(self.lineEdit_10.text())+' mm \n ('+str(self.comboBox_2.currentText())+' )','Load @ '+str(self.lineEdit_11.text())+' mm\n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
+        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
@@ -1930,17 +1933,22 @@ class TY_56_Ui_MainWindow(object):
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
         self.tested_by=""
+        self.disp_1="8"
+        self.disp_2="10"
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY,DISP_1,DISP_2 from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
+              self.disp_1=str(x[4])
+              self.disp_2=str(x[5])
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Load @ DISP 1 \n ('+str(self.last_load_unit)+')', 'Load @ DISP 2 \n ('+str(self.last_load_unit)+')']]
+        #data2= [ ['Spec. \n No', 'Load @ DISP 1 \n ('+str(self.last_load_unit)+')', 'Load @ DISP 2 \n ('+str(self.last_load_unit)+')']]
+        data2= [ ['Spec. \n No', 'Load @ '+str(self.disp_1)+' mm\n ('+str(self.last_load_unit)+')', 'Load @ '+str(self.disp_2)+' mm\n ('+str(self.last_load_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.LOAD_POINT_1),printf(\"%.2f\", A.LOAD_POINT_2) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
