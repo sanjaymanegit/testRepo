@@ -2409,6 +2409,18 @@ class PlotCanvas_Auto(FigureCanvas):
         self.instrument =""        
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        
+        
+        self.test_method=-1
+        self.load_cell_no=-1
+#         self.guage_length=-0.0
+#         self.max_load=-0.10
+#         self.max_length=-0.03
+        self.break_sence=-1
+        
+        
+        
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2515,12 +2527,14 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.axes.set_ylim(0,int(x[1]))  
         connection.close()        
         
-        ###### Set Modbus register for Test   ##########
+ ###### Set Modbus register for Test   ##########
 #         self.test_method=1
 #         self.load_cell_no=1
 #         self.guage_length=11.20
 #         self.max_load=61.10
 #         self.max_length=67.03
+#         self.breaking_sence=1
+#         self.test_speed=400
         
         try:
                 #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
@@ -2587,6 +2601,29 @@ class PlotCanvas_Auto(FigureCanvas):
                             print("Ignore-Modbus Error- self.max_length.:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
                             time.sleep(5)
+                            
+                    try:
+                        print("\n\n\n\n##### SET : Breaking Sence Or SET LOW ######")
+                        self.instrument.write_float(8,float(self.break_sence),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Breaking Sence :"+str(self.break_sence),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- break_sence.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET breaking_sence :"+str(self.break_sence),self.login_user_role)
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### SET : test_speed ######")
+                        self.instrument.write_float(10,float(self.test_speed),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.max_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET breaking_sence :"+str(self.test_speed),self.login_user_role)
+                            time.sleep(5)
                     
                     
                     time.sleep(1)
@@ -2595,6 +2632,9 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.guage_length=-1
                     self.max_load=-1
                     self.max_length=-1
+                    self.break_sence=-1
+                    self.test_speed=-1
+                    
                     try:
                         ##read_register( Register number, number of decimals, function code)
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
@@ -2656,6 +2696,33 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)                
                             self.IO_error_flg=1
                             time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : break_sence ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.break_sence=self.instrument.read_float(8,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get break_sence:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    try:
+                        print("\n\n\n\n##### GET  : test_speed ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(6,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get test_speed:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)       
+                            
+                            
                     
         else:
             print("Modbus Communication Error.... ")
