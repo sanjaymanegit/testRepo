@@ -5,7 +5,7 @@ import os
 
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_3 import TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 
 #from P1_main_screen import P1_Ui_MainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -489,7 +489,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label.setObjectName("label")
         
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(1190, 10, 201, 51))
+        self.label_2.setGeometry(QtCore.QRect(1160, 8, 201, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -501,7 +501,7 @@ class TY_02f_Ui_MainWindow(object):
         
         
         self.pushButton_4_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4_6.setGeometry(QtCore.QRect(1050,15, 120, 31)) 
+        self.pushButton_4_6.setGeometry(QtCore.QRect(1030,15, 120, 31)) 
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)

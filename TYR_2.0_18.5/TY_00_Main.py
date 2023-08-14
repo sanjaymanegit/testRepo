@@ -87,8 +87,8 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_1.setGeometry(QtCore.QRect(950, 30, 160, 161))   #This is for STARR Logo only
-        #self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 410, 101))
+        #self.pushButton_3_1.setGeometry(QtCore.QRect(950, 30, 160, 161))   #This is for STARR Logo only
+        self.pushButton_3_1.setGeometry(QtCore.QRect(730, 50, 410, 101))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton_3_1.setFont(font)
@@ -96,8 +96,8 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./images/logo.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3_1.setIcon(icon2)
-        self.pushButton_3_1.setIconSize(QtCore.QSize(500, 260)) #This is for STARR Logo only
-        #self.pushButton_3_1.setIconSize(QtCore.QSize(400, 460))
+        #self.pushButton_3_1.setIconSize(QtCore.QSize(500, 260)) #This is for STARR Logo only
+        self.pushButton_3_1.setIconSize(QtCore.QSize(400, 460))
         self.pushButton_3_1.setObjectName("pushButton_3_1")
         
         
