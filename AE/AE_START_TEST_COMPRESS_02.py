@@ -4,6 +4,8 @@ from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 
+from AE_UTM_MANNUAL_CONTROL import AE_MANUAL_CONTROL_Ui_MainWindow
+
 import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -39,7 +41,17 @@ from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 import sys
 import os
+import serial
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+#minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.clear_buffers_before_each_transaction = True
+#minimalmodbus.BYTEORDER_BIG= 0
+#minimalmodbus.BYTEORDER_LITTLE= 1
+minimalmodbus.MODE_RTU= 'rtu'
+               
+  
 
 class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -88,7 +100,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.label_47.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_47.setObjectName("label_47")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_6.setGeometry(QtCore.QRect(1160, 70, 131, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(1160, 40, 131, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -103,6 +115,25 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
+        
+        self.pushButton_6_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_6_1.setGeometry(QtCore.QRect(1165, 90, 131, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_6_1.setFont(font)
+        self.pushButton_6_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_6_1.setStyleSheet("background-color: rgb(255, 85, 127);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        self.pushButton_6_1.setFlat(False)
+        self.pushButton_6_1.setObjectName("pushButton_6")
+        
+        
         self.frame_3 = QtWidgets.QFrame(self.frame)
         self.frame_3.setGeometry(QtCore.QRect(10, 260, 1281, 441))
         self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
@@ -218,24 +249,27 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         
-        self.buttongroup = QtWidgets.QButtonGroup()
+        
         self.buttongroup_2 = QtWidgets.QButtonGroup()
         
-        self.radioButton = QtWidgets.QRadioButton(self.frame_3)
-        self.radioButton.setGeometry(QtCore.QRect(790, 20, 101, 31))
+        #self.buttongroup = QtWidgets.QButtonGroup()
+        #self.radioButton = QtWidgets.QRadioButton(self.frame_3)
+        self.radioButton = QtWidgets.QLabel(self.frame_3)
+        self.radioButton.setGeometry(QtCore.QRect(840, 20, 101, 31))
         self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self.frame_3)
-        self.radioButton_2.setGeometry(QtCore.QRect(910, 20, 101, 31))
+        
+        self.radioButton_2 = QtWidgets.QLabel(self.frame_3)
+        self.radioButton_2.setGeometry(QtCore.QRect(960, 20, 101, 31))
         self.radioButton_2.setObjectName("radioButton_2")
         
-        self.buttongroup.addButton(self.radioButton, 1)
-        self.buttongroup.addButton(self.radioButton_2, 2)
+        #self.buttongroup.addButton(self.radioButton, 1)
+        #self.buttongroup.addButton(self.radioButton_2, 2)
         
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame_3)
-        self.radioButton_3.setGeometry(QtCore.QRect(1040, 20, 81, 31))
+        self.radioButton_3.setGeometry(QtCore.QRect(1080, 20, 81, 31))
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame_3)
-        self.radioButton_4.setGeometry(QtCore.QRect(1140, 20, 111, 31))
+        self.radioButton_4.setGeometry(QtCore.QRect(1180, 20, 111, 31))
         self.radioButton_4.setObjectName("radioButton_4")
         
         self.buttongroup_2.addButton(self.radioButton_3, 1)
@@ -1106,6 +1140,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Compression Test"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
+        self.pushButton_6_1.setText(_translate("MainWindow", "Set Sample"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
         self.pushButton_11.setText(_translate("MainWindow", "Start"))
         self.pushButton_12.setText(_translate("MainWindow", "All Graphs"))
@@ -1227,6 +1262,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.failure_mod=""
         self.tmperature=""
         self.test_type_for_flexural=""
+        self.cycle_num=0
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1290,6 +1326,13 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
             self.comboBox.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+        for x in results:            
+            self.radioButton.setText("LoadCell No:"+str(x[0]))
+            self.radioButton_2.setText("Set Low :"+str(x[1]))
+        connection.close()    
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
@@ -1379,6 +1422,15 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                                 cursor = connection.cursor()                  
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_7.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
+                       
+                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
+                                #cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                                cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                        
+                       
                         connection.commit();
                         connection.close()
                         
@@ -1387,10 +1439,9 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"'")
-                              cursor.execute("UPDATE GLOBAL_VAR SET MAX_LOAD='"+str(int(self.lineEdit_17.text()))+"',MAX_LENGTH='"+str(int(self.lineEdit_18.text()))+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"')")
+                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',STG_CYCLE_ID='"+str(int(self.cycle_num)+1)+"'")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1530,25 +1581,20 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                 
            
             
-            
+            '''
             if(self.load_cell_hi==1):
                 #print("Load Cell: Hi")
                 self.radioButton.setChecked(True)
-                self.radioButton.setEnabled(True)
-                
                 self.radioButton_2.setDisabled(True)
                 self.radioButton_2.setChecked(False)
-                
+                self.radioButton.setEnabled(True)
             elif(self.load_cell_lo==1):
                 #print("Load Cell: Low")
                 self.radioButton_2.setChecked(True)
-                self.radioButton_2.setEnabled(True)
-                
                 self.radioButton.setDisabled(True)
                 self.radioButton.setChecked(False)
-            else:
-                print("Load Cell No.. :"+str(self.buff[6]))
-         
+                self.radioButton_2.setEnabled(True)
+            '''
         
             if(self.extiometer==1):
                 #print("Proxy: Extentiometer")
@@ -2157,7 +2203,12 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
           
-     
+    def open_new_window_motor(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_MANUAL_CONTROL_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def show_all_specimens(self):        
         #self.pushButton_3.setDisabled(True) ### save
         connection = sqlite3.connect("tyr.db")              
@@ -2417,14 +2468,13 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.check_R=""
         self.check_S=""
-        self.IO_error_flg=0
+        self.IO_error_flg=1
         
         self.timer1=QtCore.QTimer()
        
        
         
-        self.speed_val=""
-        self.input_speed_val=""
+
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2436,17 +2486,30 @@ class PlotCanvas_Auto(FigureCanvas):
         self.auto_rev_time_off=0
         self.break_sence=0
         self.test_motor_speed=0
+        self.test_rev_speed=0
         self.test_guage_mm=0
         self.test_type="Tensile"
         self.max_load=0
         self.max_length=0
         self.flexural_max_load=100
         self.unit_type =""
+        self.graph_type=""
         self.load_unit=""
         self.disp_unit=""
         self.cs_area_cm=""
+        self.cycle_num=""
+        self.login_user_role=""
+        self.instrument =""        
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        
+        
+        self.test_method=-1
+        self.load_cell_no=-1
+        
+        
+        
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2459,364 +2522,563 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                 cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
+                cursor.execute("DELETE FROM STG_GRAPH_MST ")
+                cursor.execute("DELETE FROM MODBUS_LOGS ") 
         connection.commit();
         connection.close()
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2") 
+        results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT,GRAPH_TYPE from GLOBAL_VAR2") 
         for x in results:
                         self.load_unit=str(x[0])
                         self.disp_unit=str(x[1])
-        connection.close()                
+                        self.graph_type=str(x[2])  
+        connection.close()
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(MAX_LOAD,0),IFNULL(MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),NEW_TEST_NAME from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),TEST_ID,STG_CYCLE_ID,LOGIN_USER_ROLE,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
-             self.max_length=float(float(x[0])-float(x[3]))
+             #self.max_length=float(float(x[0])-float(x[3]))
+             self.max_length=float(x[3])
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
             
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=str(x[6])
-             self.test_type=str(x[7])
+             self.test_id=str(x[7])
+             self.cycle_num=str(x[8])
+             self.login_user_role=str(x[9])
+             self.test_method=2 ### Test Type Set For Compression here.
+             self.load_cell_no=1
+             self.guage_length=self.test_guage_mm
+             #self.max_load=61.10
+             #self.max_length=67.03
+             self.test_speed=str(x[10])
+             self.test_rev_speed=str(x[11])
         connection.close()
         print(" xxx     gfgf self.test_type:"+str(self.test_type))
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
                  print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
-                 if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Compression (Inch)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Compression (Cm)')
-                                 self.axes.set_ylabel('Load (Kg)')                                                               
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (Lb)')
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Compression (Cm)')
-                                 self.axes.set_ylabel('Load (Lb)') 
-                 elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Compression (Inch)')
-                                 self.axes.set_ylabel('Load (Lb)')                                                         
-                 elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (N)')                                                         
-                 elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Compression (Cm)')
-                                 self.axes.set_ylabel('Load (N)')                                 
-                 elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Compression (Inch)')
-                                 self.axes.set_ylabel('Load (N)')
-                 elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (KN)')                                                         
-                 elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                 self.axes.set_xlabel('Compression (Cm)')
-                                 self.axes.set_ylabel('Load (KN)')                                 
-                 elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                 self.axes.set_xlabel('Compression (Inch)')
-                                 self.axes.set_ylabel('Load (KN)')
-                 elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (MPa)') 
-                 else:    
-                                 self.axes.set_xlabel('Compression (Mm)')
-                                 self.axes.set_ylabel('Load (Kg)')
-                                        
-                 
                  self.axes.set_xlim(0,int(x[0]))
-                 self.axes.set_ylim(0,int(x[1]))  
-        connection.close()
-         
-        try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-          
-            self.ser.flush()
-            self.ser.write(b'*D\r')
-            self.yline = self.ser.readline()
-            print("Check for Load Cel o/p:"+str(self.yline))
-            ystr3=str(self.yline)
-            ystr3=ystr3[1:int(len(ystr3)-1)]
-            ystr2=ystr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            ystr1=ystr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            ystr=ystr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.ybuff=ystr.split("_")
-            print("Length of Array :"+str(len(self.ybuff)))
-                
-         
-            #==== Guage Length Setting before staret =====
-            self.ser.flush()
-            
-            if(self.test_type=="Flexural"):
-                self.test_guage_mm=0
-                self.command_str="*G0.00\r"
-            else:
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
-                
-            print("Guage Length Command : "+str(self.command_str))
-            
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #===== Auto Reverse Time Off =====
-            self.ser.flush()
-            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
-            print("Auto reve. Time off Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #========Motor Speed and Breaking Sence =========            
-            self.validate_speed()            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-            else:   
-                self.ser.write(b'*P0050_0010\r')
-                #print("started with default motor speed . Not gohead ")
-            #self.ser.write(b'*D\r\n')
-                
-            #time.sleep(2)
-            #========Final Motor start Command =========    
-            self.ser.flush()
-            if(self.test_type=="Compress"):
-                 print("Compress")
-                 if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
-                    else:
-                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
-                    
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b)                 
-                 else:
-                    print("Compress test not started ")  
+                 self.axes.set_ylim(0,int(x[1]))
+                 if(self.graph_type=="Load Vs Compression"):
+                         if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Compression (Inch)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Compression (Cm)')
+                                         self.axes.set_ylabel('Load (Kg)')                                                               
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (Lb)')
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Compression (Cm)')
+                                         self.axes.set_ylabel('Load (Lb)') 
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Compression (Inch)')
+                                         self.axes.set_ylabel('Load (Lb)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (N)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Compression (Cm)')
+                                         self.axes.set_ylabel('Load (N)')                                 
+                         elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Compression (Inch)')
+                                         self.axes.set_ylabel('Load (N)')
+                         elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (KN)')                                                         
+                         elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Compression (Cm)')
+                                         self.axes.set_ylabel('Load (KN)')                                 
+                         elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Compression (Inch)')
+                                         self.axes.set_ylabel('Load (KN)')
+                         elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (MPa)') 
+                         else:    
+                                         self.axes.set_xlabel('Compression (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')                                      
+                 elif(self.graph_type=="Stress Vs Strain"):
+                                         print("inside sadasdasd")
+                                         self.axes.set_xlabel('Strain (%)')
+                                         self.axes.set_ylabel("Stress (MPa)'") 
                  
-            elif(self.test_type=="Flexural"):
-                print("Flexural")    
-            elif(self.test_type=="COF"):
-                print("COF")
-            else:
-                print("len(self.ybuff) :"+str(len(self.ybuff)))
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
-                    else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
-                else:
-                    print("Error :Serial O/P is not getting ")
-            
-        except IOError:
-            #print("IO Errors")
-            self.IO_error_flg=1
+                 
+                 else:
+                       print("Invalid Graph Type")
+                       
+                 
+        connection.close()        
         
+ ###### Set Modbus register for Test   ##########
+#         self.test_method=1
+#         self.load_cell_no=1
+#         self.guage_length=11.20
+#         self.max_load=61.10
+#         self.max_length=67.03
+#         self.breaking_sence=1
+#         self.test_speed=400
         
-        self.timer1.setInterval(1000)     
-        self.timer1.timeout.connect(self.update_graph)
-        self.timer1.start(1)
+        try:
+                #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                self.instrument.serial.timeout = 1
+                self.instrument.serial.baudrate = 115200
+                #time.sleep(5)
+                self.IO_error_flg=0
+        except IOError as e:
+                print("IO Errors- Connection to Modbus......:"+str(e))
+                self.IO_error_flg=1
         
-        self.on_ani_start()
-    
-    def update_graph(self):       
-        if(self.IO_error_flg==0):            
-            try:
-                self.line = self.ser.readline()
-                print("Timer Job o/p:"+str(self.line))
-                self.ser.flush()
-                self.ser.write(b'*D\r')
-            except IOError:
-                print("IO Errors")    
-                
-            xstr3=str(self.line)
-            xstr3=xstr3[1:int(len(xstr3)-1)]
-            xstr2=xstr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            xstr1=xstr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            xstr=xstr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.buff=xstr.split("_")
-        #print("length of array :"+str(len(self.buff)))
-        if(int(len(self.buff)) > 8 ):
-            #print("length of array :"+str(len(self.buff)))
-            self.check_R = re.findall(r"[R]", xstr)
-            self.check_S = re.findall("[S]", xstr)
-            self.check_OK = re.findall("[OK]", xstr)
-            #print("Checkking R Characher :"+str(self.check_R))
-            #print("Checkking OK Characher :"+str(len(self.check_OK))) 
-            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
-                #print("Running.... :"+str(self.check_R))
-                #print("length(X).... :"+str(self.buff[4]))
-                #print("load(Y)... :"+str(self.buff[1]))
-                #print("Load Cell No... :"+str(self.buff[7]))
-                #print("Encoder No.. :"+str(self.buff[6]))
-                
-                if(str(self.buff[6])=="2"):
-                    self.load_cell_hi=1
-                    self.load_cell_lo=0
-                else:
-                    self.load_cell_hi=0
-                    self.load_cell_lo=1
+        if(self.IO_error_flg==0):
+                    try:
+                        #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
+                        print("\n\n\n\n##### SET : TEST_METHOD ######")
+                        self.instrument.write_register(0,int(self.test_method),0,6)                    
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Test Method..:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                       
+                    try:
+                        print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
+                        self.instrument.write_register(1,int(self.load_cell_no),0,6)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                       
                     
-                if(str(self.buff[7])=="2"):
-                    self.extiometer=1
-                    self.encoder=0
-                else:
-                    self.extiometer=0
-                    self.encoder=1
+                    try:
+                        print("\n\n\n\n##### SET : guage_length ######")
+                        self.instrument.write_float(2,float(self.guage_length),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.guage_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### SET : MAX LOAD ######")
+                        self.instrument.write_float(4,float(self.max_load),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.max_load.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### SET : max_length ######")
+                        self.instrument.write_float(6,float(self.max_length),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.max_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
+                            time.sleep(5)
+                            
+                    try:
+                        print("\n\n\n\n##### SET : Breaking Sence Or SET LOW ######")
+                        self.instrument.write_float(8,float(self.break_sence),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Breaking Sence :"+str(self.break_sence),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- break_sence.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET breaking_sence :"+str(self.break_sence),self.login_user_role)
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### SET : test_speed ######")
+                        self.instrument.write_float(10,float(self.test_speed),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.test_speed.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### SET : test_rev_speed ######")
+                        self.instrument.write_float(12,float(self.test_rev_speed),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.test_rev_speed.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### SET : auto_rev_time_off ######")
+                        self.instrument.write_float(14,float(self.auto_rev_time_off),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.auto_rev_time_off.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
+                            time.sleep(5)
+                    
+                    
+                    time.sleep(1)
+                    self.test_method=-1
+                    self.load_cell_no=-1
+                    self.guage_length=-1
+                    self.max_load=-1
+                    self.max_length=-1
+                    self.break_sence=-1
+                    self.test_speed=-1
+                    self.test_rev_speed=-1
+                    self.auto_rev_time_off=-1
+                    
+                    try:
+                        ##read_register( Register number, number of decimals, function code)
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
+                        print("\n\n\n\n##### GET  : TEST_METHOD ######")
+                        self.test_method=self.instrument.read_register(0,0,3)                              
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                        #time.sleep(5)                        
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get Test Method.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : LOAD CELL NUMBER ######")
+                        self.load_cell_no=self.instrument.read_register(1,0,3)                               
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get Load Cell Number.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : guage_length ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.guage_length=self.instrument.read_float(2,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get guage_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    try:
+                        print("\n\n\n\n##### GET  : MAX LOAD ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.max_load=self.instrument.read_float(4,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get max_load.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : max_length ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.max_length=self.instrument.read_float(6,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get max_length.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : break_sence ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.break_sence=self.instrument.read_float(8,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get break_sence:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                    try:
+                        print("\n\n\n\n##### GET  : test_speed ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(10,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get test_speed:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : test_rev_speed ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get test_rev_speed:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : auto_rev_time_off ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get auto_rev_time_off:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                            
+                            
+                    
+        else:
+            print("Modbus Communication Error.... ")
+         
+        time.sleep(1)
+        self.start_bit=0   #Default value
+        self.is_stopped=-1
+        if(self.IO_error_flg==0):
+            ####### Start Test-Read Coil Register. ############
+            try:
+                print("\n\n\n\n##### GET -VERIFY CURENT STATUS : COIL start_bit ######")
+                #read_bit(registeraddress: int, functioncode: int = 2) → int
+                self.is_stopped=self.instrument.read_register(1,0,4)
+                self.is_stopped=round(self.is_stopped,0)
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
+                #time.sleep(5)                
+            except IOError as e:                    
+                print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                self.IO_error_flg=1
+            if((self.is_stopped == 0) or (self.is_stopped == 3)):     
+                        ####### Start Test-Write in Coil Register. ############
+                        try:
+                             #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                             print("\n\n\n\n##### SET :COIL start_bit ######")
+                             self.instrument.write_bit(0,1,5)                    
+                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                              #time.sleep(5)
+                        except IOError as e:
+                             print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                             self.IO_error_flg=1                       
+             
+                        ####### Start Test-Read Coil Register. ############
+                        try:
+                            print("\n\n\n\n##### GET  : COIL start_bit ######")
+                            #read_bit(registeraddress: int, functioncode: int = 2) → int
+                            self.start_bit=self.instrument.read_bit(0,1)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                            #time.sleep(5)                
+                        except IOError as e:                    
+                            print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                            self.IO_error_flg=1
+            else:
+                print("Test is already running......")
                 
-                if(self.load_cell_hi==1):              
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                else:
-                    self.q=abs(float(self.buff[0]))
+ 
+        else:
+                  print("Test Not Started.")
+        if(self.IO_error_flg==1):       
+                    print("Could not Start Test Beacuse of MODBUS IO Error.......")
+        else:
+                    self.save_data_flg="No"
+                    print("Started Test ....call read. input register.")
+                    self.timer1.setInterval(1000)     
+                    self.timer1.timeout.connect(self.update_graph)
+                    self.timer1.start(1)
+                    self.on_ani_start()
+         
+    
+    def update_graph(self):        
+        if(self.save_data_flg=="No"):            
+            try:
+                ##### Read all Input Ragisters ########
+                self.load_cell_number=1
+                self.extiometer=1
+                self.encoder=0
+                self.p=-1
+                self.q=-1
+                self.is_stopped=-1
+                try:
+                    ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
+                    self.p=self.instrument.read_float(7,4,2)
+                    self.p=round(self.p,3)
+                    self.q=self.instrument.read_float(3,4,2)
+                    self.q=round(self.q,3)
+                    ##read_register( Register number, number of decimals, function code)
+                    self.is_stopped=self.instrument.read_register(1,0,4)
+                    round(self.is_stopped,0)
+                    print("self.p= :"+str(round(self.p,2))+" self.q :"+str(round(self.q,2))+"  self.is_stopped  :"+str(self.is_stopped))
+                except IOError:
+                    print("IO Errors- Reading Input Register......update graph")
+                    self.IO_error_flg=1
                 
-                if(self.encoder==1):
-                    self.p=abs(float(self.buff[4])) #
-                else:
-                    self.p=abs(float(self.buff[5]))
-                
-                if(self.test_type=="Compress"):
-                    self.p=int(self.test_guage_mm)-self.p
-                    #print("self.p :"+str(self.p))
-                elif(self.test_type=="Flexural"):
-                    #self.p=self.p
-                    self.p=int(self.test_guage_mm)-self.p
-                else:
-                    self.p=self.p
-                    #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p
-                
-#                if(self.unit_type == "N/mm"):    
-#                        self.q=float(self.q)*9.81
-#                elif(self.unit_type == "Kgf/cm"):
-#                        self.p=float(self.p)/10
-#                else:
-#                        self.p=float(self.p)
-#                        self.q=float(self.q)
+                if(self.is_stopped==1): # Running
+                        self.p_cm=float(self.p)/10
+                        self.arr_p_cm.append(float(self.p_cm))
+                        
+                        self.p_inch=float(self.p)*0.0393701
+                        self.arr_p_inch.append(float(self.p_inch))
+                        
+                        self.q_n=float(self.q)*9.81
+                        self.arr_q_n.append(float(self.q_n))
+                        
+                        self.q_lb=float(self.q)*2.20462
+                        self.arr_q_lb.append(float(self.q_lb))
+                        
+                        self.q_kn=float(self.q_n)/1000
+                        self.arr_q_kn.append(float(self.q_kn))
+                        
+                        self.kg_cm2=float(self.q)/float(self.cs_area_cm)
+                        self.q_mpa=float(self.kg_cm2)*0.0980665
+                        self.arr_q_mpa.append(float(self.q_mpa))
+                        
+                        
+                        self.arr_speed.append(float(self.speed))
+                        
+                        self.arr_p.append(float(self.p))
+                        self.arr_q.append(float(self.q))
+                        
+                        print(" Timer P:"+str(self.p)+" q:"+str(self.q))
+                       
+                        #print(" Array P:"+str(self.arr_p))
+                        #print(" Array Q:"+str(self.arr_q))
+                       
+                        
+                        #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
 
-
-                self.p_cm=float(self.p)/10
-                self.arr_p_cm.append(float(self.p_cm))
+                        if(int(self.q) > int(self.ylim)):
+                            self.ylim=(int(self.q)+100)
+                            self.ylim_update='YES'                   
+                           #print(" self.ylim:"+str(self.ylim))
+                        
+                        #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
+                                      
+                        if(self.p > self.xlim):
+                           self.xlim=(int(self.p)+100)
+                           self.xlim_update='YES'                   
+                        #time.sleep(1)
+                else:          
+                        #self.is_stopped=0 ### Read stop flag
+                        if(int(self.is_stopped) == 3):                    
+                            self.save_data_flg="Yes"
+                            self.on_ani_stop()
+                        elif(int(self.is_stopped) == 2):                            
+                            print("Testing Stopped.......")
+                        else:
+                            print("Invalid is stopped flag.......")
+            except IOError:
+                print("Stopped !!!!!!")
+                if(self.is_stopped==3):                    
+                    self.save_data_flg="Yes"
+                    self.on_ani_stop()
                 
-                self.p_inch=float(self.p)*0.0393701
-                self.arr_p_inch.append(float(self.p_inch))
+    #self.record_modbus_logs(self.test_id,self.cycle_num,"SET","Login into to System.",self.login_user_role)
+    def record_modbus_logs(self,test_id,cycle_num,set_or_get,log_str,user_name):
+        connection = sqlite3.connect("tyr.db")
+        with connection:        
+            cursor = connection.cursor()
+            print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))
+            cursor.execute("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))                         
+        connection.commit();
+        connection.close()
+        
                 
-                self.q_n=float(self.q)*9.81
-                self.arr_q_n.append(float(self.q_n))
-                
-                self.q_lb=float(self.q)*2.20462
-                self.arr_q_lb.append(float(self.q_lb))
-                
-                self.q_kn=float(self.q_n)/1000
-                self.arr_q_kn.append(float(self.q_kn))
-                
-                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
-                self.q_mpa=float(self.kg_cm2)*0.0980665
-                self.arr_q_mpa.append(float(self.q_mpa))
-                
-                
-                self.arr_speed.append(float(self.speed))
-                
-                self.arr_p.append(float(self.p))
-                self.arr_q.append(float(self.q))
-                
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q))
-               
-                #print(" Array P:"+str(self.arr_p))
-                #print(" Array Q:"+str(self.arr_q))
-               
-                
-                #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
-
-                if(int(self.q) > int(self.ylim)):
-                    self.ylim=(int(self.q)+100)
-                    self.ylim_update='YES'                   
-                   #print(" self.ylim:"+str(self.ylim))
-                
-                #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
-                              
-                if(self.p > self.xlim):
-                   self.xlim=(int(self.p)+100)
-                   self.xlim_update='YES'                   
-                #time.sleep(1)
-                self.save_data_flg="No"
-            else:                
-               
-                self.save_data_flg="Yes"
-                self.on_ani_stop()
             
                    
     def plot_grah_only(self,i):
-                if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                if(self.graph_type=="Load Vs Compression"):
+                            if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                                        print("Lb/Cm ...")
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                                        self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                                        self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
+                                        return [self.line_cnt]
+                            elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
+                                        return [self.line_cnt]
+                            else:    
+                                        self.line_cnt.set_data(self.arr_p,self.arr_q)
+                                        return [self.line_cnt]
+                                        #return self.line_cnt,
+                elif(self.graph_type=="Stress Vs Strain"):
                             self.line_cnt.set_data(self.arr_p,self.arr_q)
                             return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                            print("Lb/Cm ...")
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                            self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                            self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
-                            return [self.line_cnt]
-                elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
-                            self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
-                            return [self.line_cnt]
-                else:    
-                            self.line_cnt.set_data(self.arr_p,self.arr_q)
-                            return [self.line_cnt]
-                            #return self.line_cnt,
+                else:
+                            print("Invalida Graph Type")
                        
        
         
@@ -2850,35 +3112,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     )
             print("Done1")
        
-    def validate_speed(self):
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-        connection.close()
-        self.goahead_flag=0
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-        connection.close()
-        
-        if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
-            else:
-                 print(" not Ok ")
-                 
-        else:
-            print(" not Ok ")
-    
+
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
