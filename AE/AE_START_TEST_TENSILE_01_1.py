@@ -2381,8 +2381,7 @@ class PlotCanvas_Auto(FigureCanvas):
        
        
         
-        self.speed_val=""
-        self.input_speed_val=""
+
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2394,6 +2393,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.auto_rev_time_off=0
         self.break_sence=0
         self.test_motor_speed=0
+        self.test_rev_speed=0
         self.test_guage_mm=0
         self.test_type="Tensile"
         self.max_load=0
@@ -2413,10 +2413,6 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.test_method=-1
         self.load_cell_no=-1
-#         self.guage_length=-0.0
-#         self.max_load=-0.10
-#         self.max_length=-0.03
-        self.break_sence=-1
         
         
         
@@ -2448,7 +2444,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),TEST_ID,STG_CYCLE_ID,LOGIN_USER_ROLE from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),TEST_ID,STG_CYCLE_ID,LOGIN_USER_ROLE,NEW_TEST_MOTOR_SPEED,NEW_TEST_MOTOR_REV_SPEED from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
@@ -2467,6 +2463,8 @@ class PlotCanvas_Auto(FigureCanvas):
              self.guage_length=self.test_guage_mm
              #self.max_load=61.10
              #self.max_length=67.03
+             self.test_speed=str(x[10])
+             self.test_rev_speed=str(x[11])
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
@@ -2621,8 +2619,30 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
-                            print("Ignore-Modbus Error- self.max_length.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET breaking_sence :"+str(self.test_speed),self.login_user_role)
+                            print("Ignore-Modbus Error- self.test_speed.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### SET : test_rev_speed ######")
+                        self.instrument.write_float(12,float(self.test_rev_speed),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.test_rev_speed.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### SET : auto_rev_time_off ######")
+                        self.instrument.write_float(14,float(self.auto_rev_time_off),2)
+                        #self.instrument.write_register(6,0,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- self.auto_rev_time_off.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
                             time.sleep(5)
                     
                     
@@ -2634,6 +2654,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.max_length=-1
                     self.break_sence=-1
                     self.test_speed=-1
+                    self.test_rev_speed=-1
+                    self.auto_rev_time_off=-1
                     
                     try:
                         ##read_register( Register number, number of decimals, function code)
@@ -2713,14 +2735,38 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : test_speed ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_float(6,3,2)
+                        self.test_speed=self.instrument.read_float(10,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- Get test_speed:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)                
                             self.IO_error_flg=1
-                            time.sleep(5)       
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : test_rev_speed ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get test_rev_speed:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
+                    
+                    try:
+                        print("\n\n\n\n##### GET  : auto_rev_time_off ######")
+                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
+                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
+                        #time.sleep(5)
+                    except IOError as e:
+                            print("Ignore-Modbus Error- Get auto_rev_time_off:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)                
+                            self.IO_error_flg=1
+                            time.sleep(5)
                             
                             
                     
@@ -2797,9 +2843,9 @@ class PlotCanvas_Auto(FigureCanvas):
                 try:
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
-                    self.p=round(self.p,2)
+                    self.p=round(self.p,3)
                     self.q=self.instrument.read_float(3,4,2)
-                    self.q=round(self.q,2)
+                    self.q=round(self.q,3)
                     ##read_register( Register number, number of decimals, function code)
                     self.is_stopped=self.instrument.read_register(1,0,4)
                     round(self.is_stopped,0)
