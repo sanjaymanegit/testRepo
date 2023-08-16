@@ -2,7 +2,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_2 import  TY_07_Ui_MainWindow
 
 import inspect
 
@@ -1046,6 +1046,11 @@ class TY_55_Ui_MainWindow(object):
         self.failure_mod=""
         self.tmperature=""
         self.test_type_for_flexural=""
+        self.remark=""
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1257,12 +1262,12 @@ class TY_55_Ui_MainWindow(object):
         close = close.exec()
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
-                         self.save_units();
-                         self.frame_3.show()
-                         self.sc_blank =PlotCanvas_blank(self) 
-                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-                         
-                         try:
+                        self.save_units();
+                        self.frame_3.show()
+                        self.sc_blank =PlotCanvas_blank(self) 
+                        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
+                        '''
+                        try:
                                 self.serial_3 = serial.Serial(
                                                     port='/dev/ttyUSB0',
                                                     baudrate=19200,
@@ -1280,11 +1285,66 @@ class TY_55_Ui_MainWindow(object):
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
                                 
-                                
-                                
                          except IOError:
-                                    print("IO Errors") 
-                        
+                                    print("IO Errors")
+
+                         
+                        '''
+                        try:            
+                            connection = sqlite3.connect("tyr.db")
+                            results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
+                            for x in results:
+                                 self.modbus_flag=str(x[4])
+                                 self.modbus_port=str(x[5])
+                                 self.non_modbus_port=str(x[6])
+                            connection.close()
+                            
+                            if(self.modbus_flag == 'Y'):
+                                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                                        self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyUSB1',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                )
+                                else:
+                                        self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyUSB0',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                )
+                            else:
+                                       self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyUSB0',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                ) 
+                     
+                            self.timer3=QtCore.QTimer()
+                            self.timer3.setInterval(5000)        
+                            self.timer3.timeout.connect(self.loadcell_encoder_status)
+                            self.timer3.start(1)
+                            self.pushButton_8.setDisabled(True)
+                            #self.pushButton_6.setDisabled(True)
+                            self.readonly_fields()
+                            self.show_lcd_vals="N"
+                            
+                            
+                            
+                        except IOError:
+                            print("IO Errors")
                  else:
                          self.frame_3.hide()
         
@@ -1432,7 +1492,10 @@ class TY_55_Ui_MainWindow(object):
     
     
     def manual_stop(self):
-        self.sc_new.ser.write(b'*Q\r')
+        try:
+            self.sc_new.ser.write(b'*Q\r')
+        except IOError:
+            print("IO Errors")    
         self.reset()
         self.save_graph_data()
         self.sc_new.save_data_flg=""
@@ -2137,6 +2200,13 @@ class PlotCanvas_Auto(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
+        
+        
+        
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2182,55 +2252,57 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
-                 print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
-                 if(self.graph_type=="Load Vs Travel"):                 
-                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
-                                             self.axes.set_ylabel('Load (Kg)')                                                               
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (Lb)')
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
-                                             self.axes.set_ylabel('Load (Lb)') 
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
-                                             self.axes.set_ylabel('Load (Lb)')                                                         
-                             elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (N)')                                                         
-                             elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
-                                             self.axes.set_ylabel('Load (N)')                                 
-                             elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
-                                             self.axes.set_ylabel('Load (N)')
-                             elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (KN)')                                                         
-                             elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
-                                             self.axes.set_ylabel('Load (KN)')                                 
-                             elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
-                                             self.axes.set_ylabel('Load (KN)')
-                             elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (gm)') 
-                             else:    
-                                             self.axes.set_xlabel('Travel (Mm)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                                                    
+                 self.modbus_flag=str(x[4])
+                 self.modbus_port=str(x[5])
+                 self.non_modbus_port=str(x[6])
+                 if(self.graph_type=="Load Vs Travel"):
+                         print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
+                         if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (Kg)')
+                         elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (Kg)')                                                               
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Lb)')
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (Lb)') 
+                         elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (Lb)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (N)')                                                         
+                         elif(self.load_unit=="N" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (N)')                                 
+                         elif(self.load_unit=="N" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (N)')
+                         elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (KN)')                                                         
+                         elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
+                                         self.axes.set_xlabel('Travel (Cm)')
+                                         self.axes.set_ylabel('Load (KN)')                                 
+                         elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
+                                         self.axes.set_xlabel('Travel (Inch)')
+                                         self.axes.set_ylabel('Load (KN)')
+                         elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (gm)') 
+                         else:    
+                                         self.axes.set_xlabel('Travel (Mm)')
+                                         self.axes.set_ylabel('Load (Kg)')
                  elif(self.graph_type=="Load Vs Time"):
                          #print("inside sadasdasd")
                          self.axes.set_xlabel('Time (Sec)')
@@ -2240,6 +2312,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
          
         try:
+            '''
             self.ser = serial.Serial(
                         port='/dev/ttyUSB0',
                         baudrate=19200,
@@ -2249,7 +2322,40 @@ class PlotCanvas_Auto(FigureCanvas):
                         xonxoff=False,
                         timeout = 0.05
                     )
-          
+            '''
+            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
             self.ser.flush()
             self.ser.write(b'*D\r')
             self.yline = self.ser.readline()
@@ -2593,6 +2699,140 @@ class PlotCanvas_Auto(FigureCanvas):
                  
         else:
             print(" not Ok ")
+            
+        print("test type :"+str(self.test_type))
+        print("Modbus Flag :"+str(self.modbus_flag))
+        print("Modbus Port :"+str(self.modbus_port))
+        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
+            if(self.test_type=="Compress"):        
+                v=0
+                try:
+                    v=float(self.input_rev_speed_val) 
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    print("compress :int part :%d"%v)
+                    print("compress :decial part:%.2f"%v)
+                    #v=v*100
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
+                    
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    v=float(self.input_speed_val)
+                    #v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    elif(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
+                   
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
+            
+            
+            
+            else:   
+                print("inside tesnsile part .....")
+                v=0
+                try:
+                    v=float(self.input_speed_val)
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    #print("int part :%d"%v)
+                    #print("decial part:%.2f"%v)
+                    #v=v*100
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                                
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    #instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    
+
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    
+                    v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port:"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    #instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
                
                 
    
