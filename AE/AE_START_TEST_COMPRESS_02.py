@@ -1342,7 +1342,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT MAX_LOAD,MAX_LENGTH FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR") 
         for x in results:            
             self.lineEdit_17.setText(str(x[0]))
             self.lineEdit_18.setText(str(x[1]))
@@ -2948,6 +2948,14 @@ class PlotCanvas_Auto(FigureCanvas):
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
                     self.p=round(self.p,3)
+                    
+                    if(float(self.guage_length) < float(self.p)):
+                         self.p=float(self.p) - float(self.guage_length)
+                    elif(float(self.guage_length) == float(self.p)):
+                         self.p=0.0
+                    else:                         
+                         self.p=float(self.guage_length) - float(self.p)
+                        
                     self.q=self.instrument.read_float(3,4,2)
                     self.q=round(self.q,3)
                     ##read_register( Register number, number of decimals, function code)
