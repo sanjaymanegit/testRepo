@@ -2669,7 +2669,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : guage_length ######")
-                        self.instrument.write_float(2,float(self.guage_length),2)
+                        self.instrument.write_float(3,float(self.guage_length),2)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
                         #time.sleep(5)
@@ -2680,7 +2680,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : MAX LOAD ######")
-                        self.instrument.write_float(4,float(self.max_load),2)
+                        self.instrument.write_float(5,float(self.max_load),2)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX. Load :"+str(self.max_load),self.login_user_role)
                         #time.sleep(5)
@@ -2692,7 +2692,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : max_length ######")
-                        self.instrument.write_float(6,float(self.max_length),2)
+                        self.instrument.write_float(7,float(self.max_length),2)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET max_length :"+str(self.max_length),self.login_user_role)
                         #time.sleep(5)
@@ -2703,7 +2703,7 @@ class PlotCanvas_Auto(FigureCanvas):
                             
                     try:
                         print("\n\n\n\n##### SET : Breaking Sence Or SET LOW ######")
-                        self.instrument.write_float(8,float(self.break_sence),2)
+                        self.instrument.write_float(9,float(self.break_sence),2)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Breaking Sence :"+str(self.break_sence),self.login_user_role)
                         #time.sleep(5)
@@ -2715,7 +2715,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : test_speed ######")
-                        self.instrument.write_float(10,float(self.test_speed),2)
+                        #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
+                        self.instrument.write_register(10,float(self.test_speed),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
                         #time.sleep(5)
@@ -2726,7 +2727,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : test_rev_speed ######")
-                        self.instrument.write_float(12,float(self.test_rev_speed),2)
+                        #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
+                        self.instrument.write_register(11,float(self.test_rev_speed),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
                         #time.sleep(5)
@@ -2737,7 +2739,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : auto_rev_time_off ######")
-                        self.instrument.write_float(14,float(self.auto_rev_time_off),2)
+                        #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
+                        self.instrument.write_register(12,float(self.auto_rev_time_off),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
                         #time.sleep(5)
@@ -2786,7 +2789,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : guage_length ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.guage_length=self.instrument.read_float(2,3,2)
+                        self.guage_length=self.instrument.read_float(3,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2798,7 +2801,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : MAX LOAD ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.max_load=self.instrument.read_float(4,3,2)
+                        self.max_load=self.instrument.read_float(5,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_load :"+str(self.max_load),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2811,7 +2814,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : max_length ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.max_length=self.instrument.read_float(6,3,2)
+                        self.max_length=self.instrument.read_float(7,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET max_length :"+str(self.max_length),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2824,7 +2827,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : break_sence ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.break_sence=self.instrument.read_float(8,3,2)
+                        self.break_sence=self.instrument.read_float(9,3,2)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2835,8 +2838,8 @@ class PlotCanvas_Auto(FigureCanvas):
                             
                     try:
                         print("\n\n\n\n##### GET  : test_speed ######")
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_float(10,3,2)
+                        #read_register( Register number, number of decimals, function code   
+                        self.test_speed=self.instrument.read_register(10,0,3)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2848,7 +2851,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : test_rev_speed ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.test_speed=self.instrument.read_register(11,0,3)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
@@ -2860,7 +2863,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### GET  : auto_rev_time_off ######")
                         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_float(12,3,2)
+                        self.test_speed=self.instrument.read_register(12,0,3)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
