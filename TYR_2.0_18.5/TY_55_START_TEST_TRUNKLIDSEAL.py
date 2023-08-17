@@ -40,6 +40,12 @@ from reportlab.graphics.shapes import Line, Drawing
 import sys
 import os
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
 class TY_55_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -1205,7 +1211,7 @@ class TY_55_Ui_MainWindow(object):
                                 cursor = connection.cursor()                  
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_12.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
-                                cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='99999',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='09999',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                 cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1219,7 +1225,7 @@ class TY_55_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='99999',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='500',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
                               cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DISP_1,DISP_2) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','VWSK_TRUNKLIDSEAL_CLD','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','99999','"+str(self.lineEdit_11.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2175,6 +2181,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.speed_val=""
         self.input_speed_val=""
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2242,7 +2249,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
-             self.max_length=float(float(x[3]))
+             #self.max_length=float(float(x[3]))
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
              self.max_length=float(float(x[0])-float(x[3]))
@@ -2678,11 +2685,18 @@ class PlotCanvas_Auto(FigureCanvas):
              self.speed_val=str(x[0])
         connection.close()
         self.goahead_flag=0
-        
+        '''
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+        connection.close()
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):
@@ -2704,7 +2718,7 @@ class PlotCanvas_Auto(FigureCanvas):
         print("Modbus Flag :"+str(self.modbus_flag))
         print("Modbus Port :"+str(self.modbus_port))
         if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compress"):        
+            if(self.test_type=="Compression"):        
                 v=0
                 try:
                     v=float(self.input_rev_speed_val) 

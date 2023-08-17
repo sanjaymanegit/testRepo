@@ -41,7 +41,11 @@ from reportlab.graphics.shapes import Line, Drawing
 import sys
 import os
 
-
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
 
 
 class TY_57_START_TEST_TEAR_Ui_MainWindow(object):
@@ -1040,7 +1044,7 @@ class TY_57_START_TEST_TEAR_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Tear Peak Load"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
-        self.pushButton_6_1.setText(_translate("MainWindow", "Set Sepcimen"))
+        self.pushButton_6_1.setText(_translate("MainWindow", "Set Specimen"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
         self.pushButton_11.setText(_translate("MainWindow", "Start"))
         self.pushButton_12.setText(_translate("MainWindow", "All Graphs"))
@@ -2362,6 +2366,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.speed_val=""
         self.input_speed_val=""
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2851,11 +2856,18 @@ class PlotCanvas_Auto(FigureCanvas):
              self.speed_val=str(x[0])
         connection.close()
         self.goahead_flag=0
-        
+        '''
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
+        connection.close()
+        '''
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
         connection.close()
         
         if(self.input_speed_val != ""):

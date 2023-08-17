@@ -39,6 +39,12 @@ from reportlab.graphics.shapes import Line, Drawing
 import sys
 import os
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
+
 class TY_53_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -2185,6 +2191,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.speed_val=""
         self.input_speed_val=""
+        self.input_rev_speed_val=""
         self.goahead_flag=0
         self.calc_speed=0
         self.command_str=""
@@ -2694,10 +2701,26 @@ class PlotCanvas_Auto(FigureCanvas):
         self.goahead_flag=0
         
         connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
+        for x in results:
+             self.input_speed_val=str(x[0])
+             self.input_rev_speed_val=str(x[1])
+        connection.close()
+        
+        
+        
+        
+        
+        
+        
+        
+        '''
+        connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
         for x in results:
              self.input_speed_val=str(x[0])
         connection.close()
+        '''
         
         if(self.input_speed_val != ""):
             if(int(self.input_speed_val) <= int(self.speed_val)):
@@ -2718,7 +2741,7 @@ class PlotCanvas_Auto(FigureCanvas):
         print("Modbus Flag :"+str(self.modbus_flag))
         print("Modbus Port :"+str(self.modbus_port))
         if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compress"):        
+            if(self.test_type=="Compression"):        
                 v=0
                 try:
                     v=float(self.input_rev_speed_val) 
