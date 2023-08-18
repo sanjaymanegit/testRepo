@@ -1225,6 +1225,19 @@ class TY_02f_Ui_MainWindow(object):
         self.label_3_5.setObjectName("label_3_5")
         
         
+        self.pushButton_3_5_2 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_3_5_2.setGeometry(QtCore.QRect(340, 490, 100, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        self.pushButton_3_5_2.setFont(font)
+        self.pushButton_3_5_2.setText("Stop")
+        self.pushButton_3_5_2.setDisabled(True)
+        self.pushButton_3_5_2.clicked.connect(self.manual_stop)
+        self.pushButton_3_5_2.setObjectName("pushButton_3_5_2")
+        
+        
+        
         self.lineEdit_3_5 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_3_5.setGeometry(QtCore.QRect(570, 490, 200, 31))               
         font = QtGui.QFont()
@@ -1236,7 +1249,18 @@ class TY_02f_Ui_MainWindow(object):
         self.lineEdit_3_5.setText("Test Specs.:ADS 26")
         self.lineEdit_3_5.setObjectName("lineEdit_3_5")
     
-    
+   
+    def manual_stop(self):
+        self.sc_new.save_data_flg="Yes"
+        #self.sc_new.on_ani_stop()
+        #self.reset()
+        self.save_graph_data()
+        #self.sc_new.on_ani_stop()
+        self.label_3.setText("Data Saved Successfully.(Manual Stop)")
+        self.label_3.show()
+        
+        self.pushButton_3_5_2.setDisabled(True)
+        #self.pushButton_4.setEnabled(True)
     
     def loadcell_encoder_status(self):         
         try:                
@@ -1481,7 +1505,7 @@ class TY_02f_Ui_MainWindow(object):
                 rows=results.fetchall()
                 connection.close()
                 
-                
+                self.pushButton_3_5_2.setEnabled(True)
                 #self.label_4.setText(str(rows[0][0]))
                 #print("count of stg records :"+str(rows[0][0]))
                 if(int(rows[0][0]) > -2 ):
@@ -1907,7 +1931,7 @@ class TY_02f_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED as test_speed,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.TEMPERATURE,A.TESTED_BY  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Shape:",str(x[9])],["Test Type:",str(x[3]),"Details:",str(x[8])],["Party Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[13])," Temp.(C) :",str(x[12])]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Shape:",str(x[9])],["Test Type:",str(x[3]),"Details:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],[" Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[13])," Temp.(C) :",str(x[12])]]
             self.length=str(x[6])        
         connection.close()
         
@@ -2212,7 +2236,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job ID="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         if(self.test_type=="Compress"):
@@ -3033,7 +3057,7 @@ class PlotCanvas(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID) as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job ID="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -3164,7 +3188,7 @@ class PlotCanvas_blank(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_NAME,TEST_ID,NEW_TEST_JOB_NAME,NEW_TEST_BATCH_ID ,(SELECT COUNT(CYCLE_ID)+1 as x FROM CYCLES_MST B WHERE B.TEST_ID = TEST_ID) as CycleNo   FROM GLOBAL_VAR") 
         for x in results:
              self.test_type=str(x[0])
-             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job Name="+str(x[2])+", Batch Id="+str(x[3]))  
+             self.axes.set_title("Test Id="+str(x[1])+", Cycle No="+str(x[4])+", Job ID="+str(x[2])+", Batch Id="+str(x[3]))  
         connection.close()
         
         connection = sqlite3.connect("tyr.db")

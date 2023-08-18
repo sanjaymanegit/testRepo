@@ -561,7 +561,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "Spec.  Details"))
         self.label_8.setText(_translate("MainWindow", "Specs XXXXXXX"))
         self.label_10.setText(_translate("MainWindow", "MRF"))
-        self.label_9.setText(_translate("MainWindow", "Party:"))
+        self.label_9.setText(_translate("MainWindow", "Customer Name"))
         self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
         self.label_12.setText(_translate("MainWindow", "-0"))
         self.label_13.setText(_translate("MainWindow", "Product Length(mm) :"))
@@ -574,7 +574,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
         self.label_20.setText(_translate("MainWindow", "15"))
         self.label_16.setText(_translate("MainWindow", "75000"))
         self.groupBox_3.setTitle(_translate("MainWindow", " Batch Details"))
-        self.label_21.setText(_translate("MainWindow", "Job Name:"))
+        self.label_21.setText(_translate("MainWindow", "Job ID:"))
         self.label_22.setText(_translate("MainWindow", "Batch Id:"))
         
         self.groupBox_3_1.setTitle(_translate("MainWindow", " Graph Scale"))
@@ -927,7 +927,7 @@ class TY_01_fluxurl_Ui_MainWindow(object):
     def validation(self):
         self.goAhead="No"
         if (self.lineEdit.text() == ""):
-            self.label_23.setText(" Job Name Should not Emplty ")    
+            self.label_23.setText(" Job ID Should not Emplty ")    
             self.label_23.show()
         elif(self.comboBox.currentText() == ""):
             self.label_23.setText(" Specimen Name Should not Emplty ")    

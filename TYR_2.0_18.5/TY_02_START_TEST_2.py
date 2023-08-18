@@ -1844,16 +1844,37 @@ class TY_02_Ui_MainWindow(object):
         connection.close()
         
     def manual_stop(self):
-        if(self.timer3.isActive()): 
-                self.sc_new.save_data_flg='Yes'                
+        self.sc_new.save_data_flg="Yes"
+        #self.sc_new.on_ani_stop()
+        self.reset()
+        self.save_graph_data()
+        #self.sc_new.on_ani_stop()
+        self.label_3.setText("Data Saved Successfully.(Manual Stop)")
+        self.label_3.show()
+        '''
+        try:
+            self.sc_new.ser.write(b'*Q\r')
+        except IOError:
+            print("IO Errors") 
+        
+        print("Inside Manual stop-1")
+        if(self.timer3.isActive()):
+                print("Inside Manual stop-2")
                 if(self.sc_new.timer1.isActive()):
+                           print("Inside Manual stop-3")
                            try:
-                               self.sc_new.ser.write(b'*Q\r')
+                                 self.sc_new.save_data_flg='Yes'
+                                 self.sc_new.on_ani_stop()
+                                 self.reset()
+                                 self.save_graph_data()
+                                 self.sc_new.ser.write(b'*Q\r')
+                                 print("Inside Manual stop-4")
                            except:
-                               print("IO Error.")
+                               print("IO Error.---Manual stop")
                            self.sc_new.timer1.stop()
                            self.sc_new.on_ani_stop()
                 self.timer3.stop()
+        '''
         self.pushButton_4_5.setDisabled(True)
         self.pushButton_4.setEnabled(True)
         
@@ -1939,7 +1960,7 @@ class TY_02_Ui_MainWindow(object):
         self.shape=rows[0][0]
         self.label_27.setText(self.shape) ###shap
         self.label_22.setText(str(rows[0][7])) ##test id
-        self.label_32.setText(str(rows[0][12])) ##Job name
+        self.label_32.setText(str(rows[0][12])) ##Job ID
         self.label_24.setText(str(rows[0][13])) ##batch id
         
         
@@ -2157,7 +2178,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,A.TEST_METHOD   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -2285,7 +2306,7 @@ class TY_02_Ui_MainWindow(object):
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED as test_speed,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,A.TEST_METHOD,A.TESTED_BY  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
             self.remark=str(x[12])
         
         connection.close() 
@@ -2404,7 +2425,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED as test_speed,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,A.TEST_METHOD,A.TESTED_BY  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
             self.remark=str(x[12])
         
         connection.close() 
@@ -2738,7 +2759,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.comments  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job Name : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Party Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "","",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4]),"Specmen Shape:",str(x[9])],["Test Type:",str(x[3]),"Specmen Specs:",str(x[0])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", "","",""]]
             self.comments=str(x[12])
         connection.close() 
         
