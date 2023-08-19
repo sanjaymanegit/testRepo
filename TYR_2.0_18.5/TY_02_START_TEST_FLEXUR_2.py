@@ -1260,7 +1260,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label_3.show()
         
         self.pushButton_3_5_2.setDisabled(True)
-        self.pushButton_4.setEnabled(True)
+        #self.pushButton_4.setEnabled(True)
     
     def loadcell_encoder_status(self):         
         try:                
