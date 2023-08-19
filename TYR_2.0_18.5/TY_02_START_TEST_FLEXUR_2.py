@@ -1260,7 +1260,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label_3.show()
         
         self.pushButton_3_5_2.setDisabled(True)
-        #self.pushButton_4.setEnabled(True)
+        self.pushButton_4.setEnabled(True)
     
     def loadcell_encoder_status(self):         
         try:                
@@ -1921,7 +1921,7 @@ class TY_02f_Ui_MainWindow(object):
             #self.label_30.show()
             #self.lineEdit_3.show()
             self.lineEdit_2.show()
-        self.radioButton_4.setChecked(True)
+        #self.radioButton_4.setChecked(True)
         self.on_change_input_strain()
         
         

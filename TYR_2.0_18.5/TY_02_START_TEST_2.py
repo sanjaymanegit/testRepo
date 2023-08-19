@@ -2035,7 +2035,7 @@ class TY_02_Ui_MainWindow(object):
             #self.label_30.show()
             #self.lineEdit_3.show()
             self.lineEdit_2.show()
-        self.radioButton_4.setChecked(True)
+        #self.radioButton_4.setChecked(True)
  
     def create_pdf_tensile(self):
         self.remark=""
