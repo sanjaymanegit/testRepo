@@ -1943,7 +1943,9 @@ class TY_02_Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_3.setText("Data Saved Successfully.")
                 self.label_3.show()
-                self.manual_stop()
+                #self.manual_stop()
+                self.pushButton_4_5.setDisabled(True)
+                self.pushButton_4.setEnabled(True)
 
     def load_data(self):        
         #self.pushButton_2.setDisabled(True) ### Stop

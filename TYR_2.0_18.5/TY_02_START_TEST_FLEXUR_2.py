@@ -1260,7 +1260,7 @@ class TY_02f_Ui_MainWindow(object):
         self.label_3.show()
         
         self.pushButton_3_5_2.setDisabled(True)
-        #self.pushButton_4.setEnabled(True)
+        self.pushButton_4.setEnabled(True)
     
     def loadcell_encoder_status(self):         
         try:                
@@ -1828,6 +1828,8 @@ class TY_02f_Ui_MainWindow(object):
                 self.sc_new.save_data_flg=""
                 self.label_3.setText("Data Saved Successfully.")
                 self.label_3.show()
+                self.pushButton_3_5_2.setDisabled(True)
+                self.pushButton_4.setEnabled(True)
 
     def load_data(self):        
         #self.pushButton_2.setDisabled(True) ### Stop
