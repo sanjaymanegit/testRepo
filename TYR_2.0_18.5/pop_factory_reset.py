@@ -85,6 +85,8 @@ class factory_reset_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.deleteing_count=0
+        self.total_test_count=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -101,26 +103,63 @@ class factory_reset_Ui_MainWindow(object):
         self.checkBox_2.setText(_translate("MainWindow", "All Specimen Data"))
         self.label_5.setText(_translate("MainWindow", "Factory Reset"))
         self.pushButton_3.clicked.connect(MainWindow.close)
-        self.pushButton.clicked.connect(self.delete_data)
+        self.pushButton.clicked.connect(self.delete_data_batch)
         self.pushButton_3_1.clicked.connect(self.open_new_window)
+        self.load_data()
+    
+    def load_data(self):
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select count(*) FROM (select TEST_ID from TEST_MST LIMIT 500)") 
+        for x in results:
+            self.deleteing_count=str(x[0])                                 
+        connection.close()
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select count(*) from TEST_MST") 
+        for x in results:
+            self.total_test_count=str(x[0])                                 
+        connection.close()
+        self.label_4.show()
+        self.label_4.setText("Test Count: "+str(self.deleteing_count)+"/"+str(self.total_test_count))
+        if(int(self.total_test_count) == 0):
+            connection = sqlite3.connect("tyr.db")            
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                   
+                    
+            connection.commit();
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")            
+            with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("PRAGMA auto_vacuum = FULL")
+                    cursor.execute("vacuum")
+                    
+            connection.commit();
+            connection.close()
+            
+            print("Sequences are also reinitiated")
+        else:
+            print("Still Data is not cleanned")
+            
     
     def delete_data(self):
         if(self.checkBox.isChecked()):            
             connection = sqlite3.connect("tyr.db")            
             with connection:        
                     cursor = connection.cursor()       
-                    cursor.execute("DELETE FROM TEST_MST")
+                    cursor.execute("DELETE FROM STG_GRAPH_MST")
+                    cursor.execute("DELETE FROM GRAPH_MST WHERE ")
                     cursor.execute("DELETE FROM CYCLES_MST")
                     cursor.execute("DELETE FROM CYCLES_MST_CYCLIC")
-                    cursor.execute("DELETE FROM GRAPH_MST")
-                    cursor.execute("DELETE FROM STG_GRAPH_MST")
-                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")
-                    
+                    cursor.execute("DELETE FROM TEST_MST")                    
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                    
             connection.commit();
             connection.close()
             print("ok - Deleted Test Data  ")
-            self.label_4.show()
+            self.label_4.show()        
+        
           
         if(self.checkBox_2.isChecked()):            
             connection = sqlite3.connect("tyr.db")
@@ -133,6 +172,38 @@ class factory_reset_Ui_MainWindow(object):
             connection.close()
             print("ok - Deleted Specimen Data  ")
             self.label_4.show()
+            
+    def delete_data_batch(self):
+        if(self.checkBox.isChecked()):            
+            connection = sqlite3.connect("tyr.db")            
+            with connection:        
+                    cursor = connection.cursor()       
+                    cursor.execute("DELETE FROM STG_GRAPH_MST")
+                    cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_MST LIMIT 500)")
+                    cursor.execute("DELETE FROM CYCLES_MST WHERE TEST_ID NOT IN (SELECT TEST_ID FROM TEST_MST)")
+                    cursor.execute("DELETE FROM CYCLES_MST_CYCLIC")
+                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID NOT IN (SELECT GRAPH_ID FROM CYCLES_MST)")  
+                    #cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                    
+            connection.commit();
+            connection.close()
+            print("ok - Deleted Test Data  ")
+            self.label_4.show()        
+        
+          
+        if(self.checkBox_2.isChecked()):            
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+                    cursor = connection.cursor()       
+                    cursor.execute("DELETE FROM SPECIMEN_MST")
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('SPECIMEN_MST')")
+                    
+            connection.commit();
+            connection.close()
+            print("ok - Deleted Specimen Data  ")
+            self.label_4.show()
+        
+        self.load_data()
+    
     
     def open_new_window(self):
         self.window = QtWidgets.QMainWindow()
