@@ -1251,6 +1251,8 @@ class TY_02f_Ui_MainWindow(object):
     
    
     def manual_stop(self):
+        if(self.sc_new.timer1.isActive()):
+             self.sc_new.ser.write(b'*Q\r')
         self.sc_new.save_data_flg="Yes"
         #self.sc_new.on_ani_stop()
         #self.reset()

@@ -333,6 +333,8 @@ class TY_50_LIST_Ui_MainWindow(object):
              self.open_new_window_4()
         elif(str(self.test_type_id) == "26"):    
              self.open_new_window_4()
+        elif(str(self.test_type_id) == "28"):    
+             self.open_new_window_4()
         else:
             self.open_new_window()
             print("Invalid Test ID"+str(self.test_type_id))
