@@ -1204,9 +1204,9 @@ class TY_53_Ui_MainWindow(object):
              self.msg="Max. Length should not zero"
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
-        elif(int(self.lineEdit_12.text()) == 0):
+        elif(float(self.lineEdit_12.text()) == 0):
              self.msg="Guage. Length should not zero"
-        elif(int(self.lineEdit_12.text()) < int(self.lineEdit_11.text()) ):
+        elif(float(self.lineEdit_12.text()) < float(self.lineEdit_11.text()) ):
              self.msg="Guage. Length should Should not less than Max. Length."          
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."
