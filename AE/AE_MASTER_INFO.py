@@ -110,12 +110,10 @@ class Master_info_Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_5.setObjectName("label_5")
-        self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
-        
+        self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)        
         reg_ex = QRegExp("(\\d+\\.\\d+)")
         input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
-        self.lineEdit_4.setValidator(input_validator) 
-        
+        self.lineEdit_4.setValidator(input_validator)         
         self.lineEdit_4.setGeometry(QtCore.QRect(860, 290, 71, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -306,6 +304,8 @@ class Master_info_Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Address :"))
         self.label_3.setText(_translate("MainWindow", "Contact No:"))
         self.label_4.setText(_translate("MainWindow", "Breaking Sence (Kg.):"))
+        self.label_4.setDisabled(True)
+        self.lineEdit_4.setDisabled(True)
         self.label_5.setText(_translate("MainWindow", "Auto. Reverse. Time (Sec.):"))
         self.label_7.setText(_translate("MainWindow", "Graph Scales :"))
         self.label_8.setText(_translate("MainWindow", "Load  (Y-Axis.):"))
@@ -347,7 +347,7 @@ class Master_info_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
-            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',BREAKING_SENCE='"+self.lineEdit_4.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_5.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_6.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_2.text()+"'") 
+            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_5.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_6.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_2.text()+"'") 
         connection.commit();
         connection.close() 
         
@@ -363,7 +363,7 @@ class Master_info_Ui_MainWindow(object):
         self.textEdit.setText(str(rows[0][1])) #ADDRESS1
         self.lineEdit_2.setText(str(rows[0][2])) #PHONE_NO
         self.lineEdit_3.setText(str(rows[0][3])) #AUTO_REV_TIME_OFF
-        self.lineEdit_4.setText(str(rows[0][4])) #MOTOR_TEST_SPEED
+        self.lineEdit_4.setText(str(rows[0][6])) #BREAKING SENCE
         
         self.lineEdit_5.setText(str(rows[0][7])) #GRAPH_SCALE_CELL_1
         self.lineEdit_6.setText(str(rows[0][8])) #GRAPH_SCALE_CELL_2

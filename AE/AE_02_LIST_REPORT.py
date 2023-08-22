@@ -226,6 +226,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.comboBox_2.setFont(font)
         self.comboBox_2.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.setDisabled(True)
         self.label_16 = QtWidgets.QLabel(self.frame_2)
         self.label_16.setGeometry(QtCore.QRect(380, 160, 91, 31))
         font = QtGui.QFont()
@@ -566,7 +567,9 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "NISHIGANDHA Polymer"))
         self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
         self.label_15.setText(_translate("MainWindow", "Batch.Id:"))
+        self.label_15.setDisabled(True)
         self.label_16.setText(_translate("MainWindow", "Job Name:"))
+        self.label_16.setDisabled(True)
         self.radioButton_2.setText(_translate("MainWindow", "By Tested By "))
         self.label_17.setText(_translate("MainWindow", "Tested By:"))
         self.radioButton_3.setText(_translate("MainWindow", "By Batch Id."))
@@ -615,8 +618,8 @@ class AE_02_LIST_Ui_MainWindow(object):
         self.calendarWidget.clicked.connect(self.calendar1_on_click)
         self.calendarWidget_2.clicked.connect(self.calendar2_on_click)
         
-        self.comboBox.currentTextChanged.connect(self.load_batchids_1)
-        self.comboBox_2.currentTextChanged.connect(self.load_jobname_1)
+        #self.comboBox.currentTextChanged.connect(self.load_batchids_1)
+        #self.comboBox_2.currentTextChanged.connect(self.load_jobname_1)
         
         self.pushButton_8.clicked.connect(self.list_tests)
         
@@ -815,7 +818,7 @@ class AE_02_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 print("date Range -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
                 print("by party name -select")
@@ -832,7 +835,7 @@ class AE_02_LIST_Ui_MainWindow(object):
             
         else:
                 print("by else part-select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'")                        
       
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

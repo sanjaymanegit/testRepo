@@ -2502,9 +2502,9 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     try:
                         print("\n\n\n\n##### SET : guage_length ######")
-                        self.instrument.write_float(3,float(self.guage_length),2)
+                        self.instrument.write_float(3,0.0,2) 
                         #self.instrument.write_register(6,0,0)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :0.0",self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- self.guage_length.:"+str(e))

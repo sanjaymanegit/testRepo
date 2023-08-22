@@ -533,6 +533,7 @@ class load_cell_set_Ui_MainWindow(object):
                     cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_6.text())+"',SET_LOW='"+str(self.lineEdit_11.text())+"' WHERE ID='3'")
                     cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_7.text())+"',SET_LOW='"+str(self.lineEdit_12.text())+"' WHERE ID='4'")
                     cursor.execute("UPDATE LOAD_CELL_MST SET CAPACITY='"+str(self.lineEdit_8.text())+"',SET_LOW='"+str(self.lineEdit_13.text())+"' WHERE ID='5'")
+                    cursor.execute("UPDATE SETTING_MST SET BREAKING_SENCE=(select SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE')")
         connection.commit();
         self.load_data()
         
