@@ -2401,6 +2401,14 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_rev_speed=str(x[11])
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+        for x in results:            
+            self.load_cell_no=int(x[0])
+            #self.auto_rev_time_off=float(x[1])
+        connection.close()     
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
         for x in results:
@@ -2794,12 +2802,23 @@ class PlotCanvas_Auto(FigureCanvas):
                         #self.is_stopped=0 ### Read stop flag
                         if(int(self.is_stopped) == 3):                    
                             self.save_data_flg="Yes"
-                            self.on_ani_stop()                
+                            self.on_ani_stop()
+                        elif(self.is_stopped==2):                    
+                            self.save_data_flg="Yes"
+                            self.on_ani_stop()
+                        else:
+                            print("Invalid !!!!!!")
+                            
             except IOError:
                 print("Stopped !!!!!!")
                 if(self.is_stopped==3):                    
                     self.save_data_flg="Yes"
                     self.on_ani_stop()
+                elif(self.is_stopped==2):                    
+                    self.save_data_flg="Yes"
+                    self.on_ani_stop()
+                else:
+                    print("Invalid !!!!!!")
                 
     #self.record_modbus_logs(self.test_id,self.cycle_num,"SET","Login into to System.",self.login_user_role)
     def record_modbus_logs(self,test_id,cycle_num,set_or_get,log_str,user_name):

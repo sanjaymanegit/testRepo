@@ -2828,6 +2828,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.is_stopped==3):                    
                     self.save_data_flg="Yes"
                     self.on_ani_stop()
+                elif(int(self.is_stopped) == 2):                            
+                            print("Testing Stopped.......")
+                            self.save_data_flg="Yes"
+                            self.on_ani_stop()
+                else:
+                            print("IOError Invalid is stopped flag.......")
                 
     #self.record_modbus_logs(self.test_id,self.cycle_num,"SET","Login into to System.",self.login_user_role)
     def record_modbus_logs(self,test_id,cycle_num,set_or_get,log_str,user_name):
