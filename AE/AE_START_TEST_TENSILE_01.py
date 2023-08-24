@@ -1155,6 +1155,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.show_grid_data_tensile()
         self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
         self.pushButton_9.setDisabled(True)
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
+        connection.commit();
     def load_unit_onchange(self):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        

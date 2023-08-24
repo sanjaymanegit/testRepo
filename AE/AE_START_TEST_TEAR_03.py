@@ -1154,6 +1154,13 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.show_grid_data_Tear()
         self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         self.pushButton_9.setDisabled(True)
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
+        connection.commit();
+        
     def load_unit_onchange(self):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
@@ -1304,7 +1311,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_14.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_13.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',STG_CYCLE_ID='"+str(int(self.cycle_num)+1)+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tear','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2113,7 +2120,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 400)
         self.tableWidget.setColumnWidth(4, 50)
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID")
+        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

@@ -1276,6 +1276,12 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.pushButton_9.setDisabled(True)
         self.label_51.setText("("+self.comboBox_2.currentText()+")")
         self.label_34.setText("("+self.comboBox_3.currentText()+")")
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
+        connection.commit();
     
     def load_unit_onchange(self):
         self.i=0
@@ -1390,10 +1396,18 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
              self.msg="CS Area is Empty."             
         elif(self.lineEdit_7.text()== ""):
              self.msg="Guage Length is Empty."
+        elif(float(self.lineEdit_7.text()) == 0):
+             self.msg="Guage Length Should not Zero"    
         elif(self.lineEdit_17.text()== ""):
              self.msg="Maximum Load is Empty."
+        elif(float(self.lineEdit_17.text())== 0):
+             self.msg="Maximum Load Should not Zero."
         elif(self.lineEdit_18.text()== ""):
-             self.msg="Max.Compressive Length is Empty."  
+             self.msg="Max.Compressive Length is Empty."
+        elif(float(self.lineEdit_18.text())== 0):
+             self.msg="Maximum Compressive Length Should not Zero."
+        elif(float(self.lineEdit_18.text()) > float(self.lineEdit_7.text())):
+             self.msg="Maximum Compressive Length  Should not be greater than Guage Length."
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Inch"):
@@ -1441,7 +1455,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',STG_CYCLE_ID='"+str(int(self.cycle_num)+1)+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Tensile','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -3057,6 +3071,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+                print("self.graph_type"+str(self.graph_type))
                 if(self.graph_type=="Load Vs Compression"):
                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
                                         self.line_cnt.set_data(self.arr_p,self.arr_q)
