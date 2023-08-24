@@ -2982,34 +2982,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     )
             print("Done1")
        
-    def validate_speed(self):
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-        connection.close()
-        self.goahead_flag=0
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-        connection.close()
-        
-        if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
-            else:
-                 print(" not Ok ")
-                 
-        else:
-            print(" not Ok ")
+    
                
                 
    

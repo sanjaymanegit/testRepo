@@ -157,17 +157,12 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        
-        self.rev_speed_val=0
-        self.is_active_modbus='N'
-        
-        self.speed_val=""
-        self.input_speed_val=""
-        self.goahead_flag=0
-        self.calc_speed=0
-        self.command_str=""
-        self.modbus_port=""
-        self.non_modbus_port=""
+        self.test_method=1 #Tensile
+        self.load_cell_no=1 #Get Load Cell No
+        self.test_speed=0#This is Test Speed. 
+        self.test_id=-99
+        self.login_user_role="Manual Contol Log"
+        self.cycle_num=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -181,311 +176,285 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.toolButton_3.setText(_translate("MainWindow", "..."))
         self.label_2.setText(_translate("MainWindow", "Empty Or Invalid speed !!."))        
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
+        self.pushButton.hide()
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
         self.label_3.setText(_translate("MainWindow", "( mm/min) "))
         self.label_4.setText(_translate("MainWindow", "Manual Control of Motor"))
         self.pushButton_2.clicked.connect(MainWindow.close)       
-        self.toolButton.clicked.connect(self.r_run)   #down
-        self.toolButton_2.clicked.connect(self.f_run) #up
+        self.toolButton.clicked.connect(self.down_run)   #down
+        self.toolButton_2.clicked.connect(self.up_run) #up
         self.toolButton_3.clicked.connect(self.stop_run)
-        self.pushButton.clicked.connect(self.open_new_window)
-        
+        self.pushButton.clicked.connect(self.open_new_window)        
         self.label_2.hide()
-        self.load_modbus_port()
     
-    def validate_speed(self):        
+    def record_modbus_logs(self,test_id,cycle_num,set_or_get,log_str,user_name):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),ISACTIVE_MODBUS from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-             self.is_active_modbus=str(x[1])
+        with connection:        
+            cursor = connection.cursor()
+            print("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))
+            cursor.execute("INSERT INTO MODBUS_LOGS(TEST_ID,CYCLE_NUM,SET_OR_GET,LOG_STR,USER_NAME) VALUES(?,?,?,?,?)",(test_id,cycle_num,set_or_get,log_str,user_name))                         
+        connection.commit();
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.rev_speed_val=str(x[0])
-        connection.close() 
-        
-        self.goahead_flag=0
-        self.label_2.show() 
-        self.input_speed_val=str(self.lineEdit.text())
-        if(self.input_speed_val != ""):
-            if(float(self.input_speed_val) <= float(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(float(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+"\r")
-                 self.command_str="*P%04d"%self.calc_speed+"\r"
-                 #self.command_str="*P50.00\r"
-                 #print("xcxcx :"+str(self.command_str))
-                 self.display_calc_speed=float(self.calc_speed)/10
-                 self.label_2.setText("Running with "+str(round(self.display_calc_speed,2))+"% speed of maximum speed ("+str(self.speed_val)+" rpm).")
-                 self.label_2.show()
-                 print("Validation of Speed Successfull")
-            else:
-                 #print(" not Ok ")
-                 #self.label_2.show()
-                 self.label_2.setText("Speed Should not more than MAX Speed:"+str(self.speed_val))
-                 self.label_2.show()
+    def down_run(self): ## Down Direction
+        if(str(self.lineEdit.text()) == ""):
+                    self.label_2.setText("Speed is Empty")
+                    self.label_2.show()
         else:
-            self.label_2.show()
-            
-        
-         
-        
-        
-        
-        
-        
-        
-            
-            
-        
-    def r_run(self):
-        print("Reverse Run started ....")
-        self.validate_speed()
-        #self.label_2.hide()
-#         self.toolButton.show()
-#         icon = QtGui.QIcon()
-#         icon.addPixmap(QtGui.QPixmap("./images/down.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-#         self.toolButton.setIcon(icon)
-#         self.toolButton.setIconSize(QtCore.QSize(70, 141))
-        
-        ###################################################################################       
-        #####  self.is_active_modbus : this status us detected in validate_speed function.
-        #####  self.modbus_port : this status us detected in load_modbus_port function.        
-        ###################################################################################
-        
-        #print("self.is_active_modbus:"+str(self.is_active_modbus)+"  self.modbus_port:"+str(self.modbus_port))
-        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
-                v=float(self.input_speed_val)                
-                try:
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
+                    self.label_2.hide()
+                    self.test_method=2 #Compression
+                    self.load_cell_no=1 #Get Load Cell No
+                    self.test_speed=float(str(self.lineEdit.text()))*100
+                    self.test_speed=int(float(self.test_speed))
+                    
+                    
+                    print("Reverse Run started ....Speed :"+str(self.test_speed))
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+                    for x in results:            
+                        self.load_cell_no=int(x[0])
+                        #self.auto_rev_time_off=float(x[1])
+                    connection.close()        
+                    try:
+                            #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                            self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                            self.instrument.serial.timeout = 1
+                            self.instrument.serial.baudrate = 115200
+                            #time.sleep(5)
+                            self.IO_error_flg=0
+                    except IOError as e:
+                            print("IO Errors- Connection to Modbus......:"+str(e))
+                            self.IO_error_flg=1    
+                    
+                    if(self.IO_error_flg==0):
+                            #Set Test method = compression. Display IO Error incase any problem
+                            try:
+                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
+                                            print("\n\n\n\n##### SET : TEST_METHOD ######")
+                                            self.instrument.write_register(0,int(self.test_method),0,6)                    
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- Test Method..:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                                           
+                            try:
+                                            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
+                                            self.instrument.write_register(1,int(self.load_cell_no),0,6)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                                            #time.sleep(5)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                                           
+                            
+                            #Set Down Speed . Check For IO Error.
+                            try:
+                                            print("\n\n\n\n##### SET : test_speed ######")
+                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
+                                            self.instrument.write_register(10,float(self.test_speed),0,6)
+                                            #self.instrument.write_register(6,0,0)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            #time.sleep(5)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- self.test_speed.:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            time.sleep(5)
+                                        
+                            
+                            #Start Motor.
+                            ####### Start Test- ############
+                            try:
+                                    print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
+                                    #read_bit(registeraddress: int, functioncode: int = 2) → int
+                                    self.is_stopped=self.instrument.read_register(1,0,4)
+                                    self.is_stopped=round(self.is_stopped,0)
+                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
+                                    #time.sleep(5)                
+                            except IOError as e:                    
+                                    print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                                    self.IO_error_flg=1
+                            if(self.is_stopped == 0):     
+                                            ####### Start Test-Write in Coil Register. ############
+                                            try:
+                                                 #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                                                 print("\n\n\n\n##### SET :COIL start_bit ######")
+                                                 self.instrument.write_bit(0,1,5)                    
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                                                 self.label_2.setText("Motor Started (Down) .......speed :"+str(self.lineEdit.text()))
+                                                 self.label_2.show()
+                                                  #time.sleep(5)
+                                            except IOError as e:
+                                                 print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                                                 self.IO_error_flg=1                       
+                                 
+                                            ####### Start Test-Read Coil Register. ############
+                                            try:
+                                                print("\n\n\n\n##### GET  : COIL start_bit ######")
+                                                #read_bit(registeraddress: int, functioncode: int = 2) → int
+                                                self.start_bit=self.instrument.read_bit(0,1)
+                                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                                                #time.sleep(5)                
+                                            except IOError as e:                    
+                                                print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                                                self.IO_error_flg=1
+                            else:
+                                    print("Test is already running......Status: "+str(self.is_stopped))
                     else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-                    
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600
-                    
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    #print(" write2 :"+str(v))
-                    print("Reverse speed : "+str(v)+" is set successfully in the PLC via Modbus.")
-                except IOError as e:
-                    print("Set Speed Error 02 - Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-        else:
-            print("Set Speed Error 01 : Modbus is not active or modbus port is not detected.")
-        
-        
-        ######################################################################       
-        #####  
-        #####  Above is the setting of speed if PLC is connected
-        ###### Reverse Run the Motor Below
-        ###### self.command_str : This is detected in validate_speed function
-        ######
-        #######################################################################
-        
-        time.sleep(1)
-        
-        
-        try:
-           #print("is_active_modbus [Reverse] :"+str(self.is_active_modbus))
-           if(self.is_active_modbus == 'Y'):
-               #print("rev non modbus port :"+str(self.non_modbus_port))
-               if(self.non_modbus_port=="/dev/ttyUSB0"):
-                       self.ser = serial.Serial(
-                            port='/dev/ttyUSB0',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-                       #print("non modbus port :"+str(self.non_modbus_port))
-               else:
-                        self.ser = serial.Serial(
-                            port='/dev/ttyUSB1',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-           else:
-               self.ser = serial.Serial(
-                            port='/dev/ttyUSB0',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-            
-           self.ser.flush()
-           if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-                self.ser.write(b'*R\r')
-                print("Reverse command Started.")
-           else:
-                print("Reverse command not Started. Please Check.")
-        except IOError:
-            print(print("IO Errors(Reverse): Please check motor connection is active ?")    )  
+                                    print("Modbus Error ......")   
+           
        
         
-    def f_run(self):
-        print("Forward Run ....")
-        self.validate_speed()
-        #self.label_2.hide()
-#         self.toolButton.show()
-#         icon = QtGui.QIcon()
-#         icon.addPixmap(QtGui.QPixmap("./images/up1.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-#         self.toolButton.setIcon(icon)
-#         self.toolButton.setIconSize(QtCore.QSize(70, 141))
-        ######################################################################       
-        #####  self.is_active_modbus : this status us detected in validate_speed function.
-        #####  self.modbus_port : this status us detected in load_modbus_port function.
-        ###################################################################################
-        
-        #print("self.is_active_modbus:"+str(self.is_active_modbus)+"  self.modbus_port:"+str(self.modbus_port))
-        if(self.is_active_modbus == 'Y' and self.modbus_port != ""): 
-                v=float(self.input_speed_val)
-                try:     
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-                    else:
-                                    instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600
-                    
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    #print(" write1 :"+str(v))
-                    print("Forword speed : "+str(v)+" is set successfully in the PLC via Modbus.")
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error 02  -Motor start : "+str(e))
-                #print("Forward speed : "+str(v))
+    def up_run(self):    # Up Direction         
+        if(str(self.lineEdit.text()) == ""):
+                    self.label_2.setText("Speed is Empty")
+                    self.label_2.show()
         else:
-            print("Set Speed Error 01 : Modbus is not active or modbus port is not detected.")
-        ######################################################################       
-        #####  
-        #####  Above is the setting of speed if PLC is connected
-        ###### Forword Run the Motor Below
-        ###### self.command_str : This is detected in validate_speed function
-        ######
-        #######################################################################
-        
-        time.sleep(1)
-        try:
-            if(self.is_active_modbus == 'Y'): 
-                       if(self.non_modbus_port=="/dev/ttyUSB0"):
-                               self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.25
-                                )
-                       else:
-                               self.ser = serial.Serial(
-                                    port='/dev/ttyUSB1',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.25
-                                )
-            else:
-                       self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.25
-                                )  
-           
-            if(self.goahead_flag==1):               
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-                self.ser.write(b'*F\r')
-                print("Forword command executed. ")
-            else:
-                print("Forword command not Started. Please Check.")
-         
-        except IOError:
-           print("IO Errors(Forward): Please check motor connection is active ?")    
-                
+                    print("Up Run ....")
+                    self.label_2.hide()
+                    self.test_method=1 #Tensile
+                    self.load_cell_no=1 #Get Load Cell No
+                    self.test_speed=float(str(self.lineEdit.text()))*100
+                    self.test_speed=int(float(self.test_speed))
+                    
+                    
+                    print("Reverse Run started ....Speed :"+str(self.test_speed))
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+                    for x in results:            
+                        self.load_cell_no=int(x[0])
+                        #self.auto_rev_time_off=float(x[1])
+                    connection.close()        
+                    try:
+                            #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                            self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                            self.instrument.serial.timeout = 1
+                            self.instrument.serial.baudrate = 115200
+                            #time.sleep(5)
+                            self.IO_error_flg=0
+                    except IOError as e:
+                            print("IO Errors- Connection to Modbus......:"+str(e))
+                            self.IO_error_flg=1    
+                    
+                    if(self.IO_error_flg==0):
+                            #Set Test method = compression. Display IO Error incase any problem
+                            try:
+                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
+                                            print("\n\n\n\n##### SET : TEST_METHOD ######")
+                                            self.instrument.write_register(0,int(self.test_method),0,6)                    
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- Test Method..:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
+                                           
+                            try:
+                                            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
+                                            self.instrument.write_register(1,int(self.load_cell_no),0,6)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                                            #time.sleep(5)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                                           
+                            
+                            #Set Down Speed . Check For IO Error.
+                            try:
+                                            print("\n\n\n\n##### SET : test_speed ######")
+                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
+                                            self.instrument.write_register(10,float(self.test_speed),0,6)
+                                            #self.instrument.write_register(6,0,0)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            #time.sleep(5)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- self.test_speed.:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            time.sleep(5)
+                                        
+                            
+                            #Start Motor.
+                            ####### Start Test- ############
+                            try:
+                                    print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
+                                    #read_bit(registeraddress: int, functioncode: int = 2) → int
+                                    self.is_stopped=self.instrument.read_register(1,0,4)
+                                    self.is_stopped=round(self.is_stopped,0)
+                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
+                                    #time.sleep(5)                
+                            except IOError as e:                    
+                                    print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                                    self.IO_error_flg=1
+                            if((self.is_stopped == 0) or (self.is_stopped == 3)):     
+                                            ####### Start Test-Write in Coil Register. ############
+                                            try:
+                                                 #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                                                 print("\n\n\n\n##### SET :COIL start_bit ######")
+                                                 self.instrument.write_bit(0,1,5)                    
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                                                 self.label_2.setText("Motor Started (UP) .......speed :"+str(self.lineEdit.text()))
+                                                 self.label_2.show()
+                                                  #time.sleep(5)
+                                            except IOError as e:
+                                                 print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                                                 self.IO_error_flg=1
+                                           
+                            else:
+                                    print("Test is already running......Status: "+str(self.is_stopped))
+                    else:
+                                    print("Modbus Error ......") 
+                      
     
     def stop_run(self):
-        #print("Forward Run ....")
+        print("Stop Run ....")
         self.label_2.hide()
-        #self.toolButton.hide()
+        
+        #Stop Motor.
         try:
-            if(self.is_active_modbus == 'Y'):            
-                   if(self.non_modbus_port=="/dev/ttyUSB0"):
-                           self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.25
-                            )
-                   else:
-                          self.ser = serial.Serial(
-                                port='/dev/ttyUSB1',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.25
-                            )
-            else:
-                          self.ser = serial.Serial(
-                                port='/dev/ttyUSB0',
-                                baudrate=19200,
-                                bytesize=serial.EIGHTBITS,
-                                parity=serial.PARITY_NONE,
-                                stopbits=serial.STOPBITS_ONE,
-                                xonxoff=False,
-                                timeout = 0.25
-                            )
+                #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                self.instrument.serial.timeout = 1
+                self.instrument.serial.baudrate = 115200
+                #time.sleep(5)
+                self.IO_error_flg=0
+        except IOError as e:
+                print("IO Errors- Connection to Modbus......:"+str(e))
+                self.IO_error_flg=1 
+        if(self.IO_error_flg==0):
+                ####### Start Test- ############
+                try:
+                        print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
+                        #read_bit(registeraddress: int, functioncode: int = 2) → int
+                        self.is_stopped=self.instrument.read_register(1,0,4)
+                        self.is_stopped=round(self.is_stopped,0)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
+                        #time.sleep(5)                
+                except IOError as e:                    
+                        print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                        self.IO_error_flg=1
+                if((self.is_stopped == 1) or (self.is_stopped == 2) or (self.is_stopped == 3)):     
+                                ####### Start Test-Write in Coil Register. ############
+                                try:
+                                     #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                                     print("\n\n\n\n##### SET :COIL stop  ######")
+                                     self.instrument.write_bit(1,1,5)                    
+                                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Stop Bit :1",self.login_user_role)
+                                     self.label_2.setText("Motor Stopped.")
+                                     self.label_2.show()
+                                      #time.sleep(5)
+                                except IOError as e:
+                                     print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                                     self.IO_error_flg=1 
+                else:
+                        print("Test is already Stopped......Status: "+str(self.is_stopped))
+        else:
+                        print("Modbus Error ......")   
            
-            self.ser.write(b'*Q\r')
-            #time.sleep(1)
-            print("Stop command executed. ")
-        except IOError:
-           print("IO Errors")
+       
            
     
     def open_new_window(self):       
@@ -495,127 +464,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.window.show()
         
     
-    def get_USB_0_DEVICE(self):
-        os.system("rm -rf lsusb_USB0.txt")
-        port_type="ERROR"
-        
-        ### Check for Controller #######
-        os.system("udevadm info /dev/ttyUSB0 | grep PL2303 >> lsusb_USB0.txt")
-        try:
-           f = open('lsusb_USB0.txt','r')
-           for line in f:
-               cnt=0                
-               cnt=int(line.find("PL2303")) ## For controller Port
-               if cnt > 0 :
-                    port_type="C"
-               else:
-                    port_type="ERROR"  
-                   
-           f.close()
-        except:          
-             port_type="ERROR"     
-        
-        
-        if(port_type == "ERROR"):
-        
-                #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB0 | grep Future >> lsusb_USB0.txt")
-                try:
-                   f = open('lsusb_USB0.txt','r')
-                   for line in f:
-                       cnt=0                
-                       cnt=int(line.find("Future")) ## For controller Port
-                       if cnt > 0 :
-                            port_type="M"
-                       else:
-                            port_type="ERROR"     
-                   f.close()
-                except:          
-                      port_type="ERROR"
-                   
-         
-        return port_type
-    
-    
-    def get_USB_1_DEVICE(self):
-        os.system("rm -rf lsusb_USB1.txt")
-        port_type="ERROR"
-        
-        ### Check for Controller #######
-        os.system("udevadm info /dev/ttyUSB1 | grep PL2303 >> lsusb_USB1.txt")
-        try:
-           f = open('lsusb_USB1.txt','r')
-           for line in f:
-               cnt=0                
-               cnt=int(line.find("PL2303")) ## For controller Port
-               if cnt > 0 :
-                    port_type="C"
-               else:
-                    port_type="ERROR"  
-                   
-           f.close()
-        except:          
-             port_type="ERROR"     
-        
-        
-        if(port_type == "ERROR"):
-        
-                #### Check For Modbus ########
-                os.system("udevadm info /dev/ttyUSB1 | grep Future >> lsusb_USB1.txt")
-                try:
-                   f = open('lsusb_USB1.txt','r')
-                   for line in f:
-                       cnt=0                
-                       cnt=int(line.find("Future")) ## For controller Port
-                       if cnt > 0 :
-                            port_type="M"
-                       else:
-                            port_type="ERROR"     
-                   f.close()
-                except:          
-                      port_type="ERROR"
-                   
-         
-        return port_type
-    
-        
-    def load_modbus_port(self):
-        self.modbus_port=""
-        self.non_modbus_port=""
-        self.port=""        
-        connection = sqlite3.connect("tyr.db") 
-        results=connection.execute("SELECT ISACTIVE_MODBUS FROM SETTING_MST") 
-        for x in results:
-                   if(str(x[0]) == 'Y'):                       
-                        self.port=self.get_USB_0_DEVICE()
-                        print("USB0: "+str(self.port))
-                        if(self.port == "C"):
-                             self.non_modbus_port="/dev/ttyUSB0"
-                        elif(self.port == "M"):
-                             self.modbus_port="/dev/ttyUSB0"
-                        else:                             
-                             print("Error 468")  
-                            
-                        
-                        print("USB0: "+str(self.port)+" non_modbus: "+(self.non_modbus_port))     
-                        
-                        self.port=self.get_USB_1_DEVICE()
-                        
-                        if(self.port == "C"):
-                             self.non_modbus_port="/dev/ttyUSB1"
-                        elif(self.port == "M"):
-                             self.modbus_port="/dev/ttyUSB1"
-                        else:
-                             print("Error 480")        
-                   else:
-                         print("Modbus Flag :"+str(x[0]))                       
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE SETTING_MST SET MODBUS_PORT='"+str(self.modbus_port)+"',NON_MODBUS_PORT='"+str(self.non_modbus_port)+"'")            
-        connection.commit();
+   
 
 
 if __name__ == "__main__":
