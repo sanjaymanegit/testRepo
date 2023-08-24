@@ -2834,6 +2834,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+                self.graph_type="Load Vs Displacement"
                 if(self.graph_type=="Load Vs Displacement"):
                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
                                         self.line_cnt.set_data(self.arr_p,self.arr_q)
