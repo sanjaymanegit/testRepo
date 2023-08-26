@@ -408,6 +408,8 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_tear_peak_load()
         elif(str(self.test_type_id) == "28"):
             self.save_test_CLD()
+        elif(str(self.test_type_id) == "25"):
+            self.save_test_CLD2()
         else:
             print("Invalid Test ID")
     
@@ -427,6 +429,16 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         with connection:        
                     cursor = connection.cursor()
                     cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='VWSK_TRUNKLIDSEAL_CLD'")                    
+        connection.commit();
+        connection.close()       
+        
+        self.open_new_window_LIST_NEW()
+    
+    def save_test_CLD2(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='TRUNKLIDSEAL_CLD2'")                    
         connection.commit();
         connection.close()       
         
