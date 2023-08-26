@@ -2055,7 +2055,7 @@ class TY_60_Ui_MainWindow(object):
               
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Load @ '+str(self.disp_1)+' mm\n ('+str(self.last_load_unit)+')', 'Load @ '+str(self.disp_2)+' mm\n ('+str(self.last_load_unit)+')']]
+        data2= [ ['Spec. \n No', 'Load @ '+str(self.disp_1)+' mm Guage\n ('+str(self.last_load_unit)+')', 'Load @ '+str(self.disp_2)+' mm Guage\n ('+str(self.last_load_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.LOAD_POINT_1),printf(\"%.2f\", A.LOAD_POINT_2) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
