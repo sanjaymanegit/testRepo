@@ -45,7 +45,7 @@ minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
 minimalmodbus.BYTEORDER_BIG= 0
 minimalmodbus.BYTEORDER_LITTLE= 1
 
-class TY_59_Ui_MainWindow(object):
+class TY_60_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 769)
@@ -1053,6 +1053,15 @@ class TY_59_Ui_MainWindow(object):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1065,6 +1074,42 @@ class TY_59_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels(['Load @ '+str(self.lineEdit_10.text())+' mm Guage \n ('+str(self.comboBox_2.currentText())+' )','Load @ '+str(self.lineEdit_11.text())+' mm Guage\n ('+str(self.comboBox_2.currentText())+')','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+        self.report_fun_1()
+        
+    
+    
+    def report_fun_1(self):
+        self.pushButton_8.setDisabled(True)
+        self.pushButton_10.setDisabled(True) 
+        self.frame_3.show()
+        
+        
+        self.pushButton_12.setDisabled(True)
+        #self.pushButton_13.setDisabled(True)
+        
+        self.radioButton.setDisabled(True)
+        self.radioButton_2.setDisabled(True)
+        self.radioButton_3.setDisabled(True)
+        self.radioButton_4.setDisabled(True)
+        
+        self.lcdNumber.setDisabled(True)
+        self.lcdNumber_2.setDisabled(True)
+        self.lcdNumber_3.setDisabled(True)
+        
+        
+        
+        
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.show_graph()
+        self.pushButton_11.setDisabled(True)
+        
+        ## Read Only Fields 
+        self.readonly_fields()
+        
+        
     def load_unit_onchange(self):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
@@ -1094,28 +1139,37 @@ class TY_59_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DISP_1,DISP_2 FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
-                 self.test_id=str(x[0])
-                 self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
-                 self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
+                 self.test_id=str(x[0])                
+                 self.comboBox.setCurrentText(str(x[1]))
+                 self.comboBox.setDisabled(True)
+                 print("spec name "+str(x[1]))
+                 self.label_48.setText(str(x[2]))
+                 #self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
+                 self.lineEdit_15.setText(str(x[3]))
+                 self.lineEdit_16.setText(str(x[4]))
+                 
+                 self.lineEdit_8.setText(str(x[5]))
+                 self.lineEdit_9.setText(str(x[6]))
+                 
+                 #self.lineEdit_12.setText(str(x[7]))
+                 
+                 self.lineEdit_14.setText(str(x[8]))
+                 self.lineEdit_13.setText(str(x[9]))
+                 self.comboBox_2.setCurrentText(str(x[10]))
+                 self.comboBox_3.setCurrentText(str(x[11]))
+                 self.lineEdit_10.setText(str(x[14]))
+                 self.lineEdit_11.setText(str(x[15]))
+                 
         connection.close()
-        self.i=0
-        self.comboBox.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
-        for x in results:            
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
-        connection.close()
+        #self.onchage_combo()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
+        results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID ='"+str(self.test_id)+"'") 
         for x in results:            
-            self.lineEdit_13.setText(str(x[0]))
-            self.lineEdit_14.setText(str(x[1]))
+            self.label_38.setText(str(x[0]))           
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
@@ -3064,7 +3118,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_59_Ui_MainWindow()
+    ui = TY_60_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

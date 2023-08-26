@@ -7,6 +7,7 @@ from TY_44_REPORTS_PEEL_STRENGTH import TY_44_Ui_MainWindow
 from TY_52_REPORT_PULL_ON_FORCE import TY_52_Ui_MainWindow
 from TY_54_REPORT_PUSH_ON_FORCE import TY_54_Ui_MainWindow
 from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
+from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
 
 

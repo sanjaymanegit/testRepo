@@ -221,6 +221,12 @@ class TY_59_Ui_MainWindow(object):
         self.label_33.setStyleSheet("")
         self.label_33.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
+        
+        self.buttongroup = QtWidgets.QButtonGroup()
+        self.buttongroup_2 = QtWidgets.QButtonGroup()
+        
+        
+        
         self.radioButton_3 = QtWidgets.QRadioButton(self.frame_3)
         self.radioButton_3.setGeometry(QtCore.QRect(1070, 20, 81, 31))
         self.radioButton_3.setChecked(True)
@@ -228,6 +234,11 @@ class TY_59_Ui_MainWindow(object):
         self.radioButton_4 = QtWidgets.QRadioButton(self.frame_3)
         self.radioButton_4.setGeometry(QtCore.QRect(1170, 20, 111, 31))
         self.radioButton_4.setObjectName("radioButton_4")
+        
+        
+        self.buttongroup_2.addButton(self.radioButton_3, 1)
+        self.buttongroup_2.addButton(self.radioButton_4, 2)
+        
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
         self.tableWidget.setGeometry(QtCore.QRect(810, 320, 471, 101))
         self.tableWidget.setObjectName("tableWidget")
@@ -405,6 +416,8 @@ class TY_59_Ui_MainWindow(object):
         self.radioButton_2 = QtWidgets.QRadioButton(self.frame_3)
         self.radioButton_2.setGeometry(QtCore.QRect(820, 20, 101, 31))
         self.radioButton_2.setObjectName("radioButton_2")
+        self.buttongroup.addButton(self.radioButton, 1)
+        self.buttongroup.addButton(self.radioButton_2, 2)
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
         self.pushButton_8.setGeometry(QtCore.QRect(1170, 190, 131, 41))
         font = QtGui.QFont()
