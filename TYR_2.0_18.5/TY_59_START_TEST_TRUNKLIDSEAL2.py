@@ -389,6 +389,7 @@ class TY_59_Ui_MainWindow(object):
         self.comboBox_4.setGeometry(QtCore.QRect(120, 370, 231, 31))
         self.comboBox_4.setObjectName("comboBox_4")
         self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
         self.layoutWidget = QtWidgets.QWidget(self.frame_3)
         self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 641, 331))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -629,8 +630,8 @@ class TY_59_Ui_MainWindow(object):
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+#         self.comboBox_2.addItem("")
+#         self.comboBox_2.addItem("")
         self.label_30 = QtWidgets.QLabel(self.frame)
         self.label_30.setGeometry(QtCore.QRect(740, 70, 141, 31))
         font = QtGui.QFont()
@@ -993,6 +994,7 @@ class TY_59_Ui_MainWindow(object):
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
         self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
+        self.comboBox_4.setItemText(1, _translate("MainWindow", "Load Vs Time"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
         self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
@@ -1014,8 +1016,8 @@ class TY_59_Ui_MainWindow(object):
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "gm"))
-        self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "Lb"))
+#         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
+#         self.comboBox_2.setItemText(4, _translate("MainWindow", "Lb"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
@@ -1576,7 +1578,7 @@ class TY_59_Ui_MainWindow(object):
         if(self.show_lcd_vals=="Y"):
                     if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
-                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_display))   #length
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p_cm))   #length
@@ -2136,6 +2138,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.setParent(parent)        
         ###
         self.playing = False
+        self.p_display=0
         self.p =0
         self.p_cm =0
         self.p_inch =0
@@ -2530,13 +2533,14 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                 #print("self.test_typexx: "+str(self.test_type))
                 if(self.test_type=="Compression"):
-                    '''
+                    self.p_display=self.p                    
                     if( int(self.test_guage_mm) > int(self.p)):
-                            self.p=int(self.test_guage_mm)-self.p
+                            self.p=int(self.test_guage_mm)-self.p                    
                     else:
                             self.p=int(self.p)-self.test_guage_mm
-                    '''
-                    self.p=self.p
+                    
+                    #self.p=self.p
+                   
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     #self.p=self.p
