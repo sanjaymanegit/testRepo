@@ -1169,19 +1169,19 @@ class TY_55_Ui_MainWindow(object):
              self.msg="Rev.Speed is Empty"
         elif(self.lineEdit_10.text() == ""):
              self.msg="Disp_1 is Empty"
-        elif(int(self.lineEdit_10.text()) == 0):
+        elif(float(self.lineEdit_10.text()) == 0):
              self.msg="Disp_1 should not zero"
         elif(self.lineEdit_11.text() == ""):
              self.msg="Disp_2 is Empty"
-        elif(int(self.lineEdit_11.text()) == 0):
+        elif(float(self.lineEdit_11.text()) == 0):
              self.msg="Disp_2 should not zero"
-        elif(int(self.lineEdit_11.text()) <  int(self.lineEdit_10.text())):
+        elif(float(self.lineEdit_11.text()) <  float(self.lineEdit_10.text())):
              self.msg="Disp_2 should be greater than Disp_1"
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
-        elif(int(self.lineEdit_12.text()) == 0):
+        elif(float(self.lineEdit_12.text()) == 0):
              self.msg="Guage. Length should not zero"
-        elif(int(self.lineEdit_12.text()) < int(self.lineEdit_11.text()) ):
+        elif(float(self.lineEdit_12.text()) < float(self.lineEdit_11.text()) ):
              self.msg="Guage. Length should Should not less than Disp_2."             
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."

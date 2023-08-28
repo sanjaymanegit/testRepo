@@ -992,10 +992,10 @@ class TY_59_Ui_MainWindow(object):
         self.label_42.setText(_translate("MainWindow", "Mm."))
         self.label_43.setText(_translate("MainWindow", "Current Test Speed:"))
         self.label_44.setText(_translate("MainWindow", "Mm/Min"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Displacement."))
+        self.comboBox_4.setItemText(0, _translate("MainWindow", "Load Vs Travel"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
-        self.radioButton.setText(_translate("MainWindow", "Hi-Load cell"))
-        self.radioButton_2.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
+        self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
@@ -1178,19 +1178,19 @@ class TY_59_Ui_MainWindow(object):
              self.msg="Rev.Speed is Empty"
         elif(self.lineEdit_10.text() == ""):
              self.msg="Guage Length 1 is Empty"
-        elif(int(self.lineEdit_10.text()) == 0):
+        elif(float(self.lineEdit_10.text()) == 0):
              self.msg="Guage Length 1 should not zero"
         elif(self.lineEdit_11.text() == ""):
              self.msg="Guage Length 2 is Empty"
-        elif(int(self.lineEdit_11.text()) == 0):
+        elif(float(self.lineEdit_11.text()) == 0):
              self.msg="Guage Length 2 should not zero"
-        elif(int(self.lineEdit_11.text()) <  int(self.lineEdit_10.text())):
-             self.msg="Guage Length 2 should be greater than Guage Length 1"
+        elif(float(self.lineEdit_11.text()) >  float(self.lineEdit_10.text())):
+             self.msg="Guage Length 2 should be less than Guage Length 1"
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
         elif(int(self.lineEdit_12.text()) == 0):
              self.msg="Guage. Length should not zero"
-        elif(int(self.lineEdit_12.text()) < int(self.lineEdit_11.text()) ):
+        elif(float(self.lineEdit_12.text()) < float(self.lineEdit_11.text()) ):
              self.msg="Guage. Length should Should not less than Guage Length 2."             
         elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
             self.msg="Unity Type : KN/CM incorrect."
@@ -1575,41 +1575,41 @@ class TY_59_Ui_MainWindow(object):
     def show_load_cell_val(self):
         if(self.show_lcd_vals=="Y"):
                     if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_cm))   #length
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_inch))   #length
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_lb))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_lb))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_cm))   #length
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_lb))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_inch))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_n))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_n))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_cm))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_n))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_inch))  #length
                     elif((str(self.comboBox_2.currentText()) =="KN") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_kn)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_kn))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.arr_p))  #length
                     elif((str(self.comboBox_2.currentText()) =="gm") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_mpa)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q_mpa))     #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))  #length
                     else:
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
                     #self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
                     self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
                     self.pushButton_11.setDisabled(True)
@@ -2263,10 +2263,10 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
-             #self.max_length=float(float(x[3]))
+             self.max_length=float(float(x[3]))
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
-             self.max_length=float(float(x[0])-float(x[3]))
+             #self.max_length=float(float(x[0])-float(x[3]))
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
@@ -2530,10 +2530,13 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                 #print("self.test_typexx: "+str(self.test_type))
                 if(self.test_type=="Compression"):
+                    '''
                     if( int(self.test_guage_mm) > int(self.p)):
                             self.p=int(self.test_guage_mm)-self.p
                     else:
                             self.p=int(self.p)-self.test_guage_mm
+                    '''
+                    self.p=self.p
                     #print("self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     #self.p=self.p
