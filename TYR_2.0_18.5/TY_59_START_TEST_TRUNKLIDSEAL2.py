@@ -1596,7 +1596,7 @@ class TY_59_Ui_MainWindow(object):
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p_inch))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q_n))     #load
-                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))  #length
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_display))  #length
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q_n))     #load
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p_cm))  #length
@@ -1605,10 +1605,10 @@ class TY_59_Ui_MainWindow(object):
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p_inch))  #length
                     elif((str(self.comboBox_2.currentText()) =="KN") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q_kn))     #load
-                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.arr_p))  #length
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_display))  #length
                     elif((str(self.comboBox_2.currentText()) =="gm") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q_mpa))     #load
-                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))  #length
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p_display))  #length
                     else:
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q))
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
