@@ -55,6 +55,7 @@
 ./reports/Report_of_test_227.pdf
 ./reports/Report_of_test_229.pdf
 ./reports/Report_of_test_22.pdf
+./reports/Report_of_test_234.pdf
 ./reports/Report_of_test_249.pdf
 ./reports/Report_of_test_250.pdf
 ./reports/Report_of_test_251.pdf

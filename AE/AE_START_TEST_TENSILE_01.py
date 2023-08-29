@@ -2399,6 +2399,9 @@ class PlotCanvas_Auto(FigureCanvas):
         self.break_sence=0
         self.test_motor_speed=0
         self.test_rev_speed=0
+        self.per_test_motor_speed=0
+        self.per_test_rev_speed=0
+        self.max_speed=0
         self.test_guage_mm=0
         self.test_type="Tensile"
         self.max_load=0
@@ -2481,10 +2484,11 @@ class PlotCanvas_Auto(FigureCanvas):
         
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,MOTOR_MAX_SPEED from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
+                 self.max_speed=int(x[4])
                  print("self.load_unit:"+str(self.load_unit)+"    self.disp_unit:"+str(self.disp_unit))
                  if(self.graph_type=="Load Vs Displacement"):
                          if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
@@ -2536,7 +2540,12 @@ class PlotCanvas_Auto(FigureCanvas):
                  
                  self.axes.set_xlim(0,int(x[0]))
                  self.axes.set_ylim(0,int(x[1]))  
-        connection.close()        
+        connection.close()
+        
+        self.per_test_speed=float((float(self.test_speed)/float(self.max_speed))*100)
+        self.per_test_rev_speed=float((float(self.test_rev_speed)/float(self.max_speed))*100)
+        self.per_test_speed=self.per_test_speed*100
+        self.per_test_rev_speed=self.per_test_rev_speed*100
         
  ###### Set Modbus register for Test   ##########
 #         self.test_method=1
@@ -2605,25 +2614,25 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### SET : test_speed ######")
                         #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                        self.instrument.write_register(10,float(self.test_speed),0,6)
+                        self.instrument.write_register(10,float(self.per_test_speed),0,6)
                         #self.instrument.write_register(6,0,0)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- self.test_speed.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                             time.sleep(5)
                     
                     try:
                         print("\n\n\n\n##### SET : test_rev_speed ######")
                         #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                        self.instrument.write_register(11,float(self.test_rev_speed),0,6)
+                        self.instrument.write_register(11,float(self.per_test_rev_speed),0,6)
                         #self.instrument.write_register(6,0,0)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.per_test_rev_speed),self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- self.test_rev_speed.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.per_test_rev_speed),self.login_user_role)
                             time.sleep(5)
                     
                     try:
@@ -2640,6 +2649,8 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                     time.sleep(1)
+                    
+                    '''
                     self.test_method=-1
                     self.load_cell_no=-1
                     self.guage_length=-1
@@ -2736,7 +2747,7 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)                
                             self.IO_error_flg=1
                             time.sleep(5)
-                            
+                    '''         
                             
                     
         else:

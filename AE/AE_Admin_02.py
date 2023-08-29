@@ -354,7 +354,7 @@ class AE_02_Ui_MainWindow(object):
         self.pushButton_9.hide()
         self.pushButton_10.setText(_translate("MainWindow", "USB Reports Backup"))
         self.pushButton_11.setText(_translate("MainWindow", "Speed Setup"))
-        self.pushButton_11.hide()
+        #self.pushButton_11.hide()
         self.pushButton_12.setText(_translate("MainWindow", "Change Password"))
         self.pushButton_12.hide()
         self.pushButton_14.setText(_translate("MainWindow", "Break App"))
