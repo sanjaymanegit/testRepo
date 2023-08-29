@@ -163,7 +163,9 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.test_id=-99
         self.login_user_role="Manual Contol Log"
         self.cycle_num=0
-
+        self.max_speed=1
+        self.per_test_speed=0       
+        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -176,7 +178,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.toolButton_3.setText(_translate("MainWindow", "..."))
         self.label_2.setText(_translate("MainWindow", "Empty Or Invalid speed !!."))        
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
-        self.pushButton.hide()
+        #self.pushButton.hide()
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
         self.label_3.setText(_translate("MainWindow", "( mm/min) "))
         self.label_4.setText(_translate("MainWindow", "Manual Control of Motor"))
@@ -204,9 +206,18 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     self.label_2.hide()
                     self.test_method=2 #Compression
                     self.load_cell_no=1 #Get Load Cell No
-                    self.test_speed=float(str(self.lineEdit.text()))*100
-                    self.test_speed=int(float(self.test_speed))
+                    self.max_speed=1
+                    self.per_test_speed=0
+                    self.test_speed=float(str(self.lineEdit.text()))
+                    #self.test_speed=int(float(self.test_speed))
                     
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT  MOTOR_MAX_SPEED FROM SETTING_MST LIMIT 1") 
+                    for x in results:            
+                        self.max_speed=int(x[0])                        
+                    connection.close()
+                    
+                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)
                     
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
                     connection = sqlite3.connect("tyr.db")
@@ -249,15 +260,15 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             
                             #Set Down Speed . Check For IO Error.
                             try:
-                                            print("\n\n\n\n##### SET : test_speed ######")
+                                            print("\n\n\n\n##### SET : rev test_speed ######")
                                             #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                                            self.instrument.write_register(10,float(self.test_speed),0,6)
+                                            self.instrument.write_register(11,int(self.per_test_speed),0,6)                                            
                                             #self.instrument.write_register(6,0,0)
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                                             #time.sleep(5)
                             except IOError as e:
                                             print("Ignore-Modbus Error- self.test_speed.:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                                             time.sleep(5)
                                         
                             
@@ -316,8 +327,18 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     self.label_2.hide()
                     self.test_method=1 #Tensile
                     self.load_cell_no=1 #Get Load Cell No
-                    self.test_speed=float(str(self.lineEdit.text()))*100
-                    self.test_speed=int(float(self.test_speed))
+                    self.max_speed=1
+                    self.per_test_speed=0
+                    self.test_speed=float(str(self.lineEdit.text()))
+                   
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT  MOTOR_MAX_SPEED FROM SETTING_MST LIMIT 1") 
+                    for x in results:            
+                        self.max_speed=int(x[0])                        
+                    connection.close()
+                    
+                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)*100                    
+                    
                     
                     
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
@@ -363,13 +384,13 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             try:
                                             print("\n\n\n\n##### SET : test_speed ######")
                                             #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                                            self.instrument.write_register(10,float(self.test_speed),0,6)
+                                            self.instrument.write_register(10,int(self.per_test_speed),0,6)
                                             #self.instrument.write_register(6,0,0)
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                                             #time.sleep(5)
                             except IOError as e:
                                             print("Ignore-Modbus Error- self.test_speed.:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.test_speed),self.login_user_role)
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                                             time.sleep(5)
                                         
                             
