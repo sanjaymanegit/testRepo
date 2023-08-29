@@ -2538,8 +2538,8 @@ class PlotCanvas_Auto(FigureCanvas):
                          self.axes.set_xlabel('Strain (%)')
                          self.axes.set_ylabel("Stress (MPa)'")                      
                  
-                 self.axes.set_xlim(0,int(x[0]))
-                 self.axes.set_ylim(0,int(x[1]))  
+                 self.axes.set_xlim(0,float(x[0]))
+                 self.axes.set_ylim(0,float(x[1]))  
         connection.close()
         
         self.per_test_speed=float((float(self.test_speed)/float(self.max_speed))*100)
