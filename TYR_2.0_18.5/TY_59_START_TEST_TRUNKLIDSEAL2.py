@@ -2266,7 +2266,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=int(x[0])             
              self.max_load=int(x[2])
              #self.max_load=100
-             self.max_length=float(float(x[3]))
+             self.max_length=str(x[3]).zfill(5)
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
              #self.max_length=float(float(x[0])-float(x[3]))
@@ -2436,9 +2436,9 @@ class PlotCanvas_Auto(FigureCanvas):
                  print("Compression")                 
                  if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     else:
-                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     
                     print("self.command_str:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')

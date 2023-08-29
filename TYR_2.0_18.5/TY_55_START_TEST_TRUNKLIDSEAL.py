@@ -2257,6 +2257,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
              self.max_length=float(float(x[0])-float(x[3]))
+             self.max_length=str(self.max_length).zfill(5)
              print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
@@ -2423,9 +2424,9 @@ class PlotCanvas_Auto(FigureCanvas):
                  print("Compression")                 
                  if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     else:
-                          self.command_str="*S1C%04d"%self.max_load+" %04d"%self.max_length+"\r"
+                          self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     
                     print("self.command_str:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')
