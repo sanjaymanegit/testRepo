@@ -89,7 +89,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignCenter)
         self.label_10.setObjectName("label_10")
         self.label_47 = QtWidgets.QLabel(self.frame)
-        self.label_47.setGeometry(QtCore.QRect(1165, 10, 141, 41))
+        self.label_47.setGeometry(QtCore.QRect(1165, 3, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -126,13 +126,13 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_6_1.setFont(font)
         self.pushButton_6_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.pushButton_6_1.setStyleSheet("background-color: rgb(255, 85, 127);\n"
+        self.pushButton_6_1.setStyleSheet("background-color: rgb(247, 223, 214);\n"
 "border-radius:20px;\n"
 "border-color: rgb(0, 0, 0);\n"
 "border-style:outset;\n"
 "border-width:4px;")
         self.pushButton_6_1.setFlat(False)
-        self.pushButton_6_1.setObjectName("pushButton_6")
+        self.pushButton_6_1.setObjectName("pushButton_6_1")
         
         
         self.frame_3 = QtWidgets.QFrame(self.frame)

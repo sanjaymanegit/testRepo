@@ -1,4 +1,3 @@
-Bus 001 Device 005: ID 0483:5740 STMicroelectronics Virtual COM Port
 Bus 001 Device 004: ID 0424:7800 Standard Microsystems Corp. 
 Bus 001 Device 003: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 002: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
