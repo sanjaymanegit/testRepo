@@ -3,6 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
+from TY_01_TEST_BATCH_GASKET import TY_01_Ui_MainWindow_GASEKET
 from TY_01_TEST_BATCH_QLSS import TY_01_qlss_Ui_MainWindow
 from TY_01_TEST_BATCH_ILSS import TY_01_ilss_Ui_MainWindow
 from TY_01_TEST_BATCH_FLXURL2 import TY_01_fluxurl_Ui_MainWindow
@@ -469,8 +470,11 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "26"):    
             self.save_tear_peak_load_test()
         elif(str(self.test_type_id) == "28"):    
-            self.save_cld_test() 
-            
+            self.save_cld_test()
+        elif(str(self.test_type_id) == "29"):     
+            self.save_test_tensile_gasket_round()
+        elif(str(self.test_type_id) == "30"):  
+            self.save_test_tensile_gasket_square()            
         else:
             print("Invalid Test ID"+str(self.test_type_id))
             
@@ -681,7 +685,36 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.open_new_window_push_on_force()
         
 
-
+    def save_test_tensile_gasket_round(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='TENSILE_GASKET_ROUND'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_tensile_gasket_round()
+        
+   
+    def save_test_tensile_gasket_square(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='TENSILE_GASKET_SQUARE'")            
+        connection.commit();
+        connection.close()    
+        self.open_new_window_tensile_gasket_square()
+        
+    def open_new_window_tensile_gasket_square(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_01_Ui_MainWindow_GASEKET()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window_tensile_gasket_round(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_01_Ui_MainWindow_GASEKET()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def open_new_window_tear_peak_load(self):                
         self.window = QtWidgets.QMainWindow()
