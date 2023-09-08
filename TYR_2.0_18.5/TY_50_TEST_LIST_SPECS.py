@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_05_SPECIMEN_2 import TY_05_Ui_MainWindow
 from TY_05_SPECIMEN_3 import TY_05_SPECI_Ui_MainWindow
 from TY_05_SPECIMEN_4 import TY_05_SPECI_4_ui_MainWindow
+from TY_05_SPECIMEN_5 import TY_05_SPECI_5_ui_MainWindow
 
 
 import sqlite3
@@ -335,6 +336,10 @@ class TY_50_LIST_Ui_MainWindow(object):
              self.open_new_window_4()
         elif(str(self.test_type_id) == "28"):    
              self.open_new_window_4()
+        elif(str(self.test_type_id) == "29"):    
+             self.open_new_window_5()
+        elif(str(self.test_type_id) == "30"):    
+             self.open_new_window_5()
         else:
             self.open_new_window()
             print("Invalid Test ID"+str(self.test_type_id))
@@ -361,6 +366,12 @@ class TY_50_LIST_Ui_MainWindow(object):
     def open_new_window_4(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_05_SPECI_4_ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window_5(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_05_SPECI_5_ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
