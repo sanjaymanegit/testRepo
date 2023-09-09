@@ -1,8 +1,4 @@
-'''
-from AE_REPORTS_TENSILE_03 import AE_03_Ui_MainWindow
-from AE_REPORTS_COMPRESS_02 import AE_REPORT_COMPR_02_Ui_MainWindow
-from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
-'''
+
 from TY_36_REPORTS_COMPRESS_02 import TY_36_REPORT_COMPR_02_Ui_MainWindow
 from TY_38_REPORTS_TEAR_03 import TY_38_REPORT_TEAR_Ui_MainWindow
 from TY_41_REPORTS_WEBBING import TY_41_Ui_MainWindow
@@ -11,6 +7,7 @@ from TY_44_REPORTS_PEEL_STRENGTH import TY_44_Ui_MainWindow
 from TY_52_REPORT_PULL_ON_FORCE import TY_52_Ui_MainWindow
 from TY_54_REPORT_PUSH_ON_FORCE import TY_54_Ui_MainWindow
 from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
+from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
 
 
@@ -31,9 +28,21 @@ import serial,time
 import array  as arr
 import numpy as np
 
+#### PDF creation Libs ########
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
+from reportlab.platypus import *
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Line, Drawing
+import sys
+import os
 
 
-class TY_35_LIST_Ui_MainWindow(object):
+
+class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 769)
@@ -111,6 +120,29 @@ class TY_35_LIST_Ui_MainWindow(object):
 "border-width:4px;")
         self.pushButton_8.setFlat(False)
         self.pushButton_8.setObjectName("pushButton_8")
+        
+        
+        
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(560, 550, 151, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_8_1.setStyleSheet("background-color: rgb(148, 255, 166);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        self.pushButton_8_1.setFlat(False)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        
+        
         self.label_48 = QtWidgets.QLabel(self.frame)
         self.label_48.setGeometry(QtCore.QRect(420, 500, 271, 31))
         font = QtGui.QFont()
@@ -139,7 +171,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.radioButton.setObjectName("radioButton")
         
         self.frame_2 = QtWidgets.QFrame(self.frame)
-        self.frame_2.setGeometry(QtCore.QRect(30, 60, 651, 241))
+        self.frame_2.setGeometry(QtCore.QRect(30, 60, 651, 151))
         self.frame_2.setStyleSheet("background-color: rgb(255, 240, 220);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.Box)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -198,7 +230,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.lineEdit_16.setText("")
         self.lineEdit_16.setObjectName("lineEdit_16")
         self.label_14 = QtWidgets.QLabel(self.frame_2)
-        self.label_14.setGeometry(QtCore.QRect(20, 100, 91, 31))
+        self.label_14.setGeometry(QtCore.QRect(10, 100, 121, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -219,25 +251,31 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
-        self.label_15 = QtWidgets.QLabel(self.frame_2)
-        self.label_15.setGeometry(QtCore.QRect(20, 170, 91, 31))
+        
+        ### This is radio button for Job Id 
+        self.label_15 = QtWidgets.QRadioButton(self.frame)
+        self.label_15.setGeometry(QtCore.QRect(80, 260, 141, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_15.setFont(font)
-        self.label_15.setStyleSheet("")
-        self.label_15.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_15.setStyleSheet("")        
         self.label_15.setObjectName("label_15")
-        self.comboBox_2 = QtWidgets.QComboBox(self.frame_2)
-        self.comboBox_2.setGeometry(QtCore.QRect(150, 160, 221, 41))
+        
+        
+        
+        
+        self.comboBox_2 = QtWidgets.QComboBox(self.frame)
+        self.comboBox_2.setGeometry(QtCore.QRect(200, 260, 181, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         self.comboBox_2.setFont(font)
         self.comboBox_2.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
+        
         self.label_16 = QtWidgets.QLabel(self.frame_2)
         self.label_16.setGeometry(QtCore.QRect(380, 160, 91, 31))
         font = QtGui.QFont()
@@ -569,22 +607,31 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_8.setText(_translate("MainWindow", "Search"))
+        self.pushButton_8_1.setText(_translate("MainWindow", "Summery Report"))
         self.label_48.setText(_translate("MainWindow", " ")) #message ..................
+        
         self.radioButton.setText(_translate("MainWindow", "By Date Range [Tensile Test] "))
         self.pushButton_9.setText(_translate("MainWindow", "From Date :"))
         self.pushButton_11.setText(_translate("MainWindow", "To Date.:"))
-        self.label_14.setText(_translate("MainWindow", "Party Name:"))
+        self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.comboBox.setItemText(0, _translate("MainWindow", "MRF"))
         self.comboBox.setItemText(1, _translate("MainWindow", "NISHIGANDHA Polymer"))
         self.comboBox.setItemText(2, _translate("MainWindow", "New Item"))
-        self.label_15.setText(_translate("MainWindow", "Batch.Id:"))
+        self.label_15.setText(_translate("MainWindow", "Job.Id:"))
+        #self.label_15.setDisabled(True)
+        self.comboBox_2.setDisabled(True)
         self.label_16.setText(_translate("MainWindow", "Job Name:"))
+        self.label_16.setDisabled(True)
+        #self.comboBox_3.setDisabled(True)
+        
         self.radioButton_2.setText(_translate("MainWindow", "By Tested By "))
         self.label_17.setText(_translate("MainWindow", "Tested By:"))
         self.radioButton_3.setText(_translate("MainWindow", "By Batch Id."))
+        
+        
         self.label_19.setText(_translate("MainWindow", "Batch ID:"))
         self.label_20.setText(_translate("MainWindow", "Test ID:"))
-        self.label_21.setText(_translate("MainWindow", "Party Name:"))
+        self.label_21.setText(_translate("MainWindow", "Customer Name:"))
         self.radioButton_4.setText(_translate("MainWindow", "By Test ID / Serial No :"))
         self.label_11.setText(_translate("MainWindow", "Double Click on record to see detail report"))
         self.checkBox.setText(_translate("MainWindow", "Select All"))
@@ -618,6 +665,7 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.radioButton_2.clicked.connect(self.party_radiobutt_on_click)
         self.radioButton_3.clicked.connect(self.batch_radiobutt_on_click)
         self.radioButton_4.clicked.connect(self.jobname_radiobutt_on_click)
+        self.label_15.clicked.connect(self.jobname_radiobutt_on_click)
        
         self.lineEdit_15.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
         self.lineEdit_16.setText(datetime.datetime.now().strftime("%Y-%m-%d"))
@@ -627,10 +675,12 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.calendarWidget.clicked.connect(self.calendar1_on_click)
         self.calendarWidget_2.clicked.connect(self.calendar2_on_click)
         
-        self.comboBox.currentTextChanged.connect(self.load_batchids_1)
-        self.comboBox_2.currentTextChanged.connect(self.load_jobname_1)
+        #self.comboBox.currentTextChanged.connect(self.load_batchids_1)
+        #self.comboBox_2.currentTextChanged.connect(self.load_jobname_1)
         
-        self.pushButton_8.clicked.connect(self.list_tests)
+        self.pushButton_8.clicked.connect(self.list_tests) #open_summery_pdf
+        self.pushButton_8_1.clicked.connect(self.open_summery_pdf)
+        
         
         self.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
         self.pushButton_10.clicked.connect(self.delete_tests)
@@ -699,15 +749,13 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.frame_6.setDisabled(True)
 
     def jobname_radiobutt_on_click(self):
-        self.radioButton.setChecked(False)
-        self.radioButton_2.setChecked(False)
-        self.radioButton_3.setChecked(False)
-        self.radioButton_4.setChecked(True)
-        
         self.frame_2.setDisabled(True)
         self.frame_3.setDisabled(True)
         self.frame_5.setDisabled(True)
-        self.frame_6.setEnabled(True)
+        self.frame_6.setDisabled(True)
+        self.comboBox_2.setEnabled(True)
+        self.load_jobname_1()
+        
         
     def from_on_click1(self):
         self.calendarWidget.show()
@@ -756,18 +804,18 @@ class TY_35_LIST_Ui_MainWindow(object):
             self.i=self.i+1
         connection.close()
         
-    def load_batchids_1(self):
-        self.j=0
-        self.comboBox_2.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' and PARTY_NAME='"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")
-        #print("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'") 
-        
-        for x in results:            
-            self.comboBox_2.addItem("")
-            self.comboBox_2.setItemText(self.j,str(x[0]))           
-            self.j=self.j+1
-        connection.close()
+#     def load_batchids_1(self):
+#         self.j=0
+#         self.comboBox_2.clear()
+#         connection = sqlite3.connect("tyr.db")
+#         results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' and PARTY_NAME='"+str(self.comboBox.currentText())+"' order by TEST_ID DESC")
+#         #print("SELECT DISTINCT BATCH_ID FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"'") 
+#         
+#         for x in results:            
+#             self.comboBox_2.addItem("")
+#             self.comboBox_2.setItemText(self.j,str(x[0]))           
+#             self.j=self.j+1
+#         connection.close()
         
     def load_batchids_2(self):
         self.j=0
@@ -783,14 +831,17 @@ class TY_35_LIST_Ui_MainWindow(object):
         
     def load_jobname_1(self):
         self.k=0
-        self.comboBox_3.clear()
+        self.comboBox_2.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC")         
-        #print("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='Tensile' and PARTY_NAME='"+str(self.comboBox.currentText())+"' AND BATCH_ID = '"+str(self.comboBox_2.currentText())+"'")         
+        print("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")
+        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST WHERE TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")         
+        #results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST order by TEST_ID DESC")        
+        #print("SELECT DISTINCT JOB_NAME FROM TEST_MST order by TEST_ID DESC")
         for x in results:            
-            self.comboBox_3.addItem("")
-            self.comboBox_3.setItemText(self.k,str(x[0]))         
+            self.comboBox_2.addItem("")
+            self.comboBox_2.setItemText(self.k,str(x[0]))         
             self.k=self.k+1
+            print("j_id:"+str(x[0]))
         connection.close()
         
     def list_tests(self):
@@ -821,16 +872,17 @@ class TY_35_LIST_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 200)
        
         
-        self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Party Name','Spec.Counts','Batch ID.','Product Name','Comments'])
+        self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Customer Name','Spec.Counts','Batch ID.','Product Name','Comments'])
         
          
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 print("date Range -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
+                #results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
-                print("by party name -select")
+                print("by Customer name -select")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
@@ -842,9 +894,12 @@ class TY_35_LIST_Ui_MainWindow(object):
                 else:
                     results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")                        
             
+        elif(self.label_15.isChecked()):
+                print("by Job id -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.JOB_NAME = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC ")                        
         else:
                 print("by else part-select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'")                        
       
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -853,7 +908,7 @@ class TY_35_LIST_Ui_MainWindow(object):
                     #print("data-column_number :"+str(column_number))
                     item = QtWidgets.QTableWidgetItem()
                     item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-                    item.setCheckState(QtCore.Qt.Unchecked)
+                    item.setCheckState(QtCore.Qt.Checked)
                     item.setText(str(data))
                     self.tableWidget.setItem(row_number,column_number,item)
                     #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
@@ -1015,13 +1070,154 @@ class TY_35_LIST_Ui_MainWindow(object):
                     connection.close()
        
                 
-
+    def open_summery_pdf(self):
+        if(str(self.new_test_name) == "PULL_ON_FORCE"):               
+                    self.create_pdf_Pull_ON_Force()
+        else:
+                    self.create_pdf_Pull_ON_Force()
+        #self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)                
+        os.system("xpdf ./reports/summery_report.pdf")        
+        #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/summery_report.pdf /media/usb/summery_report_"+str(self.new_test_name)+".pdf")
+                os.system("sudo umount /media/usb")
+        else:
+             print("Please connect usb storage device")
+        
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data.txt")
+        try:
+           f = open('lsusb_data.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+        return product_id
+    
+    def create_pdf_Pull_ON_Force(self):
+        self.remark=""
+        self.login_user_name=""
+        self.unit_typex="Kg/Cm"
+        self.tested_by=""
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        for x in results:
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
+              self.test_id=str(x[2])
+              self.tested_by=str(x[3])
+        connection.close()
+        
+        data2= [ ['Spec. \n No', 'Force at Peak\n ('+str(self.last_load_unit)+')']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.PEAK_LOAD_KG) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        y=300
+        Elements=[]
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (min/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            self.remark=str(x[12]) 
+        connection.close() 
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            #Title2 = Paragraph(str(x[1]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        #
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        f3=Table(summary_data)
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        #self.show_all_specimens()
+        report_gr_img="last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        '''
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
+                                leftMargin=40,
+                                topMargin=30,
+                                bottomMargin=30,)
+        '''
+        doc = SimpleDocTemplate('./reports/summery_report.pdf', pagesize=A4,rightMargin=20,
+                                leftMargin=30,
+                                topMargin=10,
+                                bottomMargin=10)
+        doc.build(Elements)
+        #print("Done")
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_35_LIST_Ui_MainWindow()
+    ui = TY_35_LIST_Ui_MainWindow_GOLD_SEAL()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

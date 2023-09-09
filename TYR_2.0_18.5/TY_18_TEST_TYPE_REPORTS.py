@@ -15,6 +15,7 @@ from TY_27_SP_REPORT_FOUND_BRK_TEST import TY_27_FBST_Ui_MainWindow
 from TY_30_SP_REPORT_PROOF import TY_30_Ui_MainWindow
 from TY_33_SP_REPORT_CYCLICK import TY_33_Ui_MainWindow
 from TY_35_LIST_REPORT_2 import TY_35_LIST_Ui_MainWindow
+from TY_35_LIST_REPORT_2_GOLD_SEAL import TY_35_LIST_Ui_MainWindow_GOLD_SEAL
 
 
 
@@ -427,7 +428,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()
         
-        self.open_new_window_LIST_NEW()
+        self.open_new_window_LIST_GOLD_SEAL()
         
     def save_test_CLD(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -437,7 +438,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()       
         
-        self.open_new_window_LIST_NEW()
+        self.open_new_window_LIST_GOLD_SEAL()
     
     def save_test_CLD2(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -447,7 +448,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()       
         
-        self.open_new_window_LIST_NEW()
+        self.open_new_window_LIST_GOLD_SEAL()
     
     def save_test_pull_on_force(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -457,7 +458,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()       
         
-        self.open_new_window_LIST_NEW()
+        self.open_new_window_LIST_GOLD_SEAL()
     
     def save_test_push_on_force(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -467,7 +468,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()       
         
-        self.open_new_window_LIST_NEW()
+        self.open_new_window_LIST_GOLD_SEAL()
             
     def save_test_peel_strength(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -651,6 +652,12 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()    
         self.open_new_window_GASKET()
+    
+    def open_new_window_LIST_GOLD_SEAL(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_35_LIST_Ui_MainWindow_GOLD_SEAL()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def open_new_window_GASKET(self):                
         self.window = QtWidgets.QMainWindow()
