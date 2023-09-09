@@ -2240,6 +2240,7 @@ class TY_03_Ui_MainWindow_GASKET(object):
         else:
             data2= [ ['Spec. \n No', 'TensileStrength \n (Kg/Cm2)', 'Mod@50% \n (Kg/Cm2)', 'Mod@100% \n (Kg/Cm2)', 'Mod@200% \n (Kg/Cm2)']]
         
+        '''
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT MOD_AT_ANY FROM REPORT_MST WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)")                        
         for rows in results:
@@ -2252,15 +2253,15 @@ class TY_03_Ui_MainWindow_GASKET(object):
             else:    
                 data2[0].append("Mod@"+str(rows[0])+"% \n (Kgf/Cm2)")
         connection.close()
-                   
+        '''           
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_300),printf(\"%.2f\", A.MODULUS_100) ,printf(\"%.2f\", A.MODULUS_200),printf(\"%.2f\", A.MOD_AT_ANY) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
+        results=connection.execute("select ((A.REC_ID-B.MIN_REC_ID)+1) as SPECIMEN_NUM,printf(\"%.2f\", A.TENSILE_STRENGTH),printf(\"%.2f\", A.MODULUS_300),printf(\"%.2f\", A.MODULUS_100) ,printf(\"%.2f\", A.MODULUS_200) FROM REPORT_MST_III A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_III WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)) B WHERE A.REPORT_ID =B.REPORT_ID") 
         for x in results:
             data2.append(x)
         connection.close()  
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200),printf(\"%.2f\", MOD_AT_ANY) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("select TYPE_STR,printf(\"%.2f\", TENSILE_STRENGTH),printf(\"%.2f\", MODULUS_300),printf(\"%.2f\", MODULUS_100) ,printf(\"%.2f\", MODULUS_200) from REPORT_III_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
         for x in results:
             data2.append(x)
         connection.close()           
