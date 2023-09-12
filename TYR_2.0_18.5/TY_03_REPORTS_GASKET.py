@@ -2124,22 +2124,22 @@ class TY_03_Ui_MainWindow_GASKET(object):
         if (self.shape=="Rectangle"):
             
             if(self.unit_typex == "Kg/Cm"):            
-                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+                    data= [['Spec. \n No.', 'Thickness \n (cm)', 'Width \n (cm)', 'CS.Area \n (cm2)','Break Load \n (kgf)' ,'E@Peak \n (cm)','% Trvl.Dist \n']]
             elif(self.unit_typex == "Lb/Inch"):
-                    data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n']]
+                    data= [['Spec. \n No.', 'Thickness \n (Inch)', 'Width \n (Inch)', 'CS.Area \n (Inch2)','Break Load \n (Lb)' ,'Trvl.Dist \n (Inch)','% Trvl.Dist \n']]
             elif(self.unit_typex == "Newton/Mm"):
-                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','E@Peak \n %','E@Break \n (mm)','E@Break \n %']]
+                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','Trvl.Dist \n %']]
             else:        
-                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                    data= [['Spec. \n No.', 'Thickness \n (mm)', 'Width \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n']]
           
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.PREC_E_AT_BREAK)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.THICKNESS),printf(\"%.2f\", A.WIDTH),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK)  FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
             for x in results:
                 data.append(x)
             connection.close()  
         
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", THICKNESS),printf(\"%.2f\", WIDTH),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             for x in results:
                 data.append(x)
             connection.close()            
@@ -2147,35 +2147,35 @@ class TY_03_Ui_MainWindow_GASKET(object):
                     
         elif (self.shape=="Cylindrical"):
             if(self.unit_typex == "Kg/Cm"):    
-                data= [['Spe. \n No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+                data= [['Spe. \n No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Break Load \n (kgf)' ,'Trvl.Dist \n (cm)','% Trvl.Dist \n']]
             elif(self.unit_typex == "Lb/Inch"):                
-                data= [['Spe. \n No.', 'Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n']]
+                data= [['Spe. \n No.', 'Diameter \n (Inch)', 'CS.Area \n (Inch2)','Break Load \n (Lb)' ,'Trvl.Dist \n (Inch)','% Trvl.Dist \n']]
             elif(self.unit_typex == "Newton/Mm"):
-                data= [['Spe. \n No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                data= [['Spe. \n No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n']]
             else:    
-                data= [['Spe. \n No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                data= [['Spe. \n No.', 'Diameter \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n']]
 
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.DIAMETER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.PREC_E_AT_BREAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
+            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.2f\", A.DIAMETER),printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
             for x in results:
                 data.append(x)
             connection.close()  
         
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", DIAMETER),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK),printf(\"%.2f\", E_BREAK_LOAD),printf(\"%.2f\", PREC_E_AT_BREAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
+            results=connection.execute("SELECT TYPE_STR,printf(\"%.2f\", DIAMETER),printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD),printf(\"%.2f\", E_PAEK_LOAD),printf(\"%.2f\", PREC_E_AT_PEAK) FROM REPORT_II_AGGR WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR)") 
             for x in results:
                 data.append(x)
             connection.close()            
             
         elif (self.shape=="Pipe"):            
             if(self.unit_typex == "Kg/Cm"):                
-                data= [['Spec. \n No.', 'Inn.Dia \n (cm)', 'Out. Dia \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+                data= [['Spec. \n No.', 'Inn.Dia \n (cm)', 'Out. Dia \n (cm)', 'CS.Area \n (cm2)','Break Load \n (kgf)' ,'Trvl.Dist \n (cm)','% Trvl.Dist \n','E@Break \n (cm)','%E@Break \n']]
             elif(self.unit_typex == "Lb/Inch"):                 
-                data= [['Spec. \n No.', 'Inn.Dia \n (Inch)', 'Out. Dia \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n']]
+                data= [['Spec. \n No.', 'Inn.Dia \n (Inch)', 'Out. Dia \n (Inch)', 'CS.Area \n (Inch2)','Break Load \n (Lb)' ,'Trvl.Dist \n (Inch)','% Trvl.Dist \n','E@Break \n (Inch)','%E@Break \n']]
             elif(self.unit_typex == "Newton/Mm"):
-                data= [['Spec. \n No.', 'Inn.Dia \n (mm)', 'Out. Dia \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                data= [['Spec. \n No.', 'Inn.Dia \n (mm)', 'Out. Dia \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n','E@Break \n (mm)','%E@Break \n']]
             else:                
-                data= [['Spec. \n No.', 'Inn.Dia \n (mm)', 'Out. Dia \n (mm)', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                data= [['Spec. \n No.', 'Inn.Dia \n (mm)', 'Out. Dia \n (mm)', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n','E@Break \n (mm)','%E@Break \n']]
             
             
             connection = sqlite3.connect("tyr.db")
@@ -2192,13 +2192,13 @@ class TY_03_Ui_MainWindow_GASKET(object):
             
         elif (self.shape=="DirectValue"):
             if(self.unit_typex == "Kg/Cm"):    
-                data= [['Spec.\n No.', 'CS.Area \n (cm)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n']]
+                data= [['Spec.\n No.', 'CS.Area \n (cm)','Break Load \n (kgf)' ,'Trvl.Dist \n (cm)','% Trvl.Dist \n','E@Break \n (cm)','%E@Break \n']]
             elif(self.unit_typex == "Lb/Inch"):
-                data= [['Spec.\n No.', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n']]
+                data= [['Spec.\n No.', 'CS.Area \n (Inch2)','Break Load \n (Lb)' ,'Trvl.Dist \n (Inch)','% Trvl.Dist \n','E@Break \n (Inch)','%E@Break \n']]
             elif(self.unit_typex == "Newton/Mm"):
-                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']]
+                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n','E@Break \n (mm)','%E@Break \n']]
             else:                
-                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Force at Peak \n (N)' ,'E@Peak \n (mm)','% E@Peak \n','E@Break \n (mm)','%E@Break \n']] 
+                data= [['Spec.\n No.', 'CS.Area \n (mm2)','Break Load \n (N)' ,'Trvl.Dist \n (mm)','% Trvl.Dist \n','E@Break \n (mm)','%E@Break \n']] 
                 
             connection = sqlite3.connect("tyr.db")
             results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,printf(\"%.4f\", A.CS_AREA),printf(\"%.2f\", A.PEAK_LOAD),printf(\"%.2f\", A.E_PAEK_LOAD),printf(\"%.2f\", A.PREC_E_AT_PEAK),printf(\"%.2f\", A.E_BREAK_LOAD),printf(\"%.2f\", A.PREC_E_AT_BREAK) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
@@ -2213,7 +2213,7 @@ class TY_03_Ui_MainWindow_GASKET(object):
             connection.close()            
                        
         else:
-           data= [['Spec. \n No.', 'Thickness (mm)', 'Width (mm)', 'CS.Area (mm2)','Peak Load (kgf)' ,'% E@Peak \n','Break Load (Kg)','E@Break (mm)','%E@Break \n']]
+           data= [['Spec. \n No.', 'Thickness (mm)', 'Width (mm)', 'CS.Area (mm2)','Peak Load (kgf)' ,'% Trvl.Dist \n','Break Load (Kg)','E@Break (mm)','%E@Break \n']]
           
            connection = sqlite3.connect("tyr.db")
            results=connection.execute("SELECT ((A.REC_ID)-B.MIN_REC_ID)+1 AS SPECIMEN_NO,A.THICKNESS,A.WIDTH,printf(\"%.4f\", A.CS_AREA),A.PEAK_LOAD,A.E_PAEK_LOAD,round(A.PREC_E_AT_PEAK,2),round(A.E_BREAK_LOAD,2),round(A.PREC_E_AT_BREAK,2) FROM REPORT_MST_II A, (SELECT MIN(REC_ID) AS MIN_REC_ID, REPORT_ID FROM REPORT_MST_II WHERE REPORT_ID IN (SELECT NEW_REPORT_ID FROM GLOBAL_VAR) ) B WHERE A.REPORT_ID=B.REPORT_ID") 
@@ -2375,7 +2375,7 @@ class TY_03_Ui_MainWindow_GASKET(object):
                   
         elif (self.shape=="Cylindrical"):
             if(self.unit_typex == "Kg/Cm"):    
-                data= [['Spe. \n No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'E@Peak \n (cm)','% E@Peak \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kg/Cm2)']]
+                data= [['Spe. \n No.', 'Diameter \n (cm)', 'CS.Area \n (cm2)','Force at Peak \n (kgf)' ,'Trvl.Dist \n (cm)','% Trvl.Dist \n','E@Break \n (cm)','%E@Break \n',' Yeild Strength \n (Kg/Cm2)']]
             elif(self.unit_typex == "Lb/Inch"):                
                 data= [['Spe. \n No.', 'Diameter \n (Inch)', 'CS.Area \n (Inch2)','Force at Peak \n (Lb)' ,'E@Peak \n (Inch)','% E@Peak \n','E@Break \n (Inch)','%E@Break \n',' Yeild Strength \n (Lb/Inch2)']]
             elif(self.unit_typex == "Newton/Mm"):
