@@ -28,6 +28,15 @@ import serial,time
 import array  as arr
 import numpy as np
 
+### This lib is for Graph only 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
+import re
+
+
 #### PDF creation Libs ########
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
 from reportlab.platypus import *
@@ -882,7 +891,7 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
-                print("by Customer name -select")
+                print("Search by Tested By.....")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
@@ -1071,10 +1080,21 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
        
                 
     def open_summery_pdf(self):
-        if(str(self.new_test_name) == "PULL_ON_FORCE"):               
+        connection = sqlite3.connect("tyr.db")          
+        with connection:        
+                      cursor = connection.cursor()
+                      cursor.execute("DELETE FROM TEST_IDS")                             
+        connection.commit();
+        connection.close()
+        
+        self.del_uncheked()
+        if(str(self.new_test_name) == "PULL_ON_FORCE"):
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_Pull_ON_Force()
         else:
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_Pull_ON_Force()
+                    
         #self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)                
         os.system("xpdf ./reports/summery_report.pdf")        
         #os.system("cp ./reports/Reportxxx.pdf /media/pi/003B-E2B4")
@@ -1187,11 +1207,11 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
         
         #self.show_all_specimens()
-        report_gr_img="last_graph.png"        
+        report_gr_img="summary_last_graph.png"        
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
@@ -1207,6 +1227,144 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                                 bottomMargin=10)
         doc.build(Elements)
         #print("Done")
+
+
+
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=8, height=5, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        #fig.savefig('ssdsd.png')
+        self.axes = fig.add_subplot(111)        
+        FigureCanvas.__init__(self, fig)
+        #FigureCanvas.setStyleSheet("background-color:red;")
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)       
+        
+        self.plot()
+        self.last_load_unit=""
+        self.last_disp_unit=""
+        self.graph_type=""
+        self.cs_area_mm="1"       
+        self.guage_length_mm="1"
+        
+        
+    def plot(self):
+        ax = self.figure.add_subplot(111)
+       
+        ax.set_facecolor('#CCFFFF')   
+        ax.minorticks_on()
+        
+        ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+        
+        self.s=[]
+        self.t=[]
+        self.graph_ids=[]    
+        self.x_num=[0.0]
+        self.y_num=[0.0]
+        self.test_type="Tear"
+        self.color=['b','r','g','y','k','c','m','b']
+        #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        for x in results:
+              self.graph_ids.append(x[0])            
+             
+        connection.close()
+        
+#         ### Univarsal change for  Graphs #####################
+#         connection = sqlite3.connect("tyr.db")
+#         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
+#         for x in results:
+#              ax.set_xlim(0,int(x[0]))
+#              ax.set_ylim(0,int(x[1]))          
+#         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        for x in results:
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
+              ax.set_xlim(0,int(x[2]))
+              ax.set_ylim(0,int(x[3]))  
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
+        for x in results:
+              self.graph_type=str(x[0])  
+        connection.close()
+        
+        
+        
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+            
+           
+            connection = sqlite3.connect("tyr.db")
+            if(self.graph_type=="Load Vs Travel"):
+                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="gm" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    else:    
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            
+            elif(self.graph_type=="Load Vs Time"):
+                    #print("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            else:
+                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            for k in results:        
+                self.x_num.append(k[0])
+                self.y_num.append(k[1])
+            connection.close()
+           
+            if(g < 8 ):
+                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+        print("self.graph_type :"+str(self.graph_type))
+        if(self.graph_type=="Load Vs Travel"):
+                ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        elif(self.graph_type=="Load Vs Time"):
+                ax.set_xlabel('Time (sec)')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        else:
+                ax.set_xlabel('Strain %')
+                ax.set_ylabel('Stress')
+        #self.connect('motion_notify_event', mouse_move)
+        ax.legend()        
+        self.draw()
+        self.figure.savefig('summary_last_graph.png',dpi=100)
+        
+        #ax.connect('motion_notify_event', mouse_move)
+
 
 if __name__ == "__main__":
     import sys
