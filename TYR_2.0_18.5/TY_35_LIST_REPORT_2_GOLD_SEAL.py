@@ -1091,6 +1091,18 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         if(str(self.new_test_name) == "PULL_ON_FORCE"):
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_Pull_ON_Force()
+        elif(str(self.new_test_name) == "PUSH_ON_FORCE"):
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    self.create_pdf_Pull_ON_Force()
+        elif(str(self.new_test_name) == "VWSK_TRUNKLIDSEAL_CLD"):
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    self.create_pdf_CLD()
+        elif(str(self.new_test_name) == "VWSK_TRUNKLIDSEAL_CLD2"):
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    self.create_pdf_CLD()
+        elif(str(self.new_test_name) == "TEAR_PEAK_LOAD"):
+                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    self.create_pdf_TEAR()
         else:
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_Pull_ON_Force()
@@ -1122,6 +1134,333 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         except:
            product_id = "ERROR"
         return product_id
+    
+    def create_pdf_TEAR(self):
+        self.remark=""
+        self.login_user_name=""
+        self.unit_typex="Kg/Cm"
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) LIMIT 1") 
+        for x in results:
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
+              self.test_id=str(x[2])
+              self.tested_by=str(x[3])
+        connection.close()
+        
+        data2= [ ['Spec. \n No',  'Force at Peak\n ('+str(self.last_load_unit)+')']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.PEAK_LOAD_KG) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        
+        y=300
+        Elements=[]
+        
+        
+        
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            #Title2 = Paragraph(str(x[1]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        #
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        #f3=Table(summary_data)
+        #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        #self.show_all_specimens()
+        report_gr_img="summary_last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        '''
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
+                                leftMargin=40,
+                                topMargin=30,
+                                bottomMargin=30,)
+        '''
+        doc = SimpleDocTemplate('./reports/summery_report.pdf', pagesize=A4,rightMargin=20,
+                                leftMargin=30,
+                                topMargin=10,
+                                bottomMargin=10)
+        doc.build(Elements)
+        #print("Done")
+ 
+    def create_pdf_CLD2(self):
+        self.remark=""
+        self.login_user_name=""
+        self.unit_typex="Kg/Cm"
+        self.tested_by=""
+        self.disp_1="8"
+        self.disp_2="10"
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY,DISP_1,DISP_2 from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) LIMIT 1 ") 
+        for x in results:
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
+              self.test_id=str(x[2])
+              self.tested_by=str(x[3])
+              self.disp_1=str(x[4])
+              self.disp_2=str(x[5])
+              
+        connection.close()
+        
+        data2= [ ['Spec. \n No', 'Load @ '+str(self.disp_1)+' mm Guage\n ('+str(self.last_load_unit)+')', 'Load @ '+str(self.disp_2)+' mm Guage\n ('+str(self.last_load_unit)+')']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.LOAD_POINT_1),printf(\"%.2f\", A.LOAD_POINT_2) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD_POINT_1)),printf(\"%.2f\", avg(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD_POINT_1)),printf(\"%.2f\", max(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD_POINT_1)),printf(\"%.2f\", min(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        y=300
+        Elements=[]
+        
+        
+        
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            #Title2 = Paragraph(str(x[1]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        #
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        #f3=Table(summary_data)
+        #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        #self.show_all_specimens()
+        report_gr_img="summary_last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        '''
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
+                                leftMargin=40,
+                                topMargin=30,
+                                bottomMargin=30,)
+        '''
+        doc = SimpleDocTemplate('./reports/summery_report.pdf', pagesize=A4,rightMargin=20,
+                                leftMargin=30,
+                                topMargin=10,
+                                bottomMargin=10)
+        doc.build(Elements)
+        #print("Done")
+    
+    def create_pdf_CLD(self):
+        self.remark=""
+        self.login_user_name=""
+        self.unit_typex="Kg/Cm"
+        self.tested_by=""
+        self.disp_1="8"
+        self.disp_2="10"
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY,DISP_1,DISP_2 from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) LIMIT 1 ") 
+        for x in results:
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
+              self.test_id=str(x[2])
+              self.tested_by=str(x[3])
+              self.disp_1=str(x[4])
+              self.disp_2=str(x[5])
+        connection.close()
+        
+        #data2= [ ['Spec. \n No', 'Load @ DISP 1 \n ('+str(self.last_load_unit)+')', 'Load @ DISP 2 \n ('+str(self.last_load_unit)+')']]
+        data2= [ ['Spec. \n No', 'Load @ '+str(self.disp_1)+' mm\n ('+str(self.last_load_unit)+')', 'Load @ '+str(self.disp_2)+' mm\n ('+str(self.last_load_unit)+')']]
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.LOAD_POINT_1),printf(\"%.2f\", A.LOAD_POINT_2) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD_POINT_1)),printf(\"%.2f\", avg(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD_POINT_1)),printf(\"%.2f\", max(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD_POINT_1)),printf(\"%.2f\", min(A.LOAD_POINT_2)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
+        
+        y=300
+        Elements=[]
+        
+        '''
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM TEST_IDS)")
+        for x in results:
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (min/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            self.remark=str(x[12]) 
+        connection.close() 
+        '''
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            #Title2 = Paragraph(str(x[1]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+       
+        
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        #
+        #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
+        #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+         
+        #f3=Table(summary_data)
+        #f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+        #self.show_all_specimens()
+        report_gr_img="summary_last_graph.png"        
+        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+        
+        
+        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        #Elements.append(f1,Spacer(1,12))        
+        #Elements.append(f2,Spacer(1,12))
+        '''
+        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
+                                leftMargin=40,
+                                topMargin=30,
+                                bottomMargin=30,)
+        '''
+        doc = SimpleDocTemplate('./reports/summery_report.pdf', pagesize=A4,rightMargin=20,
+                                leftMargin=30,
+                                topMargin=10,
+                                bottomMargin=10)
+        doc.build(Elements)
+        #print("Done")
     
     def create_pdf_Pull_ON_Force(self):
         self.remark=""
@@ -1269,7 +1608,7 @@ class PlotCanvas(FigureCanvas):
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) order by GRAPH_ID") 
         for x in results:
               self.graph_ids.append(x[0])            
              
@@ -1284,7 +1623,7 @@ class PlotCanvas(FigureCanvas):
 #         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_IDS) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
@@ -1347,7 +1686,9 @@ class PlotCanvas(FigureCanvas):
             connection.close()
            
             if(g < 8 ):
-                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                  ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+            else:
+                  ax.plot(self.x_num,self.y_num, self.color[0],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')

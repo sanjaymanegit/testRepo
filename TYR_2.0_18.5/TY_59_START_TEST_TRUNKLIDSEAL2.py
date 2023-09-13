@@ -1190,7 +1190,7 @@ class TY_59_Ui_MainWindow(object):
              self.msg="Guage Length 2 should be less than Guage Length 1"
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
-        elif(int(self.lineEdit_12.text()) == 0):
+        elif(float(self.lineEdit_12.text()) == 0):
              self.msg="Guage. Length should not zero"
         elif(float(self.lineEdit_12.text()) < float(self.lineEdit_11.text()) ):
              self.msg="Guage. Length should Should not less than Guage Length 2."             
