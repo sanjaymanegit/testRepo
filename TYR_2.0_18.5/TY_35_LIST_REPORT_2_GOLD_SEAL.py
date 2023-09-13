@@ -969,6 +969,8 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                             self.open_report_push_on_force()
             elif(str(self.new_test_name) == "VWSK_TRUNKLIDSEAL_CLD"):               
                             self.open_report_CLD()
+            elif(str(self.new_test_name) == "TRUNKLIDSEAL_CLD2"):               
+                            self.open_report_CLD2()
             elif(str(self.new_test_name) == "TEAR_PEAK_LOAD"):               
                             self.open_report_tear_peak_load()
             else:
@@ -981,6 +983,12 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    def open_report_CLD2(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_60_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def open_report_CLD(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_56_Ui_MainWindow()
@@ -1097,9 +1105,9 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         elif(str(self.new_test_name) == "VWSK_TRUNKLIDSEAL_CLD"):
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_CLD()
-        elif(str(self.new_test_name) == "VWSK_TRUNKLIDSEAL_CLD2"):
+        elif(str(self.new_test_name) == "TRUNKLIDSEAL_CLD2"):
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
-                    self.create_pdf_CLD()
+                    self.create_pdf_CLD2()
         elif(str(self.new_test_name) == "TEAR_PEAK_LOAD"):
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_TEAR()
@@ -1331,7 +1339,7 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
@@ -1445,7 +1453,7 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
         
         
-        Elements=[Title,Title2,Spacer(1,12),pdf_img,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Title,Title2,Spacer(1,12),Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))

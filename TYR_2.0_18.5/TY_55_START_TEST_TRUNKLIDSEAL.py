@@ -2496,7 +2496,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 #print("load(Y)... :"+str(self.buff[1]))
                 #print("Load Cell No... :"+str(self.buff[7]))
                 #print("Encoder No.. :"+str(self.buff[6]))
-                
+                self.chck_for_last_rec=1
                 if(str(self.buff[6])=="2"):
                     self.load_cell_hi=1
                     self.load_cell_lo=0

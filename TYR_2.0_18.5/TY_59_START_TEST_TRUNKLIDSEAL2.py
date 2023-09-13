@@ -1238,7 +1238,7 @@ class TY_59_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"',NEW_TEST_MAX_LOAD='500',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DISP_1,DISP_2) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','VWSK_TRUNKLIDSEAL_CLD','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','99999','"+str(self.lineEdit_11.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,DISP_1,DISP_2) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','TRUNKLIDSEAL_CLD2','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','99999','"+str(self.lineEdit_11.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2508,7 +2508,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 #print("load(Y)... :"+str(self.buff[1]))
                 #print("Load Cell No... :"+str(self.buff[7]))
                 #print("Encoder No.. :"+str(self.buff[6]))
-                
+                self.chck_for_last_rec=1
                 if(str(self.buff[6])=="2"):
                     self.load_cell_hi=1
                     self.load_cell_lo=0
@@ -2638,17 +2638,31 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.p=abs(float(self.buff[5]))
                         #print("self.test_typexx: "+str(self.test_type))
                         if(self.test_type=="Compression"):
-                            if(int(self.test_guage_mm) > int(self.p)):
-                                    self.p=int(self.test_guage_mm)-self.p
+                            self.p_display=self.p                    
+                            if( int(self.test_guage_mm) > int(self.p)):
+                                    self.p=int(self.test_guage_mm)-self.p                    
                             else:
                                     self.p=int(self.p)-self.test_guage_mm
+                            
+                            #self.p=self.p
+                           
                             #print("self.p :"+str(self.p))
                         elif(self.test_type=="Flexural"):
                             #self.p=self.p
                             self.p=int(self.test_guage_mm)-self.p
                         else:
                             self.p=self.p
-      
+                            #self.p=int(self.test_guage_mm)-self.p
+                            #self.p=self.p
+                        
+        #                if(self.unit_type == "N/mm"):    
+        #                        self.q=float(self.q)*9.81
+        #                elif(self.unit_type == "Kgf/cm"):
+        #                        self.p=float(self.p)/10
+        #                else:
+        #                        self.p=float(self.p)
+        #                        self.q=float(self.q)
+
 
                         self.p_cm=float(self.p)/10
                         self.arr_p_cm.append(float(self.p_cm))
@@ -2675,12 +2689,15 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.arr_p.append(float(self.p))
                         self.arr_q.append(float(self.q))
                         
-                        self.t=self.elapsed_time.total_seconds()
+                        self.t=float(self.elapsed_time.total_seconds())
                         self.t_timestamp=str(self.end_time)
                         self.arr_t_timestamp.append(self.t_timestamp)
                         self.arr_t.append(float(self.t))
                         
-                        print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                        print(" Last Record Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                        #print(" Array P:"+str(self.arr_p))
+                        #print(" Array Q:"+str(self.arr_q))
+                        
                 self.save_data_flg="Yes"
                 self.on_ani_stop()
             
