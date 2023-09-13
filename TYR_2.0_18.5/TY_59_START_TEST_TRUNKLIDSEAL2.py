@@ -2231,6 +2231,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.chck_for_last_rec=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2609,7 +2610,77 @@ class PlotCanvas_Auto(FigureCanvas):
                 #time.sleep(1)
                 self.save_data_flg="No"
             else:                
-               
+                ### This is change to process last repcord
+                if(self.chck_for_last_rec==1):
+                        self.chck_for_last_rec=0
+                        if(str(self.buff[6])=="2"):
+                            self.load_cell_hi=1
+                            self.load_cell_lo=0
+                        else:
+                            self.load_cell_hi=0
+                            self.load_cell_lo=1
+                            
+                        if(str(self.buff[7])=="2"):
+                            self.extiometer=1
+                            self.encoder=0
+                        else:
+                            self.extiometer=0
+                            self.encoder=1
+                        
+                        if(self.load_cell_hi==1):              
+                            self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                        else:
+                            self.q=abs(float(self.buff[0]))
+                        
+                        if(self.encoder==1):
+                            self.p=abs(float(self.buff[4])) #
+                        else:
+                            self.p=abs(float(self.buff[5]))
+                        #print("self.test_typexx: "+str(self.test_type))
+                        if(self.test_type=="Compression"):
+                            if(int(self.test_guage_mm) > int(self.p)):
+                                    self.p=int(self.test_guage_mm)-self.p
+                            else:
+                                    self.p=int(self.p)-self.test_guage_mm
+                            #print("self.p :"+str(self.p))
+                        elif(self.test_type=="Flexural"):
+                            #self.p=self.p
+                            self.p=int(self.test_guage_mm)-self.p
+                        else:
+                            self.p=self.p
+      
+
+                        self.p_cm=float(self.p)/10
+                        self.arr_p_cm.append(float(self.p_cm))
+                        
+                        self.p_inch=float(self.p)*0.0393701
+                        self.arr_p_inch.append(float(self.p_inch))
+                        
+                        self.q_n=float(self.q)*9.81
+                        self.arr_q_n.append(float(self.q_n))
+                        
+                        self.q_lb=float(self.q)*2.20462
+                        self.arr_q_lb.append(float(self.q_lb))
+                        
+                        self.q_kn=float(self.q_n)/1000
+                        self.arr_q_kn.append(float(self.q_kn))
+                        
+                        self.kg_cm2=float(self.q)/float(self.cs_area_cm)
+                        self.q_mpa=float(self.q)*1000
+                        self.arr_q_mpa.append(float(self.q_mpa))
+                        
+                        
+                        self.arr_speed.append(float(self.speed))
+                        
+                        self.arr_p.append(float(self.p))
+                        self.arr_q.append(float(self.q))
+                        
+                        self.t=self.elapsed_time.total_seconds()
+                        self.t_timestamp=str(self.end_time)
+                        self.arr_t_timestamp.append(self.t_timestamp)
+                        self.arr_t.append(float(self.t))
+                        
+                        print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 self.save_data_flg="Yes"
                 self.on_ani_stop()
             
