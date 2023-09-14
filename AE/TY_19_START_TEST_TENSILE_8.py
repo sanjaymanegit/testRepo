@@ -758,7 +758,8 @@ class TY_19_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.start_test_tensile_8)
         self.comboBox_2.currentTextChanged.connect(self.onchage_combo)
     
-    def onchage_combo(self):                      
+    def onchage_combo(self):
+        print("Inside combo2 chnage")
         if(self.comboBox_2.currentText() == "Mechanical Testing Report - Raw Material"):
                 self.label_31_1.setText("Heat Number :")
                 self.label_31_3.setText("Supplier :")        
