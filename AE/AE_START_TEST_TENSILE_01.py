@@ -1852,14 +1852,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                        self.lineEdit_12.setText("error")
                        self.cs_area="0.0"
         
-        '''
-        if( str(self.comboBox_3.currentText()) =="Cm"):         
-                self.cs_area=self.cs_area*0.1*0.1       
-        elif( str(self.comboBox_3.currentText()) =="Inch"):
-                self.cs_area=self.cs_area*0.0393701
-        else:                
-                self.cs_area=float(self.lineEdit_12.text())
-        '''
+       
         if (len(self.sc_new.arr_p) > 1):            
             #### Get Guage length
             connection = sqlite3.connect("tyr.db")
@@ -1878,61 +1871,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                    
             connection.commit();
             connection.close()
-            '''
-            if(str(self.comboBox_2.currentText()) =="Lb"):                   
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_lb[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="N"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_n[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="KN"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_kn[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="MPa"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;  
-            else:
-            '''
+            
             for g in range(len(self.sc_new.arr_p)):
                          if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
                                 self.load100_guage=float(self.sc_new.arr_q[g])
@@ -2206,6 +2145,10 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         elif(self.comboBox_2.currentText() == "N" and self.comboBox_3.currentText()=="Mm"):
              self.tableWidget.setHorizontalHeaderLabels(['CS Area \n ('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak \n (N) ',' Disp. at Peak \n ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength \n (N/Mm2)','Modulus @100 % \n (N/Mm2) ','Modulus @200 % \n (N/Mm2)','Modulus @300% \n (N/Mm2)','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','E@Break ('+str(self.comboBox_3.currentText())+')','% E@Break','Cycle Id'])        
              results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_N),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", STG_TENSILE_STRENGTH_N_MM) ,printf(\"%.2f\", MODULUS_100_N_MM),printf(\"%.2f\", MODULUS_200_N_MM),printf(\"%.2f\", MODULUS_300_N_MM),SHAPE,printf(\"%.2f\", GUAGE100),printf(\"%.2f\", E_AT_BREAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_BREAK),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        
+        elif(self.comboBox_2.currentText() == "KN" and self.comboBox_3.currentText()=="Mm"):
+             self.tableWidget.setHorizontalHeaderLabels(['CS Area \n ('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak \n (KN) ',' Disp. at Peak \n ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength \n (N/Mm2)','Modulus @100 % \n (N/Mm2) ','Modulus @200 % \n (N/Mm2)','Modulus @300% \n (N/Mm2)','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','E@Break ('+str(self.comboBox_3.currentText())+')','% E@Break','Cycle Id'])        
+             results=connection.execute("SELECT printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_N*0.001),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", STG_TENSILE_STRENGTH_N_MM) ,printf(\"%.2f\", MODULUS_100_N_MM),printf(\"%.2f\", MODULUS_200_N_MM),printf(\"%.2f\", MODULUS_300_N_MM),SHAPE,printf(\"%.2f\", GUAGE100),printf(\"%.2f\", E_AT_BREAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_BREAK),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
       
         elif(self.comboBox_2.currentText() == "MPa" and self.comboBox_3.currentText()=="Mm"):
              self.tableWidget.setHorizontalHeaderLabels(['CS Area \n ('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak \n (N) ',' Disp. at Peak \n ('+str(self.comboBox_3.currentText())+')','% Displacement','Tensile Strength \n (MPa)','Modulus @100 % \n (MPa) ','Modulus @200 % \n (MPa)','Modulus @300% \n (MPa)','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','E@Break ('+str(self.comboBox_3.currentText())+')','% E@Break','Cycle Id'])        
@@ -2325,6 +2268,31 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 for x in results:
                         data.append(x)
                 connection.close()
+        elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):                
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.4f\", CS_AREA),printf(\"%.2f\", PEAK_LOAD_N*0.001),printf(\"%.2f\", E_AT_PEAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_PEAK),printf(\"%.2f\", E_AT_BREAK_LOAD_MM),printf(\"%.2f\", PRC_E_AT_BREAK)  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                for x in results:
+                        data.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")            
+                results=connection.execute("SELECT 'AVG',printf(\"%.4f\", avg(CS_AREA)),printf(\"%.2f\", avg(PEAK_LOAD_N*0.001)),printf(\"%.2f\", avg(E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", avg(PRC_E_AT_PEAK)),printf(\"%.2f\", avg(E_AT_BREAK_LOAD_MM)),printf(\"%.2f\", avg(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+                for x in results:
+                        data.append(x)
+                connection.close()
+                    
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.4f\", max(CS_AREA)),printf(\"%.2f\", max(PEAK_LOAD_N*0.001)),printf(\"%.2f\", max(E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", max(PRC_E_AT_PEAK)),printf(\"%.2f\", max(E_AT_BREAK_LOAD_MM)),printf(\"%.2f\", max(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+                for x in results:
+                        data.append(x)
+                connection.close()
+                    
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.4f\", min(CS_AREA)),printf(\"%.2f\", min(PEAK_LOAD_N*0.001)),printf(\"%.2f\", min(E_AT_PEAK_LOAD_MM)),printf(\"%.2f\", min(PRC_E_AT_PEAK)),printf(\"%.2f\", min(E_AT_BREAK_LOAD_MM)),printf(\"%.2f\", min(PRC_E_AT_BREAK))  FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1")
+                for x in results:
+                        data.append(x)
+                connection.close()
         elif(self.last_load_unit=="MPa" and self.last_disp_unit=="Mm"):                
                 
                 connection = sqlite3.connect("tyr.db")
@@ -2405,6 +2373,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                data2= [['Spec. \n No', 'TensileStrength \n (Kg/Cm2)', 'Mod@100% \n (Kg/Cm2)', 'Mod@200% \n (Kg/Cm2)', 'Mod@300% \n (Kg/Cm2)']]
         elif(self.last_disp_unit=="Mm" and self.last_load_unit=="MPa"):
                data2= [['Spec. \n No', 'TensileStrength \n (MPa)', 'Mod@100% \n (MPa)', 'Mod@200% \n (MPa)', 'Mod@300% \n (MPa)']]
+        elif(self.last_disp_unit=="Mm" and self.last_load_unit=="KN"):
+               data2= [['Spec. \n No', 'TensileStrength \n (N/Mm2)', 'Mod@100% \n (N/Mm2)', 'Mod@200% \n (N/Mm2)', 'Mod@300% \n (N/Mm2)']]        
         else:
                data2= [['Spec. \n No', 'TensileStrength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@100% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@200% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@300% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)']]
         
@@ -2457,6 +2427,30 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                     data2.append(x)
                 connection.close() 
         elif(self.last_disp_unit=="Mm" and self.last_load_unit=="N"):
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("select CYCLE_NUM,printf(\"%.2f\", A.STG_TENSILE_STRENGTH_N_MM),printf(\"%.2f\", A.MODULUS_100_N_MM),printf(\"%.2f\", A.MODULUS_200_N_MM) ,printf(\"%.2f\", A.MODULUS_300_N_MM)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+                for x in results:
+                    data2.append(x)
+                connection.close()  
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("select 'AVG' as SPECIMEN_NUM,printf(\"%.2f\", avg(A.STG_TENSILE_STRENGTH_N_MM)),printf(\"%.2f\", avg(A.MODULUS_100_N_MM)),printf(\"%.2f\", avg(A.MODULUS_200_N_MM)) ,printf(\"%.2f\", avg(A.MODULUS_300_N_MM))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+                for x in results:
+                    data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("select 'MAX' as SPECIMEN_NUM,printf(\"%.2f\", max(A.STG_TENSILE_STRENGTH_N_MM)),printf(\"%.2f\", max(A.MODULUS_100_N_MM)),printf(\"%.2f\", max(A.MODULUS_200_N_MM)) ,printf(\"%.2f\", max(A.MODULUS_300_N_MM))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+                for x in results:
+                    data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("select 'MIN' as SPECIMEN_NUM,printf(\"%.2f\", min(A.STG_TENSILE_STRENGTH_N_MM)),printf(\"%.2f\", min(A.MODULUS_100_N_MM)),printf(\"%.2f\", min(A.MODULUS_200_N_MM)) ,printf(\"%.2f\", min(A.MODULUS_300_N_MM))  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) LIMIT 1") 
+                for x in results:
+                    data2.append(x)
+                connection.close()
+        elif(self.last_disp_unit=="Mm" and self.last_load_unit=="KN"):
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("select CYCLE_NUM,printf(\"%.2f\", A.STG_TENSILE_STRENGTH_N_MM),printf(\"%.2f\", A.MODULUS_100_N_MM),printf(\"%.2f\", A.MODULUS_200_N_MM) ,printf(\"%.2f\", A.MODULUS_300_N_MM)  FROM  CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
                 for x in results:
@@ -3273,8 +3267,8 @@ class PlotCanvas(FigureCanvas):
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
-              ax.set_xlim(0,int(x[2]))
-              ax.set_ylim(0,int(x[3]))  
+              ax.set_xlim(0,float(x[2]))
+              ax.set_ylim(0,float(x[3]))  
         connection.close()
         
         connection = sqlite3.connect("tyr.db")

@@ -2830,8 +2830,8 @@ class PlotCanvas(FigureCanvas):
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
-              ax.set_xlim(0,int(x[2]))
-              ax.set_ylim(0,int(x[3])) 
+              ax.set_xlim(0,float(x[2]))
+              ax.set_ylim(0,float(x[3])) 
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
