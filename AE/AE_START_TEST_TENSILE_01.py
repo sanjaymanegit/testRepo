@@ -1161,6 +1161,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                        cursor = connection.cursor()                
                        cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE='"+str(self.comboBox_4.currentText())+"'")                                   
         connection.commit();
+    
     def load_unit_onchange(self):
         self.i=0
         self.comboBox_3.clear()
@@ -1186,7 +1187,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         elif(str(self.comboBox_2.currentText())=="N"):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
-              self.i=self.i+1
+              self.i=self.i+1        
         else:
               #print("No change in combo3")
               self.comboBox_3.setDisabled(True)
@@ -1371,8 +1372,9 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
     
     def go_for_test(self):
-        print("Old object status :"+str(self.timer31.isActive()))
-        self.validations()        
+        print("Old object status :"+str(self.timer31.isActive()))        
+        self.validations()
+        self.set_graph_scale()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
@@ -1490,22 +1492,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                 self.extiometer=0
                 self.encoder=1
                 
-           
-            
-            '''
-            if(self.load_cell_hi==1):
-                #print("Load Cell: Hi")
-                self.radioButton.setChecked(True)
-                self.radioButton_2.setDisabled(True)
-                self.radioButton_2.setChecked(False)
-                self.radioButton.setEnabled(True)
-            elif(self.load_cell_lo==1):
-                #print("Load Cell: Low")
-                self.radioButton_2.setChecked(True)
-                self.radioButton.setDisabled(True)
-                self.radioButton.setChecked(False)
-                self.radioButton_2.setEnabled(True)
-            '''
+         
         
             if(self.extiometer==1):
                 #print("Proxy: Extentiometer")
@@ -1680,9 +1667,13 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         else:
                 self.lineEdit_12.setText(str("0"))
         
-    def set_graph_scale(self):
-        self.x_axis_val="0.0"
-        self.y_axis_val="0.0"        
+    def set_graph_scale(self):        
+        self.x_axis_val=0.0
+        self.x_axis_val_CM=0.0
+        self.x_axis_val_INCH=0.0
+        self.y_axis_val=0.0
+        self.y_axis_val_N=0.0
+        self.y_axis_val_LB=0.0
         try:
                 self.x_axis_val=int(self.lineEdit_13.text())
         except ValueError as e:
@@ -1706,6 +1697,57 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
            self.frame_3.hide()
            self.pushButton_8.setEnabled(True)
            self.pushButton_9.setEnabled(True)
+        connection.commit();
+        connection.close()
+        
+        self.y_axis_val=float(self.y_axis_val)            
+        #elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
+        if(self.comboBox_2.currentText()== "Kg"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "N"):
+            self.y_axis_val_N=self.y_axis_val           
+            self.y_axis_val_LB=(self.y_axis_val)*0.2248090795   #N to LB
+            self.y_axis_val=(self.y_axis_val)*0.1019716    # N to KG
+        elif(self.comboBox_2.currentText()== "MPa"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "Lb"):
+            self.y_axis_val_LB=self.y_axis_val
+            self.y_axis_val_N=(self.y_axis_val)*4.4482189159  #LB to Newton
+            self.y_axis_val=(self.y_axis_val)*0.45359237  #LB to Kg            
+        else:
+            self.y_axis_val=0.0
+            self.y_axis_val_N=0.0
+            self.y_axis_val_LB=0.0
+            
+        self.x_axis_val=float(self.x_axis_val)        
+        if(self.comboBox_3.currentText()== "Mm"):
+             self.x_axis_val=float(self.x_axis_val)
+             self.x_axis_val_CM=float(self.x_axis_val)*0.1  # Mm to CM 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.0393701 # MM to Inch              
+        elif(self.comboBox_3.currentText()== "Cm"):
+             self.x_axis_val_CM=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*10  #Cm to Mm 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.393701 # CM to Inch
+        elif(self.comboBox_3.currentText()== "Inch"):
+             self.x_axis_val_INCH=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*25.4 #Inch to Mm 
+             self.x_axis_val_CM=float(self.x_axis_val)*2.54 # inch to CM
+        else:
+             self.x_axis_val=0.0
+             self.x_axis_val_CM=0.0
+             self.x_axis_val_INCH=0.0
+        
+        connection = sqlite3.connect("tyr.db")
+        with connection:        
+           cursor = connection.cursor()
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH='"+str(self.x_axis_val)+"', GRAPH_SCAL_Y_LOAD='"+str(self.y_axis_val)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM='"+str(self.x_axis_val_CM)+"', GRAPH_SCAL_Y_LOAD_N='"+str(self.y_axis_val_N)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH='"+str(self.x_axis_val_INCH)+"', GRAPH_SCAL_Y_LOAD_LB='"+str(self.y_axis_val_LB)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           print("Conversion of Graph Scale is Ok !!")
         connection.commit();
         connection.close()
         
@@ -3263,7 +3305,7 @@ class PlotCanvas(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,CASE LAST_UNIT_DISP WHEN 'Cm' THEN GRAPH_SCAL_X_LENGTH_CM WHEN 'Inch' THEN GRAPH_SCAL_X_LENGTH_INCH ELSE GRAPH_SCAL_X_LENGTH END ,CASE LAST_UNIT_LOAD WHEN 'N' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'KN' THEN GRAPH_SCAL_Y_LOAD_N*0.001 WHEN 'Lb' THEN GRAPH_SCAL_Y_LOAD_LB  WHEN 'MPa' THEN GRAPH_SCAL_Y_LOAD ELSE GRAPH_SCAL_Y_LOAD END from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
