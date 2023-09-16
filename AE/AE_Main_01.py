@@ -6,7 +6,7 @@ from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
 from AE_START_TEST_TEAR_03 import AE_START_TEST_TEAR_Ui_MainWindow
 from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
 
-from AE_02_LIST_REPORT import AE_02_LIST_Ui_MainWindow
+from AE_02_LIST_REPORT_1 import AE_02_LIST_2_Ui_MainWindow
 
 
 
@@ -615,7 +615,7 @@ class AE_01_Ui_MainWindow(object):
     
     def AE_LIST_REPORT(self):                
         self.window = QtWidgets.QMainWindow()
-        self.ui=AE_02_LIST_Ui_MainWindow()
+        self.ui=AE_02_LIST_2_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
