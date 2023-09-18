@@ -1681,6 +1681,10 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
             self.y_axis_val_N=self.y_axis_val           
             self.y_axis_val_LB=(self.y_axis_val)*0.2248090795   #N to LB
             self.y_axis_val=(self.y_axis_val)*0.1019716    # N to KG
+        elif(self.comboBox_2.currentText()== "KN"):
+            self.y_axis_val_N=self.y_axis_val           
+            self.y_axis_val_LB=(self.y_axis_val)*0.2248090795   #N to LB
+            self.y_axis_val=(self.y_axis_val)*0.1019716    # N to KG
         elif(self.comboBox_2.currentText()== "MPa"):
             self.y_axis_val=float(self.y_axis_val)
             self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
@@ -1908,8 +1912,8 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                   cursor = connection.cursor()              
                   #print("ok1")
                   cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_CM=NEW_TEST_THICKNESS*0.1)")   ###
-                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_INCH=NEW_TEST_THICKNESS*0.0393701)")   ### MM to INCH
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_CM=NEW_TEST_THICKNESS*0.1")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_INCH=NEW_TEST_THICKNESS*0.0393701")   ### MM to INCH
                   
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ###
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
@@ -2119,10 +2123,10 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         
         connection = sqlite3.connect("tyr.db")        
         if(self.comboBox_2.currentText() == "Kg" and self.comboBox_3.currentText()=="Mm"):
-               self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+               self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (Kg) ','Tear Strength (Kg/Cm)','Created On','Cycle ID'])
                results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS_CM,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         elif(self.comboBox_2.currentText() == "Kg" and self.comboBox_3.currentText()=="Cm"):
-              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Cm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Cm)',' Peak Load (Kg) ','Tear Strength (Kg/Cm)','Created On','Cycle ID'])
               results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS_CM),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS_CM,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         elif(self.comboBox_2.currentText() == "N" and self.comboBox_3.currentText()=="Mm"):
               self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (N) ','Tear Strength (N/Mm)','Created On','Cycle ID'])
@@ -2134,7 +2138,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
               self.tableWidget.setHorizontalHeaderLabels(['Thickness (Inch)',' Peak Load (Lb) ','Tear Strength (Lb/Inch)','Created On','Cycle ID'])
               results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS_INCH),printf(\"%.2f\", PEAK_LOAD_LB),printf(\"%.2f\",(round(PEAK_LOAD_LB,2)/round(THINCKNESS_INCH,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
         else:
-              self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kg) ','Tear Strength (Kg/Cm)','Created On','Cycle ID'])
               results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
  
             
@@ -2318,8 +2322,8 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         d.add(linea_firma)
        
         
-        f1=Table(data)
-        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        #f1=Table(data)
+        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
         #
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
@@ -3003,7 +3007,7 @@ class PlotCanvas(FigureCanvas):
 #         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,CASE LAST_UNIT_DISP WHEN 'Cm' THEN GRAPH_SCAL_X_LENGTH_CM WHEN 'Inch' THEN GRAPH_SCAL_X_LENGTH_INCH ELSE GRAPH_SCAL_X_LENGTH END ,CASE LAST_UNIT_LOAD WHEN 'N' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'KN' THEN GRAPH_SCAL_Y_LOAD_N*0.001 WHEN 'Lb' THEN GRAPH_SCAL_Y_LOAD_LB  WHEN 'MPa' THEN GRAPH_SCAL_Y_LOAD ELSE GRAPH_SCAL_Y_LOAD END from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,CASE LAST_UNIT_DISP WHEN 'Cm' THEN GRAPH_SCAL_X_LENGTH_CM WHEN 'Inch' THEN GRAPH_SCAL_X_LENGTH_INCH ELSE GRAPH_SCAL_X_LENGTH END ,CASE LAST_UNIT_LOAD WHEN 'N' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'KN' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'Lb' THEN GRAPH_SCAL_Y_LOAD_LB  WHEN 'MPa' THEN GRAPH_SCAL_Y_LOAD ELSE GRAPH_SCAL_Y_LOAD END from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
