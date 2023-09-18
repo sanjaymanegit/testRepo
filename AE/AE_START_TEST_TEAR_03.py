@@ -859,7 +859,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
         self.label_30 = QtWidgets.QLabel(self.frame)
         self.label_30.setGeometry(QtCore.QRect(510, 150, 141, 31))
         font = QtGui.QFont()
@@ -1105,7 +1105,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
-        self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
+        #self.comboBox_2.setItemText(4, _translate("MainWindow", "MPa"))
         self.label_30.setText(_translate("MainWindow", "Displacement.  Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
@@ -1151,6 +1151,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
+        self.load_unit_onchange()
         self.show_grid_data_Tear()
         self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         self.pushButton_9.setDisabled(True)
@@ -1162,14 +1163,30 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         connection.commit();
         
     def load_unit_onchange(self):
-        self.i=0        
-        if(str(self.comboBox_2.currentText())=="KN"):        
-              self.comboBox_3.setCurrentText(str("Mm"))
-        elif(str(self.comboBox_2.currentText())=="MPa"):
-              self.comboBox_3.setCurrentText(str("Mm"))
+        self.i=0
+        self.comboBox_3.clear()
+        if(str(self.comboBox_2.currentText())=="KN"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1        
+        elif(str(self.comboBox_2.currentText())=="Kg"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Cm")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="Lb"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Inch")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="N"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1        
         else:
-              print("No change in combo3")
-        
+              #print("No change in combo3")
+              self.comboBox_3.setDisabled(True)
         
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1351,8 +1368,9 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         
     
     def go_for_test(self):
-        print("Old object status :"+str(self.timer31.isActive()))
-        self.validations()        
+        print("Old object status :"+str(self.timer31.isActive()))        
+        self.validations()
+        self.set_graph_scale()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
@@ -1446,21 +1464,6 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                 self.encoder=1
                 
            
-            
-            '''
-            if(self.load_cell_hi==1):
-                #print("Load Cell: Hi")
-                self.radioButton.setChecked(True)
-                self.radioButton_2.setDisabled(True)
-                self.radioButton_2.setChecked(False)
-                self.radioButton.setEnabled(True)
-            elif(self.load_cell_lo==1):
-                #print("Load Cell: Low")
-                self.radioButton_2.setChecked(True)
-                self.radioButton.setDisabled(True)
-                self.radioButton.setChecked(False)
-                self.radioButton_2.setEnabled(True)
-            '''
         
             if(self.extiometer==1):
                 #print("Proxy: Extentiometer")
@@ -1635,9 +1638,13 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         else:
                 self.lineEdit_12.setText(str("0"))
         
-    def set_graph_scale(self):
-        self.x_axis_val="0.0"
-        self.y_axis_val="0.0"        
+    def set_graph_scale(self):        
+        self.x_axis_val=0.0
+        self.x_axis_val_CM=0.0
+        self.x_axis_val_INCH=0.0
+        self.y_axis_val=0.0
+        self.y_axis_val_N=0.0
+        self.y_axis_val_LB=0.0
         try:
                 self.x_axis_val=int(self.lineEdit_13.text())
         except ValueError as e:
@@ -1661,6 +1668,57 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
            self.frame_3.hide()
            self.pushButton_8.setEnabled(True)
            self.pushButton_9.setEnabled(True)
+        connection.commit();
+        connection.close()
+        
+        self.y_axis_val=float(self.y_axis_val)            
+        #elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
+        if(self.comboBox_2.currentText()== "Kg"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "N"):
+            self.y_axis_val_N=self.y_axis_val           
+            self.y_axis_val_LB=(self.y_axis_val)*0.2248090795   #N to LB
+            self.y_axis_val=(self.y_axis_val)*0.1019716    # N to KG
+        elif(self.comboBox_2.currentText()== "MPa"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "Lb"):
+            self.y_axis_val_LB=self.y_axis_val
+            self.y_axis_val_N=(self.y_axis_val)*4.4482189159  #LB to Newton
+            self.y_axis_val=(self.y_axis_val)*0.45359237  #LB to Kg            
+        else:
+            self.y_axis_val=0.0
+            self.y_axis_val_N=0.0
+            self.y_axis_val_LB=0.0
+            
+        self.x_axis_val=float(self.x_axis_val)        
+        if(self.comboBox_3.currentText()== "Mm"):
+             self.x_axis_val=float(self.x_axis_val)
+             self.x_axis_val_CM=float(self.x_axis_val)*0.1  # Mm to CM 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.0393701 # MM to Inch              
+        elif(self.comboBox_3.currentText()== "Cm"):
+             self.x_axis_val_CM=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*10  #Cm to Mm 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.393701 # CM to Inch
+        elif(self.comboBox_3.currentText()== "Inch"):
+             self.x_axis_val_INCH=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*25.4 #Inch to Mm 
+             self.x_axis_val_CM=float(self.x_axis_val)*2.54 # inch to CM
+        else:
+             self.x_axis_val=0.0
+             self.x_axis_val_CM=0.0
+             self.x_axis_val_INCH=0.0
+        
+        connection = sqlite3.connect("tyr.db")
+        with connection:        
+           cursor = connection.cursor()
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH='"+str(self.x_axis_val)+"', GRAPH_SCAL_Y_LOAD='"+str(self.y_axis_val)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM='"+str(self.x_axis_val_CM)+"', GRAPH_SCAL_Y_LOAD_N='"+str(self.y_axis_val_N)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH='"+str(self.x_axis_val_INCH)+"', GRAPH_SCAL_Y_LOAD_LB='"+str(self.y_axis_val_LB)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           print("Conversion of Graph Scale is Ok !!")
         connection.commit();
         connection.close()
         
@@ -1808,12 +1866,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                        self.cs_area="0.0"
         
         
-        if( str(self.comboBox_3.currentText()) =="Cm"):         
-                self.cs_area=self.cs_area*0.1*0.1       
-        elif( str(self.comboBox_3.currentText()) =="Inch"):
-                self.cs_area=self.cs_area*0.0393701
-        else:                
-                self.cs_area=float(self.lineEdit_12.text())
+        
         
         if (len(self.sc_new.arr_p) > 1):            
             #### Get Guage length
@@ -1833,68 +1886,16 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                    
             connection.commit();
             connection.close()
-            if(str(self.comboBox_2.currentText()) =="Lb"):                   
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_lb[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="N"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_n[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="KN"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_kn[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="MPa"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;  
-            else:
-                    for g in range(len(self.sc_new.arr_p)):
+          
+            for g in range(len(self.sc_new.arr_p)):
                          if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
                                 self.load100_guage=float(self.sc_new.arr_q[g])
                                 break;            
-                    for g in range(len(self.sc_new.arr_p)):    
+            for g in range(len(self.sc_new.arr_p)):    
                          if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
                                 self.load200_guage=float(self.sc_new.arr_q[g])
                                 break;
-                    for g in range(len(self.sc_new.arr_p)):                                
+            for g in range(len(self.sc_new.arr_p)):                                
                          if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
                                 self.load300_guage=float(self.sc_new.arr_q[g])
                                 break;
@@ -1907,48 +1908,47 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                   cursor = connection.cursor()              
                   #print("ok1")
                   cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_CM=NEW_TEST_THICKNESS*0.1)")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS_INCH=NEW_TEST_THICKNESS*0.0393701)")   ### MM to INCH
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_N=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KN=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_MPA=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_LB=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
+                   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_CM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_INCH = (SELECT X_NUM_INCH FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_CM=(SELECT max(X_NUM_CM) FROM STG_GRAPH_MST)") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_INCH=(SELECT max(X_NUM_INCH) FROM STG_GRAPH_MST)") #
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_KG=(SELECT max(Y_NUM) FROM STG_GRAPH_MST)") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_N=(SELECT max(Y_NUM_N) FROM STG_GRAPH_MST)") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_LB=(SELECT max(Y_NUM_LB) FROM STG_GRAPH_MST)") #
                  
-                  if( str(self.comboBox_2.currentText()) =="Lb"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###    
-                  elif( str(self.comboBox_2.currentText()) =="N"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="KN"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="MPa"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
-                  else:    
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 
                   
-                  if( str(self.comboBox_3.currentText()) =="Cm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_CM) FROM STG_GRAPH_MST)") #
-                  elif( str(self.comboBox_3.currentText()) =="Inch"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_INCH FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_INCH) FROM STG_GRAPH_MST)") #
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #STG_E_AT_PEAK_LOAD_MM
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_AREA_CM=NEW_TEST_AREA*0.01") #
+                  cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_AREA_INCH=NEW_TEST_AREA*0.0393701*0.0393701") # MM to INCH 
+                   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH_KG_CM=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_THICKNESS_CM as real),1)))") #STG_TENSILE_STRENGTH   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH_LB_INCH=((cast(STG_PEAK_LOAD_LB as real)/IFNULL(cast(NEW_TEST_THICKNESS_INCH as real),1)))") #STG_TENSILE_STRENGTH
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH_N_MM=((cast(STG_PEAK_LOAD_N as real)/IFNULL(cast(NEW_TEST_THICKNESS as real),1)))") #STG_TENSILE_STRENGTH  
                   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_100_CM=NEW_TEST_GUAGE_MM*0.1")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_100_INCH=NEW_TEST_GUAGE_MM*0.0393701")
                   
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2*0.1)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_200_CM=(NEW_TEST_GUAGE_MM*2*0.1)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_200_INCH=(NEW_TEST_GUAGE_MM*2*0.0393701)")
                   
-                  if( str(self.comboBox_2.currentText()) =="MPa"):
-                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3*0.1)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_300_CM=(NEW_TEST_GUAGE_MM*3*0.1)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE_300_INCH=(NEW_TEST_GUAGE_MM*3*0.0393701)")
                   
-                  
-                  if( str(self.comboBox_3.currentText()) =="Cm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM*0.1")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2*0.1)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3*0.1)")
-                  elif( str(self.comboBox_3.currentText()) =="Inch"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM*0.0393701")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2*0.0393701)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3*0.0393701)")
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3)")
                           
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_SET_LOW=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_SET_LOW
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_KG=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_BREAK_LOAD_KG
@@ -1956,19 +1956,17 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                   
                   #print("ok5")
                   cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD100_GUAGE='"+str(self.load100_guage)+"'")                                       
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=((cast(STG_LOAD100_GUAGE as real)/cast(NEW_TEST_AREA as real)))")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD200_GUAGE='"+str(self.load200_guage)+"'")  
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_200=((cast(STG_LOAD200_GUAGE as real)/cast(NEW_TEST_AREA as real)))")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD300_GUAGE='"+str(self.load300_guage)+"'")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_300=((cast(STG_LOAD300_GUAGE as real)/cast(NEW_TEST_AREA as real)))")                 
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
-                  
+                                  
                    
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
+                  #cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
+                  
+                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,THINCKNESS_CM,THINCKNESS_INCH,CS_AREA,CS_AREA_CM,CS_AREA_INCH,PEAK_LOAD_KG,PEAK_LOAD_N,PEAK_LOAD_LB,E_AT_PEAK_LOAD_MM,E_AT_PEAK_LOAD_CM,E_AT_PEAK_LOAD_INCH,STG_TENSILE_STRENGTH_KG_CM,STG_TENSILE_STRENGTH_N_MM,STG_TENSILE_STRENGTH_LB_INCH, MODULUS_100,MODULUS_100_N_MM,MODULUS_100_LB_INCH,MODULUS_200,MODULUS_200_N_MM,MODULUS_200_LB_INCH,MODULUS_300,MODULUS_300_N_MM,MODULUS_300_LB_INCH,E_AT_BREAK_LOAD_MM,E_AT_BREAK_LOAD_CM,E_AT_BREAK_LOAD_INCH,GUAGE100) "
+                  +"SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_THICKNESS_CM,NEW_TEST_THICKNESS_INCH,NEW_TEST_AREA,NEW_TEST_AREA_CM,NEW_TEST_AREA_INCH,STG_PEAK_LOAD_KG,STG_PEAK_LOAD_N,STG_PEAK_LOAD_LB,STG_E_AT_PEAK_LOAD_MM,STG_E_AT_PEAK_LOAD_CM,STG_E_AT_PEAK_LOAD_INCH,STG_TENSILE_STRENGTH_KG_CM,STG_TENSILE_STRENGTH_N_MM,STG_TENSILE_STRENGTH_LB_INCH,MOD_100_KG_CM,MOD_100_N_MM,MOD_100_LB_INCH,MOD_200_KG_CM,MOD_200_N_MM,MOD_200_LB_INCH,MOD_300_KG_CM,MOD_300_N_MM,MOD_300_LB_INCH,STG_E_AT_BREAK_MM,STG_E_AT_BREAK_CM,STG_E_AT_BREAK_INCH,NEW_TEST_GUAGE_MM FROM GLOBAL_VAR")
+                  
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN FROM STG_GRAPH_MST")
                   
               
-                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_LOAD_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK= (((E_AT_PEAK_LOAD_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")                  
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK=(PRC_E_AT_BREAK-100)   WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK=(PRC_E_AT_PEAK-100)  WHERE GRAPH_ID IS NULL")
@@ -2113,14 +2111,33 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 400)
-        self.tableWidget.setColumnWidth(4, 50)
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        self.tableWidget.setColumnWidth(4, 50)        
+        
+        connection = sqlite3.connect("tyr.db")        
+        if(self.comboBox_2.currentText() == "Kg" and self.comboBox_3.currentText()=="Mm"):
+               self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+               results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS_CM,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        elif(self.comboBox_2.currentText() == "Kg" and self.comboBox_3.currentText()=="Cm"):
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Cm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+              results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS_CM),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS_CM,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        elif(self.comboBox_2.currentText() == "N" and self.comboBox_3.currentText()=="Mm"):
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (N) ','Tear Strength (N/Mm)','Created On','Cycle ID'])
+              results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_N),printf(\"%.2f\",(round(PEAK_LOAD_N,2)/round(THINCKNESS,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        elif(self.comboBox_2.currentText() == "KN" and self.comboBox_3.currentText()=="Mm"):
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Mm)',' Peak Load (KN) ','Tear Strength (N/Mm)','Created On','Cycle ID'])
+              results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_N*0.001),printf(\"%.2f\",(round(PEAK_LOAD_N,2)/round(THINCKNESS,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        elif(self.comboBox_2.currentText() == "Lb" and self.comboBox_3.currentText()=="Inch"):
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (Inch)',' Peak Load (Lb) ','Tear Strength (Lb/Inch)','Created On','Cycle ID'])
+              results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS_INCH),printf(\"%.2f\", PEAK_LOAD_LB),printf(\"%.2f\",(round(PEAK_LOAD_LB,2)/round(THINCKNESS_INCH,2))),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+        else:
+              self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+              results=connection.execute("SELECT printf(\"%.2f\", THINCKNESS),printf(\"%.2f\", PEAK_LOAD_KG),printf(\"%.2f\",(round(PEAK_LOAD_KG,2)/round(THINCKNESS,2)*10)),datetime(CREATED_ON,'localtime'),cycle_id FROM CYCLES_MST WHERE TEST_ID ='"+str(int(self.label_12.text()))+"' order by GRAPH_ID")
+ 
+            
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2145,31 +2162,126 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Thickness \n ('+str(self.last_disp_unit)+')', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Tear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')']]
+        if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                data2= [ ['Spec. \n No', 'Thickness \n ('+str(self.last_disp_unit)+')', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Tear Strength \n (Kg/Cm)']]
+        else:
+                data2= [ ['Spec. \n No', 'Thickness \n ('+str(self.last_disp_unit)+')', 'Force at Peak\n ('+str(self.last_load_unit)+')', 'Tear Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
+        if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):        
+                    results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+        elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                    results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS_CM),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS_CM)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS_CM)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS_CM)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+        elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):        
+                    results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_N),printf(\"%.2f\",(round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_N)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_N)),printf(\"%.2f\", max((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_N)),printf(\"%.2f\", min((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+        elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):        
+                    results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS_INCH),printf(\"%.2f\", A.PEAK_LOAD_LB),printf(\"%.2f\",(round(A.PEAK_LOAD_LB,2)/round(A.THINCKNESS_INCH,2))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS_INCH)),printf(\"%.2f\", avg(A.PEAK_LOAD_LB)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_LB,2)/round(A.THINCKNESS_INCH,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS_INCH)),printf(\"%.2f\", max(A.PEAK_LOAD_LB)),printf(\"%.2f\", max((round(A.PEAK_LOAD_LB,2)/round(A.THINCKNESS_INCH,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS_INCH)),printf(\"%.2f\", min(A.PEAK_LOAD_LB)),printf(\"%.2f\", min((round(A.PEAK_LOAD_LB,2)/round(A.THINCKNESS_INCH,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+        else:
+                    results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.PEAK_LOAD_LB,2))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_KG)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_KG)),printf(\"%.2f\", max((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_KG)),printf(\"%.2f\", min((round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS_CM,2)))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                    for x in results:
+                            data2.append(x)
+                    connection.close()
         
         y=300
         Elements=[]
@@ -2206,8 +2318,8 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         d.add(linea_firma)
        
         
-        #f1=Table(data)
-        #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        f1=Table(data)
+        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
         #
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
@@ -2226,12 +2338,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         
         #Elements.append(f1,Spacer(1,12))        
         #Elements.append(f2,Spacer(1,12))
-        '''
-        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
-                                leftMargin=40,
-                                topMargin=30,
-                                bottomMargin=30,)
-        '''
+    
         doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
                                 leftMargin=30,
                                 topMargin=10,
@@ -2315,7 +2422,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.check_R=""
         self.check_S=""
-        self.IO_error_flg=0
+        self.IO_error_flg=1
         
         self.timer1=QtCore.QTimer()
        
@@ -2428,51 +2535,50 @@ class PlotCanvas_Auto(FigureCanvas):
                  print("self.load_unit:"+str(self.load_unit)+"    self.disp_unit:"+str(self.disp_unit))
                  if(self.graph_type=="Load Vs Displacement"):
                          if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (Kg)')
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Kg) (Y-Axis)')
                          elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                         self.axes.set_xlabel('Displacement (Inch)')
-                                         self.axes.set_ylabel('Load (Kg)')
+                                         self.axes.set_xlabel('Displacement (Inch) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Kg) (Y-Axis)')
                          elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                         self.axes.set_xlabel('Displacement (Cm)')
-                                         self.axes.set_ylabel('Load (Kg)')                                                               
+                                         self.axes.set_xlabel('Displacement (Cm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Kg) (Y-Axis)')                                                               
                          elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (Lb)')
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Lb) (Y-Axis)')
                          elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                         self.axes.set_xlabel('Displacement (Cm)')
-                                         self.axes.set_ylabel('Load (Lb)') 
+                                         self.axes.set_xlabel('Displacement (Cm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Lb) (Y-Axis)') 
                          elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                         self.axes.set_xlabel('Displacement (Inch)')
-                                         self.axes.set_ylabel('Load (Lb)')                                                         
+                                         self.axes.set_xlabel('Displacement (Inch) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Lb) (Y-Axis)')                                                         
                          elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (N)')                                                         
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (N) (Y-Axis)')                                                         
                          elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                         self.axes.set_xlabel('Displacement (Cm)')
-                                         self.axes.set_ylabel('Load (N)')                                 
+                                         self.axes.set_xlabel('Displacement (Cm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (N) (Y-Axis)')                                 
                          elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                         self.axes.set_xlabel('Displacement (Inch)')
-                                         self.axes.set_ylabel('Load (N)')
+                                         self.axes.set_xlabel('Displacement (Inch) (X-Axis)')
+                                         self.axes.set_ylabel('Load (N) (Y-Axis)')
                          elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (KN)')                                                         
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (KN) (Y-Axis)')                                                         
                          elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                         self.axes.set_xlabel('Displacement (Cm)')
-                                         self.axes.set_ylabel('Load (KN)')                                 
+                                         self.axes.set_xlabel('Displacement (Cm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (KN) (Y-Axis)')                                 
                          elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                         self.axes.set_xlabel('Displacement (Inch)')
-                                         self.axes.set_ylabel('Load (KN)')
+                                         self.axes.set_xlabel('Displacement (Inch) (X-Axis)')
+                                         self.axes.set_ylabel('Load (KN) (Y-Axis)')
                          elif(self.load_unit=="MPa" and self.disp_unit=="Mm"):
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (MPa)') 
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (MPa) (Y-Axis)') 
                          else:    
-                                         self.axes.set_xlabel('Displacement (Mm)')
-                                         self.axes.set_ylabel('Load (Kg)')
-                 elif(self.graph_type=="Stress Vs Strain"):
-                         print("inside sadasdasd")
-                         self.axes.set_xlabel('Strain (%)')
-                         self.axes.set_ylabel("Stress (MPa)'")                      
+                                         self.axes.set_xlabel('Displacement (Mm) (X-Axis)')
+                                         self.axes.set_ylabel('Load (Kg) (Y-Axis)')
+                 elif(self.graph_type=="Stress Vs Strain"):                         
+                         self.axes.set_xlabel('Strain (%) (X-Axis)')
+                         self.axes.set_ylabel("Stress (MPa) (Y-Axis)'")                      
                  
                  self.axes.set_xlim(0,float(x[0]))
                  self.axes.set_ylim(0,float(x[1]))  
@@ -2528,7 +2634,7 @@ class PlotCanvas_Auto(FigureCanvas):
                         print("\n\n\n\n##### SET : guage_length ######")
                         self.instrument.write_float(3,0.0,2) 
                         #self.instrument.write_register(6,0,0)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :0.0",self.login_user_role)
+                        self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :0",self.login_user_role)
                         #time.sleep(5)
                     except IOError as e:
                             print("Ignore-Modbus Error- self.guage_length.:"+str(e))
@@ -2586,102 +2692,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                     time.sleep(1)
-                    self.test_method=-1
-                    self.load_cell_no=-1
-                    self.guage_length=-1
-                    self.max_load=-1
-                    self.max_length=-1
-                    self.break_sence=-1
-                    self.test_speed=-1
-                    self.test_rev_speed=-1
-                    self.auto_rev_time_off=-1
                     
-                    try:
-                        ##read_register( Register number, number of decimals, function code)
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]
-                        print("\n\n\n\n##### GET  : TEST_METHOD ######")
-                        self.test_method=self.instrument.read_register(0,0,3)                              
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-                        #time.sleep(5)                        
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get Test Method.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Test Method :"+str(self.test_method),self.login_user_role)
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                    
-                    try:
-                        print("\n\n\n\n##### GET  : LOAD CELL NUMBER ######")
-                        self.load_cell_no=self.instrument.read_register(1,0,3)                               
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get Load Cell Number.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                            
-                    
-                    try:
-                        print("\n\n\n\n##### GET  : guage_length ######")
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.guage_length=self.instrument.read_float(2,3,2)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get guage_length.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET guage_length :"+str(self.guage_length),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                            
-                    
-                    try:
-                        print("\n\n\n\n##### GET  : break_sence ######")
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.break_sence=self.instrument.read_float(9,3,2)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get break_sence:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET break_sence :"+str(self.break_sence),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                            
-                            
-                    try:
-                        print("\n\n\n\n##### GET  : test_speed ######")
-                        #read_register( Register number, number of decimals, function code   
-                        self.test_speed=self.instrument.read_register(10,0,3)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get test_speed:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_speed :"+str(self.test_speed),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                    
-                    try:
-                        print("\n\n\n\n##### GET  : test_rev_speed ######")
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_register(11,0,3)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get test_rev_speed:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET test_rev_speed :"+str(self.test_rev_speed),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
-                    
-                    try:
-                        print("\n\n\n\n##### GET  : auto_rev_time_off ######")
-                        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]   
-                        self.test_speed=self.instrument.read_register(12,0,3)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
-                        #time.sleep(5)
-                    except IOError as e:
-                            print("Ignore-Modbus Error- Get auto_rev_time_off:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)                
-                            self.IO_error_flg=1
-                            time.sleep(5)
                             
                             
                     
@@ -2819,7 +2830,7 @@ class PlotCanvas_Auto(FigureCanvas):
                         if(int(self.is_stopped) == 3):                    
                             self.save_data_flg="Yes"
                             self.on_ani_stop()
-                        elif(self.is_stopped==2):                    
+                        elif(int(self.is_stopped) == 2):                    
                             self.save_data_flg="Yes"
                             self.on_ani_stop()
                         else:
@@ -2830,11 +2841,11 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(self.is_stopped==3):                    
                     self.save_data_flg="Yes"
                     self.on_ani_stop()
-                elif(self.is_stopped==2):                    
-                    self.save_data_flg="Yes"
-                    self.on_ani_stop()
+                elif(int(self.is_stopped) == 2):                    
+                            self.save_data_flg="Yes"
+                            self.on_ani_stop()
                 else:
-                    print("Invalid !!!!!!")
+                            print("IOError Invalid !!!!!!")
                 
     #self.record_modbus_logs(self.test_id,self.cycle_num,"SET","Login into to System.",self.login_user_role)
     def record_modbus_logs(self,test_id,cycle_num,set_or_get,log_str,user_name):
@@ -2933,34 +2944,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     )
             print("Done1")
        
-    def validate_speed(self):
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-        connection.close()
-        self.goahead_flag=0
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-        connection.close()
-        
-        if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
-            else:
-                 print(" not Ok ")
-                 
-        else:
-            print(" not Ok ")
+   
                
                 
    
@@ -3019,7 +3003,7 @@ class PlotCanvas(FigureCanvas):
 #         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,CASE LAST_UNIT_DISP WHEN 'Cm' THEN GRAPH_SCAL_X_LENGTH_CM WHEN 'Inch' THEN GRAPH_SCAL_X_LENGTH_INCH ELSE GRAPH_SCAL_X_LENGTH END ,CASE LAST_UNIT_LOAD WHEN 'N' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'KN' THEN GRAPH_SCAL_Y_LOAD_N*0.001 WHEN 'Lb' THEN GRAPH_SCAL_Y_LOAD_LB  WHEN 'MPa' THEN GRAPH_SCAL_Y_LOAD ELSE GRAPH_SCAL_Y_LOAD END from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
@@ -3165,14 +3149,16 @@ class PlotCanvas(FigureCanvas):
                  
         
             if(g < 8 ):
-                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+            else:
+                 ax.plot(self.x_num,self.y_num, self.color[0],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Displacement"):
-                ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+')')
-                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+                ax.set_xlabel('Displacement ('+str(self.last_disp_unit)+') (X-Axis)')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+') (Y-Axis)')
         else:
-                ax.set_xlabel('Strain %')
-                ax.set_ylabel('Stress')
+                ax.set_xlabel('Strain % (X-Axis)')
+                ax.set_ylabel('Stress  (Y-Axis)')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
@@ -3237,8 +3223,8 @@ class PlotCanvas_blank(FigureCanvas):
               self.q.append(self.y[i])  
               
         ax.plot(self.x,self.y,'b')
-        ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-        ax.set_xlabel(' Displacement ('+str(self.last_disp_unit)+')')
+        ax.set_ylabel('Load  ('+str(self.last_load_unit)+')  (Y-Axis)')
+        ax.set_xlabel(' Displacement ('+str(self.last_disp_unit)+')  (X-Axis)')
         
         
         self.draw()       
