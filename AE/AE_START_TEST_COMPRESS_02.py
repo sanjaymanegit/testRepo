@@ -1530,30 +1530,25 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                          self.save_units();
                          self.frame_3.show()
                          self.sc_blank =PlotCanvas_blank(self) 
-                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-                         
+                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)                        
                          try:
-                                self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyUSB0',
-                                                    baudrate=19200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                                )                               
+                                #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                                self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                                self.instrument.serial.timeout = 1
+                                self.instrument.serial.baudrate = 115200
+                                #time.sleep(5)
+                                self.IO_error_flg=0
                                 self.timer3.setInterval(5000)        
-                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                #self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                self.timer3.timeout.connect(self.modbus_read_reg)                                
                                 self.timer3.start(1)
                                 self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
-                                
-                                
-                                
-                         except IOError:
-                                    print("IO Errors") 
+                         except IOError as e:
+                                print("IO Errors- Connection to Modbus......:"+str(e))
+                                self.IO_error_flg=1                          
                         
                  else:
                          self.frame_3.hide()
@@ -1563,7 +1558,17 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
-        
+    def modbus_read_reg(self):
+        self.data=0
+        ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
+        self.data=self.instrument.read_register(8,0,4)        
+        if(str(self.data) == "1"):
+            self.radioButton_3.setChecked(True)
+            self.radioButton_4.setChecked(False)
+        else:
+            self.radioButton_3.setChecked(False)
+            self.radioButton_4.setChecked(True)
+            
     def save_units(self):
         connection = sqlite3.connect("tyr.db")
         with connection:        

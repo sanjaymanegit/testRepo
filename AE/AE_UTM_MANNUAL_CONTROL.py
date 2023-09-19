@@ -203,9 +203,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     self.label_2.setText("Speed is Empty")
                     self.label_2.show()
         else:
-                    self.label_2.hide()
-                    self.test_method=2 #Compression
-                    self.load_cell_no=1 #Get Load Cell No
+                    self.label_2.hide()                    
                     self.max_speed=1
                     self.per_test_speed=0
                     self.test_speed=float(str(self.lineEdit.text()))
@@ -220,12 +218,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)
                     
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
-                    connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
-                    for x in results:            
-                        self.load_cell_no=int(x[0])
-                        #self.auto_rev_time_off=float(x[1])
-                    connection.close()        
+                        
                     try:
                             #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
                             self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
@@ -237,27 +230,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             print("IO Errors- Connection to Modbus......:"+str(e))
                             self.IO_error_flg=1    
                     
-                    if(self.IO_error_flg==0):
-                            #Set Test method = compression. Display IO Error incase any problem
-                            try:
-                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
-                                            print("\n\n\n\n##### SET : TEST_METHOD ######")
-                                            self.instrument.write_register(0,int(self.test_method),0,6)                    
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-                            except IOError as e:
-                                            print("Ignore-Modbus Error- Test Method..:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-                                           
-                            try:
-                                            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
-                                            self.instrument.write_register(1,int(self.load_cell_no),0,6)
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                                            #time.sleep(5)
-                            except IOError as e:
-                                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                                           
-                            
+                    if(self.IO_error_flg==0):                            
                             #Set Down Speed . Check For IO Error.
                             try:
                                             print("\n\n\n\n##### SET : rev test_speed ######")
@@ -271,48 +244,21 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                                             time.sleep(5)
                                         
-                            
-                            #Start Motor.
-                            ####### Start Test- ############
+                            ####### Write in Coil Register.- Activate DOWN BIT ############
                             try:
-                                    print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
-                                    #read_bit(registeraddress: int, functioncode: int = 2) → int
-                                    self.is_stopped=self.instrument.read_register(1,0,4)
-                                    self.is_stopped=round(self.is_stopped,0)
-                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
-                                    #time.sleep(5)                
-                            except IOError as e:                    
-                                    print("Ignore-Modbus Error- Get start_bit.:"+str(e))
-                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
-                                    self.IO_error_flg=1
-                            if(self.is_stopped == 0):     
-                                            ####### Start Test-Write in Coil Register. ############
-                                            try:
                                                  #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
                                                  print("\n\n\n\n##### SET :COIL start_bit ######")
-                                                 self.instrument.write_bit(0,1,5)                    
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                                                 self.instrument.write_bit(3,1,5)                    
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET DOWN BIT :1",self.login_user_role)
                                                  self.label_2.setText("Motor Started (Down) .......speed :"+str(self.lineEdit.text()))
                                                  self.label_2.show()
                                                   #time.sleep(5)
-                                            except IOError as e:
-                                                 print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
-                                                 self.IO_error_flg=1                       
-                                 
-                                            ####### Start Test-Read Coil Register. ############
-                                            try:
-                                                print("\n\n\n\n##### GET  : COIL start_bit ######")
-                                                #read_bit(registeraddress: int, functioncode: int = 2) → int
-                                                self.start_bit=self.instrument.read_bit(0,1)
-                                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
-                                                #time.sleep(5)                
-                                            except IOError as e:                    
-                                                print("Ignore-Modbus Error- Get start_bit.:"+str(e))
-                                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
-                                                self.IO_error_flg=1
-                            else:
-                                    print("Test is already running......Status: "+str(self.is_stopped))
+                             except IOError as e:
+                                                 print("Ignore-Modbus Error- SET COIL DOWN BIT ..:"+str(e))
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL DOWN BIT : 1",self.login_user_role)
+                                                 self.IO_error_flg=1 
+                            #Start Motor DOWN Side .
+                            
                     else:
                                     print("Modbus Error ......")   
            
@@ -324,9 +270,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     self.label_2.show()
         else:
                     print("Up Run ....")
-                    self.label_2.hide()
-                    self.test_method=1 #Tensile
-                    self.load_cell_no=1 #Get Load Cell No
+                    self.label_2.hide()                    
                     self.max_speed=1
                     self.per_test_speed=0
                     self.test_speed=float(str(self.lineEdit.text()))
@@ -335,19 +279,11 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     results=connection.execute("SELECT  MOTOR_MAX_SPEED FROM SETTING_MST LIMIT 1") 
                     for x in results:            
                         self.max_speed=int(x[0])                        
-                    connection.close()
-                    
-                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)*100                    
-                    
-                    
+                    connection.close()                    
+                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)*100 
                     
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
-                    connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
-                    for x in results:            
-                        self.load_cell_no=int(x[0])
-                        #self.auto_rev_time_off=float(x[1])
-                    connection.close()        
+                    
                     try:
                             #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
                             self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
@@ -360,27 +296,8 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             self.IO_error_flg=1    
                     
                     if(self.IO_error_flg==0):
-                            #Set Test method = compression. Display IO Error incase any problem
-                            try:
-                                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
-                                            print("\n\n\n\n##### SET : TEST_METHOD ######")
-                                            self.instrument.write_register(0,int(self.test_method),0,6)                    
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-                            except IOError as e:
-                                            print("Ignore-Modbus Error- Test Method..:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Method :"+str(self.test_method),self.login_user_role)
-                                           
-                            try:
-                                            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
-                                            self.instrument.write_register(1,int(self.load_cell_no),0,6)
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                                            #time.sleep(5)
-                            except IOError as e:
-                                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
-                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                                           
                             
-                            #Set Down Speed . Check For IO Error.
+                            #Set Forwoard Speed . Check For IO Error.
                             try:
                                             print("\n\n\n\n##### SET : test_speed ######")
                                             #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
@@ -411,15 +328,15 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                             ####### Start Test-Write in Coil Register. ############
                                             try:
                                                  #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
-                                                 print("\n\n\n\n##### SET :COIL start_bit ######")
-                                                 self.instrument.write_bit(0,1,5)                    
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                                                 print("\n\n\n\n##### SET :COIL UP BIT 1  ######")
+                                                 self.instrument.write_bit(2,1,5)                    
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :1",self.login_user_role)
                                                  self.label_2.setText("Motor Started (UP) .......speed :"+str(self.lineEdit.text()))
                                                  self.label_2.show()
                                                   #time.sleep(5)
                                             except IOError as e:
-                                                 print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                                                 print("Ignore-Modbus Error- SET COIL UP BIT ..:"+str(e))
+                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :"+str(self.start_bit),self.login_user_role)
                                                  self.IO_error_flg=1
                                            
                             else:
