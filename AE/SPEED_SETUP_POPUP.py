@@ -326,37 +326,20 @@ class spped_setup_Ui_MainWindow(object):
         
         print("Reverse speed : "+str(v))
         
-        
     def chk_modbus_conn(self):
-        self.input_speed_val=str(self.lineEdit.text())
-        v=float(self.input_speed_val)
-        try:     
-            if(self.modbus_port=="/dev/ttyUSB1"):
-                  instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)
-            else:
-                  instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
-                  print("self.modbus_port:"+str(self.modbus_port))
-            instrument.serial.timeout = 1
-            instrument.serial.baudrate = 9600
-            
-            v=v*40
-            if(float(v) < 1 ):
-                v=1.0
-            elif(float(v)== 1 ):
-                v=1.0
-            else:
-                v=round(v,0)
-            
-            instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-            instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-            print(" write2 :"+str(v))
-            self.label_5.setText("Modbus Connection Ok.")
-            self.label_5.show()
-        except IOError as e:
-            print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-            self.label_5.setText("ERROR:"+str(e))
-            self.label_5.show()
-        print("Forward speed : "+str(v))
+        try:
+                       #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
+                       self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
+                       self.instrument.serial.timeout = 1
+                       self.instrument.serial.baudrate = 115200
+                       self.label_5.setText("Modbus Connection OK.")
+                       self.label_5.show()  
+         except IOError as e:
+                    print("IO Errors- Connection to Modbus......:"+str(e))
+                    self.IO_error_flg=1
+                    self.label_5.setText("Modbus IO Error.")
+                    self.label_5.show()   
+    
         
         
     def get_USB_0_DEVICE(self):

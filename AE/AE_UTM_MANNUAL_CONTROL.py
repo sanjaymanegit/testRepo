@@ -180,7 +180,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
         #self.pushButton.hide()
         self.pushButton_2.setText(_translate("MainWindow", "Return"))
-        self.label_3.setText(_translate("MainWindow", "( mm/min) "))
+        self.label_3.setText(_translate("MainWindow", "(mm/min) "))
         self.label_4.setText(_translate("MainWindow", "Manual Control of Motor"))
         self.pushButton_2.clicked.connect(MainWindow.close)       
         self.toolButton.clicked.connect(self.down_run)   #down
@@ -228,7 +228,9 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             self.IO_error_flg=0
                     except IOError as e:
                             print("IO Errors- Connection to Modbus......:"+str(e))
-                            self.IO_error_flg=1    
+                            self.IO_error_flg=1
+                            self.label_2.setText("IO Error.")
+                            self.label_2.show()
                     
                     if(self.IO_error_flg==0):                            
                             #Set Down Speed . Check For IO Error.
@@ -253,7 +255,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                                  self.label_2.setText("Motor Started (Down) .......speed :"+str(self.lineEdit.text()))
                                                  self.label_2.show()
                                                   #time.sleep(5)
-                             except IOError as e:
+                            except IOError as e:
                                                  print("Ignore-Modbus Error- SET COIL DOWN BIT ..:"+str(e))
                                                  self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL DOWN BIT : 1",self.login_user_role)
                                                  self.IO_error_flg=1 
@@ -293,10 +295,11 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                             self.IO_error_flg=0
                     except IOError as e:
                             print("IO Errors- Connection to Modbus......:"+str(e))
-                            self.IO_error_flg=1    
+                            self.IO_error_flg=1
+                            self.label_2.setText("IO Error.")
+                            self.label_2.show()
                     
-                    if(self.IO_error_flg==0):
-                            
+                    if(self.IO_error_flg==0):                            
                             #Set Forwoard Speed . Check For IO Error.
                             try:
                                             print("\n\n\n\n##### SET : test_speed ######")
@@ -311,36 +314,22 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                             time.sleep(5)
                                         
                             
-                            #Start Motor.
-                            ####### Start Test- ############
+                            
+                            ####### Start Test-Write in Coil Register. ############
                             try:
-                                    print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
-                                    #read_bit(registeraddress: int, functioncode: int = 2) → int
-                                    self.is_stopped=self.instrument.read_register(1,0,4)
-                                    self.is_stopped=round(self.is_stopped,0)
-                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
-                                    #time.sleep(5)                
-                            except IOError as e:                    
-                                    print("Ignore-Modbus Error- Get start_bit.:"+str(e))
-                                    self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
-                                    self.IO_error_flg=1
-                            if((self.is_stopped == 0) or (self.is_stopped == 3)):     
-                                            ####### Start Test-Write in Coil Register. ############
-                                            try:
-                                                 #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
-                                                 print("\n\n\n\n##### SET :COIL UP BIT 1  ######")
-                                                 self.instrument.write_bit(2,1,5)                    
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :1",self.login_user_role)
-                                                 self.label_2.setText("Motor Started (UP) .......speed :"+str(self.lineEdit.text()))
-                                                 self.label_2.show()
-                                                  #time.sleep(5)
-                                            except IOError as e:
-                                                 print("Ignore-Modbus Error- SET COIL UP BIT ..:"+str(e))
-                                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :"+str(self.start_bit),self.login_user_role)
-                                                 self.IO_error_flg=1
+                                            #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                                            print("\n\n\n\n##### SET :COIL UP BIT 1  ######")
+                                            self.instrument.write_bit(2,1,5)                    
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :1",self.login_user_role)
+                                            self.label_2.setText("Motor Started (UP) .......speed :"+str(self.lineEdit.text()))
+                                            self.label_2.show()
+                                             #time.sleep(5)
+                            except IOError as e:
+                                            print("Ignore-Modbus Error- SET COIL UP BIT ..:"+str(e))
+                                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :"+str(self.start_bit),self.login_user_role)
+                                            self.IO_error_flg=1
                                            
-                            else:
-                                    print("Test is already running......Status: "+str(self.is_stopped))
+                    
                     else:
                                     print("Modbus Error ......") 
                       
@@ -359,38 +348,26 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                 self.IO_error_flg=0
         except IOError as e:
                 print("IO Errors- Connection to Modbus......:"+str(e))
-                self.IO_error_flg=1 
-        if(self.IO_error_flg==0):
-                ####### Start Test- ############
+                self.IO_error_flg=1
+                self.label_2.setText("IO Error.")
+                self.label_2.show()
+        if(self.IO_error_flg==0):                    
+                ####### Start Test-Write in Coil Register. ############
                 try:
-                        print("\n\n\n\n##### GET -VERIFY CURENT STATUS  ######")
-                        #read_bit(registeraddress: int, functioncode: int = 2) → int
-                        self.is_stopped=self.instrument.read_register(1,0,4)
-                        self.is_stopped=round(self.is_stopped,0)
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET Status (1=Running,2=Hold,3=Reverse):"+str(self.is_stopped),self.login_user_role)
-                        #time.sleep(5)                
-                except IOError as e:                    
-                        print("Ignore-Modbus Error- Get start_bit.:"+str(e))
-                        self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
-                        self.IO_error_flg=1
-                if((self.is_stopped == 1) or (self.is_stopped == 2) or (self.is_stopped == 3)):     
-                                ####### Start Test-Write in Coil Register. ############
-                                try:
-                                     #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
-                                     print("\n\n\n\n##### SET :COIL stop  ######")
-                                     self.instrument.write_bit(1,1,5)                    
-                                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Stop Bit :1",self.login_user_role)
-                                     self.label_2.setText("Motor Stopped.")
-                                     self.label_2.show()
-                                      #time.sleep(5)
-                                except IOError as e:
-                                     print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
-                                     self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
-                                     self.IO_error_flg=1 
-                else:
-                        print("Test is already Stopped......Status: "+str(self.is_stopped))
+                       #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                       print("\n\n\n\n##### SET :COIL stop  ######")
+                       self.instrument.write_bit(1,1,5)                    
+                       self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test Stop Bit :1",self.login_user_role)
+                       self.label_2.setText("Motor Stopped.")
+                       self.label_2.show()
+                       #time.sleep(5)
+                except IOError as e:
+                       print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                       self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                       self.IO_error_flg=1 
+                
         else:
-                        print("Modbus Error ......")   
+                       print("Modbus Error ......")   
            
        
            
