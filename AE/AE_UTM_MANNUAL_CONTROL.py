@@ -215,7 +215,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                         self.max_speed=int(x[0])                        
                     connection.close()
                     
-                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)
+                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*10000)
                     
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
                         

@@ -2954,7 +2954,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### SET : test_speed ######")
                         #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                        self.instrument.write_register(10,float(self.per_test_speed),0,6)
+                        self.instrument.write_register(10,int(self.per_test_speed),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_speed :"+str(self.per_test_speed),self.login_user_role)
                         #time.sleep(5)
@@ -2966,7 +2966,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### SET : test_rev_speed ######")
                         #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                        self.instrument.write_register(11,float(self.per_test_rev_speed),0,6)
+                        self.instrument.write_register(11,int(self.per_test_rev_speed),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET test_rev_speed :"+str(self.per_test_rev_speed),self.login_user_role)
                         #time.sleep(5)
@@ -2978,7 +2978,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     try:
                         print("\n\n\n\n##### SET : auto_rev_time_off ######")
                         #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)
-                        self.instrument.write_register(12,float(self.auto_rev_time_off),0,6)
+                        self.instrument.write_register(12,int(self.auto_rev_time_off),0,6)
                         #self.instrument.write_register(6,0,0)
                         self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET auto_rev_time_off :"+str(self.auto_rev_time_off),self.login_user_role)
                         #time.sleep(5)
