@@ -1759,7 +1759,10 @@ class TY_59_Ui_MainWindow(object):
                   cursor = connection.cursor()              
                   #print("ok1")
                   #cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
-                 
+                  
+                  cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1='"+str(self.lineEdit_10.text())+"',E_AT_LOAD_POINT_2='"+str(self.lineEdit_11.text())+"'")
+                  cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_1=(NEW_TEST_GUAGE_MM-E_AT_LOAD_POINT_1)")
+                  cursor.execute("UPDATE GLOBAL_VAR SET E_AT_LOAD_POINT_2=(NEW_TEST_GUAGE_MM-E_AT_LOAD_POINT_2)")
                   if( str(self.comboBox_2.currentText()) =="Lb"):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###
                           cursor.execute("UPDATE GLOBAL_VAR SET LOAD_POINT_1=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST WHERE X_NUM < (SELECT E_AT_LOAD_POINT_1 FROM GLOBAL_VAR))")   ###
