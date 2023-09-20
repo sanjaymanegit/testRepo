@@ -334,7 +334,7 @@ class spped_setup_Ui_MainWindow(object):
                        self.instrument.serial.baudrate = 115200
                        self.label_5.setText("Modbus Connection OK.")
                        self.label_5.show()  
-         except IOError as e:
+        except IOError as e:
                     print("IO Errors- Connection to Modbus......:"+str(e))
                     self.IO_error_flg=1
                     self.label_5.setText("Modbus IO Error.")

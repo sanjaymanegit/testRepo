@@ -4,15 +4,20 @@ from AE_Admin_02 import AE_02_Ui_MainWindow
 from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
 from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
 from AE_START_TEST_TEAR_03 import AE_START_TEST_TEAR_Ui_MainWindow
-from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
+from AE_07_START_TEST_PULL_ON_FORCE import AE_07_Ui_MainWindow
 
+
+
+from AE_LOAD_CELL_SELECTION import load_cell_set_Ui_MainWindow
 from AE_02_LIST_REPORT_1 import AE_02_LIST_2_Ui_MainWindow
+
 
 
 
 from AE_UTM_MANNUAL_CONTROL import AE_MANUAL_CONTROL_Ui_MainWindow
 #from TY_05_SPECIMEN import TY_05_Ui_MainWindow
 from AE_05_SPECIMEN import AE_05_Ui_MainWindow
+from AE_05_SPECIMEN_4 import TY_05_SPECI_4_ui_MainWindow
 
 from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
 #from TY_01_TEST_BATCH import TY_01_Ui_MainWindow
@@ -222,7 +227,7 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_5.clicked.connect(self.open_new_window_admin)
         self.pushButton_3.clicked.connect(self.open_new_window_motor)
-        self.pushButton_4.clicked.connect(self.open_new_window_specimen)
+        self.pushButton_4.clicked.connect(self.open_new_specs_win)
         #self.pushButton.clicked.connect(self.open_new_window_Tensile)
         self.pushButton.clicked.connect(self.validate_Register)
         self.pushButton_2.clicked.connect(self.open_new_report_win)
@@ -255,7 +260,8 @@ class AE_01_Ui_MainWindow(object):
         
    
     def selected_record(self):
-        self.test_type_id=""        
+        self.test_type_id=""
+        self.list_type="1"     
         self.list_type=self.listWidget.currentItem().text()
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME||'('||TEST_TYPE_ID||')' = '"+str(self.list_type)+"'")
@@ -282,12 +288,23 @@ class AE_01_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    def open_new_window_specimen_4(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_05_SPECI_4_ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     def open_new_window_Tensile(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-        
+    
+    def open_new_window_pull_on_force(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_07_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def validate_Register(self):        
         f = open("/var/local/devid", "r")
@@ -325,8 +342,16 @@ class AE_01_Ui_MainWindow(object):
         except:
            cpuserial = "ERROR000000000"
         return cpuserial
-                
+    def open_new_specs_win(self):
+        if(str(self.test_type_id) == "18"):            
+            self.open_new_window_specimen_4()
+        elif(str(self.test_type_id) == "19"):            
+            self.open_new_window_specimen_4()
+        else:
+            self.open_new_window_specimen()
+        
     def open_new_test_win(self):
+        
         
         if(str(self.test_type_id) == "1"):
             self.save_test_tensile()
@@ -364,6 +389,9 @@ class AE_01_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "17"):
             self.save_test_CYCLICK()
             self.open_new_window_CYCLICK()
+        elif(str(self.test_type_id) == "18"):
+            self.save_test_PULL_ON_FORCE()
+            self.open_new_window_pull_on_force()  
         else:
             print("Invalid Test ID")
             
@@ -408,6 +436,16 @@ class AE_01_Ui_MainWindow(object):
         else:
             print("Invalid Test ID")    
         
+    
+    
+    def save_test_PULL_ON_FORCE(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PULL_ON_FORCE'")                    
+        connection.commit();
+        connection.close()
+    
     def save_test_tensile(self):                     
         connection = sqlite3.connect("tyr.db")              
         with connection:        
