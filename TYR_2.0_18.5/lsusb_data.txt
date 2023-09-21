@@ -1,8 +1,7 @@
-Bus 001 Device 006: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
-Bus 001 Device 004: ID 0403:6015 Future Technology Devices International, Ltd Bridge(I2C/SPI/UART/FIFO)
-Bus 001 Device 007: ID 30fa:0300  
-Bus 001 Device 005: ID 03f0:6941 HP, Inc 
-Bus 001 Device 008: ID 0424:7800 Standard Microsystems Corp. 
+Bus 001 Device 006: ID 30fa:0300  
+Bus 001 Device 004: ID 03f0:6941 HP, Inc 
+Bus 001 Device 005: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
+Bus 001 Device 007: ID 0424:7800 Standard Microsystems Corp. 
 Bus 001 Device 003: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 002: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub

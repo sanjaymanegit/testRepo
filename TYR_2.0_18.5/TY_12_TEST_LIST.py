@@ -23,6 +23,7 @@ from TY_53_START_TEST_PUSH_ON_FORCE import TY_53_Ui_MainWindow
 from TY_55_START_TEST_TRUNKLIDSEAL import TY_55_Ui_MainWindow
 from TY_59_START_TEST_TRUNKLIDSEAL2 import TY_59_Ui_MainWindow
 from TY_57_START_TEST_TEAR_PEAK_LOAD import TY_57_START_TEST_TEAR_Ui_MainWindow
+from TY_61_START_TEST_PUNCTURE_RESITANCE import TY_61_Ui_MainWindow
 
 
 
@@ -474,10 +475,20 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "29"):     
             self.save_test_tensile_gasket_round()
         elif(str(self.test_type_id) == "30"):  
-            self.save_test_tensile_gasket_square()            
+            self.save_test_tensile_gasket_square()
+        elif(str(self.test_type_id) == "31"):  
+            self.save_test_PUNCTURE_RESISTANCE() 
         else:
             print("Invalid Test ID"+str(self.test_type_id))
             
+    def save_test_PUNCTURE_RESISTANCE(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PUNCTURE_RESISTANCE'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_PUNCTURE_RESISTANCE()
     
     def save_tear_peak_load_test(self):                     
         connection = sqlite3.connect("tyr.db")              
@@ -704,6 +715,13 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection.close()    
         self.open_new_window_tensile_gasket_square()
         
+    
+    def open_new_window_PUNCTURE_RESISTANCE(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_61_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     def open_new_window_tensile_gasket_square(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_01_Ui_MainWindow_GASEKET()
