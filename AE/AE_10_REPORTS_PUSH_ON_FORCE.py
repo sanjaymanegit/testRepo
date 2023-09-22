@@ -50,7 +50,7 @@ minimalmodbus.MODE_RTU= 'rtu'
                
   
 
-class AE_09_Ui_MainWindow(object):
+class AE_10_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 769)
@@ -1097,6 +1097,16 @@ class AE_09_Ui_MainWindow(object):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
+        
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1107,7 +1117,41 @@ class AE_09_Ui_MainWindow(object):
         self.load_unit_onchange()
         self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
-        #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
+        #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])
+        self.report_fun_1()
+        
+    
+    
+    def report_fun_1(self):
+        #self.pushButton_8.setDisabled(True)
+        self.pushButton_10.setDisabled(True) 
+        self.frame_3.show()
+        
+        
+        self.pushButton_12.setDisabled(True)
+        #self.pushButton_13.setDisabled(True)
+        
+        self.radioButton.setDisabled(True)
+        self.radioButton_2.setDisabled(True)
+        self.radioButton_3.setDisabled(True)
+        self.radioButton_4.setDisabled(True)
+        
+        self.lcdNumber.setDisabled(True)
+        self.lcdNumber_2.setDisabled(True)
+        self.lcdNumber_3.setDisabled(True)
+        
+        
+        
+        
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.show_graph()
+        self.pushButton_11.setDisabled(True)
+        
+        ## Read Only Fields 
+        self.readonly_fields()
         
         self.pushButton_9.setDisabled(True)
     def load_unit_onchange(self):
@@ -1159,50 +1203,45 @@ class AE_09_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
-                 self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
-                 self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
+                 print("test id :"+str(self.test_id))
+                 self.comboBox.setCurrentText(str(x[1]))
+                 self.comboBox.setDisabled(True)
+                 print("spec name "+str(x[1]))
+                 self.label_48.setText(str(x[2]))
+                 #self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
+                 self.lineEdit_15.setText(str(x[3]))
+                 self.lineEdit_16.setText(str(x[4]))
+                 
+                 self.lineEdit_8.setText(str(x[5]))
+                 self.lineEdit_9.setText(str(x[6]))
+                 
+                 #self.lineEdit_12.setText(str(x[7]))
+                 
+                 self.lineEdit_14.setText(str(x[8]))
+                 self.lineEdit_13.setText(str(x[9]))
+                 self.comboBox_2.setCurrentText(str(x[10]))
+                 print("load unit to set :"+str(x[10]))
+                 self.comboBox_3.setCurrentText(str(x[11]))
+                 
         connection.close()
-        self.i=0
-        self.comboBox.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
-        for x in results:            
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
-        connection.close()
+        #self.onchage_combo()
+        
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
+        results=connection.execute("SELECT COUNT(*) FROM CYCLES_MST WHERE TEST_ID ='"+str(self.test_id)+"'") 
         for x in results:            
-            self.radioButton.setText("LoadCell No:"+str(x[0]))
-            self.radioButton_2.setText("Set Low :"+str(x[1]))
+            self.label_38.setText(str(x[0]))           
         connection.close()
         
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR") 
-        for x in results:            
-            self.lineEdit_10.setText(str(x[0]))
-            self.lineEdit_11.setText(str(x[1]))
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
-        for x in results:            
-            self.lineEdit_13.setText(str(x[0]))
-            self.lineEdit_14.setText(str(x[1]))
-        connection.close()
-        
-        self.sc_blank =PlotCanvas_blank(self) 
+        self.sc_blank =PlotCanvas(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
-        self.onchage_combo()
-        self.label_49.setText("Start Test Please.")
+        #self.onchage_combo()
+        self.label_49.setText("")
         self.label_49.show()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
@@ -1227,7 +1266,7 @@ class AE_09_Ui_MainWindow(object):
     
     def validations(self):        
         self.go_ahead="No"
-        self.msg=""
+        self.msg="Confirm to Refresh Report"
         if(self.lineEdit_15.text() == ""):
              self.msg="Test Details is Empty."            
         elif(self.lineEdit_16.text()== ""):
@@ -1279,7 +1318,7 @@ class AE_09_Ui_MainWindow(object):
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_12.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                         
-                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
                               
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1333,7 +1372,8 @@ class AE_09_Ui_MainWindow(object):
     def go_for_test(self):
         print("Old object status :"+str(self.timer31.isActive()))        
         self.validations()
-        self.set_graph_scale()
+        #self.set_graph_scale()
+        self.save_units()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
@@ -1342,20 +1382,11 @@ class AE_09_Ui_MainWindow(object):
                  if(self.go_ahead=="Yes"):
                          self.save_units();
                          self.frame_3.show()
-                         self.sc_blank =PlotCanvas_blank(self) 
+                         self.sc_blank =PlotCanvas(self) 
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                          try:
-                                #instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7,debug = True) # port name, slave address (in decimal)                   
-                                self.instrument = minimalmodbus.Instrument('/dev/ttyACM0', 7) # port name, slave address (in decimal)
-                                self.instrument.serial.timeout = 1
-                                self.instrument.serial.baudrate = 115200
-                                #time.sleep(5)
-                                self.IO_error_flg=0
-                                self.timer3.setInterval(5000)        
-                                #self.timer3.timeout.connect(self.loadcell_encoder_status)
-                                self.timer3.timeout.connect(self.modbus_read_reg)                                
-                                self.timer3.start(1)
-                                self.pushButton_8.setDisabled(True)
+                                
+                                #self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
@@ -1369,7 +1400,7 @@ class AE_09_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_Tear()
+        self.show_grid_data_Tear()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
@@ -3085,7 +3116,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = AE_09_Ui_MainWindow()
+    ui = AE_10_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

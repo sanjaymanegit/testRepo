@@ -2,6 +2,8 @@
 from AE_REPORTS_TENSILE_03 import AE_03_Ui_MainWindow
 from AE_REPORTS_COMPRESS_02 import AE_REPORT_COMPR_02_Ui_MainWindow
 from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
+from AE_08_REPORTS_PULL_ON_FORCE import AE_08_Ui_MainWindow
+from AE_10_REPORTS_PUSH_ON_FORCE import AE_10_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -586,10 +588,7 @@ class AE_02_LIST_2_Ui_MainWindow(object):
         self.specimen_name=""
         self.unit_type=""
                   
-#         self.kg_to_lb=float(2.20462)
-#         self.mm_to_inch=float(0.0393701)
-#         self.kg_to_Newton=float(9.81)
-#         self.kgCm2_toMPA=float(0.0980665)
+
         
         self.test_ids=[]
         self.length=""
@@ -609,6 +608,7 @@ class AE_02_LIST_2_Ui_MainWindow(object):
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_8.setText(_translate("MainWindow", "Search"))
         self.pushButton_8_1.setText(_translate("MainWindow", "Summery Report"))
+        self.pushButton_8_1.hide()
         self.label_48.setText(_translate("MainWindow", " ")) #message ..................
         
         self.radioButton.setText(_translate("MainWindow", "By Date Range [Tensile Test] "))
@@ -875,11 +875,13 @@ class AE_02_LIST_2_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 print("date Range -select")
-                #results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
+                print("SELECT B.TEST_ID,B.CREATED_ON,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.JOB_NAME,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.JOB_NAME,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
                 print("Search by Tested By.....")
+                print("SELECT B.TEST_ID,B.CREATED_ON,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.JOB_NAME,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
+       
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.JOB_NAME,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
@@ -947,6 +949,10 @@ class AE_02_LIST_2_Ui_MainWindow(object):
                             self.open_report_compress()
             elif(str(self.new_test_name) == "Tear"):               
                             self.open_report_tear()
+            elif(str(self.new_test_name) == "PULL_ON_FORCE"):               
+                            self.open_report_pull_on_force()
+            elif(str(self.new_test_name) == "PUSH_ON_FORCE"):               
+                            self.open_report_push_on_force()
             else:
                             self.open_report_tensile()
             
@@ -967,6 +973,18 @@ class AE_02_LIST_2_Ui_MainWindow(object):
     def open_report_tear(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=AE_REPORT_TEAR_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_report_pull_on_force(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_08_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_report_push_on_force(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_10_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

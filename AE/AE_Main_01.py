@@ -5,6 +5,7 @@ from AE_START_TEST_TENSILE_01 import AE_START_TEST_TENSILE_Ui_MainWindow
 from AE_START_TEST_COMPRESS_02 import AE_START_TEST_COMPR_02_Ui_MainWindow
 from AE_START_TEST_TEAR_03 import AE_START_TEST_TEAR_Ui_MainWindow
 from AE_07_START_TEST_PULL_ON_FORCE import AE_07_Ui_MainWindow
+from AE_09_START_TEST_PUSH_ON_FORCE import AE_09_Ui_MainWindow
 
 
 
@@ -391,7 +392,10 @@ class AE_01_Ui_MainWindow(object):
             self.open_new_window_CYCLICK()
         elif(str(self.test_type_id) == "18"):
             self.save_test_PULL_ON_FORCE()
-            self.open_new_window_pull_on_force()  
+            self.open_new_window_pull_on_force()
+        elif(str(self.test_type_id) == "19"):    
+            self.save_test_PUSH_ON_FORCE()
+            self.open_AE_PUSH_ON_FORCE()
         else:
             print("Invalid Test ID")
             
@@ -433,6 +437,12 @@ class AE_01_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "17"):
             self.save_test_CYCLICK()
             self.open_report_window_CYCLICK()
+        elif(str(self.test_type_id) == "18"):
+            self.save_test_PULL_ON_FORCE()
+            self.AE_LIST_REPORT()
+        elif(str(self.test_type_id) == "19"):
+            self.save_test_PUSH_ON_FORCE()
+            self.AE_LIST_REPORT()
         else:
             print("Invalid Test ID")    
         
@@ -560,7 +570,13 @@ class AE_01_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         
-        
+    def save_test_PUSH_ON_FORCE(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='PUSH_ON_FORCE'")            
+        connection.commit();
+        connection.close()   
     
     
     
@@ -580,6 +596,12 @@ class AE_01_Ui_MainWindow(object):
     def open_AE_Tear_03(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=AE_START_TEST_TEAR_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_AE_PUSH_ON_FORCE(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_09_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     
