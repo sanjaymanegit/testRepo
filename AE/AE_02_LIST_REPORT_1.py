@@ -635,10 +635,11 @@ class AE_02_LIST_2_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Customer Name:"))
         self.radioButton_4.setText(_translate("MainWindow", "By Test ID / Serial No :"))
         self.label_11.setText(_translate("MainWindow", "Double Click on record to see detail report"))
-        self.checkBox.setText(_translate("MainWindow", "Select All"))
-        self.checkBox.hide()
+        self.checkBox.setText(_translate("MainWindow", "All"))
+        #self.checkBox.hide()
+        self.checkBox.setChecked(True)
         self.pushButton_10.setText(_translate("MainWindow", " Delete "))
-
+        self.checkBox.clicked.connect(self.check_uncheck_all_records)
         
         #### Default setting ######
         self.calendarWidget.hide()
@@ -922,6 +923,15 @@ class AE_02_LIST_2_Ui_MainWindow(object):
         self.label_48.setText("")                   
         self.label_48.show()
        
+    def check_uncheck_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            item = self.tableWidget.item(i, 0)
+            if(self.checkBox.isChecked()):
+                item.setCheckState(QtCore.Qt.Checked)
+            else:
+                item.setCheckState(not QtCore.Qt.Checked)
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
