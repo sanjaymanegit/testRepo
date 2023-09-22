@@ -2703,7 +2703,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     
                     
                     
-                    time.sleep(1)
+                    #time.sleep(1)
                     
                             
                             
@@ -2711,7 +2711,7 @@ class PlotCanvas_Auto(FigureCanvas):
         else:
             print("Modbus Communication Error.... ")
          
-        time.sleep(1)
+        #time.sleep(1)
         self.start_bit=0   #Default value
         self.is_stopped=-1
         if(self.IO_error_flg==0):
