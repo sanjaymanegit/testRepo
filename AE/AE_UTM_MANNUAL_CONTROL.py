@@ -216,7 +216,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     connection.close()
                     
                     self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*10000)
-                    
+                    self.per_test_speed=(self.per_test_speed-1)
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
                         
                     try:
@@ -252,7 +252,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                                  print("\n\n\n\n##### SET :COIL start_bit ######")
                                                  self.instrument.write_bit(3,1,5)                    
                                                  self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET DOWN BIT :1",self.login_user_role)
-                                                 self.label_2.setText("Motor Started (Down) .......speed :"+str(self.lineEdit.text()))
+                                                 self.label_2.setText("Motor Started (Down) .speed :"+str(self.lineEdit.text())+"..cal:"+str(int(self.per_test_speed)))
                                                  self.label_2.show()
                                                   #time.sleep(5)
                             except IOError as e:
@@ -282,8 +282,8 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                     for x in results:            
                         self.max_speed=int(x[0])                        
                     connection.close()                    
-                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*100)*100 
-                    
+                    self.per_test_speed=((float(self.test_speed)/float(self.max_speed))*10000) 
+                    self.per_test_speed=(self.per_test_speed-1)
                     print("Reverse Run started ....Speed :"+str(self.test_speed))
                     
                     try:
@@ -321,7 +321,7 @@ class  AE_MANUAL_CONTROL_Ui_MainWindow(object):
                                             print("\n\n\n\n##### SET :COIL UP BIT 1  ######")
                                             self.instrument.write_bit(2,1,5)                    
                                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET COIL UP BIT  :1",self.login_user_role)
-                                            self.label_2.setText("Motor Started (UP) .......speed :"+str(self.lineEdit.text()))
+                                            self.label_2.setText("Motor Started (UP) .speed :"+str(self.lineEdit.text())+". cal :"+str(int(self.per_test_speed)))
                                             self.label_2.show()
                                              #time.sleep(5)
                             except IOError as e:

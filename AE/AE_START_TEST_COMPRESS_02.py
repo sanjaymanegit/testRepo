@@ -1151,7 +1151,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
         self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
-        self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
+        self.radioButton_4.setText(_translate("MainWindow", "Extensometer"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Spec.No."))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -1271,12 +1271,12 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
-        self.show_grid_data_compress()
+        #self.show_grid_data_compress()
         #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Comprassion ('+str(self.comboBox_3.currentText())+')','% Compression','Compressive Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
        
         self.pushButton_9.setDisabled(True)
-        self.label_51.setText("("+self.comboBox_2.currentText()+")")
-        self.label_34.setText("("+self.comboBox_3.currentText()+")")
+        #self.label_51.setText("("+self.comboBox_2.currentText()+")")
+        #self.label_34.setText("("+self.comboBox_3.currentText()+")")
         
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -1473,7 +1473,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_AREA='"+str(self.lineEdit_12.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                               cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_7.text())+"',STG_CYCLE_ID='"+str(int(self.cycle_num)+1)+"'")
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_13.text())+"','"+str(self.lineEdit_18.text())+"')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','Compress','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1554,7 +1554,7 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_compress()
+        self.show_grid_data_compress()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
@@ -2813,6 +2813,9 @@ class PlotCanvas_Auto(FigureCanvas):
         self.per_test_rev_speed=float((float(self.test_rev_speed)/float(self.max_speed))*100)
         self.per_test_speed=self.per_test_speed*100
         self.per_test_rev_speed=self.per_test_rev_speed*100
+        self.per_test_speed=(self.per_test_speed-1)
+        self.per_test_rev_speed=(self.per_test_rev_speed-1)
+        
         
  ###### Set Modbus register for Test   ##########
 #         self.test_method=1

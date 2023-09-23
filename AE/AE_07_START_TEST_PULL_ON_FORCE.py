@@ -519,8 +519,7 @@ class AE_07_Ui_MainWindow(object):
         self.label_13.setObjectName("label_13")
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(280, 20, 201, 31))
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
+        self.comboBox.setObjectName("comboBox")        
         self.label_14 = QtWidgets.QLabel(self.frame)
         self.label_14.setGeometry(QtCore.QRect(150, 50, 111, 31))
         font = QtGui.QFont()
@@ -912,7 +911,7 @@ class AE_07_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Low-Load cell"))
         self.radioButton_2.setText(_translate("MainWindow", "Hi-Load cell"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
-        self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
+        self.radioButton_4.setText(_translate("MainWindow", "Extensometer"))
         
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
@@ -929,8 +928,7 @@ class AE_07_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
-        self.label_13.setText(_translate("MainWindow", "Speciment Name:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXXXXXXXXXX"))
+        self.label_13.setText(_translate("MainWindow", "Speciment Name:"))        
         self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Load Cell:"))
@@ -998,7 +996,7 @@ class AE_07_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
-        self.show_grid_data_Tear()
+        #self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
@@ -1059,6 +1057,7 @@ class AE_07_Ui_MainWindow(object):
                  self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
+        
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
@@ -1183,8 +1182,8 @@ class AE_07_Ui_MainWindow(object):
         self.lineEdit_16.setReadOnly(True)
         self.lineEdit_8.setReadOnly(True)
         self.lineEdit_9.setReadOnly(True)
-        #self.comboBox_2.setDisabled(True)
-        #self.comboBox_3.setDisabled(True)
+        self.comboBox_2.setDisabled(True)
+        self.comboBox_3.setDisabled(True)
         self.lineEdit_13.setReadOnly(True)
         self.lineEdit_14.setReadOnly(True)
     
@@ -1266,65 +1265,7 @@ class AE_07_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-    
-    def loadcell_encoder_status(self):
-        self.load_cell_hi=-1
-        self.load_cell_lo=-1
-        self.extiometer=-1
-        self.encoder=-1
-        try:                
-            self.serial_3.flush()
-            self.serial_3.write(b'*D\r')
-            self.line_3 = self.serial_3.readline()
-            #print("encoder_status:o/p:"+str(self.line_3))
-        except IOError:
-            print("IO Errors")    
-                
-        xstr3=str(self.line_3)        
-        xstr3=xstr3[1:int(len(xstr3)-1)]
-        xstr2=xstr3.replace("'\\r","")        
-        #print("replace3('\r):"+str(xstr2))
-        xstr1=xstr2.replace("'","")        
-        #print("replace2('):"+str(xstr1))
-        xstr=xstr1.replace("\\r","")
-        #print("replace1(\r):"+str(xstr))        
-        self.buff=xstr.split("_")
-        
-        #print("length of array :"+str(len(self.buff)))
-        if(int(len(self.buff)) > 8 ):          
-            #print("Load Cell No... :"+str(self.buff[7]))
-            #print("Encoder No.. :"+str(self.buff[6]))
-            if(str(self.buff[6])=="2"):
-                self.load_cell_hi=1
-                self.load_cell_lo=0
-            else:
-                self.load_cell_hi=0
-                self.load_cell_lo=1
-                    
-            if(str(self.buff[7])=="2"):
-                self.extiometer=1
-                self.encoder=0
-            else:
-                self.extiometer=0
-                self.encoder=1
-                
-           
-        
-            if(self.extiometer==1):
-                #print("Proxy: Extentiometer")
-                self.radioButton_4.setChecked(True)
-                self.radioButton_3.setDisabled(True)
-                self.radioButton_3.setChecked(False)
-                self.radioButton_4.setEnabled(True)            
-            else:
-            #elif(self.encoder==1):
-                #print("Proxy: Encoder")
-                self.radioButton_3.setChecked(True)
-                self.radioButton_4.setDisabled(True)
-                self.radioButton_4.setChecked(False)
-                self.radioButton_3.setEnabled(True)
-                                   
-    
+   
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
@@ -2314,6 +2255,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.per_test_rev_speed=float((float(self.test_rev_speed)/float(self.max_speed))*100)
         self.per_test_speed=self.per_test_speed*100
         self.per_test_rev_speed=self.per_test_rev_speed*100
+        self.per_test_speed=(self.per_test_speed-1)
+        self.per_test_rev_speed=(self.per_test_rev_speed-1)
         
  ###### Set Modbus register for Test   ##########
 #         self.test_method=1

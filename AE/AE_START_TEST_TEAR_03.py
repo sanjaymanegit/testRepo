@@ -1066,7 +1066,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "LoadCell No:1"))
         self.radioButton_2.setText(_translate("MainWindow", "Set Low:2"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
-        self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
+        self.radioButton_4.setText(_translate("MainWindow", "Extensometer"))
        
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
@@ -1152,8 +1152,8 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
-        self.show_grid_data_Tear()
-        self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
+        #self.show_grid_data_Tear()
+        #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         self.pushButton_9.setDisabled(True)
         
         connection = sqlite3.connect("tyr.db")              
@@ -1406,7 +1406,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_Tear()
+        self.show_grid_data_Tear()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
@@ -2600,6 +2600,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.per_test_rev_speed=float((float(self.test_rev_speed)/float(self.max_speed))*100)
         self.per_test_speed=self.per_test_speed*100
         self.per_test_rev_speed=self.per_test_rev_speed*100
+        self.per_test_speed=(self.per_test_speed-1)
+        self.per_test_rev_speed=(self.per_test_rev_speed-1)
         
  ###### Set Modbus register for Test   ##########
 #         self.test_method=1
@@ -3006,13 +3008,7 @@ class PlotCanvas(FigureCanvas):
              
         connection.close()
         
-#         ### Univarsal change for  Graphs #####################
-#         connection = sqlite3.connect("tyr.db")
-#         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-#         for x in results:
-#              ax.set_xlim(0,int(x[0]))
-#              ax.set_ylim(0,int(x[1]))          
-#         connection.close()
+
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,CASE LAST_UNIT_DISP WHEN 'Cm' THEN GRAPH_SCAL_X_LENGTH_CM WHEN 'Inch' THEN GRAPH_SCAL_X_LENGTH_INCH ELSE GRAPH_SCAL_X_LENGTH END ,CASE LAST_UNIT_LOAD WHEN 'N' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'KN' THEN GRAPH_SCAL_Y_LOAD_N WHEN 'Lb' THEN GRAPH_SCAL_Y_LOAD_LB  WHEN 'MPa' THEN GRAPH_SCAL_Y_LOAD ELSE GRAPH_SCAL_Y_LOAD END from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 

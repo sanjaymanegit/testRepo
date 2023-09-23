@@ -1067,7 +1067,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "LoadCell No:1"))
         self.radioButton_2.setText(_translate("MainWindow", "Set Low:2"))
         self.radioButton_3.setText(_translate("MainWindow", "Encoder"))
-        self.radioButton_4.setText(_translate("MainWindow", "Exentiometer"))
+        self.radioButton_4.setText(_translate("MainWindow", "Extensometer"))
        
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_39.setText(_translate("MainWindow", "Load:"))
@@ -1265,7 +1265,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         
         self.pushButton_7.setDisabled(True)
         self.pushButton_11.setEnabled(True)
-        self.show_grid_data_tensile()
+        #self.show_grid_data_tensile()
         print("Data Loaded OK !!")
        
     
@@ -1409,7 +1409,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_tensile()
+        self.show_grid_data_tensile()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
     
@@ -1417,7 +1417,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.data=0
         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
         self.data=self.instrument.read_register(8,0,4)
-        print("Read Data "+str(self.data))
+        #print("Read Data "+str(self.data))
         if(str(self.data) == "1"):
             self.radioButton_3.setChecked(True)
             self.radioButton_4.setChecked(False)
@@ -2886,6 +2886,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.per_test_rev_speed=float((float(self.test_rev_speed)/float(self.max_speed))*100)
         self.per_test_speed=self.per_test_speed*100
         self.per_test_rev_speed=self.per_test_rev_speed*100
+        self.per_test_speed=(self.per_test_speed-1)
+        self.per_test_rev_speed=(self.per_test_rev_speed-1)
         
 ###### Set Modbus register for Test   ##########
 #         self.test_method=1
