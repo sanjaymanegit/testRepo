@@ -560,8 +560,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.label_13.setObjectName("label_13")
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(280, 10, 201, 31))
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
+        self.comboBox.setObjectName("comboBox")       
         self.label_14 = QtWidgets.QLabel(self.frame)
         self.label_14.setGeometry(QtCore.QRect(150, 50, 111, 31))
         font = QtGui.QFont()
@@ -902,6 +901,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_13.setFont(font)
+        #self.lineEdit_13.setText("13")
         self.lineEdit_13.setObjectName("lineEdit_13")
         self.label_32 = QtWidgets.QLabel(self.frame)
         self.label_32.setGeometry(QtCore.QRect(990, 90, 51, 31))
@@ -1045,7 +1045,9 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.timer31=QtCore.QTimer()
         self.cycle_num=0
         self.show_lcd_vals="N"
-
+        self.i=0
+        self.i1=0
+        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1082,8 +1084,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "New Test"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
-        self.label_13.setText(_translate("MainWindow", "Speciment Name:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Speciment 1 XXXXXX"))
+        self.label_13.setText(_translate("MainWindow", "Speciment Name:"))        
         self.label_14.setText(_translate("MainWindow", "Party Name:"))
         self.label_48.setText(_translate("MainWindow", "Panakj Polymerst Pvt. Ltd."))
         self.label_15.setText(_translate("MainWindow", "Shape:"))
@@ -1143,15 +1144,26 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         self.failure_mod=""
         self.tmperature=""
         self.test_type_for_flexural=""
-        self.cycle_num=0
+        self.cycle_num=0        
         
-        self.load_data()
+        self.i1=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME  FROM SPECIMEN_MST WHERE SHAPE = 'Rectangle'") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i1,str(x[0]))            
+            self.i1=self.i1+1
+        connection.close()
+        
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
+        self.load_data()
         #self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         self.pushButton_9.setDisabled(True)
@@ -1206,6 +1218,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                         print("Timer3 Stopped......Timer3 status: "+str(self.timer3.isActive()))
         
     def load_data(self):
+        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
         for x in results:           
@@ -1214,16 +1227,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
                  self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
-        self.i=0
-        self.comboBox.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
-        for x in results:            
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
-        connection.close()
-        
+       
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
         for x in results:            
@@ -1433,59 +1437,7 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-    
-    def loadcell_encoder_status(self):         
-        try:                
-            self.serial_3.flush()
-            self.serial_3.write(b'*D\r')
-            self.line_3 = self.serial_3.readline()
-            #print("encoder_status:o/p:"+str(self.line_3))
-        except IOError:
-            print("IO Errors")    
-                
-        xstr3=str(self.line_3)        
-        xstr3=xstr3[1:int(len(xstr3)-1)]
-        xstr2=xstr3.replace("'\\r","")        
-        #print("replace3('\r):"+str(xstr2))
-        xstr1=xstr2.replace("'","")        
-        #print("replace2('):"+str(xstr1))
-        xstr=xstr1.replace("\\r","")
-        #print("replace1(\r):"+str(xstr))        
-        self.buff=xstr.split("_")
-        
-        #print("length of array :"+str(len(self.buff)))
-        if(int(len(self.buff)) > 8 ):          
-            #print("Load Cell No... :"+str(self.buff[7]))
-            #print("Encoder No.. :"+str(self.buff[6]))
-            if(str(self.buff[6])=="2"):
-                self.load_cell_hi=0
-                self.load_cell_lo=1
-            else:
-                self.load_cell_hi=1
-                self.load_cell_lo=0
-                    
-            if(str(self.buff[7])=="2"):
-                self.extiometer=1
-                self.encoder=0
-            else:
-                self.extiometer=0
-                self.encoder=1
-                
-           
-        
-            if(self.extiometer==1):
-                #print("Proxy: Extentiometer")
-                self.radioButton_4.setChecked(True)
-                self.radioButton_3.setDisabled(True)
-                self.radioButton_3.setChecked(False)
-                self.radioButton_4.setEnabled(True)            
-            elif(self.encoder==1):
-                #print("Proxy: Encoder")
-                self.radioButton_3.setChecked(True)
-                self.radioButton_4.setDisabled(True)
-                self.radioButton_4.setChecked(False)
-                self.radioButton_3.setEnabled(True)
-                                   
+                            
     
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")

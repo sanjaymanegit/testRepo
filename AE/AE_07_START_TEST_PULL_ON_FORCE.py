@@ -988,6 +988,16 @@ class AE_07_Ui_MainWindow(object):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.i1=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i1,str(x[0]))            
+            self.i1=self.i1+1
+        connection.close()
+        
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -996,6 +1006,7 @@ class AE_07_Ui_MainWindow(object):
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
+        self.load_data()
         #self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
@@ -1058,16 +1069,7 @@ class AE_07_Ui_MainWindow(object):
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
         
-        self.i=0
-        self.comboBox.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE TEST_MODE='Tensile'") 
-        for x in results:            
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
-        connection.close()
-        
+       
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT ID,SET_LOW FROM LOAD_CELL_MST WHERE STATUS = 'ACTIVE' LIMIT 1") 
         for x in results:            

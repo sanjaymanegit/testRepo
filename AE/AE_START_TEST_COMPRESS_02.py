@@ -1263,6 +1263,15 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.tmperature=""
         self.test_type_for_flexural=""
         self.cycle_num=0
+        self.i=0
+        self.comboBox.clear()        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -1340,9 +1349,9 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
                  self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
-        self.i=0
-        self.comboBox.clear()
         
+        self.i=0
+        self.comboBox.clear()        
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
         for x in results:            

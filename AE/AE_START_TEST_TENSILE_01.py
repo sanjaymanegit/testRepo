@@ -1145,15 +1145,25 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         self.tmperature=""
         self.test_type_for_flexural=""
         self.cycle_num=0
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        #print("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
         
-        self.load_data()
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
         self.load_unit_onchange()
-        self.show_grid_data_tensile()
+        self.load_data()
+        #self.show_grid_data_tensile()
         
         self.pushButton_9.setDisabled(True)
         connection = sqlite3.connect("tyr.db")              
@@ -1218,9 +1228,11 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
                  self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
                  self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
         connection.close()
+        
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
+        print("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
         results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
         for x in results:            
             self.comboBox.addItem("")
