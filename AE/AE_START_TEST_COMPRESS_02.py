@@ -1900,26 +1900,31 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
     
     
     def manual_stop(self):
-        self.sc_new.ser.write(b'*Q\r')
-        self.reset()
-        self.save_graph_data()
-        self.sc_new.save_data_flg=""
-        self.label_49.setText("Mannual stopped new.")
-        self.label_49.show()
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_11.setEnabled(True)
-        self.label_38.setText(str(self.cycle_num))
-        self.pushButton_12.setEnabled(True)
-        self.pushButton_13.setEnabled(True)
-        self.pushButton_14.setEnabled(True)
-        self.pushButton_15.setEnabled(True)
-        self.pushButton_16.setEnabled(True)
-        self.sc_new.arr_p=[0.0]
-        self.sc_new.arr_q=[0.0]
-        self.sc_new.arr_speed=[0.0]
-        self.lcdNumber.setProperty("value", 0.0)     #load
-        self.lcdNumber_2.setProperty("value",0.0)  #length
-        self.lcdNumber_3.setProperty("value",0.0)  #speed
+        try:            
+            #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+            print("\n\n\n\n##### SET :COIL stop  ######")
+            self.instrument.write_bit(1,1,5)   
+            #self.reset()
+            self.save_graph_data()
+            self.sc_new.save_data_flg=""
+            self.label_49.setText("Mannual stopped new.")
+            self.label_49.show()
+            self.pushButton_7.setDisabled(True)
+            self.pushButton_11.setEnabled(True)
+            self.label_38.setText(str(self.cycle_num))
+            self.pushButton_12.setEnabled(True)
+            self.pushButton_13.setEnabled(True)
+            self.pushButton_14.setEnabled(True)
+            self.pushButton_15.setEnabled(True)
+            self.pushButton_16.setEnabled(True)
+            self.sc_new.arr_p=[0.0]
+            self.sc_new.arr_q=[0.0]
+            self.sc_new.arr_speed=[0.0]
+            self.lcdNumber.setProperty("value", 0.0)     #load
+            self.lcdNumber_2.setProperty("value",0.0)  #length
+            self.lcdNumber_3.setProperty("value",0.0)  #speed
+        except IOError as e:
+                            print("Error to stop motor:"+str(e))
                 
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
@@ -3130,7 +3135,7 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
-                print("self.graph_type :"+str(self.graph_type))
+                #print("self.graph_type :"+str(self.graph_type))
                 if(self.graph_type=="Load Vs Compression"):
                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):                                
                                         self.line_cnt.set_data(self.arr_p,self.arr_q)

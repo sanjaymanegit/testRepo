@@ -473,6 +473,9 @@ class load_cell_set_Ui_MainWindow(object):
             elif(int(x[0])==4):
                 self.lineEdit_7.setText(str(x[1]))
                 self.lineEdit_12.setText(str(x[3]))
+                self.lineEdit_7.setDisabled(True)
+                self.lineEdit_12.setDisabled(True)
+                self.radioButton_4.setDisabled(True)
                 if(str(x[2]) == "ACTIVE"):
                     self.radioButton_4.setChecked(True)                    
                 else:

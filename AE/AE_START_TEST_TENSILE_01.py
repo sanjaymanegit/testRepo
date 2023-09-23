@@ -1452,58 +1452,7 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
             
         
         
-        
-    def loadcell_encoder_status(self):         
-        try:                
-            self.serial_3.flush()
-            self.serial_3.write(b'*D\r')
-            self.line_3 = self.serial_3.readline()
-            #print("encoder_status:o/p:"+str(self.line_3))
-        except IOError:
-            print("IO Errors")    
-                
-        xstr3=str(self.line_3)        
-        xstr3=xstr3[1:int(len(xstr3)-1)]
-        xstr2=xstr3.replace("'\\r","")        
-        #print("replace3('\r):"+str(xstr2))
-        xstr1=xstr2.replace("'","")        
-        #print("replace2('):"+str(xstr1))
-        xstr=xstr1.replace("\\r","")
-        #print("replace1(\r):"+str(xstr))        
-        self.buff=xstr.split("_")
-        
-        #print("length of array :"+str(len(self.buff)))
-        if(int(len(self.buff)) > 8 ):          
-            #print("Load Cell No... :"+str(self.buff[7]))
-            #print("Encoder No.. :"+str(self.buff[6]))
-            if(str(self.buff[6])=="2"):
-                self.load_cell_hi=0
-                self.load_cell_lo=1
-            else:
-                self.load_cell_hi=1
-                self.load_cell_lo=0
-                    
-            if(str(self.buff[7])=="2"):
-                self.extiometer=1
-                self.encoder=0
-            else:
-                self.extiometer=0
-                self.encoder=1
-                
-         
-        
-            if(self.extiometer==1):
-                #print("Proxy: Extentiometer")
-                self.radioButton_4.setChecked(True)
-                self.radioButton_3.setDisabled(True)
-                self.radioButton_3.setChecked(False)
-                self.radioButton_4.setEnabled(True)            
-            elif(self.encoder==1):
-                #print("Proxy: Encoder")
-                self.radioButton_3.setChecked(True)
-                self.radioButton_4.setDisabled(True)
-                self.radioButton_4.setChecked(False)
-                self.radioButton_3.setEnabled(True)
+   
                                    
     
     def onchage_combo(self):
@@ -1752,26 +1701,31 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     
     
     def manual_stop(self):
-        self.sc_new.ser.write(b'*Q\r')
-        self.reset()
-        self.save_graph_data()
-        self.sc_new.save_data_flg=""
-        self.label_49.setText("Mannual stopped new.")
-        self.label_49.show()
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_11.setEnabled(True)
-        self.label_38.setText(str(self.cycle_num))
-        self.pushButton_12.setEnabled(True)
-        self.pushButton_13.setEnabled(True)
-        self.pushButton_14.setEnabled(True)
-        self.pushButton_15.setEnabled(True)
-        self.pushButton_16.setEnabled(True)
-        self.sc_new.arr_p=[0.0]
-        self.sc_new.arr_q=[0.0]
-        self.sc_new.arr_speed=[0.0]
-        self.lcdNumber.setProperty("value", 0.0)     #load
-        self.lcdNumber_2.setProperty("value",0.0)  #length
-        self.lcdNumber_3.setProperty("value",0.0)  #speed
+        try:            
+            #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+            print("\n\n\n\n##### SET :COIL stop  ######")
+            self.instrument.write_bit(1,1,5)   
+            #self.reset()
+            self.save_graph_data()
+            self.sc_new.save_data_flg=""
+            self.label_49.setText("Mannual stopped new.")
+            self.label_49.show()
+            self.pushButton_7.setDisabled(True)
+            self.pushButton_11.setEnabled(True)
+            self.label_38.setText(str(self.cycle_num))
+            self.pushButton_12.setEnabled(True)
+            self.pushButton_13.setEnabled(True)
+            self.pushButton_14.setEnabled(True)
+            self.pushButton_15.setEnabled(True)
+            self.pushButton_16.setEnabled(True)
+            self.sc_new.arr_p=[0.0]
+            self.sc_new.arr_q=[0.0]
+            self.sc_new.arr_speed=[0.0]
+            self.lcdNumber.setProperty("value", 0.0)     #load
+            self.lcdNumber_2.setProperty("value",0.0)  #length
+            self.lcdNumber_3.setProperty("value",0.0)  #speed
+        except IOError as e:
+                            print("Error to stop motor:"+str(e))
                 
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
