@@ -1245,6 +1245,8 @@ class AE_START_TEST_COMPR_02_Ui_MainWindow(object):
         self.lineEdit_11.textChanged.connect(self.cs_area_calculation)
         self.pushButton_8.clicked.connect(self.go_for_test)
         self.pushButton_6.clicked.connect(MainWindow.close)
+        self.pushButton_6_1.clicked.connect(self.open_new_window_motor)
+        
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
