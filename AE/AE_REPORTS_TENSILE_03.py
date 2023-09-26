@@ -1410,14 +1410,14 @@ class AE_03_Ui_MainWindow(object):
         print("Old object status :"+str(self.timer31.isActive()))        
         self.validations()
         #self.set_graph_scale()
-        self.save_units()
+        #self.save_units()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
         close = close.exec()
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
-                         self.save_units();
+                         #self.save_units();
                          self.show_grid_data_tensile()
                          self.frame_3.show()
                          self.sc_blank =PlotCanvas(self) 
@@ -1425,31 +1425,8 @@ class AE_03_Ui_MainWindow(object):
                          
                          try:
                                 
-                                self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyUSB0',
-                                                    baudrate=19200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                                )
-                                '''
-                                self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyACM0',
-                                                    baudrate=115200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                                )
-                                '''
-                                self.timer3.setInterval(5000)        
-                                self.timer3.timeout.connect(self.loadcell_encoder_status)
-                                #self.timer3.timeout.connect(self.modbus_read_reg)                                
-                                self.timer3.start(1)
-                                self.pushButton_8.setDisabled(True)
+                                
+                                #self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
@@ -1530,20 +1507,6 @@ class AE_03_Ui_MainWindow(object):
                 
            
             
-            '''
-            if(self.load_cell_hi==1):
-                #print("Load Cell: Hi")
-                self.radioButton.setChecked(True)
-                self.radioButton_2.setDisabled(True)
-                self.radioButton_2.setChecked(False)
-                self.radioButton.setEnabled(True)
-            elif(self.load_cell_lo==1):
-                #print("Load Cell: Low")
-                self.radioButton_2.setChecked(True)
-                self.radioButton.setDisabled(True)
-                self.radioButton.setChecked(False)
-                self.radioButton_2.setEnabled(True)
-            '''
         
             if(self.extiometer==1):
                 #print("Proxy: Extentiometer")
@@ -1569,8 +1532,8 @@ class AE_03_Ui_MainWindow(object):
             self.label_16.setText(str(x[7])) #shape
             self.shape=str(x[7])
             self.lineEdit_9.setText(str(x[10])) #rev. speed
-            self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
-            self.comboBox_3.setCurrentText(str(x[12])) #UNIT_DISPLACEMENT
+            #self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
+            #self.comboBox_3.setCurrentText(str(x[12])) #UNIT_DISPLACEMENT
             if(str(x[7]) == "Rectangle"):
                    self.lineEdit_10.setText(str(x[4]))#THICKNESS
                    self.lineEdit_11.setText(str(x[5]))#WIDTH
