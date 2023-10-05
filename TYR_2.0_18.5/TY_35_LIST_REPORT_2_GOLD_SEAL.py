@@ -9,7 +9,6 @@ from TY_54_REPORT_PUSH_ON_FORCE import TY_54_Ui_MainWindow
 from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
 from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
-from TY_62_REPORT_PUNCTURE_RESISTANCE import TY_62_Ui_MainWindow
 
 
 
@@ -974,17 +973,9 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                             self.open_report_CLD2()
             elif(str(self.new_test_name) == "TEAR_PEAK_LOAD"):               
                             self.open_report_tear_peak_load()
-            elif(str(self.new_test_name) == "PUNCTURE_RESISTANCE"):               
-                            self.open_report_PUNCTURE_RESISTANCE()
             else:
                             self.open_report_tensile()
             
-        
-    def open_report_PUNCTURE_RESISTANCE(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui=TY_62_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
         
     def open_report_tear_peak_load(self):
         self.window = QtWidgets.QMainWindow()
