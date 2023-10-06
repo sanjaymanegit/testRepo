@@ -770,7 +770,9 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         
         '''
         self.pushButton_6.setText(_translate("MainWindow", "Export"))
+        self.pushButton_6.setDisabled(True)
         self.pushButton_7.setText(_translate("MainWindow", "Import"))
+        self.pushButton_7.setDisabled(True)
         self.label_47.setText(_translate("MainWindow", "Test Method:"))
         self.radioButton.setText(_translate("MainWindow", "Tensile"))
         self.radioButton_2.setText(_translate("MainWindow", "Compression"))
