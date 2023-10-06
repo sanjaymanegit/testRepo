@@ -564,6 +564,15 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         self.label_41.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_41.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_41.setObjectName("label_41")
+        
+        self.textEdit = QtWidgets.QTextEdit(self.frame)
+        self.textEdit.setGeometry(QtCore.QRect(1130, 230, 161, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        self.textEdit.setFont(font)
+        self.textEdit.setObjectName("textEdit")
+        '''
         self.textBrowser = QtWidgets.QTextBrowser(self.frame)
         self.textBrowser.setGeometry(QtCore.QRect(1130, 230, 161, 41))
         font = QtGui.QFont()
@@ -571,6 +580,7 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         font.setPointSize(10)
         self.textBrowser.setFont(font)
         self.textBrowser.setObjectName("textBrowser")
+        '''
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(850, 40, 101, 41))
         font = QtGui.QFont()
@@ -756,11 +766,9 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         self.label_37.setText(_translate("MainWindow", "(mm/min)"))
         self.label_39.setText(_translate("MainWindow", "(mm)"))
         self.label_41.setText(_translate("MainWindow", "(kg)"))
-        self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">TM -00JT002</p></body></html>"))
+        '''
+        
+        '''
         self.pushButton_6.setText(_translate("MainWindow", "Export"))
         self.pushButton_7.setText(_translate("MainWindow", "Import"))
         self.label_47.setText(_translate("MainWindow", "Test Method:"))
@@ -769,6 +777,346 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         self.lineEdit_15.setText(_translate("MainWindow", "Operator Name"))
         self.label_42.setText(_translate("MainWindow", "(kg)"))
         self.pushButton_9.clicked.connect(MainWindow.close)
+        self.lineEdit_5.setText("")
+        #self.label_35_1.setText("Rev.Test Speed:")
+        self.pushButton_9.clicked.connect(MainWindow.close)
+        
+        #self.comboBox_2.currentTextChanged.connect(self.specimen_diamentions)
+        
+       
+        self.timer1=QtCore.QTimer()
+        self.timer1.setInterval(1000)        
+        self.timer1.timeout.connect(self.device_date)
+        self.timer1.start(1)
+        
+        self.c_select_all_data()
+        self.c_rest_fun()
+        self.tableWidget.doubleClicked.connect(self.c_fetch_data_from_tw)
+        self.pushButton_2.clicked.connect(self.c_add_click) 
+        self.pushButton_3.clicked.connect(self.c_edit_click)       
+        self.pushButton_4.clicked.connect(self.c_delete_click)
+        self.pushButton_5.clicked.connect(self.c_rest_fun)
+        self.pushButton_6.clicked.connect(self.open_new_window)
+        self.pushButton_7.clicked.connect(self.open_new_window2)
+    
+    def device_date(self):     
+        self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
+       
+    
+    
+    
+   
+           
+    
+   
+    
+    
+    #Contractors            
+    def c_fetch_data_from_tw(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.dr_id=str(self.tableWidget.item(row, 0).text())
+            self.label_2.setText(str(self.tableWidget.item(row, 0).text()).zfill(3)) 
+            self.lineEdit_12.setText(str(self.tableWidget.item(row, 1).text())) #Part No           
+            self.lineEdit_7.setText(str(self.tableWidget.item(row, 2).text())) #Part Name
+            self.lineEdit_5.setText(str(self.tableWidget.item(row, 3).text())) # Test Type
+            self.lineEdit_15.setText(str(self.tableWidget.item(row, 4).text())) #Operator Name
+            self.textEdit.setText(str(self.tableWidget.item(row, 5).text())) #Material
+            self.lineEdit_3.setText(str(self.tableWidget.item(row, 6).text())) #Hardness
+            self.lineEdit_6.setText(str(self.tableWidget.item(row, 7).text())) #Max Load
+            self.lineEdit_10.setText(str(self.tableWidget.item(row, 8).text())) #Max . Deflection
+            self.lineEdit.setText(str(self.tableWidget.item(row, 9).text())) #pre load
+            self.lineEdit_4.setText(str(self.tableWidget.item(row, 10).text())) # test speed
+            self.pushButton_2.setDisabled(True) #add
+            self.pushButton_3.setEnabled(True)  #save
+            self.pushButton_4.setEnabled(True) #delete           
+            #self.pushButton_5.setEnabled(True) #reset
+            if(str(self.tableWidget.item(row, 11).text()) == "Tensile"):
+                self.radioButton.setChecked(True)
+                self.radioButton_2.setChecked(False)
+                self.test_mode="Tensile"                
+            elif(str(self.tableWidget.item(row, 11).text()) == "Compression"): 
+                self.radioButton_2.setChecked(True)
+                self.radioButton.setChecked(False)
+                self.test_mode="Compression"
+            else:    
+                self.radioButton.setChecked(True)
+                self.radioButton_2.setChecked(False)
+                self.test_mode="Tensile"
+            
+        else:    
+            self.label_2.setText("Please Select the record.")
+            self.label_2.show()
+            
+           
+    def c_rest_fun(self):
+        self.label_2.setText("")
+        self.lineEdit_12.setText("")
+        self.textEdit.setText("")
+        self.lineEdit_7.setText("")
+       
+        self.lineEdit_4.setText("")
+        self.lineEdit_5.setText("") #Rev Speed.
+        self.lineEdit_10.setText("")
+            
+        self.lineEdit.setText("")
+        self.lineEdit_3.setText("")
+        self.lineEdit_6.setText("")
+            
+        #self.lineEdit_8.setText("")
+        #self.lineEdit_11.setText("")
+        #self.lineEdit_13.setText("")
+        #self.lineEdit_14.setText("")
+        
+        self.pushButton_2.setEnabled(True) #add
+        self.pushButton_3.setDisabled(True)  #save
+        self.pushButton_4.setDisabled(True) #delete           
+        self.pushButton_5.setEnabled(True) #reset
+        
+        self.label_21.hide()
+        self.c_select_all_data()
+        self.label_2.setText("01")
+  
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'SPECIMEN_MST'")       
+        for x in results:           
+                 self.label_2.setText(str(x[0]).zfill(3))            
+        connection.close()         
+            
+   
+    def c_load_data(self):        
+        if(self.operation_flg=="ADD"):
+                #print("inside Add ")
+                self.c_add_data()
+        elif(self.operation_flg=="EDIT"):
+                #print("inside edit ")
+                self.c_edit_data()
+        elif(self.operation_flg=="DELETE"):
+                #print("inside delete ")
+                self.c_delete_data()
+        else:
+                print("Invalid Operation.")
+         
+    def c_add_click(self):
+        self.operation_flg="ADD"       
+        self.c_load_data()
+        
+    def c_add_data(self):
+        self.validations()
+        self.check_for_dup_spec_name_add()
+        if(self.dup_spec_name_flag == "Y"):
+              self.label_21.setText("Product Name is already exist.")           
+              self.label_21.show()
+        else:                
+            if(self.label_2.text() != ""):            
+                if(self.go_ahead=="Yes"):
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("INSERT INTO SPECIMEN_MST(PART_NO,PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE) VALUES('"+str(self.part_no)+"','"+str(self.part_name)+"','"+str(self.test_type)+"','"+str(self.operator)+"','"+str(self.material)+"','"+str(self.hardness)+"','"+str(self.max_load)+"','"+str(self.max_deflection)+"','"+str(self.pre_load)+"','"+str(self.test_speed)+"','"+str(self.test_mode)+"')")                    
+                    connection.commit();                    
+                    connection.close()  
+              
+                    self.label_21.setText("Record Added Successfully.")           
+                    self.label_21.show()
+            else :
+                self.label_21.setText("Id is Empty.")
+                self.label_21.show()
+            
+        self.c_select_all_data()
+    
+    def c_edit_click(self):        
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="EDIT"
+            self.c_load_data()
+        else:    
+            self.label_21.setText("Please Select the record.")
+            self.label_21.show() 
+    
+    def c_edit_data(self):
+        self.validations()
+        self.check_for_dup_spec_name_upd()
+        if(self.dup_spec_name_flag == "Y"):
+              self.label_21.setText("Spec. Name is already exist.")           
+              self.label_21.show()
+        else:
+              if(self.label_2.text() != "" and self.go_ahead == 'Yes'):
+                connection = sqlite3.connect("tyr.db")
+                with connection:        
+                        cursor = connection.cursor()
+                        cursor.execute("UPDATE SPECIMEN_MST SET PART_NO='"+str(self.part_no)+"',PART_NAME='"+str(self.part_name)+"',MATERIAL='"+str(self.material)+"',MAX_DEFLECTION='"+str(self.max_deflection)+"', MAX_LOAD='"+str(self.max_load)+"',MOTOR_SPEED='"+str(self.test_speed)+"',PRE_LOAD='"+str(self.pre_load)+"' ,HARDNESS='"+str(self.hardness)+"', TEST_TYPE='"+str(self.test_type)+"' , OPERATOR='"+str(self.operator)+"',TEST_MODE='"+str(self.test_mode)+"'  WHERE  SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                connection.commit();                    
+                connection.close()
+                self.label_21.setText("Record Saved Successfully.")       
+                self.label_21.show()
+                self.c_select_all_data()
+    
+    def validations(self):
+        self.part_no=""
+        self.part_name=""
+        self.max_deflection=""
+        self.max_load=""
+        self.test_speed=""
+        self.pre_load=""
+        self.hardness=""
+        self.test_type=""
+        self.material=""
+        self.operator=""
+        self.test_mode=""
+        self.go_ahead="No"
+        if(self.lineEdit_12.text() == ""):
+             self.label_21.setText("Part Number is Empty.")
+             self.label_21.show()  
+        elif(self.lineEdit_7.text()== ""):
+             self.label_21.setText("Part Name is Empty.")
+             self.label_21.show()
+        elif(self.lineEdit_10.text()== ""):
+             self.label_21.setText("Max. Deflection is Empty.")
+             self.label_21.show()        
+        elif(self.lineEdit_4.text() == ""):
+             self.label_21.setText("Test Speed Should not null.")
+             self.label_21.show()         
+        elif(self.lineEdit_6.text() == ""):
+             self.label_21.setText("Max Load is Empty.")
+             self.label_21.show() 
+        elif(self.lineEdit_15.text() == ""):
+             self.label_21.setText("Operator Name is Empty.")
+             self.label_21.show()
+        elif(self.lineEdit.text() == ""):
+             self.label_21.setText("Pre Load is Empty.")
+             self.label_21.show()
+        elif(self.lineEdit_3.text() == ""):
+             self.label_21.setText("Hardness is Empty.")
+             self.label_21.show()
+        elif(self.lineEdit_5.text() == ""):
+             self.label_21.setText("Test Type is Empty.")
+             self.label_21.show()
+        else:
+             self.part_no=str(self.lineEdit_12.text())
+             self.part_name=str(self.lineEdit_7.text())
+             self.max_deflection=str(self.lineEdit_10.text())
+             self.max_load=str(self.lineEdit_6.text())
+             self.test_speed=str(self.lineEdit_4.text())
+             self.pre_load=str(self.lineEdit.text())
+             self.hardness=str(self.lineEdit_3.text())
+             self.test_type=str(self.lineEdit_5.text())
+             self.material=self.textEdit.toPlainText()
+             self.operator=str(self.lineEdit_15.text())
+             if(self.radioButton.isChecked()):
+                  self.test_mode="Tensile"   
+             elif(self.radioButton_2.isChecked()):
+                  self.test_mode="Compression"   
+             else:
+                  self.test_mode="Tensile"
+             self.go_ahead="Yes"
+        
+    def check_for_dup_spec_name_add(self):
+        self.dup_spec_name_flag="N"
+        if(self.lineEdit_12.text() != ""):
+             connection = sqlite3.connect("tyr.db")
+             results=connection.execute("select count(*) from SPECIMEN_MST WHERE PART_NO = '"+str(self.lineEdit_12.text())+"'")       
+             for x in results:           
+                     if(int(x[0]) > 0):
+                          self.dup_spec_name_flag="Y"
+                     else:
+                          self.dup_spec_name_flag="N"                         
+             connection.close()
+        else:
+             print("Spec Name is Empty.")
+    
+    
+    def check_for_dup_spec_name_upd(self):
+        self.dup_spec_name_flag="N"
+        if(self.lineEdit_12.text() != ""):
+             connection = sqlite3.connect("tyr.db")
+             print("select count(*) from SPECIMEN_MST WHERE PART_NO = '"+str(self.lineEdit_12.text())+"' and SPECIMEN_ID !='"+str(self.dr_id)+"'") 
+             results=connection.execute("select count(*) from SPECIMEN_MST WHERE PART_NO = '"+str(self.lineEdit_12.text())+"' and SPECIMEN_ID !='"+str(self.dr_id)+"'")       
+             for x in results:           
+                     if(int(x[0]) > 0):
+                          self.dup_spec_name_flag="Y"
+                     else:
+                          self.dup_spec_name_flag="N"                         
+             connection.close()
+        else:
+             print("Spec Name is Empty.")
+        
+        
+    
+    def c_delete_click(self):
+        row = self.tableWidget.currentRow()     
+        if(row != -1 ):
+            self.operation_flg="DELETE"
+            self.c_load_data()
+        else:    
+            self.label_21.setText("Please Select the record.")
+            self.label_21.show()        
+     
+      
+    def c_delete_data(self):
+        if(self.label_2.text() != ""):
+            close = QMessageBox()
+            close.setText("Confirm Deleteing Specimen ID : "+str(self.dr_id))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
+            if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")
+                    with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("DELETE FROM SPECIMEN_MST WHERE SPECIMEN_ID ='"+str(self.dr_id)+"'")                    
+                    connection.commit();                    
+                    connection.close()
+                    
+                    self.label_21.setText("Record Deleted Successfully.")                   
+                    self.label_21.show()                    
+                    self.c_select_all_data()
+            else:
+                    self.label_21.setText("Canceled Delete..")                   
+                    self.label_21.show()
+            
+         
+    def c_select_all_data(self):     
+        self.c_delete_all_records()        
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)       
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(12)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)        
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Part No', 'Part Name',' Test Type ','Operator',' Material  ','Hardness','Max. Load','Max. Deflection','Pre Load','Test Speed','Test Method'] )       
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select SPECIMEN_ID,PART_NO,PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE FROM SPECIMEN_MST")                        
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))                
+        connection.close()   
+        #self.tableWidget.resizeColumnsToContents()
+        
+        
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        
+    
+    def c_delete_all_records(self):
+        i = self.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            self.tableWidget.removeRow(i)
+    
+    def open_new_window(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_46_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window2(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_47_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+  
 
 
 if __name__ == "__main__":
