@@ -218,6 +218,7 @@ class TY_63_Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(7)
+        
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -233,6 +234,7 @@ class TY_63_Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(6, item)
         item = QtWidgets.QTableWidgetItem()
+        
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -1256,15 +1258,18 @@ class TY_63_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "M/C No :"))
         self.label_27.setText(_translate("MainWindow", "Operator :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg."))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb."))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "N."))
+        
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
-        self.label_30.setText(_translate("MainWindow", "Deflection \n"
-" Unit:"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm."))
+        
+        self.label_30.setText(_translate("MainWindow", "Deflection \n Unit:"))
+        
+        self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch."))
+        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))        
+        
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
@@ -1295,7 +1300,7 @@ class TY_63_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Deflection"))
         self.label_26.setText(_translate("MainWindow", "01"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
-        self.lineEdit_25.setText(_translate("MainWindow", "MRF"))
+        self.lineEdit_25.setText(_translate("MainWindow", ""))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         #self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
@@ -1315,6 +1320,9 @@ class TY_63_Ui_MainWindow(object):
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
+        self.radioButton.clicked.connect(self.radiobutt_on_change)
+        self.radioButton_2.clicked.connect(self.radiobutt_on_change)
+        
         self.test_method=""                             
         self.failure_mod=""
         self.tmperature=""
@@ -1336,19 +1344,81 @@ class TY_63_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+    
     def load_unit_onchange(self):
-        self.i=0        
-        if(str(self.comboBox_2.currentText())=="KN"):        
-              self.comboBox_3.setCurrentText(str("Mm"))
+        self.i=0
+        self.comboBox_3.clear()
+        if(str(self.comboBox_2.currentText())=="KN"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1
         elif(str(self.comboBox_2.currentText())=="MPa"):
-              self.comboBox_3.setCurrentText(str("Mm"))
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="Kg"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Cm")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="Lb"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Inch")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="N"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1
+        elif(str(self.comboBox_2.currentText())=="gm"):
+              self.comboBox_3.addItem("")
+              self.comboBox_3.setItemText(self.i,"Mm")
+              self.i=self.i+1   
         else:
-              print("No change in combo3")
+              #print("No change in combo3")
+              self.comboBox_3.setDisabled(True)
         
         
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
+    def radiobutt_on_change(self):
+        if(self.radioButton.isChecked()):
+                self.label_53.setText("Load:")
+                self.label_55.setText("Load:")
+                self.label_57.setText("Load:")
+                self.label_59.setText("Load:")
+                self.label_61.setText("Load:")
+                self.label_54.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_56.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_58.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_60.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_62.setText("("+str(self.comboBox_2.currentText())+")")
+        elif(self.radioButton_2.isChecked()):
+                self.label_53.setText("Deflection:")
+                self.label_55.setText("Deflection:")
+                self.label_57.setText("Deflection:")
+                self.label_59.setText("Deflection:")
+                self.label_61.setText("Deflection:")                
+                self.label_54.setText("("+str(self.comboBox_3.currentText())+")")
+                self.label_56.setText("("+str(self.comboBox_3.currentText())+")")
+                self.label_58.setText("("+str(self.comboBox_3.currentText())+")")
+                self.label_60.setText("("+str(self.comboBox_3.currentText())+")")
+                self.label_62.setText("("+str(self.comboBox_3.currentText())+")")
+        else:
+                self.label_53.setText("Load:")
+                self.label_55.setText("Load:")
+                self.label_57.setText("Load:")
+                self.label_59.setText("Load:")
+                self.label_61.setText("Load:")                
+                self.label_54.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_56.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_58.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_60.setText("("+str(self.comboBox_2.currentText())+")")
+                self.label_62.setText("("+str(self.comboBox_2.currentText())+")")
+            
+        
     def new_test_reset(self):
         self.cycle_num=0
         self.label_38.setText(str(self.cycle_num))
@@ -1375,7 +1445,7 @@ class TY_63_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
+        results=connection.execute("SELECT PART_NO FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            
@@ -1390,10 +1460,11 @@ class TY_63_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,NEW_TEST_PARTY_NAME FROM GLOBAL_VAR") 
         for x in results:            
             self.lineEdit_10.setText(str(x[0]))
             self.lineEdit_11.setText(str(x[1]))
+            self.lineEdit_25.setText(str(x[2]))
         connection.close()
         
         self.sc_blank =PlotCanvas_blank(self) 
@@ -1426,9 +1497,36 @@ class TY_63_Ui_MainWindow(object):
     def validations(self):        
         self.go_ahead="No"
         self.msg=""
-        if(self.lineEdit_15.text() == ""):
-              self.msg="Test Details is Empty."
-              print("not ok")
+        if(self.lineEdit_25.text() == ""):
+              self.msg="Customer Name Should not Empty."              
+        elif(self.lineEdit_8.text() == ""):
+              self.msg="Test Type Should not Empty."
+        elif(self.lineEdit_15.text() == ""):
+              self.msg="Part Name Should not Empty."
+        elif(self.lineEdit_16.text() == ""):
+              self.msg="Batch Number Should not Empty."
+        elif(self.lineEdit_19.text() == ""):
+              self.msg="Material Should not Empty."
+        elif(self.lineEdit_9.text() == ""):
+              self.msg="Test Speed Should not Empty."
+        elif(self.lineEdit_18.text() == ""):
+              self.msg="Max Deflection Should not Empty."
+        elif(self.lineEdit_17.text() == ""):
+              self.msg="Max Load Should not Empty."
+        elif(self.lineEdit_10.text() == ""):
+              self.msg="Hardness Should not Empty."
+        elif(self.lineEdit_10.text() == ""):
+              self.msg="Hardness Should not Empty."
+        elif(self.lineEdit_11.text() == ""):
+              self.msg="Machine No Should not Empty."
+        elif(self.lineEdit_12.text() == ""):
+              self.msg="Operator Should not Empty."
+        elif(self.lineEdit_7.text() == ""):
+              self.msg="Pre Load Should not Empty."
+        elif(self.lineEdit_13.text() == ""):
+              self.msg="Graph Scale x-axsis Should not Empty."
+        elif(self.lineEdit_14.text() == ""):
+              self.msg="Graph Scale y-axsis  Should not Empty."
         else:
                self.msg="Confirm to start Test."
                self.go_ahead="Yes"
@@ -1441,23 +1539,19 @@ class TY_63_Ui_MainWindow(object):
                        self.test_id_exist="No"                     
                connection.close() 
                
-               if(self.test_id_exist=="Yes"):
-                   
+               if(self.test_id_exist=="Yes"):                   
                      ### Update global var
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                                 cursor = connection.cursor()                  
-                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
-                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME='"+str(self.comboBox.currentText())+"',BATCH_ID='"+str(self.lineEdit_16.text())+"',PARTY_NAME='"+str(self.label_48.text())+"',GUAGE_LENGTH='"+str(self.lineEdit_12.text())+"',MOTOR_SPEED='"+str(self.lineEdit_8.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
-                        
-                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
-                              
+                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE TEST_MST SET PART_NO="+str(self.comboBox.currentText())+"',PARTY_NAME='"+str(self.lineEdit_25.text())+"',PART_NAME='"+str(self.lineEdit_15.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")                                
+                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")                               
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                 cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                 cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                                cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE=''")
-                     
+                    
                         connection.commit();
                         connection.close()
                         
@@ -1466,14 +1560,13 @@ class TY_63_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
-                              
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','','PUSH_ON_FORCE','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
+                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
+                              cursor.execute("INSERT INTO TEST_MST(BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','','COMPRESSION_3','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                              cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE=''")
+                              
                         connection.commit();
                         connection.close()
        
@@ -1514,11 +1607,7 @@ class TY_63_Ui_MainWindow(object):
                         self.frame_3.show()
                         self.sc_blank =PlotCanvas_blank(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-                        '''
                         
-
-                         
-                        '''
                         try:            
                             connection = sqlite3.connect("tyr.db")
                             results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
@@ -1528,30 +1617,8 @@ class TY_63_Ui_MainWindow(object):
                                  self.non_modbus_port=str(x[6])
                             connection.close()
                             
-                            if(self.modbus_flag == 'Y'):
-                                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
-                                if(self.non_modbus_port=="/dev/ttyUSB1"):
-                                        self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyUSB1',
-                                                    baudrate=19200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                )
-                                else:
-                                        self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyUSB0',
-                                                    baudrate=19200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                )
-                            else:
-                                       self.serial_3 = serial.Serial(
+                           
+                            self.serial_3 = serial.Serial(
                                                     port='/dev/ttyUSB0',
                                                     baudrate=19200,
                                                     bytesize=serial.EIGHTBITS,
@@ -1600,25 +1667,31 @@ class TY_63_Ui_MainWindow(object):
     
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select C_A_AREA,GUAGE_LENGTH_MM,MOTOR_SPEED,PARTY_NAME,THICKNESS,WIDTH,DIAMETER,SHAPE ,IN_DIAMETER_MM,OUTER_DIAMETER_MM,REV_MOTOR_SPEED,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL FROM SPECIMEN_MST WHERE PART_NO='"+self.comboBox.currentText()+"'")                 
         for x in results:
-            self.lineEdit_12.setText(str(x[1])) # GUAGE LENGTH
-            self.lineEdit_8.setText(str(x[2])) # SPEED
-            self.label_48.setText(str(x[3])) # Customer Name
-            self.label_16.setText(str(x[13])) #shape
-            self.shape=str(x[7])
-            self.lineEdit_9.setText(str(x[10])) #rev. speed
-            self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
-            self.comboBox_3.setCurrentText(str(x[12])) #UNIT_Travel
-                     
-        
+            self.lineEdit_15.setText(str(x[0])) # PART_NAME
+            self.lineEdit_8.setText(str(x[1])) # TEST_TYPE
+            self.lineEdit_12.setText(str(x[2])) # OPERATOR
+            self.lineEdit_19.setText(str(x[3])) # Material
+            self.lineEdit_10.setText(str(x[4])) # Hardness
+            self.lineEdit_17.setText(str(x[5])) # MAX LOAD
+            self.lineEdit_18.setText(str(x[6])) # MAX DEFLECTION
+            self.lineEdit_7.setText(str(x[7])) # PRE LOAD
+            self.lineEdit_9.setText(str(x[8])) # TEST SPEED 
+            self.label_24.setText(str(x[9])) #TEST MODE          
+            self.comboBox_2.setCurrentText(str(x[10])) #UNIT_LOAD
+            self.comboBox_3.setCurrentText(str(x[11])) #UNIT_Travel
         connection.close()
         #self.click_onRadiobutt()
         #self.cs_area_calculation()
         
-    def set_graph_scale(self):
-        self.x_axis_val="0.0"
-        self.y_axis_val="0.0"        
+    def set_graph_scale(self):        
+        self.x_axis_val=0.0
+        self.x_axis_val_CM=0.0
+        self.x_axis_val_INCH=0.0
+        self.y_axis_val=0.0
+        self.y_axis_val_N=0.0
+        self.y_axis_val_LB=0.0
         try:
                 self.x_axis_val=int(self.lineEdit_13.text())
         except ValueError as e:
@@ -1638,13 +1711,64 @@ class TY_63_Ui_MainWindow(object):
         with connection:        
            cursor = connection.cursor()
            cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_2='"+str(self.x_axis_val)+"', GRAPH_SCALE_CELL_1='"+str(self.y_axis_val)+"'")
-           print("Graph Scale set Ok !!")
-           self.label_50.setText("Graph Scale set Ok !!")
+           print("Graph Scale set Ok !!")           
            self.frame_3.hide()
            self.pushButton_8.setEnabled(True)
            self.pushButton_9.setEnabled(True)
         connection.commit();
         connection.close()
+        
+        self.y_axis_val=float(self.y_axis_val)            
+        #elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
+        if(self.comboBox_2.currentText()== "Kg"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "N"):
+            self.y_axis_val_N=self.y_axis_val           
+            self.y_axis_val_LB=(self.y_axis_val)*0.2248090795   #N to LB
+            self.y_axis_val=(self.y_axis_val)*0.1019716    # N to KG
+        elif(self.comboBox_2.currentText()== "MPa"):
+            self.y_axis_val=float(self.y_axis_val)
+            self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
+            self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
+        elif(self.comboBox_2.currentText()== "Lb"):
+            self.y_axis_val_LB=self.y_axis_val
+            self.y_axis_val_N=(self.y_axis_val)*4.4482189159  #LB to Newton
+            self.y_axis_val=(self.y_axis_val)*0.45359237  #LB to Kg            
+        else:
+            self.y_axis_val=0.0
+            self.y_axis_val_N=0.0
+            self.y_axis_val_LB=0.0
+            
+        self.x_axis_val=float(self.x_axis_val)        
+        if(self.comboBox_3.currentText()== "Mm"):
+             self.x_axis_val=float(self.x_axis_val)
+             self.x_axis_val_CM=float(self.x_axis_val)*0.1  # Mm to CM 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.0393701 # MM to Inch              
+        elif(self.comboBox_3.currentText()== "Cm"):
+             self.x_axis_val_CM=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*10  #Cm to Mm 
+             self.x_axis_val_INCH=float(self.x_axis_val)*0.393701 # CM to Inch
+        elif(self.comboBox_3.currentText()== "Inch"):
+             self.x_axis_val_INCH=float(self.x_axis_val)
+             self.x_axis_val=float(self.x_axis_val)*25.4 #Inch to Mm 
+             self.x_axis_val_CM=float(self.x_axis_val)*2.54 # inch to CM
+        else:
+             self.x_axis_val=0.0
+             self.x_axis_val_CM=0.0
+             self.x_axis_val_INCH=0.0
+        
+        connection = sqlite3.connect("tyr.db")
+        with connection:        
+           cursor = connection.cursor()
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH='"+str(self.x_axis_val)+"', GRAPH_SCAL_Y_LOAD='"+str(self.y_axis_val)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM='"+str(self.x_axis_val_CM)+"', GRAPH_SCAL_Y_LOAD_N='"+str(self.y_axis_val_N)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH='"+str(self.x_axis_val_INCH)+"', GRAPH_SCAL_Y_LOAD_LB='"+str(self.y_axis_val_LB)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+           print("Conversion of Graph Scale is Ok !!")
+        connection.commit();
+        connection.close()
+        
         
     
     
