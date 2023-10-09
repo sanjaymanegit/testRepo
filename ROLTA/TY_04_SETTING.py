@@ -464,6 +464,7 @@ class TY_04_Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Error: Please fill required mandatory fileds"))
         self.pushButton_14.setText(_translate("MainWindow", "Return"))
         self.pushButton_14_1.setText(_translate("MainWindow", "E-Mail Setup"))
+        self.pushButton_14_1.hide()
         self.pushButton_14_2.setText("Copy PDF reports to USB")
         self.groupBox_2.setTitle(_translate("MainWindow", "Configuration"))
         self.label_4.setText(_translate("MainWindow", "AutoReverse Time(Sec):"))

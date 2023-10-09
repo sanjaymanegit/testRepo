@@ -91,15 +91,16 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3_1.setGeometry(QtCore.QRect(1210, 150, 400, 300))
+        self.pushButton_3_1.setGeometry(QtCore.QRect(1210, 150, 400, 200))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton_3_1.setFont(font)
         self.pushButton_3_1.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./images/GIGSYSlogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #icon2.addPixmap(QtGui.QPixmap("./images/GIGSYSlogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #GIG_SYS_NEWLOGO1.jpg
+        icon2.addPixmap(QtGui.QPixmap("./images/GIG_SYS_NEWLOGO1.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3_1.setIcon(icon2)
-        self.pushButton_3_1.setIconSize(QtCore.QSize(800, 900))
+        self.pushButton_3_1.setIconSize(QtCore.QSize(350, 200))
 #        self.pushButton_3_1.setStyleSheet("border-radius:20px;\n"
 #"background-color: rgb(255, 212, 238);")
         self.pushButton_3_1.setObjectName("pushButton_3_1")

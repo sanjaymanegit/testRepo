@@ -406,12 +406,12 @@ class RL_01_Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_15.setObjectName("pushButton_15")
         self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(1570, 20, 180, 111))
+        self.pushButton.setGeometry(QtCore.QRect(1540, 20, 230, 111))
         self.pushButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./images/GIGSYSlogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./images/GIG_SYS_NEWLOGO1.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QtCore.QSize(150, 110))
+        self.pushButton.setIconSize(QtCore.QSize(200, 160))
         self.pushButton.setObjectName("pushButton")
         self.label_149 = QtWidgets.QLabel(self.frame)
         self.label_149.setGeometry(QtCore.QRect(960, 700, 91, 31))
@@ -534,8 +534,18 @@ class RL_01_Ui_MainWindow(object):
         self.label_15.setStyleSheet("color: rgb(170, 0, 127);")
         self.label_15.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_15.setObjectName("label_15")
+        
+        self.pushButton_img_logo = QtWidgets.QPushButton(self.frame)
+        self.pushButton_img_logo.setGeometry(QtCore.QRect(390, 15, 210, 51))
+        self.pushButton_img_logo.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("images/logo_new_2.jpeg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_img_logo.setIcon(icon1)
+        self.pushButton_img_logo.setIconSize(QtCore.QSize(200, 160))
+        self.pushButton_img_logo.setObjectName("pushButton_img_logo")
+        
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(410, 20, 371, 41))
+        self.label.setGeometry(QtCore.QRect(570, 20, 290, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(18)
@@ -544,10 +554,15 @@ class RL_01_Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
+        
+        
+        
+        
+        
         self.label_2 = QtWidgets.QLabel(self.frame)
         self.label_2.setGeometry(QtCore.QRect(400, 80, 401, 51))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.label_2.setFont(font)
@@ -555,7 +570,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.line_2 = QtWidgets.QFrame(self.frame)
-        self.line_2.setGeometry(QtCore.QRect(410, 60, 371, 16))
+        self.line_2.setGeometry(QtCore.QRect(410, 65, 371, 16))
         self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_2.setLineWidth(2)
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
@@ -859,6 +874,22 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_23.setStyleSheet("background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_23.setObjectName("pushButton_23")
+        
+        
+        self.pushButton_23_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_23_1.setGeometry(QtCore.QRect(600, 830, 161, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_23_1.setFont(font)
+        self.pushButton_23_1.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_23_1.setObjectName("pushButton_23_1")
+        
+        
+        
         self.pushButton_24 = QtWidgets.QPushButton(self.frame)
         self.pushButton_24.setGeometry(QtCore.QRect(1540, 720, 161, 21))
         font = QtGui.QFont()
@@ -870,6 +901,13 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_24.setStyleSheet("background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_24.setObjectName("pushButton_24")
+        
+        
+        
+        
+        
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 21))
@@ -911,6 +949,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
+        self.pushButton_5.hide()
         self.pushButton_6.setText(_translate("MainWindow", "Remark"))
         self.pushButton_7.setText(_translate("MainWindow", "Report View"))
         self.pushButton_8.setText(_translate("MainWindow", "Report Print"))
@@ -960,12 +999,7 @@ class RL_01_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Timestamp"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
-#         item = self.tableWidget.item(0, 0)
-#         item.setText(_translate("MainWindow", "Pressure"))
-#         item = self.tableWidget.item(0, 1)
-#         item.setText(_translate("MainWindow", "233.2"))
-#         item = self.tableWidget.item(0, 2)
-#         item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         item = self.tableWidget_2.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -977,12 +1011,7 @@ class RL_01_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Timestamp"))
         __sortingEnabled = self.tableWidget_2.isSortingEnabled()
         self.tableWidget_2.setSortingEnabled(False)
-#         item = self.tableWidget_2.item(0, 0)
-#         item.setText(_translate("MainWindow", "Expansion"))
-#         item = self.tableWidget_2.item(0, 1)
-#         item.setText(_translate("MainWindow", "233.2"))
-#         item = self.tableWidget_2.item(0, 2)
-#         item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+
         self.tableWidget_2.setSortingEnabled(__sortingEnabled)
         item = self.tableWidget_3.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
@@ -994,12 +1023,7 @@ class RL_01_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Timestamp"))
         __sortingEnabled = self.tableWidget_3.isSortingEnabled()
         self.tableWidget_3.setSortingEnabled(False)
-#         item = self.tableWidget_3.item(0, 0)
-#         item.setText(_translate("MainWindow", "Stress"))
-#         item = self.tableWidget_3.item(0, 1)
-#         item.setText(_translate("MainWindow", "233.2"))
-#         item = self.tableWidget_3.item(0, 2)
-#         item.setText(_translate("MainWindow", "22-11-2011 03:44:55"))
+
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
@@ -1007,14 +1031,19 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Stress Vs Strain"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Pressure Vs Expansion"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Pressure Vs Time"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "Expansion Vs Time"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Time"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "Strain Vs Time"))
+        
+        self.comboBox.setItemText(0, _translate("MainWindow", "Pressure Vs Time"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Expansion Vs Time"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Stress Vs Time"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "Strain Vs Time"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "Stress Vs Strain"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "Pressure Vs Expansion"))
+        
+        
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_23.setText(_translate("MainWindow", "Email Log"))
+        self.pushButton_23.hide()
+        self.pushButton_23_1.setText(_translate("MainWindow", "Set Zero"))
         self.pushButton_24.setText(_translate("MainWindow", "Reset Graph"))
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
@@ -1038,6 +1067,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_7.clicked.connect(self.open_pdf)
         self.pushButton_20.clicked.connect(self.open_log_pdf)
         self.pushButton_23.clicked.connect(self.open_log_email)
+        self.pushButton_23_1.clicked.connect(self.set_zero)
         
         self.pushButton_6.clicked.connect(self.open_comment_popup)
         self.pushButton_8.clicked.connect(self.print_file)
@@ -1064,6 +1094,15 @@ class RL_01_Ui_MainWindow(object):
         self.load_data()
         #self.graph_type_pressure()
     
+    
+    def set_zero(self):
+        self.lcdNumber.setProperty("value", 0.0)
+        self.lcdNumber_2.setProperty("value", 0.0)
+        self.lineEdit_48.setText("0")
+        self.lineEdit_52.setText("0")
+        self.label_15.setText("Set Zero Done.")
+        self.pushButton_21.show()
+        
     def start_test_1_or_2(self):
         if(self.graph_group_no==1):
                 self.start_test_expansion()
@@ -1755,8 +1794,8 @@ class RL_01_Ui_MainWindow(object):
                   self.timer4.stop()
                   print("Stopped timer4")
                   
-#            self.label_15.show()
-#            self.label_15.setText("Data Saved Successful")
+            #self.label_15.show()
+            #self.label_15.setText("Data Saved Successful")
                   
             self.lcdNumber.setProperty("value", 0.0)
             self.lcdNumber_2.setProperty("value", 0.0)
