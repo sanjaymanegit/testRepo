@@ -317,7 +317,9 @@ class RL_01_Ui_MainWindow(object):
         self.label_144.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_144.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_144.setObjectName("label_144")
-        self.lineEdit_48 = QtWidgets.QLineEdit(self.frame)
+        
+        #self.lineEdit_48 = QtWidgets.QLineEdit(self.frame) #QtWidgets.QLCDNumber(self.frame)
+        self.lineEdit_48 = QtWidgets.QLCDNumber(self.frame)
         self.lineEdit_48.setGeometry(QtCore.QRect(250, 730, 81, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -325,8 +327,11 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_48.setFont(font)
-        self.lineEdit_48.setStyleSheet("color: rgb(0, 0, 127);")
-        self.lineEdit_48.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        #self.lineEdit_48.setStyleSheet("color: rgb(0, 0, 127);")
+        self.lineEdit_48.setStyleSheet("background-color: rgb(0, 0, 0);\n"
+"font: 10pt \"MS Sans Serif\";\n"
+"color: rgb(255, 0, 0);")
+        #self.lineEdit_48.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_48.setObjectName("lineEdit_48")
         self.label_145 = QtWidgets.QLabel(self.frame)
         self.label_145.setGeometry(QtCore.QRect(10, 700, 71, 31))
@@ -383,7 +388,8 @@ class RL_01_Ui_MainWindow(object):
         self.label_148.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_148.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_148.setObjectName("label_148")
-        self.lineEdit_52 = QtWidgets.QLineEdit(self.frame)
+        #self.lineEdit_52 = QtWidgets.QLineEdit(self.frame) #QLCDNumber
+        self.lineEdit_52 = QtWidgets.QLCDNumber(self.frame)
         self.lineEdit_52.setGeometry(QtCore.QRect(360, 730, 91, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -391,8 +397,11 @@ class RL_01_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_52.setFont(font)
-        self.lineEdit_52.setStyleSheet("color: rgb(0, 0, 127);")
-        self.lineEdit_52.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        #self.lineEdit_52.setStyleSheet("color: rgb(0, 0, 127);")
+        self.lineEdit_52.setStyleSheet("background-color: rgb(0, 0, 0);\n"
+"font: 10pt \"MS Sans Serif\";\n"
+"color: rgb(255, 0, 0);")
+        #self.lineEdit_52.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_52.setObjectName("lineEdit_52")
         self.pushButton_15 = QtWidgets.QPushButton(self.frame)
         self.pushButton_15.setGeometry(QtCore.QRect(910, 30, 121, 31))
@@ -966,13 +975,15 @@ class RL_01_Ui_MainWindow(object):
         self.label_143.setText(_translate("MainWindow", "Thickness (mm):"))
         self.lineEdit_47.setText(_translate("MainWindow", "0"))
         self.label_144.setText(_translate("MainWindow", "Circumference (mm):"))
-        self.lineEdit_48.setText(_translate("MainWindow", "0"))
+        #self.lineEdit_48.setText(_translate("MainWindow", "0")) #
+        self.lineEdit_48.setProperty("Value",0.0)
         self.label_145.setText(_translate("MainWindow", "Pressure :"))
         self.label_146.setText(_translate("MainWindow", "Expansion :"))
         self.label_147.setText(_translate("MainWindow", "Stress :"))
         self.lineEdit_51.setText(_translate("MainWindow", "0"))
         self.label_148.setText(_translate("MainWindow", "Strain :"))
-        self.lineEdit_52.setText(_translate("MainWindow", "0"))
+        #self.lineEdit_52.setText(_translate("MainWindow", "0"))
+        self.lineEdit_52.setProperty("Value",0.0)
         self.pushButton_15.setText(_translate("MainWindow", "Return"))
         self.label_149.setText(_translate("MainWindow", "Elapsed Time:"))
         self.lineEdit_53.setText(_translate("MainWindow", "00:00:00"))
@@ -1098,8 +1109,8 @@ class RL_01_Ui_MainWindow(object):
     def set_zero(self):
         self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber_2.setProperty("value", 0.0)
-        self.lineEdit_48.setText("0")
-        self.lineEdit_52.setText("0")
+        self.lineEdit_48.setProperty("value", 0.0)
+        self.lineEdit_52.setProperty("value", 0.0)
         self.label_15.setText("Set Zero Done.")
         self.pushButton_21.show()
         
@@ -1806,8 +1817,10 @@ class RL_01_Ui_MainWindow(object):
             self.lcdNumber_2.setProperty("value", str(self.sc_new.q))        
             self.lcdNumber.setProperty("value",str(self.sc_new.p))   #length  
             
-            self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
-            self.lineEdit_52.setText(str(round(self.sc_new.p_strain,0)))   #Strain
+            #self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
+            self.lineEdit_48.setProperty("value",round(self.sc_new.q_mpa,0))
+            #self.lineEdit_52.setText(str(round(self.sc_new.p_strain,0)))   #Strain
+            self.lineEdit_52.setProperty("value",round(self.sc_new.p_strain,0))
             #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.sc_new.t)
             self.mod=int(self.sc_new.t) % 60 
             self.lineEdit_53.setText(str(int(int(self.sc_new.t)/3600)).zfill(2)+":"+str(int(int(self.sc_new.t)/60)).zfill(2)+":"+str(int(int(self.mod))).zfill(2))
@@ -1857,9 +1870,7 @@ class RL_01_Ui_MainWindow(object):
                           cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_NUM_CM) FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
-                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT (LENGTH_AT_MAX_MPA/NEW_TEST_AREA ) FROM GLOBAL_VAR))") 
-                           
-
+                          cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT (LENGTH_AT_MAX_MPA/NEW_TEST_AREA ) FROM GLOBAL_VAR))")
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_NUM_STRAIN,T_SEC,T_TIMESTAMP) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
@@ -1868,7 +1879,9 @@ class RL_01_Ui_MainWindow(object):
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET YEILD_STRENGTH=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP),MODULUS_OF_ELASTICITY=(SELECT MODULUS_OF_ELASTICITY FROM TEST_MST_TMP)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                     
                           #cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                          print("Data Saved Ok in STG_GRAPH_MST")  
+                          print("Data Saved Ok in STG_GRAPH_MST")
+                          self.label_15.show()
+                          self.label_15.setText("Data Saved Successfully.")
                   
                   #update max load , yead strength , modulus 
                   
