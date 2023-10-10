@@ -495,6 +495,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_17.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_17.setObjectName("label_17")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
+        self.lineEdit_7.setValidator(input_validator)
         self.lineEdit_7.setGeometry(QtCore.QRect(850, 170, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -563,6 +566,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
         self.lineEdit_9.setGeometry(QtCore.QRect(600, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -696,6 +702,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
+        self.lineEdit_13.setValidator(input_validator)
         self.lineEdit_13.setGeometry(QtCore.QRect(1050, 40, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -716,6 +725,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_32.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
+        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(1050, 90, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -809,6 +821,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_46.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_46.setObjectName("label_46")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_17)
+        self.lineEdit_17.setValidator(input_validator)
         self.lineEdit_17.setGeometry(QtCore.QRect(620, 170, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -829,6 +844,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_50.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_50.setObjectName("label_50")
         self.lineEdit_18 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_18)
+        self.lineEdit_18.setValidator(input_validator)
         self.lineEdit_18.setGeometry(QtCore.QRect(620, 130, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -915,6 +933,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_53.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_53.setObjectName("label_53")
         self.lineEdit_20 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_20)
+        self.lineEdit_20.setValidator(input_validator)
         self.lineEdit_20.setGeometry(QtCore.QRect(100, 220, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -963,6 +984,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_56.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_56.setObjectName("label_56")
         self.lineEdit_21 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_21)
+        self.lineEdit_21.setValidator(input_validator)
         self.lineEdit_21.setGeometry(QtCore.QRect(300, 220, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -994,6 +1018,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_58.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_58.setObjectName("label_58")
         self.lineEdit_22 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_22)
+        self.lineEdit_22.setValidator(input_validator)
         self.lineEdit_22.setGeometry(QtCore.QRect(500, 220, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1025,6 +1052,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_60.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_60.setObjectName("label_60")
         self.lineEdit_23 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_23)
+        self.lineEdit_23.setValidator(input_validator)
         self.lineEdit_23.setGeometry(QtCore.QRect(700, 220, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1056,6 +1086,9 @@ class TY_63_Ui_MainWindow(object):
         self.label_62.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_62.setObjectName("label_62")
         self.lineEdit_24 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_24)
+        self.lineEdit_24.setValidator(input_validator)
         self.lineEdit_24.setGeometry(QtCore.QRect(900, 220, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1527,6 +1560,16 @@ class TY_63_Ui_MainWindow(object):
               self.msg="Graph Scale x-axsis Should not Empty."
         elif(self.lineEdit_14.text() == ""):
               self.msg="Graph Scale y-axsis  Should not Empty."
+        elif(self.lineEdit_20.text() == ""):
+              self.msg="LOAD/DEFLECTION-1  Should not Empty."
+        elif(self.lineEdit_21.text() == ""):
+              self.msg="LOAD/DEFLECTION-2  Should not Empty."
+        elif(self.lineEdit_22.text() == ""):
+              self.msg="LOAD/DEFLECTION-3  Should not Empty."
+        elif(self.lineEdit_23.text() == ""):
+              self.msg="LOAD/DEFLECTION-4  Should not Empty."
+        elif(self.lineEdit_24.text() == ""):
+              self.msg="LOAD/DEFLECTION-5  Should not Empty."
         else:
                self.msg="Confirm to start Test."
                self.go_ahead="Yes"
