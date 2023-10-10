@@ -1113,6 +1113,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_52.setProperty("value", 0.0)
         self.label_15.setText("Set Zero Done.")
         self.pushButton_21.show()
+        self.pushButton_15.setEnabled(True)
         
     def start_test_1_or_2(self):
         if(self.graph_group_no==1):
@@ -1478,9 +1479,7 @@ class RL_01_Ui_MainWindow(object):
                                         self.timer3.timeout.connect(self.show_grid1_val_P4)
                                         self.timer3.timeout.connect(self.show_grid1_val_P5)
                                         self.timer3.start(1)
-                                        '''
                                         
-                                        '''
         else:            
                     print("validation Error") 
 
@@ -1536,7 +1535,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderLabels(['Parameter','Stress(MPa)','Strain (%)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
        
-        self.rev_arr=self.sc_new_P1.arr_q
+        self.rev_arr=self.sc_new_P1.arr_q_mpa
         self.rev_arr2=self.sc_new_P1.arr_p_strain
         self.rev_arr.reverse()
         self.rev_arr2.reverse()
@@ -1573,7 +1572,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Stress(MPa)','Time (sec)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
        
-        self.rev_arr5=self.sc_new_P2.arr_q
+        self.rev_arr5=self.sc_new_P2.arr_q_mpa
         self.rev_arr6=self.sc_new_P2.arr_t
         self.rev_arr5.reverse()
         self.rev_arr6.reverse()
@@ -2236,7 +2235,8 @@ class PlotCanvas(FigureCanvas):
         ### Univarsal change for  Graphs #####################
             
         connection = sqlite3.connect("tyr.db")
-        if(self.graph_type == "PRESSURE_VS_TIME"):   
+        if(self.graph_type == "PRESSURE_VS_TIME"):
+                #print("xxx-> SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE Y_SCALE_MAX > 0 AND GRAPH_NAME = 'PRESSURE_VS_TIME'") 
                 results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_TIME'") 
         elif(self.graph_type == "EXPANSION_VS_TIME"):
                 results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'EXPANSION_VS_TIME'") 
@@ -2277,7 +2277,8 @@ class PlotCanvas(FigureCanvas):
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc  ")
+                    #print("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE Y_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc  ")                   
+                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE Y_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc  ")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Pressure (MPa)')            
             elif(self.graph_type == "EXPANSION_VS_TIME"):
@@ -2669,9 +2670,9 @@ class PlotCanvas_Auto(FigureCanvas):
                  
                  
                  
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[0])) #fix val
                 self.t=self.elapsed_time.seconds
-                self.p=abs(float(self.buff[4])) #fix val
+                #self.p=abs(float(self.buff[4])) #fix val
                 
                 self.t_timestamp=str(self.end_time)
                 #self.arr_t_timestamp.append(self.t_timestamp)
@@ -2713,8 +2714,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
-                self.p_strain=float(self.p)*100/float(self.test_guage_mm)
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                self.p_strain=float(self.p)*100/float(20.00)
+                self.arr_p_strain.append(float(self.p_strain))
                 
                 self.arr_t.append(int(self.t))
                 
@@ -3095,10 +3096,10 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                  
                  
                  
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[0])) #fix val
                 #self.t=abs(float(self.buff[3]))
                 self.t=self.elapsed_time.seconds
-                self.p=abs(float(self.buff[4])) #fix val
+                #self.p=abs(float(self.buff[4])) #fix val
                 
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
@@ -3118,7 +3119,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 self.arr_t.append(float(self.t))
                 
@@ -3487,10 +3488,10 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                  
                  
                  
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[0])) #fix val
                 #self.t=abs(float(self.buff[3]))
                 self.t=self.elapsed_time.seconds
-                self.p=abs(float(self.buff[4])) #fix val
+                #self.p=abs(float(self.buff[4])) #fix val
                 
                 if(self.test_type=="Compress"):
                     self.p=int(self.test_guage_mm)-self.p
@@ -3510,7 +3511,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 self.arr_t.append(float(self.t))
                 
@@ -4176,12 +4177,12 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 '''
                 
                 
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[1])) #fix val
                 #self.t=abs(float(self.buff[3]))
                 self.t=float(self.elapsed_time.seconds)
-                self.p=abs(float(self.buff[4])) #fix val
-                
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                #self.p=abs(float(self.buff[4])) #fix val
+                self.p_strain=(float(self.p)*100/float(20.00))
+                self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 if(float(self.t_av) > 0.0):
                         self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
@@ -4484,80 +4485,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                  self.ser=""
                  self.IO_error_flg=1
         '''
-        try:
-
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-          
-            self.ser.flush()
-            self.ser.write(b'*D\r')
-            self.yline = self.ser.readline()
-            print("Check for Load Cel o/p:"+str(self.yline))
-            ystr3=str(self.yline)
-            ystr3=ystr3[1:int(len(ystr3)-1)]
-            ystr2=ystr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            ystr1=ystr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            ystr=ystr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.ybuff=ystr.split("_")
-            print("Length of Array :"+str(len(self.ybuff)))
-            #==== Guage Length Setting before staret =====
-            self.ser.flush()
-            
-            if(self.test_type=="Flexural"):
-                #self.test_guage_mm=0
-                #self.command_str="*G0.00\r"
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
-            else:
-                self.command_str="*G000.0\r"
-                
-            print("Guage Length Command : "+str(self.command_str))
-            
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #===== Auto Reverse Time Off =====
-            self.ser.flush()
-            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
-            print("Auto reve. Time off Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #========Motor Speed and Breaking Sence =========            
-            self.validate_speed()            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-            else:   
-                self.ser.write(b'*P0050_0010\r')
-                
-                
-            #time.sleep(2)
-            #========Final Motor start Command =========
-            self.ser.flush()           
-                
-            if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
-                    else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
-            else:
-                    print("Error :Serial O/P is not getting ")
-            
-        except IOError:
-            print("IO Errors")
-            self.IO_error_flg=1
+       
         
         '''
         self.timer1.setInterval(1000)     
@@ -4652,12 +4580,14 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 '''
                 
                 
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[1])) #fix val
                 #self.t=abs(float(self.buff[3]))
                 self.t=float(self.elapsed_time.seconds)
-                self.p=abs(float(self.buff[4])) #fix val
-                self.p_strain=float(float(self.p)*100/float(self.test_guage_mm))
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                
+                #self.p=abs(float(self.buff[4])) #fix val
+                
+                self.p_strain=float(float(self.p)*100/float(20.00))
+                self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 if(float(self.t_av) > 0.0):
                         self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
@@ -4691,7 +4621,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                    
     def plot_grah_only(self,i):
         self.x1.append(self.p)
-        self.y1.append(self.q)
+        self.y1.append(self.q_mpa)
         self.x2.append(self.p)
         self.y2.append(self.t)
 
@@ -4959,80 +4889,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                  self.IO_error_flg=1
         
         '''
-        try:
-        
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-          
-            self.ser.flush()
-            self.ser.write(b'*D\r')
-            self.yline = self.ser.readline()
-            print("Check for Load Cel o/p:"+str(self.yline))
-            ystr3=str(self.yline)
-            ystr3=ystr3[1:int(len(ystr3)-1)]
-            ystr2=ystr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            ystr1=ystr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            ystr=ystr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.ybuff=ystr.split("_")
-            print("Length of Array :"+str(len(self.ybuff)))
-            #==== Guage Length Setting before staret =====
-            self.ser.flush()
-            
-            if(self.test_type=="Flexural"):
-                #self.test_guage_mm=0
-                #self.command_str="*G0.00\r"
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
-            else:
-                self.command_str="*G000.0\r"
-                
-            print("Guage Length Command : "+str(self.command_str))
-            
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #===== Auto Reverse Time Off =====
-            self.ser.flush()
-            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
-            print("Auto reve. Time off Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #========Motor Speed and Breaking Sence =========            
-            self.validate_speed()            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-            else:   
-                self.ser.write(b'*P0050_0010\r')
-                
-                
-            #time.sleep(2)
-            #========Final Motor start Command =========
-            self.ser.flush()           
-                
-            if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
-                    else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
-            else:
-                    print("Error :Serial O/P is not getting ")
-            
-        except IOError:
-            #print("IO Errors")
-            self.IO_error_flg=1
+       
         
         '''
         self.timer1.setInterval(1000)     
@@ -5127,12 +4984,12 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                 '''
                 
                 
-                self.q=abs(float(self.buff[1])) #fix val
+                #self.q=abs(float(self.buff[1])) #fix val
                 #self.t=abs(float(self.buff[3]))
                 self.t=float(self.elapsed_time.seconds)
-                self.p=abs(float(self.buff[4])) #fix val
-                self.p_strain=float(float(self.p)*100/float(self.test_guage_mm))
-                self.arr_p_strain.append(float(self.p)*100/float(self.test_guage_mm))
+                #self.p=abs(float(self.buff[4])) #fix val
+                self.p_strain=float(float(self.p)*100/float(20.00))
+                self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 if(float(self.t_av) > 0.0):
                         self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
@@ -5164,7 +5021,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                    
     def plot_grah_only(self,i):
         self.x1.append(self.t)
-        self.y1.append(self.q)
+        self.y1.append(self.q_mpa)
         self.x2.append(self.t)
         self.y2.append(self.t)
 
