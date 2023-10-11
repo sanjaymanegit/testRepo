@@ -1546,7 +1546,7 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
     def go_for_test(self):
         print("Old object status :"+str(self.timer31.isActive()))        
         self.validations()
-        #self.save_units()
+        self.save_units()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         self.label_52.setText(str(self.msg))
@@ -1554,14 +1554,25 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
         close = close.exec()
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
-                         #self.save_units();
+                         self.save_units();
                          self.frame_3.show()
                          self.sc_blank =PlotCanvas(self) 
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                          
                          try:
-                                
-                                #self.pushButton_8.setDisabled(True)
+                                self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyUSB0',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                                )                               
+                                self.timer3.setInterval(5000)        
+                                self.timer3.timeout.connect(self.loadcell_encoder_status)
+                                self.timer3.start(1)
+                                self.pushButton_8.setDisabled(True)
                                 #self.pushButton_6.setDisabled(True)
                                 self.readonly_fields()
                                 self.show_lcd_vals="N"
@@ -1662,8 +1673,8 @@ class AE_REPORT_COMPR_02_Ui_MainWindow(object):
             self.label_16.setText(str(x[7])) #shape
             self.shape=str(x[7])
             self.lineEdit_9.setText(str(x[10])) #rev. speed
-            #self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
-            #self.comboBox_3.setCurrentText(str(x[12])) #UNIT_Compression
+            self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
+            self.comboBox_3.setCurrentText(str(x[12])) #UNIT_Compression
             if(str(x[7]) == "Rectangle"):
                    self.lineEdit_10.setText(str(x[4]))#THICKNESS
                    self.lineEdit_11.setText(str(x[5]))#WIDTH

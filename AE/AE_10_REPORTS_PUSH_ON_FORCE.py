@@ -1360,14 +1360,14 @@ class AE_10_Ui_MainWindow(object):
         print("Old object status :"+str(self.timer31.isActive()))        
         self.validations()
         #self.set_graph_scale()
-        #self.save_units()
+        self.save_units()
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
         close = close.exec()
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
-                         #self.save_units();
+                         self.save_units();
                          self.frame_3.show()
                          self.sc_blank =PlotCanvas(self) 
                          self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
@@ -1483,8 +1483,8 @@ class AE_10_Ui_MainWindow(object):
             self.label_16.setText(str(x[13])) #shape
             self.shape=str(x[7])
             self.lineEdit_9.setText(str(x[10])) #rev. speed
-            #self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
-            #self.comboBox_3.setCurrentText(str(x[12])) #UNIT_Travel
+            self.comboBox_2.setCurrentText(str(x[11])) #UNIT_LOAD
+            self.comboBox_3.setCurrentText(str(x[12])) #UNIT_Travel
                      
         
         connection.close()
