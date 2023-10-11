@@ -1,7 +1,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_2 import  TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
 
 import inspect
 
@@ -1225,6 +1225,13 @@ class TY_63_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.test_type=""
+        self.test_id="1"
+        self.remark=""
+        self.timer3=QtCore.QTimer()
+        self.timer31=QtCore.QTimer()
+        self.cycle_num=0
+        self.show_lcd_vals="N"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1374,7 +1381,7 @@ class TY_63_Ui_MainWindow(object):
         self.frame_3.hide()
         self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
+        #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
     
@@ -1454,7 +1461,7 @@ class TY_63_Ui_MainWindow(object):
         
     def new_test_reset(self):
         self.cycle_num=0
-        self.label_38.setText(str(self.cycle_num))
+        self.label_26.setText(str(self.cycle_num))
         self.readWrite_fields()
         self.load_data()
         self.pushButton_8.setEnabled(True)
@@ -1603,9 +1610,9 @@ class TY_63_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                               cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")                              
-                              cursor.execute("INSERT INTO TEST_MST(BATCH_ID,PARTY_NAME,TEST_TYPE,MOTOR_SPEED,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','','COMPRESSION_3','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"')")
+                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='0'")                              
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1688,7 +1695,7 @@ class TY_63_Ui_MainWindow(object):
                          self.frame_3.hide()
         
         
-        #self.show_grid_data_Tear()
+        self.show_grid_data_Tear()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
@@ -1704,9 +1711,7 @@ class TY_63_Ui_MainWindow(object):
         connection.commit();
         connection.close()
         
-    
-    
-                                   
+                                 
     
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
@@ -1831,7 +1836,7 @@ class TY_63_Ui_MainWindow(object):
         self.label_49.show()
         self.pushButton_7.setDisabled(True)
         self.pushButton_11.setEnabled(True)
-        self.label_38.setText(str(self.cycle_num))
+        self.label_26.setText(str(self.cycle_num))
         self.pushButton_12.setEnabled(True)
         self.pushButton_13.setEnabled(True)
         self.pushButton_14.setEnabled(True)
@@ -1933,7 +1938,7 @@ class TY_63_Ui_MainWindow(object):
                             self.label_49.show()
                             self.pushButton_7.setDisabled(True)
                             self.pushButton_11.setEnabled(True)
-                            self.label_38.setText(str(self.cycle_num))
+                            self.label_26.setText(str(self.cycle_num))
                             self.pushButton_12.setEnabled(True)
                             self.pushButton_13.setEnabled(True)
                             self.pushButton_14.setEnabled(True)
@@ -1977,7 +1982,7 @@ class TY_63_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")
             results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,IS_METAL FROM GLOBAL_VAR")                 
             for x in results:
-                self.guage_length_mm=int(x[0])
+                self.guage_length_mm=0
                 self.test_type=str(x[1])
                 self.def_flg=str(x[2])            
             connection.close()                                  
@@ -1987,75 +1992,11 @@ class TY_63_Ui_MainWindow(object):
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                    cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
-                   
+                   cursor.execute("DELETE FROM STG_TEST_DATA")                  
             connection.commit();
             connection.close()
-            print("1587 check........")  
-            if(str(self.comboBox_2.currentText()) =="Lb"):                   
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_lb[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_lb[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="N"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_n[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_n[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="KN"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_kn[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_kn[g])
-                                break;
-            elif(str(self.comboBox_2.currentText()) =="gm"):
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q_mpa[g])
-                                break;  
-            else:
-                    for g in range(len(self.sc_new.arr_p)):
-                         if((float(self.guage_length_mm)*1) <= float(self.sc_new.arr_p[g])):
-                                self.load100_guage=float(self.sc_new.arr_q[g])
-                                break;            
-                    for g in range(len(self.sc_new.arr_p)):    
-                         if((float(self.guage_length_mm)*2) <= float(self.sc_new.arr_p[g])):
-                                self.load200_guage=float(self.sc_new.arr_q[g])
-                                break;
-                    for g in range(len(self.sc_new.arr_p)):                                
-                         if((float(self.guage_length_mm)*3) <= float(self.sc_new.arr_p[g])):
-                                self.load300_guage=float(self.sc_new.arr_q[g])
-                                break;
+           
+            
           
         
         if (len(self.sc_new.arr_p) > 1):            
@@ -2064,81 +2005,45 @@ class TY_63_Ui_MainWindow(object):
             with connection:
                   print("0 Data saved........")  
                   cursor = connection.cursor()              
-                  #print("ok1")
-                  #cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_THICKNESS='"+str(self.lineEdit_10.text())+"',NEW_TEST_WIDTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_AREA='"+str(self.cs_area)+"',NEW_TEST_DIAMETER='"+str(self.lineEdit_10.text())+"', NEW_TEST_INN_DIAMETER='"+str(self.lineEdit_11.text())+"', NEW_TEST_OUTER_DIAMETER='"+str(self.lineEdit_10.text())+"'")
+                  if(self.radioButton.isChecked()):  ### Load 
+                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_20.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_21.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_22.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
+                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                                    cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")                                    
+                        elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD) ")
+                        elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD) ")
+                        else:
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")
+                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'L' ") 
+                  else: ### Deflection 
+                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_20.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_21.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_22.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_23.text())+"')")
+                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_24.text())+"')")
+                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")                                    
+                        elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST where X_NUM_INCH <= DEFLCTION) ")
+                        elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")
+                        else:
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ") 
+                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'D' ") 
+                
                  
-                  if( str(self.comboBox_2.currentText()) =="Lb"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST)")   ###    
-                  elif( str(self.comboBox_2.currentText()) =="N"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="KN"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_KN) FROM STG_GRAPH_MST)")   ###
-                  elif( str(self.comboBox_2.currentText()) =="gm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM_MPA) FROM STG_GRAPH_MST)")   ###  
-                  else:    
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_PEAK_LOAD_KG=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)")   ### STG_PEAK_LOAD_KG                 
-                  
-                  if( str(self.comboBox_3.currentText()) =="Cm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_CM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_CM) FROM STG_GRAPH_MST)") #
-                  elif( str(self.comboBox_3.currentText()) =="Inch"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM_INCH FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM_INCH) FROM STG_GRAPH_MST)") #
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_PEAK_LOAD_MM = (SELECT X_NUM FROM STG_GRAPH_MST where Y_NUM = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST))") #STG_E_AT_PEAK_LOAD_MM
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_E_AT_BREAK_MM=(SELECT max(X_NUM) FROM STG_GRAPH_MST)") #STG_TENSILE_STRENGTH
-                  
-                  
-                  print("1 Data saved........") 
-                  if( str(self.comboBox_2.currentText()) =="MPa"):
-                         cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=cast(STG_PEAK_LOAD_KG as real)") #STG_TENSILE_STRENGTH                           
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_TENSILE_STRENGTH=((cast(STG_PEAK_LOAD_KG as real)/IFNULL(cast(NEW_TEST_AREA as real),1)))") #STG_TENSILE_STRENGTH                  
-                  
-                  
-                  if( str(self.comboBox_3.currentText()) =="Cm"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM*0.1")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2*0.1)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3*0.1)")
-                  elif( str(self.comboBox_3.currentText()) =="Inch"):
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM*0.0393701")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2*0.0393701)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3*0.0393701)")
-                  else:
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE100=NEW_TEST_GUAGE_MM")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE200=(NEW_TEST_GUAGE_MM*2)")
-                          cursor.execute("UPDATE GLOBAL_VAR SET STG_GUAGE300=(NEW_TEST_GUAGE_MM*3)")
-                          
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_SET_LOW=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_SET_LOW
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_BREAK_LOAD_KG=(SELECT  BREAKING_SENCE FROM SETTING_MST) ") #STG_BREAK_LOAD_KG
-                 
-                  
-                  #print("ok5")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD100_GUAGE='"+str(self.load100_guage)+"'")                                       
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=((cast(STG_LOAD100_GUAGE as real)/cast(NEW_TEST_AREA as real)))")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD200_GUAGE='"+str(self.load200_guage)+"'")  
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_200=((cast(STG_LOAD200_GUAGE as real)/cast(NEW_TEST_AREA as real)))")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_LOAD300_GUAGE='"+str(self.load300_guage)+"'")
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_300=((cast(STG_LOAD300_GUAGE as real)/cast(NEW_TEST_AREA as real)))")                 
-                  cursor.execute("UPDATE GLOBAL_VAR SET STG_MODULUS_100=IFNULL(STG_MODULUS_100,0),STG_MODULUS_200=IFNULL(STG_MODULUS_200,0),STG_MODULUS_300=IFNULL(STG_MODULUS_300,0)")
-                  print("1 Data saved........")  
-                   
-                  cursor.execute("INSERT INTO CYCLES_MST(TEST_ID,SHAPE,THINCKNESS,WIDTH,CS_AREA,DIAMETER,INNER_DIAMETER,OUTER_DIAMETER,PEAK_LOAD_KG,E_AT_PEAK_LOAD_MM,TENSILE_STRENGTH,MODULUS_100,MODULUS_200,MODULUS_300,MODULUS_ANY,BREAK_LOAD_KG,E_AT_BREAK_MM,SET_LOW,GUAGE100,LOAD100_GUAGE,GUAGE200,LOAD200_GUAGE,GUAGE300,LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG) SELECT TEST_ID,NEW_TEST_SPE_SHAPE,NEW_TEST_THICKNESS,NEW_TEST_WIDTH,NEW_TEST_AREA,NEW_TEST_DIAMETER, NEW_TEST_INN_DIAMETER, NEW_TEST_OUTER_DIAMETER,STG_PEAK_LOAD_KG,STG_E_AT_PEAK_LOAD_MM,STG_TENSILE_STRENGTH,STG_MODULUS_100,STG_MODULUS_200,STG_MODULUS_300,STG_MODULUS_ANY,STG_BREAK_LOAD_KG,STG_E_AT_BREAK_MM,STG_SET_LOW,STG_GUAGE100,STG_LOAD100_GUAGE,STG_GUAGE200,STG_LOAD200_GUAGE,STG_GUAGE300,STG_LOAD300_GUAGE,BREAK_MODE,TEMPERATURE,TEST_METHOD,DEF_POINT,DEF_LOAD,DEF_YEILD_STRG,DEF_FLG FROM GLOBAL_VAR")
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
-                  
-              
-                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK= (((E_AT_BREAK_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")
-                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK= (((E_AT_PEAK_LOAD_MM+GUAGE100)*100)/GUAGE100)  WHERE GRAPH_ID IS NULL")                  
-                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_BREAK=(PRC_E_AT_BREAK-100)   WHERE GRAPH_ID IS NULL")
-                  cursor.execute("UPDATE CYCLES_MST SET PRC_E_AT_PEAK=(PRC_E_AT_PEAK-100)  WHERE GRAPH_ID IS NULL")
-                  
-                  cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM='"+str(self.cycle_num)+"'  WHERE GRAPH_ID IS NULL")
-                  
-                  cursor.execute("UPDATE CYCLES_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                  
-                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")              
+                  cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
+                  cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
+                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                  cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                  #cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                  cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID FROM STG_TEST_DATA")                    
                   print("Data saved........")                  
             
             connection.commit();
@@ -2272,14 +2177,19 @@ class TY_63_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(2)
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
+        self.tableWidget.setColumnCount(3)
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
         self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 150)
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),cycle_id FROM CYCLES_MST WHERE TEST_ID = '"+self.test_id+"' order by GRAPH_ID")
+        if(self.radioButton.isChecked()):
+                self.tableWidget.setHorizontalHeaderLabels([' Load ('+str(self.comboBox_2.currentText())+') ',' Deflection ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
+                results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        else:
+                self.tableWidget.setHorizontalHeaderLabels([' Deflection ('+str(self.comboBox_3.currentText())+') ',' Load ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
+                results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2553,15 +2463,15 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=int(x[0])             
-             self.max_load=int(x[2])
+             self.test_guage_mm=20            
+             self.max_load=float(x[2])
              #self.max_load=100
              self.max_length=float(float(x[3]))
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
-             self.max_length=float(float(x[0])-float(x[3]))
+             #self.max_length=float(float(x[0])-float(x[3]))
              self.max_length=str(self.max_length).zfill(5)
-             print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
+             #print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
         connection.close()
@@ -2574,48 +2484,49 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.modbus_flag=str(x[4])
                  self.modbus_port=str(x[5])
                  self.non_modbus_port=str(x[6])
+                 self.graph_type="Load Vs Travel"
                  if(self.graph_type=="Load Vs Travel"):
                              if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (Kg)')
                              elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
+                                             self.axes.set_xlabel('Deflection (Inch)')
                                              self.axes.set_ylabel('Load (Kg)')
                              elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
+                                             self.axes.set_xlabel('Deflection (Cm)')
                                              self.axes.set_ylabel('Load (Kg)')                                                               
                              elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (Lb)')
                              elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
+                                             self.axes.set_xlabel('Deflection (Cm)')
                                              self.axes.set_ylabel('Load (Lb)') 
                              elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
+                                             self.axes.set_xlabel('Deflection (Inch)')
                                              self.axes.set_ylabel('Load (Lb)')                                                         
                              elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (N)')                                                         
                              elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
+                                             self.axes.set_xlabel('Deflection (Cm)')
                                              self.axes.set_ylabel('Load (N)')                                 
                              elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
+                                             self.axes.set_xlabel('Deflection (Inch)')
                                              self.axes.set_ylabel('Load (N)')
                              elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (KN)')                                                         
                              elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Travel (Cm)')
+                                             self.axes.set_xlabel('Deflection (Cm)')
                                              self.axes.set_ylabel('Load (KN)')                                 
                              elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Travel (Inch)')
+                                             self.axes.set_xlabel('Deflection (Inch)')
                                              self.axes.set_ylabel('Load (KN)')
                              elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (gm)') 
                              else:    
-                                             self.axes.set_xlabel('Travel (Mm)')
+                                             self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (Kg)')
                                         
                  elif(self.graph_type=="Load Vs Time"):
@@ -2976,8 +2887,9 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+                self.graph_type="Load Vs Travel"
                 #print("self.load_unit :"+str(self.load_unit)+" self.disp_unit : "+str(self.disp_unit))
-                 if(self.graph_type=="Load Vs Travel"):
+                if(self.graph_type=="Load Vs Travel"):
                                     if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
                                                 self.line_cnt.set_data(self.arr_p,self.arr_q)
                                                 return [self.line_cnt]
@@ -3023,10 +2935,10 @@ class PlotCanvas_Auto(FigureCanvas):
                                                 self.line_cnt.set_data(self.arr_p,self.arr_q)
                                                 return [self.line_cnt]
                                                 #return self.line_cnt,
-                 elif(self.graph_type=="Load Vs Time"):
+                elif(self.graph_type=="Load Vs Time"):
                             self.line_cnt.set_data(self.arr_t,self.arr_q)
                             return [self.line_cnt]
-                 else:
+                else:
                             print("Invalida Graph Type")
                        
        
@@ -3077,20 +2989,6 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         
-        
-        
-        
-        
-        
-        
-        '''
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-        connection.close()
-        '''
-        
         if(self.input_speed_val != ""):
             if(int(self.input_speed_val) <= int(self.speed_val)):
                  #print(" Ok ")
@@ -3106,139 +3004,7 @@ class PlotCanvas_Auto(FigureCanvas):
         else:
             print(" not Ok ")
             
-        print("test type :"+str(self.test_type))
-        print("Modbus Flag :"+str(self.modbus_flag))
-        print("Modbus Port :"+str(self.modbus_port))
-        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
-            if(self.test_type=="Compression"):        
-                v=0
-                try:
-                    v=float(self.input_rev_speed_val) 
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    print("compress :int part :%d"%v)
-                    print("compress :decial part:%.2f"%v)
-                    #v=v*100
-                    if(self.modbus_port=="/dev/ttyUSB0"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
-                    
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600 
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    print(" write1 :"+str(v))
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Forward speed : "+str(v))
-            
-                v=0
-                try:     
-                    v=float(self.input_speed_val)
-                    #v=float(self.input_rev_speed_val)            
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    print("int part :%d"%v)
-                    print("decial part:%.2f"%v)         
-                    print("self.modbus_port :"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB0"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    elif(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
-                   
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600 
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    print(" write2 :"+str(v))
-                except IOError as e:
-                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Reverse speed : "+str(v))
-            
-            
-            
-            else:   
-                print("inside tesnsile part .....")
-                v=0
-                try:
-                    v=float(self.input_speed_val)
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                        
-                    #print("int part :%d"%v)
-                    #print("decial part:%.2f"%v)
-                    #v=v*100
-                    print("self.modbus_port :"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                                
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600            
-                    #instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    #instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    
-
-                    print(" write1 :"+str(v))
-                except IOError as e:
-                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Forward speed : "+str(v))
-            
-                v=0
-                try:     
-                    
-                    v=float(self.input_rev_speed_val)            
-                    v=v*40
-                    if(float(v) < 1 ):
-                        v=1.0
-                    elif(float(v)== 1 ):
-                        v=1.0
-                    else:
-                        v=round(v,0)
-                    print("int part :%d"%v)
-                    print("decial part:%.2f"%v)         
-                    print("self.modbus_port:"+str(self.modbus_port))
-                    if(self.modbus_port=="/dev/ttyUSB1"):
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
-                    else:
-                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
-                    instrument.serial.timeout = 1
-                    instrument.serial.baudrate = 9600            
-                    #instrument.write_register(4096,v,0) ###self.input_speed_val RPM
-                    #instrument.write_register(4097,0,0) ###self.input_speed_val RPM
-                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
-                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
-                    print(" write2 :"+str(v))
-                except IOError as e:
-                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
-                
-                print("Reverse speed : "+str(v))
+        
                
 
 class PlotCanvas(FigureCanvas):
@@ -3286,13 +3052,7 @@ class PlotCanvas(FigureCanvas):
              
         connection.close()
         
-#         ### Univarsal change for  Graphs #####################
-#         connection = sqlite3.connect("tyr.db")
-#         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-#         for x in results:
-#              ax.set_xlim(0,int(x[0]))
-#              ax.set_ylim(0,int(x[1]))          
-#         connection.close()
+
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
@@ -3317,7 +3077,7 @@ class PlotCanvas(FigureCanvas):
         connection.close()
         
         
-        
+        self.graph_type="Load Vs Travel"
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
@@ -3366,15 +3126,15 @@ class PlotCanvas(FigureCanvas):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
-                ax.set_xlabel('Travel ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         
         elif(self.graph_type=="Load Vs Time"):
                 ax.set_xlabel('Time (sec)')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         else:
-                ax.set_xlabel('Strain %')
-                ax.set_ylabel('Stress')
+                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
@@ -3449,10 +3209,10 @@ class PlotCanvas_blank(FigureCanvas):
         
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Travel ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
         else:
                 ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Time (Sec)')
+                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
         
         self.draw()       
     
