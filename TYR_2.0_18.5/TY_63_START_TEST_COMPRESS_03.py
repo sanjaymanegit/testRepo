@@ -2,6 +2,7 @@ from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
+from pop_graph_data import pop_graph_data_Ui_MainWindow
 
 import inspect
 
@@ -1348,7 +1349,7 @@ class TY_63_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(self.go_for_test)
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_9.clicked.connect(self.new_test_reset)
-        #self.pushButton_9_1.clicked.connect(self.open_manual_control)
+        self.pushButton_18.clicked.connect(self.open_graph_data)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
         self.tableWidget.doubleClicked.connect(self.delete_cycle)
@@ -1568,59 +1569,92 @@ class TY_63_Ui_MainWindow(object):
         elif(self.lineEdit_14.text() == ""):
               self.msg="Graph Scale y-axsis  Should not Empty."
         elif(self.lineEdit_20.text() == ""):
-              self.msg="LOAD/DEFLECTION-1  Should not Empty."
+              self.msg="LOAD/DEFLECTION-1  Should not Empty."       
         elif(self.lineEdit_21.text() == ""):
-              self.msg="LOAD/DEFLECTION-2  Should not Empty."
+              self.msg="LOAD/DEFLECTION-2  Should not Empty."       
         elif(self.lineEdit_22.text() == ""):
-              self.msg="LOAD/DEFLECTION-3  Should not Empty."
+              self.msg="LOAD/DEFLECTION-3  Should not Empty."       
         elif(self.lineEdit_23.text() == ""):
-              self.msg="LOAD/DEFLECTION-4  Should not Empty."
+              self.msg="LOAD/DEFLECTION-4  Should not Empty."        
         elif(self.lineEdit_24.text() == ""):
-              self.msg="LOAD/DEFLECTION-5  Should not Empty."
+              self.msg="LOAD/DEFLECTION-5  Should not Empty."        
         else:
-               self.msg="Confirm to start Test."
-               self.go_ahead="Yes"
-               connection = sqlite3.connect("tyr.db")
-               results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
-               for x in results:           
-                 if(int(x[0]) > 0):
-                       self.test_id_exist="Yes"
-                 else:
-                       self.test_id_exist="No"                     
-               connection.close() 
-               
-               if(self.test_id_exist=="Yes"):                   
-                     ### Update global var
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor()                  
-                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
-                                cursor.execute("UPDATE TEST_MST SET PART_NO="+str(self.comboBox.currentText())+"',PARTY_NAME='"+str(self.lineEdit_25.text())+"',PART_NAME='"+str(self.lineEdit_15.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
-                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")                                
-                                cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")                               
-                                cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                                cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                                cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                    
-                        connection.commit();
-                        connection.close()
-                        
-               else:        
-                        ### INSERT 
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:        
-                              cursor = connection.cursor()
-                              cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")                              
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"')")
-                              cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                              cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                              cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                              
-                        connection.commit();
-                        connection.close()
+               self.check_for_max_load_deflection()           
+               if(self.go_ahead=="Yes"):    
+                           self.msg="Confirm to start Test."
+                           self.go_ahead="Yes"
+                           connection = sqlite3.connect("tyr.db")
+                           results=connection.execute("select count(*) from TEST_MST WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+                           for x in results:           
+                             if(int(x[0]) > 0):
+                                   self.test_id_exist="Yes"
+                             else:
+                                   self.test_id_exist="No"                     
+                           connection.close() 
+                           
+                           if(self.test_id_exist=="Yes"):                   
+                                 ### Update global var
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:
+                                            cursor = connection.cursor()                  
+                                            cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                            cursor.execute("UPDATE TEST_MST SET PART_NO="+str(self.comboBox.currentText())+"',PARTY_NAME='"+str(self.lineEdit_25.text())+"',PART_NAME='"+str(self.lineEdit_15.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
+                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")                                
+                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")                               
+                                            cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                            cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                            cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                
+                                    connection.commit();
+                                    connection.close()
+                                    
+                           else:        
+                                    ### INSERT 
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:        
+                                          cursor = connection.cursor()
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
+                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"')")
+                                          cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                          cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                          cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                          
+                                    connection.commit();
+                                    connection.close()
        
-    
+    def check_for_max_load_deflection(self):
+        if(self.radioButton.isChecked()):        
+            if(float(self.lineEdit_20.text()) > float(self.lineEdit_17.text())):
+                          self.msg="LOAD/DEFLECTION-1  Should not Greater than Max. Load."
+            elif(float(self.lineEdit_21.text()) > float(self.lineEdit_17.text())):
+                          self.msg="LOAD/DEFLECTION-2  Should not Greater than Max. Load."
+            elif(float(self.lineEdit_22.text()) > float(self.lineEdit_17.text())):
+                          self.msg="LOAD/DEFLECTION-3  Should not Greater than Max. Load."
+            elif(float(self.lineEdit_23.text()) > float(self.lineEdit_17.text())):
+                          self.msg="LOAD/DEFLECTION-4  Should not Greater than Max. Load."
+            elif(float(self.lineEdit_24.text()) > float(self.lineEdit_17.text())):
+                          self.msg="LOAD/DEFLECTION-5  Should not Greater than Max. Load."
+            else:
+                       print("Ok")
+                       self.go_ahead="Yes"
+        else:
+            if(float(self.lineEdit_20.text()) > float(self.lineEdit_18.text())):
+                          self.msg="LOAD/DEFLECTION-1  Should not Greater than Max. DEFLECTION."
+            elif(float(self.lineEdit_21.text()) > float(self.lineEdit_18.text())):
+                          self.msg="LOAD/DEFLECTION-2  Should not Greater than Max. DEFLECTION."
+            elif(float(self.lineEdit_22.text()) > float(self.lineEdit_18.text())):
+                          self.msg="LOAD/DEFLECTION-3  Should not Greater than Max. DEFLECTION."
+            elif(float(self.lineEdit_23.text()) > float(self.lineEdit_18.text())):
+                          self.msg="LOAD/DEFLECTION-4  Should not Greater than Max. DEFLECTION."
+            elif(float(self.lineEdit_24.text()) > float(self.lineEdit_18.text())):
+                          self.msg="LOAD/DEFLECTION-5  Should not Greater than Max. DEFLECTION."
+            else:
+                       print("Ok")
+                       self.go_ahead="Yes"
+                       
+                       
     def readonly_fields(self):
         self.comboBox.setDisabled(True)
         self.lineEdit_15.setReadOnly(True)
@@ -2131,6 +2165,12 @@ class TY_63_Ui_MainWindow(object):
         self.ui=TY_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+   
+    def open_graph_data(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=pop_graph_data_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def show_all_specimens(self):        
         #self.pushButton_3.setDisabled(True) ### save
@@ -2180,8 +2220,8 @@ class TY_63_Ui_MainWindow(object):
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
-        self.tableWidget.setColumnWidth(2, 50)
-        self.tableWidget.setColumnWidth(3, 50)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
         
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
@@ -2213,42 +2253,67 @@ class TY_63_Ui_MainWindow(object):
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
         connection.close()
-        
-        data2= [ ['Spec. \n No', 'Load\n ('+str(self.last_load_unit)+')','Deflection \n ('+str(self.last_disp_unit)+')']]
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", A.LOAD) ,printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
+        if(self.radioButton.isChecked()):
+                data2= [ ['Spec. \n No', 'Deflection \n ('+str(self.last_disp_unit)+')','Load \n ('+str(self.last_load_unit)+')']]
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+        else:
+                data2= [ ['Spec. \n No','Deflection \n ('+str(self.last_disp_unit)+')', 'Load\n ('+str(self.last_load_unit)+')']]
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.DEFLCTION),printf(\"%.2f\", A.LOAD) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG', printf(\"%.2f\", avg(A.DEFLCTION)),printf(\"%.2f\", avg(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DEFLCTION)),printf(\"%.2f\", max(A.LOAD))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DEFLCTION)),printf(\"%.2f\", min(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
         
         y=300
         Elements=[]
         
         
         connection = sqlite3.connect("tyr.db")
-        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (min/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Part No : ",str(x[2]),"Batch ID: ",str(x[3])],["Part Name:  ",str(x[4]),"Hardness:",str(x[5])],["Test Type:",str(x[6]),"M/C No:",str(x[7])],["Customer Name :",str(x[8]),"Test Speed (min/min) :",str(x[9])],["Material:",str(x[10]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Operator :",str(x[13])]]
             self.remark=str(x[12]) 
         connection.close() 
         

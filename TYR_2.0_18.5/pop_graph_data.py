@@ -208,7 +208,7 @@ class pop_graph_data_Ui_MainWindow(object):
         self.load_data()
         self.listWidget.doubleClicked.connect(self.show_single_graph_data)
         self.pushButton_9.clicked.connect(MainWindow.close)
-    
+        
     def load_data(self):
         self.i=0
         self.g=[]
@@ -221,36 +221,42 @@ class pop_graph_data_Ui_MainWindow(object):
             self.listWidget.addItem("Specimen No: ("+str(self.i)+")")
         connection.close()
         self.listWidget.setCurrentRow(0)
+        self.show_single_graph_data()
         
     def show_single_graph_data(self):        
         #print("inside tear list.....")
         self.delete_all_records()
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(7)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.setHorizontalHeaderLabels(['X_MM','X_CM','X_INCH','Y_KG','Y_N','Y_LB','Rec.ID'])  
-              
-        self.tableWidget.setColumnWidth(0, 170)
-        self.tableWidget.setColumnWidth(1, 120)
-        self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 150)
-        self.tableWidget.setColumnWidth(4, 150)
-        self.tableWidget.setColumnWidth(5, 150)
-        self.tableWidget.setColumnWidth(6, 170)
-        
-        connection = sqlite3.connect("tyr.db")
-         
-        results=connection.execute("SELECT printf(\"%.2f\", X_NUM),printf(\"%.2f\", X_NUM_CM),printf(\"%.2f\", X_NUM_INCH),printf(\"%.2f\", Y_NUM),printf(\"%.2f\", Y_NUM_N),printf(\"%.2f\", Y_NUM_LB),REC_ID FROM GRAPH_MST ")
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        connection.close()
+        row = self.listWidget.currentRow()
+        print("Current row :"+str(row))        
+        if(row > -1):
+                    font = QtGui.QFont()
+                    font.setPointSize(10)
+                    self.tableWidget.setFont(font)
+                    self.tableWidget.setColumnCount(7)
+                    self.tableWidget.horizontalHeader().setStretchLastSection(True)
+                    self.tableWidget.setHorizontalHeaderLabels(['X_MM','X_CM','X_INCH','Y_KG','Y_N','Y_LB','Rec.ID'])  
+                          
+                    self.tableWidget.setColumnWidth(0, 100)
+                    self.tableWidget.setColumnWidth(1, 100)
+                    self.tableWidget.setColumnWidth(2, 100)
+                    self.tableWidget.setColumnWidth(3, 100)
+                    self.tableWidget.setColumnWidth(4, 100)
+                    self.tableWidget.setColumnWidth(5, 100)
+                    self.tableWidget.setColumnWidth(6, 100)
+                    
+                    connection = sqlite3.connect("tyr.db")
+                     
+                    results=connection.execute("SELECT printf(\"%.2f\", X_NUM),printf(\"%.2f\", X_NUM_CM),printf(\"%.2f\", X_NUM_INCH),printf(\"%.2f\", Y_NUM),printf(\"%.2f\", Y_NUM_N),printf(\"%.2f\", Y_NUM_LB),REC_ID FROM GRAPH_MST where X_NUM >0  AND Y_NUM > 0  AND GRAPH_ID = '"+str(self.g[row])+"' ")
+                    for row_number, row_data in enumerate(results):            
+                        self.tableWidget.insertRow(row_number)
+                        for column_number, data in enumerate(row_data):
+                            self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+                    #self.tableWidget.resizeColumnsToContents()
+                    self.tableWidget.resizeRowsToContents()
+                    self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+                    connection.close()
+        else:
+            print("Please select Graph Id")
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
