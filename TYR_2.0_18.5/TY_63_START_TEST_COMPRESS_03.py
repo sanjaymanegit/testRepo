@@ -1611,7 +1611,7 @@ class TY_63_Ui_MainWindow(object):
                         with connection:        
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='0'")                              
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")                              
                               cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2144,7 +2144,7 @@ class TY_63_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 1).text())
+            self.cycle_id=str(self.tableWidget.item(row, 3).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -2154,7 +2154,7 @@ class TY_63_Ui_MainWindow(object):
                     connection = sqlite3.connect("tyr.db")              
                     with connection:        
                                     cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
+                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+self.cycle_id+"'")
                                     #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
                                     #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
                     connection.commit();
@@ -2177,18 +2177,18 @@ class TY_63_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(3)
-        self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 150)
-        self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 150)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 50)
+        self.tableWidget.setColumnWidth(3, 50)
         
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
-                self.tableWidget.setHorizontalHeaderLabels([' Load ('+str(self.comboBox_2.currentText())+') ',' Deflection ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
+                self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
                 results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         else:
-                self.tableWidget.setHorizontalHeaderLabels([' Deflection ('+str(self.comboBox_3.currentText())+') ',' Load ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
+                self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
                 results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -2214,28 +2214,28 @@ class TY_63_Ui_MainWindow(object):
               self.tested_by=str(x[3])
         connection.close()
         
-        data2= [ ['Spec. \n No', 'Force at Peak\n ('+str(self.last_load_unit)+')']]
+        data2= [ ['Spec. \n No', 'Load\n ('+str(self.last_load_unit)+')','Deflection \n ('+str(self.last_disp_unit)+')']]
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.PEAK_LOAD_KG) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", A.LOAD) ,printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.PEAK_LOAD_KG)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
@@ -2244,8 +2244,9 @@ class TY_63_Ui_MainWindow(object):
         Elements=[]
         
         
-        connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        connection = sqlite3.connect("tyr.db")
+        
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (min/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
@@ -2280,6 +2281,7 @@ class TY_63_Ui_MainWindow(object):
         #
         #TEST_DETAILS = Paragraph("----------------------------------------------------------------------------------------------------------------------------------------------------", styles["Normal"])
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
+        
         f2=Table(data2)
         f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
          
@@ -2293,14 +2295,7 @@ class TY_63_Ui_MainWindow(object):
         
         Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
-        #Elements.append(f1,Spacer(1,12))        
-        #Elements.append(f2,Spacer(1,12))
-        '''
-        doc = SimpleDocTemplate('./reports/Reportxxx.pdf', pagesize=A4, rightMargin=10,
-                                leftMargin=40,
-                                topMargin=30,
-                                bottomMargin=30,)
-        '''
+       
         doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
                                 leftMargin=30,
                                 topMargin=10,
@@ -2463,7 +2458,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=20            
+             self.test_guage_mm=200            
              self.max_load=float(x[2])
              #self.max_load=100
              self.max_length=float(float(x[3]))
@@ -3046,7 +3041,7 @@ class PlotCanvas(FigureCanvas):
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_ID FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT DISTINCT GRAPH_ID FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
               self.graph_ids.append(x[0])            
              
