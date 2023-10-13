@@ -16,6 +16,8 @@ from TY_30_SP_REPORT_PROOF import TY_30_Ui_MainWindow
 from TY_33_SP_REPORT_CYCLICK import TY_33_Ui_MainWindow
 from TY_35_LIST_REPORT_2 import TY_35_LIST_Ui_MainWindow
 from TY_35_LIST_REPORT_2_GOLD_SEAL import TY_35_LIST_Ui_MainWindow_GOLD_SEAL
+from TY_35_LIST_REPORT_2_COMP_3 import TY_35_LIST_Ui_MainWindow_COMP_3
+
 
 
 
@@ -416,10 +418,21 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_tensile_gasket_round()
         elif(str(self.test_type_id) == "30"):
             self.save_test_tensile_gasket_square()
+        elif(str(self.test_type_id) == "32"):
+            self.save_test_compression_3()
         else:
             print("Invalid Test ID")
     
-    
+    def save_test_compression_3(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='COMPRESSION_3'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_COMP_3()
+        
     def save_test_tear_peak_load(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -653,12 +666,23 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.close()    
         self.open_new_window_GASKET()
     
+    
+    def open_new_window_COMP_3(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_35_LIST_Ui_MainWindow_COMP_3()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    
     def open_new_window_LIST_GOLD_SEAL(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_35_LIST_Ui_MainWindow_GOLD_SEAL()
         self.ui.setupUi(self.window)           
         self.window.show()
     
+    
+   
+        
     def open_new_window_GASKET(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_03_Ui_MainWindow_GASKET()
