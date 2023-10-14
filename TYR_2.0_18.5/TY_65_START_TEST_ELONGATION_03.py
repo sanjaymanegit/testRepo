@@ -1102,6 +1102,7 @@ class TY_65_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(self.open_comment_popup)
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
+        self.pushButton_17.clicked.connect(self.open_manual_control)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         #self.radioButton.clicked.connect(self.radiobutt_on_change)
         #self.radioButton_2.clicked.connect(self.radiobutt_on_change)
