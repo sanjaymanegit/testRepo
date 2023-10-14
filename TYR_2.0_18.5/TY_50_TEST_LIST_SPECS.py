@@ -1,6 +1,4 @@
 
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from TY_05_SPECIMEN_2 import TY_05_Ui_MainWindow
 from TY_05_SPECIMEN_3 import TY_05_SPECI_Ui_MainWindow
@@ -342,6 +340,8 @@ class TY_50_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "30"):    
              self.open_new_window_5()
         elif(str(self.test_type_id) == "32"):    
+             self.open_new_window_6()
+        elif(str(self.test_type_id) == "33"):    
              self.open_new_window_6()
         else:
             self.open_new_window()

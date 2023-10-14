@@ -24,6 +24,8 @@ from TY_55_START_TEST_TRUNKLIDSEAL import TY_55_Ui_MainWindow
 from TY_59_START_TEST_TRUNKLIDSEAL2 import TY_59_Ui_MainWindow
 from TY_57_START_TEST_TEAR_PEAK_LOAD import TY_57_START_TEST_TEAR_Ui_MainWindow
 from TY_63_START_TEST_COMPRESS_03 import TY_63_Ui_MainWindow
+from TY_65_START_TEST_ELONGATION_03 import TY_65_Ui_MainWindow
+
 
 
 import sqlite3
@@ -476,10 +478,21 @@ class TY_12_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "30"):  
             self.save_test_tensile_gasket_square()
         elif(str(self.test_type_id) == "32"):  
-            self.save_test_compress_3() 
+            self.save_test_compress_3()
+        elif(str(self.test_type_id) == "33"):  
+            self.save_test_elongation_3()
         else:
             print("Invalid Test ID"+str(self.test_type_id))
-            
+    
+    def save_test_elongation_3(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='ELONGATION'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_elongation_3()
+    
     def save_test_compress_3(self):                     
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -713,7 +726,13 @@ class TY_12_LIST_Ui_MainWindow(object):
         connection.commit();
         connection.close()    
         self.open_new_window_tensile_gasket_square()
-        
+    
+    def open_new_window_elongation_3(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_65_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     def open_new_window_compression_3(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_63_Ui_MainWindow()

@@ -1080,7 +1080,7 @@ class TY_65_Ui_MainWindow(object):
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Mm)"))
         self.label_16.setText(_translate("MainWindow", "Test Method :"))
-        self.label_24.setText(_translate("MainWindow", "Compression"))
+        self.label_24.setText(_translate("MainWindow", "Tensile"))
         self.label_26.setText(_translate("MainWindow", "01"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.lineEdit_25.setText(_translate("MainWindow", "MRF"))
@@ -1195,7 +1195,7 @@ class TY_65_Ui_MainWindow(object):
         self.i=0
         self.comboBox.clear()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT PART_NO FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
+        results=connection.execute("SELECT PART_NO FROM SPECIMEN_MST WHERE TEST_MODE='Tensile'") 
         for x in results:            
             self.comboBox.addItem("")
             self.comboBox.setItemText(self.i,str(x[0]))            

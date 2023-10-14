@@ -10,7 +10,7 @@ from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
 from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
 from TY_64_REPORT_COMPRESS_03 import TY_64_Ui_MainWindow
-
+from TY_66_REPORT_ELONGATION_03 import TY_66_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -986,9 +986,17 @@ class TY_35_LIST_Ui_MainWindow_COMP_3(object):
                             self.open_report_tear_peak_load()
             elif(str(self.new_test_name) == "COMPRESSION_3"):               
                             self.open_report_compression_3()
+            elif(str(self.new_test_name) == "ELONGATION"):               
+                            self.open_report_elongation_3()
             else:
                             self.open_report_tensile()
             
+        
+    def open_report_elongation_3(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_66_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def open_report_compression_3(self):
         self.window = QtWidgets.QMainWindow()
@@ -1131,7 +1139,10 @@ class TY_35_LIST_Ui_MainWindow_COMP_3(object):
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_TEAR()
         elif(str(self.new_test_name) == "COMPRESSION_3"):
-                    self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    #self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+                    self.create_pdf_COMPRESSION_3()
+        elif(str(self.new_test_name) == "ELONGATION"):
+                    #self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
                     self.create_pdf_COMPRESSION_3()
         else:
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)

@@ -420,9 +420,21 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_tensile_gasket_square()
         elif(str(self.test_type_id) == "32"):
             self.save_test_compression_3()
+        elif(str(self.test_type_id) == "33"):
+            self.save_test_elongation_3()
         else:
             print("Invalid Test ID")
     
+    def save_test_elongation_3(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='ELONGATION'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_COMP_3()
+        
     def save_test_compression_3(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
