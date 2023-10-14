@@ -47,9 +47,10 @@ minimalmodbus.BYTEORDER_BIG= 0
 minimalmodbus.BYTEORDER_LITTLE= 1
 
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class TY_64_Ui_MainWindow(object):
+class TY_66_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 752)
@@ -112,13 +113,13 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
         self.frame_3 = QtWidgets.QFrame(self.frame)
-        self.frame_3.setGeometry(QtCore.QRect(10, 270, 1281, 421))
+        self.frame_3.setGeometry(QtCore.QRect(10, 230, 1281, 461))
         self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_3.setLineWidth(1)
         self.frame_3.setObjectName("frame_3")
         self.pushButton_7 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_7.setGeometry(QtCore.QRect(810, 60, 101, 41))
+        self.pushButton_7.setGeometry(QtCore.QRect(810, 70, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -134,7 +135,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_7.setFlat(False)
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_11.setGeometry(QtCore.QRect(810, 10, 101, 41))
+        self.pushButton_11.setGeometry(QtCore.QRect(810, 20, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -151,7 +152,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_11.setFlat(False)
         self.pushButton_11.setObjectName("pushButton_11")
         self.pushButton_12 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_12.setGeometry(QtCore.QRect(810, 110, 101, 41))
+        self.pushButton_12.setGeometry(QtCore.QRect(810, 120, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -167,7 +168,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_12.setFlat(False)
         self.pushButton_12.setObjectName("pushButton_12")
         self.pushButton_13 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_13.setGeometry(QtCore.QRect(810, 310, 101, 41))
+        self.pushButton_13.setGeometry(QtCore.QRect(810, 340, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -183,7 +184,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_13.setFlat(False)
         self.pushButton_13.setObjectName("pushButton_13")
         self.pushButton_14 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_14.setGeometry(QtCore.QRect(810, 260, 101, 41))
+        self.pushButton_14.setGeometry(QtCore.QRect(810, 290, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -199,7 +200,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_14.setFlat(False)
         self.pushButton_14.setObjectName("pushButton_14")
         self.pushButton_15 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_15.setGeometry(QtCore.QRect(810, 210, 101, 41))
+        self.pushButton_15.setGeometry(QtCore.QRect(810, 230, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -215,11 +216,10 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_15.setFlat(False)
         self.pushButton_15.setObjectName("pushButton_15")
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
-        self.tableWidget.setGeometry(QtCore.QRect(930, 20, 341, 241))
+        self.tableWidget.setGeometry(QtCore.QRect(930, 10, 341, 291))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(7)
-        
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -235,7 +235,6 @@ class TY_64_Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(6, item)
         item = QtWidgets.QTableWidgetItem()
-        
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -272,12 +271,6 @@ class TY_64_Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         item.setFont(font)
-        self.tableWidget.setItem(0, 0, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        item.setFont(font)
         self.tableWidget.setItem(0, 1, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -286,15 +279,21 @@ class TY_64_Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setItem(0, 2, item)
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(1, 0, item)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 3, item)
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(2, 0, item)
+        self.tableWidget.setItem(1, 1, item)
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(3, 0, item)
+        self.tableWidget.setItem(2, 1, item)
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(4, 0, item)
+        self.tableWidget.setItem(3, 1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setItem(4, 1, item)
         self.pushButton_16 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_16.setGeometry(QtCore.QRect(810, 160, 101, 41))
+        self.pushButton_16.setGeometry(QtCore.QRect(810, 180, 101, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -310,12 +309,12 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_16.setFlat(False)
         self.pushButton_16.setObjectName("pushButton_16")
         self.lcdNumber = QtWidgets.QLCDNumber(self.frame_3)
-        self.lcdNumber.setGeometry(QtCore.QRect(940, 280, 231, 51))
+        self.lcdNumber.setGeometry(QtCore.QRect(940, 330, 231, 51))
         self.lcdNumber.setStyleSheet("color: rgb(255, 0, 0);\n"
 "background-color: rgb(0, 0, 0);")
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_41 = QtWidgets.QLabel(self.frame_3)
-        self.label_41.setGeometry(QtCore.QRect(1180, 290, 51, 31))
+        self.label_41.setGeometry(QtCore.QRect(1190, 340, 41, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -326,12 +325,12 @@ class TY_64_Ui_MainWindow(object):
         self.label_41.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_41.setObjectName("label_41")
         self.lcdNumber_2 = QtWidgets.QLCDNumber(self.frame_3)
-        self.lcdNumber_2.setGeometry(QtCore.QRect(940, 350, 231, 51))
+        self.lcdNumber_2.setGeometry(QtCore.QRect(940, 400, 231, 51))
         self.lcdNumber_2.setStyleSheet("color: rgb(255, 0, 0);\n"
 "background-color: rgb(0, 0, 0);")
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.label_42 = QtWidgets.QLabel(self.frame_3)
-        self.label_42.setGeometry(QtCore.QRect(1200, 350, 31, 41))
+        self.label_42.setGeometry(QtCore.QRect(1190, 410, 41, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -342,7 +341,7 @@ class TY_64_Ui_MainWindow(object):
         self.label_42.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_42.setObjectName("label_42")
         self.layoutWidget = QtWidgets.QWidget(self.frame_3)
-        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 791, 401))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 791, 441))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -363,7 +362,7 @@ class TY_64_Ui_MainWindow(object):
         self.label_49.setObjectName("label_49")
         self.gridLayout.addWidget(self.label_49, 0, 0, 1, 1)
         self.pushButton_18 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_18.setGeometry(QtCore.QRect(810, 360, 111, 41))
+        self.pushButton_18.setGeometry(QtCore.QRect(810, 400, 111, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -496,9 +495,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_17.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_17.setObjectName("label_17")
         self.lineEdit_7 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_7)
-        self.lineEdit_7.setValidator(input_validator)
         self.lineEdit_7.setGeometry(QtCore.QRect(850, 170, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -534,7 +530,7 @@ class TY_64_Ui_MainWindow(object):
         self.lineEdit_8.setFont(font)
         self.lineEdit_8.setObjectName("lineEdit_8")
         self.label_19 = QtWidgets.QLabel(self.frame)
-        self.label_19.setGeometry(QtCore.QRect(510, 10, 81, 31))
+        self.label_19.setGeometry(QtCore.QRect(510, 10, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -567,9 +563,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
-        self.lineEdit_9.setValidator(input_validator)
         self.lineEdit_9.setGeometry(QtCore.QRect(600, 60, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -703,9 +696,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
-        self.lineEdit_13.setValidator(input_validator)
         self.lineEdit_13.setGeometry(QtCore.QRect(1050, 40, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -726,9 +716,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_32.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
-        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(1050, 90, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -804,12 +791,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_45.setStyleSheet("")
         self.label_45.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_45.setObjectName("label_45")
-        self.line_8 = QtWidgets.QFrame(self.frame)
-        self.line_8.setGeometry(QtCore.QRect(0, 250, 1321, 21))
-        self.line_8.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_8.setLineWidth(3)
-        self.line_8.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_8.setObjectName("line_8")
         self.label_46 = QtWidgets.QLabel(self.frame)
         self.label_46.setGeometry(QtCore.QRect(500, 170, 81, 31))
         font = QtGui.QFont()
@@ -822,9 +803,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_46.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_46.setObjectName("label_46")
         self.lineEdit_17 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_17)
-        self.lineEdit_17.setValidator(input_validator)
         self.lineEdit_17.setGeometry(QtCore.QRect(620, 170, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -845,9 +823,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_50.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_50.setObjectName("label_50")
         self.lineEdit_18 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_18)
-        self.lineEdit_18.setValidator(input_validator)
         self.lineEdit_18.setGeometry(QtCore.QRect(620, 130, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -878,18 +853,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_51.setStyleSheet("")
         self.label_51.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_51.setObjectName("label_51")
-        self.label_52 = QtWidgets.QLabel(self.frame)
-        self.label_52.setGeometry(QtCore.QRect(1000, 220, 121, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
-        self.label_52.setFont(font)
-        self.label_52.setStyleSheet("color: rgb(170, 0, 255);")
-        self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_52.setObjectName("label_52")
         self.lineEdit_19 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_19.setGeometry(QtCore.QRect(280, 170, 191, 31))
         font = QtGui.QFont()
@@ -922,206 +885,6 @@ class TY_64_Ui_MainWindow(object):
         self.line_9.setLineWidth(3)
         self.line_9.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_9.setObjectName("line_9")
-        self.label_53 = QtWidgets.QLabel(self.frame)
-        self.label_53.setGeometry(QtCore.QRect(10, 220, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_53.setFont(font)
-        self.label_53.setStyleSheet("")
-        self.label_53.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_53.setObjectName("label_53")
-        self.lineEdit_20 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_20)
-        self.lineEdit_20.setValidator(input_validator)
-        self.lineEdit_20.setGeometry(QtCore.QRect(100, 220, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_20.setFont(font)
-        self.lineEdit_20.setObjectName("lineEdit_20")
-        self.label_54 = QtWidgets.QLabel(self.frame)
-        self.label_54.setGeometry(QtCore.QRect(160, 220, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_54.setFont(font)
-        self.label_54.setStyleSheet("")
-        self.label_54.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_54.setObjectName("label_54")
-        self.line_10 = QtWidgets.QFrame(self.frame)
-        self.line_10.setGeometry(QtCore.QRect(190, 210, 20, 51))
-        self.line_10.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_10.setLineWidth(3)
-        self.line_10.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_10.setObjectName("line_10")
-        self.label_55 = QtWidgets.QLabel(self.frame)
-        self.label_55.setGeometry(QtCore.QRect(210, 220, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_55.setFont(font)
-        self.label_55.setStyleSheet("")
-        self.label_55.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_55.setObjectName("label_55")
-        self.label_56 = QtWidgets.QLabel(self.frame)
-        self.label_56.setGeometry(QtCore.QRect(360, 220, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_56.setFont(font)
-        self.label_56.setStyleSheet("")
-        self.label_56.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_56.setObjectName("label_56")
-        self.lineEdit_21 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_21)
-        self.lineEdit_21.setValidator(input_validator)
-        self.lineEdit_21.setGeometry(QtCore.QRect(300, 220, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_21.setFont(font)
-        self.lineEdit_21.setObjectName("lineEdit_21")
-        self.label_57 = QtWidgets.QLabel(self.frame)
-        self.label_57.setGeometry(QtCore.QRect(410, 220, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_57.setFont(font)
-        self.label_57.setStyleSheet("")
-        self.label_57.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_57.setObjectName("label_57")
-        self.label_58 = QtWidgets.QLabel(self.frame)
-        self.label_58.setGeometry(QtCore.QRect(550, 220, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_58.setFont(font)
-        self.label_58.setStyleSheet("")
-        self.label_58.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_58.setObjectName("label_58")
-        self.lineEdit_22 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_22)
-        self.lineEdit_22.setValidator(input_validator)
-        self.lineEdit_22.setGeometry(QtCore.QRect(500, 220, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_22.setFont(font)
-        self.lineEdit_22.setObjectName("lineEdit_22")
-        self.label_59 = QtWidgets.QLabel(self.frame)
-        self.label_59.setGeometry(QtCore.QRect(600, 220, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_59.setFont(font)
-        self.label_59.setStyleSheet("")
-        self.label_59.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_59.setObjectName("label_59")
-        self.label_60 = QtWidgets.QLabel(self.frame)
-        self.label_60.setGeometry(QtCore.QRect(760, 220, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_60.setFont(font)
-        self.label_60.setStyleSheet("")
-        self.label_60.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_60.setObjectName("label_60")
-        self.lineEdit_23 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_23)
-        self.lineEdit_23.setValidator(input_validator)
-        self.lineEdit_23.setGeometry(QtCore.QRect(700, 220, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_23.setFont(font)
-        self.lineEdit_23.setObjectName("lineEdit_23")
-        self.label_61 = QtWidgets.QLabel(self.frame)
-        self.label_61.setGeometry(QtCore.QRect(810, 220, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_61.setFont(font)
-        self.label_61.setStyleSheet("")
-        self.label_61.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_61.setObjectName("label_61")
-        self.label_62 = QtWidgets.QLabel(self.frame)
-        self.label_62.setGeometry(QtCore.QRect(950, 220, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_62.setFont(font)
-        self.label_62.setStyleSheet("")
-        self.label_62.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_62.setObjectName("label_62")
-        self.lineEdit_24 = QtWidgets.QLineEdit(self.frame)
-        reg_ex = QRegExp("(\\d+\\.\\d+)")
-        input_validator = QRegExpValidator(reg_ex, self.lineEdit_24)
-        self.lineEdit_24.setValidator(input_validator)
-        self.lineEdit_24.setGeometry(QtCore.QRect(900, 220, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.lineEdit_24.setFont(font)
-        self.lineEdit_24.setObjectName("lineEdit_24")
-        self.line_11 = QtWidgets.QFrame(self.frame)
-        self.line_11.setGeometry(QtCore.QRect(390, 210, 20, 51))
-        self.line_11.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_11.setLineWidth(3)
-        self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_11.setObjectName("line_11")
-        self.line_12 = QtWidgets.QFrame(self.frame)
-        self.line_12.setGeometry(QtCore.QRect(580, 210, 20, 51))
-        self.line_12.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_12.setLineWidth(3)
-        self.line_12.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_12.setObjectName("line_12")
-        self.line_13 = QtWidgets.QFrame(self.frame)
-        self.line_13.setGeometry(QtCore.QRect(790, 210, 20, 51))
-        self.line_13.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_13.setLineWidth(3)
-        self.line_13.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_13.setObjectName("line_13")
-        self.line_14 = QtWidgets.QFrame(self.frame)
-        self.line_14.setGeometry(QtCore.QRect(980, 210, 20, 51))
-        self.line_14.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line_14.setLineWidth(3)
-        self.line_14.setFrameShape(QtWidgets.QFrame.VLine)
-        self.line_14.setObjectName("line_14")
         self.label_63 = QtWidgets.QLabel(self.frame)
         self.label_63.setGeometry(QtCore.QRect(1110, 90, 31, 31))
         font = QtGui.QFont()
@@ -1166,27 +929,6 @@ class TY_64_Ui_MainWindow(object):
         self.label_24.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
-        self.radioButton = QtWidgets.QRadioButton(self.frame)
-        self.radioButton.setGeometry(QtCore.QRect(1130, 230, 61, 17))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(9)
-        font.setBold(True)
-        font.setWeight(75)
-        self.radioButton.setFont(font)
-        self.radioButton.setStyleSheet("color: rgb(170, 85, 127);")
-        self.radioButton.setChecked(True)
-        self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
-        self.radioButton_2.setGeometry(QtCore.QRect(1210, 230, 82, 17))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(9)
-        font.setBold(True)
-        font.setWeight(75)
-        self.radioButton_2.setFont(font)
-        self.radioButton_2.setStyleSheet("color: rgb(170, 85, 127);")
-        self.radioButton_2.setObjectName("radioButton_2")
         self.label_26 = QtWidgets.QLabel(self.frame)
         self.label_26.setGeometry(QtCore.QRect(1100, 180, 31, 20))
         font = QtGui.QFont()
@@ -1198,6 +940,19 @@ class TY_64_Ui_MainWindow(object):
         self.label_26.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_26.setAlignment(QtCore.Qt.AlignCenter)
         self.label_26.setObjectName("label_26")
+        
+        self.label_26_1 = QtWidgets.QLabel(self.frame_3)
+        self.label_26_1.setGeometry(QtCore.QRect(900, 310, 231, 20))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_26_1.setFont(font)       
+        self.label_26_1.setStyleSheet("color: rgb(0, 170, 0);")
+        self.label_26_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_26_1.setObjectName("label_26_1")
+        
         self.label_28 = QtWidgets.QLabel(self.frame)
         self.label_28.setGeometry(QtCore.QRect(1010, 180, 91, 21))
         font = QtGui.QFont()
@@ -1226,6 +981,9 @@ class TY_64_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.guage_length_mm=0
+        self.goAhead="No"
         self.test_type=""
         self.test_id="1"
         self.remark=""
@@ -1240,7 +998,7 @@ class TY_64_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "Compression Test- 03"))
+        self.label_10.setText(_translate("MainWindow", "Elongation Test"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
@@ -1250,28 +1008,28 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Load (Kgf)"))
+        item.setText(_translate("MainWindow", " #"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Deflection (mm)"))
+        item.setText(_translate("MainWindow", "Max. Load (Kgf)"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Rec# "))
+        item.setText(_translate("MainWindow", "Max. Elongation (mm)"))
         item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Sample #"))
+        item.setText(_translate("MainWindow", "Rec# "))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "100"))
         item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "123.8"))
+        item.setText(_translate("MainWindow", "100"))
         item = self.tableWidget.item(0, 2)
+        item.setText(_translate("MainWindow", "123.8"))
+        item = self.tableWidget.item(0, 3)
         item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(1, 0)
+        item = self.tableWidget.item(1, 1)
         item.setText(_translate("MainWindow", "200"))
-        item = self.tableWidget.item(2, 0)
+        item = self.tableWidget.item(2, 1)
         item.setText(_translate("MainWindow", "300"))
-        item = self.tableWidget.item(3, 0)
+        item = self.tableWidget.item(3, 1)
         item.setText(_translate("MainWindow", "400"))
-        item = self.tableWidget.item(4, 0)
+        item = self.tableWidget.item(4, 1)
         item.setText(_translate("MainWindow", "500"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
@@ -1299,18 +1057,15 @@ class TY_64_Ui_MainWindow(object):
         self.label_25.setText(_translate("MainWindow", "M/C No :"))
         self.label_27.setText(_translate("MainWindow", "Operator :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
-        
-        self.label_30.setText(_translate("MainWindow", "Deflection \n Unit:"))
-        
+        self.label_30.setText(_translate("MainWindow", "Elongation \n"
+" Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))        
-        
+        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
@@ -1318,30 +1073,17 @@ class TY_64_Ui_MainWindow(object):
         self.label_36.setText(_translate("MainWindow", "Batch Number :"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.label_46.setText(_translate("MainWindow", "Max. Load:"))
-        self.label_50.setText(_translate("MainWindow", "Max. Deflection:"))
+        self.label_50.setText(_translate("MainWindow", "Max. Elongation:"))
         self.label_34.setText(_translate("MainWindow", "(Mm)"))
         self.label_51.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_52.setText(_translate("MainWindow", "Graph Set Done."))
         self.pushButton_17.setText(_translate("MainWindow", "Set Sample"))
-        self.label_53.setText(_translate("MainWindow", "Load (1):"))
-        self.label_54.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_55.setText(_translate("MainWindow", " Load (2):"))
-        self.label_56.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_57.setText(_translate("MainWindow", " Load (3):"))
-        self.label_58.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_59.setText(_translate("MainWindow", " Load (4):"))
-        self.label_60.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_61.setText(_translate("MainWindow", " Load (5):"))
-        self.label_62.setText(_translate("MainWindow", "(Kgf)"))
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Mm)"))
         self.label_16.setText(_translate("MainWindow", "Test Method :"))
         self.label_24.setText(_translate("MainWindow", "Compression"))
-        self.radioButton.setText(_translate("MainWindow", "Load"))
-        self.radioButton_2.setText(_translate("MainWindow", "Deflection"))
         self.label_26.setText(_translate("MainWindow", "01"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
-        self.lineEdit_25.setText(_translate("MainWindow", ""))
+        self.lineEdit_25.setText(_translate("MainWindow", "MRF"))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         #self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
@@ -1361,8 +1103,8 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_12.clicked.connect(self.show_all_specimens)        
         self.pushButton_7.clicked.connect(self.manual_stop)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
-        self.radioButton.clicked.connect(self.radiobutt_on_change)
-        self.radioButton_2.clicked.connect(self.radiobutt_on_change)
+        #self.radioButton.clicked.connect(self.radiobutt_on_change)
+        #self.radioButton_2.clicked.connect(self.radiobutt_on_change)
         
         self.test_method=""                             
         self.failure_mod=""
@@ -1407,8 +1149,8 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_12.setDisabled(True)
         #self.pushButton_13.setDisabled(True)
         
-        self.radioButton.setDisabled(True)
-        self.radioButton_2.setDisabled(True)
+        #self.radioButton.setDisabled(True)
+        #self.radioButton_2.setDisabled(True)
         #self.radioButton_3.setDisabled(True)
         #self.radioButton_4.setDisabled(True)
         
@@ -1467,40 +1209,7 @@ class TY_64_Ui_MainWindow(object):
     def device_date(self):     
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
     
-    def radiobutt_on_change(self):
-        if(self.radioButton.isChecked()):
-                self.label_53.setText("Load:")
-                self.label_55.setText("Load:")
-                self.label_57.setText("Load:")
-                self.label_59.setText("Load:")
-                self.label_61.setText("Load:")
-                self.label_54.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_56.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_58.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_60.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_62.setText("("+str(self.comboBox_2.currentText())+")")
-        elif(self.radioButton_2.isChecked()):
-                self.label_53.setText("Deflection:")
-                self.label_55.setText("Deflection:")
-                self.label_57.setText("Deflection:")
-                self.label_59.setText("Deflection:")
-                self.label_61.setText("Deflection:")                
-                self.label_54.setText("("+str(self.comboBox_3.currentText())+")")
-                self.label_56.setText("("+str(self.comboBox_3.currentText())+")")
-                self.label_58.setText("("+str(self.comboBox_3.currentText())+")")
-                self.label_60.setText("("+str(self.comboBox_3.currentText())+")")
-                self.label_62.setText("("+str(self.comboBox_3.currentText())+")")
-        else:
-                self.label_53.setText("Load:")
-                self.label_55.setText("Load:")
-                self.label_57.setText("Load:")
-                self.label_59.setText("Load:")
-                self.label_61.setText("Load:")                
-                self.label_54.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_56.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_58.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_60.setText("("+str(self.comboBox_2.currentText())+")")
-                self.label_62.setText("("+str(self.comboBox_2.currentText())+")")
+    
             
         
     def new_test_reset(self):
@@ -1517,7 +1226,7 @@ class TY_64_Ui_MainWindow(object):
                         self.timer3.stop()
                         print("Timer3 Stopped......Timer3 status: "+str(self.timer3.isActive()))
         
-    def load_data(self):        
+    def load_data(self):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select TEST_ID,PART_NO,PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,PARTY_NAME,BATCH_ID,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,MACHINE_NO FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")                 
         for x in results:
@@ -1550,23 +1259,11 @@ class TY_64_Ui_MainWindow(object):
             self.label_26.setText(str(x[0]))           
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT FLAG FROM TEST_DATA WHERE TEST_ID ='"+str(self.test_id)+"'  LIMIT 1") 
-        for x in results:            
-            if(str(x[0]) == "L"):
-                 self.radioButton.setChecked(True)
-                 self.radioButton_2.setChecked(False)
-            else:
-                 self.radioButton_2.setChecked(True)
-                 self.radioButton.setChecked(False)
-                
-                
-        connection.close()
         
         self.sc_blank =PlotCanvas(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
-        #self.onchage_combo()
+        self.onchage_combo()
         #self.label_49.setText("Start Test Please.")
         #self.label_49.show()
         #self.frame_3.hide()
@@ -1606,7 +1303,7 @@ class TY_64_Ui_MainWindow(object):
         elif(self.lineEdit_9.text() == ""):
               self.msg="Test Speed Should not Empty."
         elif(self.lineEdit_18.text() == ""):
-              self.msg="Max Deflection Should not Empty."
+              self.msg="Max Elongation Should not Empty."
         elif(self.lineEdit_17.text() == ""):
               self.msg="Max Load Should not Empty."
         elif(self.lineEdit_10.text() == ""):
@@ -1623,18 +1320,9 @@ class TY_64_Ui_MainWindow(object):
               self.msg="Graph Scale x-axsis Should not Empty."
         elif(self.lineEdit_14.text() == ""):
               self.msg="Graph Scale y-axsis  Should not Empty."
-        elif(self.lineEdit_20.text() == ""):
-              self.msg="LOAD/DEFLECTION-1  Should not Empty."       
-        elif(self.lineEdit_21.text() == ""):
-              self.msg="LOAD/DEFLECTION-2  Should not Empty."       
-        elif(self.lineEdit_22.text() == ""):
-              self.msg="LOAD/DEFLECTION-3  Should not Empty."       
-        elif(self.lineEdit_23.text() == ""):
-              self.msg="LOAD/DEFLECTION-4  Should not Empty."        
-        elif(self.lineEdit_24.text() == ""):
-              self.msg="LOAD/DEFLECTION-5  Should not Empty."        
+           
         else:
-               self.check_for_max_load_deflection()           
+               self.go_ahead="Yes"       
                if(self.go_ahead=="Yes"):    
                            self.msg="Confirm to start Test."
                            self.go_ahead="Yes"
@@ -1671,7 +1359,7 @@ class TY_64_Ui_MainWindow(object):
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
-                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"')")
+                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID) VALUES('"+str(self.lineEdit_15.text())+"','ELONGATION','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1679,35 +1367,7 @@ class TY_64_Ui_MainWindow(object):
                                     connection.commit();
                                     connection.close()
        
-    def check_for_max_load_deflection(self):
-        if(self.radioButton.isChecked()):        
-            if(float(self.lineEdit_20.text()) > float(self.lineEdit_17.text())):
-                          self.msg="LOAD/DEFLECTION-1  Should not Greater than Max. Load."
-            elif(float(self.lineEdit_21.text()) > float(self.lineEdit_17.text())):
-                          self.msg="LOAD/DEFLECTION-2  Should not Greater than Max. Load."
-            elif(float(self.lineEdit_22.text()) > float(self.lineEdit_17.text())):
-                          self.msg="LOAD/DEFLECTION-3  Should not Greater than Max. Load."
-            elif(float(self.lineEdit_23.text()) > float(self.lineEdit_17.text())):
-                          self.msg="LOAD/DEFLECTION-4  Should not Greater than Max. Load."
-            elif(float(self.lineEdit_24.text()) > float(self.lineEdit_17.text())):
-                          self.msg="LOAD/DEFLECTION-5  Should not Greater than Max. Load."
-            else:
-                       print("Ok")
-                       self.go_ahead="Yes"
-        else:
-            if(float(self.lineEdit_20.text()) > float(self.lineEdit_18.text())):
-                          self.msg="LOAD/DEFLECTION-1  Should not Greater than Max. DEFLECTION."
-            elif(float(self.lineEdit_21.text()) > float(self.lineEdit_18.text())):
-                          self.msg="LOAD/DEFLECTION-2  Should not Greater than Max. DEFLECTION."
-            elif(float(self.lineEdit_22.text()) > float(self.lineEdit_18.text())):
-                          self.msg="LOAD/DEFLECTION-3  Should not Greater than Max. DEFLECTION."
-            elif(float(self.lineEdit_23.text()) > float(self.lineEdit_18.text())):
-                          self.msg="LOAD/DEFLECTION-4  Should not Greater than Max. DEFLECTION."
-            elif(float(self.lineEdit_24.text()) > float(self.lineEdit_18.text())):
-                          self.msg="LOAD/DEFLECTION-5  Should not Greater than Max. DEFLECTION."
-            else:
-                       print("Ok")
-                       self.go_ahead="Yes"
+    
                        
                        
     def readonly_fields(self):
@@ -1756,7 +1416,21 @@ class TY_64_Ui_MainWindow(object):
                                  self.non_modbus_port=str(x[6])
                             connection.close()
                             
-                          
+                           
+                            self.serial_3 = serial.Serial(
+                                                    port='/dev/ttyUSB0',
+                                                    baudrate=19200,
+                                                    bytesize=serial.EIGHTBITS,
+                                                    parity=serial.PARITY_NONE,
+                                                    stopbits=serial.STOPBITS_ONE,
+                                                    xonxoff=False,
+                                                    timeout = 0.05
+                                                ) 
+                     
+#                             self.timer3=QtCore.QTimer()
+#                             self.timer3.setInterval(5000)        
+#                             self.timer3.timeout.connect(self.loadcell_encoder_status)
+#                             self.timer3.start(1)
                             self.pushButton_8.setDisabled(True)
                             #self.pushButton_6.setDisabled(True)
                             self.readonly_fields()
@@ -1775,6 +1449,65 @@ class TY_64_Ui_MainWindow(object):
         self.label_42.setText(str(self.comboBox_3.currentText()))
         
         
+    
+    
+    def loadcell_encoder_status(self):
+        self.load_cell_hi=-1
+        self.load_cell_lo=-1
+        self.extiometer=-1
+        self.encoder=-1
+        try:                
+            self.serial_3.flush()
+            self.serial_3.write(b'*D\r')
+            self.line_3 = self.serial_3.readline()
+            #print("encoder_status:o/p:"+str(self.line_3))
+        except IOError:
+            print("IO Errors")    
+                
+        xstr3=str(self.line_3)        
+        xstr3=xstr3[1:int(len(xstr3)-1)]
+        xstr2=xstr3.replace("'\\r","")        
+        #print("replace3('\r):"+str(xstr2))
+        xstr1=xstr2.replace("'","")        
+        #print("replace2('):"+str(xstr1))
+        xstr=xstr1.replace("\\r","")
+        #print("replace1(\r):"+str(xstr))        
+        self.buff=xstr.split("_")
+        
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):          
+            #print("Load Cell No... :"+str(self.buff[7]))
+            #print("Encoder No.. :"+str(self.buff[6]))
+            if(str(self.buff[6])=="2"):
+                self.load_cell_hi=1
+                self.load_cell_lo=0
+            else:
+                self.load_cell_hi=0
+                self.load_cell_lo=1
+                    
+            if(str(self.buff[7])=="2"):
+                self.extiometer=1
+                self.encoder=0
+            else:
+                self.extiometer=0
+                self.encoder=1
+                
+           
+            
+            
+            if(self.load_cell_hi==1):
+                if(self.extiometer==1):
+                        self.label_26_1.setText("Load cell: (Hi)-Extensometer ")
+                else:        
+                        self.label_26_1.setText("Load cell: (Hi)-Encoder ")
+            
+            else:
+                if(self.extiometer==1):
+                        self.label_26_1.setText("Load cell: (Low)-Extensometer ")
+                else:
+                        self.label_26_1.setText("Load cell: (Low)-Encoder ")
+    
+    
     def save_units(self):
         connection = sqlite3.connect("tyr.db")
         with connection:        
@@ -1798,7 +1531,7 @@ class TY_64_Ui_MainWindow(object):
             self.lineEdit_19.setText(str(x[3])) # Material
             self.lineEdit_10.setText(str(x[4])) # Hardness
             self.lineEdit_17.setText(str(x[5])) # MAX LOAD
-            self.lineEdit_18.setText(str(x[6])) # MAX DEFLECTION
+            self.lineEdit_18.setText(str(x[6])) # MAX Elongation
             self.lineEdit_7.setText(str(x[7])) # PRE LOAD
             self.lineEdit_9.setText(str(x[8])) # TEST SPEED 
             self.label_24.setText(str(x[9])) #TEST MODE          
@@ -1923,7 +1656,7 @@ class TY_64_Ui_MainWindow(object):
         self.lcdNumber.setProperty("value", 0.0)     #load
         self.lcdNumber_2.setProperty("value",0.0)  #length
         #self.lcdNumber_3.setProperty("value",0.0)  #speed
-                
+    
     def reset(self):
         if(self.sc_new.timer1.isActive()): 
            self.sc_new.on_ani_stop()
@@ -2079,39 +1812,20 @@ class TY_64_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")              
             with connection:
                   print("0 Data saved........")  
-                  cursor = connection.cursor()              
-                  if(self.radioButton.isChecked()):  ### Load 
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_20.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_21.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_22.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
-                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                                    cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")                                    
-                        elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD) ")
-                        elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD) ")
-                        else:
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")
-                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'L' ") 
-                  else: ### Deflection 
-                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_20.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_21.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_22.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_23.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_24.text())+"')")
-                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")                                    
-                        elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST where X_NUM_INCH <= DEFLCTION) ")
-                        elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")
-                        else:
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ") 
-                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'D' ") 
-                
-                 
+                  cursor = connection.cursor()                  
+                  if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM),9999) FROM STG_GRAPH_MST ")
+                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ") 
+                  elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
+                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM_LB),9999) FROM STG_GRAPH_MST ")
+                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM_INCH),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ")                     
+                  elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
+                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM_N),9999) FROM STG_GRAPH_MST ")
+                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ") 
+                  else:
+                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM),9999) FROM STG_GRAPH_MST ")
+                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ")                              
+                  
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
                   cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
                   cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
@@ -2265,12 +1979,8 @@ class TY_64_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 100)
         
         connection = sqlite3.connect("tyr.db")
-        if(self.radioButton.isChecked()):
-                self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
-        else:
-                self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels([' Max.Elongation \n ('+str(self.comboBox_3.currentText())+') ',' Max.Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
+        results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2294,58 +2004,33 @@ class TY_64_Ui_MainWindow(object):
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
         connection.close()
-        if(self.radioButton.isChecked()):
-                data2= [ ['Spec. \n No', 'Load \n ('+str(self.last_load_unit)+')','Deflection \n ('+str(self.last_disp_unit)+')']]
+        
+        
+        data2= [ ['Spec. \n No','Max.Load \n ('+str(self.last_load_unit)+')', 'Max.Elongation \n ('+str(self.last_disp_unit)+')']]
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                data2.append(x)
+        connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                   data2.append(x)
+        connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                    data2.append(x)
+        connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-        else:
-                data2= [ ['Spec. \n No','Deflection \n ('+str(self.last_disp_unit)+')', 'Load\n ('+str(self.last_load_unit)+')']]
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.DEFLCTION),printf(\"%.2f\", A.LOAD) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG', printf(\"%.2f\", avg(A.DEFLCTION)),printf(\"%.2f\", avg(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DEFLCTION)),printf(\"%.2f\", max(A.LOAD))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DEFLCTION)),printf(\"%.2f\", min(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+                    data2.append(x)
+        connection.close()
         
         y=300
         Elements=[]
@@ -2420,7 +2105,6 @@ class TY_64_Ui_MainWindow(object):
         connection.commit();
         self.show_all_specimens()
                 
-    
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -2588,46 +2272,46 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.graph_type="Load Vs Travel"
                  if(self.graph_type=="Load Vs Travel"):
                              if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (Kg)')
                              elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
+                                             self.axes.set_xlabel('Elongation (Inch)')
                                              self.axes.set_ylabel('Load (Kg)')
                              elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
+                                             self.axes.set_xlabel('Elongation (Cm)')
                                              self.axes.set_ylabel('Load (Kg)')                                                               
                              elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (Lb)')
                              elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
+                                             self.axes.set_xlabel('Elongation (Cm)')
                                              self.axes.set_ylabel('Load (Lb)') 
                              elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
+                                             self.axes.set_xlabel('Elongation (Inch)')
                                              self.axes.set_ylabel('Load (Lb)')                                                         
                              elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (N)')                                                         
                              elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
+                                             self.axes.set_xlabel('Elongation (Cm)')
                                              self.axes.set_ylabel('Load (N)')                                 
                              elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
+                                             self.axes.set_xlabel('Elongation (Inch)')
                                              self.axes.set_ylabel('Load (N)')
                              elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (KN)')                                                         
                              elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
+                                             self.axes.set_xlabel('Elongation (Cm)')
                                              self.axes.set_ylabel('Load (KN)')                                 
                              elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
+                                             self.axes.set_xlabel('Elongation (Inch)')
                                              self.axes.set_ylabel('Load (KN)')
                              elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (gm)') 
                              else:    
-                                             self.axes.set_xlabel('Deflection (Mm)')
+                                             self.axes.set_xlabel('Elongation (Mm)')
                                              self.axes.set_ylabel('Load (Kg)')
                                         
                  elif(self.graph_type=="Load Vs Time"):
@@ -2701,7 +2385,7 @@ class PlotCanvas_Auto(FigureCanvas):
          
             #==== Guage Length Setting before staret =====
             self.ser.flush()
-            self.test_type="Compression"
+            self.test_type="Elongation"
             
             if(self.test_type=="Compression"):
                 #self.test_guage_mm=0
@@ -3227,14 +2911,14 @@ class PlotCanvas(FigureCanvas):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
-                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel('Elongation ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         
         elif(self.graph_type=="Load Vs Time"):
                 ax.set_xlabel('Time (sec)')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         else:
-                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel('Elongation ('+str(self.last_disp_unit)+')')
                 ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
         #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
@@ -3310,22 +2994,19 @@ class PlotCanvas_blank(FigureCanvas):
         
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel(' Elongation ('+str(self.last_disp_unit)+')')
         else:
                 ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_xlabel(' Elongation ('+str(self.last_disp_unit)+')')
         
         self.draw()       
     
-
-        
-
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_64_Ui_MainWindow()
+    ui = TY_66_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
