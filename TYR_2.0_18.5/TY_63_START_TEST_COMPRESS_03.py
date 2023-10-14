@@ -1925,8 +1925,8 @@ class TY_63_Ui_MainWindow(object):
     def show_load_cell_val(self):
         if(self.show_lcd_vals=="Y"):
                     if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
@@ -2528,7 +2528,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.test_guage_mm=200            
              self.max_load=float(x[2])
              #self.max_load=100
-             self.max_length=float(float(x[3]))
+             self.max_length=float(self.test_guage_mm)-float(float(x[3]))
              self.flex_max_length=float(x[3])
              self.cof_max_length=float(x[4])
              #self.max_length=float(float(x[0])-float(x[3]))
@@ -2797,6 +2797,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 else:
                     self.p=abs(float(self.buff[5]))
                 #print("self.test_typexx: "+str(self.test_type))
+                    
+                self.test_type="Compression"    
                 if(self.test_type=="Compression"):
                     if(int(self.test_guage_mm) > int(self.p)):
                             self.p=int(self.test_guage_mm)-self.p
