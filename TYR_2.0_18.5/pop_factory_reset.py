@@ -125,7 +125,7 @@ class factory_reset_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")            
             with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                   
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC','TEST_DATA')")                   
                     
             connection.commit();
             connection.close()
@@ -153,8 +153,9 @@ class factory_reset_Ui_MainWindow(object):
                     cursor.execute("DELETE FROM GRAPH_MST WHERE ")
                     cursor.execute("DELETE FROM CYCLES_MST")
                     cursor.execute("DELETE FROM CYCLES_MST_CYCLIC")
-                    cursor.execute("DELETE FROM TEST_MST")                    
-                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                    
+                    cursor.execute("DELETE FROM TEST_MST")
+                    cursor.execute("DELETE FROM TEST_DATA")
+                    cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC','TEST_DATA')")                    
             connection.commit();
             connection.close()
             print("ok - Deleted Test Data  ")
@@ -179,8 +180,9 @@ class factory_reset_Ui_MainWindow(object):
             with connection:        
                     cursor = connection.cursor()       
                     cursor.execute("DELETE FROM STG_GRAPH_MST")
-                    cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_MST LIMIT 500)")
+                    cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM TEST_MST LIMIT 500)")                    
                     cursor.execute("DELETE FROM CYCLES_MST WHERE TEST_ID NOT IN (SELECT TEST_ID FROM TEST_MST)")
+                    cursor.execute("DELETE FROM TEST_DATA WHERE TEST_ID NOT IN (SELECT TEST_ID FROM TEST_MST)")
                     cursor.execute("DELETE FROM CYCLES_MST_CYCLIC")
                     cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID NOT IN (SELECT GRAPH_ID FROM CYCLES_MST)")  
                     #cursor.execute("DELETE FROM SQLITE_SEQUENCE WHERE name in ('TEST_MST','CYCLES_MST','GRAPH_MST','STG_GRAPH_MST','CYCLES_MST_CYCLIC')")                    

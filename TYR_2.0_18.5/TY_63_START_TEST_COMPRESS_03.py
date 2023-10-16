@@ -2048,13 +2048,13 @@ class TY_63_Ui_MainWindow(object):
                         cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
                         cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
                         if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                                    cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")                                    
+                                    cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD)   ")                                    
                         elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD) ")
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_LB >= LOAD) ")
                         elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD) ")
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_N >= LOAD) ")
                         else:
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD) ")
+                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD) ")
                         cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'L' ") 
                   else: ### Deflection 
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_20.text())+"')")
@@ -2063,13 +2063,13 @@ class TY_63_Ui_MainWindow(object):
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_23.text())+"')")
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_24.text())+"')")
                         if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")                                    
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ")                                    
                         elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST where X_NUM_INCH <= DEFLCTION) ")
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST where X_NUM_INCH <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM_INCH >= DEFLCTION) ")
                         elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ")
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ")
                         else:
-                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION) ") 
+                                     cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ") 
                         cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'D' ") 
                 
                  
@@ -2079,7 +2079,7 @@ class TY_63_Ui_MainWindow(object):
                   cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                   cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                  cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID FROM STG_TEST_DATA")                    
+                  cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG FROM STG_TEST_DATA")                    
                   print("Data saved........")                  
             
             connection.commit();
@@ -2228,10 +2228,10 @@ class TY_63_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         if(self.radioButton.isChecked()):
                 self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' and DATA_EXIST_FLAG > 0  order by ID ASC")
         else:
                 self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"'  and DATA_EXIST_FLAG > 0 order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2259,25 +2259,25 @@ class TY_63_Ui_MainWindow(object):
                 data2= [ ['Spec. \n No','Load \n ('+str(self.last_load_unit)+')', 'Deflection \n ('+str(self.last_disp_unit)+')']]
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
@@ -2285,25 +2285,25 @@ class TY_63_Ui_MainWindow(object):
                 data2= [ ['Spec. \n No','Deflection \n ('+str(self.last_disp_unit)+')', 'Load\n ('+str(self.last_load_unit)+')']]
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.DEFLCTION),printf(\"%.2f\", A.LOAD) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.DEFLCTION),printf(\"%.2f\", A.LOAD) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG', printf(\"%.2f\", avg(A.DEFLCTION)),printf(\"%.2f\", avg(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'AVG', printf(\"%.2f\", avg(A.DEFLCTION)),printf(\"%.2f\", avg(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DEFLCTION)),printf(\"%.2f\", max(A.LOAD))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DEFLCTION)),printf(\"%.2f\", max(A.LOAD))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DEFLCTION)),printf(\"%.2f\", min(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DEFLCTION)),printf(\"%.2f\", min(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
                 for x in results:
                         data2.append(x)
                 connection.close()
