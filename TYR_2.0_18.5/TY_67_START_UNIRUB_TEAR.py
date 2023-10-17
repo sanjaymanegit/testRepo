@@ -885,7 +885,7 @@ class TY_67_Ui_MainWindow(object):
         self.label_41.setText(_translate("MainWindow", "Kgf."))
         self.label_42.setText(_translate("MainWindow", "Sec."))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
-        self.pushButton_18.setText(_translate("MainWindow", "Data"))
+        self.pushButton_18.setText(_translate("MainWindow", "Peaks Data"))
         self.label_15.setText(_translate("MainWindow", "Load Cell :"))
         self.label_16.setText(_translate("MainWindow", "High"))
         self.label_17.setText(_translate("MainWindow", "Length Device : "))
@@ -1628,18 +1628,18 @@ class TY_67_Ui_MainWindow(object):
         
         for x in range(len(self.rec_id)-1):
              if(self.load_vals[x] < self.load_vals[x+1]):
-                 print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : UP")
+                 #print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : UP")
                  self.UP_DWON_FLAG="UP"
                  self.UP_COUNT=self.UP_COUNT+1
              else:
-                 print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : DOWN")
+                 #print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : DOWN")
                  self.UP_DWON_FLAG="DOWN"
                  if(self.UP_COUNT > 0):
                      self.peak_val_arr.append(self.load_vals[x])
                      self.UP_COUNT=0
                  
         #self.peak_val_arr.sort()
-        print("All Peak Values :"+str(self.peak_val_arr))
+        #print("All Peak Values :"+str(self.peak_val_arr))
         
         
     def open_pdf(self):
@@ -1805,28 +1805,28 @@ class TY_67_Ui_MainWindow(object):
         connection.close()
         
         
-        data2= [ ['Spec. \n No','Max.Load \n ('+str(self.last_load_unit)+')', 'Max.Elongation \n ('+str(self.last_disp_unit)+')']]
+        data2= [ ['Spec. \n No','Median \n ('+str(self.last_load_unit)+')', 'Range From  \n ('+str(self.last_load_unit)+')', 'Range To  \n ('+str(self.last_load_unit)+')']]
                 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.MEDIAN),printf(\"%.2f\", A.RANGE_FROM),printf(\"%.2f\", A.RANGE_TO) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                 data2.append(x)
         connection.close()
                 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.MEDIAN)), printf(\"%.2f\", avg(A.RANGE_FROM)), printf(\"%.2f\", avg(A.RANGE_TO)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                    data2.append(x)
         connection.close()
                 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.MEDIAN)),printf(\"%.2f\", max(A.RANGE_FROM)), printf(\"%.2f\", max(A.RANGE_TO))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                     data2.append(x)
         connection.close()
                 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.MEDIAN)),printf(\"%.2f\", min(A.RANGE_FROM)),printf(\"%.2f\", min(A.RANGE_TO)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
         for x in results:
                     data2.append(x)
         connection.close()
@@ -1836,9 +1836,9 @@ class TY_67_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.SPECIMEN_NAME,A.BATCH_ID,NULL,A.JOB_NAME,A.TEST_TYPE,NULL,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Part No : ",str(x[2]),"Batch ID: ",str(x[3])],["Part Name:  ",str(x[4]),"Hardness:",str(x[5])],["Test Type:",str(x[6]),"M/C No:",str(x[7])],["Customer Name :",str(x[8]),"Test Speed (min/min) :",str(x[9])],["Material:",str(x[10]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Operator :",str(x[13])]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Spec. Name : ",str(x[2]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Job ID:",str(x[5])],["Customer Name :",str(x[8]),"Test Speed (min/min) :",str(x[9])],["Tested By :", str(self.tested_by),"Report Date-Time: ",str(x[11])]]
             self.remark=str(x[12]) 
         connection.close() 
         
