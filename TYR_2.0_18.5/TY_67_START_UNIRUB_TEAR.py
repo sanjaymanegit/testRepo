@@ -2,7 +2,7 @@ from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_2 import  TY_07_Ui_MainWindow
-from pop_graph_data import pop_graph_data_Ui_MainWindow
+from pop_peak_val import pop_peal_val_Ui_MainWindow
 
 import inspect
 
@@ -927,7 +927,7 @@ class TY_67_Ui_MainWindow(object):
         self.label_26.setText(_translate("MainWindow", "01"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.label_10.setText(_translate("MainWindow", "Tear Strength"))
-        self.label_24.setText(_translate("MainWindow", "Graph Set Ok."))
+        self.label_24.setText(_translate("MainWindow", ""))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         #self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
@@ -1515,8 +1515,7 @@ class TY_67_Ui_MainWindow(object):
                 
                 
         
-    def save_graph_data(self):                
-        
+    def save_graph_data(self):
         self.load100_guage=0
         self.load200_guage=0
         self.load300_guage=0
@@ -1542,52 +1541,68 @@ class TY_67_Ui_MainWindow(object):
         if (len(self.sc_new.arr_p) > 1):            
             #### Get Guage length
             connection = sqlite3.connect("tyr.db")
-            results=connection.execute("select IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,IS_METAL FROM GLOBAL_VAR")                 
-            for x in results:
-                self.guage_length_mm=0
-                self.test_type=str(x[1])
-                self.def_flg=str(x[2])            
-            connection.close()                                  
+            with connection:        
+              cursor = connection.cursor()
+              cursor.execute("DELETE FROM STG_TEST_DATA")
+              cursor.execute("DELETE FROM STG_PEAK_MST") 
+            connection.commit();
+            connection.close()                               
             
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
                    cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
-                   cursor.execute("DELETE FROM STG_TEST_DATA")                  
+                  
             connection.commit();
             connection.close()
            
             
           
+            self.populate_peak_loads()
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.peak_val_arr)):
+                   cursor.execute("INSERT INTO STG_PEAK_MST(PEAK_VALUE,ID) VALUES ('"+str(float(self.peak_val_arr[g]))+"','"+str(g+1)+"')")                  
+            connection.commit();
+            connection.close()
+           
         
+        
+        
+       
         if (len(self.sc_new.arr_p) > 1):            
             self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:
-                  print("0 Data saved........")  
-                  cursor = connection.cursor()                  
-                  if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM),9999) FROM STG_GRAPH_MST ")
-                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ") 
-                  elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM_LB),9999) FROM STG_GRAPH_MST ")
-                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM_INCH),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ")                     
-                  elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM_N),9999) FROM STG_GRAPH_MST ")
-                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ") 
-                  else:
-                              cursor.execute("INSERT INTO STG_TEST_DATA(LOAD) SELECT IFNULL(MAX(Y_NUM),9999) FROM STG_GRAPH_MST ")
-                              cursor.execute("UPDATE STG_TEST_DATA SET  DEFLCTION=(SELECT IFNULL(MAX(X_NUM),9999) FROM STG_GRAPH_MST) WHERE DEFLCTION IS NULL ")                              
-                  
-                  cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
-                  cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
-                  cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
-                  cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
-                  cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
-                  cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                  cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID FROM STG_TEST_DATA")                    
-                  print("Data saved........")                  
+                  cursor = connection.cursor()
+                  print("0 Data saved........")
+                  try:
+                          cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
+                          
+                          cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                          cursor.execute("UPDATE STG_PEAK_MST SET PEAK_LIST_ID = (SELECT MAX(IFNULL(PEAK_LIST_ID+1,0)) FROM PEAK_MST)")
+                          cursor.execute("UPDATE STG_PEAK_MST SET TEST_METHOD_TYPE = '"+str(self.comboBox_3.currentText())+"'")
+                          cursor.execute("INSERT INTO PEAK_MST(SQ_NO,PEAK_VAL,PEAK_LIST_ID,TEST_METHOD_TYPE) SELECT ID,PEAK_VALUE,PEAK_LIST_ID,TEST_METHOD_TYPE FROM STG_PEAK_MST")         
+                          cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                          
+                          cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID) SELECT TEST_ID FROM GLOBAL_VAR")
+                          cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
+                          cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")                          
+                          cursor.execute("UPDATE STG_TEST_DATA SET MEDIAN = (SELECT AVG(PEAK_VALUE) FROM STG_PEAK_MST)")                          
+                          cursor.execute("UPDATE STG_TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM STG_PEAK_MST)")
+                          cursor.execute("UPDATE STG_TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM STG_PEAK_MST)")
+                          cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
+                          cursor.execute("UPDATE STG_TEST_DATA SET TEST_METHOD_TYPE = '"+str(self.comboBox_3.currentText())+"'")
+                          cursor.execute("UPDATE STG_TEST_DATA SET PEAK_LIST_ID = (SELECT MAX(IFNULL(PEAK_LIST_ID,0)) FROM PEAK_MST)")
+                          
+                          cursor.execute("INSERT INTO TEST_DATA(TEST_ID,MEDIAN,RANGE_FROM,RANGE_TO,GRAPH_ID,SPEC_ID,TEST_METHOD_TYPE,PEAK_LIST_ID) SELECT TEST_ID,MEDIAN,RANGE_FROM,RANGE_TO,GRAPH_ID,SPEC_ID,TEST_METHOD_TYPE,PEAK_LIST_ID FROM STG_TEST_DATA")                    
+                          
+                          print("Data saved........")
+                  except Exception as e:
+                                     print("SQL Error :"+str(e))
+                                     connection.commit();
             
             connection.commit();
             connection.close()            
@@ -1595,6 +1610,36 @@ class TY_67_Ui_MainWindow(object):
         #self.load_data()
         #print("Save completed")
         self.show_grid_data_Tear()
+        
+    def populate_peak_loads(self):        
+        #### Get All records based on rec id ascending
+        self.load_vals=[]
+        self.rec_id=[]
+        self.UP_DWON_FLAG=""
+        self.UP_COUNT=0
+        self.peak_val_arr=[]
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT round(Y_NUM,2),REC_ID FROM STG_GRAPH_MST order by REC_ID ASC")
+        for x in results:
+              self.load_vals.append(float(x[0]))
+              self.rec_id.append(int(x[1]))
+        connection.close()   
+        
+        for x in range(len(self.rec_id)-1):
+             if(self.load_vals[x] < self.load_vals[x+1]):
+                 print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : UP")
+                 self.UP_DWON_FLAG="UP"
+                 self.UP_COUNT=self.UP_COUNT+1
+             else:
+                 print("ID: "+str(x)+"  ....self.UP_DWON_FLAG : DOWN")
+                 self.UP_DWON_FLAG="DOWN"
+                 if(self.UP_COUNT > 0):
+                     self.peak_val_arr.append(self.load_vals[x])
+                     self.UP_COUNT=0
+                 
+        #self.peak_val_arr.sort()
+        print("All Peak Values :"+str(self.peak_val_arr))
         
         
     def open_pdf(self):
@@ -1677,7 +1722,7 @@ class TY_67_Ui_MainWindow(object):
    
     def open_graph_data(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui=pop_graph_data_Ui_MainWindow()
+        self.ui=pop_peal_val_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
         
@@ -1733,8 +1778,8 @@ class TY_67_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 100)
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels([' Max.Elongation \n ('+str(self.comboBox_3.currentText())+') ',' Max.Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-        results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels([' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
+        results=connection.execute("SELECT printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
