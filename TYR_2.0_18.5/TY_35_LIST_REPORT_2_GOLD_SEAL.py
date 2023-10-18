@@ -718,7 +718,12 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         
         self.load_batchids_2()
         
-        self.list_tests()
+        if(self.new_test_name=="TEAR_STRENGTH"):
+                  self.list_tests_2()
+        elif(self.new_test_name=="ADHESION_STRENGTH"):         
+                  self.list_tests_2()
+        else:
+                  self.list_tests()
         
         
         self.timer1=QtCore.QTimer()
@@ -939,7 +944,85 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         self.label_48.setText("")                   
         self.label_48.show()
        
-    
+    def list_tests_2(self):
+        
+        #self.pushButton_14_1.setEnabled(True)
+        self.from_dt=self.lineEdit_15.text()
+        self.to_dt=self.lineEdit_16.text()
+        #self.party_name=str(self.comboBox_3.currentText())
+        #self.specimen_name=str(self.comboBox_4.currentText())
+        #self.unit_type=str(self.comboBox_5.currentText())
+        
+        print("frm:"+str(self.from_dt)+"   to:"+str(self.to_dt))
+        self.specimen_shape=""
+        
+        self.delete_all_records()        
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+       
+        self.tableWidget.setFont(font)
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 150)
+        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(3, 200)
+        self.tableWidget.setColumnWidth(4, 200)
+        self.tableWidget.setColumnWidth(5, 200)
+        self.tableWidget.setColumnWidth(6, 200)
+       
+        
+        self.tableWidget.setHorizontalHeaderLabels(['Test ID.','CreatedOn','Customer Name','Spec.Counts','Batch ID.','Product Name','Comments'])
+        
+         
+        connection = sqlite3.connect("tyr.db")
+        if(self.radioButton.isChecked()):
+                print("date Range -select")
+                #results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
+                
+        elif(self.radioButton_2.isChecked()):
+                print("Search by Tested By.....")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
+        elif(self.radioButton_3.isChecked()):
+                print("by batch id -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' order by TEST_ID DESC ")                        
+        elif(self.radioButton_4.isChecked()):
+                if(self.lineEdit_17.text() != ""):
+                    print("by Test Id / Serial No -select")
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' order by TEST_ID DESC")                        
+                else:
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")                        
+            
+        elif(self.label_15.isChecked()):
+                print("by Job id -select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.JOB_NAME = '"+str(self.comboBox_2.currentText())+"' order by TEST_ID DESC ")                        
+        else:
+                print("by else part-select")
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'")                        
+      
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                if(int(column_number) == 0):
+                    #print("data-column_number :"+str(column_number))
+                    item = QtWidgets.QTableWidgetItem()
+                    item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                    item.setCheckState(QtCore.Qt.Checked)
+                    item.setText(str(data))
+                    self.tableWidget.setItem(row_number,column_number,item)
+                    #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                else:
+                    self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                #self.lineEdit.setText("")
+        connection.close()   
+        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        self.label_48.setText("")                   
+        self.label_48.show()
+        
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
         while (i>0):             
