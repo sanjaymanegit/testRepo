@@ -49,7 +49,7 @@ minimalmodbus.BYTEORDER_LITTLE= 1
 import statistics
 
 
-class TY_67_Ui_MainWindow(object):
+class TY_68_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 752)
@@ -889,9 +889,13 @@ class TY_67_Ui_MainWindow(object):
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_18.setText(_translate("MainWindow", "Peaks Data"))
         self.label_15.setText(_translate("MainWindow", "Load Cell :"))
+        self.label_15.hide()
         self.label_16.setText(_translate("MainWindow", "High"))
+        self.label_16.hide()
         self.label_17.setText(_translate("MainWindow", "Length Device : "))
+        self.label_17.hide()
         self.label_18.setText(_translate("MainWindow", "Extensometer"))
+        self.label_18.hide()
         self.label_22.setText(_translate("MainWindow", "Load :"))
         self.label_23.setText(_translate("MainWindow", "Time :"))
         self.label_19.setText(_translate("MainWindow", "Test Method:"))
@@ -961,6 +965,15 @@ class TY_67_Ui_MainWindow(object):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.i=0
+        self.comboBox.clear()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST") 
+        for x in results:            
+            self.comboBox.addItem("")
+            self.comboBox.setItemText(self.i,str(x[0]))            
+            self.i=self.i+1
+        connection.close()
         
         self.load_data()
         self.timer1=QtCore.QTimer()
@@ -973,6 +986,40 @@ class TY_67_Ui_MainWindow(object):
         #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+        self.report_fun_1()
+        
+    
+    
+    def report_fun_1(self):
+        self.pushButton_8.setDisabled(True)
+        self.pushButton_10.setDisabled(True) 
+        self.frame_3.show()
+        
+        
+        self.pushButton_12.setDisabled(True)
+        #self.pushButton_13.setDisabled(True)
+        
+        #self.radioButton.setDisabled(True)
+        #self.radioButton_2.setDisabled(True)
+        #self.radioButton_3.setDisabled(True)
+        #self.radioButton_4.setDisabled(True)
+        
+        self.lcdNumber.setDisabled(True)
+        self.lcdNumber_2.setDisabled(True)
+        #self.lcdNumber_3.setDisabled(True)
+        
+        
+        
+        
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.show_graph()
+        self.pushButton_11.setDisabled(True)
+        
+        ## Read Only Fields 
+        self.readonly_fields()
     
     def load_unit_onchange(self):
         self.label_63.setText("("+str(self.comboBox_2.currentText())+")")
@@ -1000,30 +1047,35 @@ class TY_67_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
-        for x in results:           
-                 self.label_12.setText(str(x[0]).zfill(3))
-                 self.test_id=str(x[0])
-                 self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(3))
-                 self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(3))
-        connection.close()
-        self.i=0
-        self.comboBox.clear()
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST ") 
-        for x in results:            
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(self.i,str(x[0]))            
-            self.i=self.i+1
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
-        for x in results:            
-            self.lineEdit_13.setText(str(x[0]))
-            self.lineEdit_14.setText(str(x[1]))
+        results=connection.execute("select PARTY_NAME,MOTOR_SPEED,LAST_UNIT_LOAD,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,TEST_ID ,SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        for x in results:
+            self.lineEdit_25.setText(str(x[0])) # CUSTOMER NAME
+            self.lineEdit_15.setText(str("Job_ID_")+str(self.test_id)) # JOB ID
+            self.lineEdit_16.setText(str("Batch_ID_")+str(self.test_id)) # BATCH ID            
+            self.lineEdit_9.setText(str(x[1])) # TEST SPEED                    
+            self.comboBox_2.setCurrentText(str(x[2])) #UNIT_LOAD
+            self.lineEdit_14.setText(str(x[3]))
+            self.lineEdit_13.setText(str(x[4]))
+            self.label_12.setText(str(x[5]).zfill(3))
+            self.test_id=str(x[5])                
+            self.comboBox.setCurrentText(str(x[6]))
+            self.comboBox.setDisabled(True)
+            
         connection.close()
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT COUNT(DISTINCT SPEC_ID) FROM TEST_DATA WHERE TEST_ID ='"+str(self.test_id)+"'") 
+        for x in results:            
+            self.label_26.setText(str(x[0]))           
+        connection.close()
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT DISTINCT TEST_METHOD_TYPE FROM TEST_DATA WHERE TEST_ID ='"+str(self.test_id)+"' LIMIT 1") 
+        for x in results:            
+            self.comboBox_3.setCurrentText(str(x[0]))
+            self.comboBox_3.setDisabled(True)       
+        connection.close()
 
         
         self.sc_blank =PlotCanvas_blank(self) 
@@ -1158,10 +1210,10 @@ class TY_67_Ui_MainWindow(object):
                                                     timeout = 0.05
                                                 ) 
                      
-                            self.timer3=QtCore.QTimer()
-                            self.timer3.setInterval(5000)        
-                            self.timer3.timeout.connect(self.loadcell_encoder_status)
-                            self.timer3.start(1)
+#                             self.timer3=QtCore.QTimer()
+#                             self.timer3.setInterval(5000)        
+#                             self.timer3.timeout.connect(self.loadcell_encoder_status)
+#                             self.timer3.start(1)
                             self.pushButton_8.setDisabled(True)
                             #self.pushButton_6.setDisabled(True)
                             self.readonly_fields()
@@ -2978,7 +3030,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_67_Ui_MainWindow()
+    ui = TY_68_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
