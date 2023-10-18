@@ -49,7 +49,7 @@ minimalmodbus.BYTEORDER_LITTLE= 1
 import statistics
 
 
-class TY_68_Ui_MainWindow(object):
+class TY_70_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 752)
@@ -1187,7 +1187,7 @@ class TY_68_Ui_MainWindow(object):
                  if(self.go_ahead=="Yes"):
                         self.save_units();
                         self.frame_3.show()
-                        self.sc_blank =PlotCanvas_blank(self) 
+                        self.sc_blank =PlotCanvas(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                         
                         try:            
@@ -3030,7 +3030,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_68_Ui_MainWindow()
+    ui = TY_70_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

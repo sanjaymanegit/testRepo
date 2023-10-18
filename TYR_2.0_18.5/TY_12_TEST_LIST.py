@@ -25,6 +25,8 @@ from TY_59_START_TEST_TRUNKLIDSEAL2 import TY_59_Ui_MainWindow
 from TY_57_START_TEST_TEAR_PEAK_LOAD import TY_57_START_TEST_TEAR_Ui_MainWindow
 from TY_63_START_TEST_COMPRESS_03 import TY_63_Ui_MainWindow
 from TY_65_START_TEST_ELONGATION_03 import TY_65_Ui_MainWindow
+from TY_67_START_UNIRUB_TEAR import TY_67_Ui_MainWindow
+from TY_69_START_UNIRUB_ADHESION import TY_69_Ui_MainWindow
 
 
 
@@ -481,8 +483,43 @@ class TY_12_LIST_Ui_MainWindow(object):
             self.save_test_compress_3()
         elif(str(self.test_type_id) == "33"):  
             self.save_test_elongation_3()
+        elif(str(self.test_type_id) == "34"):  
+            self.save_test_tear_strength()
+        elif(str(self.test_type_id) == "35"):  
+            self.save_test_adhesion_strength()
         else:
             print("Invalid Test ID"+str(self.test_type_id))
+    
+    
+    def save_test_adhesion_strength(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='ADHESION_STRENGTH'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_adhesion_strength()
+        
+    def open_new_window_adhesion_strength(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_69_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def save_test_tear_strength(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='TEAR_STRENGTH'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_tear_strength()
+        
+    def open_new_window_tear_strength(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_67_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def save_test_elongation_3(self):                     
         connection = sqlite3.connect("tyr.db")              

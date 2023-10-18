@@ -49,7 +49,7 @@ minimalmodbus.BYTEORDER_LITTLE= 1
 import statistics
 
 
-class TY_67_Ui_MainWindow(object):
+class TY_69_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 752)
@@ -2978,7 +2978,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_67_Ui_MainWindow()
+    ui = TY_69_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

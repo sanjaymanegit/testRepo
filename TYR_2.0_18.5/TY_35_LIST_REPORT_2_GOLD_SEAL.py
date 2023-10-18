@@ -9,6 +9,9 @@ from TY_54_REPORT_PUSH_ON_FORCE import TY_54_Ui_MainWindow
 from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
 from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
+from TY_68_REPORT_UNIRUB_TEAR import TY_68_Ui_MainWindow
+from TY_70_REPORT_UNIRUB_ADHESION import TY_70_Ui_MainWindow
+
 
 
 
@@ -700,10 +703,14 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         for x in results:
                 self.new_test_name=str(x[0])
                 self.radioButton.setText("By Date Range ["+str(self.new_test_name)+" Test] ")
+                
         connection.close()
         
+        if(self.new_test_name=="TEAR_STRENGTH"):
+            self.pushButton_8_1.hide()
         
-        
+        if(self.new_test_name=="ADHESION_STRENGTH"):
+            self.pushButton_8_1.hide()
         
         
         self.load_party_names_1()
@@ -973,9 +980,25 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                             self.open_report_CLD2()
             elif(str(self.new_test_name) == "TEAR_PEAK_LOAD"):               
                             self.open_report_tear_peak_load()
+            elif(str(self.new_test_name) == "TEAR_STRENGTH"):               
+                            self.open_report_tear_strength()
+            elif(str(self.new_test_name) == "ADHESION_STRENGTH"):               
+                            self.open_report_adhesion_strength()
             else:
                             self.open_report_tensile()
             
+    
+    def open_report_adhesion_strength(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_70_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    def open_report_tear_strength(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_68_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def open_report_tear_peak_load(self):
         self.window = QtWidgets.QMainWindow()
