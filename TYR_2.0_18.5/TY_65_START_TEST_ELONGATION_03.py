@@ -1076,7 +1076,7 @@ class TY_65_Ui_MainWindow(object):
         self.label_50.setText(_translate("MainWindow", "Max. Elongation:"))
         self.label_34.setText(_translate("MainWindow", "(Mm)"))
         self.label_51.setText(_translate("MainWindow", "(Kgf)"))
-        self.pushButton_17.setText(_translate("MainWindow", "Set Sample"))
+        self.pushButton_17.setText(_translate("MainWindow", "Set Pre.Load"))
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Mm)"))
         self.label_16.setText(_translate("MainWindow", "Test Method :"))
@@ -1874,6 +1874,12 @@ class TY_65_Ui_MainWindow(object):
         self.window.show()
           
     def open_manual_control(self):
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set PRE_LOAD='"+str(self.lineEdit_7.text())+"'")                 
+        connection.commit()
+        connection.close()
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
@@ -2416,7 +2422,7 @@ class PlotCanvas_Auto(FigureCanvas):
             #print("IO Errors")
             self.IO_error_flg=1
         
-        
+        time.sleep(2)
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
