@@ -124,6 +124,9 @@ class TY_07_Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(140, 50, 131, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -167,6 +170,9 @@ class TY_07_Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         self.lineEdit_2.setGeometry(QtCore.QRect(580, 50, 111, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -221,6 +227,9 @@ class TY_07_Ui_MainWindow(object):
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
         self.lineEdit_3.setGeometry(QtCore.QRect(960, 50, 111, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -356,52 +365,100 @@ class TY_07_Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Running with 40 % speed of maximum speed 500 ( mm/min)"))
         self.label.setText(_translate("MainWindow", " Speed :"))
         self.label_3.setText(_translate("MainWindow", "(mm/min) "))
-        self.label_5.setText(_translate("MainWindow", "Displacement :"))
+        self.label_5.setText(_translate("MainWindow", "Load cell No :"))
         self.label_6.setText(_translate("MainWindow", "(mm) "))
+        self.label_6.hide()
         self.label_7.setText(_translate("MainWindow", "(UP) "))
         self.label_8.setText(_translate("MainWindow", "(DOWN) "))
         self.label_9.setText(_translate("MainWindow", "(STOP) "))
         self.label_11.setText(_translate("MainWindow", "(Kg) "))
         self.label_12.setText(_translate("MainWindow", "Pre.Load:"))
-        self.radioButton.setText(_translate("MainWindow", "Active"))
-        self.radioButton_2.setText(_translate("MainWindow", "Inactive"))
-        self.pushButton_3.setText(_translate("MainWindow", "Set  Follow Me"))
+        self.radioButton.setText(_translate("MainWindow", "Tensile"))
+        self.radioButton_2.setText(_translate("MainWindow", "Compress"))
+        self.pushButton_3.setText(_translate("MainWindow", "Set Pre Load"))
         self.label_10.setText(_translate("MainWindow", ""))
         self.pushButton_2.clicked.connect(MainWindow.close)       
         self.toolButton.clicked.connect(self.r_run)   #down
         self.toolButton_2.clicked.connect(self.f_run) #up
         self.toolButton_3.clicked.connect(self.stop_run)
         self.pushButton.clicked.connect(self.open_new_window)
-        self.pushButton_3.clicked.connect(self.set_follow_me)
+        self.pushButton_3.clicked.connect(self.set_pre_load)
         #self.lineEdit_3.setDisabled(True)
-        self.lineEdit_2.setDisabled(True)
+        #self.lineEdit_2.setDisabled(True)
         #self.lineEdit.setDisabled(True)
-        self.pushButton_3.setDisabled(True)
-        self.radioButton.setDisabled(True)
-        self.radioButton_2.setDisabled(True)
-        
+        #self.pushButton_3.setDisabled(True)
+        #self.radioButton.setDisabled(True)
+        #self.radioButton_2.setDisabled(True)
+        self.pre_load="0"
         self.label_2.hide()
         self.load_modbus_port()
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),LOAD_CELL_NO,TEST_MODE from GLOBAL_VAR") 
+        for x in results:
+                        self.pre_load=float(x[0])
+                        self.lineEdit_3.setText(str(x[0]))
+                        self.load_cell_no=str(x[1])
+                        self.lineEdit_2.setText(str(x[1]))
+                        self.test_mode=str(x[2])
+        connection.close()
+        print(" self.load_cell_no : "+str(self.load_cell_no))
+        #self.lineEdit_2.setText("1")
     
-    
-    def set_follow_me(self):
-        self.follow_me_flg=0       
+    def set_pre_load(self):
+        self.flag=0
+        self.command_str=""
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    if(self.radioButton.isChecked()):                        
-                        self.follow_me_flg=1
-                        self.frame_2.setDisabled(True)
-                    elif(self.radioButton_2.isChecked()):                        
-                        self.follow_me_flg=0
-                        self.frame_2.setEnabled(True)    
-                    else:
-                        print(" invalid flag")
-                    cursor.execute("UPDATE SETTING_MST SET FOLLOW_ME_FLAG='"+str(self.follow_me_flg)+"'")   
-                    self.label_2.setText("Done ...with Follow me.")
-                    self.label_2.show()   
+                    cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_3.text())+"',LOAD_CELL_NO='"+str(self.lineEdit_2.text())+"'")
         connection.commit();
         connection.close()
+        if(self.radioButton.isChecked()):                        
+                        self.flag=1                        
+        elif(self.radioButton_2.isChecked()):                        
+                        self.flag=0                         
+        else:
+                        print(" invalid flag")
+                    
+        self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )            
+        self.ser.flush()
+        self.load_cell_no=str(self.lineEdit_2.text())
+        self.pre_load=str(self.lineEdit_3.text())
+        self.pre_load=float(self.pre_load)
+        if(int(self.flag) == 1):
+                if(int(self.load_cell_no)==1):
+                        self.command_str="S1H%05d"%self.pre_load+"\r"
+                       
+                else:
+                        self.command_str="S2H%05d"%self.pre_load+"\r"
+                        
+                        
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+                self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Tensile")
+                print("Tensile With Pre Load Started. command: "+str(self.command_str))
+        else:
+                if(int(self.load_cell_no) ==1):
+                        self.command_str="S1J%05d"%self.pre_load+"\r"
+                       
+                else:
+                        self.command_str="S2J%05d"%self.pre_load+"\r"
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+                self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Compression")               
+                print("Compress With Pre Load Started. command: "+str(self.command_str))
+                
+                            
+        self.label_2.show()   
+        
         
         
     

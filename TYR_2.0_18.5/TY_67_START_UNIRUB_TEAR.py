@@ -1126,6 +1126,7 @@ class TY_67_Ui_MainWindow(object):
     
     def go_for_test(self):
         #print("Old object status :"+str(self.timer31.isActive()))
+        self.label_24.hide()
         self.validations()        
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
@@ -1134,7 +1135,7 @@ class TY_67_Ui_MainWindow(object):
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
                         self.save_units();
-                        self.frame_3.show()
+                        self.frame_3.show()                        
                         self.sc_blank =PlotCanvas_blank(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                         
@@ -1346,6 +1347,8 @@ class TY_67_Ui_MainWindow(object):
            cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM='"+str(self.x_axis_val_CM)+"', GRAPH_SCAL_Y_LOAD_N='"+str(self.y_axis_val_N)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
            cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH='"+str(self.x_axis_val_INCH)+"', GRAPH_SCAL_Y_LOAD_LB='"+str(self.y_axis_val_LB)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
            print("Conversion of Graph Scale is Ok !!")
+           self.label_24.setText("Graph Scale Set Ok")
+           self.label_24.show()
         connection.commit();
         connection.close()
         

@@ -1322,7 +1322,7 @@ class TY_63_Ui_MainWindow(object):
         self.label_34.setText(_translate("MainWindow", "(Mm)"))
         self.label_51.setText(_translate("MainWindow", "(Kgf)"))
         self.label_52.setText(_translate("MainWindow", "Graph Set Done."))
-        self.pushButton_17.setText(_translate("MainWindow", "Set Sample"))
+        self.pushButton_17.setText(_translate("MainWindow", "Set Pre.Load"))
         self.label_53.setText(_translate("MainWindow", "Load (1):"))
         self.label_54.setText(_translate("MainWindow", "(Kgf)"))
         self.label_55.setText(_translate("MainWindow", " Load (2):"))
@@ -1375,6 +1375,7 @@ class TY_63_Ui_MainWindow(object):
         self.modbus_port=""
         self.non_modbus_port=""
         self.pre_load="0"
+        self.load_cell_no="0"
         
         
         
@@ -1619,7 +1620,7 @@ class TY_63_Ui_MainWindow(object):
                                           cursor = connection.cursor()
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
-                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"'") 
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE=''") 
                                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1736,7 +1737,72 @@ class TY_63_Ui_MainWindow(object):
         self.show_grid_data_Tear()
         self.label_41.setText(str(self.comboBox_2.currentText()))
         self.label_42.setText(str(self.comboBox_3.currentText()))
+        '''
+        time.sleep(3)
+        connection = sqlite3.connect("tyr.db")
+        with connection:        
+           cursor = connection.cursor()
+           print("UPDATE GLOBAL_VAR SET LOAD_CELL_NO='"+str(self.load_cell_no)+"', TEST_MODE= 'TENSILE'")
+           cursor.execute("UPDATE GLOBAL_VAR SET LOAD_CELL_NO='"+str(self.load_cell_no)+"', TEST_MODE= 'TENSILE'")
+        connection.commit();
+        connection.close()
+        '''
+    
+    def loadcell_encoder_status(self):
+        self.load_cell_hi=-1
+        self.load_cell_lo=-1
+        self.extiometer=-1
+        self.encoder=-1
+        self.load_cell_no="0"
         
+        try:                
+            self.serial_3.flush()
+            self.serial_3.write(b'*D\r')
+            self.line_3 = self.serial_3.readline()
+            print("encoder_status:o/p:"+str(self.line_3))
+        except IOError:
+            print("IO Errors")    
+                
+        xstr3=str(self.line_3)        
+        xstr3=xstr3[1:int(len(xstr3)-1)]
+        xstr2=xstr3.replace("'\\r","")        
+        #print("replace3('\r):"+str(xstr2))
+        xstr1=xstr2.replace("'","")        
+        #print("replace2('):"+str(xstr1))
+        xstr=xstr1.replace("\\r","")
+        #print("replace1(\r):"+str(xstr))        
+        self.buff=xstr.split("_")
+        
+        #print("length of array :"+str(len(self.buff)))
+        if(int(len(self.buff)) > 8 ):          
+            #print("Load Cell No... :"+str(self.buff[7]))
+            #print("Encoder No.. :"+str(self.buff[6]))
+            if(str(self.buff[6])=="2"):
+                self.load_cell_no="2"
+            else:
+                self.load_cell_no="1"
+                    
+            if(str(self.buff[7])=="2"):
+                self.extiometer=1
+                self.encoder=0
+            else:
+                self.extiometer=0
+                self.encoder=1
+                
+           
+            
+            
+#             if(self.load_cell_hi==1):
+#                 if(self.extiometer==1):
+#                         self.label_26_1.setText("Load cell: (Hi)-Extensometer ")
+#                 else:        
+#                         self.label_26_1.setText("Load cell: (Hi)-Encoder ")
+#             
+#             else:
+#                 if(self.extiometer==1):
+#                         self.label_26_1.setText("Load cell: (Low)-Extensometer ")
+#                 else:
+#                         self.label_26_1.setText("Load cell: (Low)-Encoder ")
         
     def save_units(self):
         connection = sqlite3.connect("tyr.db")
@@ -2165,6 +2231,12 @@ class TY_63_Ui_MainWindow(object):
         self.window.show()
           
     def open_manual_control(self):
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set PRE_LOAD='"+str(self.lineEdit_7.text())+"'")                 
+        connection.commit()
+        connection.close()
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
@@ -2496,6 +2568,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.chck_for_last_rec=0
         self.pre_load="0"
+        self.load_cell_no="1"
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2704,15 +2777,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.flush()
             if(self.test_type=="Compression"):
                  print("Compression")                 
-                 if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2J%05d"%self.pre_load+"\r"
-                    else:
-                          self.command_str="*S1J%05d"%self.pre_load+"\r"
-                    
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b) 
+                 if(len(self.ybuff) > 8):                    
                     
                     if(str(self.ybuff[6])=="2"):
                           self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"

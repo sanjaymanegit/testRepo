@@ -2401,15 +2401,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("COF")
             else:
                 print("len(self.ybuff) :"+str(len(self.ybuff)))
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2H%05d"%self.pre_load+"\r"
-                    else:
-                          self.command_str="*S1H%05d"%self.pre_load+"\r"
-                    
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b)
+                if(len(self.ybuff) > 8):                    
                     
                     if(str(self.ybuff[6])=="2"):
                         self.ser.write(b'*S2T000.0 000.0\r')

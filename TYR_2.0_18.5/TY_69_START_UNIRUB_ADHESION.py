@@ -1126,6 +1126,7 @@ class TY_69_Ui_MainWindow(object):
     
     def go_for_test(self):
         #print("Old object status :"+str(self.timer31.isActive()))
+        self.label_24.hide()
         self.validations()        
         close = QMessageBox()
         close.setText("Message: "+str(self.msg))
@@ -1346,6 +1347,8 @@ class TY_69_Ui_MainWindow(object):
            cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM='"+str(self.x_axis_val_CM)+"', GRAPH_SCAL_Y_LOAD_N='"+str(self.y_axis_val_N)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
            cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH='"+str(self.x_axis_val_INCH)+"', GRAPH_SCAL_Y_LOAD_LB='"+str(self.y_axis_val_LB)+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
            print("Conversion of Graph Scale is Ok !!")
+           self.label_24.setText("Graph Scale Set Ok")
+           self.label_24.show()
         connection.commit();
         connection.close()
         
@@ -1621,8 +1624,11 @@ class TY_69_Ui_MainWindow(object):
         results=connection.execute("SELECT PEAK_VALUE FROM STG_PEAK_MST order by ID ASC")
         for x in results:
               self.load_vals_A.append(float(x[0]))              
-        connection.close()   
-        self.med = statistics.median(self.load_vals_A)
+        connection.close()
+        try:
+            self.med = statistics.median(self.load_vals_A)
+        except Exception as e:
+                             print("median Error :"+str(e))   
         print("Median A :"+str(self.med))
         connection = sqlite3.connect("tyr.db")              
         with connection:
