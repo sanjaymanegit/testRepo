@@ -933,7 +933,7 @@ class TY_68_Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.label_10.setText(_translate("MainWindow", "Tear Strength"))
         self.label_24.setText(_translate("MainWindow", ""))
-        self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        #self.comboBox.currentTextChanged.connect(self.onchage_combo)
         #self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
       
@@ -1047,6 +1047,7 @@ class TY_68_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
+        print("select PARTY_NAME,MOTOR_SPEED,LAST_UNIT_LOAD,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,TEST_ID ,SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")       
         results=connection.execute("select PARTY_NAME,MOTOR_SPEED,LAST_UNIT_LOAD,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,TEST_ID ,SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             self.lineEdit_25.setText(str(x[0])) # CUSTOMER NAME
@@ -1081,7 +1082,7 @@ class TY_68_Ui_MainWindow(object):
         self.sc_blank =PlotCanvas_blank(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
-        self.onchage_combo()
+        #self.onchage_combo()
         self.label_49.setText("Start Test Please.")
         self.label_49.show()
         #self.frame_3.hide()
@@ -1313,7 +1314,7 @@ class TY_68_Ui_MainWindow(object):
             self.lineEdit_15.setText(str("Job_ID_")+str(self.test_id)) # JOB ID
             self.lineEdit_16.setText(str("Batch_ID_")+str(self.test_id)) # BATCH ID            
             self.lineEdit_9.setText(str(x[1])) # TEST SPEED                    
-            self.comboBox_2.setCurrentText(str(x[2])) #UNIT_LOAD           
+            #self.comboBox_2.setCurrentText(str(x[2])) #UNIT_LOAD           
         connection.close()
         
         

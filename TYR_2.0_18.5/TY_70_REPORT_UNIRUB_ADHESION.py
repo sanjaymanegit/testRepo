@@ -933,7 +933,7 @@ class TY_70_Ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.label_10.setText(_translate("MainWindow", "Adhesion Strength"))
         self.label_24.setText(_translate("MainWindow", ""))
-        self.comboBox.currentTextChanged.connect(self.onchage_combo)
+        #self.comboBox.currentTextChanged.connect(self.onchage_combo)
         #self.comboBox_4.currentTextChanged.connect(self.show_graph)
         
       
@@ -1081,7 +1081,7 @@ class TY_70_Ui_MainWindow(object):
         self.sc_blank =PlotCanvas_blank(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         
-        self.onchage_combo()
+        #self.onchage_combo()
         self.label_49.setText("Start Test Please.")
         self.label_49.show()
         #self.frame_3.hide()
