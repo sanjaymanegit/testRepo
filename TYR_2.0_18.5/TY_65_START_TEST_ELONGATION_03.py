@@ -1301,7 +1301,7 @@ class TY_65_Ui_MainWindow(object):
                                             cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                                             cursor.execute("UPDATE TEST_MST SET PART_NO="+str(self.comboBox.currentText())+"',PARTY_NAME='"+str(self.lineEdit_25.text())+"',PART_NAME='"+str(self.lineEdit_15.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")                                
-                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")                               
+                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"'")                               
                                             cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1316,8 +1316,8 @@ class TY_65_Ui_MainWindow(object):
                                           cursor = connection.cursor()
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
-                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
-                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID) VALUES('"+str(self.lineEdit_15.text())+"','ELONGATION','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"')")
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"'") 
+                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD) VALUES('"+str(self.lineEdit_15.text())+"','ELONGATION','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2174,6 +2174,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.non_modbus_port=""
         
         self.chck_for_last_rec=0
+        self.pre_load="0"
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2204,7 +2205,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()                
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),PRE_LOAD from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=200            
              self.max_load=float(x[2])
@@ -2217,13 +2218,16 @@ class PlotCanvas_Auto(FigureCanvas):
              #print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
+             self.pre_load=float(str(x[7]))
         connection.close()
-        print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
+        print("self.unit_type: "+str(self.unit_type)+" self.pre_load :"+str(self.pre_load)+" Max Load :"+str(self.max_load).zfill(5)+" self.max_length: "+str(self.max_length))
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
+                 self.break_sence=self.break_sence+float(self.pre_load)
+                 print(" self.break_sence and preload :"+str(self.break_sence))
                  self.modbus_flag=str(x[4])
                  self.modbus_port=str(x[5])
                  self.non_modbus_port=str(x[6])
@@ -2379,7 +2383,8 @@ class PlotCanvas_Auto(FigureCanvas):
             self.ser.flush()
             if(self.test_type=="Compression"):
                  print("Compression")                 
-                 if(len(self.ybuff) > 8):
+                 if(len(self.ybuff) > 8):                    
+                    
                     if(str(self.ybuff[6])=="2"):
                           self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     else:
@@ -2397,6 +2402,15 @@ class PlotCanvas_Auto(FigureCanvas):
             else:
                 print("len(self.ybuff) :"+str(len(self.ybuff)))
                 if(len(self.ybuff) > 8):
+                    if(str(self.ybuff[6])=="2"):
+                          self.command_str="*S2H%05d"%self.pre_load+"\r"
+                    else:
+                          self.command_str="*S1H%05d"%self.pre_load+"\r"
+                    
+                    print("self.command_str:"+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    
                     if(str(self.ybuff[6])=="2"):
                         self.ser.write(b'*S2T000.0 000.0\r')
                         print("Start Command :*S2T000.0 000.0\r")
