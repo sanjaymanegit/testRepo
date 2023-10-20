@@ -1507,7 +1507,7 @@ class TY_35_LIST_Ui_MainWindow_COMP_3(object):
         data2= [ ['Test.\n No', 'Tested \n On','Part \n No','Part Name','Material','Hardness','Batch ID','Machine \n No','Operator \n Name','Max \n Load','Max \n Def.']]
                 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,date(CREATED_ON),PART_NO,PART_NAME,MATERIAL,HARDNESS,BATCH_ID,MACHINE_NO,OPERATOR,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH  FROM TEST_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
+        results=connection.execute("SELECT A.TEST_ID,date(A.CREATED_ON),A.PART_NO,A.PART_NAME,A.MATERIAL,A.HARDNESS,A.BATCH_ID,A.MACHINE_NO,A.OPERATOR,(select B.LOAD from TEST_DATA B where B.TEST_ID = A.TEST_ID ORDER BY B.ID DESC LIMIT 1) as MAX_LOAD,(select C.DEFLCTION from TEST_DATA C where C.TEST_ID = A.TEST_ID ORDER BY C.ID DESC LIMIT 1) as MAX_DEF  FROM TEST_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM TEST_IDS)") 
         for x in results:
                  data2.append(x)
         connection.close()
