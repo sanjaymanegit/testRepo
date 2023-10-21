@@ -780,7 +780,7 @@ class TY_02_ilss_Ui_MainWindow(object):
         item = self.tableWidget.item(0, 9)
         item.setText(_translate("MainWindow", "12 Sep 2019 12:12:11 AM"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
-        self.label.setText(_translate("MainWindow", "New Test"))
+        self.label.setText(_translate("MainWindow", "ILSS Test"))
         self.label_2.setText(_translate("MainWindow", datetime.datetime.now().strftime("%B  %d , %Y %I:%M ")+""))
         self.label_23.setText(_translate("MainWindow", "Batch Id:"))
         self.label_24.setText(_translate("MainWindow", "Batch_900011"))
@@ -817,16 +817,50 @@ class TY_02_ilss_Ui_MainWindow(object):
         for x in results:                
                     self.test_type_for_ilss=str(x[0])            
         connection.close()
-        try:
-            self.serial_3 = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+        
+        try:            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
+            for x in results:
+                 self.modbus_flag=str(x[4])
+                 self.modbus_port=str(x[5])
+                 self.non_modbus_port=str(x[6])
+            connection.close()
+            
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.serial_3 = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                ) 
+        
+       
             
             self.timer3=QtCore.QTimer()
             self.timer3.setInterval(5000)        
@@ -1694,6 +1728,11 @@ class PlotCanvas_Auto(FigureCanvas):
         self.max_load=0
         self.flexural_max_load=100
         self.max_length=0
+        
+        self.modbus_flag=""
+        self.modbus_port=""
+        self.non_modbus_port=""
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -1711,7 +1750,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE from SETTING_MST") 
+        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
              self.axes.set_xlim(0,int(x[0]))
              self.axes.set_ylim(0,int(x[1]))
@@ -1720,6 +1759,9 @@ class PlotCanvas_Auto(FigureCanvas):
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
              self.break_sence=int(x[3])
+             self.modbus_flag=str(x[4])
+             self.modbus_port=str(x[5])
+             self.non_modbus_port=str(x[6])
         connection.close()
         
         
@@ -1738,15 +1780,39 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
         
         try:
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
+            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
+            if(self.modbus_flag == 'Y'):
+                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
+                if(self.non_modbus_port=="/dev/ttyUSB1"):
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+                else:
+                        self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
+            else:
+                       self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.05
+                                )
           
             self.ser.flush()
             self.ser.write(b'*D\r')
@@ -2062,7 +2128,141 @@ class PlotCanvas_Auto(FigureCanvas):
         else:
             print(" not Ok ")
             #self.label_3.setText("Motor Speed is Required")
-            #self.label_3.show()            
+            #self.label_3.show()
+        
+        print("test type :"+str(self.test_type))
+        print("Modbus Flag :"+str(self.modbus_flag))
+        print("Modbus Port :"+str(self.modbus_port))
+        if(self.modbus_flag=='Y' and self.modbus_port != "" ):
+            if(self.test_type=="Compress"):        
+                v=0
+                try:
+                    v=float(self.input_rev_speed_val) 
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    print("compress :int part :%d"%v)
+                    print("compress :decial part:%.2f"%v)
+                    #v=v*100
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) # port name, slave address (in decimal)                
+                    
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    v=float(self.input_speed_val)
+                    #v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB0"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    elif(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                        
+                   
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600 
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
+            
+            
+            
+            else:   
+                print("inside tesnsile part .....")
+                v=0
+                try:
+                    v=float(self.input_speed_val)
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                        
+                    #print("int part :%d"%v)
+                    #print("decial part:%.2f"%v)
+                    #v=v*100
+                    print("self.modbus_port :"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                                
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    #instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    
+
+                    print(" write1 :"+str(v))
+                except IOError as e:
+                    print("Forward-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Forward speed : "+str(v))
+            
+                v=0
+                try:     
+                    
+                    v=float(self.input_rev_speed_val)            
+                    v=v*40
+                    if(float(v) < 1 ):
+                        v=1.0
+                    elif(float(v)== 1 ):
+                        v=1.0
+                    else:
+                        v=round(v,0)
+                    print("int part :%d"%v)
+                    print("decial part:%.2f"%v)         
+                    print("self.modbus_port:"+str(self.modbus_port))
+                    if(self.modbus_port=="/dev/ttyUSB1"):
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB1', 1) #                       
+                    else:
+                                instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) #
+                    instrument.serial.timeout = 1
+                    instrument.serial.baudrate = 9600            
+                    #instrument.write_register(4096,v,0) ###self.input_speed_val RPM
+                    #instrument.write_register(4097,0,0) ###self.input_speed_val RPM
+                    instrument.write_register(4098,v,0) ###self.input_speed_val RPM
+                    instrument.write_register(4099,0,0) ###self.input_speed_val RPM
+                    print(" write2 :"+str(v))
+                except IOError as e:
+                    print("Reverse-Write Modbus IO Error -Motor start : "+str(e))
+                
+                print("Reverse speed : "+str(v))
     
 
  
