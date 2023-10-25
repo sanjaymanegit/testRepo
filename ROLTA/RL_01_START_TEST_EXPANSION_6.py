@@ -1,5 +1,5 @@
 from GRAPH_SCALES_ALL import set_two_graphs_Ui_MainWindow
-
+from POP_GRAPH_2_SET import pop_graph2_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import os
@@ -1086,7 +1086,7 @@ class RL_01_Ui_MainWindow(object):
         #self.pushButton_17.clicked.connect(self.graph_type_pressure)
         #self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
         self.pushButton_21.clicked.connect(self.graph_group1_onclick)
-        self.pushButton_22.clicked.connect(self.graph_group2_onclick)
+        self.pushButton_22.clicked.connect(self.open_pop_graph2)
         self.pushButton_24.clicked.connect(self.reset_graph_onclick)
         self.comboBox.currentTextChanged.connect(self.update_graph_type)
         
@@ -1127,7 +1127,7 @@ class RL_01_Ui_MainWindow(object):
                 
     def graph_group2_onclick(self):
         self.graph_group_no=2
-        self.pushButton_22.setDisabled(True)
+        #self.pushButton_22.setDisabled(True)
         self.pushButton_21.setEnabled(True)
         self.display_bank_graphs2()
         self.pushButton_17.setText("Pressure Vs  Expansion")
@@ -1140,7 +1140,7 @@ class RL_01_Ui_MainWindow(object):
     def graph_group1_onclick(self):
         self.graph_group_no=1
         self.pushButton_21.setDisabled(True)
-        self.pushButton_22.setEnabled(True)
+        #self.pushButton_22.setEnabled(True)
         self.display_bank_graphs()
         self.pushButton_17.setText("Pressure Vs  Time")
         self.pushButton_18.setText("Expansion Vs Time")
@@ -1157,7 +1157,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_21.show()
         self.pushButton_22.show()
         self.pushButton_21.setEnabled(True)
-        self.pushButton_22.setEnabled(True)
+        #self.pushButton_22.setEnabled(True)
         
         
         
@@ -1244,7 +1244,7 @@ class RL_01_Ui_MainWindow(object):
                 
     def start_test_expansion(self):
         self.pushButton_21.show()
-        self.pushButton_22.hide()
+        #self.pushButton_22.hide()
         self.pushButton_21.setDisabled(True)
         self.validation() 
         self.disable_all()
@@ -1445,7 +1445,7 @@ class RL_01_Ui_MainWindow(object):
         print("Group2 started")
         self.pushButton_21.hide()
         self.pushButton_22.show()
-        self.pushButton_22.setDisabled(True)
+        #self.pushButton_22.setDisabled(True)
     
         self.validation() 
         self.disable_all()
@@ -1893,7 +1893,12 @@ class RL_01_Ui_MainWindow(object):
                      
             #self.show_grid_data_PROOF()
      
-           
+    def open_pop_graph2(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=pop_graph2_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()       
             
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
