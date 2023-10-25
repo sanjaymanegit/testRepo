@@ -1839,8 +1839,8 @@ class RL_01_Ui_MainWindow(object):
                     self.pushButton_7.setEnabled(True)
                     self.pushButton_8.setEnabled(True)
                     
-                    self.lcdNumber_2.setProperty("value", str(max(self.sc_new.arr_q)))        
-                    self.lcdNumber.setProperty("value",str(max(self.sc_new.arr_p)))   #leng
+                    self.lcdNumber_2.setProperty("value", str(self.sc_new.q))        
+                    self.lcdNumber.setProperty("value",str(self.sc_new.p))   #leng
                             
                     self.label_15.setText("")    
                     
@@ -3868,7 +3868,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.real_sec=0.0
         
         self.arr_p=[0.0]
-        self.arr_q=[133.0]
+        self.arr_q=[0.0]
         self.arr_t=[0.0]
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
@@ -4345,7 +4345,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.t =170
         
         self.arr_p=[0.0]
-        self.arr_q=[133.0]
+        self.arr_q=[0.0]
         self.arr_t=[0.0]
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
@@ -4617,7 +4617,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 #print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                print(" [G2 P1 ] arr_p_strain:"+str(self.arr_p_strain)+" q_mpa:"+str(self.q_mpa)+" t:"+str(self.t))
+                print(" [G2 P1 ] arr_p_strain:"+str(self.p_strain)+" q_mpa:"+str(self.q_mpa)+" t:"+str(self.t))
                 
 
 
@@ -4757,7 +4757,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         self.t =170
         
         self.arr_p=[0.0]
-        self.arr_q=[133.0]
+        self.arr_q=[0.0]
         self.arr_t=[0.0]
         self.arr_p1=[0.0]
         self.arr_q1=[0.0]
