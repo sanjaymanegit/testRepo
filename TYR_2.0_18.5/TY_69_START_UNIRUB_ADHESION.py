@@ -2024,7 +2024,12 @@ class TY_69_Ui_MainWindow(object):
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
         d.add(linea_firma)
-       
+        
+#         logo_arr=[]
+#         report_gr_img="last_graph.png"        
+#         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+#         logo_arr.append("odkfoksdf")
+#         logo_arr.append(pdf_img)
         
         #f1=Table(data)
         #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
@@ -2037,6 +2042,9 @@ class TY_69_Ui_MainWindow(object):
          
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+#         f4=Table(logo_arr)
+#         f4.setStyle(TableStyle([('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),('BOX', (0,0), (-1,-1), 0.25, colors.black)]))
         
         #self.show_all_specimens()
         report_gr_img="last_graph.png"        
