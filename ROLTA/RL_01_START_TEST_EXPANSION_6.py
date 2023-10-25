@@ -3848,10 +3848,10 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.axes.grid(which='major', linestyle='-', linewidth='0.50', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
-        self.axes2 = self.axes.twinx()
-        color = 'tab:green'
-        self.axes2.set_ylabel('Time (Sec)', color = color)
-        self.axes2.set_ylim(0,500)
+#         self.axes2 = self.axes.twinx()
+#         color = 'tab:green'
+#         self.axes2.set_ylabel('Time (Sec)', color = color)
+#         self.axes2.set_ylim(0,500)
         
         
         
@@ -3928,6 +3928,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.elapsed_time_show=0
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        self.circumference=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -3947,13 +3948,14 @@ class PlotCanvasG2_Auto(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE,CIRCUMFARANCE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
                         self.axes.set_xlabel('Expansion (mm)')
                         self.axes.set_ylabel('Pressure (MPa)')
                         self.cs_area= 0
+                        self.circumference=str(x[3])
         connection.close()
         
         
@@ -4093,10 +4095,10 @@ class PlotCanvasG2_Auto(FigureCanvas):
         self.x2,self.y2 = [],[]
         self.lines = []
         lobj = self.axes.plot([],[],lw=2)[0]
-        lobj2 = self.axes2.plot([],[],lw=2)[0]
+        #lobj2 = self.axes2.plot([],[],lw=2)[0]
         
         self.lines.append(lobj)
-        self.lines.append(lobj2)
+        #self.lines.append(lobj2)
         self.on_ani_start()
         
         
@@ -4181,9 +4183,14 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 #self.t=abs(float(self.buff[3]))
                 self.t=float(self.elapsed_time.seconds)
                 #self.p=abs(float(self.buff[4])) #fix val
-                self.p_strain=(float(self.p)*100/float(20.00))
-                self.arr_p_strain.append(float(self.p)*100/float(20.00))
-                
+                #self.p_strain=(float(self.p)*100/float(20.00))
+                #self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                if(int(self.circumference) > 0):
+                     self.p_strain=(float(self.p)/float(self.p))*100
+                else:
+                     self.p_strain=0
+                     
+                self.arr_p_strain.append(float(self.p_strain))  
                 if(float(self.t_av) > 0.0):
                         self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
                 else:
@@ -4200,9 +4207,12 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 self.arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
                 self.real_sec=float(self.t)                
                 self.arr_key_id.append(float(self.real_sec))
+                
                 print(" [G2 P0 ] P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                 
 
+                
+                
                 if(int(self.q) > int(self.ylim)):
                     self.ylim=(int(self.q)+100)
                     self.ylim_update='YES'                   
@@ -4220,6 +4230,7 @@ class PlotCanvasG2_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+        '''
         self.x1.append(self.p)
         self.y1.append(self.q)
         self.x2.append(self.p)
@@ -4231,9 +4242,9 @@ class PlotCanvasG2_Auto(FigureCanvas):
         for lnum,line in enumerate(self.lines):
             line.set_data(self.xlist[lnum], self.ylist[lnum]) # set data for each line separately.
         return self.lines
-
-        #self.line_cnt.set_data(self.arr_p,self.arr_q)       
-        #return [self.line_cnt]
+        '''
+        self.line_cnt.set_data(self.arr_p,self.arr_q)       
+        return [self.line_cnt]
         #return self.line_cnt,
     
    
@@ -4316,10 +4327,10 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.axes.grid(which='major', linestyle='-', linewidth='0.50', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
-        self.axes2 = self.axes.twinx()
-        color = 'tab:green'
-        self.axes2.set_ylabel('Time (Sec)', color = color)
-        self.axes2.set_ylim(0,500)
+#         self.axes2 = self.axes.twinx()
+#         color = 'tab:green'
+#         self.axes2.set_ylabel('Time (Sec)', color = color)
+#         self.axes2.set_ylim(0,500)
         
         
         
@@ -4391,6 +4402,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.elapsed_time_show=0
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
+        self.circumference="0"
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -4410,13 +4422,14 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE,CIRCUMFARANCE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
-                        self.axes.set_ylabel('Strain (%)')
-                        self.axes.set_xlabel('Stress (MPa)')
+                        self.axes.set_xlabel('Strain (%)')
+                        self.axes.set_ylabel('Stress (MPa)')
                         self.cs_area= 0
+                        self.circumference=str(x[3])
         connection.close()
         
         
@@ -4496,10 +4509,10 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         self.x2,self.y2 = [],[]
         self.lines = []
         lobj = self.axes.plot([],[],lw=2)[0]
-        lobj2 = self.axes2.plot([],[],lw=2)[0]
+        #lobj2 = self.axes2.plot([],[],lw=2)[0]
         
         self.lines.append(lobj)
-        self.lines.append(lobj2)
+        #self.lines.append(lobj2)
         self.on_ani_start()
         
         
@@ -4586,9 +4599,14 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 
                 #self.p=abs(float(self.buff[4])) #fix val
                 
-                self.p_strain=float(float(self.p)*100/float(20.00))
-                self.arr_p_strain.append(float(self.p)*100/float(20.00))
-                
+                #self.p_strain=float(float(self.p)*100/float(20.00))
+                #self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                if(int(self.circumference) > 0):
+                     self.p_strain=(float(self.p)/float(self.p))*100
+                else:
+                     self.p_strain=0
+                     
+                self.arr_p_strain.append(float(self.p_strain))
                 if(float(self.t_av) > 0.0):
                         self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
                 else:
@@ -4599,7 +4617,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 #print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                print(" [G2 P1 ] P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                print(" [G2 P1 ] arr_p_strain:"+str(self.arr_p_strain)+" q_mpa:"+str(self.q_mpa)+" t:"+str(self.t))
                 
 
 
@@ -4620,6 +4638,7 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+        ''''
         self.x1.append(self.p)
         self.y1.append(self.q_mpa)
         self.x2.append(self.p)
@@ -4631,9 +4650,10 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
         for lnum,line in enumerate(self.lines):
             line.set_data(self.xlist[lnum], self.ylist[lnum]) # set data for each line separately.
         return self.lines
+        '''
 
-        #self.line_cnt.set_data(self.arr_p,self.arr_q)       
-        #return [self.line_cnt]
+        self.line_cnt.set_data(self.arr_p_strain,self.arr_q_mpa)       
+        return [self.line_cnt]
         #return self.line_cnt,
     
    
@@ -4719,10 +4739,10 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         self.axes.grid(which='major', linestyle='-', linewidth='0.50', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.50', color='black')
         
-        self.axes2 = self.axes.twinx()
-        color = 'tab:green'
-        self.axes2.set_ylabel('Time (Sec)', color = color)
-        self.axes2.set_ylim(0,500)
+#         self.axes2 = self.axes.twinx()
+#         color = 'tab:green'
+#         self.axes2.set_ylabel('Time (Sec)', color = color)
+#         self.axes2.set_ylim(0,500)
         
         
         
@@ -5020,6 +5040,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
+        '''
         self.x1.append(self.t)
         self.y1.append(self.q_mpa)
         self.x2.append(self.t)
@@ -5031,10 +5052,11 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
         for lnum,line in enumerate(self.lines):
             line.set_data(self.xlist[lnum], self.ylist[lnum]) # set data for each line separately.
         return self.lines
+        '''
 
-        #self.line_cnt.set_data(self.arr_p,self.arr_q)       
-        #return [self.line_cnt]
-        #return self.line_cnt,
+        self.line_cnt.set_data(self.arr_t,self.arr_q_mpa)       
+        return [self.line_cnt]
+         #return self.line_cnt,
     
    
         
