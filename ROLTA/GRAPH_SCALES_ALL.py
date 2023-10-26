@@ -458,7 +458,7 @@ class set_two_graphs_Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Pressure (MPa)"))
         self.label_7.setText(_translate("MainWindow", "Expansion Vs Time"))
         self.label_8.setText(_translate("MainWindow", "Time (sec)"))
-        self.label_9.setText(_translate("MainWindow", "Expansion (MPa)"))
+        self.label_9.setText(_translate("MainWindow", "Expansion (mm)"))
         self.label_11.setText(_translate("MainWindow", "Graph Type"))
         self.label_10.setText(_translate("MainWindow", "Strerss Vs Time"))
         self.label_12.setText(_translate("MainWindow", "Time (sec)"))

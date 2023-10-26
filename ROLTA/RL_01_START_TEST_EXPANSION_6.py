@@ -77,7 +77,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_4.setGeometry(QtCore.QRect(10, 830, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
@@ -255,7 +255,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_9.setGeometry(QtCore.QRect(210, 830, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
@@ -334,10 +334,10 @@ class RL_01_Ui_MainWindow(object):
         #self.lineEdit_48.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_48.setObjectName("lineEdit_48")
         self.label_145 = QtWidgets.QLabel(self.frame)
-        self.label_145.setGeometry(QtCore.QRect(10, 700, 71, 31))
+        self.label_145.setGeometry(QtCore.QRect(10, 700, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_145.setFont(font)
@@ -345,10 +345,10 @@ class RL_01_Ui_MainWindow(object):
         self.label_145.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_145.setObjectName("label_145")
         self.label_146 = QtWidgets.QLabel(self.frame)
-        self.label_146.setGeometry(QtCore.QRect(130, 700, 71, 31))
+        self.label_146.setGeometry(QtCore.QRect(130, 700, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_146.setFont(font)
@@ -359,7 +359,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_147.setGeometry(QtCore.QRect(280, 700, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_147.setFont(font)
@@ -381,7 +381,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_148.setGeometry(QtCore.QRect(360, 700, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.label_148.setFont(font)
@@ -407,7 +407,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_15.setGeometry(QtCore.QRect(910, 30, 121, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_15.setFont(font)
@@ -770,7 +770,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_17.setGeometry(QtCore.QRect(200, 160, 181, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_17.setFont(font)
@@ -781,7 +781,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_18.setGeometry(QtCore.QRect(800, 160, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_18.setFont(font)
@@ -792,7 +792,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_19.setGeometry(QtCore.QRect(1360, 160, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_19.setFont(font)
@@ -803,7 +803,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_20.setGeometry(QtCore.QRect(410, 830, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_20.setFont(font)
@@ -876,7 +876,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_23.setGeometry(QtCore.QRect(600, 830, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_23.setFont(font)
@@ -889,7 +889,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_23_1.setGeometry(QtCore.QRect(600, 830, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_23_1.setFont(font)
@@ -1038,7 +1038,7 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
         self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
-        self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Time"))
+        self.pushButton_19.setText(_translate("MainWindow", "Strain Vs Time"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
@@ -1819,7 +1819,7 @@ class RL_01_Ui_MainWindow(object):
             #self.lineEdit_48.setText(str(round(self.sc_new.q_mpa,0)))    #stress     
             self.lineEdit_48.setProperty("value",round(self.sc_new.q_mpa,0))
             #self.lineEdit_52.setText(str(round(self.sc_new.p_strain,0)))   #Strain
-            self.lineEdit_52.setProperty("value",round(self.sc_new.p_strain,0))
+            self.lineEdit_52.setProperty("value",round(self.sc_new.p_strain,4))
             #self.elapsed_time_show=self.time.strftime("%H:%M:%S",self.sc_new.t)
             self.mod=int(self.sc_new.t) % 60 
             self.lineEdit_53.setText(str(int(int(self.sc_new.t)/3600)).zfill(2)+":"+str(int(int(self.sc_new.t)/60)).zfill(2)+":"+str(int(int(self.mod))).zfill(2))
@@ -2426,7 +2426,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
-        
+        self.circumference=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2443,13 +2443,14 @@ class PlotCanvas_Auto(FigureCanvas):
 #         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE,CIRCUMFARANCE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
                         self.axes.set_xlabel('Time (S)')
                         self.axes.set_ylabel('Pressure (MPa)')
                         self.cs_area= 0
+                        self.circumference=str(x[3])
         connection.close()
         
         
@@ -2719,8 +2720,16 @@ class PlotCanvas_Auto(FigureCanvas):
                 
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
-                self.p_strain=float(self.p)*100/float(20.00)
-                self.arr_p_strain.append(float(self.p_strain))
+                
+                #self.p_strain=float(self.p)*100/float(20.00)
+#                 self.arr_p_strain.append(float(self.p_strain))
+                
+                if(int(self.circumference) > 0):
+                     self.p_strain=(float(self.p)/float(self.circumference))*100
+                else:
+                     self.p_strain=0
+                print("  self.circumference :"+str(self.circumference)+"   self.p:"+str(self.p)+"  self.p_strain: "+str(self.p_strain))     
+                self.arr_p_strain.append(float(self.p_strain))  
                 
                 self.arr_t.append(int(self.t))
                 
@@ -2732,15 +2741,15 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_q_lb.append(float(self.q_lb))
                 
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
                 self.arr_q_mpa.append(float(self.q_mpa))              
-                
+                print(" (P0) P:"+str(self.p)+" q:"+str(self.q)+" real_sec:"+str(self.real_sec))
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
-                print(" (P0) P:"+str(self.p)+" q:"+str(self.q)+" real_sec:"+str(self.real_sec))
+                print(" self.q: "+str(self.q)+" self.d_av: "+str(self.d_av)+" self.t_av: "+str(self.t_av)+" self.q_mpa : "+str(self.q_mpa))
                 self.arr_key_id.append(float(self.real_sec))
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
@@ -3257,6 +3266,8 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         self.p =0
         self.p_cm =0
         self.p_inch =0
+        self.p_strain =0
+         
         self.t=0
         self.q =0
         self.q_n =0
@@ -3334,6 +3345,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
+        self.circumference=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -3350,13 +3362,14 @@ class PlotCanvas_Auto_P2(FigureCanvas):
 #         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE,CIRCUMFARANCE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
                         self.axes.set_xlabel('Time (Sec)')
                         self.axes.set_ylabel('Strain (%)')
                         self.cs_area= 0
+                        self.circumference=str(x[3])
         connection.close()
         
         
@@ -3516,8 +3529,13 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
-                self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                #self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                if(int(self.circumference) > 0):
+                     self.p_strain=(float(self.p)/float(self.circumference))*100
+                else:
+                     self.p_strain=0
                 
+                self.arr_p_strain.append(float(self.p_strain))     
                 self.arr_t.append(float(self.t))
                 
                 self.q=float(self.q)
@@ -3689,8 +3707,8 @@ class PlotCanvas_blank(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_TIME' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
         ax.set_xlabel('Time (sec)')
         ax.set_ylabel('Pressure (MPa)')
@@ -3753,8 +3771,8 @@ class PlotCanvas_blank_P1(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'EXPANSION_VS_TIME' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
         ax.set_xlabel('Time (sec)')
         ax.set_ylabel('Expansion (mm)')
@@ -3818,8 +3836,8 @@ class PlotCanvas_blank_P2(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRAIN_VS_TIME' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
         ax.set_xlabel('Time (sec)')
         ax.set_ylabel('Strain (%)')
@@ -5187,8 +5205,8 @@ class PlotCanvasG2_blank(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_EXPANSION' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
                
         for i in range(len(self.x)):
@@ -5242,8 +5260,8 @@ class PlotCanvasG2_blank_P1(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_STRAIN' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
                
         for i in range(len(self.x)):
@@ -5300,8 +5318,8 @@ class PlotCanvasG2_blank_P2(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_TIME' LIMIT 1") 
         for x in results:
-             ax.set_xlim(0,int(x[0]))
-             ax.set_ylim(0,int(x[1]))          
+             ax.set_xlim(0,float(x[0]))
+             ax.set_ylim(0,float(x[1]))          
         connection.close()
                
         for i in range(len(self.x)):

@@ -81,9 +81,25 @@ class pop_graph2_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+#         self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
+# "background-color: rgb(0, 180, 0);")
         self.pushButton_4.setObjectName("pushButton_4")
+        
+        
+        
+        
+        self.chke_box = QtWidgets.QCheckBox(self.frame)
+        self.chke_box.setGeometry(QtCore.QRect(1280, 30, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.chke_box.setFont(font)
+        self.chke_box.setText("Enable")
+        self.chke_box.setObjectName("chke_box")
+        
+        
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(10, 390, 471, 201))
         self.tableWidget.setObjectName("tableWidget")
@@ -367,6 +383,9 @@ class pop_graph2_Ui_MainWindow(object):
         self.pushButton_18.setText(_translate("MainWindow", "Strain Vs Stress"))
         self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Time"))
         self.pushButton_4.clicked.connect(MainWindow.close)
+        
+        self.chke_box.clicked.connect(self.stop_process)
+        
         self.start2_test_expansion()
         
     
@@ -409,11 +428,25 @@ class pop_graph2_Ui_MainWindow(object):
                                         self.timer3.timeout.connect(self.show_grid1_val_P4)
                                         self.timer3.timeout.connect(self.show_grid1_val_P5)
                                         self.timer3.start(1)
+                                        self.pushButton_4.setDisabled(True)
                                         
         else:            
                     print("validation Error") 
 
-
+    def stop_process(self):
+        if(self.sc_new.timer1.isActive()):
+                self.sc_new.on_ani_stop()
+                self.sc_new_P1.on_ani_stop()
+                self.sc_new_P2.on_ani_stop()
+                if(self.timer3.isActive()): 
+                    self.timer3.stop()                    
+                    self.pushButton_4.setEnabled(True)
+                    self.chke_box.setChecked(True)
+                else:
+                    print("Process is not running")
+                    self.pushButton_4.setEnabled(True)
+                    self.chke_box.setChecked(True)
+            
     def show_grid1_val_P3(self):        
         self.rev_arr3=[]        
         self.rev_arr4=[]
@@ -897,13 +930,13 @@ class PlotCanvasG2_Auto(FigureCanvas):
                 #self.p_strain=(float(self.p)*100/float(20.00))
                 #self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 if(int(self.circumference) > 0):
-                     self.p_strain=(float(self.p)/float(self.p))*100
+                     self.p_strain=(float(self.p)/float(self.circumference))*100
                 else:
                      self.p_strain=0
                      
                 self.arr_p_strain.append(float(self.p_strain))  
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
@@ -1313,13 +1346,13 @@ class PlotCanvasG2_Auto_P1(FigureCanvas):
                 #self.p_strain=float(float(self.p)*100/float(20.00))
                 #self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 if(int(self.circumference) > 0):
-                     self.p_strain=(float(self.p)/float(self.p))*100
+                     self.p_strain=(float(self.p)/float(self.circumference))*100
                 else:
                      self.p_strain=0
                      
                 self.arr_p_strain.append(float(self.p_strain))
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
@@ -1723,7 +1756,7 @@ class PlotCanvasG2_Auto_P2(FigureCanvas):
                 self.arr_p_strain.append(float(self.p)*100/float(20.00))
                 
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
