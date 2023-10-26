@@ -1257,7 +1257,7 @@ class RL_01_Ui_MainWindow(object):
         connection.commit();
         connection.close();        
         if(self.goAhead=="Yes"):              
-                        
+                        #time.sleep(2)
                         self.sc_new =PlotCanvas_Auto(self,width=5, height=4, dpi=80)
                         self.gridLayout.addWidget(self.sc_new, 0, 0, 1, 1)
                         
@@ -1845,7 +1845,7 @@ class RL_01_Ui_MainWindow(object):
                     self.label_15.setText("")    
                     
     def save_graph_data(self):         
-         if (len(self.sc_new.arr_p) > 1):            
+         if (len(self.sc_new.db_arr_p) > 1):            
             
             #self.cycle_num=int(str(self.label_67.text()))+1
             print("Data saved fun called ....xssxsxsx")
@@ -1853,8 +1853,8 @@ class RL_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
-              for g in range(len(self.sc_new.arr_p)):                     
-                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_q[g]))+"','"+str(float(self.sc_new.arr_q_mpa[g]))+"','"+str(float(self.sc_new.arr_p_strain[g]))+"','"+str(self.sc_new.arr_key_id[g])+"','"+str(self.sc_new.arr_t_timestamp[g])+"')")
+              for g in range(1,len(self.sc_new.db_arr_p)):                     
+                        cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.db_arr_p[g]))+"','"+str(float(self.sc_new.db_arr_q[g]))+"','"+str(float(self.sc_new.db_arr_q_mpa[g]))+"','"+str(float(self.sc_new.db_arr_p_strain[g]))+"','"+str(self.sc_new.db_arr_key_id[g])+"','"+str(self.sc_new.db_arr_t_timestamp[g])+"')")
             connection.commit();
             connection.close()
             
@@ -1870,9 +1870,9 @@ class RL_01_Ui_MainWindow(object):
                           cursor.execute("UPDATE TEST_MST_TMP SET YEILD_STRENGTH=(SELECT MAX(Y_NUM) FROM STG_GRAPH_MST)") 
                           cursor.execute("UPDATE GLOBAL_VAR SET LENGTH_AT_MAX_MPA=(SELECT MAX(X_NUM_CM) FROM STG_GRAPH_MST WHERE Y_NUM=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP))")
                           cursor.execute("UPDATE TEST_MST_TMP SET MODULUS_OF_ELASTICITY=((YEILD_STRENGTH) / ( SELECT (LENGTH_AT_MAX_MPA/NEW_TEST_AREA ) FROM GLOBAL_VAR))")
-                          cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")                          
                           cursor.execute("INSERT INTO GRAPH_MST(X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_NUM_STRAIN,T_SEC,T_TIMESTAMP) SELECT X_NUM,Y_NUM,X_NUM_CM,Y_NUM_N,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP FROM STG_GRAPH_MST")                  
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL") 
+                          cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET YEILD_STRENGTH=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP),MODULUS_OF_ELASTICITY=(SELECT MODULUS_OF_ELASTICITY FROM TEST_MST_TMP)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2370,7 +2370,12 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_q_mpa=[0.0]
         self.arr_t_timestamp=[""]
         
-        
+        self.db_arr_p=[0.0]
+        self.db_arr_q=[0.0]
+        self.db_arr_q_mpa=[0.0]
+        self.db_arr_p_strain=[0.0]
+        self.db_arr_t_timestamp=[""]
+        self.db_arr_key_id=[0.0]
         
         
         self.arr_p1=[0.0]
@@ -2427,6 +2432,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.elapsed_time=0
         self.elapsed_time_show=0
         self.circumference=0
+        self.i=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2597,7 +2603,7 @@ class PlotCanvas_Auto(FigureCanvas):
         except IOError:
             #print("IO Errors")
             self.IO_error_flg=1
-        
+        time.sleep(2)
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
@@ -2750,6 +2756,17 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 print(" self.q: "+str(self.q)+" self.d_av: "+str(self.d_av)+" self.t_av: "+str(self.t_av)+" self.q_mpa : "+str(self.q_mpa))
+                
+                
+                self.db_arr_p.append(float(self.p))
+                self.db_arr_q.append(float(self.q))
+                self.db_arr_q_mpa.append(float(self.q_mpa))
+                self.db_arr_p_strain.append(float(self.p_strain))
+                self.db_arr_key_id.append(float(self.real_sec))
+                self.db_arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
+                
+                
+                
                 self.arr_key_id.append(float(self.real_sec))
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
@@ -2944,6 +2961,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         self.end_time = datetime.datetime.now()
         self.elapsed_time=0
         self.elapsed_time_show=0
+        self.circumference=0
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2973,13 +2991,14 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE FROM TEST_MST_TMP") 
+        results=connection.execute("SELECT SAMPLE_ID,CURRENT_TIMESTAMP ,GRAPH_TYPE,CIRCUMFARANCE FROM TEST_MST_TMP") 
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
                         self.axes.set_xlabel('Time (S)')
                         self.axes.set_ylabel('Expansion (MPa)')
                         self.cs_area= 0
+                        self.circumference=str(x[3])
         connection.close()
         
         
@@ -3133,7 +3152,12 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.p_inch=float(self.p)*0.0393701
                 self.arr_p_inch.append(float(self.p_inch))
                 
-                self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                #self.arr_p_strain.append(float(self.p)*100/float(20.00))
+                if(int(self.circumference) > 0):
+                     self.p_strain=(float(self.p)/float(self.circumference))*100
+                else:
+                     self.p_strain=0
+                self.arr_p_strain.append(float(self.p_strain))    
                 
                 self.arr_t.append(float(self.t))
                 
@@ -3145,7 +3169,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.arr_q_lb.append(float(self.q_lb))
                 
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
@@ -3546,7 +3570,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.arr_q_lb.append(float(self.q_lb))
                 
                 if(float(self.t_av) > 0.0):
-                        self.q_mpa=float((float(self.q)* float(self.d_av)/2*float(self.t_av)))
+                        self.q_mpa=float(((float(self.q)* float(self.d_av))/(2*float(self.t_av))))
                 else:
                         self.q_mpa=0.0
                 
