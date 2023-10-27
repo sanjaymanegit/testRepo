@@ -231,6 +231,8 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_16.setStyleSheet("background-color: rgb(90, 90, 134);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_16.setObjectName("pushButton_16")
+        
+        
         self.label_9 = QtWidgets.QLabel(self.frame)
         self.label_9.setGeometry(QtCore.QRect(1230, 810, 91, 41))
         font = QtGui.QFont()
@@ -242,6 +244,25 @@ class RL_01_Ui_MainWindow(object):
         self.label_9.setStyleSheet("color: rgb(0, 0, 0);")
         self.label_9.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_9.setObjectName("label_9")
+        
+        
+        self.label_9_1 = QtWidgets.QLabel(self.frame)
+        self.label_9_1.setGeometry(QtCore.QRect(1230, 840, 91, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_9_1.setFont(font)
+        self.label_9_1.setStyleSheet("color: rgb(0, 0, 0);")
+        self.label_9_1.setText("Test Stand. :")
+        self.label_9_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_9_1.setObjectName("label_9_1")
+        
+        
+        
+        
+        
         self.lineEdit_44 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_44.setGeometry(QtCore.QRect(1330, 820, 191, 21))
         font = QtGui.QFont()
@@ -251,6 +272,19 @@ class RL_01_Ui_MainWindow(object):
         font.setWeight(75)
         self.lineEdit_44.setFont(font)
         self.lineEdit_44.setObjectName("lineEdit_44")
+        
+        self.lineEdit_44_1 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_44_1.setGeometry(QtCore.QRect(1330, 850, 191, 21))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_44_1.setFont(font)       
+        self.lineEdit_44_1.setObjectName("lineEdit_44_1")
+        
+        
+        
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
         self.pushButton_9.setGeometry(QtCore.QRect(210, 830, 161, 31))
         font = QtGui.QFont()
@@ -778,7 +812,7 @@ class RL_01_Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_17.setObjectName("pushButton_17")
         self.pushButton_18 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_18.setGeometry(QtCore.QRect(800, 160, 171, 31))
+        self.pushButton_18.setGeometry(QtCore.QRect(800, 160, 191, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
@@ -999,7 +1033,7 @@ class RL_01_Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Company Name Pvt. Ltd"))
         self.label_2.setText(_translate("MainWindow", "Blue Star IT PArk ,\n"
 "  MIDC , Thane ,  Mumbai Andhrei  Pin No 400232"))
-        self.label_3.setText(_translate("MainWindow", "29-Nov-2022 11:22:33"))
+        self.label_3.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "1"))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -1037,12 +1071,13 @@ class RL_01_Ui_MainWindow(object):
 
         self.tableWidget_3.setSortingEnabled(__sortingEnabled)
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
-        self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
-        self.pushButton_19.setText(_translate("MainWindow", "Strain Vs Time"))
+        self.pushButton_18.setText(_translate("MainWindow", "Pressure Vs Expansion"))
+        self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Strain"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
+        self.pushButton_21.hide()
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
-        
+        self.pushButton_22.hide()
         self.comboBox.setItemText(0, _translate("MainWindow", "Pressure Vs Time"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Expansion Vs Time"))
         self.comboBox.setItemText(2, _translate("MainWindow", "Stress Vs Time"))
@@ -1056,6 +1091,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_23.hide()
         self.pushButton_23_1.setText(_translate("MainWindow", "Set Zero"))
         self.pushButton_24.setText(_translate("MainWindow", "Reset Graph"))
+        self.pushButton_24.hide()
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
         self.pushButton_20.setDisabled(True)
@@ -1085,9 +1121,9 @@ class RL_01_Ui_MainWindow(object):
         #self.pushButton_18.clicked.connect(self.graph_type_strain)
         #self.pushButton_17.clicked.connect(self.graph_type_pressure)
         #self.pushButton_20.clicked.connect(self.show_grid1_val_P0)
-        self.pushButton_21.clicked.connect(self.graph_group1_onclick)
-        self.pushButton_22.clicked.connect(self.open_pop_graph2)
-        self.pushButton_24.clicked.connect(self.reset_graph_onclick)
+        #self.pushButton_21.clicked.connect(self.graph_group1_onclick)
+        #self.pushButton_22.clicked.connect(self.open_pop_graph2)
+        #self.pushButton_24.clicked.connect(self.reset_graph_onclick)
         self.comboBox.currentTextChanged.connect(self.update_graph_type)
         
         
@@ -1112,7 +1148,7 @@ class RL_01_Ui_MainWindow(object):
         self.lineEdit_48.setProperty("value", 0.0)
         self.lineEdit_52.setProperty("value", 0.0)
         self.label_15.setText("Set Zero Done.")
-        self.pushButton_21.show()
+        #self.pushButton_21.show()
         self.pushButton_15.setEnabled(True)
         
     def start_test_1_or_2(self):
@@ -1347,11 +1383,11 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_2.setFont(font) 
         self.tableWidget_2.setColumnCount(3)
         self.tableWidget_2.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget_2.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
+        self.tableWidget_2.setHorizontalHeaderLabels(['Parameter','Value','Pressure'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
        
         self.rev_arr=self.sc_new_P1.arr_p
-        self.rev_arr2=self.sc_new_P1.arr_t
+        self.rev_arr2=self.sc_new_P1.arr_q
         self.rev_arr.reverse()
         self.rev_arr2.reverse()
         if(len(self.rev_arr) > 0):
@@ -1388,12 +1424,12 @@ class RL_01_Ui_MainWindow(object):
         self.tableWidget_3.setFont(font) 
         self.tableWidget_3.setColumnCount(3)
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)      
-        self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Value','Time (sec)'] )
+        self.tableWidget_3.setHorizontalHeaderLabels(['Parameter','Value','Strain(%)'] )
         #self.z=[123.00,344.4,24.5,45.77,34,565]
         #self.rev_arr5=[]
         #self.rev_arr6=[]
-        self.rev_arr5=self.sc_new_P2.arr_p_strain
-        self.rev_arr6=self.sc_new_P2.arr_t
+        self.rev_arr5=self.sc_new_P2.arr_q_mpa
+        self.rev_arr6=self.sc_new_P2.arr_p_strain
         #print("length-rev_arr5 :"+str(len(self.rev_arr5))+"  length-rev_arr6 :"+str(len(self.rev_arr6)))
         self.rev_arr5.reverse()
         self.rev_arr6.reverse()
@@ -1401,7 +1437,7 @@ class RL_01_Ui_MainWindow(object):
                 for i in range(len(self.rev_arr5)):
                         self.tableWidget_3.insertRow(i)
                         item7 = QtWidgets.QTableWidgetItem()        
-                        item7.setText(str("Strain"))
+                        item7.setText(str("Stress"))
                         self.tableWidget_3.setItem(i,0,item7) 
                         item8 = QtWidgets.QTableWidgetItem()        
                         item8.setText(str(round(self.rev_arr5[i],2)))
@@ -1705,7 +1741,7 @@ class RL_01_Ui_MainWindow(object):
                                                                 "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
                                                                 "'"+self.graph_type+"')" #GRAPH_TYPE
                                                                 )
-                                      cursor.execute("INSERT INTO TEST_MST_EXPANSION (TEST_ID,SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE)"
+                                      cursor.execute("INSERT INTO TEST_MST_EXPANSION (TEST_ID,SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE,TEST_STD)"
                                                     "VALUES(   "+str(int(self.label_12.text()))+","
                                                                 "'"+str(self.lineEdit_16.text())+"'," 
                                                                 "'"+str(self.lineEdit_17.text())+"',"
@@ -1713,7 +1749,8 @@ class RL_01_Ui_MainWindow(object):
                                                                 "'"+str(self.lineEdit_47.text())+"',"
                                                                 "'"+str(self.lineEdit_51.text())+"',"
                                                                 "'"+str(self.lineEdit_44.text())+"'," #REVIEWED_BY
-                                                                "'"+self.graph_type+"')" #GRAPH_TYPE
+                                                                "'"+self.graph_type+"'," #GRAPH_TYPE
+                                                                "'"+self.lineEdit_44_1.text()+"')" #TEST_STD
                                                                 )
                                       print("inserted OK ")
 
@@ -2048,10 +2085,11 @@ class RL_01_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            summary_data.append([" Test Standered: ",str(x[9]),"",""])
             self.remark=str(x[8])        
         connection.close() 
         
@@ -2278,7 +2316,7 @@ class PlotCanvas(FigureCanvas):
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc     ")
+                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
@@ -2291,7 +2329,7 @@ class PlotCanvas(FigureCanvas):
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Expansion (mm)')                     
             elif(self.graph_type == "STRESS_VS_TIME"):
-                    results=connection.execute("SELECT Y_NUM,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
+                    results=connection.execute("SELECT Y_NUM_MPA,T_SEC FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc")
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "STRAIN_VS_TIME"):
@@ -2376,6 +2414,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.db_arr_p_strain=[0.0]
         self.db_arr_t_timestamp=[""]
         self.db_arr_key_id=[0.0]
+        self.db_arr_t=[0]
         
         
         self.arr_p1=[0.0]
@@ -2764,7 +2803,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.db_arr_p_strain.append(float(self.p_strain))
                 self.db_arr_key_id.append(float(self.real_sec))
                 self.db_arr_t_timestamp.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
-                
+                self.db_arr_t.append(int(self.t))
                 
                 
                 self.arr_key_id.append(float(self.real_sec))
@@ -2787,7 +2826,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_t,self.arr_q)
+            self.line_cnt.set_data(self.db_arr_key_id,self.db_arr_q)
             return [self.line_cnt]
           
     
@@ -2995,8 +3034,8 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
-                        self.axes.set_xlabel('Time (S)')
-                        self.axes.set_ylabel('Expansion (MPa)')
+                        self.axes.set_ylabel('Pressure (Mpa)')
+                        self.axes.set_xlabel('Expansion (mm)')
                         self.cs_area= 0
                         self.circumference=str(x[3])
         connection.close()
@@ -3045,7 +3084,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'EXPANSION_VS_TIME'") 
+        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'PRESSURE_VS_EXPANSION'") 
         for x in results:             
                     self.axes.set_xlim(0,float(x[0]))
                     self.axes.set_ylim(0,float(x[1]))
@@ -3198,7 +3237,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_t,self.arr_p)
+            self.line_cnt.set_data(self.arr_p,self.arr_q)
             return [self.line_cnt]
           
 
@@ -3390,8 +3429,8 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         for x in results:
                         self.axes.set_title('Sample ID :'+str(x[0])+" Date :"+str(x[1])[0:10]+"")                        
                         self.graph_type=str(x[2])
-                        self.axes.set_xlabel('Time (Sec)')
-                        self.axes.set_ylabel('Strain (%)')
+                        self.axes.set_ylabel('Stress (MPa)')
+                        self.axes.set_xlabel('Strain (%)')
                         self.cs_area= 0
                         self.circumference=str(x[3])
         connection.close()
@@ -3438,7 +3477,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRAIN_VS_TIME'") 
+        results=connection.execute("SELECT X_SCALE_MAX, Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME = 'STRESS_VS_STRAIN'") 
         for x in results:             
                     self.axes.set_xlim(0,float(x[0]))
                     self.axes.set_ylim(0,float(x[1]))
@@ -3599,7 +3638,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_t,self.arr_p_strain)
+            self.line_cnt.set_data(self.arr_p_strain,self.arr_q_mpa)
             return [self.line_cnt]
           
     
@@ -3793,13 +3832,13 @@ class PlotCanvas_blank_P1(FigureCanvas):
 #        connection.close()
          
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'EXPANSION_VS_TIME' LIMIT 1") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'PRESSURE_VS_EXPANSION' LIMIT 1") 
         for x in results:
              ax.set_xlim(0,float(x[0]))
              ax.set_ylim(0,float(x[1]))          
         connection.close()
-        ax.set_xlabel('Time (sec)')
-        ax.set_ylabel('Expansion (mm)')
+        ax.set_ylabel('Pressure (MPa)')
+        ax.set_xlabel('Expansion (mm)')
         
         for i in range(len(self.x)):
               self.p.append(self.x[i])
@@ -3858,13 +3897,13 @@ class PlotCanvas_blank_P2(FigureCanvas):
 #        
 #        connection.close()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRAIN_VS_TIME' LIMIT 1") 
+        results=connection.execute("SELECT X_SCALE_MAX,Y_SCALE_MAX from GRAPH_SCALES WHERE GRAPH_NAME= 'STRESS_VS_STRAIN' LIMIT 1") 
         for x in results:
              ax.set_xlim(0,float(x[0]))
              ax.set_ylim(0,float(x[1]))          
         connection.close()
-        ax.set_xlabel('Time (sec)')
-        ax.set_ylabel('Strain (%)')
+        ax.set_ylabel('Stress (MPa)')
+        ax.set_xlabel('Strain (%)')
         
         
         for i in range(len(self.x)):
