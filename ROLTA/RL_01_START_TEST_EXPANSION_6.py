@@ -1876,8 +1876,8 @@ class RL_01_Ui_MainWindow(object):
                     self.pushButton_7.setEnabled(True)
                     self.pushButton_8.setEnabled(True)
                     
-                    self.lcdNumber_2.setProperty("value", str(self.sc_new.q))        
-                    self.lcdNumber.setProperty("value",str(self.sc_new.p))   #leng
+                    self.lcdNumber_2.setProperty("value", str(max(self.sc_new.db_arr_q)))        
+                    self.lcdNumber.setProperty("value",str(max(self.sc_new.db_arr_p)))   #leng
                             
                     self.label_15.setText("")    
                     
@@ -2403,7 +2403,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.setParent(parent)        
         ###
         self.playing = False
-        self.p_start_val=0.0
+       
         self.p =0
         self.p_cm =0
         self.p_inch =0
@@ -2425,6 +2425,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.arr_p_inch=[0.0]
         self.arr_p_strain=[0.0]
         self.arr_key_id=[0.0]
+       
         
         self.arr_t=[0]
         self.arr_q=[0.0]
@@ -2440,6 +2441,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.db_arr_t_timestamp=[""]
         self.db_arr_key_id=[0.0]
         self.db_arr_t=[0]
+        self.p_start_val=0.0
         
         
         self.arr_p1=[0.0]
@@ -2971,6 +2973,15 @@ class PlotCanvas_Auto_P1(FigureCanvas):
         self.arr_key_id=[""]
         
         
+        self.db_arr_p1=[0.0]
+        self.db_arr_q1=[0.0]
+        self.db_arr_q_mpa1=[0.0]
+        self.db_arr_p_strain1=[0.0]
+        self.db_arr_t_timestamp1=[""]
+        self.db_arr_key_id1=[0.0]
+        self.db_arr_t1=[0]
+        self.p_start_val=0.0
+        
         
         
         self.arr_p1=[0.0]
@@ -3192,7 +3203,11 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                  
                  
                  
-                 
+                if(float(self.p_start_val)==0.0):
+                      self.p_start_val=float(self.p)
+                else: 
+                      self.p=float(self.p)-float(self.p_start_val)
+					   
                  
                 #self.q=abs(float(self.buff[0])) #fix val
                 #self.t=abs(float(self.buff[3]))
@@ -3246,7 +3261,13 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.arr_key_id.append(self.key_id)
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
-               
+                self.db_arr_p1.append(float(self.p))
+                self.db_arr_q1.append(float(self.q))
+                self.db_arr_q_mpa1.append(float(self.q_mpa))
+                self.db_arr_p_strain1.append(float(self.p_strain))
+                #self.db_arr_key_id1.append(float(self.real_sec))
+                #self.db_arr_t_timestamp1.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
+                self.db_arr_t1.append(int(self.t))
                 
                 #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
 
@@ -3263,7 +3284,7 @@ class PlotCanvas_Auto_P1(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_p,self.arr_q)
+            self.line_cnt.set_data(self.db_arr_p1,self.db_arr_q1)
             return [self.line_cnt]
           
 
@@ -3378,7 +3399,14 @@ class PlotCanvas_Auto_P2(FigureCanvas):
         self.arr_q_lb=[0.0]
         self.arr_q_mpa=[0.0]
         
-        
+        self.db_arr_p2=[0.0]
+        self.db_arr_q2=[0.0]
+        self.db_arr_q_mpa2=[0.0]
+        self.db_arr_p_strain2=[0.0]
+        self.db_arr_t_timestamp2=[""]
+        self.db_arr_key_id2=[0.0]
+        self.db_arr_t2=[0]
+        self.p_start_val=0.0
         
         
         self.arr_p1=[0.0]
@@ -3592,7 +3620,11 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                  
                  
-                 
+                if(float(self.p_start_val)==0.0):
+                      self.p_start_val=float(self.p)
+                else: 
+                      self.p=float(self.p)-float(self.p_start_val)
+					   
                  
                  
                 #self.q=abs(float(self.buff[0])) #fix val
@@ -3647,6 +3679,14 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.arr_key_id.append(self.key_id)
                 #print(" Array P:"+str(self.arr_p))
                 #print(" Array Q:"+str(self.arr_q))
+                
+                self.db_arr_p2.append(float(self.p))
+                self.db_arr_q2.append(float(self.q))
+                self.db_arr_q_mpa2.append(float(self.q_mpa))
+                self.db_arr_p_strain2.append(float(self.p_strain))
+                #self.db_arr_key_id2.append(float(self.real_sec))
+                #self.db_arr_t_timestamp2.append(str(int(int(self.t)/3600)).zfill(2)+":"+str(int(int(self.t)/60)).zfill(2)+":"+str(int(int(self.t_mod))).zfill(2))
+                self.db_arr_t2.append(int(self.t))
                
                 
                 #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
@@ -3664,7 +3704,7 @@ class PlotCanvas_Auto_P2(FigureCanvas):
                 self.on_ani_stop()
         
     def plot_grah_only(self,i):
-            self.line_cnt.set_data(self.arr_p_strain,self.arr_q_mpa)
+            self.line_cnt.set_data(self.db_arr_p_strain2,self.db_arr_q_mpa2)
             return [self.line_cnt]
           
     
