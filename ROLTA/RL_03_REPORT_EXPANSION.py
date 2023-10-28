@@ -934,8 +934,8 @@ class RL_03_Ui_MainWindow(object):
         
         
         self.pushButton_17.setText(_translate("MainWindow", "Pressure Vs  Time"))
-        self.pushButton_18.setText(_translate("MainWindow", "Expansion Vs Time"))
-        self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Time"))
+        self.pushButton_18.setText(_translate("MainWindow", "Pressure Vs Expansion"))
+        self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Strain"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
         self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
         self.pushButton_22.setText(_translate("MainWindow", "Graph set -2"))
@@ -1065,7 +1065,7 @@ class RL_03_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
                         cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='EXPANSION_VS_TIME'")                 
+                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='PRESSURE_VS_EXPANSION'")                 
         connection.commit()
         connection.close()
         self.sc_blank_p1 =PlotCanvas(self,width=5, height=4, dpi=80)
@@ -1074,7 +1074,7 @@ class RL_03_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
                         cursor = connection.cursor()                
-                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_TIME'")                 
+                        cursor.execute("update TEST_MST_TMP set GRAPH_TYPE='STRESS_VS_STRAIN'")                 
         connection.commit()
         connection.close()
         self.sc_blank_p2 =PlotCanvas(self,width=5, height=4, dpi=80)
@@ -1818,6 +1818,7 @@ class RL_03_Ui_MainWindow(object):
              print("Please connect usb storage device")
         
     def open_pdf(self):
+        self.update_graph_type()
         self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
         self.create_pdf_expansion() 
         
@@ -1973,11 +1974,12 @@ class RL_03_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE,REMARK,TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter :  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Circumference: ",str(x[6]),"Reviewed By :",str(x[7])])
-            self.remark=str(x[5])        
+            self.remark=str(x[9])        
+            summary_data.append([" Test Standered: ",str(x[10]),"",""])
         connection.close() 
         
         
@@ -2131,7 +2133,7 @@ class PlotCanvas(FigureCanvas):
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc     ")
+                    results=connection.execute("SELECT Y_NUM_MPA,X_NUM_STRAIN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
@@ -2151,7 +2153,7 @@ class PlotCanvas(FigureCanvas):
                     ax.set_xlabel('Time (sec)')
                     ax.set_ylabel('Strain (%)')
             elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
+                    results=connection.execute("SELECT Y_NUM,X_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by rec_id asc")
                     ax.set_xlabel('Expansion (mm)')
                     ax.set_ylabel('Pressure (MPa)')
             else:

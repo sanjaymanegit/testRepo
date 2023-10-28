@@ -1929,6 +1929,30 @@ class RL_01_Ui_MainWindow(object):
             connection.close()            
                      
             #self.show_grid_data_PROOF()
+            ###### Create and SAVE all PDF's
+            self.create_log_pdf()
+            os.system("cp ./reports/log_report.pdf ./reports/Report_of_log_"+str(self.test_id)+".pdf")        
+            product_id=self.get_usb_storage_id()
+            if(product_id != "ERROR"):
+                    os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                    os.system("cp ./reports/log_report.pdf /media/usb/Report_of_log_test_"+str(self.test_id)+".pdf")
+                    os.system("sudo umount /media/usb")
+            else:
+                    print("Log-Please connect usb storage device")
+            
+            self.create_pdf_expansion()        
+            os.system("xpdf ./reports/test_report.pdf")
+            os.system("cp ./reports/test_report.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
+           
+            
+            #product_id=self.get_usb_storage_id()
+            if(product_id != "ERROR"):
+                    os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                    os.system("cp ./reports/test_report.pdf /media/usb/Report_of_test_"+str(self.test_id)+".pdf")
+                    os.system("sudo umount /media/usb")
+            else:
+                    print("Test PDF- Please connect usb storage device")
+       
      
     def open_pop_graph2(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
@@ -2379,6 +2403,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.setParent(parent)        
         ###
         self.playing = False
+        self.p_start_val=0.0
         self.p =0
         self.p_cm =0
         self.p_inch =0
@@ -2718,9 +2743,10 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                  
                  
-                 
-                 
-                 
+                if(float(self.p_start_val)==0.0):
+                      self.p_start_val=float(self.p)
+                else: 
+                      self.p=float(self.p)-float(self.p_start_val)
                 #self.q=abs(float(self.buff[0])) #fix val
                 self.t=self.elapsed_time.seconds
                 #self.p=abs(float(self.buff[4])) #fix val
