@@ -15,6 +15,7 @@
 /home/pi/Products/ROLTA/reports/Report_of_log_115.pdf
 /home/pi/Products/ROLTA/reports/Report_of_log_116.pdf
 /home/pi/Products/ROLTA/reports/Report_of_log_117.pdf
+/home/pi/Products/ROLTA/reports/Report_of_log_122.pdf
 /home/pi/Products/ROLTA/reports/Report_of_log_12.pdf
 /home/pi/Products/ROLTA/reports/Report_of_log_277.pdf
 /home/pi/Products/ROLTA/reports/Report_of_log_2.pdf
@@ -53,6 +54,7 @@
 /home/pi/Products/ROLTA/reports/Report_of_test_115.pdf
 /home/pi/Products/ROLTA/reports/Report_of_test_116.pdf
 /home/pi/Products/ROLTA/reports/Report_of_test_117.pdf
+/home/pi/Products/ROLTA/reports/Report_of_test_122.pdf
 /home/pi/Products/ROLTA/reports/Report_of_test_276.pdf
 /home/pi/Products/ROLTA/reports/Report_of_test_277.pdf
 /home/pi/Products/ROLTA/reports/Report_of_test_2.pdf
