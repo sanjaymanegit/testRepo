@@ -1941,7 +1941,7 @@ class RL_01_Ui_MainWindow(object):
                     print("Log-Please connect usb storage device")
             
             self.create_pdf_expansion()        
-            os.system("xpdf ./reports/test_report.pdf")
+            #os.system("xpdf ./reports/test_report.pdf")
             os.system("cp ./reports/test_report.pdf ./reports/Report_of_test_"+str(self.test_id)+".pdf")
            
             
@@ -2340,7 +2340,7 @@ class PlotCanvas(FigureCanvas):
             
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type == "STRESS_VS_STRAIN"):
-                    results=connection.execute("SELECT X_NUM_STRAIN,Y_NUM_MPA FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc     ")
+                    results=connection.execute("SELECT Y_NUM_MPA,X_NUM_STRAIN FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"' order by REC_ID asc     ")
                     ax.set_xlabel('Strain (%)')
                     ax.set_ylabel('Stress (MPa)')
             elif(self.graph_type == "PRESSURE_VS_TIME"):
