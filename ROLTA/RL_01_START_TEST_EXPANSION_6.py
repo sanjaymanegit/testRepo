@@ -1890,7 +1890,7 @@ class RL_01_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
-              for g in range(1,len(self.sc_new.db_arr_p)):                     
+              for g in range(2,len(self.sc_new.db_arr_p)):                     
                         cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,Y_NUM,Y_NUM_MPA,X_STRAIN,T_SEC,T_TIMESTAMP) VALUES ('"+str(float(self.sc_new.db_arr_p[g]))+"','"+str(float(self.sc_new.db_arr_q[g]))+"','"+str(float(self.sc_new.db_arr_q_mpa[g]))+"','"+str(float(self.sc_new.db_arr_p_strain[g]))+"','"+str(self.sc_new.db_arr_key_id[g])+"','"+str(self.sc_new.db_arr_t_timestamp[g])+"')")
             connection.commit();
             connection.close()
