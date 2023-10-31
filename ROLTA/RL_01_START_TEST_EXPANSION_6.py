@@ -1089,7 +1089,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_23.setText(_translate("MainWindow", "Email Log"))
         self.pushButton_23.hide()
-        self.pushButton_23_1.setText(_translate("MainWindow", "Set Zero"))
+        self.pushButton_23_1.setText(_translate("MainWindow", "Calibration"))
         self.pushButton_24.setText(_translate("MainWindow", "Reset Graph"))
         self.pushButton_24.hide()
         self.pushButton_15.clicked.connect(MainWindow.close)
@@ -1147,7 +1147,7 @@ class RL_01_Ui_MainWindow(object):
         self.lcdNumber_2.setProperty("value", 0.0)
         self.lineEdit_48.setProperty("value", 0.0)
         self.lineEdit_52.setProperty("value", 0.0)
-        self.label_15.setText("Set Zero Done.")
+        self.label_15.setText("Calibration Done.")
         #self.pushButton_21.show()
         self.pushButton_15.setEnabled(True)
         
