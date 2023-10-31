@@ -2204,7 +2204,7 @@ class RL_01_Ui_MainWindow(object):
         summary_data2=[["Pressure(MPa)","Expansion(mm)","Stress(MPa)","Strain(%)","Sec","Time(HH:MI:SS)"]]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, X_NUM as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        results=connection.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, printf(\"%.4f\", X_NUM) as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
         for x in results:
                     summary_data2.append([str(x[0]),str(x[1]),str(x[2]),str(x[3]),str(x[4]),str(x[5])])
         connection.close()
