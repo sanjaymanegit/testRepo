@@ -48,7 +48,7 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
-
+import csv
 
 
 class RL_03_Ui_MainWindow(object):
@@ -77,8 +77,8 @@ class RL_03_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(0, 180, 0);")
+        self.pushButton_4.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
         self.pushButton_4.setObjectName("pushButton_4")
         self.label_11 = QtWidgets.QLabel(self.frame)
         self.label_11.setGeometry(QtCore.QRect(10, 20, 91, 21))
@@ -255,8 +255,8 @@ class RL_03_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_9.setFont(font)
-        self.pushButton_9.setStyleSheet("color: rgb(255, 255, 255);\n"
-"background-color: rgb(255, 0, 0);")
+        self.pushButton_9.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+"color: rgb(255, 255, 255);")
         self.pushButton_9.setObjectName("pushButton_9")
         self.label_140 = QtWidgets.QLabel(self.frame)
         self.label_140.setGeometry(QtCore.QRect(540, 580, 101, 31))
@@ -772,7 +772,7 @@ class RL_03_Ui_MainWindow(object):
 "color: rgb(255, 255, 255);")
         self.pushButton_19.setObjectName("pushButton_19")
         self.pushButton_20 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_20.setGeometry(QtCore.QRect(300, 570, 91, 31))
+        self.pushButton_20.setGeometry(QtCore.QRect(300, 670, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -885,7 +885,7 @@ class RL_03_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_4.setText(_translate("MainWindow", "Start Logging"))
+        self.pushButton_4.setText(_translate("MainWindow", "Analysis"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "001"))
         self.pushButton_5.setText(_translate("MainWindow", "Email"))
@@ -900,7 +900,7 @@ class RL_03_Ui_MainWindow(object):
         self.pushButton_16.setText(_translate("MainWindow", "Set Graphs Scales"))
         self.label_9.setText(_translate("MainWindow", "Reviewd  By :"))
         self.lineEdit_44.setText(_translate("MainWindow", "Dr.John"))
-        self.pushButton_9.setText(_translate("MainWindow", "Stop Logging"))
+        self.pushButton_9.setText(_translate("MainWindow", "Export to CSV"))
         self.label_140.setText(_translate("MainWindow", "Diameter:"))
         self.lineEdit_46.setText(_translate("MainWindow", "355"))
         self.label_143.setText(_translate("MainWindow", "Thickness (mm):"))
@@ -947,16 +947,16 @@ class RL_03_Ui_MainWindow(object):
         self.comboBox.setItemText(5, _translate("MainWindow", "STRAIN_VS_TIME"))
         self.label_4.setText(_translate("MainWindow", "Report Graph :"))
         self.pushButton_15.clicked.connect(MainWindow.close)
-        self.pushButton_9.setDisabled(True)
-        self.pushButton_20.setDisabled(True)
+        #self.pushButton_9.setDisabled(True)
+        #self.pushButton_20.setDisabled(True)
         self.pushButton_21.setDisabled(True)
         self.display_bank_graphs()
         self.load_ops()
 
     def load_ops(self):
         
-        self.pushButton_4.clicked.connect(self.start_test_1_or_2)
-        self.pushButton_9.clicked.connect(self.mannual_stop)
+        self.pushButton_4.clicked.connect(self.open_pdf_analysis)
+        self.pushButton_9.clicked.connect(self.export_to_csv)
         
         self.pushButton_16.clicked.connect(self.pop_graph_scales)
         
@@ -997,8 +997,8 @@ class RL_03_Ui_MainWindow(object):
         self.lcdNumber_2.setProperty("value", 0.0)
         self.lcdNumber.hide()
         self.lcdNumber_2.hide()
-        self.pushButton_4.hide()
-        self.pushButton_9.hide()
+        #self.pushButton_4.hide()
+        #self.pushButton_9.hide()
         self.label_145.hide()
         self.label_146.hide()
         self.label_147.hide()
@@ -1804,9 +1804,7 @@ class RL_03_Ui_MainWindow(object):
         connection.commit()
         connection.close()
     
-    def open_log_pdf(self):
-        
-        
+    def open_log_pdf(self):        
         self.create_log_pdf()
         os.system("xpdf ./reports/log_report.pdf")
         product_id=self.get_usb_storage_id()
@@ -1831,7 +1829,23 @@ class RL_03_Ui_MainWindow(object):
                 os.system("sudo umount /media/usb")
         else:
              print("Please connect usb storage device")
+    
+    def open_pdf_analysis(self):
+        #self.update_graph_type()
+        #self.sc_data =PlotCanvas(self,width=8, height=4,dpi=80) 
+        self.create_pdf_analysis() 
         
+        os.system("xpdf ./reports/test_analysis.pdf")
+        os.system("cp ./reports/test_analysis.pdf ./reports/Report_analysis_"+str(self.test_id)+".pdf")
+        
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/test_analysis.pdf /media/usb/Report_analysis_"+str(self.test_id)+".pdf")
+                os.system("sudo umount /media/usb")
+        else:
+             print("Please connect usb storage device")
+             
     def get_usb_storage_id(self):
         os.system("rm -rf lsusb_data.txt")  
         product_id = "ERROR"
@@ -1885,6 +1899,47 @@ class RL_03_Ui_MainWindow(object):
         self.ui=set_two_graphs_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
+        
+    
+    def export_to_csv(self):        
+        print("Exporte Started ........")
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT GRAPH_ID FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        for x in results:
+                self.graph_id=str(x[0])       
+        connection.close()
+        
+        conn = sqlite3.connect('tyr.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        with open("./reports/export_to_csv.csv", 'w',newline='') as csv_file:                
+                csv_writer = csv.writer(csv_file)               
+                csv_writer.writerow([i[0] for i in cursor.description]) 
+                csv_writer.writerows(cursor)
+        conn.close()        
+        
+        conn = sqlite3.connect('tyr.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT printf(\"%.4f\", Y_NUM) as PRESSURE, printf(\"%.4f\", X_NUM) as expansion, printf(\"%.4f\", Y_NUM_MPA) as stress, printf(\"%.4f\", X_NUM_STRAIN)  as strain, T_SEC, T_TIMESTAMP  FROM GRAPH_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+        with open("./reports/export_to_csv.csv", 'a',newline='') as csv_file:                
+                csv_writer = csv.writer(csv_file)               
+                csv_writer.writerow([i[0] for i in cursor.description]) 
+                csv_writer.writerows(cursor)
+        conn.close()        
+       
+        os.system("cp ./reports/export_to_csv.csv ./reports/export_to_csv_"+str(self.test_id)+".csv")
+        
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/export_to_csv.csv /media/usb/export_to_csv_"+str(self.test_id)+".csv")
+                os.system("sudo umount /media/usb")
+                print("Exported CSV file name :export_to_csv.csv")
+                self.label_15.show()
+                self.label_15.setText("Exported to CSV.")
+        else:
+                print("Please connect usb storage device")
+                
         
     def create_pdf_expansion(self):
         self.remark=""
@@ -1961,7 +2016,71 @@ class RL_03_Ui_MainWindow(object):
                                 leftMargin=20,
                                 topMargin=10,
                                 bottomMargin=10,)
+        doc.build(Elements)
+        
+        
+    def create_pdf_analysis(self):
+        self.remark=""
+        #self.unit_typex=self.comboBox_2.currentText()
+        self.unit_typex = "N/mm"
+             
+        y=300
+        Elements=[]
+        summary_data=[]
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        for x in results:
+            summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
+            summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            self.remark=str(x[8])        
+        connection.close() 
+        
+        PAGE_HEIGHT=defaultPageSize[1]
+        styles = getSampleStyleSheet()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
+        for x in results:            
+            Title = Paragraph(str(x[0]), styles["Title"])
+            ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
+            Title2 = Paragraph(str(ptext), styles["Title"])
+        connection.close()
+        blank=Paragraph("                                                                                          ", styles["Normal"])
+        
+        if(str(self.remark) == ""):
+                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        else:
+                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
+                
+        footer_2= Paragraph("     Authorised: __________________________________.            Signed By : _________________.", styles["Normal"])
+        
+        h_line=Paragraph("              _____________________________________________________________________________________________", styles["Normal"])
+        
+        linea_firma = Line(2, 90, 670, 90)
+        d = Drawing(50, 1)
+        d.add(linea_firma)
+        
+        f=Table(summary_data)
+        f.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 8),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+         
+         
+         
+        report_gr_img1="STRESS_VS_STRAIN.png"
+        pdf_img1= Image(report_gr_img1, 6 * inch, 4 * inch)
+        report_gr_img2="PRESSURE_VS_EXPANSION.png"
+        pdf_img2= Image(report_gr_img2, 6 * inch, 4 * inch)
+        report_gr_img3="PRESSURE_VS_TIME.png"
+        pdf_img3= Image(report_gr_img3, 6 * inch, 4 * inch)
+        
+        Elements=[Title,Title2,Spacer(1,12),f,Spacer(1,12),pdf_img1,Spacer(1,12),pdf_img2,Spacer(1,12),pdf_img3,Spacer(1,12),footer_2,Spacer(1,12),comments]
+        
+        doc = SimpleDocTemplate('./reports/test_analysis.pdf', rightMargin=10,
+                                leftMargin=20,
+                                topMargin=10,
+                                bottomMargin=10,)
         doc.build(Elements) 
+
 
 
     def create_log_pdf(self):
@@ -2174,7 +2293,14 @@ class PlotCanvas(FigureCanvas):
         ax.legend()
         #ax1.legend() 
         self.draw()
-        self.figure.savefig('last_graph.png',dpi=100)            
+        if(self.graph_type == "STRESS_VS_STRAIN"):
+            self.figure.savefig('STRESS_VS_STRAIN.png',dpi=100)
+        elif(self.graph_type == "PRESSURE_VS_EXPANSION"):
+            self.figure.savefig('PRESSURE_VS_EXPANSION.png',dpi=100)
+        elif(self.graph_type == "PRESSURE_VS_TIME"):
+            self.figure.savefig('PRESSURE_VS_TIME.png',dpi=100)
+        else:
+            self.figure.savefig('last_graph.png',dpi=100)            
         connection.close()
 
 
