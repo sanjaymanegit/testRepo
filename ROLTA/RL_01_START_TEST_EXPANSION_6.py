@@ -2557,8 +2557,10 @@ class PlotCanvas(FigureCanvas):
         elif(self.graph_type == "PRESSURE_VS_TIME"):
             self.figure.savefig('PRESSURE_VS_TIME.png',dpi=100)
         else:
-            self.figure.savefig('last_graph.png',dpi=100)                
-        connection.close()
+            self.figure.savefig('last_graph.png',dpi=100)
+        
+        self.figure.savefig('last_graph.png',dpi=100)        
+        #connection.close()
         
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=8, height=5, dpi=100):
