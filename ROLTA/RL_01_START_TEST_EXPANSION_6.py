@@ -1003,7 +1003,7 @@ class RL_01_Ui_MainWindow(object):
         self.label_79.setText(_translate("MainWindow", "Sample Identification:"))
         self.pushButton_16.setText(_translate("MainWindow", "Set Graphs Scales"))
         self.label_9.setText(_translate("MainWindow", "Reviewd  By :"))
-        self.lineEdit_44.setText(_translate("MainWindow", "Dr.John"))
+        self.lineEdit_44.setText(_translate("MainWindow", ""))
         self.pushButton_9.setText(_translate("MainWindow", "Stop Logging"))
         self.label_140.setText(_translate("MainWindow", "Diameter:"))
         self.lineEdit_46.setText(_translate("MainWindow", "0"))
