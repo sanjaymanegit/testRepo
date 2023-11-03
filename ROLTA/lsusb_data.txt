@@ -1,4 +1,5 @@
 Bus 001 Device 004: ID 04d9:1702 Holtek Semiconductor, Inc. Keyboard LKS02
+Bus 001 Device 007: ID 0781:5567 SanDisk Corp. Cruzer Blade
 Bus 001 Device 006: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
 Bus 001 Device 005: ID 093a:2510 Pixart Imaging, Inc. Optical Mouse
 Bus 001 Device 008: ID 0424:7800 Standard Microsystems Corp. 
