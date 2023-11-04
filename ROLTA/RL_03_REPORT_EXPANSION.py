@@ -1952,10 +1952,11 @@ class RL_03_Ui_MainWindow(object):
         summary_data=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,IFNULL(STRAIN_RATE,0),TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            summary_data.append([" Strain Rate: ",str(x[9]),"Test Standered :",str(x[10])])
             self.remark=str(x[8])        
         connection.close() 
         
@@ -2029,10 +2030,11 @@ class RL_03_Ui_MainWindow(object):
         summary_data=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,IFNULL(STRAIN_RATE,0),TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            summary_data.append([" Strain Rate: ",str(x[9]),"Test Standered :",str(x[10])])
             self.remark=str(x[8])        
         connection.close() 
         
@@ -2093,10 +2095,11 @@ class RL_03_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE,REMARK,TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,GRAPH_TYPE,REMARK,TEST_STD,IFNULL(STRAIN_RATE,0) FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter :  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Circumference: ",str(x[6]),"Reviewed By :",str(x[7])])
+            summary_data.append([" Strain Rate: ",str(x[11]),"",""])
             self.remark=str(x[9])        
             summary_data.append([" Test Standered: ",str(x[10]),"",""])
         connection.close() 

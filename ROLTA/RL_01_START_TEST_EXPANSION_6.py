@@ -861,15 +861,15 @@ class RL_01_Ui_MainWindow(object):
         self.graphicsView_3.setObjectName("graphicsView_3")
         self.gridLayout.addWidget(self.graphicsView_3, 0, 2, 1, 1)
         self.pushButton_21 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_21.setGeometry(QtCore.QRect(1220, 720, 91, 21))
+        self.pushButton_21.setGeometry(QtCore.QRect(1140, 700, 181, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(8)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_21.setFont(font)
         self.pushButton_21.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(0, 0, 200);")
         self.pushButton_21.setObjectName("pushButton_21")
         self.pushButton_22 = QtWidgets.QPushButton(self.frame)
         self.pushButton_22.setGeometry(QtCore.QRect(1350, 720, 161, 21))
@@ -1075,8 +1075,8 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_18.setText(_translate("MainWindow", "Pressure Vs Expansion"))
         self.pushButton_19.setText(_translate("MainWindow", "Stress Vs Strain"))
         self.pushButton_20.setText(_translate("MainWindow", "View Log"))
-        self.pushButton_21.setText(_translate("MainWindow", "Graph set -1"))
-        self.pushButton_21.hide()
+        self.pushButton_21.setText(_translate("MainWindow", "Strain Rate : 0"))
+        #self.pushButton_21.hide()
         self.pushButton_22.setText(_translate("MainWindow", "Export-log to CSV"))
         #self.pushButton_22.hide()
         self.comboBox.setItemText(0, _translate("MainWindow", "Pressure Vs Time"))
@@ -1096,7 +1096,7 @@ class RL_01_Ui_MainWindow(object):
         self.pushButton_15.clicked.connect(MainWindow.close)
         self.pushButton_9.setDisabled(True)
         self.pushButton_20.setDisabled(True)
-        self.pushButton_21.setDisabled(True)
+        #self.pushButton_21.setDisabled(True)
         #self.pushButton_4.setDisabled(True)
         self.pushButton_23.setDisabled(True)
         self.pushButton_22.setDisabled(True)
@@ -1178,7 +1178,7 @@ class RL_01_Ui_MainWindow(object):
     
     def graph_group1_onclick(self):
         self.graph_group_no=1
-        self.pushButton_21.setDisabled(True)
+        #self.pushButton_21.setDisabled(True)
         #self.pushButton_22.setEnabled(True)
         self.display_bank_graphs()
         self.pushButton_17.setText("Pressure Vs  Time")
@@ -1284,7 +1284,7 @@ class RL_01_Ui_MainWindow(object):
     def start_test_expansion(self):
         self.pushButton_21.show()
         #self.pushButton_22.hide()
-        self.pushButton_21.setDisabled(True)
+        #self.pushButton_21.setDisabled(True)
         self.validation() 
         self.disable_all()
         self.pushButton_9.setEnabled(True)
@@ -1482,7 +1482,7 @@ class RL_01_Ui_MainWindow(object):
         
     def start2_test_expansion(self):
         print("Group2 started")
-        self.pushButton_21.hide()
+        #self.pushButton_21.hide()
         self.pushButton_22.show()
         #self.pushButton_22.setDisabled(True)
     
@@ -1916,25 +1916,13 @@ class RL_01_Ui_MainWindow(object):
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_STATUS='LOADED GRAPH'  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                  
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                           cursor.execute("UPDATE TEST_MST_EXPANSION SET YEILD_STRENGTH=(SELECT YEILD_STRENGTH FROM TEST_MST_TMP),MODULUS_OF_ELASTICITY=(SELECT MODULUS_OF_ELASTICITY FROM TEST_MST_TMP)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                    
+                          cursor.execute("UPDATE TEST_MST_EXPANSION SET STRAIN_RATE=(SELECT MAX(Y_NUM)- MIN(Y_NUM)/MAX(X_NUM)-MIN(X_NUM) FROM STG_GRAPH_MST WHERE X_STRAIN BETWEEN 0.25 AND 0.50)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                           #cursor.execute("UPDATE TEST_MST_EXPANSION SET GRAPH_SCAL_X_LENGTH=(SELECT GRAPH_SCALE_CELL_2 FROM SETTING_MST),GRAPH_SCAL_Y_LOAD=(SELECT GRAPH_SCALE_CELL_1 FROM SETTING_MST)  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                           print("Data Saved Ok in STG_GRAPH_MST")
                           self.label_15.show()
                           self.label_15.setText("Data Saved Successfully.")
                           self.pushButton_22.setEnabled(True)
                           self.pushButton_24.setEnabled(True)
-                  
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
                           
                   
                   #update max load , yead strength , modulus 
@@ -1945,7 +1933,14 @@ class RL_01_Ui_MainWindow(object):
                           
             connection.commit();
             connection.close()            
-                     
+             
+
+            connection = sqlite3.connect("tyr.db")               
+            results=connection.execute("select IFNULL(STRAIN_RATE,0) from TEST_MST_EXPANSION WHERE TEST_ID = '"+str(int(self.label_12.text()))+"'")       
+            for x in results:           
+                      self.pushButton_21.setText("Strain Rate: "+str(x[0]))              
+            connection.close() 
+             
             #self.show_grid_data_PROOF()
             ###### Create and SAVE all PDF's
             self.create_log_pdf()
@@ -2216,11 +2211,11 @@ class RL_01_Ui_MainWindow(object):
         Elements=[]
         summary_data=[]
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,TEST_STD FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,TEST_STD,IFNULL(STRAIN_RATE,0) FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
             summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
-            summary_data.append([" Test Standered: ",str(x[9]),"",""])
+            summary_data.append([" Test Standered: ",str(x[9]),"Strain Rate :",str(x[10])])
             self.remark=str(x[8])        
         connection.close() 
         
@@ -2293,10 +2288,11 @@ class RL_01_Ui_MainWindow(object):
         summary_data=[]
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
+        results=connection.execute("SELECT TEST_ID,DATE(TEST_DATE),SAMPLE_PIPE_NO,SAMPLE_ID,D_AV,T_AV,CIRCUMFARANCE, REVIEWED_BY,REMARK,IFNULL(STRAIN_RATE,0) FROM TEST_MST_EXPANSION WHERE TEST_ID ='"+str(int(self.label_12.text()))+"'")
         for x in results:
             summary_data=[["Parameter","Value","Prarameter","Value"],["Test ID: ",str(x[0]),"Tested On: ",str(x[1])],["Sample Pipe No : ",str(x[2]),"Sample ID: ",str(x[3])],["Diameter:  ",str(x[4]),"Thickness:",str(x[5])]]
-            summary_data.append([" Reviewed By: ",str(x[7]),"Circumference",str(x[6])])
+            summary_data.append([" Reviewed By: ",str(x[7]),"Circumference :",str(x[6])])
+            summary_data.append([" Strain Rate: ",str(x[9]),"",""])
             self.remark=str(x[8])        
         connection.close() 
         
