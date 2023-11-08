@@ -9,6 +9,8 @@
 ./reports/Report_of_test_0048.pdf
 ./reports/Report_of_test_0049.pdf
 ./reports/Report_of_test_0066.pdf
+./reports/Report_of_test_0070.pdf
+./reports/Report_of_test_0073.pdf
 ./reports/Report_of_test_0076.pdf
 ./reports/Report_of_test_0118.pdf
 ./reports/Report_of_test_0127.pdf
@@ -20,10 +22,14 @@
 ./reports/Report_of_test_2038.pdf
 ./reports/Report_of_test_2046.pdf
 ./reports/Report_of_test_20.pdf
+./reports/Report_of_test_22.pdf
+./reports/Report_of_test_23.pdf
 ./reports/Report_of_test_25.pdf
+./reports/Report_of_test_26.pdf
 ./reports/Report_of_test_28.pdf
 ./reports/Report_of_test_29.pdf
 ./reports/Report_of_test_2.pdf
+./reports/Report_of_test_34.pdf
 ./reports/Report_of_test_3.pdf
 ./reports/Report_of_test_41.pdf
 ./reports/Report_of_test_43.pdf
