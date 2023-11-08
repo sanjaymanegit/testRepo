@@ -343,16 +343,13 @@ class TY_50_LIST_Ui_MainWindow(object):
              self.open_new_window_6()
         elif(str(self.test_type_id) == "33"):    
              self.open_new_window_6()
+        elif(str(self.test_type_id) == "36"):    
+             self.open_new_window_4()
         else:
             self.open_new_window()
             print("Invalid Test ID"+str(self.test_type_id))
             
     
-   
-
-   
-    
-  
     
     def open_new_window(self):                
         self.window = QtWidgets.QMainWindow()

@@ -1180,17 +1180,11 @@ class TY_71_Ui_MainWindow(object):
         elif(self.lineEdit_8.text()== ""):
              self.msg="Test Speed is Empty."            
         elif(self.lineEdit_9.text() == ""):
-             self.msg="Rev.Speed is Empty"
-        elif(self.lineEdit_10.text() == ""):
-             self.msg="Guage Length 1 is Empty"
-        elif(float(self.lineEdit_10.text()) == 0):
-             self.msg="Guage Length 1 should not zero"
+             self.msg="Rev.Speed is Empty"          
         elif(self.lineEdit_11.text() == ""):
              self.msg="Guage Length 2 is Empty"
         elif(float(self.lineEdit_11.text()) == 0):
-             self.msg="Guage Length 2 should not zero"
-        elif(float(self.lineEdit_11.text()) >  float(self.lineEdit_10.text())):
-             self.msg="Guage Length 2 should be less than Guage Length 1"
+             self.msg="Guage Length 2 should not zero"       
         elif(self.lineEdit_12.text() == ""):
              self.msg="Guage. Length is Empty"
         elif(float(self.lineEdit_12.text()) == 0):
