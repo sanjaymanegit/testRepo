@@ -1175,14 +1175,14 @@ class TY_72_Ui_MainWindow(object):
         for x in results:            
             self.label_38.setText(str(x[0]))           
         connection.close()
-        
+        '''
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT E_AT_LOAD_POINT_1,E_AT_LOAD_POINT_2 FROM GLOBAL_VAR") 
         for x in results:            
             self.lineEdit_10.setText(str(x[0]))
             self.lineEdit_11.setText(str(x[1]))
         connection.close()
-        
+        '''
         self.sc_blank =PlotCanvas_blank(self) 
         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
         

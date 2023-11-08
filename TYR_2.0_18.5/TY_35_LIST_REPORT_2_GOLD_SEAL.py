@@ -11,6 +11,7 @@ from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
 from TY_68_REPORT_UNIRUB_TEAR import TY_68_Ui_MainWindow
 from TY_70_REPORT_UNIRUB_ADHESION import TY_70_Ui_MainWindow
+from TY_72_REPORT_CLD3 import TY_72_Ui_MainWindow
 
 
 
@@ -1067,10 +1068,18 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                             self.open_report_tear_strength()
             elif(str(self.new_test_name) == "ADHESION_STRENGTH"):               
                             self.open_report_adhesion_strength()
+            elif(str(self.new_test_name) == "CLD3"):               
+                            self.open_report_cld3()
             else:
                             self.open_report_tensile()
             
     
+    def open_report_cld3(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_72_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
     def open_report_adhesion_strength(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_70_Ui_MainWindow()
