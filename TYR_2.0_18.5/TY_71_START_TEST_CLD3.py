@@ -1670,7 +1670,13 @@ class TY_71_Ui_MainWindow(object):
                 self.guage_length_mm=int(x[0])
                 self.test_type=str(x[1])
                 self.def_flg=str(x[2])            
-            connection.close()                                  
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("select count(*) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                 
+            for x in results:
+                   self.cycle_num=int(str(x[0]))       
+            connection.close()  
             
             connection = sqlite3.connect("tyr.db")
             with connection:        

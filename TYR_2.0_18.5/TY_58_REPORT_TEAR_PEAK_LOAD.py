@@ -1092,7 +1092,7 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
-        #self.tableWidget.doubleClicked.connect(self.delete_cycle)
+        self.tableWidget.doubleClicked.connect(self.delete_cycle)
         
         self.pushButton_13.clicked.connect(self.open_pdf)
         self.pushButton_16.clicked.connect(self.print_file)
@@ -1122,7 +1122,7 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         self.frame_3.hide()
         self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['CS Area('+str(self.comboBox_3.currentText())+'2)', ' Force at Peak ('+str(self.comboBox_2.currentText())+') ',' Disp. at Peak ('+str(self.comboBox_3.currentText())+')','% Travel','Tear Strength ('+str(self.comboBox_2.currentText())+'/'+str(self.comboBox_3.currentText())+'2)','Modulus @100 %','Modulus @200 %','Modulus @300%','Shape', 'Guage Length ('+str(self.comboBox_3.currentText())+')','Cycle Id'])        
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ',' Peak Load (Kg)','cycle_id'])        
+        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
         self.report_fun_1()
@@ -2054,22 +2054,29 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 10).text())
+            self.cycle_id=str(self.tableWidget.item(row, 1).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
                 close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
                 close = close.exec()
                 if close == QMessageBox.Yes:
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("select IFNULL(CYCLE_NUM,0),TEST_ID,IFNULL(GRAPH_ID,0) from CYCLES_MST where CYCLE_ID = '"+str(self.cycle_id)+"'")                 
+                    for x in results:
+                        self.curr_cycle_num=int(x[0])
+                        self.test_id=str(x[1])
+                        self.curr_graph_id=str(x[2])            
+                    connection.close()
+                    
                     connection = sqlite3.connect("tyr.db")              
                     with connection:        
                                     cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
+                                    cursor.execute("DELETE FROM CYCLES_MST WHERE CYCLE_ID = '"+str(self.cycle_id)+"'")
+                                    cursor.execute("UPDATE CYCLES_MST SET CYCLE_NUM=IFNULL(CYCLE_NUM,0)-1 WHERE TEST_ID = '"+str(self.test_id)+"' and CYCLE_NUM > '"+str(self.curr_cycle_num)+"'")
+                                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID = '"+str(self.curr_graph_id)+"'")                                    
                     connection.commit();
                     connection.close()
-                    #self.load_data()
                     self.show_grid_data_Tear()
         
     
@@ -2088,10 +2095,10 @@ class TY_58_REPORT_TEAR_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(2)
-        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','Peak Load (Kg)','cycle_id'])        
+        self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         self.tableWidget.setColumnWidth(0, 150)
         self.tableWidget.setColumnWidth(1, 150)
-       
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT printf(\"%.2f\", PEAK_LOAD_KG),cycle_id FROM CYCLES_MST WHERE TEST_ID = '"+self.test_id+"' order by GRAPH_ID")
