@@ -14,6 +14,11 @@ sudo pyinstaller --clean --onedir --add-data "wt.db:." --add-data "services.db:.
 ### TYR_18.5 #####
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.py"
 
+
+### WIN_UTM_3.0  This is on windows #####
+pyinstaller --clean "WIN_TY_00_Main.py" -n WIN_UTM_3.0 --add-data "tyr.db:."
+
+
 ###ROLTA #####
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=ROLTA "TY_00_Main.py"
 
