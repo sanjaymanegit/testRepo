@@ -16,7 +16,7 @@ sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.p
 
 
 ### WIN_UTM_3.0  This is on windows #####
-pyinstaller --clean "WIN_TY_00_Main.py" -n WIN_UTM_3.0 --add-data "tyr.db:."
+pyinstaller --clean "WIN_TY_00_Main.py" -n WIN_UTM_3.0 --add-data "tyr.db;."
 
 
 ###ROLTA #####
