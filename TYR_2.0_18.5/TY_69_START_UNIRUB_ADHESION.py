@@ -445,6 +445,8 @@ class TY_69_Ui_MainWindow(object):
         self.label_19.setStyleSheet("")
         self.label_19.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_19.setObjectName("label_19")
+        
+        
         self.comboBox_3 = QtWidgets.QComboBox(self.frame_3)
         self.comboBox_3.setGeometry(QtCore.QRect(1040, 60, 121, 31))
         font = QtGui.QFont()
@@ -461,6 +463,20 @@ class TY_69_Ui_MainWindow(object):
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(1170, 60, 100, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_1.setFlat(False)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
         self.pushButton_8.setGeometry(QtCore.QRect(1160, 120, 131, 41))
         font = QtGui.QFont()
@@ -901,6 +917,8 @@ class TY_69_Ui_MainWindow(object):
         self.comboBox_3.setItemText(3, _translate("MainWindow", "Method D"))
         self.comboBox_3.setItemText(4, _translate("MainWindow", "Method E"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
+        self.pushButton_8_1.setText(_translate("MainWindow", "Get-Results"))
+        
         self.pushButton_9.setText(_translate("MainWindow", "Reset"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
@@ -925,7 +943,7 @@ class TY_69_Ui_MainWindow(object):
         self.pushButton_17.setText(_translate("MainWindow", "Set Sample"))
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Sec)"))
-        self.label_26.setText(_translate("MainWindow", "01"))
+        self.label_26.setText(_translate("MainWindow", "0"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.label_10.setText(_translate("MainWindow", "Adhesion Strength"))
         self.label_24.setText(_translate("MainWindow", ""))
@@ -934,6 +952,7 @@ class TY_69_Ui_MainWindow(object):
         
       
         self.pushButton_8.clicked.connect(self.go_for_test)
+        self.pushButton_8_1.clicked.connect(self.get_results)        
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_18.clicked.connect(self.open_graph_data)
@@ -968,11 +987,13 @@ class TY_69_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
-        self.show_grid_data_Tear()
+        #self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+        self.pushButton_8_1.setDisabled(True)
+        self.comboBox_3.setDisabled(True)
     
     def load_unit_onchange(self):
         self.label_63.setText("("+str(self.comboBox_2.currentText())+")")
@@ -1048,7 +1069,7 @@ class TY_69_Ui_MainWindow(object):
         
         self.pushButton_7.setDisabled(True)
         self.pushButton_11.setEnabled(True)
-        self.show_grid_data_Tear()
+        #self.show_grid_data_Tear()
         print("Data Loaded OK !!")
        
     
@@ -1407,6 +1428,8 @@ class TY_69_Ui_MainWindow(object):
         self.pushButton_11.setDisabled(True)
         self.pushButton_7.setEnabled(True)
         self.pushButton_9.setEnabled(True)
+       
+        
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
         connection = sqlite3.connect("tyr.db")
@@ -1441,26 +1464,33 @@ class TY_69_Ui_MainWindow(object):
                     #print("lcd printing .......")
                     if(str(self.sc_new.save_data_flg) =="Yes"):
                             self.reset()
-                            self.save_graph_data()
+                            #self.save_graph_data()
                             self.sc_new.save_data_flg=""
-                            self.label_49.setText("Data Saved Successfully.")
+                            self.label_49.setText("Please Click on Get-Results...to view results")
                             self.label_49.show()
-                            self.pushButton_7.setDisabled(True)
-                            self.pushButton_11.setEnabled(True)
-                            self.label_26.setText(str(self.cycle_num))
-                            self.pushButton_12.setEnabled(True)
-                            self.pushButton_13.setEnabled(True)
-                            self.pushButton_14.setEnabled(True)
-                            self.pushButton_15.setEnabled(True)
-                            self.pushButton_16.setEnabled(True)
-                            self.pushButton_6.setEnabled(True)
+                            self.pushButton_7.setDisabled(True)                           
+                            self.comboBox_3.setEnabled(True)
+                            self.pushButton_8_1.setEnabled(True)
+                                                          
                             
         else:
                            self.lcdNumber.setProperty("value", 0.0)     #load
                            self.lcdNumber_2.setProperty("value",0.0)  #length
                            #self.lcdNumber_3.setProperty("value",0.0)  #speed
                 
-                
+    def get_results(self):
+        self.save_graph_data()
+        self.pushButton_11.setEnabled(True)        
+        self.pushButton_12.setEnabled(True)
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.pushButton_6.setEnabled(True)
+        self.label_49.setText("Results are Calculated.")
+        self.label_49.show()
+        self.label_26.setText(str(self.cycle_num))
+        
         
     def save_graph_data(self):
         self.load100_guage=0
@@ -1493,8 +1523,19 @@ class TY_69_Ui_MainWindow(object):
               cursor.execute("DELETE FROM STG_TEST_DATA")
               cursor.execute("DELETE FROM STG_PEAK_MST") 
               cursor.execute("DELETE FROM STG_LOW_VAL_MST")
+              #cursor.execute("DELETE FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) and SPEC_ID = '"+str(int(self.label_26.text()))+"'")
             connection.commit();
-            connection.close()                               
+            connection.close()
+            
+            ###### Spec ID ###################
+            self.cycle_num=0
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("select IFNULL(MAX(SPEC_ID),0) FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                 
+            for x in results:
+                       self.cycle_num=int(str(x[0]))       
+            connection.close()                     
+            ####################################
+            
             
             connection = sqlite3.connect("tyr.db")
             with connection:        
@@ -1522,8 +1563,8 @@ class TY_69_Ui_MainWindow(object):
             connection.commit();
             connection.close()
        
-        if (len(self.sc_new.arr_p) > 1):            
-            self.cycle_num=self.cycle_num+1
+        if (len(self.sc_new.arr_p) > 1):           
+            self.cycle_num=self.cycle_num+1 
             connection = sqlite3.connect("tyr.db")              
             with connection:
                   cursor = connection.cursor()
@@ -1898,7 +1939,7 @@ class TY_69_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 3).text())
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1906,14 +1947,31 @@ class TY_69_Ui_MainWindow(object):
                 close = close.exec()
                 if close == QMessageBox.Yes:
                     connection = sqlite3.connect("tyr.db")              
-                    with connection:        
-                                    cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
-                    connection.commit();
-                    connection.close()
-                    #self.load_data()
+                    with connection:                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(SPEC_ID,0),TEST_ID,IFNULL(GRAPH_ID,0) from TEST_DATA where ID = '"+str(self.cycle_id)+"' LIMIT 1")                 
+                                    for x in results:
+                                        self.curr_cycle_num=int(x[0])
+                                        self.test_id=str(x[1])
+                                        self.curr_graph_id=str(x[2])            
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:        
+                                                    cursor = connection.cursor()                
+                                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+str(self.cycle_id)+"'")
+                                                    cursor.execute("UPDATE TEST_DATA SET SPEC_ID=IFNULL(SPEC_ID,0)-1 WHERE TEST_ID = '"+str(self.test_id)+"' and SPEC_ID > '"+str(self.curr_cycle_num)+"'")
+                                                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID = '"+str(self.curr_graph_id)+"'")                                    
+                                    connection.commit();
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(MAX(SPEC_ID),0) from TEST_DATA where TEST_ID = '"+str(self.test_id)+"'")                 
+                                    for x in results:
+                                        self.label_26.setText(str(x[0]))
+                                        #print("updated cycle id :"+str(self.cycle_id))
+                                    connection.close()
+                   
                     self.show_grid_data_Tear()
         
     
@@ -1931,15 +1989,17 @@ class TY_69_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels([' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-        results=connection.execute("SELECT printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id',' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Test Method','cycle_id'])
+        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),TEST_METHOD_TYPE,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
