@@ -228,7 +228,7 @@ class pop_peal_val_Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Please Select Graph id to view Data set"))
         self.pushButton.setText(_translate("MainWindow", "Graph Data"))
         self.pushButton_2.setText(_translate("MainWindow", "Save Changes "))
-        self.pushButton_2.setDisabled(True)
+        #self.pushButton_2.setDisabled(True)
         self.pushButton_3.setText(_translate("MainWindow", "Re-Calculate Results"))
         self.pushButton_3.setDisabled(True)
         self.pushButton_4.setText(_translate("MainWindow", "Close"))
@@ -262,6 +262,8 @@ class pop_peal_val_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(MainWindow.close)
         self.pushButton.clicked.connect(self.open_graph_data)
         self.pushButton_5.clicked.connect(self.show_single_graph_data)
+        #self.tableWidget.itemClicked.connect(self.itemclick_fun)
+        self.pushButton_2.clicked.connect(self.save_ignore_flg)        
         self.show_single_graph_data()
         
     
@@ -285,6 +287,37 @@ class pop_peal_val_Ui_MainWindow(object):
         self.ui.setupUi(self.window)           
         self.window.show()
         
+     
+        
+    def save_ignore_flg(self):
+        i = self.tableWidget.rowCount()       
+        while (i > 0):
+            i=i-1
+            item = self.tableWidget.item(i, 2)
+            item_2 = self.tableWidget.item(i, 0)
+            #print("test id  :"+str(item.text()))
+            currentState = item.checkState()
+            if(currentState == QtCore.Qt.Checked):
+                    print("Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()
+                            print("UPDATE PEAK_MST set IGNORE_FLG='Y' WHERE SQ_NO='"+str(item.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
+                            cursor.execute("UPDATE PEAK_MST set IGNORE_FLG='Y',COMMENT='Updated - By App' WHERE SQ_NO='"+str(item_2.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
+                            self.pushButton_3.setEnabled(True)
+                    connection.commit();
+                    connection.close()                    
+            else:
+                    print("Un-Checked test ID:"+str(item.text()))
+                    connection = sqlite3.connect("tyr.db")          
+                    with connection:        
+                            cursor = connection.cursor()
+                            
+                            cursor.execute("UPDATE PEAK_MST set IGNORE_FLG='N' WHERE SQ_NO='"+str(item_2.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
+                    connection.commit();
+                    connection.close()
+        self.show_grid_data()
+    
     def show_single_graph_data(self):        
         #print("inside tear list.....")
         self.delete_all_records()
@@ -298,40 +331,7 @@ class pop_peal_val_Ui_MainWindow(object):
                        cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_ID='"+str(self.g[row])+"'")                                   
                     connection.commit();
                     
-                    
-                    font = QtGui.QFont()
-                    font.setPointSize(10)
-                    self.tableWidget.setFont(font)
-                    self.tableWidget.setColumnCount(5)
-                    self.tableWidget.horizontalHeader().setStretchLastSection(True)
-                    self.tableWidget.setHorizontalHeaderLabels(['ID','Peak Val','Ignored[Y/N]','Comment','Test Method'])  
-                          
-                    self.tableWidget.setColumnWidth(0, 50)
-                    self.tableWidget.setColumnWidth(1, 100)
-                    self.tableWidget.setColumnWidth(2, 100)
-                    self.tableWidget.setColumnWidth(3, 200)
-                    self.tableWidget.setColumnWidth(4, 100)
-                    connection = sqlite3.connect("tyr.db")                     
-                     
-                    results=connection.execute("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,COMMENT,TEST_METHOD_TYPE FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID = '"+str(self.g[row])+"') ")
-                    for row_number, row_data in enumerate(results):            
-                        self.tableWidget.insertRow(row_number)
-                        for column_number, data in enumerate(row_data):
-                            if(int(column_number) == 2):
-                                #print("data-column_number :"+str(column_number))
-                                item = QtWidgets.QTableWidgetItem()
-                                item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-                                item.setCheckState(QtCore.Qt.Unchecked)
-                                item.setText(str(data))
-                                self.tableWidget.setItem(row_number,column_number,item)
-                                #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
-                            else:
-                                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
-                               
-                    #self.tableWidget.resizeColumnsToContents()
-                    self.tableWidget.resizeRowsToContents()
-                    self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-                    connection.close()
+                    self.show_grid_data()
                     
                     self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
                     self.gridLayout.addWidget(self.sc_data, 0, 1, 1, 1)
@@ -339,6 +339,48 @@ class pop_peal_val_Ui_MainWindow(object):
                     
         else:
             print("Please select Graph Id")
+    
+    
+    
+    
+    def show_grid_data(self):
+        self.delete_all_records()
+        self.tableWidget.setColumnCount(5)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+                    
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setHorizontalHeaderLabels(['ID','Peak Val','Ignored[Y/N]','Test Method','Comment'])  
+                          
+        self.tableWidget.setColumnWidth(0, 50)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 90)
+        self.tableWidget.setColumnWidth(4, 200)
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,TEST_METHOD_TYPE,IFNULL(COMMENT,'') FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2)) ")
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                            if(int(column_number) == 2):
+                                #print("data:"+str(data))
+                                item = QtWidgets.QTableWidgetItem()
+                                item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                                if(str(data) == 'Y'):
+                                    item.setCheckState(QtCore.Qt.Checked)
+                                else:
+                                    item.setCheckState(QtCore.Qt.Unchecked)
+                                item.setText(str(data))
+                                self.tableWidget.setItem(row_number,column_number,item)
+                                #self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                            else:
+                                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data)))
+                               
+                    #self.tableWidget.resizeColumnsToContents()
+            self.tableWidget.resizeRowsToContents()
+            self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()        
     
     def delete_all_records(self):
         i = self.tableWidget.rowCount()       
