@@ -1,7 +1,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_2 import  TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
 
 import inspect
 

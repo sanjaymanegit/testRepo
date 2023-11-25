@@ -1,7 +1,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_2 import  TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
 
 import inspect
 
@@ -959,7 +959,7 @@ class TY_59_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "TRUNKLIDSEAL_CLD2"))
+        self.label_10.setText(_translate("MainWindow", "CLD2"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
