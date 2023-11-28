@@ -465,7 +465,7 @@ class TY_69_Ui_MainWindow(object):
         self.comboBox_3.addItem("")
         
         self.pushButton_8_1 = QtWidgets.QPushButton(self.frame_3)
-        self.pushButton_8_1.setGeometry(QtCore.QRect(1170, 60, 100, 31))
+        self.pushButton_8_1.setGeometry(QtCore.QRect(1170, 60, 100, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -475,6 +475,18 @@ class TY_69_Ui_MainWindow(object):
         self.pushButton_8_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
         self.pushButton_8_1.setFlat(False)
         self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        self.pushButton_8_2 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_2.setGeometry(QtCore.QRect(930, 325, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_2.setFont(font)
+        self.pushButton_8_2.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_2.setFlat(False)
+        self.pushButton_8_2.setObjectName("pushButton_8_2")
         
         
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
@@ -918,6 +930,7 @@ class TY_69_Ui_MainWindow(object):
         self.comboBox_3.setItemText(4, _translate("MainWindow", "Method E"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
         self.pushButton_8_1.setText(_translate("MainWindow", "Get-Results"))
+        self.pushButton_8_2.setText(_translate("MainWindow", "Refresh"))
         
         self.pushButton_9.setText(_translate("MainWindow", "Reset"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
@@ -952,7 +965,8 @@ class TY_69_Ui_MainWindow(object):
         
       
         self.pushButton_8.clicked.connect(self.go_for_test)
-        self.pushButton_8_1.clicked.connect(self.get_results)        
+        self.pushButton_8_1.clicked.connect(self.get_results)
+        self.pushButton_8_2.clicked.connect(self.show_grid_data_Tear) 
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_18.clicked.connect(self.open_graph_data)
@@ -1541,7 +1555,7 @@ class TY_69_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_t[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
                   
             connection.commit();
             connection.close()
@@ -1574,7 +1588,7 @@ class TY_69_Ui_MainWindow(object):
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE STG_PEAK_MST SET PEAK_LIST_ID = (SELECT MAX(IFNULL(PEAK_LIST_ID+1,0)) FROM PEAK_MST)")
                           cursor.execute("UPDATE STG_PEAK_MST SET TEST_METHOD_TYPE = '"+str(self.comboBox_3.currentText())+"'")
-                          cursor.execute("INSERT INTO PEAK_MST(SQ_NO,PEAK_VAL,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL) SELECT ID,PEAK_VALUE,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL FROM STG_PEAK_MST")         
+                          cursor.execute("INSERT INTO PEAK_MST(SQ_NO,PEAK_VAL,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL,COMMENT,IGNORE_FLG,GRAPH_ID) SELECT ID,PEAK_VALUE,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL,COMMENT,IGNORE_FLG,(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) FROM STG_PEAK_MST")         
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                          
                           cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID) SELECT TEST_ID FROM GLOBAL_VAR")
                           cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
@@ -1699,7 +1713,7 @@ class TY_69_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID ASC LIMIT 1")
+        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID DESC LIMIT 1")
         for x in results:
               self.t2=(float(x[0]))              
         connection.close() 
@@ -1709,11 +1723,29 @@ class TY_69_Ui_MainWindow(object):
         self.t2=(self.t2)-(0.1*(self.time_diff))
         
         
-        connection = sqlite3.connect("tyr.db")        
+        connection = sqlite3.connect("tyr.db")
+        print("SELECT PEAK_VALUE FROM STG_PEAK_MST WHERE TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
+        
         results=connection.execute("SELECT PEAK_VALUE FROM STG_PEAK_MST WHERE TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
         for x in results:
               self.load_vals_B.append(float(x[0]))              
         connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        print("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")              
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE STG_PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"'")
+
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
         
         self.med = statistics.median(self.load_vals_B)
         print("Median A :"+str(self.med))
@@ -1723,10 +1755,10 @@ class TY_69_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   try:
                         cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.med)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM STG_PEAK_MST) WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM STG_PEAK_MST) WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM STG_PEAK_MST WHERE IGNORE_FLG = 'N') WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM STG_PEAK_MST WHERE IGNORE_FLG = 'N') WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
                   except Exception as e:
-                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           print("SQL Error- test_method_B_calc() :"+str(e))
                            connection.commit();
         connection.commit();
         connection.close()
@@ -1747,7 +1779,7 @@ class TY_69_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID ASC LIMIT 1")
+        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID DESC LIMIT 1")
         for x in results:
               self.t2=(float(x[0]))              
         connection.close() 
@@ -1762,6 +1794,23 @@ class TY_69_Ui_MainWindow(object):
         for x in results:
               self.load_vals_B.append(float(x[0]))              
         connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        print("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")              
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE STG_PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"'")
+
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+        
         
         self.med = statistics.median(self.load_vals_B)
         print("Median A :"+str(self.med))

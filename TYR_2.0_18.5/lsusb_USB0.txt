@@ -1,1 +1,1 @@
-E: ID_MODEL_FROM_DATABASE=PL2303 Serial Port
+E: ID_VENDOR_FROM_DATABASE=Future Technology Devices International, Ltd

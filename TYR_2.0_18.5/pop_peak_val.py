@@ -264,7 +264,7 @@ class pop_peal_val_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.show_single_graph_data)
         #self.tableWidget.itemClicked.connect(self.itemclick_fun)
         self.pushButton_2.clicked.connect(self.save_ignore_flg)        
-        self.show_single_graph_data()
+        self.load_data()
         
     
     def load_data(self):
@@ -279,7 +279,7 @@ class pop_peal_val_Ui_MainWindow(object):
             self.listWidget.addItem("Specimen No: ("+str(self.i)+")")
         connection.close()
         self.listWidget.setCurrentRow(0)
-        #self.show_single_graph_data()
+        self.show_single_graph_data()
     
     def open_graph_data(self):
         self.window = QtWidgets.QMainWindow()
@@ -316,6 +316,7 @@ class pop_peal_val_Ui_MainWindow(object):
                             cursor.execute("UPDATE PEAK_MST set IGNORE_FLG='N' WHERE SQ_NO='"+str(item_2.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
                     connection.commit();
                     connection.close()
+        self.pushButton_3.setEnabled(True)
         self.show_grid_data()
     
     def show_single_graph_data(self):        
@@ -359,6 +360,8 @@ class pop_peal_val_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 90)
         self.tableWidget.setColumnWidth(4, 200)
         connection = sqlite3.connect("tyr.db")
+        print("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,TEST_METHOD_TYPE,IFNULL(COMMENT,'') FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2)) ")
+        
         results=connection.execute("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,TEST_METHOD_TYPE,IFNULL(COMMENT,'') FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2)) ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
