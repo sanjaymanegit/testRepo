@@ -264,7 +264,7 @@ class pop_peal_val_Ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.show_single_graph_data)
         #self.tableWidget.itemClicked.connect(self.itemclick_fun)
         self.pushButton_2.clicked.connect(self.save_ignore_flg)        
-        self.load_data()
+        self.show_single_graph_data()
         
     
     def load_data(self):
@@ -279,7 +279,7 @@ class pop_peal_val_Ui_MainWindow(object):
             self.listWidget.addItem("Specimen No: ("+str(self.i)+")")
         connection.close()
         self.listWidget.setCurrentRow(0)
-        self.show_single_graph_data()
+        #self.show_single_graph_data()
     
     def open_graph_data(self):
         self.window = QtWidgets.QMainWindow()
@@ -316,7 +316,6 @@ class pop_peal_val_Ui_MainWindow(object):
                             cursor.execute("UPDATE PEAK_MST set IGNORE_FLG='N' WHERE SQ_NO='"+str(item_2.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
                     connection.commit();
                     connection.close()
-        self.pushButton_3.setEnabled(True)
         self.show_grid_data()
     
     def show_single_graph_data(self):        
@@ -360,8 +359,6 @@ class pop_peal_val_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(3, 90)
         self.tableWidget.setColumnWidth(4, 200)
         connection = sqlite3.connect("tyr.db")
-        print("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,TEST_METHOD_TYPE,IFNULL(COMMENT,'') FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2)) ")
-        
         results=connection.execute("SELECT SQ_NO,printf(\"%.2f\", PEAK_VAL),IGNORE_FLG,TEST_METHOD_TYPE,IFNULL(COMMENT,'') FROM PEAK_MST WHERE PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2)) ")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
@@ -391,7 +388,254 @@ class pop_peal_val_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)
 
-
+    
+    def save_calcualtions(self):        
+        self.graph_id=""
+        self.test_id=""
+        self.test_calc_method=""
+        
+        row = self.listWidget.currentRow()
+        print("Current row :"+str(row)+"  Graph ID :"+str(g[row]))
+        self.graph_id=str(self.g[row])
+        
+        
+        results=connection.execute("SELECT TEST_METHOD_TYPE FROM PEAK_MST WHERE GRAPH_ID = '"+str(self.graph_id)+"' LIMIT 1")
+        for x in results:
+              self.test_calc_method=str(x[0])              
+        connection.close()
+        
+        
+        
+        
+        if(str(self.test_calc_method) == "Method A"):
+                   self.test_method_A_calc()
+        elif(str(self.test_calc_method) == "Method B"):
+                   self.test_method_B_calc()
+        elif(str(self.test_calc_method) == "Method C"):
+                   self.test_method_C_calc()
+        elif(str(self.test_calc_method) == "Method D"): 
+                   self.test_method_D_calc()
+        elif(str(self.test_calc_method) == "Method E"): 
+                   self.test_method_E_calc() 
+        else:
+                   self.test_method_A_calc()
+    
+    def test_method_A_calc(self):
+        self.load_vals_A=[]        
+        self.med = 0
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT PEAK_VALUE FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' order by ID ASC")
+        for x in results:
+              self.load_vals_A.append(float(x[0]))              
+        connection.close()
+        try:
+            self.med = statistics.median(self.load_vals_A)
+        except Exception as e:
+                             print("median Error :"+str(e))   
+        print("Median A :"+str(self.med))
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.med)+"' WHERE GRAPH_ID = '"+str(self.graph_id)+"'")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' ) WHERE GRAPH_ID = '"+str(self.graph_id)+"'")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' ) WHERE GRAPH_ID = '"+str(self.graph_id)+"'")
+                  except Exception as e:
+                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()                   
+        
+    def test_method_B_calc(self):
+        self.load_vals_B=[]
+        self.time_vals_B=[]
+        self.t1=0
+        self.t2=0
+        self.time_diff=0
+        self.med = 0
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' AND SQ_NO = 1")
+        for x in results:
+              self.t1=(float(x[0]))              
+        connection.close() 
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST  WHERE GRAPH_ID ='"+str(self.graph_id)+"' order by SQ_NO DESC LIMIT 1")
+        for x in results:
+              self.t2=(float(x[0]))              
+        connection.close() 
+        
+        self.time_diff=(self.t2)-(self.t1)
+        self.t1=(self.t1)+(0.1*(self.time_diff))
+        self.t2=(self.t2)-(0.1*(self.time_diff))
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        #print("SELECT PEAK_VALUE FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' AND TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
+        
+        results=connection.execute("SELECT PEAK_VALUE FROM STG_PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
+        for x in results:
+              self.load_vals_B.append(float(x[0]))              
+        connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        print("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID ='"+str(self.graph_id)+"'")              
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID ='"+str(self.graph_id)+"'")
+                        
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+        
+        self.med = statistics.median(self.load_vals_B)
+        print("Median A :"+str(self.med))
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.med)+"' WHERE GRAPH_ID ='"+str(self.graph_id)+"' ")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N') WHERE GRAPH_ID ='"+str(self.graph_id)+"' ")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N') WHERE GRAPH_ID ='"+str(self.graph_id)+"' ")
+                  except Exception as e:
+                           print("SQL Error- test_method_B_calc() :"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+        
+    def test_method_C_calc(self):
+        self.load_vals_B=[]
+        self.time_vals_B=[]
+        self.t1=0
+        self.t2=0
+        self.time_diff=0
+        self.med = 0
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST WHERE SQ_NO = 1  AND GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N'")
+        for x in results:
+              self.t1=(float(x[0]))              
+        connection.close() 
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' order by ID DESC LIMIT 1")
+        for x in results:
+              self.t2=(float(x[0]))              
+        connection.close() 
+        
+        self.time_diff=(self.t2)-(self.t1)
+        self.t1=(self.t1)+(0.1*(self.time_diff))
+        self.t2=(self.t2)-(0.1*(self.time_diff))
+        
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT PEAK_VALUE FROM PEAK_MST WHERE TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' order by ID ASC")
+        for x in results:
+              self.load_vals_B.append(float(x[0]))              
+        connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N'")
+                        
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+        
+        
+        self.med = statistics.median(self.load_vals_B)
+        print("Median A :"+str(self.med))
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.med)+"' WHERE GRAPH_ID ='"+str(self.graph_id)+"'")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N') WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N') WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+                  except Exception as e:
+                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+    
+    def test_method_D_calc(self):
+        self.max_peak_load=""
+        self.min_low_load="" 
+        self.avg_load = 0
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' order by ID ASC")
+        for x in results:
+              self.max_peak_load=(float(x[0]))              
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT min(LOW_VAL) FROM STG_LOW_VAL_MST where LOW_VAL > 0  order by ID ASC")
+        for x in results:
+              self.min_low_load=(float(x[0]))              
+        connection.close()       
+        
+        self.avg_load = (self.max_peak_load + self.min_low_load)/2
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_low_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                  except Exception as e:
+                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+    def test_method_E_calc(self):
+        self.max_peak_load=""
+        self.min_peak_load="" 
+        self.avg_load = 0
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT max(PEAK_VALUE) FROM STG_PEAK_MST order by ID ASC")
+        for x in results:
+              self.max_peak_load=(float(x[0]))              
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")        
+        results=connection.execute("SELECT min(PEAK_VALUE) FROM STG_PEAK_MST order by ID ASC")
+        for x in results:
+              self.min_peak_load=(float(x[0]))              
+        connection.close()       
+        
+        self.avg_load = (self.max_peak_load + self.min_peak_load)/2
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                  except Exception as e:
+                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()  
 
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None, width=8, height=5, dpi=100):

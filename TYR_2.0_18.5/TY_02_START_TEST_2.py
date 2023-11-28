@@ -3016,7 +3016,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.xlim=int(x[0])
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
-             self.break_sence=int(x[3])
+             self.break_sence=float(x[3])
              self.modbus_flag=str(x[4])
              self.modbus_port=str(x[5])
              self.non_modbus_port=str(x[6])
@@ -3168,7 +3168,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.axes.autoscale(True, 'both', True)
         #self.axes.plot(self.arr_p,self.arr_q)
         #Create Timer here          
-        
+        time.sleep(2)
         self.timer1.setInterval(1000)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
@@ -3246,8 +3246,10 @@ class PlotCanvas_Auto(FigureCanvas):
                     #print("actual self.p :"+str(self.p))
                 elif(self.test_type=="Flexural"):
                     self.p=self.p
-                else:                    
+                else:
+                    print("bbbbbb self.p  : "+str(self.p)+"  bbbbb self.test_guage_mm : "+str(self.test_guage_mm))
                     self.p=self.p-int(self.test_guage_mm)
+                    
                     if(self.p_old > self.p):
                          self.p=self.p_old                                            
                     self.p_old=self.p
@@ -3437,7 +3439,7 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))                 
             else:
                  print(" not Ok ")
