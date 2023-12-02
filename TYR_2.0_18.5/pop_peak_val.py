@@ -585,7 +585,7 @@ class pop_peal_val_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT min(LOW_VAL) FROM STG_LOW_VAL_MST where LOW_VAL > 0  order by ID ASC")
+        results=connection.execute("SELECT min(LOW_VAL) FROM LOW_VAL_MST where LOW_VAL > 0 AND  GRAPH_ID ='"+str(self.graph_id)+"'  order by ID ASC")
         for x in results:
               self.min_low_load=(float(x[0]))              
         connection.close()       
@@ -596,9 +596,9 @@ class pop_peal_val_Ui_MainWindow(object):
         with connection:
                   cursor = connection.cursor()
                   try:
-                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_low_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE  GRAPH_ID ='"+str(self.graph_id)+"' ")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_low_load)+"' WHERE  GRAPH_ID ='"+str(self.graph_id)+"'")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE  GRAPH_ID ='"+str(self.graph_id)+"'")
                   except Exception as e:
                            print("SQL Error- test_method_A_calc() :"+str(e))
                            connection.commit();
@@ -611,13 +611,13 @@ class pop_peal_val_Ui_MainWindow(object):
         self.avg_load = 0
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT max(PEAK_VALUE) FROM STG_PEAK_MST order by ID ASC")
+        results=connection.execute("SELECT max(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' order by ID ASC")
         for x in results:
               self.max_peak_load=(float(x[0]))              
         connection.close()
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT min(PEAK_VALUE) FROM STG_PEAK_MST order by ID ASC")
+        results=connection.execute("SELECT min(PEAK_VALUE) FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"'  AND IGNORE_FLG = 'N' order by ID ASC")
         for x in results:
               self.min_peak_load=(float(x[0]))              
         connection.close()       
@@ -628,9 +628,9 @@ class pop_peal_val_Ui_MainWindow(object):
         with connection:
                   cursor = connection.cursor()
                   try:
-                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.avg_load)+"' WHERE GRAPH_ID ='"+str(self.graph_id)+"'")                          
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = '"+str(self.min_peak_load)+"' WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO ='"+str(self.max_peak_load)+"' WHERE GRAPH_ID ='"+str(self.graph_id)+"'")
                   except Exception as e:
                            print("SQL Error- test_method_A_calc() :"+str(e))
                            connection.commit();
