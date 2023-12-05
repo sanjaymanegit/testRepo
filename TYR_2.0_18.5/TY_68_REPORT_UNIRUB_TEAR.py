@@ -823,6 +823,22 @@ class TY_68_Ui_MainWindow(object):
         self.label_24.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_24.setAlignment(QtCore.Qt.AlignCenter)
         self.label_24.setObjectName("label_24")
+        
+        self.pushButton_8_2 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_2.setGeometry(QtCore.QRect(930, 325, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_2.setFont(font)
+        self.pushButton_8_2.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_2.setFlat(False)
+        self.pushButton_8_2.setObjectName("pushButton_8_2")
+        
+        
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -955,6 +971,8 @@ class TY_68_Ui_MainWindow(object):
         self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         #self.radioButton.clicked.connect(self.radiobutt_on_change)
         #self.radioButton_2.clicked.connect(self.radiobutt_on_change)
+        self.pushButton_8_2.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_8_2.clicked.connect(self.show_grid_data_Tear) 
         
         self.test_method=""                             
         self.failure_mod=""
@@ -1047,7 +1065,6 @@ class TY_68_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        print("select PARTY_NAME,MOTOR_SPEED,LAST_UNIT_LOAD,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,TEST_ID ,SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")       
         results=connection.execute("select PARTY_NAME,MOTOR_SPEED,LAST_UNIT_LOAD,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,TEST_ID ,SPECIMEN_NAME FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             self.lineEdit_25.setText(str(x[0])) # CUSTOMER NAME
@@ -1143,7 +1160,7 @@ class TY_68_Ui_MainWindow(object):
                                             cursor = connection.cursor()
                                             cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")
-                                            cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,PARTY_NAME,BATCH_ID,JOB_NAME) VALUES('"+str(self.comboBox.currentText())+"','TEAR_STRENGTH','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_15.text())+"')")
+                                            cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,PARTY_NAME,BATCH_ID,JOB_NAME) VALUES('"+str(self.comboBox.currentText())+"','ADHESION_STRENGTH','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_15.text())+"')")
                                             cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1188,7 +1205,7 @@ class TY_68_Ui_MainWindow(object):
                  if(self.go_ahead=="Yes"):
                         self.save_units();
                         self.frame_3.show()
-                        self.sc_blank =PlotCanvas_blank(self) 
+                        self.sc_blank =PlotCanvas(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                         
                         try:            
@@ -1314,7 +1331,7 @@ class TY_68_Ui_MainWindow(object):
             self.lineEdit_15.setText(str("Job_ID_")+str(self.test_id)) # JOB ID
             self.lineEdit_16.setText(str("Batch_ID_")+str(self.test_id)) # BATCH ID            
             self.lineEdit_9.setText(str(x[1])) # TEST SPEED                    
-            #self.comboBox_2.setCurrentText(str(x[2])) #UNIT_LOAD           
+            self.comboBox_2.setCurrentText(str(x[2])) #UNIT_LOAD           
         connection.close()
         
         
@@ -1945,7 +1962,7 @@ class TY_68_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 3).text())
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1953,16 +1970,32 @@ class TY_68_Ui_MainWindow(object):
                 close = close.exec()
                 if close == QMessageBox.Yes:
                     connection = sqlite3.connect("tyr.db")              
-                    with connection:        
-                                    cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
-                    connection.commit();
-                    connection.close()
-                    #self.load_data()
+                    with connection:                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(SPEC_ID,0),TEST_ID,IFNULL(GRAPH_ID,0) from TEST_DATA where ID = '"+str(self.cycle_id)+"' LIMIT 1")                 
+                                    for x in results:
+                                        self.curr_cycle_num=int(x[0])
+                                        self.test_id=str(x[1])
+                                        self.curr_graph_id=str(x[2])            
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:        
+                                                    cursor = connection.cursor()                
+                                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+str(self.cycle_id)+"'")
+                                                    cursor.execute("UPDATE TEST_DATA SET SPEC_ID=IFNULL(SPEC_ID,0)-1 WHERE TEST_ID = '"+str(self.test_id)+"' and SPEC_ID > '"+str(self.curr_cycle_num)+"'")
+                                                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID = '"+str(self.curr_graph_id)+"'")                                    
+                                    connection.commit();
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(MAX(SPEC_ID),0) from TEST_DATA where TEST_ID = '"+str(self.test_id)+"'")                 
+                                    for x in results:
+                                        self.label_26.setText(str(x[0]))
+                                        #print("updated cycle id :"+str(self.cycle_id))
+                                    connection.close()
+                   
                     self.show_grid_data_Tear()
-        
     
     
     
@@ -1978,15 +2011,17 @@ class TY_68_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels([' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-        results=connection.execute("SELECT printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id',' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Test Method','cycle_id'])
+        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),TEST_METHOD_TYPE,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -3035,4 +3070,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
 

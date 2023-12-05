@@ -823,6 +823,22 @@ class TY_70_Ui_MainWindow(object):
         self.label_24.setStyleSheet("color: rgb(0, 170, 0);")
         self.label_24.setAlignment(QtCore.Qt.AlignCenter)
         self.label_24.setObjectName("label_24")
+        
+        self.pushButton_8_2 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_2.setGeometry(QtCore.QRect(930, 325, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_2.setFont(font)
+        self.pushButton_8_2.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_2.setFlat(False)
+        self.pushButton_8_2.setObjectName("pushButton_8_2")
+        
+        
+        
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1368, 21))
@@ -955,6 +971,8 @@ class TY_70_Ui_MainWindow(object):
         self.comboBox_2.currentTextChanged.connect(self.load_unit_onchange)
         #self.radioButton.clicked.connect(self.radiobutt_on_change)
         #self.radioButton_2.clicked.connect(self.radiobutt_on_change)
+        self.pushButton_8_2.setText(_translate("MainWindow", "Refresh"))
+        self.pushButton_8_2.clicked.connect(self.show_grid_data_Tear) 
         
         self.test_method=""                             
         self.failure_mod=""
@@ -1944,7 +1962,7 @@ class TY_70_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 3).text())
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1952,16 +1970,32 @@ class TY_70_Ui_MainWindow(object):
                 close = close.exec()
                 if close == QMessageBox.Yes:
                     connection = sqlite3.connect("tyr.db")              
-                    with connection:        
-                                    cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
-                    connection.commit();
-                    connection.close()
-                    #self.load_data()
+                    with connection:                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(SPEC_ID,0),TEST_ID,IFNULL(GRAPH_ID,0) from TEST_DATA where ID = '"+str(self.cycle_id)+"' LIMIT 1")                 
+                                    for x in results:
+                                        self.curr_cycle_num=int(x[0])
+                                        self.test_id=str(x[1])
+                                        self.curr_graph_id=str(x[2])            
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:        
+                                                    cursor = connection.cursor()                
+                                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+str(self.cycle_id)+"'")
+                                                    cursor.execute("UPDATE TEST_DATA SET SPEC_ID=IFNULL(SPEC_ID,0)-1 WHERE TEST_ID = '"+str(self.test_id)+"' and SPEC_ID > '"+str(self.curr_cycle_num)+"'")
+                                                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID = '"+str(self.curr_graph_id)+"'")                                    
+                                    connection.commit();
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(MAX(SPEC_ID),0) from TEST_DATA where TEST_ID = '"+str(self.test_id)+"'")                 
+                                    for x in results:
+                                        self.label_26.setText(str(x[0]))
+                                        #print("updated cycle id :"+str(self.cycle_id))
+                                    connection.close()
+                   
                     self.show_grid_data_Tear()
-        
     
     
     
@@ -1977,15 +2011,17 @@ class TY_70_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels([' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-        results=connection.execute("SELECT printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id',' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Test Method','cycle_id'])
+        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),TEST_METHOD_TYPE,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

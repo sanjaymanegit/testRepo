@@ -1074,6 +1074,7 @@ class TY_69_Ui_MainWindow(object):
         self.pushButton_14.setDisabled(True)
         self.pushButton_15.setDisabled(True)
         self.pushButton_16.setDisabled(True)
+        self.pushButton_18.setDisabled(True)
         
         self.label_41.setText(str(self.comboBox_2.currentText()))
         #self.label_42.setText(str(self.comboBox_3.currentText() ))
@@ -1501,6 +1502,8 @@ class TY_69_Ui_MainWindow(object):
         self.pushButton_15.setEnabled(True)
         self.pushButton_16.setEnabled(True)
         self.pushButton_6.setEnabled(True)
+        self.pushButton_18.setEnabled(True)
+        
         self.label_49.setText("Results are Calculated.")
         self.label_49.show()
         self.label_26.setText(str(self.cycle_num))
@@ -2341,7 +2344,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
-                 self.break_sence=int(x[3])
+                 self.break_sence=float(x[3])
                  self.modbus_flag=str(x[4])
                  self.modbus_port=str(x[5])
                  self.non_modbus_port=str(x[6])
@@ -2868,7 +2871,8 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")

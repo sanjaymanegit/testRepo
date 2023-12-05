@@ -445,6 +445,8 @@ class TY_67_Ui_MainWindow(object):
         self.label_19.setStyleSheet("")
         self.label_19.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_19.setObjectName("label_19")
+        
+        
         self.comboBox_3 = QtWidgets.QComboBox(self.frame_3)
         self.comboBox_3.setGeometry(QtCore.QRect(1040, 60, 121, 31))
         font = QtGui.QFont()
@@ -461,6 +463,32 @@ class TY_67_Ui_MainWindow(object):
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
         self.comboBox_3.addItem("")
+        
+        self.pushButton_8_1 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_1.setGeometry(QtCore.QRect(1170, 60, 100, 21))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_1.setFont(font)
+        self.pushButton_8_1.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_1.setFlat(False)
+        self.pushButton_8_1.setObjectName("pushButton_8_1")
+        
+        self.pushButton_8_2 = QtWidgets.QPushButton(self.frame_3)
+        self.pushButton_8_2.setGeometry(QtCore.QRect(930, 325, 80, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_8_2.setFont(font)
+        self.pushButton_8_2.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))        
+        self.pushButton_8_2.setFlat(False)
+        self.pushButton_8_2.setObjectName("pushButton_8_2")
+        
+        
         self.pushButton_8 = QtWidgets.QPushButton(self.frame)
         self.pushButton_8.setGeometry(QtCore.QRect(1160, 120, 131, 41))
         font = QtGui.QFont()
@@ -901,6 +929,9 @@ class TY_67_Ui_MainWindow(object):
         self.comboBox_3.setItemText(3, _translate("MainWindow", "Method D"))
         self.comboBox_3.setItemText(4, _translate("MainWindow", "Method E"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
+        self.pushButton_8_1.setText(_translate("MainWindow", "Get-Results"))
+        self.pushButton_8_2.setText(_translate("MainWindow", "Refresh"))
+        
         self.pushButton_9.setText(_translate("MainWindow", "Reset"))
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
@@ -925,7 +956,7 @@ class TY_67_Ui_MainWindow(object):
         self.pushButton_17.setText(_translate("MainWindow", "Set Sample"))
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Sec)"))
-        self.label_26.setText(_translate("MainWindow", "01"))
+        self.label_26.setText(_translate("MainWindow", "0"))
         self.label_28.setText(_translate("MainWindow", "Spec. Count:"))
         self.label_10.setText(_translate("MainWindow", "Tear Strength"))
         self.label_24.setText(_translate("MainWindow", ""))
@@ -934,6 +965,8 @@ class TY_67_Ui_MainWindow(object):
         
       
         self.pushButton_8.clicked.connect(self.go_for_test)
+        self.pushButton_8_1.clicked.connect(self.get_results)
+        self.pushButton_8_2.clicked.connect(self.show_grid_data_Tear) 
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.pushButton_9.clicked.connect(self.new_test_reset)
         self.pushButton_18.clicked.connect(self.open_graph_data)
@@ -968,11 +1001,13 @@ class TY_67_Ui_MainWindow(object):
         self.timer1.timeout.connect(self.device_date)
         self.timer1.start(1)
         self.frame_3.hide()
-        self.show_grid_data_Tear()
+        #self.show_grid_data_Tear()
         #self.tableWidget.setHorizontalHeaderLabels(['Thickness (mm)',' Peak Load (Kgf) ','Tear Strength (Kgf/Cm)','Created On','Cycle ID'])
         #self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+        self.pushButton_8_1.setDisabled(True)
+        self.comboBox_3.setDisabled(True)
     
     def load_unit_onchange(self):
         self.label_63.setText("("+str(self.comboBox_2.currentText())+")")
@@ -1039,6 +1074,7 @@ class TY_67_Ui_MainWindow(object):
         self.pushButton_14.setDisabled(True)
         self.pushButton_15.setDisabled(True)
         self.pushButton_16.setDisabled(True)
+        self.pushButton_18.setDisabled(True)
         
         self.label_41.setText(str(self.comboBox_2.currentText()))
         #self.label_42.setText(str(self.comboBox_3.currentText() ))
@@ -1048,7 +1084,7 @@ class TY_67_Ui_MainWindow(object):
         
         self.pushButton_7.setDisabled(True)
         self.pushButton_11.setEnabled(True)
-        self.show_grid_data_Tear()
+        #self.show_grid_data_Tear()
         print("Data Loaded OK !!")
        
     
@@ -1092,7 +1128,7 @@ class TY_67_Ui_MainWindow(object):
                                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'")
                                             cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,PARTY_NAME,BATCH_ID,JOB_NAME) VALUES('"+str(self.comboBox.currentText())+"','TEAR_STRENGTH','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_15.text())+"')")
                                             cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-                                            cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+                                            cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           
                                     connection.commit();
@@ -1135,7 +1171,7 @@ class TY_67_Ui_MainWindow(object):
         if close == QMessageBox.Yes:
                  if(self.go_ahead=="Yes"):
                         self.save_units();
-                        self.frame_3.show()                        
+                        self.frame_3.show()
                         self.sc_blank =PlotCanvas_blank(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                         
@@ -1407,6 +1443,8 @@ class TY_67_Ui_MainWindow(object):
         self.pushButton_11.setDisabled(True)
         self.pushButton_7.setEnabled(True)
         self.pushButton_9.setEnabled(True)
+       
+        
         self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
         self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
         connection = sqlite3.connect("tyr.db")
@@ -1441,26 +1479,35 @@ class TY_67_Ui_MainWindow(object):
                     #print("lcd printing .......")
                     if(str(self.sc_new.save_data_flg) =="Yes"):
                             self.reset()
-                            self.save_graph_data()
+                            #self.save_graph_data()
                             self.sc_new.save_data_flg=""
-                            self.label_49.setText("Data Saved Successfully.")
+                            self.label_49.setText("Please Click on Get-Results...to view results")
                             self.label_49.show()
-                            self.pushButton_7.setDisabled(True)
-                            self.pushButton_11.setEnabled(True)
-                            self.label_26.setText(str(self.cycle_num))
-                            self.pushButton_12.setEnabled(True)
-                            self.pushButton_13.setEnabled(True)
-                            self.pushButton_14.setEnabled(True)
-                            self.pushButton_15.setEnabled(True)
-                            self.pushButton_16.setEnabled(True)
-                            self.pushButton_6.setEnabled(True)
+                            self.pushButton_7.setDisabled(True)                           
+                            self.comboBox_3.setEnabled(True)
+                            self.pushButton_8_1.setEnabled(True)
+                                                          
                             
         else:
                            self.lcdNumber.setProperty("value", 0.0)     #load
                            self.lcdNumber_2.setProperty("value",0.0)  #length
                            #self.lcdNumber_3.setProperty("value",0.0)  #speed
                 
-                
+    def get_results(self):
+        self.save_graph_data()
+        self.pushButton_11.setEnabled(True)        
+        self.pushButton_12.setEnabled(True)
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.pushButton_6.setEnabled(True)
+        self.pushButton_18.setEnabled(True)
+        
+        self.label_49.setText("Results are Calculated.")
+        self.label_49.show()
+        self.label_26.setText(str(self.cycle_num))
+        
         
     def save_graph_data(self):
         self.load100_guage=0
@@ -1493,14 +1540,25 @@ class TY_67_Ui_MainWindow(object):
               cursor.execute("DELETE FROM STG_TEST_DATA")
               cursor.execute("DELETE FROM STG_PEAK_MST") 
               cursor.execute("DELETE FROM STG_LOW_VAL_MST")
+              #cursor.execute("DELETE FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) and SPEC_ID = '"+str(int(self.label_26.text()))+"'")
             connection.commit();
-            connection.close()                               
+            connection.close()
+            
+            ###### Spec ID ###################
+            self.cycle_num=0
+            connection = sqlite3.connect("tyr.db")
+            results=connection.execute("select IFNULL(MAX(SPEC_ID),0) FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                 
+            for x in results:
+                       self.cycle_num=int(str(x[0]))       
+            connection.close()                     
+            ####################################
+            
             
             connection = sqlite3.connect("tyr.db")
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_t[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
                   
             connection.commit();
             connection.close()
@@ -1522,8 +1580,8 @@ class TY_67_Ui_MainWindow(object):
             connection.commit();
             connection.close()
        
-        if (len(self.sc_new.arr_p) > 1):            
-            self.cycle_num=self.cycle_num+1
+        if (len(self.sc_new.arr_p) > 1):           
+            self.cycle_num=self.cycle_num+1 
             connection = sqlite3.connect("tyr.db")              
             with connection:
                   cursor = connection.cursor()
@@ -1533,7 +1591,7 @@ class TY_67_Ui_MainWindow(object):
                           cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
                           cursor.execute("UPDATE STG_PEAK_MST SET PEAK_LIST_ID = (SELECT MAX(IFNULL(PEAK_LIST_ID+1,0)) FROM PEAK_MST)")
                           cursor.execute("UPDATE STG_PEAK_MST SET TEST_METHOD_TYPE = '"+str(self.comboBox_3.currentText())+"'")
-                          cursor.execute("INSERT INTO PEAK_MST(SQ_NO,PEAK_VAL,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL) SELECT ID,PEAK_VALUE,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL FROM STG_PEAK_MST")         
+                          cursor.execute("INSERT INTO PEAK_MST(SQ_NO,PEAK_VAL,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL,COMMENT,IGNORE_FLG,GRAPH_ID) SELECT ID,PEAK_VALUE,PEAK_LIST_ID,TEST_METHOD_TYPE,TIME_VAL,COMMENT,IGNORE_FLG,(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) FROM STG_PEAK_MST")         
                           cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")                          
                           cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID) SELECT TEST_ID FROM GLOBAL_VAR")
                           cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
@@ -1624,8 +1682,11 @@ class TY_67_Ui_MainWindow(object):
         results=connection.execute("SELECT PEAK_VALUE FROM STG_PEAK_MST order by ID ASC")
         for x in results:
               self.load_vals_A.append(float(x[0]))              
-        connection.close()   
-        self.med = statistics.median(self.load_vals_A)
+        connection.close()
+        try:
+            self.med = statistics.median(self.load_vals_A)
+        except Exception as e:
+                             print("median Error :"+str(e))   
         print("Median A :"+str(self.med))
         connection = sqlite3.connect("tyr.db")              
         with connection:
@@ -1655,7 +1716,7 @@ class TY_67_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID ASC LIMIT 1")
+        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID DESC LIMIT 1")
         for x in results:
               self.t2=(float(x[0]))              
         connection.close() 
@@ -1665,11 +1726,29 @@ class TY_67_Ui_MainWindow(object):
         self.t2=(self.t2)-(0.1*(self.time_diff))
         
         
-        connection = sqlite3.connect("tyr.db")        
+        connection = sqlite3.connect("tyr.db")
+        print("SELECT PEAK_VALUE FROM STG_PEAK_MST WHERE TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
+        
         results=connection.execute("SELECT PEAK_VALUE FROM STG_PEAK_MST WHERE TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
         for x in results:
               self.load_vals_B.append(float(x[0]))              
         connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        print("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")              
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE STG_PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"'")
+
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
         
         self.med = statistics.median(self.load_vals_B)
         print("Median A :"+str(self.med))
@@ -1679,10 +1758,10 @@ class TY_67_Ui_MainWindow(object):
                   cursor = connection.cursor()
                   try:
                         cursor.execute("UPDATE TEST_DATA SET MEDIAN = '"+str(self.med)+"' WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")                          
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM STG_PEAK_MST) WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
-                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM STG_PEAK_MST) WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_FROM = (SELECT MIN(PEAK_VALUE) FROM STG_PEAK_MST WHERE IGNORE_FLG = 'N') WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE TEST_DATA SET RANGE_TO = (SELECT MAX(PEAK_VALUE) FROM STG_PEAK_MST WHERE IGNORE_FLG = 'N') WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
                   except Exception as e:
-                           print("SQL Error- test_method_A_calc() :"+str(e))
+                           print("SQL Error- test_method_B_calc() :"+str(e))
                            connection.commit();
         connection.commit();
         connection.close()
@@ -1703,7 +1782,7 @@ class TY_67_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID ASC LIMIT 1")
+        results=connection.execute("SELECT TIME_VAL FROM STG_PEAK_MST order by ID DESC LIMIT 1")
         for x in results:
               self.t2=(float(x[0]))              
         connection.close() 
@@ -1718,6 +1797,23 @@ class TY_67_Ui_MainWindow(object):
         for x in results:
               self.load_vals_B.append(float(x[0]))              
         connection.close()   
+        
+        
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                  cursor = connection.cursor()
+                  try:
+                        print("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")              
+                        cursor.execute("UPDATE PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' AND GRAPH_ID IN (SELECT GRAPH_ID FROM STG_TEST_DATA)")
+                        cursor.execute("UPDATE STG_PEAK_MST SET COMMENT  = 'IGNORED BY 10PER',IGNORE_FLG='Y' WHERE TIME_VAL NOT BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"'")
+
+                  except Exception as e:
+                           print("SQL Error- Update:"+str(e))
+                           connection.commit();
+        connection.commit();
+        connection.close()
+        
+        
         
         self.med = statistics.median(self.load_vals_B)
         print("Median A :"+str(self.med))
@@ -1895,7 +1991,7 @@ class TY_67_Ui_MainWindow(object):
     
     def delete_cycle(self):       
             row = self.tableWidget.currentRow() 
-            self.cycle_id=str(self.tableWidget.item(row, 3).text())
+            self.cycle_id=str(self.tableWidget.item(row, 5).text())
             if(int(self.cycle_id) > 0):
                 close = QMessageBox()
                 close.setText("Confirm Deleteing Cycle : "+str(self.cycle_id))
@@ -1903,14 +1999,31 @@ class TY_67_Ui_MainWindow(object):
                 close = close.exec()
                 if close == QMessageBox.Yes:
                     connection = sqlite3.connect("tyr.db")              
-                    with connection:        
-                                    cursor = connection.cursor()                
-                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+self.cycle_id+"'")
-                                    #cursor.execute("DELETE FROM GRAPH_MST2 WHERE GRAPHI_ID in (SELECT GRAPHI_ID2 FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"')")
-                                    #cursor.execute("DELETE FROM TEST_MST WHERE TEST_ID = '"+self.test_id+"'")
-                    connection.commit();
-                    connection.close()
-                    #self.load_data()
+                    with connection:                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(SPEC_ID,0),TEST_ID,IFNULL(GRAPH_ID,0) from TEST_DATA where ID = '"+str(self.cycle_id)+"' LIMIT 1")                 
+                                    for x in results:
+                                        self.curr_cycle_num=int(x[0])
+                                        self.test_id=str(x[1])
+                                        self.curr_graph_id=str(x[2])            
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")              
+                                    with connection:        
+                                                    cursor = connection.cursor()                
+                                                    cursor.execute("DELETE FROM TEST_DATA WHERE ID = '"+str(self.cycle_id)+"'")
+                                                    cursor.execute("UPDATE TEST_DATA SET SPEC_ID=IFNULL(SPEC_ID,0)-1 WHERE TEST_ID = '"+str(self.test_id)+"' and SPEC_ID > '"+str(self.curr_cycle_num)+"'")
+                                                    cursor.execute("DELETE FROM GRAPH_MST WHERE GRAPH_ID = '"+str(self.curr_graph_id)+"'")                                    
+                                    connection.commit();
+                                    connection.close()
+                                    
+                                    connection = sqlite3.connect("tyr.db")
+                                    results=connection.execute("select IFNULL(MAX(SPEC_ID),0) from TEST_DATA where TEST_ID = '"+str(self.test_id)+"'")                 
+                                    for x in results:
+                                        self.label_26.setText(str(x[0]))
+                                        #print("updated cycle id :"+str(self.cycle_id))
+                                    connection.close()
+                   
                     self.show_grid_data_Tear()
         
     
@@ -1928,15 +2041,17 @@ class TY_67_Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)
         
         connection = sqlite3.connect("tyr.db")
-        self.tableWidget.setHorizontalHeaderLabels([' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-        results=connection.execute("SELECT printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id',' Median \n ('+str(self.comboBox_2.currentText())+') ',' Range From \n ('+str(self.comboBox_2.currentText())+') ',' Range To \n ('+str(self.comboBox_2.currentText())+') ','Test Method','cycle_id'])
+        results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\", MEDIAN),printf(\"%.2f\", RANGE_FROM),printf(\"%.2f\", RANGE_TO),TEST_METHOD_TYPE,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):
@@ -2021,7 +2136,12 @@ class TY_67_Ui_MainWindow(object):
         linea_firma = Line(2, 90, 670, 90)
         d = Drawing(50, 1)
         d.add(linea_firma)
-       
+        
+#         logo_arr=[]
+#         report_gr_img="last_graph.png"        
+#         pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
+#         logo_arr.append("odkfoksdf")
+#         logo_arr.append(pdf_img)
         
         #f1=Table(data)
         #f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
@@ -2034,6 +2154,9 @@ class TY_67_Ui_MainWindow(object):
          
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        
+#         f4=Table(logo_arr)
+#         f4.setStyle(TableStyle([('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),('BOX', (0,0), (-1,-1), 0.25, colors.black)]))
         
         #self.show_all_specimens()
         report_gr_img="last_graph.png"        
@@ -2221,7 +2344,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
-                 self.break_sence=int(x[3])
+                 self.break_sence=float(x[3])
                  self.modbus_flag=str(x[4])
                  self.modbus_port=str(x[5])
                  self.non_modbus_port=str(x[6])
@@ -2748,7 +2871,8 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")
@@ -2985,4 +3109,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
 

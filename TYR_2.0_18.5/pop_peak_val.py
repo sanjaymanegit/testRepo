@@ -319,13 +319,17 @@ class pop_peal_val_Ui_MainWindow(object):
                             cursor.execute("UPDATE PEAK_MST set IGNORE_FLG='N' WHERE SQ_NO='"+str(item_2.text())+"' AND PEAk_LIST_ID IN (SELECT MAX(PEAK_LIST_ID) FROM TEST_DATA WHERE GRAPH_ID IN (SELECT GRAPH_ID FROM GLOBAL_VAR2))")
                     connection.commit();
                     connection.close()
+        self.label.setText("Data Saved.")
+        self.label.show()
         self.show_grid_data()
     
     def show_single_graph_data(self):        
         #print("inside tear list.....")
         self.delete_all_records()
         row = self.listWidget.currentRow()
-        print("Current row :"+str(row))        
+        print("Current row :"+str(row))
+        self.label.setText("Current Spec. no:."+str(row+1))
+        self.label.show()
         if(row > -1):
                     
                     connection = sqlite3.connect("tyr.db")              
@@ -422,7 +426,8 @@ class pop_peal_val_Ui_MainWindow(object):
                    self.test_method_E_calc() 
         else:
                    self.test_method_A_calc()
-    
+        self.label.setText("Result Saved Successfuly.")
+        self.label.show()
     def test_method_A_calc(self):
         self.load_vals_A=[]        
         self.med = 0
@@ -464,7 +469,7 @@ class pop_peal_val_Ui_MainWindow(object):
         connection.close() 
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST  WHERE GRAPH_ID ='"+str(self.graph_id)+"' order by SQ_NO DESC LIMIT 1")
+        results=connection.execute("SELECT TIME_VAL FROM PEAK_MST  WHERE GRAPH_ID ='"+str(self.graph_id)+"' AND IGNORE_FLG = 'N' order by SQ_NO DESC LIMIT 1")
         for x in results:
               self.t2=(float(x[0]))              
         connection.close() 
@@ -477,7 +482,7 @@ class pop_peal_val_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         #print("SELECT PEAK_VAL FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' AND TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
         
-        results=connection.execute("SELECT PEAK_VAL FROM STG_PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
+        results=connection.execute("SELECT PEAK_VAL FROM PEAK_MST WHERE GRAPH_ID ='"+str(self.graph_id)+"' AND IGNORE_FLG = 'N' AND TIME_VAL BETWEEN '"+str(self.t1)+"' and '"+str(self.t2)+"' order by ID ASC")
         for x in results:
               self.load_vals_B.append(float(x[0]))              
         connection.close()   
