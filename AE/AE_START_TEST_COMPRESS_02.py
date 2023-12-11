@@ -3037,7 +3037,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 try:
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
-                    self.p=round(self.p,3)                    
+                    self.p=round(self.p,1)                    
                     print("Before ...self.p= :"+str(round(self.p,2)))
                     
                     if(float(self.guage_length) < float(self.p)):

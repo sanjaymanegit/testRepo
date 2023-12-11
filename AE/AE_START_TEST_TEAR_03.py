@@ -2740,7 +2740,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 try:
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
-                    self.p=round(self.p,3)
+                    self.p=round(self.p,1)
                     self.q=self.instrument.read_float(3,4,2)
                     self.q=round(self.q,3)
                     ##read_register( Register number, number of decimals, function code)
