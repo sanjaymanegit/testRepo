@@ -3153,6 +3153,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.p=-1
                 self.q=-1
                 self.is_stopped=-1
+                self.dp_set=0
                 try:
                     self.dp_set=self.instrument.read_register(9,0,4)
                     #print("Read Data - data_dp_set :  "+str(self.dp_set))
