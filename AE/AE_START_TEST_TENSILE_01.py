@@ -1430,6 +1430,8 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
         self.data=self.instrument.read_register(8,0,4)
         #print("Read Data "+str(self.data))
+        #self.data_dp_set=self.instrument.read_register(9,0,4)
+        #print("Read Data - data_dp_set :  "+str(self.data_dp_set))
         if(str(self.data) == "1"):
             self.radioButton_3.setChecked(True)
             self.radioButton_4.setChecked(False)
@@ -1770,42 +1772,159 @@ class AE_START_TEST_TENSILE_Ui_MainWindow(object):
     
     def show_load_cell_val(self):
         if(self.show_lcd_vals=="Y"):
-                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):                                   
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q))    #load 
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_cm))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q))    #load
                     elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_inch))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q))    #load
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_lb))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_lb))    #load
+                                         
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_cm))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_lb))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_lb))    #load
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_inch))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_lb))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_lb))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_lb))    #load
+                                         
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_n))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_n))    #load
+                                         
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_cm))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_n))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_n))    #load
+                                    
+                                    
                     elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length                                    
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p_cm))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_n))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_n))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_n))    #load
+                                         
                     elif((str(self.comboBox_2.currentText()) =="KN") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_kn)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_kn)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_kn))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_kn))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_kn))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_kn))    #load
                     elif((str(self.comboBox_2.currentText()) =="MPa") and (str(self.comboBox_3.currentText()) =="Mm")):
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_mpa)))     #load
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_mpa)))     #load
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q_mpa))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q_mpa))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q_mpa))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q_mpa))    #load
+                                    
                     else:
-                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
-                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    #self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
+                                    #self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                                    self.lcdNumber_2.display("%0.1f" % max(self.sc_new.arr_p))    #length
+                                    if(int(self.sc_new.dp_set) == 3):
+                                         self.lcdNumber.display("%0.3f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 2):
+                                         self.lcdNumber.display("%0.2f" % max(self.sc_new.arr_q))    #load
+                                    elif(int(self.sc_new.dp_set) == 1):
+                                         self.lcdNumber.display("%0.1f" % max(self.sc_new.arr_q))    #load
+                                    else:
+                                         self.lcdNumber.display("%1d" % max(self.sc_new.arr_q))    #load
+                    
+                    
                     #self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
                     self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
                     self.pushButton_11.setDisabled(True)
@@ -2732,7 +2851,7 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.test_method=-1
         self.load_cell_no=-1
-        
+        self.dp_set=0
         
         
         
@@ -3035,11 +3154,20 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.q=-1
                 self.is_stopped=-1
                 try:
+                    self.dp_set=self.instrument.read_register(9,0,4)
+                    #print("Read Data - data_dp_set :  "+str(self.dp_set))
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
                     self.p=round(self.p,1)
                     self.q=self.instrument.read_float(3,4,2)
-                    self.q=round(self.q,3)
+                    if(int(self.dp_set) == 3):
+                         self.q=round(self.q,3)
+                    elif(int(self.dp_set) == 2):
+                         self.q=round(self.q,2)
+                    elif(int(self.dp_set) == 1):
+                         self.q=round(self.q,1)
+                    else:    
+                         self.q=round(self.q,0)
                     ##read_register( Register number, number of decimals, function code)
                     self.is_stopped=self.instrument.read_register(1,0,4)
                     round(self.is_stopped,0)
