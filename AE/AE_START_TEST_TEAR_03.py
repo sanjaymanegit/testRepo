@@ -1417,11 +1417,14 @@ class AE_START_TEST_TEAR_Ui_MainWindow(object):
     def modbus_read_reg(self):
         self.data=0
         ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]        
-        self.data=self.instrument.read_register(8,0,4)
-        #print("Read Data "+str(self.data))
+        self.data=self.instrument.read_register(8,0,4)        
         if(str(self.data) == "1"):
             self.radioButton_3.setChecked(True)
             self.radioButton_4.setChecked(False)
+        elif(str(self.data) == "2"):
+            self.radioButton_3.setChecked(True)
+            self.radioButton_4.setChecked(False)
+            self.radioButton_3.setText("Proxy")
         else:
             self.radioButton_3.setChecked(False)
             self.radioButton_4.setChecked(True)
@@ -2860,13 +2863,13 @@ class PlotCanvas_Auto(FigureCanvas):
                     #print("Read Data - data_dp_set :  "+str(self.dp_set))
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
-                    self.p=round(self.p,1)
+                    self.p=round(self.p,3)
                     self.q=self.instrument.read_float(3,4,2)
                     self.q=round(self.q,3)
                     ##read_register( Register number, number of decimals, function code)
                     self.is_stopped=self.instrument.read_register(1,0,4)
                     round(self.is_stopped,0)
-                    print("self.p= :"+str(round(self.p,2))+" self.q :"+str(round(self.q,2))+"  self.is_stopped  :"+str(self.is_stopped))
+                    print("self.p= :"+str(round(self.p,3))+" self.q :"+str(round(self.q,3))+"  self.is_stopped  :"+str(self.is_stopped))
                 except IOError:
                     print("IO Errors- Reading Input Register......update graph")
                     self.IO_error_flg=1

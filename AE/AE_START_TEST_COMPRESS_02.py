@@ -3160,17 +3160,17 @@ class PlotCanvas_Auto(FigureCanvas):
                     #print("Read Data - data_dp_set :  "+str(self.dp_set))
                     ##read_float(registeraddress: int, functioncode: int = 3, number_of_registers: int = 2, byteorder: int = 0) → float[source]                                    
                     self.p=self.instrument.read_float(7,4,2)
-                    self.p=round(self.p,1)                    
+                    self.p=round(self.p,3)                    
                     print("Before ...self.p= :"+str(round(self.p,2)))
-                    
-                    if(int(self.dp_set) == 3):
-                         self.q=round(self.q,3)
-                    elif(int(self.dp_set) == 2):
-                         self.q=round(self.q,2)
-                    elif(int(self.dp_set) == 1):
-                         self.q=round(self.q,1)
-                    else:    
-                         self.q=round(self.q,0)
+                    self.q=round(self.q,3)
+#                     if(int(self.dp_set) == 3):
+#                          self.q=round(self.q,3)
+#                     elif(int(self.dp_set) == 2):
+#                          self.q=round(self.q,2)
+#                     elif(int(self.dp_set) == 1):
+#                          self.q=round(self.q,1)
+#                     else:    
+#                          self.q=round(self.q,0)
                          
                     if(float(self.guage_length) < float(self.p)):
                          self.p=float(self.p) - float(self.guage_length)
