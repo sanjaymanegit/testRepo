@@ -2231,7 +2231,7 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
         for x in results:
                  self.auto_rev_time_off=int(x[2])
-                 self.break_sence=int(x[3])
+                 self.break_sence=float(x[3])
                  self.break_sence=self.break_sence+float(self.pre_load)
                  print(" self.break_sence and preload :"+str(self.break_sence))
                  self.modbus_flag=str(x[4])
@@ -2410,11 +2410,19 @@ class PlotCanvas_Auto(FigureCanvas):
                 if(len(self.ybuff) > 8):                    
                     
                     if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
+                        #self.ser.write(b'*S2T000.0 000.0\r')
+                        #print("Start Command :*S2T000.0 000.0\r")
+                        self.command_str="*S2T%.1f"%self.max_load+" 000.0\r"
+                        print("self.command_str:"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
                     else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
+                        #self.ser.write(b'*S1T000.0 000.0\r')
+                        #print("Start Command:*S1T000.0 000.0\r")
+                        self.command_str="*S1T%.1f"%self.max_load+" 000.0\r"
+                        print("self.command_str:"+str(self.command_str))
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
                 else:
                     print("Error :Serial O/P is not getting ")
             
@@ -2751,7 +2759,8 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")

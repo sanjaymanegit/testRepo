@@ -1758,7 +1758,7 @@ class PlotCanvas_Auto(FigureCanvas):
              self.xlim=int(x[0])
              self.ylim=int(x[1])
              self.auto_rev_time_off=int(x[2])
-             self.break_sence=int(x[3])
+             int(x[3])
              self.modbus_flag=str(x[4])
              self.modbus_port=str(x[5])
              self.non_modbus_port=str(x[6])
