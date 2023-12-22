@@ -1,0 +1,42 @@
+
+Raspberry pi 4 Preaparation Steps (4GB RAM) 
+===============================================
+1. SD Card Image : 
+          Raspberry pi imager ---> select device raspberry pi 4 
+		                      ---> OS --> Raspberry pi OS (Others) ----> Raspberry pi OS(Legacy ,32 bit) Full 
+							                                           ---> A port of Debian Bullyseye with security update,desktop environment, recommanded softwares.
+																	   ---> userid set as "pi"  
+2. Change Root Password : 
+           sudo passwd root 
+3. Install Following packages:
+           sudo apg-get update && sudo apt-get full-upgrade.
+		   sudo apt-get install xrdp
+		   sudo apt-get install xpdf
+		   
+4. Copy Code form PEN drive 
+           copy TYR_2.0_18.5 , AE 
+		   install matplat lib if needed 
+		   
+5. Update pyinstaller version to 5.7.0 
+           pyinstaller --vesion 
+		   pip install pyinstaller == 5.7.0 
+6. Build code using following command 
+           pyinstaller --clean --onedir --add-data "tyr.db:." --name=TYR "TY_00_Main.py"
+7.Create /home/pi/Product
+         copy /TYR folder 
+8.set .profile file and test: 
+         source .profile
+9.Reboot the system and check .profile is working ok 
+
+10.install app-pi using command : 
+
+11.Anydesk Installtion Complete.
+
+12.Setup Config.txt for RTC 
+
+13.Install HPLIP-Toolkit : 
+
+		 
+           		   
+																	   
+																	  
