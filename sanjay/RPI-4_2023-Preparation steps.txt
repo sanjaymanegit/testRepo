@@ -33,9 +33,10 @@ Raspberry pi 4 Preaparation Steps (4GB RAM)
 11.Anydesk Installtion Complete.
 
 12.Setup Config.txt for RTC 
+      
 
 13.Install HPLIP-Toolkit : 
-
+         sudo apt-get install hplip-gui
 		 
            		   
 																	   
