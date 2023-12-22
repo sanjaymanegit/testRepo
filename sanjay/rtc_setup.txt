@@ -48,3 +48,6 @@ pi@raspberrypi:~ $ sudo i2cdetect -y 1
 ##############################################
 date -s "28 APR 2019 10:42:00"
 date -s "19 NOV 2022 14:58:00"
+
+
+https://maker.pro/raspberry-pi/tutorial/how-to-add-an-rtc-module-to-raspberry-pi
