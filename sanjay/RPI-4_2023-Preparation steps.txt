@@ -38,15 +38,16 @@ Raspberry pi 4 Preaparation Steps (4GB RAM)
     
 
 12.Setup Config.txt for RTC  
-    sudo vi /boot/config.txt
-    dtparam=i2c_arm=on
-    dtoverlay=i2c-rtc,ds3231
-
-    sudo raspi-config
-    insterface option ---> enable i2c 
-
-    ls -ltr /dev/i2c*
-    i2cdetect -y 1
+    1. sudo raspi-config 
+        interface option Enable 
+	2. sudo vi /boot/config.txt 
+	3. add following line   
+			dtparam=i2c_arm=on 
+			dtoverlay=12c-rtc,ds3231
+	4.disconnect internet 
+	5.reboot 
+	6.run command : sudo hwclock -r
+    
       
 
 13.Install HPLIP-Toolkit : 
