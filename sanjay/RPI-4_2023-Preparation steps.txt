@@ -7,11 +7,14 @@ Raspberry pi 4 Preaparation Steps (4GB RAM)
 							                                           ---> A port of Debian Bullyseye with security update,desktop environment, recommanded softwares.
 																	   ---> userid set as "pi"  
 2. Change Root Password : 
-           sudo passwd root 
+           sudo passwd root
+           sudo adduser rmdt 
+
 3. Install Following packages:
-           sudo apg-get update && sudo apt-get full-upgrade.
-		   sudo apt-get install xrdp
-		   sudo apt-get install xpdf
+                    sudo apt update
+                    sudo apt upgrade.
+		    sudo apt-get install xrdp
+		    sudo apt-get install xpdf
 		   
 4. Copy Code form PEN drive 
            copy TYR_2.0_18.5 , AE 
@@ -29,10 +32,21 @@ Raspberry pi 4 Preaparation Steps (4GB RAM)
 9.Reboot the system and check .profile is working ok 
 
 10.install app-pi using command : 
+     wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash
 
 11.Anydesk Installtion Complete.
+    
 
-12.Setup Config.txt for RTC 
+12.Setup Config.txt for RTC  
+    sudo vi /boot/config.txt
+    dtparam=i2c_arm=on
+    dtoverlay=i2c-rtc,ds3231
+
+    sudo raspi-config
+    insterface option ---> enable i2c 
+
+    ls -ltr /dev/i2c*
+    i2cdetect -y 1
       
 
 13.Install HPLIP-Toolkit : 

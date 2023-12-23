@@ -2,3 +2,6 @@ wget https://download.anydesk.com/rpi/anydesk_6.1.1-1_armhf.deb
 ls -ltr
 sudo dpkg -i anydesk_6.1.1-1_armhf.deb 
 sudo apt install -f
+
+## pi-app 
+wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash

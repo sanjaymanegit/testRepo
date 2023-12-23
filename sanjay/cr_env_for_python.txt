@@ -1,0 +1,12 @@
+
+=========================================================
+URL :   For more information visit http://rptl.io/venv
+=========================================================
+
+
+cd my_projects/
+python -m venv env
+ls -la
+source env/bin/activate
+(env):// you can run pip3 install <pkg> 
+deactivate
