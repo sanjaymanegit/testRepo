@@ -13,6 +13,7 @@
 ./reports/Report_of_test_0021.pdf
 ./reports/Report_of_test_0025.pdf
 ./reports/Report_of_test_0036.pdf
+./reports/Report_of_test_0045.pdf
 ./reports/Report_of_test_0059.pdf
 ./reports/Report_of_test_0080.pdf
 ./reports/Report_of_test_0084.pdf
