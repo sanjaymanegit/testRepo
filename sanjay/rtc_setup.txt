@@ -56,7 +56,7 @@ https://maker.pro/raspberry-pi/tutorial/how-to-add-an-rtc-module-to-raspberry-pi
 ## RTC SETUP for RASPBERRY PI #######################
 1. sudo raspi-config 
         interface option Enable 
-2. sudo vi /bootconfig.txt 
+2. sudo vi /boot/config.txt 
 3. add following line   
         dtparam=i2c_arm=on 
         dtoverlay=12c-rtc,ds3231
