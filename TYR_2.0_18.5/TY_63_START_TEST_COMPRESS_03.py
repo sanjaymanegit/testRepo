@@ -1586,7 +1586,8 @@ class TY_63_Ui_MainWindow(object):
         elif(self.lineEdit_24.text() == ""):
               self.msg="LOAD/DEFLECTION-5  Should not Empty."        
         else:
-               self.check_for_max_load_deflection()           
+               #self.check_for_max_load_deflection()
+               self.go_ahead="Yes"
                if(self.go_ahead=="Yes"):    
                            self.msg="Confirm to start Test."
                            self.go_ahead="Yes"
@@ -2109,23 +2110,28 @@ class TY_63_Ui_MainWindow(object):
             self.cycle_num=self.cycle_num+1
             connection = sqlite3.connect("tyr.db")              
             with connection:
-                  print("0 Data saved........")  
+                  
                   cursor = connection.cursor()              
-                  if(self.radioButton.isChecked()):  ### Load 
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_20.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_21.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_22.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
-                        cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
-                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
-                                    cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD)   ")                                    
-                        elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_LB >= LOAD) ")
-                        elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_N >= LOAD) ")
-                        else:
-                                     cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD) ")
-                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'L' ") 
+                  if(self.radioButton.isChecked()):  ### Load
+                          try:
+                                cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_20.text())+"')")
+                                cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_21.text())+"')")
+                                cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_22.text())+"')")
+                                cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
+                                cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
+                                if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                                            cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD)   ")                                    
+                                elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
+                                             cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_LB >= LOAD) ")
+                                elif( str(self.comboBox_2.currentText()) =="N" and str(self.comboBox_3.currentText()) =="Mm"):
+                                             cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM_N <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_N >= LOAD) ")
+                                else:
+                                             cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD) ")
+                                cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'L' ")
+                                print("L Data saved........Cycle no : "+str(self.cycle_num))
+                          except IOError as e:
+                                    print("SQL Error : "+str(e))
+                            
                   else: ### Deflection 
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_20.text())+"')")
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_21.text())+"')")
@@ -2140,9 +2146,10 @@ class TY_63_Ui_MainWindow(object):
                                      cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_N) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ")
                         else:
                                      cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ") 
-                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'D' ") 
+                        cursor.execute("UPDATE STG_TEST_DATA SET FLAG = 'D' ")
+                        print("D Data saved........Cycle no : "+str(self.cycle_num))  
                 
-                 
+                  print("0 Data saved........Cycle no : "+str(self.cycle_num))  
                   cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
                   cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
                   cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
@@ -2150,15 +2157,58 @@ class TY_63_Ui_MainWindow(object):
                   cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG FROM STG_TEST_DATA")                    
-                  print("Data saved........")                  
+                  print("Data saved........")
+                    
             
             connection.commit();
-            connection.close()            
-        
+            connection.close()
+            
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                  print("Update the Load and Defection data : "+str(self.cycle_num))  
+                  cursor = connection.cursor() 
+                  if(self.radioButton.isChecked()):  
+                           if(str(self.cycle_num) == "1"):
+                                  cursor.execute("INSERT INTO DEFLECTION_DATA(TEST_ID,LOAD,DEF_1) SELECT TEST_ID,LOAD,DEFLCTION FROM STG_TEST_DATA")
+                           else:
+                                   print("Invalid cycle id ....will not work after 4th Cycle")
+                  else: 
+                           if(str(self.cycle_num) == "1"):
+                                  cursor.execute("INSERT INTO LOAD_DATA(TEST_ID,DEFLECTION,LOAD_1) SELECT TEST_ID,DEFLCTION,LOAD FROM STG_TEST_DATA")                      
+                           else:
+                                  print("Invalid cycle id ....will not work after 4th Cycle")    
+            connection.commit();
+            connection.close()
+            
+            if(str(self.cycle_num) == "2"):                    
+                    self.test_id_arr=[]
+                    self.load=[]
+                    self.deflc=[]     
+                    if(self.radioButton.isChecked()): 
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("select TEST_ID,LOAD,DEFLCTION FROM STG_TEST_DATA")                 
+                        for x in results:
+                             self.test_id_arr.append(str(x[0]))
+                             self.load.append(str(x[1]))
+                             self.deflc.append(str(x[2]))
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                            cursor = connection.cursor()
+                            for x in range(len(self.load)):
+                                    cursor.execute("UPDATE DEFLECTION_DATA set DEF_2='"+str(self.deflc[x])+"' WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")   
+                        connection.commit();
+                        connection.close()
+                    else:
+                               print("ok--load data table")
+            else:
+                   print("ok")
+            
         #self.load_data()
         #print("Save completed")
         self.show_grid_data_Tear()
-        
+    
         
     def open_pdf(self):
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90) 
@@ -2300,22 +2350,24 @@ class TY_63_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
-        
-        connection = sqlite3.connect("tyr.db")
-        if(self.radioButton.isChecked()):
-                self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' and DATA_EXIST_FLAG > 0  order by ID ASC")
+        if(self.radioButton.isChecked()):  
+                connection = sqlite3.connect("tyr.db")
+                if(self.radioButton.isChecked()):                    
+                        self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
+                        results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' and DATA_EXIST_FLAG > 0  order by ID ASC")
+                else:
+                        self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
+                        results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"'  and DATA_EXIST_FLAG > 0 order by ID ASC")
+                for row_number, row_data in enumerate(results):            
+                    self.tableWidget.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+                #self.tableWidget.resizeColumnsToContents()
+                self.tableWidget.resizeRowsToContents()
+                self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+                connection.close()
         else:
-                self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
-                results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"'  and DATA_EXIST_FLAG > 0 order by ID ASC")
-        for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-        #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
-        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        connection.close() 
+                print("ok")
         
     def create_pdf_Tear(self):
         self.remark=""
