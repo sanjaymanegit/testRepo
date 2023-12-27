@@ -2197,9 +2197,51 @@ class TY_63_Ui_MainWindow(object):
                         with connection:
                             cursor = connection.cursor()
                             for x in range(len(self.load)):
-                                    cursor.execute("UPDATE DEFLECTION_DATA set DEF_2='"+str(self.deflc[x])+"' WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")   
+                                    cursor.execute("UPDATE DEFLECTION_DATA set DEF_2='"+str(self.deflc[x])+"' WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")
+                                    cursor.execute("UPDATE DEFLECTION_DATA set AVG_DEF=(DEF_2+DEF_1)/2 ,MAX_DEF= CASE WHEN DEF_1 > DEF_2 THEN DEF_1 ELSE DEF_2 END, MIN_DEF=CASE WHEN DEF_1 < DEF_2 THEN DEF_1 ELSE DEF_2 END WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'") 
                         connection.commit();
                         connection.close()
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    else:
+                               print("ok--load data table")
+            elif(str(self.cycle_num) == "3"):                    
+                    self.test_id_arr=[]
+                    self.load=[]
+                    self.deflc=[]     
+                    if(self.radioButton.isChecked()): 
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("select TEST_ID,LOAD,DEFLCTION FROM STG_TEST_DATA")                 
+                        for x in results:
+                             self.test_id_arr.append(str(x[0]))
+                             self.load.append(str(x[1]))
+                             self.deflc.append(str(x[2]))
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                            cursor = connection.cursor()
+                            for x in range(len(self.load)):
+                                    cursor.execute("UPDATE DEFLECTION_DATA set DEF_3='"+str(self.deflc[x])+"' WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")
+                                    cursor.execute("UPDATE DEFLECTION_DATA set AVG_DEF=(DEF_2+DEF_1+DEF_3)/3 ,MAX_DEF= CASE WHEN DEF_1 > DEF_2 THEN DEF_1 ELSE DEF_2 END, MIN_DEF=CASE WHEN DEF_1 < DEF_2 THEN DEF_1 ELSE DEF_2 END WHERE LOAD='"+str(self.load[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'") 
+                        connection.commit();
+                        connection.close()
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     else:
                                print("ok--load data table")
             else:
@@ -2350,11 +2392,20 @@ class TY_63_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(1, 100)
         self.tableWidget.setColumnWidth(2, 100)
         self.tableWidget.setColumnWidth(3, 100)
-        if(self.radioButton.isChecked()):  
+        if(self.radioButton.isChecked()):   ## LOAD  
                 connection = sqlite3.connect("tyr.db")
-                if(self.radioButton.isChecked()):                    
-                        self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','Spec.Id','cycle_id'])
-                        results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEFLCTION),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"' and DATA_EXIST_FLAG > 0  order by ID ASC")
+                if(self.radioButton.isChecked()):
+                        if(str(self.cycle_num) == "2"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Def_1 \n ('+str(self.comboBox_3.currentText())+') ',' Def_2 \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),printf(\"%.2f\", DEF_2),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                        elif(str(self.cycle_num) == "3"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Def_1 \n ('+str(self.comboBox_3.currentText())+') ',' Def_2 \n ('+str(self.comboBox_3.currentText())+') ',' Def_3 \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),printf(\"%.2f\", DEF_2),printf(\"%.2f\", DEF_3),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                       
+                        else:
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Deflection \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                            
                 else:
                         self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load \n ('+str(self.comboBox_2.currentText())+') ','Spec.Id','cycle_id'])
                         results=connection.execute("SELECT printf(\"%.2f\", DEFLCTION),printf(\"%.2f\", LOAD),SPEC_ID,ID FROM TEST_DATA WHERE TEST_ID = '"+self.test_id+"'  and DATA_EXIST_FLAG > 0 order by ID ASC")
@@ -2383,58 +2434,39 @@ class TY_63_Ui_MainWindow(object):
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
         connection.close()
-        if(self.radioButton.isChecked()):
-                data2= [ ['Spec. \n No','Load \n ('+str(self.last_load_unit)+')', 'Deflection \n ('+str(self.last_disp_unit)+')']]
-                
+        if(self.radioButton.isChecked()): ### LOAD
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
+                if(str(self.cycle_num) == "2"):
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')', 'Def_2 \n ('+str(self.last_disp_unit)+')','Avg.Defl','Max.Defl','Min_Defl']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')', 'Def_2 \n ('+str(self.last_disp_unit)+')','Def_3 \n ('+str(self.last_disp_unit)+')','Avg.Defl','Max.Defl','Min_Defl']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.DEF_3),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
         else:
-                data2= [ ['Spec. \n No','Deflection \n ('+str(self.last_disp_unit)+')', 'Load\n ('+str(self.last_load_unit)+')']]
-                
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.DEFLCTION),printf(\"%.2f\", A.LOAD) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
+                if(str(self.cycle_num) == "2"):
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')', 'Def_2 \n ('+str(self.last_disp_unit)+')','Avg.Defl','Max.Defl','Min_Defl']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')', 'Def_2 \n ('+str(self.last_disp_unit)+')','Def_3 \n ('+str(self.last_disp_unit)+')','Avg.Defl','Max.Defl','Min_Defl']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.DEF_3),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        data2= [['Load \n ('+str(self.last_load_unit)+')', 'Def_1 \n ('+str(self.last_disp_unit)+')']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEF_1) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG', printf(\"%.2f\", avg(A.DEFLCTION)),printf(\"%.2f\", avg(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.DEFLCTION)),printf(\"%.2f\", max(A.LOAD))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
-                
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.DEFLCTION)),printf(\"%.2f\", min(A.LOAD)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)  and DATA_EXIST_FLAG > 0 ") 
-                for x in results:
-                        data2.append(x)
-                connection.close()
         
         y=300
         Elements=[]
