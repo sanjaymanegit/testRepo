@@ -133,7 +133,7 @@ class TY_07_Ui_MainWindow(object):
         font.setPointSize(26)
         font.setBold(True)
         font.setWeight(75)
-        self.lineEdit.setFont(font)
+        self.lineEdit.setFont(font)        
         self.lineEdit.setStyleSheet("color: rgb(0, 170, 0);")
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.frame_2)
@@ -393,7 +393,7 @@ class TY_07_Ui_MainWindow(object):
         self.label_2.hide()
         self.load_modbus_port()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),LOAD_CELL_NO,TEST_MODE from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),IFNULL(LOAD_CELL_NO,2),TEST_MODE from GLOBAL_VAR") 
         for x in results:
                         self.pre_load=float(x[0])
                         self.lineEdit_3.setText(str(x[0]))
