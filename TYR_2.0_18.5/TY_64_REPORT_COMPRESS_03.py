@@ -1352,7 +1352,7 @@ class TY_64_Ui_MainWindow(object):
         self.pushButton_18.clicked.connect(self.open_graph_data)
         self.pushButton_10.clicked.connect(self.set_graph_scale)
         self.pushButton_11.clicked.connect(self.start_test)
-        self.tableWidget.doubleClicked.connect(self.delete_cycle)
+        #self.tableWidget.doubleClicked.connect(self.delete_cycle)
         
         self.pushButton_13.clicked.connect(self.open_pdf)
         self.pushButton_16.clicked.connect(self.print_file)

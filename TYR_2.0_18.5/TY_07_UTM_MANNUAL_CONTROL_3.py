@@ -393,13 +393,14 @@ class TY_07_Ui_MainWindow(object):
         self.label_2.hide()
         self.load_modbus_port()
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),IFNULL(LOAD_CELL_NO,2),TEST_MODE from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),IFNULL(LOAD_CELL_NO,2),TEST_MODE,IFNULL(MANUAL_CONTROL_TEST_SPEED,0) from GLOBAL_VAR") 
         for x in results:
                         self.pre_load=float(x[0])
                         self.lineEdit_3.setText(str(x[0]))
                         self.load_cell_no=str(x[1])
                         self.lineEdit_2.setText(str(x[1]))
                         self.test_mode=str(x[2])
+                        self.lineEdit.setText(str(x[3]))
         connection.close()
         print(" self.load_cell_no : "+str(self.load_cell_no))
         #self.lineEdit_2.setText("1")
@@ -410,7 +411,7 @@ class TY_07_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_3.text())+"',LOAD_CELL_NO='"+str(self.lineEdit_2.text())+"'")
+                    cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_3.text())+"',LOAD_CELL_NO='"+str(self.lineEdit_2.text())+"',MANUAL_CONTROL_TEST_SPEED='"+str(self.lineEdit.text())+"'")
         connection.commit();
         connection.close()
         if(self.radioButton.isChecked()):                        
