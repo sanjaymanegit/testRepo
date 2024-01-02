@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import serial,time
@@ -20,7 +21,7 @@ minimalmodbus.BYTEORDER_BIG= 0
 minimalmodbus.BYTEORDER_LITTLE= 1
 
 
-class TY_07_Ui_MainWindow(object):
+class TY_07_3_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1368, 768)
@@ -48,6 +49,17 @@ class TY_07_Ui_MainWindow(object):
 "border-radius:20px;\n"
 "background-color: rgb(255, 231, 254);")
         self.pushButton.setObjectName("pushButton")
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
         self.pushButton_2.setGeometry(QtCore.QRect(1030, 30, 201, 51))
         font = QtGui.QFont()
@@ -85,6 +97,27 @@ class TY_07_Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_2.setLineWidth(3)
         self.frame_2.setObjectName("frame_2")
+        
+        
+        
+        self.pushButton_199 = QtWidgets.QPushButton(self.frame_2)
+        self.pushButton_199.setGeometry(QtCore.QRect(560, 300, 201, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_199.setFont(font)
+        self.pushButton_199.setStyleSheet("border-style:outset;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-width:4px;\n"
+"color: rgb(0, 0, 0);\n"
+"border-radius:20px;\n"
+"background-color: rgb(255, 231, 254);")
+        self.pushButton_199.setObjectName("pushButton_199")
+        
+        
+        
         self.toolButton_2 = QtWidgets.QToolButton(self.frame_2)
         self.toolButton_2.setGeometry(QtCore.QRect(270, 280, 121, 141))
         icon = QtGui.QIcon()
@@ -357,6 +390,7 @@ class TY_07_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
+        self.pushButton_199.setText(_translate("MainWindow", "Set Sample"))
         self.pushButton_2.setText(_translate("MainWindow", "Close"))
         self.label_4.setText(_translate("MainWindow", "Manual Control "))
         self.toolButton_2.setText(_translate("MainWindow", "..."))
@@ -369,8 +403,11 @@ class TY_07_Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "(mm) "))
         self.label_6.hide()
         self.label_7.setText(_translate("MainWindow", "(UP) "))
+        self.label_7.hide()
         self.label_8.setText(_translate("MainWindow", "(DOWN) "))
+        self.label_8.hide()
         self.label_9.setText(_translate("MainWindow", "(STOP) "))
+        self.label_9.hide()
         self.label_11.setText(_translate("MainWindow", "(Kg) "))
         self.label_12.setText(_translate("MainWindow", "Pre.Load:"))
         self.radioButton.setText(_translate("MainWindow", "Tensile"))
@@ -379,9 +416,13 @@ class TY_07_Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", ""))
         self.pushButton_2.clicked.connect(MainWindow.close)       
         self.toolButton.clicked.connect(self.r_run)   #down
+        self.toolButton.hide()
         self.toolButton_2.clicked.connect(self.f_run) #up
+        self.toolButton_2.hide()
         self.toolButton_3.clicked.connect(self.stop_run)
+        self.toolButton_3.hide()
         self.pushButton.clicked.connect(self.open_new_window)
+        
         self.pushButton_3.clicked.connect(self.set_pre_load)
         #self.lineEdit_3.setDisabled(True)
         #self.lineEdit_2.setDisabled(True)
@@ -403,9 +444,70 @@ class TY_07_Ui_MainWindow(object):
                         self.lineEdit.setText(str(x[3]))
         connection.close()
         print(" self.load_cell_no : "+str(self.load_cell_no))
-        #self.lineEdit_2.setText("1")
+        #self.lineEdit_2.setText("1"
+        self.pushButton_199.clicked.connect(self.open_new_window5)
     
+    
+    def open_new_window5(self):
+        print("ok")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_07_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
     def set_pre_load(self):
+        self.validate_speed()        
+        try:
+           #print("is_active_modbus [Reverse] :"+str(self.is_active_modbus))
+           if(self.is_active_modbus == 'Y'):
+               #print("rev non modbus port :"+str(self.non_modbus_port))
+               if(self.non_modbus_port=="/dev/ttyUSB0"):
+                       self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
+                       #print("non modbus port :"+str(self.non_modbus_port))
+               else:
+                        self.ser = serial.Serial(
+                            port='/dev/ttyUSB1',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
+           else:
+               self.ser = serial.Serial(
+                            port='/dev/ttyUSB0',
+                            baudrate=19200,
+                            bytesize=serial.EIGHTBITS,
+                            parity=serial.PARITY_NONE,
+                            stopbits=serial.STOPBITS_ONE,
+                            xonxoff=False,
+                            timeout = 0.25
+                        )
+            
+           self.ser.flush()
+           if(self.goahead_flag==1):
+                b = bytes(self.command_str, 'utf-8')
+                self.ser.write(b)
+                #self.ser.write(b'*R\r')
+                print("speed setup done.")
+           else:
+                print("speed set in pre load. Please Check.")
+        except IOError:
+            print(print("IO Errors(speed set in pre load): ")    )  
+        
+        
+        
+        
         self.flag=0
         self.command_str=""
         connection = sqlite3.connect("tyr.db")              
@@ -899,13 +1001,13 @@ class TY_07_Ui_MainWindow(object):
                     cursor.execute("UPDATE SETTING_MST SET MODBUS_PORT='"+str(self.modbus_port)+"',NON_MODBUS_PORT='"+str(self.non_modbus_port)+"'")            
         connection.commit();
 
-
+    
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_07_Ui_MainWindow()
+    ui = TY_07_3_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
