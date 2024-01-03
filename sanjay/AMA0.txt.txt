@@ -1,0 +1,27 @@
+
+enable_uart=1
+$ sudo su root
+$ echo "hello" > /dev/ttyAMA0
+
+ cat /dev/ttyAMA0
+# terminal 1
+$ tail /dev/ttyAMA0
+
+# terminal 2
+$ echo "hello" > /dev/ttyAMA0
+
+ ls -l /dev | grep serial
+
+sudo apt-get –y install minicom
+#Now run up minicom on the Raspberry Pi using
+$ sudo minicom -b 9600 -o -D /dev/serial0
+or
+$ sudo minicom -b 9600 -o -D /dev/serial1
+$ dmesg | grep tty  #check port is enabled or not
+###################################
+Other Tasks : 
+1. Delivery Challan -- Create Format. 
+###################################
+sudo adduser mynewuser sudo
+
+console=serial0,115200 root=PARTUUID=65d74736-02 console=tty3 rootfstype=ext4 elevator=deadline loglevel=3 fsck.repair=yes rootwait logo.nologo qmap=de vt.global_cursor_default=0 plymouth.enable=0 quiet
