@@ -186,6 +186,7 @@ class TY_15_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.comboBox_2.setFont(font)
+        self.comboBox_2.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")

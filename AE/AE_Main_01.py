@@ -806,7 +806,7 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_905.setObjectName("pushButton_905")
         
         self.pushButton_906 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_906.setGeometry(QtCore.QRect(90, 650, 201, 41))
+        self.pushButton_906.setGeometry(QtCore.QRect(50, 650, 170, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -820,6 +820,22 @@ class AE_01_Ui_MainWindow(object):
 "border-width:4px;")
         #self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
         self.pushButton_906.setObjectName("pushButton_906")
+        
+        self.pushButton_907 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_907.setGeometry(QtCore.QRect(250, 650, 130, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_907.setFont(font)
+        self.pushButton_907.setStyleSheet("border-radius:20px;\n"
+    "color: rgb(256, 256, 256); background-color: rgb(169, 202, 255);"
+    "border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        #self.pushButton_11_1.setStyleSheet("background-color: rgb(170, 170, 255);\n")
+        self.pushButton_907.setObjectName("pushButton_907")
         
         
         self.label_9021 = QtWidgets.QLabel(self.frame)
@@ -838,9 +854,11 @@ class AE_01_Ui_MainWindow(object):
         self.pushButton_902.setText("SHUT DOWN")
         self.pushButton_905.setText("REBOOT")
         self.pushButton_906.setText("Check LoadCell")
+        self.pushButton_907.setText("Refresh")
         self.pushButton_902.clicked.connect(self.shutdown_system)
         self.pushButton_905.clicked.connect(self.reboot_system)
         self.pushButton_906.clicked.connect(self.open_loadcell_window)
+        self.pushButton_907.clicked.connect(self.refresh_test_list)
         
         self.anydesk_open()
         
@@ -850,6 +868,11 @@ class AE_01_Ui_MainWindow(object):
         
     def reboot_system(self):
         os.system("sudo reboot")
+     
+    def refresh_test_list(self):
+        self.load_data()
+        
+        
         
     def anydesk_open(self):
         self.anydesk_id =0
