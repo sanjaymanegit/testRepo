@@ -1,0 +1,16 @@
+1.sudo raspi-config
+2.Go to Interface option enable I2c and Serial
+3.update /boot/config.txt add "enable_uart=1"
+4.update /boot/config.txt add "dtoverlay=disable-bt"
+5.use file /URmini/serial.py to test the "ttyAMA0" port
+6.no change in "/boot/cmdline.txt" file.
+7.ls -ltr /dev/ttyAMA0
+8.sudo chmod 777 /dev/ttyAMA0     #change the rights of ttyAMA0 
+9.excuted following commands too 
+     sudo systemctl enable serial-getty@ttyAMA0.service
+     sudo systemctl mask serial-getty@ttyAMA0.service
+     sudo usermod -a -G tty pi
+
+
+
+           
