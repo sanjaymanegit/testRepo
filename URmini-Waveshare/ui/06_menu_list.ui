@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>600</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>20</y>
-      <width>971</width>
-      <height>521</height>
+      <width>981</width>
+      <height>571</height>
      </rect>
     </property>
     <property name="font">
@@ -46,9 +46,9 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>750</x>
        <y>20</y>
-       <width>181</width>
+       <width>211</width>
        <height>51</height>
       </rect>
      </property>
@@ -67,10 +67,10 @@
     <widget class="QPushButton" name="pushButton_8">
      <property name="geometry">
       <rect>
-       <x>670</x>
-       <y>440</y>
-       <width>131</width>
-       <height>41</height>
+       <x>110</x>
+       <y>460</y>
+       <width>151</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -83,7 +83,10 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(170, 170, 127);
-</string>
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
      </property>
      <property name="text">
       <string>RETURN</string>
@@ -101,10 +104,10 @@
     <widget class="QFrame" name="frame_2">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>110</x>
        <y>90</y>
-       <width>861</width>
-       <height>311</height>
+       <width>771</width>
+       <height>341</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -117,31 +120,34 @@
       <enum>QFrame::Plain</enum>
      </property>
      <property name="lineWidth">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QPushButton" name="pushButton_9">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>190</y>
-        <width>201</width>
-        <height>41</height>
+        <x>140</x>
+        <y>200</y>
+        <width>161</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 127);
-</string>
+       <string notr="true">background-color: rgb(231, 154, 115);
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
       </property>
       <property name="text">
-       <string>SYSTEM</string>
+       <string>System</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -156,26 +162,29 @@
      <widget class="QPushButton" name="pushButton_5">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>190</y>
-        <width>261</width>
-        <height>41</height>
+        <x>460</x>
+        <y>200</y>
+        <width>161</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 127);
-</string>
+       <string notr="true">background-color: rgb(231, 154, 115);
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
       </property>
       <property name="text">
-       <string>PATIENT DATA</string>
+       <string>Patients</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -190,26 +199,29 @@
      <widget class="QPushButton" name="pushButton_4">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>90</y>
-        <width>261</width>
-        <height>41</height>
+        <x>140</x>
+        <y>50</y>
+        <width>161</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 127);
-</string>
+       <string notr="true">background-color: rgb(231, 154, 115);
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
       </property>
       <property name="text">
-       <string>HOSPITAL DETAILS</string>
+       <string>Hospital Details</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -224,26 +236,29 @@
      <widget class="QPushButton" name="pushButton_10">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>90</y>
-        <width>201</width>
-        <height>41</height>
+        <x>460</x>
+        <y>50</y>
+        <width>161</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 127);
-</string>
+       <string notr="true">background-color: rgb(231, 154, 115);
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
       </property>
       <property name="text">
-       <string>DOCTORS</string>
+       <string>Doctors</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -259,16 +274,16 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>460</x>
-       <y>20</y>
-       <width>161</width>
-       <height>51</height>
+       <x>410</x>
+       <y>30</y>
+       <width>141</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>20</pointsize>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -279,17 +294,14 @@
      <property name="text">
       <string>Menu</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>440</y>
-       <width>131</width>
-       <height>41</height>
+       <x>550</x>
+       <y>470</y>
+       <width>151</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -302,7 +314,10 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 170, 255);
-</string>
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
      </property>
      <property name="text">
       <string>Shutdown</string>
@@ -320,10 +335,10 @@
     <widget class="QPushButton" name="pushButton_7">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>440</y>
-       <width>121</width>
-       <height>41</height>
+       <x>740</x>
+       <y>470</y>
+       <width>141</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -336,7 +351,10 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 170, 255);
-</string>
+border-radius:20px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:4px;</string>
      </property>
      <property name="text">
       <string>Reboot</string>
@@ -354,10 +372,10 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>30</y>
-       <width>281</width>
-       <height>31</height>
+       <x>40</x>
+       <y>20</y>
+       <width>211</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
