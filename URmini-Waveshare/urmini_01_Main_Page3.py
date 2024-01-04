@@ -1,12 +1,8 @@
-'''
 
-
-from urmini_06_menu_list import urmini_06_Ui_MainWindow
-
-'''
 from urmini_11_patient_save import Urmini_11_MainWindow
 from urmini_15_scales import urmini_15_MainWindow
 from urmini_07_report_list import urmini_07_MainWindow
+from urmini_06_menu_list import urmini_06_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
@@ -15,11 +11,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-'''
-from ur_03_ADMIN_MENU import ur_03_A_Ui_MainWindow
-from ur_06_pop_graph_scales import ur_06_Ui_MainWindow
-from ur_12_admin_reports import ur_12_Ui_MainWindow
-'''
+
 import datetime
 import serial
 import time
