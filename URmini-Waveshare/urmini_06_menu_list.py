@@ -1,13 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-'''
 
-
-
-from urmini_02_Admin_Page import urmini_02_Ui_MainWindow
-'''
 from urmini_12_hospital_info import urmini_12_Ui_MainWindow
 from urmini_13_doctors_info import urmini_13_Ui_MainWindow
 from urmini_14_patient_data_update import urmini_14_Ui_MainWindow
+from urmini_02_Admin_Page import urmini_02_Ui_MainWindow
 
 import datetime
 import sqlite3
