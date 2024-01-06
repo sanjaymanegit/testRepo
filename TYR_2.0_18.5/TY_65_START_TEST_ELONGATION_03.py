@@ -1,7 +1,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
 from pop_graph_data import pop_graph_data_Ui_MainWindow
 
 import inspect
@@ -1883,7 +1883,7 @@ class TY_65_Ui_MainWindow(object):
         connection.commit()
         connection.close()
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_07_Ui_MainWindow()
+        self.ui=TY_07_3_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
    
