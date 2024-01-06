@@ -2054,6 +2054,8 @@ class AE_REPORT_TEAR_Ui_MainWindow(object):
     
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
         self.window = QtWidgets.QMainWindow()
         self.ui=P_POP_TEST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
