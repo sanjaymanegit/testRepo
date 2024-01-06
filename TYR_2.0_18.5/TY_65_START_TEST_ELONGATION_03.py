@@ -1,7 +1,7 @@
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
-from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_Ui_MainWindow
 from pop_graph_data import pop_graph_data_Ui_MainWindow
 
 import inspect
@@ -1835,6 +1835,8 @@ class TY_65_Ui_MainWindow(object):
     
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
         self.window = QtWidgets.QMainWindow()
         self.ui=P_POP_TEST_Ui_MainWindow()
         self.ui.setupUi(self.window)           
@@ -1881,7 +1883,7 @@ class TY_65_Ui_MainWindow(object):
         connection.commit()
         connection.close()
         self.window = QtWidgets.QMainWindow()
-        self.ui=TY_07_3_Ui_MainWindow()
+        self.ui=TY_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
    
@@ -2001,7 +2003,7 @@ class TY_65_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,B.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Part No : ",str(x[2]),"Batch ID: ",str(x[3])],["Part Name:  ",str(x[4]),"Hardness:",str(x[5])],["Test Type:",str(x[6]),"M/C No:",str(x[7])],["Customer Name :",str(x[8]),"Test Speed (min/min) :",str(x[9])],["Material:",str(x[10]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Operator :",str(x[13])]]
             self.remark=str(x[12]) 
@@ -2181,7 +2183,6 @@ class PlotCanvas_Auto(FigureCanvas):
         
         self.chck_for_last_rec=0
         self.pre_load="0"
-        self.command_str_rev=""
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2383,15 +2384,6 @@ class PlotCanvas_Auto(FigureCanvas):
             else:   
                 self.ser.write(b'*P0050_0010\r')
                 #print("started with default motor speed . Not gohead ")
-            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str_rev, 'utf-8')
-                self.ser.write(b)
-            else:   
-                print("rev speed command problem")
-            
-            
-            
             #self.ser.write(b'*D\r\n')
             
             #time.sleep(2)
@@ -2772,18 +2764,6 @@ class PlotCanvas_Auto(FigureCanvas):
                  #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
                  self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
-            else:
-                 print(" not Ok ")
-                 
-            if(float(self.input_rev_speed_val) <= float(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(float(self.input_rev_speed_val)/float(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 self.command_str_rev="*Y%04d"%self.calc_speed+"\r"
-                 print("Rever Speed Command   :"+str(self.command_str_rev))
             else:
                  print(" not Ok ")
                  
