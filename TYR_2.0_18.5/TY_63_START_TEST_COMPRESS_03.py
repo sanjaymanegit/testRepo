@@ -1608,7 +1608,7 @@ class TY_63_Ui_MainWindow(object):
                                             cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
                                             cursor.execute("UPDATE TEST_MST SET PART_NO='"+str(self.comboBox.currentText())+"',PARTY_NAME='"+str(self.lineEdit_25.text())+"',MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                                             cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")                                
-                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"'")                               
+                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'")                               
                                             cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1623,7 +1623,7 @@ class TY_63_Ui_MainWindow(object):
                                           cursor = connection.cursor()
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
-                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,TEST_TYPE_2,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD) VALUES('"+str(self.lineEdit_15.text())+"','COMPRESSION_3','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2664,6 +2664,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.chck_for_last_rec=0
         self.pre_load="0"
         self.load_cell_no="1"
+        self.command_str_rev=""
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2865,6 +2866,13 @@ class PlotCanvas_Auto(FigureCanvas):
             else:   
                 self.ser.write(b'*P0050_0010\r')
                 #print("started with default motor speed . Not gohead ")
+            
+            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str_rev, 'utf-8')
+                self.ser.write(b)
+            else:   
+                print("rev speed command problem")
             #self.ser.write(b'*D\r\n')
             
             #time.sleep(2)
@@ -3229,10 +3237,10 @@ class PlotCanvas_Auto(FigureCanvas):
         
         
         if(self.input_speed_val != ""):
-            if(int(self.input_speed_val) <= int(self.speed_val)):
+            if(float(self.input_speed_val) <= float(self.speed_val)):
                  #print(" Ok ")
                  self.goahead_flag=1
-                 self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
                  #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
@@ -3240,7 +3248,20 @@ class PlotCanvas_Auto(FigureCanvas):
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
             else:
                  print(" not Ok ")
-                 
+            
+            if(float(self.input_rev_speed_val) <= float(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(float(self.input_rev_speed_val)/float(self.speed_val))*1000                 
+                 #print(" calc Speed : "+str(self.calc_speed))
+                 #print(" command: *P"+str(self.calc_speed)+" \r")
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str_rev="*Y%04d"%self.calc_speed+"\r"
+                 print("Rever Speed Command   :"+str(self.command_str_rev))
+            else:
+                 print(" not Ok ")
+            
+            
         else:
             print(" not Ok ")
             
