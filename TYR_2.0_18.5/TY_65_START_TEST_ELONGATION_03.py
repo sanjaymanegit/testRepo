@@ -1791,13 +1791,38 @@ class TY_65_Ui_MainWindow(object):
                   cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
                   cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                   cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID FROM STG_TEST_DATA")                    
-                  print("Data saved........")                  
+                  print("Data saved........")
+                  
             
             connection.commit();
             connection.close()            
         
         #self.load_data()
         #print("Save completed")
+                
+        connection = sqlite3.connect("tyr.db")              
+        with connection:
+                    print("0 Data saved........")  
+                    cursor = connection.cursor() 
+                    if(int(self.cycle_num) == 1):
+                            cursor.execute("INSERT INTO DEFLECTION_DATA(TEST_ID,DEF_1) SELECT TEST_ID,DEFLCTION FROM STG_TEST_DATA ")
+                            cursor.execute("INSERT INTO LOAD_DATA(TEST_ID,LOAD_1) SELECT TEST_ID,LOAD FROM STG_TEST_DATA ")                            
+                    elif(int(self.cycle_num) == 2):
+                            cursor.execute("UPDATE DEFLECTION_DATA SET DEF_2 = (SELECT DEFLCTION FROM STG_TEST_DATA) WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                            cursor.execute("UPDATE DEFLECTION_DATA SET AVG_DEF=(DEF_2+DEF_1)/2 ,MAX_DEF= CASE WHEN DEF_1 > DEF_2 THEN DEF_1 ELSE DEF_2 END, MIN_DEF=CASE WHEN DEF_1 < DEF_2 THEN DEF_1 ELSE DEF_2 END  WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                            cursor.execute("UPDATE LOAD_DATA SET LOAD_2 = (SELECT LOAD FROM STG_TEST_DATA) WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                            cursor.execute("UPDATE LOAD_DATA SET AVG_LOAD=(LOAD_2+LOAD_1)/2 ,MAX_LOAD= CASE WHEN LOAD_1 > LOAD_2 THEN LOAD_1 ELSE LOAD_2 END, MIN_LOAD=CASE WHEN LOAD_1 < LOAD_2 THEN LOAD_1 ELSE LOAD_2 END WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                           
+                    elif(int(self.cycle_num) == 3):
+                            cursor.execute("UPDATE DEFLECTION_DATA SET DEF_3 = (SELECT DEFLCTION FROM STG_TEST_DATA) WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                            cursor.execute("UPDATE DEFLECTION_DATA set AVG_DEF=(DEF_2+DEF_1+DEF_3)/3 ,MAX_DEF= (select max(DEFLCTION) from TEST_DATA WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)), MIN_DEF=(select min(DEFLCTION) from TEST_DATA WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA) ) WHERE  TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)") 
+                            cursor.execute("UPDATE LOAD_DATA SET LOAD_3 = (SELECT LOAD FROM STG_TEST_DATA) WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                            cursor.execute("UPDATE LOAD_DATA set AVG_LOAD=(LOAD_2+LOAD_1+LOAD_3)/3 ,MAX_LOAD= (select max(LOAD) from TEST_DATA WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)), MIN_LOAD=(select min(LOAD) from TEST_DATA WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)) WHERE TEST_ID=(SELECT TEST_ID FROM STG_TEST_DATA)")
+                    else:
+                        print("Invalid Cycle :"+str(self.cycle_num))
+        
+        connection.commit();
+        connection.close()            
         self.show_grid_data_Tear()
         
         
