@@ -1256,7 +1256,8 @@ class TY_66_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT COUNT(DISTINCT SPEC_ID) FROM TEST_DATA WHERE TEST_ID ='"+str(self.test_id)+"'") 
         for x in results:            
-            self.label_26.setText(str(x[0]))           
+            self.label_26.setText(str(x[0]))
+            self.cycle_num=int(x[0])
         connection.close()
         
         
@@ -2008,31 +2009,46 @@ class TY_66_Ui_MainWindow(object):
         connection.close()
         
         
-        data2= [ ['Spec. \n No','Max.Load \n ('+str(self.last_load_unit)+')', 'Max.Elongation \n ('+str(self.last_disp_unit)+')']]
+        if(str(self.cycle_num) == "2"):
+                data2= [ ['Parameter','Spec_1 ','Spec_2','Avg.','Max.','Min.']]
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Load-("+str(self.last_load_unit)+")',printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
                 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT SPEC_ID ,printf(\"%.2f\", A.LOAD),printf(\"%.2f\", A.DEFLCTION) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                data2.append(x)
-        connection.close()
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Elongation-("+str(self.last_disp_unit)+")',printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
                 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.LOAD)), printf(\"%.2f\", avg(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                   data2.append(x)
-        connection.close()
+        elif(str(self.cycle_num) == "3"):
+                data2= [ ['Parameter','Spec_1 ','Spec_2','Spec_3','Avg.','Max.','Min.']]
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Load-("+str(self.last_load_unit)+")',printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.Load_3),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
                 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.LOAD)),printf(\"%.2f\", max(A.DEFLCTION))  FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                    data2.append(x)
-        connection.close()
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Elongation-("+str(self.last_disp_unit)+")',printf(\"%.2f\", A.DEF_1),printf(\"%.2f\", A.DEF_2),printf(\"%.2f\", A.DEF_3),printf(\"%.2f\", A.AVG_DEF),printf(\"%.2f\", A.MAX_DEF),printf(\"%.2f\", A.MIN_DEF) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
+        else:
+                data2= [ ['Parameter','Spec_1 ']]
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Load-("+str(self.last_load_unit)+")',printf(\"%.2f\", A.Load_1) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
                 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.LOAD)),printf(\"%.2f\", min(A.DEFLCTION)) FROM TEST_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
-        for x in results:
-                    data2.append(x)
-        connection.close()
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'Elongation-("+str(self.last_disp_unit)+")',printf(\"%.2f\", A.DEF_1) FROM DEFLECTION_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                for x in results:
+                         data2.append(x)
+                connection.close()
         
         y=300
         Elements=[]
