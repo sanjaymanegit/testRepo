@@ -310,7 +310,7 @@ class TY_12_LIST_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Metal"))
         self.radioButton_5.setText(_translate("MainWindow", "External (Ext/Encoder)"))
         self.radioButton_6.setText(_translate("MainWindow", "Internal  (Ext/Encoder)"))
-        
+        self.frame_2.hide()
         self.pushButton_14.clicked.connect(MainWindow.close)
         self.pushButton_4.clicked.connect(self.open_new_test_win)
         
@@ -379,14 +379,14 @@ class TY_12_LIST_Ui_MainWindow(object):
                    self.test_type_id=str(x[4])
                    
                    if(self.label_11.text() == "TENSILE"):
-                       self.frame_2.show()
+                       #self.frame_2.show()
                        connection = sqlite3.connect("tyr.db")
                        results=connection.execute("SELECT  IS_METAL,IS_INTERNAL_ENCODER FROM GLOBAL_VAR")
                        for x in results:
                             if(str(x[0]) == 'Y'):
                                 self.radioButton_2.setChecked(True)
                                 self.radioButton.setChecked(False)
-                                self.frame_5.show()
+                                #self.frame_5.show()
                             else:
                                 self.radioButton_2.setChecked(False)
                                 self.radioButton.setChecked(True)

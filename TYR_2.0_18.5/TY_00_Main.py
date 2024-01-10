@@ -48,7 +48,8 @@ class Ui_MainWindow(object):
         self.pushButton_5.setIconSize(QtCore.QSize(200, 160))
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(100, 310, 201, 181))
+        #self.pushButton_4.setGeometry(QtCore.QRect(100, 310, 201, 181))
+        self.pushButton_4.setGeometry(QtCore.QRect(760, 310, 201, 181))
         self.pushButton_4.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("images/sample.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -79,7 +80,8 @@ class Ui_MainWindow(object):
         
         
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(760, 310, 201, 181))
+        #self.pushButton_3.setGeometry(QtCore.QRect(760, 310, 201, 181))
+        self.pushButton_3.setGeometry(QtCore.QRect(100, 310, 201, 181))
         self.pushButton_3.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("images/setting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
