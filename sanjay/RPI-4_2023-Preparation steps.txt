@@ -39,6 +39,8 @@ Raspberry pi 4 Preaparation Steps (4GB RAM)
 
 12.Setup Config.txt for RTC  
     sudo vi /boot/config.txt
+	enable_uart=1
+    dtoverlay=disable-bt 
     dtparam=i2c_arm=on
     dtoverlay=i2c-rtc,ds3231
 
