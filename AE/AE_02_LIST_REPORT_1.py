@@ -4,6 +4,7 @@ from AE_REPORTS_COMPRESS_02 import AE_REPORT_COMPR_02_Ui_MainWindow
 from AE_REPORTS_TEAR_03 import AE_REPORT_TEAR_Ui_MainWindow
 from AE_08_REPORTS_PULL_ON_FORCE import AE_08_Ui_MainWindow
 from AE_10_REPORTS_PUSH_ON_FORCE import AE_10_Ui_MainWindow
+from AE_REPORTS_FLEXURAL import AE_REPORT_FLEXURAL_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -959,15 +960,23 @@ class AE_02_LIST_2_Ui_MainWindow(object):
                             self.open_report_compress()
             elif(str(self.new_test_name) == "Tear"):               
                             self.open_report_tear()
+            elif(str(self.new_test_name) == "Flexural"):               
+                            self.open_report_flexural()
             elif(str(self.new_test_name) == "PULL_ON_FORCE"):               
                             self.open_report_pull_on_force()
             elif(str(self.new_test_name) == "PUSH_ON_FORCE"):               
                             self.open_report_push_on_force()
+                            
             else:
                             self.open_report_tensile()
             
         
-        
+    def open_report_flexural(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=AE_REPORT_FLEXURAL_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
     def open_report_tensile(self):
         self.window = QtWidgets.QMainWindow()
         self.ui=AE_03_Ui_MainWindow()

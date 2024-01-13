@@ -412,7 +412,7 @@ class AE_01_Ui_MainWindow(object):
             self.AE_LIST_REPORT()
         elif(str(self.test_type_id) == "4"):
             self.save_test_flexural()
-            self.open_report_window_flexurl()
+            self.AE_LIST_REPORT()
         elif(str(self.test_type_id) == "5"):
             self.save_test_cof()
             self.open_report_window_cof()
