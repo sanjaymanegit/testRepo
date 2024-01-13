@@ -1240,7 +1240,9 @@ class AE_REPORT_FLEXURAL_Ui_MainWindow(object):
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
         self.label_46.setText(_translate("MainWindow", "Span:"))
         self.label_50.setText(_translate("MainWindow", "Input Strain:"))
+        self.label_50.hide()
         self.label_34.setText(_translate("MainWindow", "(mm)"))
+        self.label_34.hide()
         self.label_51.setText(_translate("MainWindow", "(mm)"))
         self.label_52.setText(_translate("MainWindow", ""))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
@@ -1405,11 +1407,19 @@ class AE_REPORT_FLEXURAL_Ui_MainWindow(object):
                  self.comboBox_2.setCurrentText(str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
                  
-                 self.lineEdit_17.setText(str(x[12]))
-                 self.lineEdit_18.setText(str(x[13]))
+                 #self.lineEdit_17.setText(str(x[12]))
+                 #self.lineEdit_18.setText(str(x[13]))
                  
                  
         connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(MAX(SPAN),0) FROM CYCLES_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")       
+        for x in results:
+                     self.lineEdit_17.setText(str(x[0]))
+                     self.lineEdit_18.hide()           
+        connection.close()    
+            
         self.onchage_combo()
         #self.frame_3.hide()
         #print("Timer4 Status :"+str(self.timer4.isActive()))
