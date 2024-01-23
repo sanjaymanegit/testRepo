@@ -5,3 +5,9 @@ sudo apt install -f
 
 ## pi-app 
 wget -qO- https://raw.githubusercontent.com/Botspot/pi-apps/master/install | bash
+
+
+### Reset Anydesk ID 
+1. QUITE the anydesk - Go to Anydesk icon top Right and rightclick and QUITE anydesk 
+2. Remove file "/etc/anydesk/service.conf
+3. Restart Device.
