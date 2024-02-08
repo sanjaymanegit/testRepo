@@ -152,7 +152,44 @@ class TY_04_Ui_MainWindow(object):
         self.label_9_2.setFont(font)
         self.label_9_2.setObjectName("label_9_2")
         
+        self.label_9_3 = QtWidgets.QLabel(self.frame)
+        self.label_9_3.setGeometry(QtCore.QRect(800,580, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Sans Serif")
+        font.setPointSize(10)
+        self.label_9_3.setFont(font)
+        self.label_9_3.setText("Controller Type:")
+        self.label_9_3.setObjectName("label_9_3")
         
+        self.buttongroup = QtWidgets.QButtonGroup()
+        
+        self.radioButton_3 = QtWidgets.QRadioButton(self.frame)
+        self.radioButton_3.setGeometry(QtCore.QRect(930, 580, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.radioButton_3.setFont(font)
+        self.radioButton_3.setStyleSheet("color: rgb(170, 85, 127);")
+        self.radioButton_3.setChecked(True)
+        self.radioButton_3.setText("New")
+        self.radioButton_3.setObjectName("radioButton")
+        
+        self.radioButton_4 = QtWidgets.QRadioButton(self.frame)
+        self.radioButton_4.setGeometry(QtCore.QRect(1000, 580, 121, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.radioButton_4.setFont(font)
+        self.radioButton_4.setText("Old")
+        self.radioButton_4.setStyleSheet("color: rgb(170, 85, 127);")
+        self.radioButton_4.setObjectName("radioButton_4")
+        
+        self.buttongroup.addButton(self.radioButton_3, 1)
+        self.buttongroup.addButton(self.radioButton_4, 2)
         
         self.lineEdit_7 = QtWidgets.QLineEdit(self.groupBox_3)
         reg_ex = QRegExp("(\\d+\\.\\d+)")
@@ -424,7 +461,7 @@ class TY_04_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.controller_type="NEW"
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -528,7 +565,8 @@ class TY_04_Ui_MainWindow(object):
             self.radioButton_2.setChecked(True)
             self.lineEdit_7.setEnabled(True)
             self.lineEdit_9.setEnabled(True)
-             
+        
+        
         connection.close()
         
         self.i=0        
@@ -549,9 +587,15 @@ class TY_04_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select NEW_TEST_MOTOR_REV_SPEED from GLOBAL_VAR") 
+        results=connection.execute("select NEW_TEST_MOTOR_REV_SPEED,CONTROLLER_TYPE from GLOBAL_VAR") 
         for x in results:
-            self.label_9_2.setText(str(x[0]))                       
+            self.label_9_2.setText(str(x[0]))
+            if(str(x[1]) == "NEW"):
+                self.radioButton_3.setChecked(True)
+                self.radioButton_4.setChecked(False)
+            else:
+                self.radioButton_3.setChecked(False)
+                self.radioButton_4.setChecked(True)                
         connection.close()
         
         self.timer1=QtCore.QTimer()
@@ -615,13 +659,24 @@ class TY_04_Ui_MainWindow(object):
         else:    
             self.graphscal_type="MANNUAL"
         
-        
+        if(self.radioButton_3.isChecked()):
+                self.controller_type="NEW"
+        else:
+                self.controller_type="OLD"
+                
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
             cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_3.text()+"', MOTOR_TEST_SPEED = '"+self.lineEdit_4.text()+"',MOTOR_MAX_SPEED='"+self.lineEdit_5.text()+"',BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_7.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_9.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_2.text()+"'") 
         connection.commit();
         connection.close() 
+        
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+            cursor = connection.cursor()                    
+            cursor.execute("UPDATE GLOBAL_VAR SET CONTROLLER_TYPE = '"+str(self.controller_type)+"'")
+        connection.commit();
+        connection.close()
         
         self.label_16.setText("Saved Successfully !")
         self.label_16.show()
