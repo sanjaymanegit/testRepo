@@ -2171,12 +2171,12 @@ class TY_63_Ui_MainWindow(object):
                            if(str(self.cycle_num) == "1"):
                                   cursor.execute("INSERT INTO DEFLECTION_DATA(TEST_ID,LOAD,DEF_1) SELECT TEST_ID,LOAD,DEFLCTION FROM STG_TEST_DATA")
                            else:
-                                   print("Invalid cycle id ....will not work after 4th Cycle")
+                                   print("OK ....")
                   else: 
                            if(str(self.cycle_num) == "1"):
                                   cursor.execute("INSERT INTO LOAD_DATA(TEST_ID,DEFLECTION,LOAD_1) SELECT TEST_ID,DEFLCTION,LOAD FROM STG_TEST_DATA")                      
                            else:
-                                  print("Invalid cycle id ....will not work after 4th Cycle")    
+                                  print("OK..")    
             connection.commit();
             connection.close()
             
@@ -2237,11 +2237,15 @@ class TY_63_Ui_MainWindow(object):
                             with connection:
                                 cursor = connection.cursor()
                                 for x in range(len(self.load)):
-                                        cursor.execute("UPDATE LOAD_DATA set LOAD_2='"+str(self.load[x])+"' WHERE DEFLECTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")
+                                        cursor.execute("UPDATE LOAD_DATA set LOAD_3='"+str(self.load[x])+"' WHERE DEFLECTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")
+                                        #print("UPDATE LOAD_DATA set LOAD_2='"+str(self.load[x])+"' WHERE DEFLECTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'")
+                                        
                                         cursor.execute("UPDATE LOAD_DATA set AVG_LOAD=(LOAD_2+LOAD_1+LOAD_3)/3 ,MAX_LOAD= (select max(LOAD) from TEST_DATA WHERE DEFLCTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'), MIN_LOAD=(select min(LOAD) from TEST_DATA WHERE DEFLCTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"') WHERE DEFLECTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'") 
+                                        #print("UPDATE LOAD_DATA set AVG_LOAD=(LOAD_2+LOAD_1+LOAD_3)/3 ,MAX_LOAD= (select max(LOAD) from TEST_DATA WHERE DEFLCTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'), MIN_LOAD=(select min(LOAD) from TEST_DATA WHERE DEFLCTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"') WHERE DEFLECTION='"+str(self.deflc[x])+"' and TEST_ID='"+str(self.test_id_arr[x])+"'") 
+                         
                             connection.commit();
                             connection.close() 
-                            print("ok--load data table")
+                            print("Cycle - 3 ok--load data table")
             else:
                    print("ok")
             

@@ -111,7 +111,7 @@ class Ui_MainWindow(object):
         
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setGeometry(QtCore.QRect(830, 420, 191, 181))
-        self.label_3.setText("Setting")
+        self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         
         self.label_3_1 = QtWidgets.QLabel(self.frame)
