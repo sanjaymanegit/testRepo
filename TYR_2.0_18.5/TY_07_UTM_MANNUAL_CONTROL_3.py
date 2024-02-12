@@ -332,8 +332,9 @@ class TY_07_3_Ui_MainWindow(object):
         self.radioButton_2.setFont(font)
         self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
+        
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(370, 620, 231, 51))
+        self.pushButton_3.setGeometry(QtCore.QRect(370, 620, 211, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -347,6 +348,28 @@ class TY_07_3_Ui_MainWindow(object):
 "border-radius:20px;\n"
 "background-color: rgb(255, 231, 254);")
         self.pushButton_3.setObjectName("pushButton_3")
+        
+        
+        self.pushButton_3_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_3_1.setGeometry(QtCore.QRect(600, 620, 131, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_3_1.setFont(font)
+        self.pushButton_3_1.setStyleSheet("border-style:outset;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-width:4px;\n"
+"color: rgb(0, 0, 0);\n"
+"border-radius:20px;\n"
+"background-color: rgb(255, 231, 254);")
+        self.pushButton_3_1.setObjectName("pushButton_3_1")
+        
+        
+        
+        
+        
         self.label_10 = QtWidgets.QLabel(self.frame)
         self.label_10.setGeometry(QtCore.QRect(680, 620, 541, 51))
         font = QtGui.QFont()
@@ -413,13 +436,16 @@ class TY_07_3_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Tensile"))
         self.radioButton_2.setText(_translate("MainWindow", "Compress"))
         self.pushButton_3.setText(_translate("MainWindow", "Set Pre Load"))
+        self.pushButton_3_1.setText(_translate("MainWindow", "Stop"))
+        self.pushButton_3_1.setDisabled(True)
+        self.pushButton_3_1.clicked.connect(self.stop_run)
         self.label_10.setText(_translate("MainWindow", ""))
         self.pushButton_2.clicked.connect(MainWindow.close)       
         self.toolButton.clicked.connect(self.r_run)   #down
         self.toolButton.hide()
         self.toolButton_2.clicked.connect(self.f_run) #up
         self.toolButton_2.hide()
-        self.toolButton_3.clicked.connect(self.stop_run)
+        
         self.toolButton_3.hide()
         self.pushButton.clicked.connect(self.open_new_window)
         
@@ -457,110 +483,112 @@ class TY_07_3_Ui_MainWindow(object):
         
         
     def set_pre_load(self):
-        self.validate_speed()        
-        try:
-           #print("is_active_modbus [Reverse] :"+str(self.is_active_modbus))
-           if(self.is_active_modbus == 'Y'):
-               #print("rev non modbus port :"+str(self.non_modbus_port))
-               if(self.non_modbus_port=="/dev/ttyUSB0"):
+        self.validate_speed()
+        if(self.goahead_flag==1):
+                self.pushButton_3_1.setEnabled(True)
+                try:
+                   #print("is_active_modbus [Reverse] :"+str(self.is_active_modbus))
+                   if(self.is_active_modbus == 'Y'):
+                       #print("rev non modbus port :"+str(self.non_modbus_port))
+                       if(self.non_modbus_port=="/dev/ttyUSB0"):
+                               self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )
+                               #print("non modbus port :"+str(self.non_modbus_port))
+                       else:
+                                self.ser = serial.Serial(
+                                    port='/dev/ttyUSB1',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )
+                   else:
                        self.ser = serial.Serial(
-                            port='/dev/ttyUSB0',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-                       #print("non modbus port :"+str(self.non_modbus_port))
-               else:
-                        self.ser = serial.Serial(
-                            port='/dev/ttyUSB1',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-           else:
-               self.ser = serial.Serial(
-                            port='/dev/ttyUSB0',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )
-            
-           self.ser.flush()
-           if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-                #self.ser.write(b'*R\r')
-                print("speed setup done.")
-           else:
-                print("speed set in pre load. Please Check.")
-        except IOError:
-            print(print("IO Errors(speed set in pre load): ")    )  
-        
-        
-        
-        
-        self.flag=0
-        self.command_str=""
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_3.text())+"',LOAD_CELL_NO='"+str(self.lineEdit_2.text())+"',MANUAL_CONTROL_TEST_SPEED='"+str(self.lineEdit.text())+"'")
-        connection.commit();
-        connection.close()
-        if(self.radioButton.isChecked()):                        
-                        self.flag=1                        
-        elif(self.radioButton_2.isChecked()):                        
-                        self.flag=0                         
-        else:
-                        print(" invalid flag")
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )
                     
-        self.ser = serial.Serial(
-                            port='/dev/ttyUSB0',
-                            baudrate=19200,
-                            bytesize=serial.EIGHTBITS,
-                            parity=serial.PARITY_NONE,
-                            stopbits=serial.STOPBITS_ONE,
-                            xonxoff=False,
-                            timeout = 0.25
-                        )            
-        self.ser.flush()
-        self.load_cell_no=str(self.lineEdit_2.text())
-        self.pre_load=str(self.lineEdit_3.text())
-        self.pre_load=float(self.pre_load)
-        if(int(self.flag) == 1):
-                if(int(self.load_cell_no)==1):
-                        self.command_str="S1H%05d"%self.pre_load+"\r"
-                       
-                else:
-                        self.command_str="S2H%05d"%self.pre_load+"\r"
-                        
-                        
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-                self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Tensile")
-                print("Tensile With Pre Load Started. command: "+str(self.command_str))
-        else:
-                if(int(self.load_cell_no) ==1):
-                        self.command_str="S1J%05d"%self.pre_load+"\r"
-                       
-                else:
-                        self.command_str="S2J%05d"%self.pre_load+"\r"
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-                self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Compression")               
-                print("Compress With Pre Load Started. command: "+str(self.command_str))
+                   self.ser.flush()
+                   if(self.goahead_flag==1):
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        #self.ser.write(b'*R\r')
+                        print("speed setup done.")
+                   else:
+                        print("speed set in pre load. Please Check.")
+                except IOError:
+                    print(print("IO Errors(speed set in pre load): ")    )  
                 
+                
+                
+                
+                self.flag=0
+                self.command_str=""
+                connection = sqlite3.connect("tyr.db")              
+                with connection:        
+                            cursor = connection.cursor()
+                            cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_3.text())+"',LOAD_CELL_NO='"+str(self.lineEdit_2.text())+"',MANUAL_CONTROL_TEST_SPEED='"+str(self.lineEdit.text())+"'")
+                connection.commit();
+                connection.close()
+                if(self.radioButton.isChecked()):                        
+                                self.flag=1                        
+                elif(self.radioButton_2.isChecked()):                        
+                                self.flag=0                         
+                else:
+                                print(" invalid flag")
                             
-        self.label_2.show()   
+                self.ser = serial.Serial(
+                                    port='/dev/ttyUSB0',
+                                    baudrate=19200,
+                                    bytesize=serial.EIGHTBITS,
+                                    parity=serial.PARITY_NONE,
+                                    stopbits=serial.STOPBITS_ONE,
+                                    xonxoff=False,
+                                    timeout = 0.25
+                                )            
+                self.ser.flush()
+                self.load_cell_no=str(self.lineEdit_2.text())
+                self.pre_load=str(self.lineEdit_3.text())
+                self.pre_load=float(self.pre_load)
+                if(int(self.flag) == 1):
+                        if(int(self.load_cell_no)==1):
+                                self.command_str="S1H%05d"%self.pre_load+"\r"
+                               
+                        else:
+                                self.command_str="S2H%05d"%self.pre_load+"\r"
+                                
+                                
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Tensile")
+                        print("Tensile With Pre Load Started. command: "+str(self.command_str))
+                else:
+                        if(int(self.load_cell_no) ==1):
+                                self.command_str="S1J%05d"%self.pre_load+"\r"
+                               
+                        else:
+                                self.command_str="S2J%05d"%self.pre_load+"\r"
+                        b = bytes(self.command_str, 'utf-8')
+                        self.ser.write(b)
+                        self.label_2.setText("Pre Load :"+str(self.lineEdit_3.text())+" Kg. Load cell No:"+str(self.load_cell_no)+" Test Mode:Compression")               
+                        print("Compress With Pre Load Started. command: "+str(self.command_str))
+                        
+                                    
+                self.label_2.show()   
         
         
         
@@ -570,10 +598,10 @@ class TY_07_3_Ui_MainWindow(object):
              self.goahead_flag=0
              self.label_2.setText("Speed is Empty.")
              self.label_2.show()
-#         elif(str(self.lineEdit_2.text()) == ""):
-#              self.goahead_flag=0
-#              self.label_2.setText("Displacement is Empty.")
-#              self.label_2.show()
+        elif(str(self.lineEdit_2.text()) == ""):
+             self.goahead_flag=0
+             self.label_2.setText("Load cell no. is Empty.")
+             self.label_2.show()
 #         elif(str(self.lineEdit_3.text()) == ""):
 #              self.goahead_flag=0
 #              self.label_2.setText("Load is Empty.")

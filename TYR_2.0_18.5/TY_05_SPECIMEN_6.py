@@ -528,6 +528,7 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit_5.setFont(font)
         self.lineEdit_5.setObjectName("lineEdit_5")
+        '''
         self.label_37 = QtWidgets.QLabel(self.frame)
         self.label_37.setGeometry(QtCore.QRect(900, 230, 71, 31))
         font = QtGui.QFont()
@@ -540,6 +541,7 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         self.label_37.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_37.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_37.setObjectName("label_37")
+        '''
         self.label_39 = QtWidgets.QLabel(self.frame)
         self.label_39.setGeometry(QtCore.QRect(900, 290, 51, 31))
         font = QtGui.QFont()
@@ -763,7 +765,7 @@ class TY_05_SPECI_6_ui_MainWindow(object):
         self.label_28.setText(_translate("MainWindow", "(mm/min)"))
         self.label_36.setText(_translate("MainWindow", "Test Type:"))
         self.lineEdit_5.setText(_translate("MainWindow", "Axiel"))
-        self.label_37.setText(_translate("MainWindow", "(mm/min)"))
+        #self.label_37.setText(_translate("MainWindow", "(mm/min)"))
         self.label_39.setText(_translate("MainWindow", "(mm)"))
         self.label_41.setText(_translate("MainWindow", "(kg)"))
         '''
