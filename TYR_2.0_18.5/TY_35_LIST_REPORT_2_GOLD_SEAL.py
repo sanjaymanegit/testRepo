@@ -691,7 +691,7 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         #self.comboBox.currentTextChanged.connect(self.load_batchids_1)
         #self.comboBox_2.currentTextChanged.connect(self.load_jobname_1)
         
-        self.pushButton_8.clicked.connect(self.list_tests) #open_summery_pdf
+         #open_summery_pdf
         self.pushButton_8_1.clicked.connect(self.open_summery_pdf)
         
         
@@ -721,10 +721,13 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
         
         if(self.new_test_name=="TEAR_STRENGTH"):
                   self.list_tests_2()
+                  self.pushButton_8.clicked.connect(self.list_tests_2)
         elif(self.new_test_name=="ADHESION_STRENGTH"):         
                   self.list_tests_2()
+                  self.pushButton_8.clicked.connect(self.list_tests_2)
         else:
                   self.list_tests()
+                  self.pushButton_8.clicked.connect(self.list_tests)
         
         
         self.timer1=QtCore.QTimer()
@@ -904,7 +907,7 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
-                print("Search by Tested By.....")
+                print("Search by Tested By. yyy....")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
@@ -983,8 +986,10 @@ class TY_35_LIST_Ui_MainWindow_GOLD_SEAL(object):
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
-                print("Search by Tested By.....")
+                print("Search by Tested By xxx.....")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
+                print("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
+        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
                 results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM TEST_DATA A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' order by TEST_ID DESC ")                        
