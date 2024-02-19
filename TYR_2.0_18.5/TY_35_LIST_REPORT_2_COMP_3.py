@@ -612,7 +612,7 @@ class TY_35_LIST_Ui_MainWindow_COMP_3(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "Search Report33"))
+        self.label_10.setText(_translate("MainWindow", "Search Report"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_8.setText(_translate("MainWindow", "Search"))

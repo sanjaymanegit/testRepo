@@ -48,6 +48,8 @@ minimalmodbus.BYTEORDER_LITTLE= 1
 
 import statistics
 
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
 
 class TY_67_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -606,7 +608,11 @@ class TY_67_Ui_MainWindow(object):
         self.label_21.setStyleSheet("")
         self.label_21.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_21.setObjectName("label_21")
+        
         self.lineEdit_9 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9)
+        self.lineEdit_9.setValidator(input_validator)
         self.lineEdit_9.setGeometry(QtCore.QRect(610, 30, 61, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -615,14 +621,18 @@ class TY_67_Ui_MainWindow(object):
         font.setWeight(75)
         self.lineEdit_9.setFont(font)
         self.lineEdit_9.setObjectName("lineEdit_9")
+        
+        
         self.line_5 = QtWidgets.QFrame(self.frame)
         self.line_5.setGeometry(QtCore.QRect(760, 0, 20, 171))
         self.line_5.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_5.setLineWidth(3)
         self.line_5.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_5.setObjectName("line_5")
-        self.label_29 = QtWidgets.QLabel(self.frame)
-        self.label_29.setGeometry(QtCore.QRect(510, 110, 91, 31))
+        
+        
+        self.label_29 = QtWidgets.QLabel(self.frame)        
+        self.label_29.setGeometry(QtCore.QRect(510, 95, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -632,12 +642,56 @@ class TY_67_Ui_MainWindow(object):
         self.label_29.setStyleSheet("")
         self.label_29.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_29.setObjectName("label_29")
+        
         self.comboBox_2 = QtWidgets.QComboBox(self.frame)
-        self.comboBox_2.setGeometry(QtCore.QRect(610, 110, 71, 31))
+        self.comboBox_2.setGeometry(QtCore.QRect(610, 95, 71, 31))
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")       
+        
+        
+        self.label_29_1 = QtWidgets.QLabel(self.frame)        
+        self.label_29_1.setGeometry(QtCore.QRect(510, 135, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_29_1.setFont(font)
+        self.label_29_1.setText("Max. Length :")
+        self.label_29_1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_29_1.setObjectName("label_29_1")
+        
+        
+        self.lineEdit_9_1 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_9_1)
+        self.lineEdit_9_1.setValidator(input_validator)
+        self.lineEdit_9_1.setGeometry(QtCore.QRect(610, 135, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_9_1.setFont(font)
+        self.lineEdit_9_1.setObjectName("lineEdit_9_1")
+        
+        self.label_29_2 = QtWidgets.QLabel(self.frame)        
+        self.label_29_2.setGeometry(QtCore.QRect(650, 135, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_29_2.setFont(font)
+        self.label_29_2.setText("(Mm)")
+        self.label_29_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_29_2.setObjectName("label_29_2")
+        
+        
+        
+        
         self.line_7 = QtWidgets.QFrame(self.frame)
         self.line_7.setGeometry(QtCore.QRect(1140, 0, 20, 171))
         self.line_7.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -656,6 +710,9 @@ class TY_67_Ui_MainWindow(object):
         self.label_31.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_31.setObjectName("label_31")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
+        self.lineEdit_13.setValidator(input_validator)
         self.lineEdit_13.setGeometry(QtCore.QRect(840, 40, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -675,7 +732,11 @@ class TY_67_Ui_MainWindow(object):
         self.label_32.setStyleSheet("")
         self.label_32.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_32.setObjectName("label_32")
+        
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
+        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(840, 80, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -1059,6 +1120,13 @@ class TY_67_Ui_MainWindow(object):
             self.lineEdit_14.setText(str(x[1]))
         connection.close()
         
+        
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT PROOF_MAX_LENGTH FROM GLOBAL_VAR") 
+        for x in results:            
+            self.lineEdit_9_1.setText(str(x[0]))           
+        connection.close()
 
         
         self.sc_blank =PlotCanvas_blank(self) 
@@ -1125,7 +1193,7 @@ class TY_67_Ui_MainWindow(object):
                                     with connection:        
                                             cursor = connection.cursor()
                                             cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
-                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+self.lineEdit_9.text()+"'")
+                                            cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',NEW_TEST_MOTOR_SPEED='"+self.lineEdit_9.text()+"',PROOF_MAX_LENGTH='"+self.lineEdit_9_1.text()+"'")
                                             cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_SPEED,PARTY_NAME,BATCH_ID,JOB_NAME) VALUES('"+str(self.comboBox.currentText())+"','TEAR_STRENGTH','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_15.text())+"')")
                                             cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                             cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2293,6 +2361,8 @@ class PlotCanvas_Auto(FigureCanvas):
         self.modbus_flag=""
         self.modbus_port=""
         self.non_modbus_port=""
+        self.proof_max_load=99999
+        self.test_time_sec=00000
         
         self.chck_for_last_rec=0
         self.plot_auto()
@@ -2325,7 +2395,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()                
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),PROOF_MAX_LENGTH from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=200            
              self.max_load=float(x[2])
@@ -2338,6 +2408,7 @@ class PlotCanvas_Auto(FigureCanvas):
              #print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
              self.unit_type=str(x[5])
              self.cs_area_cm=1
+             self.proof_max_length=int(str(x[7]))
         connection.close()
         print(" xxx     gfgf self.unit_type:"+str(self.unit_type))
         connection = sqlite3.connect("tyr.db")
@@ -2517,13 +2588,22 @@ class PlotCanvas_Auto(FigureCanvas):
                 print("COF")
             else:
                 print("len(self.ybuff) :"+str(len(self.ybuff)))
+                #self.proof_max_load="99999"
+                #self.test_time_sec="00000"
                 if(len(self.ybuff) > 8):
                     if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
+                        #self.ser.write(b'*S2T000.0 000.0\r')
+                        
+                        self.command_str="*S2P%05d"%self.proof_max_load+" %05d"%self.proof_max_length+" %05d"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
                     else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
+                        #self.ser.write(b'*S1T000.0 000.0\r')
+                        self.command_str="*S1P%05d"%self.proof_max_load+" %05d"%self.proof_max_length+" %05d"%self.test_time_sec+"\r"
+                        print("Proof Start Command :"+str(self.command_str))
+                    
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    
                 else:
                     print("Error :Serial O/P is not getting ")
             
