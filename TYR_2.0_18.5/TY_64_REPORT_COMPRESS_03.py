@@ -1519,7 +1519,7 @@ class TY_64_Ui_MainWindow(object):
         
     def load_data(self):        
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select TEST_ID,PART_NO,PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,PARTY_NAME,BATCH_ID,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,MACHINE_NO FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")                 
+        results=connection.execute("select TEST_ID,PART_NO,PART_NAME,TEST_TYPE,OPERATOR,MATERIAL,HARDNESS,PARTY_NAME,BATCH_ID,PRE_LOAD,MOTOR_REV_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,MACHINE_NO FROM TEST_MST WHERE TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")                 
         for x in results:
             self.label_12.setText(str(x[0]).zfill(3))
             self.test_id=str(x[0])                
@@ -2352,7 +2352,7 @@ class TY_64_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,B.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,A.PART_NO,A.BATCH_ID,A.PART_NAME,A.HARDNESS,B.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR   FROM TEST_MST A, SPECIMEN_MST B WHERE A.PART_NO=B.PART_NO AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Part No : ",str(x[2]),"Batch ID: ",str(x[3])],["Part Name:  ",str(x[4]),"Hardness:",str(x[5])],["Test Type:",str(x[6]),"M/C No:",str(x[7])],["Customer Name :",str(x[8]),"Test Speed (min/min) :",str(x[9])],["Material:",str(x[10]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Operator :",str(x[13])]]
             self.remark=str(x[12]) 
