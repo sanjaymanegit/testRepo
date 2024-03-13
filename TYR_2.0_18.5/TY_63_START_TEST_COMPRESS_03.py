@@ -2917,7 +2917,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.IO_error_flg=1
         
         #time.sleep(2)
-        self.timer1.setInterval(250)     
+        self.timer1.setInterval(1)     
         self.timer1.timeout.connect(self.update_graph)
         self.timer1.start(1)
         
