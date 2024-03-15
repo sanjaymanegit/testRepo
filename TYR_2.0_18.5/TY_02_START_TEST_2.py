@@ -2378,28 +2378,53 @@ class TY_02_Ui_MainWindow(object):
         
         if(self.last_load_unit == "MPa" and self.last_disp_unit=="Mm"):               
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.PEAK_LOAD_N),printf(\"%.2f\",(round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_N),printf(\"%.2f\",(round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS*0.1)),printf(\"%.2f\", avg(A.PEAK_LOAD_N)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_N)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS*0.1)),printf(\"%.2f\", max(A.PEAK_LOAD_N)),printf(\"%.2f\", max((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_N)),printf(\"%.2f\", max((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS*0.1)),printf(\"%.2f\", min(A.PEAK_LOAD_N)),printf(\"%.2f\", min((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_N)),printf(\"%.2f\", min((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
                 for x in results:
                         data2.append(x)
                 connection.close()
+        elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):               
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS),printf(\"%.2f\", A.PEAK_LOAD_N),printf(\"%.2f\",(round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'AVG',printf(\"%.2f\", avg(A.THINCKNESS)),printf(\"%.2f\", avg(A.PEAK_LOAD_N)),printf(\"%.2f\", avg((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MAX',printf(\"%.2f\", max(A.THINCKNESS)),printf(\"%.2f\", max(A.PEAK_LOAD_N)),printf(\"%.2f\", max((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT 'MIN',printf(\"%.2f\", min(A.THINCKNESS)),printf(\"%.2f\", min(A.PEAK_LOAD_N)),printf(\"%.2f\", min((round(A.PEAK_LOAD_N,2)/round(A.THINCKNESS,2)*10))) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
+                for x in results:
+                        data2.append(x)
+                connection.close()
+     
         else:
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT CYCLE_NUM,printf(\"%.2f\", A.THINCKNESS*0.1),printf(\"%.2f\", A.PEAK_LOAD_KG),printf(\"%.2f\",(round(A.PEAK_LOAD_KG,2)/round(A.THINCKNESS,2)*10)) FROM CYCLES_MST A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)") 
