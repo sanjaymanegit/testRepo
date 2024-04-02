@@ -172,7 +172,7 @@
        <rect>
         <x>20</x>
         <y>190</y>
-        <width>101</width>
+        <width>141</width>
         <height>51</height>
        </rect>
       </property>
@@ -185,7 +185,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Length:</string>
+       <string>Length (Defalut) :</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -210,6 +210,30 @@
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(241, 255, 239);</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>190</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>(mm.)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
     </widget>
