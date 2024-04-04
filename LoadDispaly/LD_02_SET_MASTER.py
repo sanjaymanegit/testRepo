@@ -129,6 +129,8 @@ class Ui_SetMaster(object):
         self.label_6.setStyleSheet("border:None;")
         self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
+        
+        
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(550, 380, 161, 51))
         font = QtGui.QFont()
@@ -146,6 +148,26 @@ class Ui_SetMaster(object):
         self.pushButton_6.setDefault(True)
         self.pushButton_6.setFlat(False)
         self.pushButton_6.setObjectName("pushButton_6")
+        
+        
+        self.pushButton_7 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_7.setGeometry(QtCore.QRect(200, 380, 161, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_7.setFont(font)
+        self.pushButton_7.setStyleSheet("background-color: rgb(203, 203, 203);\n"
+"border-radius:20px;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-style:outset;\n"
+"border-width:4px;")
+        self.pushButton_7.setAutoDefault(True)
+        self.pushButton_7.setDefault(True)
+        self.pushButton_7.setFlat(False)
+        self.pushButton_7.setObjectName("pushButton_7")
+        
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(740, 380, 151, 51))
         font = QtGui.QFont()
@@ -194,6 +216,7 @@ class Ui_SetMaster(object):
         self.label_4.setText(_translate("MainWindow", "Unit No:"))
         self.label_5.setText(_translate("MainWindow", "Length (Default) :"))
         self.label_6.setText(_translate("MainWindow", "(mm.)"))
+        self.pushButton_7.setText(_translate("MainWindow", "Register"))
         self.pushButton_6.setText(_translate("MainWindow", "Save"))
         self.pushButton_5.setText(_translate("MainWindow", "Close"))
         self.label_47.setText(_translate("MainWindow", "Enter the field"))
