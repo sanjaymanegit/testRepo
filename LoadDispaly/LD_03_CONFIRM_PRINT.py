@@ -308,7 +308,8 @@ class Ui_Confirm_Print(object):
         connection.close()
         
         
-    def print_file(self):        
+    def print_file(self):
+        self.pre_print_steps()
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
         self.window = QtWidgets.QMainWindow()
         self.ui=P_POP_TEST_Ui_MainWindow()
