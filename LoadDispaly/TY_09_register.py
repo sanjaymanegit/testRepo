@@ -12,6 +12,7 @@ import time
 from PyQt5.QtCore import QDate
 import sys,os
 import sqlite3
+import wmi
 
 
 class TY_09_Ui_MainWindow(object):
@@ -210,7 +211,7 @@ class TY_09_Ui_MainWindow(object):
         else:
                self.label_5.setText('Registration is incomplete.')
                self.label_5.show() 
-        
+    '''    
     def getserial(self):
         # Extract serial from cpuinfo file
         cpuserial = "0000000000000000"
@@ -223,7 +224,19 @@ class TY_09_Ui_MainWindow(object):
         except:
            cpuserial = "ERROR000000000"
         return cpuserial
-            
+    '''
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+           c = wmi.WMI()
+           hddSerialNumber = c.Win32_PhysicalMedia()[0].wmi_property('SerialNumber').value.strip()
+           cpuserial=hddSerialNumber
+           #print("Serial No xxx: "+str(cpuserial))
+        except:
+           cpuserial = "ERROR000000000"
+        return cpuserial    
+        
     def save_data(self):
         serial_no=self.getserial()
         #print("current serial No : "+str(serial_no))
