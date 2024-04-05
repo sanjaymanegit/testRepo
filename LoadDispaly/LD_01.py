@@ -11,6 +11,8 @@ from LD_02_SET_MASTER import Ui_SetMaster
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
 import datetime
+import time
+import serial
 
 
 class Ui_MainWindow(object):
@@ -90,7 +92,7 @@ class Ui_MainWindow(object):
         self.lcdNumber.setFrameShape(QtWidgets.QFrame.Box)
         self.lcdNumber.setFrameShadow(QtWidgets.QFrame.Plain)
         self.lcdNumber.setLineWidth(3)
-        self.lcdNumber.setProperty("value", 20000.0)
+        self.lcdNumber.setProperty("value", 0.0)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_15 = QtWidgets.QLabel(self.frame_2)
         self.label_15.setGeometry(QtCore.QRect(720, 180, 41, 41))
@@ -264,6 +266,40 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        
+        self.ld_flag="No"
+        self.capacity_flag="No"
+        self.off_position_flag="No"
+        self.flag="No"
+        self.ser =""
+        self.line =""                   
+       
+        self.xstr0=""
+        self.xstr1=""
+        self.xstr2=""
+        self.buff=[]
+        
+        self.IO_error_flg=0
+        self.xstr3=""
+        self.xstr2=""
+        self.xstr4=""
+        self.current_value=0
+        self.green_counter=0
+        
+        self.last_value=0
+        self.current_value=0
+        self.enable_buttons_flag="No"
+        self.enable_counter=0
+        self.weighing_crosses_min_wt_lim="No"
+        self.weighing_crosses_max_wt_lim="No"
+        self.wt_min_limit=0
+        self.wt_max_limit=0      
+        self.c1_count=0
+        
+        self.ld_set=0
+        self.mod_val=0
+        
+        self.last_display_val=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -296,6 +332,8 @@ class Ui_MainWindow(object):
         self.timer.timeout.connect(self.dateAndTime)
         self.checkbox.stateChanged.connect(self.length_checked)
         self.pushButton_7.clicked.connect(self.confirm_print)
+        self.timer2=QtCore.QTimer()
+        self.start_wt()   
 
     def length_checked(self, state):
         
@@ -360,6 +398,85 @@ class Ui_MainWindow(object):
             self.label_4.setText(str(x[1]))
             self.lineEdit.setText(str(x[2]))
 
+
+
+    def start_wt(self):
+        #print("Weight Started ....")
+        try:
+            self.ser = serial.Serial(
+                                port='/dev/ttyAMA0',
+                                baudrate=115200,
+                                bytesize=serial.EIGHTBITS,
+                                parity=serial.PARITY_NONE,
+                                stopbits=serial.STOPBITS_ONE,
+                                xonxoff=False,
+                                timeout = 0.05
+                            )
+        
+            self.ser.flush()       
+            
+            
+            self.line = self.ser.readline(15)
+            print("o/p:"+str(self.line))
+             
+            self.timer2.setInterval(1000)        
+            self.timer2.timeout.connect(self.display_lcd_val)
+            self.timer2.start(1)
+            
+            
+        except IOError:
+            print("IO Errors-load cell connections error")
+            self.IO_error_flg=1
+            self.groupBox_7.show()
+            self.label_2.show()
+            self.label_2.setText("LOAD CELL CONNECTION ERROR.")
+            
+            
+    def display_lcd_val(self):               
+        #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        #self.label_2.hide()
+        if(self.green_counter > 0):
+                #self.pushButton_9.setStyleSheet("background-color: rgb(0, 170, 0);")
+                #self.lcdNumber_2.setStyleSheet("color: rgb(255, 255, 0);\n background-color: rgb(0, 0, 0);")               
+                self.green_counter=self.green_counter-1
+        else:
+                self.green_counter=0
+                #self.pushButton_9.setStyleSheet("background-color: rgb(170, 0, 0);")
+        if(self.IO_error_flg==0):
+            try:
+                self.line = self.ser.readline()
+                print(" raw o/p:"+str(self.line))
+                print("self.line:"+str(self.line,'utf-8'))
+                self.xstr0=str(self.line,'utf-8')
+                self.xstr1=self.xstr0.replace("\r","")
+                self.xstr2=self.xstr1.replace("\n","")
+                self.buff=self.xstr2.split("_")
+                self.last_value=self.current_value 
+                if(len(self.buff)> 1):
+                       # if(str(self.buff[3]) == 'R'): 
+                                self.xstr2=str(self.buff[0])
+                                try:
+                                     self.xstr4=int(self.xstr2)
+                                except ValueError:                        
+                                    print("Value Error"+str(self.xstr2))
+                                    self.xstr4=0
+                                    self.c1_count=0
+                                self.c1_count=str(self.buff[1])
+                                #self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                self.lcdNumber.setProperty("value", str(self.xstr4)) 
+                                #self.lcdNumber.setProperty("value", str(self.c1_count))
+                                #print("self.c1_count :"+str(self.c1_count)+" Weight : "+str(self.xstr4))
+                               
+                    
+            except IOError:
+                print("IO Errors : Data Read Error") 
+                self.IO_error_flg=1                
+                self.label_2.show()
+                self.label_2.setText("IO Errors .")
+        
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop()           
 
 
 
