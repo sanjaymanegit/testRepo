@@ -333,7 +333,7 @@ class Ui_MainWindow(object):
         self.checkbox.stateChanged.connect(self.length_checked)
         self.pushButton_7.clicked.connect(self.confirm_print)
         self.timer2=QtCore.QTimer()
-        self.start_wt()   
+        #self.start_wt()   
 
     def length_checked(self, state):
         
