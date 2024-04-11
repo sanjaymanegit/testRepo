@@ -107,12 +107,18 @@ class Ui_MainWindow(object):
         
         
         
-        
+       
         
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setGeometry(QtCore.QRect(830, 420, 191, 181))
-        self.label_3.setText("")
+        self.label_3.setText("Specimens")
         self.label_3.setObjectName("label_3")
+        
+        
+        self.label_3_0 = QtWidgets.QLabel(self.frame)
+        self.label_3_0.setGeometry(QtCore.QRect(180, 420, 191, 181))
+        self.label_3_0.setText("Setting")
+        self.label_3_0.setObjectName("label_3_0")
         
         self.label_3_1 = QtWidgets.QLabel(self.frame)
         self.label_3_1.setGeometry(QtCore.QRect(530, 420, 191, 181))
