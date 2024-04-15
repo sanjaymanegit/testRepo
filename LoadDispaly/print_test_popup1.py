@@ -39,7 +39,7 @@ class PrintDemo(QMainWindow):
             dialog = QPrintDialog(printer, self)
             if dialog.exec_() == QPrintDialog.Accepted:
                 with tempfile.TemporaryDirectory() as path:
-                    images = convert_from_path(filePath, dpi=300, output_folder="D:\code\testRepo\LoadDispaly\reports\xx")
+                    images = convert_from_path(filePath, dpi=300, output_folder="D:\code\testRepo\LoadDispaly\reports\ok")
                     painter = QPainter()
                     painter.begin(printer)
                     for i, image in enumerate(images):
