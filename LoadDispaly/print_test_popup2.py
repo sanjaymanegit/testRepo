@@ -19,12 +19,12 @@ class PrintDemo(QMainWindow):
   
         
      
-        self.setWindowTitle("Print Demo")
+         self.setWindowTitle("Print Demo")
 
-        self.printButton = QPushButton('Print', self)
-        self.printButton.clicked.connect(self.onPrint)
-        self.printButton.resize(128, 32)
-        self.printButton.move(32, 48)
+         self.printButton = QPushButton('Print', self)
+         self.printButton.clicked.connect(self.onPrint)
+         self.printButton.resize(128, 32)
+         self.printButton.move(32, 48)
    
 
         

@@ -1,12 +1,10 @@
-import usb
-busses = usb.busses()
-for bus in busses:
-  devices = bus.devices
-  for dev in devices:
-    print (str(dev))
-    print ("Device:"+str(dev.filename))
-    #print ("  idVendor: %d (0x%04x)" % (dev.idVendor, dev.idVendor)
-    #print "  idProduct: %d (0x%04x)" % (dev.idProduct, dev.idProduct)
-    print ("Manufacturer:"+str(dev.iManufacturer))
-    #print "Serial:", dev.iSerialNumber
-    #print "Product:", dev.iProduct
+try:
+    check_driver = self.device.is_kernel_driver_active(0)
+except NotImplementedError:
+    pass
+if check_driver is None or check_driver:
+    try:
+        device.detach_kernel_driver(0)
+    except usb.core.USBError as e:
+        if check_driver is not None:
+            print("Could not detatch kernel driver: {0}".format(str(e)))
