@@ -28,6 +28,37 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
+#### PDF File creation ######
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY 
+from reportlab.platypus import *
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Line, Drawing
+
+import datetime
+import serial
+import time
+#import array  as arr
+import numpy as np
+import sqlite3
+
+import serial,time
+import array  as arr
+import numpy as np
+import sys
+import os
+
 class Ui_Confirm_Print(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -347,6 +378,8 @@ class Ui_Confirm_Print(object):
         self.window.show()
 
     def onPrint(self):
+        self.pre_print_steps()  
+        self.create_pdf()        
         self.printDialog()
         
     def getfile(self):
@@ -384,6 +417,37 @@ class Ui_Confirm_Print(object):
                     painter.end()
         else:
             pass
+        
+    def create_pdf(self):
+        y=300
+        Elements=[]        
+        self.dr_name=""
+        self.test_id=""
+        self.remark=""
+        self.p_name=""
+        self.report_date=""
+        summary_data=[]
+        test_data=[]
+        connection = sqlite3.connect("LD.db")        
+        results=connection.execute("SELECT COMPANY_NAME,UNIT_NO,GROSS_WT,LENGTH,COMMENT,DATE_RC,TIME_RC FROM REPORTS ORDER BY ID DESC LIMIT 1 ")
+        for x in results:
+            summary_data=[["Company Name:        ",str(x[0]),"Unit No:        ",str(x[1])]]           
+            summary_data.append(["Gross Weight : ",str(x[2]).zfill(6),"Length:",str(x[3])]) 
+            self.remark=str(x[4])            
+            summary_data.append(["Date:",str(x[5]),"Time:",str(x[6])])            
+        connection.close()       
+              
+        if(len(summary_data) > 0):
+            f3=Table(summary_data)
+            f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 16)]))       
+             
+            Elements=[Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),Spacer(1,12)]
+                
+            doc = SimpleDocTemplate('./reports/print_reports.pdf', rightMargin=10,
+                                    leftMargin=10,
+                                    topMargin=200,
+                                    bottomMargin=200)
+            doc.build(Elements)
         
 
             
