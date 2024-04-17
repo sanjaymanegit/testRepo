@@ -41,8 +41,8 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.platypus import *
 from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.rl_config import defaultPageSize
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
+from reportlab.lib.units import mm,inch
+from reportlab.lib.pagesizes import portrait,landscape, letter,mm,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
@@ -58,6 +58,9 @@ import array  as arr
 import numpy as np
 import sys
 import os
+
+PAGESIZE = (100 * mm, 150 * mm)
+BASE_MARGIN = 1 * mm
 
 class Ui_Confirm_Print(object):
     def setupUi(self, MainWindow):
@@ -336,6 +339,15 @@ class Ui_Confirm_Print(object):
         
         #printButton.clicked.connect(self.onPrint)
     def load_data(self):
+        
+        connection = sqlite3.connect("LD.db")
+        results = connection.execute("SELECT COMMENT FROM GLOBAL_VAR ")
+        for x in results:
+             self.plainTextEdit.setPlainText(str(x[0]))
+        connection.close()
+        
+        
+        #######################################
         connection = sqlite3.connect("LD.db")
         results = connection.execute("SELECT * FROM REPORTS ORDER BY ID DESC LIMIT 1")
 
@@ -346,45 +358,25 @@ class Ui_Confirm_Print(object):
             self.label_40.setText(str(x[3]))
             self.label_5.setText(str(x[5]))
             self.label_30.setText(str(x[8]))
-            self.label_39.setText(str(x[9]))
-            
-
-        connection.commit()
+            self.label_39.setText(str(x[9]))        
         connection.close()
         
     def pre_print_steps(self):
         connection = sqlite3.connect("LD.db")        
         with connection:        
                     cursor = connection.cursor()                
-                    cursor.execute("update REPORTS SET COMMENT='"+str(self.plainTextEdit.toPlainText())+"' WHERE ID = (SELECT MAX(ID) FROM REPORTS)")                 
+                    cursor.execute("update REPORTS SET COMMENT='"+str(self.plainTextEdit.toPlainText())+"' WHERE ID = (SELECT MAX(ID) FROM REPORTS)")  
+                    cursor.execute("update GLOBAL_VAR SET COMMENT='"+str(self.plainTextEdit.toPlainText())+"'")                      
         connection.commit()
         connection.close()
         
-        
-    def print_file(self):
-        self.pre_print_steps()
-        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
-        self.window = QtWidgets.QMainWindow()
-        self.ui=P_POP_TEST_Ui_MainWindow()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-        
-    def print_DEMO(self):
-        #self.pre_print_steps()
-        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
-        self.window = QtWidgets.QMainWindow()
-        self.ui=PrintDemo()
-        self.ui.setupUi(self.window)           
-        self.window.show()
-
+   
     def onPrint(self):
         self.pre_print_steps()  
         self.create_pdf()        
         self.printDialog()
         
-    def getfile(self):
-      fname,m = QFileDialog.getOpenFileName('Open file','c:\\',".")
-      #self.le.setPixmap(QPixmap(fname))
+   
 
     def printDialog(self):        
         filePath,filter = QtWidgets.QFileDialog.getOpenFileName()
@@ -428,25 +420,45 @@ class Ui_Confirm_Print(object):
         self.report_date=""
         summary_data=[]
         test_data=[]
+        styles = getSampleStyleSheet()
+       
         connection = sqlite3.connect("LD.db")        
-        results=connection.execute("SELECT COMPANY_NAME,UNIT_NO,GROSS_WT,LENGTH,COMMENT,DATE_RC,TIME_RC FROM REPORTS ORDER BY ID DESC LIMIT 1 ")
+        results=connection.execute("SELECT COMPANY_NAME,UNIT_NO,GROSS_WT,DATE_RC,TIME_RC ,LENGTH,COMMENT FROM REPORTS ORDER BY ID DESC LIMIT 1 ")
         for x in results:
-            summary_data=[["Company Name:        ",str(x[0]),"Unit No:        ",str(x[1])]]           
-            summary_data.append(["Gross Weight : ",str(x[2]).zfill(6),"Length:",str(x[3])]) 
-            self.remark=str(x[4])            
-            summary_data.append(["Date:",str(x[5]),"Time:",str(x[6])])            
+            summary_data=[["Company Name:",str(x[0])]] 
+            summary_data.append(["Unit No:",str(x[1]).zfill(6)])   
+            summary_data.append(["Gross Weight : ",str(x[2]).zfill(6)])
+            summary_data.append(["Date : ",str(x[3])])  
+            summary_data.append(["Time : ",str(x[4])])             
+            summary_data.append(["Length:",str(x[5]).zfill(2)])             
+            self.remark=str(x[6])  
         connection.close()       
               
         if(len(summary_data) > 0):
             f3=Table(summary_data)
-            f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 16)]))       
+            f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10)]))   
+
+
+            comments=""
+            if(str(self.remark) == ""):
+                print("kok")
+                #comments = Paragraph("<font name=Helvetica size=11>    Remark : ______________________________________________________________________________ </font>", styles["Normal"])
+            else:
+                comments = Paragraph("<font name=Helvetica size=11>    Remark : "+str(self.remark)+" </font>", styles["Title"])            
              
-            Elements=[Spacer(1,12),Spacer(1,12),f3,Spacer(1,12),Spacer(1,12)]
+            
+            
+            
+            Elements=[f3,Spacer(1,12),comments]
+            
                 
-            doc = SimpleDocTemplate('./reports/print_reports.pdf', rightMargin=10,
-                                    leftMargin=10,
-                                    topMargin=200,
-                                    bottomMargin=200)
+            doc = SimpleDocTemplate('./reports/print_reports.pdf',
+                                                pagesize=PAGESIZE,
+                                                rightMargin=1*mm,
+                                                leftMargin=1*mm,
+                                                topMargin=20,
+                                                bottomMargin=1*mm
+                                    )
             doc.build(Elements)
         
 
