@@ -427,7 +427,7 @@ class Ui_Confirm_Print(object):
         for x in results:
             summary_data=[["Company Name:",str(x[0])]] 
             summary_data.append(["Unit No:",str(x[1]).zfill(6)])   
-            summary_data.append(["Gross Weight : ",str(x[2]).zfill(6)])
+            summary_data.append(["Gross Weight (Kg.): ",str(x[2]).zfill(6)])
             summary_data.append(["Date : ",str(x[3])])  
             summary_data.append(["Time : ",str(x[4])])             
             summary_data.append(["Length:",str(x[5]).zfill(2)])             
