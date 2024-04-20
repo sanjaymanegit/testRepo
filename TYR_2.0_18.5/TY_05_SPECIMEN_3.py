@@ -1045,7 +1045,8 @@ class TY_05_SPECI_Ui_MainWindow(object):
     
     
     #Contractors            
-    def c_fetch_data_from_tw(self):        
+    def c_fetch_data_from_tw(self):
+        self.lineEdit_12.setReadOnly(True)
         row = self.tableWidget.currentRow()     
         if(row != -1 ):
             self.dr_id=str(self.tableWidget.item(row, 0).text())
@@ -1080,6 +1081,7 @@ class TY_05_SPECI_Ui_MainWindow(object):
             
            
     def c_rest_fun(self):
+        self.lineEdit_12.setReadOnly(False)
         self.label_2.setText("")
         self.lineEdit_12.setText("")
         self.textEdit.setText("")
