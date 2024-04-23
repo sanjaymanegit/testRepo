@@ -355,7 +355,13 @@ class Ui_Confirm_Print(object):
         for x in results:
             self.label.setText(str(x[1]))
             self.label_4.setText(str(x[2]))
-            self.label_40.setText(str(x[3]))
+            if(int(x[3]) > 0):
+                self.label_40.setText(str(x[3]))
+            else:
+                self.label_40.hide()
+                self.label_7.hide()
+                self.label_16.hide()
+            
             self.label_5.setText(str(x[5]))
             self.label_30.setText(str(x[8]))
             self.label_39.setText(str(x[9]))        
@@ -429,8 +435,11 @@ class Ui_Confirm_Print(object):
             summary_data.append(["Unit No:",str(x[1]).zfill(6)])   
             summary_data.append(["Gross Weight (Kg.): ",str(x[2]).zfill(6)])
             summary_data.append(["Date : ",str(x[3])])  
-            summary_data.append(["Time : ",str(x[4])])             
-            summary_data.append(["Length:",str(x[5]).zfill(2)])             
+            summary_data.append(["Time : ",str(x[4])]) 
+            if(int(x[5]) > 0):
+                summary_data.append(["Length:",str(x[5]).zfill(2)])
+            else: 
+                print("No length data")             
             self.remark=str(x[6])  
         connection.close()       
               

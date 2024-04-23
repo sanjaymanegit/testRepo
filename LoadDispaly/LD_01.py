@@ -333,7 +333,7 @@ class Ui_MainWindow(object):
         self.checkbox.stateChanged.connect(self.length_checked)
         self.pushButton_7.clicked.connect(self.confirm_print)
         self.timer2=QtCore.QTimer()
-        #self.start_wt()   
+        self.start_wt()   
 
     def length_checked(self, state):
         
@@ -364,7 +364,11 @@ class Ui_MainWindow(object):
         self.unit_no = str(self.label_4.text())
         self.date = str(self.label_30.text())
         self.time = str(self.label_39.text())
-        self.length = str(self.lineEdit.text())
+        if(self.checkbox.isChecked()):
+            self.length = str(self.lineEdit.text())
+        else:
+            self.length = "0"
+            
         self.gross_weigth = str(self.lcdNumber.value())
         print(self.gross_weigth, "gross ")
         connection =sqlite3.connect("LD.db")
@@ -404,8 +408,10 @@ class Ui_MainWindow(object):
         #print("Weight Started ....")
         try:
             self.ser = serial.Serial(
-                                port='/dev/ttyAMA0',
-                                baudrate=115200,
+                                #port='/dev/ttyAMA0',
+                                #baudrate=115200,
+                                port='COM3',
+                                baudrate=1200,
                                 bytesize=serial.EIGHTBITS,
                                 parity=serial.PARITY_NONE,
                                 stopbits=serial.STOPBITS_ONE,
@@ -418,10 +424,12 @@ class Ui_MainWindow(object):
             
             self.line = self.ser.readline(15)
             print("o/p:"+str(self.line))
-             
+            #self.display_lcd_val()
+            
             self.timer2.setInterval(1000)        
             self.timer2.timeout.connect(self.display_lcd_val)
             self.timer2.start(1)
+            
             
             
         except IOError:
@@ -445,29 +453,39 @@ class Ui_MainWindow(object):
         if(self.IO_error_flg==0):
             try:
                 self.line = self.ser.readline()
+                print("########## START #################")
                 print(" raw o/p:"+str(self.line))
                 print("self.line:"+str(self.line,'utf-8'))
-                self.xstr0=str(self.line,'utf-8')
                 self.xstr1=self.xstr0.replace("\r","")
                 self.xstr2=self.xstr1.replace("\n","")
-                self.buff=self.xstr2.split("_")
-                self.last_value=self.current_value 
-                if(len(self.buff)> 1):
-                       # if(str(self.buff[3]) == 'R'): 
-                                self.xstr2=str(self.buff[0])
-                                try:
-                                     self.xstr4=int(self.xstr2)
-                                except ValueError:                        
-                                    print("Value Error"+str(self.xstr2))
-                                    self.xstr4=0
-                                    self.c1_count=0
-                                self.c1_count=str(self.buff[1])
-                                #self.lcdNumber_2.setProperty("value", str(self.xstr4))
-                                self.lcdNumber.setProperty("value", str(self.xstr4)) 
-                                #self.lcdNumber.setProperty("value", str(self.c1_count))
-                                #print("self.c1_count :"+str(self.c1_count)+" Weight : "+str(self.xstr4))
-                               
+                self.xstr2=self.xstr1.replace(" ","")
+                self.buff=self.xstr2.split("_")               
+                
+                if(str(self.line,'utf-8')=="" or str(self.line,'utf-8') =="\r" ):
+                     pass;                
+                else:
                     
+                    self.xstr0=str(self.line,'utf-8')                    
+                    self.last_value=self.current_value 
+                    #print("lenxxx:"+str(len(self.buff)))
+                    if(len(self.buff) == 1):
+                           # if(str(self.buff[3]) == 'R'): 
+                                    self.xstr2=str(self.buff[0])
+                                    print("self.xstr2:"+str(self.buff[0]))
+                                    try:
+                                         self.xstr4=int(self.xstr2)
+                                    except ValueError:                        
+                                        print("Value Error :"+str(self.xstr2))
+                                        self.xstr4=0
+                                        self.c1_count=0
+                                    self.c1_count=str(self.buff[0])
+                                    #self.lcdNumber_2.setProperty("value", str(self.xstr4))
+                                    self.lcdNumber.setProperty("value", str(self.xstr4)) 
+                                    #self.lcdNumber.setProperty("value", str(self.c1_count))
+                                    #print("self.c1_count :"+str(self.c1_count)+" Weight : "+str(self.xstr4))
+                                    print("########## END #################")
+                                   
+                        
             except IOError:
                 print("IO Errors : Data Read Error") 
                 self.IO_error_flg=1                
