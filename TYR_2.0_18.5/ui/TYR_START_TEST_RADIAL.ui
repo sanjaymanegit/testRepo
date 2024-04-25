@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1367</width>
-    <height>752</height>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,6 +28,9 @@
       <family>Arial</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
@@ -55,34 +58,6 @@
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_10">
-     <property name="geometry">
-      <rect>
-       <x>1120</x>
-       <y>219</y>
-       <width>191</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>true</underline>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(170, 85, 127);</string>
-     </property>
-     <property name="text">
-      <string>Graph set Done.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_47">
@@ -134,11 +109,26 @@
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 85, 127);
+      <string notr="true">#pushButton_6 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(198, 198, 198), stop:1  rgb(255, 255, 255));
+	
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_6:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(255, 255, 255), stop:1  rgb(198, 198, 198));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_6:pressed {
+background-color: rgb(198, 198, 198);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Return</string>
@@ -186,11 +176,27 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 85, 127);
+       <string notr="true">#pushButton_7 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(255, 0, 0), stop:1  rgb(158, 3, 3));
+	
+	
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_7:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(158, 3, 3), stop:1  rgb(255, 0, 0));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_7:pressed {
+background-color: rgb(255, 0, 0);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Stop</string>
@@ -220,12 +226,26 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius:20px;
-color: rgb(0, 0, 0);
-background-color: rgb(148, 255, 166);
+       <string notr="true">#pushButton_11 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(85, 255, 0), stop:1  rgb(7, 240, 151));
+	
+
+border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_11:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(7, 240, 151), stop:1  rgb(85, 255, 0));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_11:pressed {
+background-color: rgb(85, 255, 0);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Start</string>
@@ -255,11 +275,26 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_12 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_12:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_12:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>All Graphs</string>
@@ -289,11 +324,26 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_13 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_13:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_13:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>View Report</string>
@@ -323,11 +373,27 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_14 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(85, 255, 255), stop:1  rgb(44, 69, 211));
+	
+	
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_14:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(85, 255, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_14:pressed {
+background-color: rgb(85, 255, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Email</string>
@@ -357,11 +423,26 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_15 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_15:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_15:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Comment</string>
@@ -378,6 +459,31 @@ border-width:4px;</string>
         <width>341</width>
         <height>241</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableWidget {gridline-color: rgb(0, 0, 0); font: 75 12pt &quot;Arial&quot;; selection-color: green;}
+QTableWidget::item:selected{
+color: rgb(255, 255, 255);
+background-color: rgb(0, 255, 0);
+}
+QHeaderView{
+font: 75 12pt &quot;Arial&quot;;
+background-color: rgb(85, 255, 255);
+}
+QHeaderView::section{
+font: 75 10pt &quot;Arial&quot;;
+background-color: rgb(85, 255, 255);
+}
+QTableWidget::item:hover{background-color: rgb(255, 255, 0);}</string>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
       </property>
       <row>
        <property name="text">
@@ -479,7 +585,7 @@ border-width:4px;</string>
       </item>
       <item row="0" column="1">
        <property name="text">
-        <string>123.8</string>
+        <string>1234</string>
        </property>
        <property name="font">
         <font>
@@ -502,6 +608,11 @@ border-width:4px;</string>
       <item row="1" column="0">
        <property name="text">
         <string>200</string>
+       </property>
+      </item>
+      <item row="1" column="1">
+       <property name="text">
+        <string>134</string>
        </property>
       </item>
       <item row="2" column="0">
@@ -541,11 +652,26 @@ border-width:4px;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_16 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_16:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_16:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Print</string>
@@ -694,11 +820,26 @@ background-color: rgb(0, 0, 0);</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(169, 202, 255);
+       <string notr="true">#pushButton_18 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_18:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_18:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
       </property>
       <property name="text">
        <string>Data</string>
@@ -729,11 +870,26 @@ border-width:4px;</string>
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(148, 255, 166);
+      <string notr="true">#pushButton_8 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(85, 255, 0), stop:1  rgb(7, 240, 151));
+	
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_8:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(7, 240, 151), stop:1  rgb(85, 255, 0));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_8:pressed {
+background-color: rgb(85, 255, 0);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Go For Test</string>
@@ -763,11 +919,25 @@ border-width:4px;</string>
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(169, 202, 255);
+      <string notr="true">#pushButton_9 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(12, 146, 158), stop:1  rgb(97, 242, 255));
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_9:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(97, 242, 255), stop:1  rgb(12, 146, 158));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_9:pressed {
+background-color: rgb(97, 242, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Reset</string>
@@ -839,6 +1009,14 @@ border-width:4px;</string>
        <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(217, 217, 217);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
+     <property name="maxVisibleItems">
+      <number>8</number>
+     </property>
      <item>
       <property name="text">
        <string>02</string>
@@ -864,11 +1042,21 @@ border-width:4px;</string>
        <string>06</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>07</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>08</string>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="label_14">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>160</x>
        <y>50</y>
        <width>111</width>
        <height>31</height>
@@ -886,7 +1074,7 @@ border-width:4px;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Customer Name:</string>
+      <string>Specimen Name:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1047,6 +1235,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="Line" name="line_5">
      <property name="geometry">
@@ -1130,6 +1323,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_29">
      <property name="geometry">
@@ -1166,6 +1364,11 @@ border-width:4px;</string>
        <width>51</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(217, 217, 217);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
      </property>
      <item>
       <property name="text">
@@ -1224,6 +1427,11 @@ border-width:4px;</string>
        <width>51</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(217, 217, 217);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
      </property>
      <item>
       <property name="text">
@@ -1304,6 +1512,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_32">
      <property name="geometry">
@@ -1349,6 +1562,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_10">
      <property name="geometry">
@@ -1371,11 +1589,27 @@ border-width:4px;</string>
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(169, 202, 255);
+      <string notr="true">#pushButton_10 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(255, 38, 154), stop:1  rgb(226, 102, 135));
+	
+
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_10:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(226, 102, 135), stop:1  rgb(255, 38, 154));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_10:pressed {
+background-color: rgb(255, 38, 154);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Set Graph</string>
@@ -1387,7 +1621,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_35">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>160</x>
        <y>90</y>
        <width>111</width>
        <height>31</height>
@@ -1428,11 +1662,16 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_36">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>160</x>
        <y>130</y>
        <width>111</width>
        <height>31</height>
@@ -1472,6 +1711,11 @@ border-width:4px;</string>
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_45">
@@ -1564,6 +1808,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_50">
      <property name="geometry">
@@ -1608,6 +1857,11 @@ border-width:4px;</string>
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_34">
@@ -1681,6 +1935,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_17">
      <property name="geometry">
@@ -1703,12 +1962,26 @@ border-width:4px;</string>
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(148, 255, 166);
-background-color: rgb(251, 234, 255);
+      <string notr="true">#pushButton_17 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(253, 169, 0), stop:1  rgb(206, 221, 71));
+	
+	
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_17:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(206, 221, 71), stop:1  rgb(253, 169, 0));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_17:pressed {
+background-color: rgb(253, 169, 0);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Set Sample</string>
@@ -1793,7 +2066,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_16">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>180</x>
        <y>10</y>
        <width>91</width>
        <height>31</height>
@@ -1876,7 +2149,7 @@ border-width:4px;</string>
       <rect>
        <x>400</x>
        <y>170</y>
-       <width>71</width>
+       <width>31</width>
        <height>31</height>
       </rect>
      </property>
@@ -1942,6 +2215,11 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_25">
      <property name="geometry">
@@ -1991,11 +2269,26 @@ border-width:4px;</string>
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(169, 202, 255);
+      <string notr="true">#pushButton_19 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(255, 255, 0), stop:1  rgb(217, 200, 64));
+	
+
 border-radius:20px;
 border-color: rgb(0, 0, 0);
 border-style:outset;
-border-width:4px;</string>
+border-width:3px;
+}
+#pushButton_19:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(217, 200, 64), stop:1  rgb(255, 255, 0));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_19:pressed {
+background-color: rgb(255, 255, 0);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Set Load Points</string>
@@ -2009,7 +2302,7 @@ border-width:4px;</string>
       <rect>
        <x>10</x>
        <y>220</y>
-       <width>81</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -2034,7 +2327,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_91">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>110</x>
        <y>220</y>
        <width>31</width>
        <height>31</height>
@@ -2061,7 +2354,7 @@ border-width:4px;</string>
     <widget class="QLineEdit" name="lineEdit_37">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>70</x>
        <y>220</y>
        <width>51</width>
        <height>31</height>
@@ -2075,13 +2368,18 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_92">
      <property name="geometry">
       <rect>
-       <x>230</x>
+       <x>150</x>
        <y>220</y>
-       <width>81</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -2097,7 +2395,7 @@ border-width:4px;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load (1):</string>
+      <string>Load (2):</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2106,7 +2404,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_93">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>250</x>
        <y>220</y>
        <width>31</width>
        <height>31</height>
@@ -2133,9 +2431,9 @@ border-width:4px;</string>
     <widget class="QLineEdit" name="lineEdit_38">
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>210</x>
        <y>220</y>
-       <width>51</width>
+       <width>41</width>
        <height>31</height>
       </rect>
      </property>
@@ -2147,13 +2445,18 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_94">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>290</x>
        <y>220</y>
-       <width>81</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -2169,7 +2472,7 @@ border-width:4px;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load (1):</string>
+      <string>Load (3):</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2178,7 +2481,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_95">
      <property name="geometry">
       <rect>
-       <x>590</x>
+       <x>390</x>
        <y>220</y>
        <width>31</width>
        <height>31</height>
@@ -2205,9 +2508,9 @@ border-width:4px;</string>
     <widget class="QLineEdit" name="lineEdit_39">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>350</x>
        <y>220</y>
-       <width>51</width>
+       <width>41</width>
        <height>31</height>
       </rect>
      </property>
@@ -2219,13 +2522,18 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_96">
      <property name="geometry">
       <rect>
-       <x>650</x>
+       <x>430</x>
        <y>220</y>
-       <width>81</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -2241,7 +2549,7 @@ border-width:4px;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load (1):</string>
+      <string>Load (4):</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2250,7 +2558,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_97">
      <property name="geometry">
       <rect>
-       <x>800</x>
+       <x>530</x>
        <y>220</y>
        <width>31</width>
        <height>31</height>
@@ -2277,9 +2585,9 @@ border-width:4px;</string>
     <widget class="QLineEdit" name="lineEdit_40">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>490</x>
        <y>220</y>
-       <width>51</width>
+       <width>41</width>
        <height>31</height>
       </rect>
      </property>
@@ -2291,13 +2599,18 @@ border-width:4px;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
     </widget>
     <widget class="QLabel" name="label_98">
      <property name="geometry">
       <rect>
-       <x>870</x>
+       <x>570</x>
        <y>220</y>
-       <width>81</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -2313,7 +2626,7 @@ border-width:4px;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load (1):</string>
+      <string>Load (5):</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2322,7 +2635,7 @@ border-width:4px;</string>
     <widget class="QLabel" name="label_99">
      <property name="geometry">
       <rect>
-       <x>1020</x>
+       <x>670</x>
        <y>220</y>
        <width>31</width>
        <height>31</height>
@@ -2349,9 +2662,9 @@ border-width:4px;</string>
     <widget class="QLineEdit" name="lineEdit_41">
      <property name="geometry">
       <rect>
-       <x>960</x>
+       <x>630</x>
        <y>220</y>
-       <width>51</width>
+       <width>41</width>
        <height>31</height>
       </rect>
      </property>
@@ -2362,6 +2675,11 @@ border-width:4px;</string>
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_13">
@@ -2401,6 +2719,11 @@ border-width:4px;</string>
        <height>31</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(217, 217, 217);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
      <item>
       <property name="text">
        <string>MRF</string>
@@ -2422,17 +2745,266 @@ border-width:4px;</string>
       </property>
      </item>
     </widget>
+    <widget class="QLineEdit" name="lineEdit_42">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>220</y>
+       <width>41</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_100">
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>220</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Load (6):</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_101">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>220</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>(Kgf)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_43">
+     <property name="geometry">
+      <rect>
+       <x>910</x>
+       <y>220</y>
+       <width>41</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_102">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>220</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Load (7):</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_103">
+     <property name="geometry">
+      <rect>
+       <x>950</x>
+       <y>220</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>(Kgf)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_44">
+     <property name="geometry">
+      <rect>
+       <x>1050</x>
+       <y>220</y>
+       <width>41</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: 1px solid rgba(131,131,131,255);
+border-radius: 8px;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_104">
+     <property name="geometry">
+      <rect>
+       <x>990</x>
+       <y>220</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Load (8):</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_105">
+     <property name="geometry">
+      <rect>
+       <x>1090</x>
+       <y>220</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>(Kgf)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>1130</x>
+       <y>220</y>
+       <width>181</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>true</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 85, 127);</string>
+     </property>
+     <property name="text">
+      <string>Graph set Done.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1367</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
