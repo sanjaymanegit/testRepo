@@ -1510,7 +1510,14 @@ class TY_73_Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.non_empty_line_edits = []
         self.retranslateUi(MainWindow)
-
+        self.cycle_num=0
+        self.test_type=""
+        self.test_id="1"
+        self.remark=""
+        self.timer3=QtCore.QTimer()
+        self.timer31=QtCore.QTimer()
+        self.cycle_num=0
+        self.show_lcd_vals="N"
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1571,15 +1578,15 @@ class TY_73_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Test Speed: "))
         self.label_27.setText(_translate("MainWindow", "Operator :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "kg"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
         self.label_30.setText(_translate("MainWindow", "Deflection \n"
 " Unit:"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "mm"))
-        self.comboBox_3.setItemText(1, _translate("MainWindow", "cm"))
-        self.comboBox_3.setItemText(2, _translate("MainWindow", "inch"))
+        self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
+        self.comboBox_3.setItemText(1, _translate("MainWindow", "Cm"))
+        self.comboBox_3.setItemText(2, _translate("MainWindow", "Inch"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
@@ -1634,7 +1641,11 @@ class TY_73_Ui_MainWindow(object):
         self.pushButton_10.clicked.connect(self.graph_scale_on_change)
         self.pushButton_8.clicked.connect(self.go_for_test)
         self.pushButton_9.clicked.connect(self.readWrite_fields)
-
+        self.pushButton_11.clicked.connect(self.start_test)
+    
+    def dateAndTime(self):
+        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
+   
     def readWrite_fields(self):
         self.frame_3.hide()
         fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
@@ -1760,22 +1771,7 @@ class TY_73_Ui_MainWindow(object):
                         else:
                                 print("load point is not empty.")
                                 
-                        ##### Populate STG_TEST_DATA Table ##########
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor()                  
-                                cursor.execute("DELETE FROM STG_TEST_DATA")
-                        connection.commit()
-                        connection.close()
-                        
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor()  
-                                for l in   self.non_empty_line_edits:
-                                      print(" LineEdit Name :"+str(l.text()))
-                                      cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID,LOAD) VALUES ('"+str(int(self.label_12.text()))+"','"+str(l.text())+"')")
-                        connection.commit()
-                        connection.close()       
+                              
                                 
         
         if not self.msg:
@@ -1969,9 +1965,241 @@ class TY_73_Ui_MainWindow(object):
                 self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(4))
         connection.close() 
 
-    def dateAndTime(self):
-        self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
+         
+        
+        
+    def manual_stop(self):
+        self.sc_new.save_data_flg="Yes"
+        self.sc_new.on_ani_stop()
+        self.reset()
+        self.save_graph_data()        
+        try:
+            self.sc_new.ser.write(b'*Q\r')
+        except IOError:
+            print("IO Errors")    
+#         self.reset()
+#         self.save_graph_data()
+#         self.sc_new.save_data_flg=""
+        self.label_49.setText("Mannual stopped new.")
+        self.label_49.show()
+        self.pushButton_7.setDisabled(True)
+        self.pushButton_11.setEnabled(True)
+        self.label_26.setText(str(self.cycle_num))
+        self.pushButton_12.setEnabled(True)
+        self.pushButton_13.setEnabled(True)
+        self.pushButton_14.setEnabled(True)
+        self.pushButton_15.setEnabled(True)
+        self.pushButton_16.setEnabled(True)
+        self.sc_new.arr_p=[0.0]
+        self.sc_new.arr_q=[0.0]
+        self.sc_new.arr_speed=[0.0]
+        self.lcdNumber.setProperty("value", 0.0)     #load
+        self.lcdNumber_2.setProperty("value",0.0)  #length
+        #self.lcdNumber_3.setProperty("value",0.0)  #speed
+                
+    def reset(self):
+        if(self.sc_new.timer1.isActive()): 
+           self.sc_new.on_ani_stop()
+           self.sc_new.timer1.stop()
+           self.sc_new.arr_p=[0.0]
+           self.sc_new.arr_q=[0.0]
+           self.sc_new.arr_speed=[0.0]
+           
+           
+        if(self.timer3.isActive()): 
+           self.timer3.stop()    
+        
+        
+    def start_test(self):
+        self.show_lcd_vals="Y"
+        self.label_49.setText("Running Test ........")
+        self.label_49.show()
+        self.pushButton_11.setDisabled(True)
+        self.pushButton_7.setEnabled(True)
+        self.pushButton_9.setEnabled(True)
+        self.sc_new =PlotCanvas_Auto(self,width=8, height=5, dpi=90)
+        self.gridLayout.addWidget(self.sc_new, 1, 0, 1, 1)
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT COUNT(*) FROM STG_GRAPH_MST")
+        rows=results.fetchall()
+        connection.close()               
+        print("Test Strated.")
+        if(int(rows[0][0]) > -2 ):
+                    self.timer3=QtCore.QTimer()
+                    self.timer3.setInterval(1000)        
+                    self.timer3.timeout.connect(self.show_load_cell_val)
+                    self.timer3.start(1)
+                    
     
+    def show_load_cell_val(self):
+        if(self.show_lcd_vals=="Y"):
+                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
+                                    self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))    #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
+                    elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_lb)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Cm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="N") and (str(self.comboBox_3.currentText()) =="Inch")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_n)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="KN") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_kn)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                    elif((str(self.comboBox_2.currentText()) =="gm") and (str(self.comboBox_3.currentText()) =="Mm")):
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q_mpa)))     #load
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))  #length
+                    else:
+                                    self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))
+                                    self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
+                    #self.lcdNumber_3.setProperty("value",str(max(self.sc_new.arr_speed)))
+                    #self.lcdNumber_3.setProperty("value",str(self.lineEdit_8.text()))
+                    self.pushButton_11.setDisabled(True)
+                    self.pushButton_7.setEnabled(True)
+                    self.pushButton_6.setDisabled(True)
+                    #print("lcd printing .......")
+                    if(str(self.sc_new.save_data_flg) =="Yes"):
+                            self.reset()
+                            self.save_graph_data()
+                            self.sc_new.save_data_flg=""
+                            self.label_49.setText("Data Saved Successfully.")
+                            self.label_49.show()
+                            self.pushButton_7.setDisabled(True)
+                            self.pushButton_11.setEnabled(True)
+                            self.label_26.setText(str(self.cycle_num))
+                            self.pushButton_12.setEnabled(True)
+                            self.pushButton_13.setEnabled(True)
+                            self.pushButton_14.setEnabled(True)
+                            self.pushButton_15.setEnabled(True)
+                            self.pushButton_16.setEnabled(True)
+                            self.pushButton_6.setEnabled(True)
+                            
+        else:
+                           self.lcdNumber.setProperty("value", 0.0)     #load
+                           self.lcdNumber_2.setProperty("value",0.0)  #length
+                           #self.lcdNumber_3.setProperty("value",0.0)  #speed
+                
+        
+    
+    
+    def save_graph_data(self):
+        if (len(self.sc_new.arr_p) > 1):
+            self.cycle_num=self.cycle_num+1
+            #### Load Graph Data ######
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                    cursor = connection.cursor()
+                    cursor.execute("DELETE FROM STG_TEST_DATA")
+                    cursor.execute("DELETE FROM STG_GRAPH_MST") 
+            connection.commit();
+            connection.close()        
+                    
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.sc_new.arr_p)):
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
+                                    
+            connection.commit();
+            connection.close()
+            
+            ##### Populate STG_TEST_DATA Table ##########     
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                 cursor = connection.cursor()  
+                 for l in   self.non_empty_line_edits:
+                            print(" LineEdit Name :"+str(l.text()))
+                            cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID,LOAD) VALUES ('"+str(int(self.label_12.text()))+"','"+str(l.text())+"')")
+            connection.commit()
+            connection.close()
+            
+            ## Populate GRAPH _MST ##############################
+            ## Update Graph id in TEST_MST, TEST_DATA ###########
+            ####### Update Defelection value ,Spec ID ,##########
+            connection = sqlite3.connect("tyr.db")              
+            with connection:
+                    cursor = connection.cursor() 
+                    cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
+                    cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
+                    cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
+                    cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
+                    cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
+                    cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                    cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG FROM STG_TEST_DATA")                    
+                    print("Data saved........")
+            connection.commit();
+            connection.close()
+            
+        else:
+            print("Graph Data is not available.")
+        
+        
+        
+        
+        
+    
+    def show_grid_data_Tear(self):
+        self.delete_all_records()
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100)
+        
+        connection = sqlite3.connect("tyr.db")
+        if(self.radioButton.isChecked()):
+                    if(str(self.cycle_num) == "2"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Def_1 \n ('+str(self.comboBox_3.currentText())+') ',' Def_2 \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),printf(\"%.2f\", DEF_2),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                    elif(str(self.cycle_num) == "3"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Def_1 \n ('+str(self.comboBox_3.currentText())+') ',' Def_2 \n ('+str(self.comboBox_3.currentText())+') ',' Def_3 \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),printf(\"%.2f\", DEF_2),printf(\"%.2f\", DEF_3),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                       
+                    else:
+                            self.tableWidget.setHorizontalHeaderLabels([' Load \n ('+str(self.comboBox_2.currentText())+') ',' Def_1 \n ('+str(self.comboBox_3.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", LOAD),printf(\"%.2f\", DEF_1),ID FROM DEFLECTION_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                            
+        else:
+                    if(str(self.cycle_num) == "2"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load_1 \n ('+str(self.comboBox_2.currentText())+') ',' Load_2 \n ('+str(self.comboBox_2.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", DEFLECTION),printf(\"%.2f\", LOAD_1),printf(\"%.2f\", LOAD_2),ID FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                    elif(str(self.cycle_num) == "3"):
+                            self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load_1 \n ('+str(self.comboBox_2.currentText())+') ',' Load_2 \n ('+str(self.comboBox_2.currentText())+') ',' Load_3 \n ('+str(self.comboBox_2.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", DEFLECTION),printf(\"%.2f\", LOAD_1),printf(\"%.2f\", LOAD_2),printf(\"%.2f\", LOAD_3),ID FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                       
+                    else:
+                            self.tableWidget.setHorizontalHeaderLabels([' Deflection \n ('+str(self.comboBox_3.currentText())+') ',' Load_1 \n ('+str(self.comboBox_2.currentText())+') ','cycle_id'])
+                            results=connection.execute("SELECT printf(\"%.2f\", DEFLECTION),printf(\"%.2f\", LOAD_1),ID FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID ASC")
+                            
+                    
+        for row_number, row_data in enumerate(results):            
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                        self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+                #self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
+        self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        connection.close()  
 
 class PlotCanvas_Auto(FigureCanvas):     
     def __init__(self, parent=None, width=5, height=4, dpi=80):
