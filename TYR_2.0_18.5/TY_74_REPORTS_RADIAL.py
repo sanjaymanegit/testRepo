@@ -57,7 +57,7 @@ import sys
 import os
 
 
-class TY_73_Ui_MainWindow(object):
+class TY_74_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -1643,6 +1643,7 @@ class TY_73_Ui_MainWindow(object):
         self.pushButton_9.clicked.connect(self.readWrite_fields)
         self.pushButton_11.clicked.connect(self.start_test)
         self.show_grid_data()
+        self.go_for_test()
         
     
     def dateAndTime(self):
@@ -1687,34 +1688,13 @@ class TY_73_Ui_MainWindow(object):
                 if(self.go_ahead=="Yes"):
                         self.readOnly_fields()
                         self.frame_3.show()
-                        self.label_49.setText("Please start the test......")
-                        self.sc_blank =PlotCanvas_blank(self) 
+                        self.label_49.setText("All Graphs")
+                        self.sc_blank =PlotCanvas(self) 
                         self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
-                        try:            
+                        self.pushButton_11.hide()
+                        self.pushButton_7.hide() 
                             
-                            self.serial_3 = serial.Serial(
-                                                    port='/dev/ttyUSB0',
-                                                    baudrate=19200,
-                                                    bytesize=serial.EIGHTBITS,
-                                                    parity=serial.PARITY_NONE,
-                                                    stopbits=serial.STOPBITS_ONE,
-                                                    xonxoff=False,
-                                                    timeout = 0.05
-                                                ) 
-                     
-#                             self.timer3=QtCore.QTimer()
-#                             self.timer3.setInterval(5000)        
-#                             self.timer3.timeout.connect(self.loadcell_encoder_status)
-#                             self.timer3.start(1)
-                            self.pushButton_8.setDisabled(True)
-                            #self.pushButton_6.setDisabled(True)
-                            #self.readonly_fields()
-                            self.show_lcd_vals="N"
-                            
-                            
-                            
-                        except IOError:
-                            print("IO Errors")
+                        
 
     def validations(self):
         self.go_ahead="No"
@@ -1930,6 +1910,7 @@ class TY_73_Ui_MainWindow(object):
         for widget in widgets:
              widget.hide()  
         
+        self.comboBox_4.clear()
         # Selecting the specimen name from SPECIMEN_MST
         connection = sqlite3.connect("tyr.db") 
         results = connection.execute("SELECT DISTINCT SPECIMEN_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME IS NOT NULL")
@@ -1960,56 +1941,18 @@ class TY_73_Ui_MainWindow(object):
 
         # Creating the new test ID 
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select seq+1 from sqlite_sequence WHERE name = 'TEST_MST'")       
+        results=connection.execute("select test_id from global_var")       
         for x in results:           
                 self.label_12.setText(str(x[0]).zfill(4))
-                self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(4))
-                self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(4))
+                self.test_id=str(x[0])
+                #self.lineEdit_15.setText("Job_Name_"+str(x[0]).zfill(4))
+                #self.lineEdit_16.setText("Batch_"+str(x[0]).zfill(4))
         connection.close() 
 
          
         
         
-    def manual_stop(self):
-        self.sc_new.save_data_flg="Yes"
-        self.sc_new.on_ani_stop()
-        self.reset()
-        self.save_graph_data()        
-        try:
-            self.sc_new.ser.write(b'*Q\r')
-        except IOError:
-            print("IO Errors")    
-#         self.reset()
-#         self.save_graph_data()
-#         self.sc_new.save_data_flg=""
-        self.label_49.setText("Mannual stopped new.")
-        self.label_49.show()
-        self.pushButton_7.setDisabled(True)
-        self.pushButton_11.setEnabled(True)
-        self.label_26.setText(str(self.cycle_num))
-        self.pushButton_12.setEnabled(True)
-        self.pushButton_13.setEnabled(True)
-        self.pushButton_14.setEnabled(True)
-        self.pushButton_15.setEnabled(True)
-        self.pushButton_16.setEnabled(True)
-        self.sc_new.arr_p=[0.0]
-        self.sc_new.arr_q=[0.0]
-        self.sc_new.arr_speed=[0.0]
-        self.lcdNumber.setProperty("value", 0.0)     #load
-        self.lcdNumber_2.setProperty("value",0.0)  #length
-        #self.lcdNumber_3.setProperty("value",0.0)  #speed
-                
-    def reset(self):
-        if(self.sc_new.timer1.isActive()): 
-           self.sc_new.on_ani_stop()
-           self.sc_new.timer1.stop()
-           self.sc_new.arr_p=[0.0]
-           self.sc_new.arr_q=[0.0]
-           self.sc_new.arr_speed=[0.0]
-           
-           
-        if(self.timer3.isActive()): 
-           self.timer3.stop()    
+    
         
         
     def start_test(self):
@@ -2336,720 +2279,7 @@ class TY_73_Ui_MainWindow(object):
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close()  
 
-class PlotCanvas_Auto(FigureCanvas):     
-    def __init__(self, parent=None, width=5, height=4, dpi=80):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        
-        self.axes = fig.add_subplot(111)
-        #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
-        self.axes.set_facecolor('#CCFFFF')  
-        self.axes.minorticks_on()
-        self.test_type="Tensile"
-        self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-        self.compute_initial_figure()
-        FigureCanvas.__init__(self, fig)
-        #self.setParent(parent)        
-        ###
-        self.playing = False
-        self.p =0
-        self.p_cm =0
-        self.p_inch =0
-        self.t=0
-        
-        self.q =0
-        self.q_n =0
-        self.q_lb =0
-        self.q_kn =0
-        self.q_mpa =0
-        
-        self.speed=500
-        self.t_timestamp=0
-        
-        
-        
-        
-        self.arr_p=[0.0]
-        self.arr_p_cm=[0.0]
-        self.arr_p_inch=[0.0]
-        
-        self.arr_t=[0.0]
-        self.arr_q=[0.0]
-        self.arr_q_n=[0.0]
-        self.arr_q_lb=[0.0]
-        self.arr_q_kn=[0.0]
-        self.arr_q_mpa=[0.0]
-        self.arr_t_timestamp=[""]
-        
-        self.arr_speed=[0.0]
-        
-        self.arr_p1=[0.0]
-        self.arr_q1=[0.0]
-        self.x=0
-        self.y=0
-        #self.ax = self.figure.add_subplot(111) 
-        self.xlim=0
-        self.ylim=10
-        self.line_cnt=0
-        self.kg_cm2=0
-        self.xlim_update='NO'
-        self.ylim_update='NO'
-        ##############
-        self.buff=[]
-        self.ybuff=[]
-        self.line=""
-        self.yline=""
-        self.flag=1
-        
-        self.check_R=""
-        self.check_S=""
-        self.IO_error_flg=0
-        
-        self.timer1=QtCore.QTimer()
-       
-       
-        
-        self.speed_val=""
-        self.input_speed_val=""
-        self.input_rev_speed_val=""
-        self.goahead_flag=0
-        self.calc_speed=0
-        self.command_str=""
-        self.save_data_flg=""
-        self.load_cell_hi=0
-        self.load_cell_lo=0
-        self.extiometer=0
-        self.encoder=0      
-        self.auto_rev_time_off=0
-        self.break_sence=0
-        self.test_motor_speed=0
-        self.test_guage_mm=0
-        self.test_type="Tensile"
-        self.max_load=0
-        self.max_length=0
-        self.flexural_max_load=100
-        self.unit_type =""
-        self.graph_type=""
-        self.load_unit=""
-        self.disp_unit=""
-        self.cs_area_cm="1"
-        #self.start_time = datetime.datetime.now()
-        #self.end_time = datetime.datetime.now()
-        self.start_time = datetime.datetime.now()
-        self.end_time = datetime.datetime.now()
-        self.elapsed_time=0
-        self.elapsed_time_show=0
-        
-        
-        
-        self.modbus_flag=""
-        self.modbus_port=""
-        self.non_modbus_port=""
-        
-        self.chck_for_last_rec=0
-        self.pre_load="0"
-        self.load_cell_no="1"
-        self.command_str_rev=""
-        self.plot_auto()
-         
-    def compute_initial_figure(self):
-        pass
-    
-   
-    
-    def plot_auto(self):
-        self.line_cnt, = self.axes.plot([0,0], [0,0], lw=2)
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
-        for x in results:
-              self.graph_type=str(x[0])  
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2") 
-        for x in results:
-                        self.load_unit=str(x[0])
-                        self.disp_unit=str(x[1])
-        connection.close()                
-                        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),IFNULL(PRE_LOAD,0) from GLOBAL_VAR") 
-        for x in results:            
-             self.test_guage_mm=200            
-             self.max_load=float(x[2])
-             #self.max_load=100
-             self.max_length=float(self.test_guage_mm)-float(float(x[3]))
-             self.flex_max_length=float(x[3])
-             self.cof_max_length=float(x[4])
-             #self.max_length=float(float(x[0])-float(x[3]))
-             self.max_length=str(self.max_length).zfill(5)
-             #print("Max Load :"+str(self.max_load).zfill(5)+"  CoF Max length :"+str(int(self.cof_max_length)).zfill(5))
-             self.unit_type=str(x[5])
-             self.cs_area_cm=1
-             self.pre_load=float(str(x[7]))
-        connection.close()
-        print("self.unit_type: "+str(self.unit_type)+" self.pre_load :"+str(self.pre_load)+" Max Load :"+str(self.max_load).zfill(5)+" self.max_length: "+str(self.max_length))
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1,AUTO_REV_TIME_OFF,BREAKING_SENCE,ISACTIVE_MODBUS,MODBUS_PORT,NON_MODBUS_PORT from SETTING_MST") 
-        for x in results:
-                 self.auto_rev_time_off=int(x[2])
-                 self.break_sence=float(x[3])
-                 self.break_sence=self.break_sence+float(self.pre_load)
-                 print(" self.break_sence and preload :"+str(self.break_sence))
-                 self.modbus_flag=str(x[4])
-                 self.modbus_port=str(x[5])
-                 self.non_modbus_port=str(x[6])
-                 self.graph_type="Load Vs Travel"
-                 if(self.graph_type=="Load Vs Travel"):
-                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
-                                             self.axes.set_ylabel('Load (Kg)')                                                               
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (Lb)')
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
-                                             self.axes.set_ylabel('Load (Lb)') 
-                             elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
-                                             self.axes.set_ylabel('Load (Lb)')                                                         
-                             elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (N)')                                                         
-                             elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
-                                             self.axes.set_ylabel('Load (N)')                                 
-                             elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
-                                             self.axes.set_ylabel('Load (N)')
-                             elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (KN)')                                                         
-                             elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                             self.axes.set_xlabel('Deflection (Cm)')
-                                             self.axes.set_ylabel('Load (KN)')                                 
-                             elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                             self.axes.set_xlabel('Deflection (Inch)')
-                                             self.axes.set_ylabel('Load (KN)')
-                             elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (gm)') 
-                             else:    
-                                             self.axes.set_xlabel('Deflection (Mm)')
-                                             self.axes.set_ylabel('Load (Kg)')
-                                        
-                 elif(self.graph_type=="Load Vs Time"):
-                         #print("inside sadasdasd")
-                         self.axes.set_xlabel('Time (Sec)')
-                         self.axes.set_ylabel("'"+str(self.load_unit)+"'")
-                 self.axes.set_xlim(0,int(x[0]))
-                 self.axes.set_ylim(0,int(x[1]))  
-        connection.close()
-         
-        try:
-            '''
-            self.ser = serial.Serial(
-                        port='/dev/ttyUSB0',
-                        baudrate=19200,
-                        bytesize=serial.EIGHTBITS,
-                        parity=serial.PARITY_NONE,
-                        stopbits=serial.STOPBITS_ONE,
-                        xonxoff=False,
-                        timeout = 0.05
-                    )
-            '''
-            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
-            if(self.modbus_flag == 'Y'):
-                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
-                if(self.non_modbus_port=="/dev/ttyUSB1"):
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB1',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-                else:
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-            else:
-                       self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                ) 
-            self.ser.flush()
-            self.ser.write(b'*D\r')
-            self.yline = self.ser.readline()
-            print("Check for Load Cel o/p:"+str(self.yline))
-            ystr3=str(self.yline)
-            ystr3=ystr3[1:int(len(ystr3)-1)]
-            ystr2=ystr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            ystr1=ystr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            ystr=ystr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.ybuff=ystr.split("_")
-            print("Length of Array :"+str(len(self.ybuff)))
-                
-         
-            #==== Guage Length Setting before staret =====
-            self.ser.flush()
-            self.test_type="Compression"
-            
-            if(self.test_type=="Compression"):
-                #self.test_guage_mm=0
-                #self.command_str="*G0.00\r"
-                self.command_str="*G%.2f"%self.test_guage_mm+"\r"
-            else:
-                self.command_str="*G000.0\r"
-                
-            print("Guage Length Command : "+str(self.command_str))
-            
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #===== Auto Reverse Time Off =====
-            self.ser.flush()
-            self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
-            print("Auto reve. Time off Command : "+str(self.command_str))
-            b = bytes(self.command_str, 'utf-8')
-            self.ser.write(b)
-            #time.sleep(2)
-            #========Motor Speed and Breaking Sence =========            
-            self.validate_speed()            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str, 'utf-8')
-                self.ser.write(b)
-            else:   
-                self.ser.write(b'*P0050_0010\r')
-                #print("started with default motor speed . Not gohead ")
-            
-            
-            if(self.goahead_flag==1):
-                b = bytes(self.command_str_rev, 'utf-8')
-                self.ser.write(b)
-            else:   
-                print("rev speed command problem")
-            #self.ser.write(b'*D\r\n')
-            
-            #time.sleep(2)
-            #========Final Motor start Command =========    
-            self.ser.flush()
-            if(self.test_type=="Compression"):
-                 print("Compression")                 
-                 if(len(self.ybuff) > 8):                    
-                    
-                    if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
-                    else:
-                          self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
-                    
-                    print("self.command_str:"+str(self.command_str))
-                    b = bytes(self.command_str, 'utf-8')
-                    self.ser.write(b)                 
-                 else:
-                    print("Compress test not started ") 
-            elif(self.test_type=="Flexural"):
-                print("Flexural")    
-            elif(self.test_type=="COF"):
-                print("COF")
-            else:
-                print("len(self.ybuff) :"+str(len(self.ybuff)))
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
-                    else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
-                else:
-                    print("Error :Serial O/P is not getting ")
-            
-        except IOError:
-            #print("IO Errors")
-            self.IO_error_flg=1
-        
-        #time.sleep(2)
-        self.timer1.setInterval(1)     
-        self.timer1.timeout.connect(self.update_graph)
-        self.timer1.start(1)
-        
-        self.on_ani_start()
-    
-    def update_graph(self):
-        self.end_time = datetime.datetime.now()
-        self.elapsed_time=self.end_time-self.start_time
-        if(self.IO_error_flg==0):            
-            try:
-                self.line = self.ser.readline()
-                print("Timer Job o/p:"+str(self.line))
-                self.ser.flush()
-                self.ser.write(b'*D\r')
-            except IOError:
-                print("IO Errors")    
-                
-            xstr3=str(self.line)
-            xstr3=xstr3[1:int(len(xstr3)-1)]
-            xstr2=xstr3.replace("'\\r","")        
-            #print("replace3('\r):"+str(xstr2))
-            xstr1=xstr2.replace("'","")        
-            #print("replace2('):"+str(xstr1))
-            xstr=xstr1.replace("\\r","")
-            #print("replace1(\r):"+str(xstr))        
-            self.buff=xstr.split("_")
-        #print("length of array :"+str(len(self.buff)))
-        if(int(len(self.buff)) > 8 ):
-            #print("length of array :"+str(len(self.buff)))
-            self.check_R = re.findall(r"[R]", xstr)
-            self.check_S = re.findall("[S]", xstr)
-            self.check_OK = re.findall("[OK]", xstr)
-            #print("Checkking R Characher :"+str(self.check_R))
-            #print("Checkking OK Characher :"+str(len(self.check_OK))) 
-            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
-                #print("Running.... :"+str(self.check_R))
-                #print("length(X).... :"+str(self.buff[4]))
-                #print("load(Y)... :"+str(self.buff[1]))
-                #print("Load Cell No... :"+str(self.buff[7]))
-                #print("Encoder No.. :"+str(self.buff[6]))
-                self.chck_for_last_rec=1
-                
-                if(str(self.buff[6])=="2"):
-                    self.load_cell_hi=1
-                    self.load_cell_lo=0
-                else:
-                    self.load_cell_hi=0
-                    self.load_cell_lo=1
-                    
-                if(str(self.buff[7])=="2"):
-                    self.extiometer=1
-                    self.encoder=0
-                else:
-                    self.extiometer=0
-                    self.encoder=1
-                
-                if(self.load_cell_hi==1):              
-                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                else:
-                    self.q=abs(float(self.buff[0]))
-                
-                if(self.encoder==1):
-                    self.p=abs(float(self.buff[4])) #
-                else:
-                    self.p=abs(float(self.buff[5]))
-                #print("self.test_typexx: "+str(self.test_type))
-                    
-                self.test_type="Compression"    
-                if(self.test_type=="Compression"):
-                    if(int(self.test_guage_mm) > int(self.p)):
-                            self.p=int(self.test_guage_mm)-self.p
-                    else:
-                            self.p=int(self.p)-self.test_guage_mm
-                    #print("self.p :"+str(self.p))
-                elif(self.test_type=="Flexural"):
-                    #self.p=self.p
-                    self.p=int(self.test_guage_mm)-self.p
-                else:
-                    self.p=self.p
-                    #self.p=int(self.test_guage_mm)-self.p
-                    #self.p=self.p
-                
-#                if(self.unit_type == "N/mm"):    
-#                        self.q=float(self.q)*9.81
-#                elif(self.unit_type == "Kgf/cm"):
-#                        self.p=float(self.p)/10
-#                else:
-#                        self.p=float(self.p)
-#                        self.q=float(self.q)
 
-
-                self.p_cm=float(self.p)/10
-                self.arr_p_cm.append(float(self.p_cm))
-                
-                self.p_inch=float(self.p)*0.0393701
-                self.arr_p_inch.append(float(self.p_inch))
-                
-                self.q_n=float(self.q)*9.81
-                self.arr_q_n.append(float(self.q_n))
-                
-                self.q_lb=float(self.q)*2.20462
-                self.arr_q_lb.append(float(self.q_lb))
-                
-                self.q_kn=float(self.q_n)/1000
-                self.arr_q_kn.append(float(self.q_kn))
-                
-                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
-                self.q_mpa=float(self.q)*1000
-                self.arr_q_mpa.append(float(self.q_mpa))
-                
-                
-                self.arr_speed.append(float(self.speed))
-                
-                self.arr_p.append(float(self.p))
-                self.arr_q.append(float(self.q))
-                
-                self.t=self.elapsed_time.total_seconds()
-                self.t_timestamp=str(self.end_time)
-                self.arr_t_timestamp.append(self.t_timestamp)
-                self.arr_t.append(float(self.t))
-                
-                print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-               
-                #print(" Array P:"+str(self.arr_p))
-                #print(" Array Q:"+str(self.arr_q))
-               
-                
-                #print(" self.q :"+str(self.q)+" self.ylim: "+str(self.ylim))
-
-                if(int(self.q) > int(self.ylim)):
-                    self.ylim=(int(self.q)+100)
-                    self.ylim_update='YES'                   
-                   #print(" self.ylim:"+str(self.ylim))
-                
-                #print(" self.p :"+str(self.p)+" self.xlim: "+str(self.xlim))
-                              
-                if(self.p > self.xlim):
-                   self.xlim=(int(self.p)+100)
-                   self.xlim_update='YES'                   
-                #time.sleep(1)
-                self.save_data_flg="No"
-            else:               
-                
-                ### This is change to process last repcord
-                if(self.chck_for_last_rec==1):
-                        self.chck_for_last_rec=0
-                        if(str(self.buff[6])=="2"):
-                            self.load_cell_hi=1
-                            self.load_cell_lo=0
-                        else:
-                            self.load_cell_hi=0
-                            self.load_cell_lo=1
-                            
-                        if(str(self.buff[7])=="2"):
-                            self.extiometer=1
-                            self.encoder=0
-                        else:
-                            self.extiometer=0
-                            self.encoder=1
-                        
-                        if(self.load_cell_hi==1):              
-                            self.q=abs(float(self.buff[1])) #+random.randint(0,50)
-                        else:
-                            self.q=abs(float(self.buff[0]))
-                        
-                        if(self.encoder==1):
-                            self.p=abs(float(self.buff[4])) #
-                        else:
-                            self.p=abs(float(self.buff[5]))
-                        #print("self.test_typexx: "+str(self.test_type))
-                        if(self.test_type=="Compression"):
-                            if(int(self.test_guage_mm) > int(self.p)):
-                                    self.p=int(self.test_guage_mm)-self.p
-                            else:
-                                    self.p=int(self.p)-self.test_guage_mm
-                            #print("self.p :"+str(self.p))
-                        elif(self.test_type=="Flexural"):
-                            #self.p=self.p
-                            self.p=int(self.test_guage_mm)-self.p
-                        else:
-                            self.p=self.p
-      
-
-                        self.p_cm=float(self.p)/10
-                        self.arr_p_cm.append(float(self.p_cm))
-                        
-                        self.p_inch=float(self.p)*0.0393701
-                        self.arr_p_inch.append(float(self.p_inch))
-                        
-                        self.q_n=float(self.q)*9.81
-                        self.arr_q_n.append(float(self.q_n))
-                        
-                        self.q_lb=float(self.q)*2.20462
-                        self.arr_q_lb.append(float(self.q_lb))
-                        
-                        self.q_kn=float(self.q_n)/1000
-                        self.arr_q_kn.append(float(self.q_kn))
-                        
-                        self.kg_cm2=float(self.q)/float(self.cs_area_cm)
-                        self.q_mpa=float(self.q)*1000
-                        self.arr_q_mpa.append(float(self.q_mpa))
-                        
-                        
-                        self.arr_speed.append(float(self.speed))
-                        
-                        self.arr_p.append(float(self.p))
-                        self.arr_q.append(float(self.q))
-                        
-                        self.t=self.elapsed_time.total_seconds()
-                        self.t_timestamp=str(self.end_time)
-                        self.arr_t_timestamp.append(self.t_timestamp)
-                        self.arr_t.append(float(self.t))
-                        
-                        print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                
-                self.save_data_flg="Yes"
-                self.on_ani_stop()
-            
-                   
-    def plot_grah_only(self,i):
-                self.graph_type="Load Vs Travel"
-                #print("self.load_unit :"+str(self.load_unit)+" self.disp_unit : "+str(self.disp_unit))
-                if(self.graph_type=="Load Vs Travel"):
-                                    if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
-                                                self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
-                                                self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
-                                                self.line_cnt.set_data(self.arr_p_inch,self.arr_q_lb)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="Lb" and self.disp_unit=="Cm"):
-                                                print("Lb/Cm ...")
-                                                self.line_cnt.set_data(self.arr_p_cm,self.arr_q_lb)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q_lb)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="N" and self.disp_unit=="Mm"):
-                                                #print("Inside N/mm plot") 
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q_n)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="N" and self.disp_unit=="Cm"):
-                                                self.line_cnt.set_data(self.arr_p_cm,self.arr_q_n)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="N" and self.disp_unit=="Inch"):
-                                                self.line_cnt.set_data(self.arr_p_inch,self.arr_q_n)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="KN" and self.disp_unit=="Mm"):
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q_kn)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="KN" and self.disp_unit=="Cm"):
-                                                self.line_cnt.set_data(self.arr_p_cm,self.arr_q_kn)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="KN" and self.disp_unit=="Inch"):
-                                                self.line_cnt.set_data(self.arr_p_inch,self.arr_q_kn)
-                                                return [self.line_cnt]
-                                    elif(self.load_unit=="gm" and self.disp_unit=="Mm"):
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q_mpa)
-                                                return [self.line_cnt]
-                                    else:    
-                                                self.line_cnt.set_data(self.arr_p,self.arr_q)
-                                                return [self.line_cnt]
-                                                #return self.line_cnt,
-                elif(self.graph_type=="Load Vs Time"):
-                            self.line_cnt.set_data(self.arr_t,self.arr_q)
-                            return [self.line_cnt]
-                else:
-                            print("Invalida Graph Type")
-                       
-       
-        
-    
-    
-    def on_ani_stop(self):
-        self.on_stop()
-        if self.playing:
-            self.ani._stop()
-        else:
-             pass
-            
-    def on_stop(self):
-        if(self.timer1.isActive()): 
-           self.timer1.stop()
-           
-    def init(self):
-        self.line_cnt.set_data([], [])
-        return self.line_cnt,
-
-    def on_ani_start(self):        
-        if self.playing:
-            pass
-        else:
-            self.playing = True
-            self.ani = animation.FuncAnimation(
-                self.figure,
-                self.plot_grah_only,init_func=self.init
-                ,blit=True
-                ,interval=10
-                    )
-            print("Done1")
-       
-    def validate_speed(self):        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0) from SETTING_MST") 
-        for x in results:
-             self.speed_val=str(x[0])
-        connection.close()
-        self.goahead_flag=0
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0), IFNULL(NEW_TEST_MOTOR_REV_SPEED,0) from GLOBAL_VAR") 
-        for x in results:
-             self.input_speed_val=str(x[0])
-             self.input_rev_speed_val=str(x[1])
-        connection.close()
-        
-        
-        if(self.input_speed_val != ""):
-            if(float(self.input_speed_val) <= float(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(float(self.input_speed_val)/float(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
-                 print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
-            else:
-                 print(" not Ok ")
-            
-            if(float(self.input_rev_speed_val) <= float(self.speed_val)):
-                 #print(" Ok ")
-                 self.goahead_flag=1
-                 self.calc_speed=(float(self.input_rev_speed_val)/float(self.speed_val))*1000                 
-                 #print(" calc Speed : "+str(self.calc_speed))
-                 #print(" command: *P"+str(self.calc_speed)+" \r")
-                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
-                 self.command_str_rev="*Y%04d"%self.calc_speed+"\r"
-                 print("Rever Speed Command   :"+str(self.command_str_rev))
-            else:
-                 print(" not Ok ")
-            
-            
-        else:
-            print(" not Ok ")
-            
         
                
 
@@ -3092,10 +2322,10 @@ class PlotCanvas(FigureCanvas):
         #ax.set_title('Test Id=32         Samples=3       BreakLoad(Kg)=110        Length(mm)=3')         
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT DISTINCT GRAPH_ID FROM TEST_DATA WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
+        results=connection.execute("SELECT DISTINCT GRAPH_ID FROM TEST_DATA_RADIAL WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) order by GRAPH_ID") 
         for x in results:
               self.graph_ids.append(x[0])            
-             
+              print("Grph IDs :"+str(x[0]))
         connection.close()
         
 
@@ -3103,32 +2333,22 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
-              self.last_load_unit=str(x[0])
-              self.last_disp_unit=str(x[1])
+              self.last_load_unit="Kg"
+              self.last_disp_unit="Mm"
               ax.set_xlim(0,int(x[2]))
               ax.set_ylim(0,int(x[3]))  
         connection.close()
         
         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
-        for x in results:
-              self.graph_type=str(x[0])  
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
-        for x in results:
-              self.graph_type=str(x[0])  
-        connection.close()
         
         
-        self.graph_type="Load Vs Travel"
+        
+        self.graph_type="Load Vs Deflection"
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
             self.y_num=[0.0]
             connection = sqlite3.connect("tyr.db")
-            if(self.graph_type=="Load Vs Travel"):
+            if(self.graph_type=="Load Vs Deflection"):
                     if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
@@ -3170,6 +2390,7 @@ class PlotCanvas(FigureCanvas):
            
             if(g < 8 ):
                 ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+        
         print("self.graph_type :"+str(self.graph_type))
         if(self.graph_type=="Load Vs Travel"):
                 ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
@@ -3190,78 +2411,7 @@ class PlotCanvas(FigureCanvas):
     
             
 
-class PlotCanvas_blank(FigureCanvas):
-    def __init__(self, parent=None, width=1, height=0.1, dpi=80):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)        
-        FigureCanvas.__init__(self, fig)
-        #self.setParent(parent)
-        FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-        self.plot_blank()
-        self.last_load_unit=""
-        self.last_disp_unit=""
-        self.graph_type=""
-        
-    def plot_blank(self):                
-        
-        connection = sqlite3.connect("tyr.db")              
-        with connection:        
-                cursor = connection.cursor()                            
-                cursor.execute("DELETE FROM STG_GRAPH_MST ")                            
-        connection.commit();
-        connection.close()
-        
-        self.x=[0,0,0,0,0,0,0,0]
-        self.y=[0,0,0,0,0,0,0,0]
-        
-        self.p=list()
-        self.q=list()
-        self.test_type="Tear"
-        ax = self.figure.add_subplot(111)
-        ax.set_facecolor('#CCFFFF')
-        ax.minorticks_on()
-        ax.grid(which='major', linestyle='-', linewidth='0.5', color='red')
-        ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-       
-         
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_SCALE_CELL_2,GRAPH_SCALE_CELL_1 from SETTING_MST") 
-        for x in results:
-             ax.set_xlim(0,float(x[0]))
-             ax.set_ylim(0,float(x[1]))          
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT GRAPH_TYPE from GLOBAL_VAR2") 
-        for x in results:
-              self.graph_type=str(x[0])  
-        connection.close()
-        
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2") 
-        for x in results:
-             self.last_load_unit=str(x[0])
-             self.last_disp_unit=str(x[1])  
-        connection.close()
-               
-        for i in range(len(self.x)):
-              self.p.append(self.x[i])
-              self.q.append(self.y[i])  
-              
-        ax.plot(self.x,self.y,'b')
-        
-        if(self.graph_type=="Load Vs Travel"):
-                ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
-        else:
-                ax.set_ylabel('Load  ('+str(self.last_load_unit)+')')
-                ax.set_xlabel(' Deflection ('+str(self.last_disp_unit)+')')
-        
-        self.draw()       
-    
+
 
 
 
@@ -3269,7 +2419,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = TY_73_Ui_MainWindow()
+    ui = TY_74_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
