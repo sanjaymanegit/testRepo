@@ -13,13 +13,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRegExp, Qt
 from PyQt5.QtGui import QRegExpValidator
-
+'''
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
 from pop_graph_data import pop_graph_data_Ui_MainWindow
-
+'''
 import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
