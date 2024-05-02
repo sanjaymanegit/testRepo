@@ -1628,8 +1628,10 @@ class TY_73_Ui_MainWindow(object):
         self.timer.timeout.connect(self.dateAndTime)
         self.pushButton_6.clicked.connect(MainWindow.close)
         self.load_data()
-        self.pushButton_19.clicked.connect(self.set_load_points)
+        #self.pushButton_19.clicked.connect(self.set_load_points)
+        self.comboBox.currentTextChanged.connect(self.set_load_points)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
+        
         self.comboBox_3.currentTextChanged.connect(self.deflection_unit_on_change)
         self.comboBox_4.currentTextChanged.connect(self.specimen_name_on_change)
         self.pushButton_10.clicked.connect(self.graph_scale_on_change)
@@ -1828,7 +1830,7 @@ class TY_73_Ui_MainWindow(object):
     def graph_scale_on_change(self):
         connection = sqlite3.connect("tyr.db") 
         cursor = connection.cursor()
-        cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_13.text())+"', GRAPH_SCALE_CELL_2 ='"+str(self.lineEdit_14.text())+"'") 
+        cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_14.text())+"', GRAPH_SCALE_CELL_2 ='"+str(self.lineEdit_13.text())+"'") 
         connection.commit()
         connection.close()
         self.label_10.setText("Graph Scale Updated...") 
@@ -1956,7 +1958,7 @@ class TY_73_Ui_MainWindow(object):
 
         # Selecting the graph scale from SETTING_MST
         connection = sqlite3.connect("tyr.db") 
-        results = connection.execute("SELECT GRAPH_SCALE_CELL_1, GRAPH_SCALE_CELL_2 FROM SETTING_MST") 
+        results = connection.execute("SELECT GRAPH_SCALE_CELL_2, GRAPH_SCALE_CELL_1 FROM SETTING_MST") 
         for scale in results:
              self.lineEdit_13.setText(str(scale[0]))
              self.lineEdit_14.setText(str(scale[1]))
