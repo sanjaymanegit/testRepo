@@ -28,6 +28,7 @@ from TY_65_START_TEST_ELONGATION_03 import TY_65_Ui_MainWindow
 from TY_67_START_UNIRUB_TEAR import TY_67_Ui_MainWindow
 from TY_69_START_UNIRUB_ADHESION import TY_69_Ui_MainWindow
 from TY_71_START_TEST_CLD3 import TY_71_Ui_MainWindow
+from TY_73_START_TEST_RADIAL import TY_73_Ui_MainWindow
 
 
 
@@ -490,9 +491,26 @@ class TY_12_LIST_Ui_MainWindow(object):
             self.save_test_adhesion_strength()
         elif(str(self.test_type_id) == "36"):  
             self.save_test_cld3()
+        elif(str(self.test_type_id) == "37"):  
+            self.save_test_radial()
         else:
             print("Invalid Test ID"+str(self.test_type_id))
     
+   
+    def save_test_radial(self):                     
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='RADIAL_TEST'")                    
+        connection.commit();
+        connection.close()
+        self.open_new_window_radial()
+    
+    def open_new_window_radial(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_73_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     def save_test_cld3(self):                     
         connection = sqlite3.connect("tyr.db")              

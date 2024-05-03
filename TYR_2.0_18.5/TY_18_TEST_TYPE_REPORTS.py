@@ -428,9 +428,22 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_adhesion_strength()
         elif(str(self.test_type_id) == "36"):
             self.save_test_cld3()
+        elif(str(self.test_type_id) == "37"):
+            self.save_test_radial()
         else:
             print("Invalid Test ID")
-            
+    
+    
+    def save_test_radial(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='RADIAL_TEST'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_LIST_NEW()
+        
     def save_test_cld3(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
