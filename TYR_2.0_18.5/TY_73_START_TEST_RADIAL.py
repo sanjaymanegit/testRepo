@@ -2218,6 +2218,8 @@ class TY_73_Ui_MainWindow(object):
                         print("Invalid Load Point can not load data")                    
                     print("Data saved........")
                     cursor.execute("UPDATE TEST_DATA_RADIAL SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                    cursor.execute("UPDATE TEST_DATA_RADIAL SET MAX_LOAD=(SELECT MAX(Y_NUM) from STG_GRAPH_MST),MAX_LENGTH=(SELECT MAX(X_NUM) from STG_GRAPH_MST),LOAD_UNIT='"+str(self.comboBox_2.currentText())+"',LENGTH_UNIT='"+str(self.comboBox_3.currentText())+"' WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                    cursor.execute("UPDATE TEST_DATA_RADIAL SET STIFFNESS=((MAX_LOAD)/(MAX_LENGTH))  WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                           
 
             connection.commit();
@@ -2360,26 +2362,26 @@ class TY_73_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(STIFFNESS)),printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max',printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Max',printf(\"%.2f\",max(STIFFNESS)),printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",min(STIFFNESS)),printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
                   connection.close()
@@ -2466,46 +2468,37 @@ class TY_73_Ui_MainWindow(object):
         font.setPointSize(10)
         self.tableWidget.setFont(font)        
         if(int(str(self.comboBox.currentText())) == 2):       
-                self.tableWidget.setColumnCount(3)
-                self.tableWidget.setColumnWidth(0, 100)
-                self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-        elif(int(str(self.comboBox.currentText())) == 3):       
                 self.tableWidget.setColumnCount(4)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-        elif(int(str(self.comboBox.currentText())) == 4):       
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+        elif(int(str(self.comboBox.currentText())) == 3):       
                 self.tableWidget.setColumnCount(5)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100)
                 self.tableWidget.setColumnWidth(4, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-        
-        elif(int(str(self.comboBox.currentText())) == 5):       
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+        elif(int(str(self.comboBox.currentText())) == 4):       
                 self.tableWidget.setColumnCount(6)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100)
                 self.tableWidget.setColumnWidth(4, 100)
-                self.tableWidget.setColumnWidth(5, 100)
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setColumnWidth(5, 100) 
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
         
-        elif(int(str(self.comboBox.currentText())) == 6):       
+        elif(int(str(self.comboBox.currentText())) == 5):       
                 self.tableWidget.setColumnCount(7)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
@@ -2514,12 +2507,11 @@ class TY_73_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(4, 100)
                 self.tableWidget.setColumnWidth(5, 100)
                 self.tableWidget.setColumnWidth(6, 100)
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')'])
-                
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-   
-        elif(int(str(self.comboBox.currentText())) == 7):       
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+        
+        elif(int(str(self.comboBox.currentText())) == 6):       
                 self.tableWidget.setColumnCount(8)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
@@ -2529,11 +2521,12 @@ class TY_73_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(5, 100)
                 self.tableWidget.setColumnWidth(6, 100)
                 self.tableWidget.setColumnWidth(7, 100)
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6),printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-        elif(int(str(self.comboBox.currentText())) == 8):       
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+   
+        elif(int(str(self.comboBox.currentText())) == 7):       
                 self.tableWidget.setColumnCount(9)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
@@ -2544,19 +2537,36 @@ class TY_73_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(6, 100)
                 self.tableWidget.setColumnWidth(7, 100)
                 self.tableWidget.setColumnWidth(8, 100)
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_44.text())+' ('+str(self.comboBox_2.currentText())+')'    ])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6),printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-   
-        else:
-                self.tableWidget.setColumnCount(3)
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6),printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+        elif(int(str(self.comboBox.currentText())) == 8):       
+                self.tableWidget.setColumnCount(10)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setColumnWidth(2, 100)
+                self.tableWidget.setColumnWidth(3, 100)
+                self.tableWidget.setColumnWidth(4, 100)
+                self.tableWidget.setColumnWidth(5, 100)
+                self.tableWidget.setColumnWidth(6, 100)
+                self.tableWidget.setColumnWidth(7, 100)
+                self.tableWidget.setColumnWidth(8, 100)
+                self.tableWidget.setColumnWidth(9, 100)
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+') ','Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')','Def \n @ '+str(self.lineEdit_44.text())+' ('+str(self.comboBox_2.currentText())+')'    ])
+                
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3),printf(\"%.2f\",D4),printf(\"%.2f\",D5),printf(\"%.2f\",D6),printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+   
+        else:
+                self.tableWidget.setColumnCount(4)
+                self.tableWidget.setColumnWidth(0, 100)
+                self.tableWidget.setColumnWidth(1, 100)
+                self.tableWidget.setColumnWidth(2, 100)
+                self.tableWidget.setColumnWidth(3, 100) 
+                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
   
             
         for row_number, row_data in enumerate(results):            
