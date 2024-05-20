@@ -1,5 +1,3 @@
-
-
 import datetime
 import sqlite3
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -7,14 +5,18 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRegExp, Qt
 from PyQt5.QtGui import QRegExpValidator
 import subprocess, shutil, os, platform
+from reportlab.lib.units import mm, cm, inch
+from reportlab.pdfgen import canvas
 
-'''
+from matplotlib.table import Cell
+
+
 from print_test_popup import P_POP_TEST_Ui_MainWindow
 from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
 from pop_graph_data import pop_graph_data_Ui_MainWindow
-'''
+
 import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -1670,12 +1672,72 @@ class TY_74_Ui_MainWindow(object):
         self.pushButton_8.clicked.connect(self.go_for_report)
         self.pushButton_9.clicked.connect(self.readWrite_fields)
         self.pushButton_13.clicked.connect(self.open_pdf)
+        
+        self.pushButton_16.clicked.connect(self.print_file)
+        self.pushButton_14.clicked.connect(self.open_email_report)
+        self.pushButton_15.clicked.connect(self.open_comment_popup)
+        self.pushButton_12.clicked.connect(self.show_all_specimens)
+        
         self.go_for_report()
         
     
     def dateAndTime(self):
         self.label_47.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
    
+    
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def show_all_specimens(self):        
+        #self.pushButton_3.setDisabled(True) ### save
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE=''")                                   
+        connection.commit();
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
+        self.gridLayout.addWidget(self.sc_data, 1,0,1,1)
+        
+        
+    def open_comment_popup(self):
+        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+    
     def readWrite_fields(self):
         self.pushButton_8.setEnabled(True)
         self.frame_3.hide()
@@ -1707,6 +1769,233 @@ class TY_74_Ui_MainWindow(object):
 
 
     def update_data(self):
+                if  (self.initial_unit == "Kg" and self.current_unit == "Lb") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                        connection.commit()
+                        connection.close()
+               
+                elif (self.initial_unit == "Kg" and self.current_unit == "N"):
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor()
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")  
+                                        # cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("N already in Mm")
+                elif (self.initial_unit == "Kg" and self.current_unit == "Gm"):
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                        # cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Gm already in Mm")
+
+                elif (self.initial_unit == "Kg" and self.current_unit == "Kg"):
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                        # cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Kg already in Mm")
+                elif  (self.initial_unit == "N" and self.current_unit == "Lb") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                        connection.commit()
+                        connection.close()
+                elif  (self.initial_unit == "N" and self.current_unit == "Kg") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Kg already in Mm")
+                elif  (self.initial_unit == "N" and self.current_unit == "Gm") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Gm already in Mm")
+                elif  (self.initial_unit == "N" and self.current_unit == "N") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("N already in Mm")
+                elif  (self.initial_unit == "Gm" and self.current_unit == "Lb") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                        connection.commit()
+                        connection.close()
+                elif  (self.initial_unit == "Gm" and self.current_unit == "Kg") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Kg already in Mm")
+                elif  (self.initial_unit == "Gm" and self.current_unit == "N") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("N already in Mm")
+                elif  (self.initial_unit == "Gm" and self.current_unit == "Gm") :
+                        connection = sqlite3.connect("tyr.db")
+                        with connection:
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if self.load_unit == "Lb":
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ") 
+                                connection.commit()
+                                connection.close()
+                        else:
+                                print("Gm already in Mm")                
+                elif  (self.initial_unit == "Lb" and self.current_unit == "Kg") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                        connection.commit()
+                        connection.close()
+                elif  (self.initial_unit == "Lb" and self.current_unit == "N") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                        connection.commit()
+                        connection.close()
+                elif  (self.initial_unit == "Lb" and self.current_unit == "Gm") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:
+                                cursor = connection.cursor() 
+                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                        connection.commit()
+                        connection.close() 
+                elif  (self.initial_unit == "Lb" and self.current_unit == "Lb") :
+                        connection = sqlite3.connect("tyr.db")              
+                        with connection:        
+                                cursor = connection.cursor()
+                                results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                                for x in results:
+                                        self.load_unit = str(x[0])         
+                        connection.commit()
+                        connection.close()
+                        if ( self.load_unit == "Kg" or self.load_unit == "N" or self.load_unit == "Gm" ):
+                                connection = sqlite3.connect("tyr.db")              
+                                with connection:
+                                        cursor = connection.cursor() 
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
+                                connection.commit()
+                                connection.close()
+                else:
+                        pass
                 connection = sqlite3.connect("tyr.db") 
                           
                 with connection:
@@ -1715,13 +2004,14 @@ class TY_74_Ui_MainWindow(object):
                         cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"'")
                         
                         cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', OPERATOR = '"+str(self.lineEdit_12.text())+"', MOTOR_SPEED='"+str(self.lineEdit_9.text())+"', LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_3.currentText())+"', NEW_TEST_MAX_LOAD = '"+str(self.lineEdit_17.text())+"', NEW_TEST_MAX_LENGTH = '"+str(self.lineEdit_18.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")                                        
-                        cursor.execute("UPDATE TEST_DATA_RADIAL SET SPEC_ID = '"+str(self.label_26.text())+"', LOAD_POINTS = '"+str(self.comboBox.currentText())+"', MAX_LOAD = '"+self.lineEdit_17.text()+"', MAX_LENGTH = '"+self.lineEdit_18.text()+"', L1 = '"+self.lineEdit_37.text()+"', L2 = '"+self.lineEdit_38.text()+"', L3 = '"+self.lineEdit_39.text()+"', L4 = '"+self.lineEdit_40.text()+"', L5 = '"+self.lineEdit_41.text()+"', L6 = '"+self.lineEdit_42.text()+"', L7 = '"+self.lineEdit_43.text()+"', L8 = '"+self.lineEdit_44.text()+"', LOAD_UNIT = '"+str(self.comboBox_2.currentText())+"', LENGTH_UNIT = '"+str(self.comboBox_3.currentText())+"' WHERE TEST_ID = '"+str(self.label_12.text())+"'")
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET LOAD_POINTS = '"+str(self.comboBox.currentText())+"', L1 = '"+self.lineEdit_37.text()+"', L2 = '"+self.lineEdit_38.text()+"', L3 = '"+self.lineEdit_39.text()+"', L4 = '"+self.lineEdit_40.text()+"', L5 = '"+self.lineEdit_41.text()+"', L6 = '"+self.lineEdit_42.text()+"', L7 = '"+self.lineEdit_43.text()+"', L8 = '"+self.lineEdit_44.text()+"', LOAD_UNIT = '"+str(self.comboBox_2.currentText())+"', LENGTH_UNIT = '"+str(self.comboBox_3.currentText())+"' WHERE TEST_ID = '"+str(self.label_12.text())+"'")
                 connection.commit()
                 connection.close() 
                 if (self.comboBox_3.currentText() == "Mm"):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:
                                 cursor = connection.cursor() 
+                                cursor.execute("UPDATE GRAPH_MST SET X_NUM = '"+str(self.lineEdit_13.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
                         connection.commit()
                         connection.close() 
@@ -1730,6 +2020,7 @@ class TY_74_Ui_MainWindow(object):
                         with connection:
                                 cursor = connection.cursor() 
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_INCH  = '"+self.lineEdit_13.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GRAPH_MST SET X_NUM_INCH = '"+str(self.lineEdit_13.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")
                         connection.commit()
                         connection.close()
                 elif (self.comboBox_3.currentText() == "Cm"):
@@ -1738,6 +2029,7 @@ class TY_74_Ui_MainWindow(object):
                         with connection:
                                 cursor = connection.cursor() 
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM ='"+self.lineEdit_13.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GRAPH_MST SET X_NUM_CM = '"+str(self.lineEdit_13.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")
                         connection.commit()
                         connection.close()
                 else:
@@ -1746,6 +2038,7 @@ class TY_74_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db") 
                         with connection:
                                 cursor = connection.cursor() 
+                                cursor.execute("UPDATE GRAPH_MST SET Y_NUM = '"+str(self.lineEdit_14.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
                         connection.commit()
                         connection.close() 
@@ -1754,7 +2047,7 @@ class TY_74_Ui_MainWindow(object):
                         with connection:
                                 cursor = connection.cursor() 
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_LB='"+self.lineEdit_14.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
-                                      
+                                cursor.execute("UPDATE GRAPH_MST SET Y_NUM_LB = '"+str(self.lineEdit_14.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")      
                         connection.commit()
                         connection.close()
                 elif (self.comboBox_2.currentText() == "N"):
@@ -1762,6 +2055,7 @@ class TY_74_Ui_MainWindow(object):
                         with connection:
                                 cursor = connection.cursor() 
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_N='"+self.lineEdit_14.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GRAPH_MST SET Y_NUM_N = '"+str(self.lineEdit_14.text())+"'  WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")      
                         connection.commit()
                         connection.close()
                 elif (self.comboBox_2.currentText() == "Gm"):
@@ -1769,71 +2063,27 @@ class TY_74_Ui_MainWindow(object):
                         with connection:
                                 cursor = connection.cursor() 
                                 cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_X_LENGTH_CM ='"+self.lineEdit_14.text()+"' WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")
+                                cursor.execute("UPDATE GRAPH_MST SET Y_NUM_GM = '"+str(self.lineEdit_14.text())+"' WHERE GRAPH_ID IN ( SELECT TEST_ID FROM GLOBAL_VAR)")   
                         connection.commit()
                         connection.close()   
                 else:
                         pass
                 connection = sqlite3.connect("tyr.db")              
-                with connection:
-                        cursor = connection.cursor()
-                        results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
-                        for x in results:
-                                self.load_unit = str(x[0])
-                        print("seeeee rrrreesssu :", results)
-                        print("seeeee rrrreesssu :", self.load_unit)         
-                connection.commit()
-                connection.close()        
-                if  (self.initial_unit == "Kg" and self.load_unit == "Lb") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
-                        connection.commit()
-                        connection.close()
-               
-                elif  (self.initial_unit == "N" and self.load_unit == "Lb") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
-                        connection.commit()
-                        connection.close()
-                elif  (self.initial_unit == "Gm" and self.load_unit == "Lb") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 0.0393701, D2 = D2 * 0.0393701, D3 = D3 * 0.0393701, D4 = D4 * 0.0393701, D5 = D5 * 0.0393701, D6 = D6 * 0.0393701, D7 = D7 * 0.0393701, D8 = D8 * 0.0393701 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")        
-                        connection.commit()
-                        connection.close()
-                elif  (self.initial_unit == "Lb" and self.load_unit == "Kg") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
-                        connection.commit()
-                        connection.close()
-                elif  (self.initial_unit == "Lb" and self.load_unit == "N") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
-                        connection.commit()
-                        connection.close()
-                elif  (self.initial_unit == "Lb" and self.load_unit == "Gm") :
-                        connection = sqlite3.connect("tyr.db")              
-                        with connection:
-                                cursor = connection.cursor() 
-                                cursor.execute("UPDATE TEST_DATA_RADIAL SET D1 = D1 * 25.4, D2 = D2 * 25.4, D3 = D3 * 25.4, D4 = D4 * 25.4, D5 = D5 * 25.4, D6 = D6 * 25.4, D7 = D7 * 25.4, D8 = D8 * 25.4 WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
-                        connection.commit()
-                        connection.close() 
-                else:
-                        pass        
+                # with connection:
+                #         cursor = connection.cursor()
+                #         results = cursor.execute("SELECT LOAD_UNIT FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"'  ")
+                #         for x in results:
+                #                 self.load_unit = str(x[0])         
+                # connection.commit()
+                # connection.close()        
+                        
                 connection = sqlite3.connect("tyr.db")              
                 with connection:
                         cursor = connection.cursor()
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET STIFFNESS = ((MAX_LOAD)/(MAX_LENGTH)) WHERE TEST_ID='"+str(int(self.label_12.text()))+"'")     
                 connection.commit()
                 connection.close()
+
     def go_for_report(self):
         self.validations()
         self.update_data() 
@@ -2015,7 +2265,7 @@ class TY_74_Ui_MainWindow(object):
                 for row in results:
                         for value in row:
                                 self.initial_value_for_deflec.append(float(value))
-                                print("initial deflec :", self.initial_value_for_deflec) 
+                                # print("initial deflec :", self.initial_value_for_deflec) 
         connection.commit()
         connection.close() 
            
@@ -2308,7 +2558,7 @@ class TY_74_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Spec. ID','Stiffness'+'\n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
         elif(int(str(self.comboBox.currentText())) == 3):       
@@ -2515,14 +2765,14 @@ class TY_74_Ui_MainWindow(object):
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1), printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) , printf(\"%.2f\",avg(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2539,7 +2789,7 @@ class TY_74_Ui_MainWindow(object):
         elif(int(str(self.comboBox.currentText())) == 3) :
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ']]
-                  print(data2)
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1), printf(\"%.2f\",D2), printf(\"%.2f\",D3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
@@ -2550,7 +2800,7 @@ class TY_74_Ui_MainWindow(object):
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2567,18 +2817,18 @@ class TY_74_Ui_MainWindow(object):
         elif(int(str(self.comboBox.currentText())) == 4) :
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  print(data2)
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2599,14 +2849,14 @@ class TY_74_Ui_MainWindow(object):
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2623,18 +2873,18 @@ class TY_74_Ui_MainWindow(object):
         elif(int(str(self.comboBox.currentText())) == 6) :
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  print(data2)
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2651,18 +2901,18 @@ class TY_74_Ui_MainWindow(object):
         elif(int(str(self.comboBox.currentText())) == 7) :
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  print(data2)
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6), printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)), printf(\"%.2f\",avg(D7)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2679,18 +2929,18 @@ class TY_74_Ui_MainWindow(object):
         elif(int(str(self.comboBox.currentText())) == 8) :
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_44.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  print(data2)
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6), printf(\"%.2f\",D7), printf(\"%.2f\",D8) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)), printf(\"%.2f\",avg(D7)), printf(\"%.2f\",avg(D8)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                                print(data2)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
@@ -2722,20 +2972,25 @@ class TY_74_Ui_MainWindow(object):
         results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
         for x in results:            
             Title = Paragraph(str(x[0]), styles["Title"])
+        #     Title = [Cell(str(x[0]), styles["Title"], ln = 1)]
             #Title2 = Paragraph(str(x[1]), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
+            
+            
+            
         connection.close()
+        
         blank=Paragraph("                                                                                          ", styles["Normal"])
         #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
-        if(str(self.remark) == ""):
-                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == "None"):
+                comments = Paragraph("    <b> Remark : </b>______________________________________________________________________________", styles["Normal"])
         else:
-                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
-        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+                comments = Paragraph("   <b>  Remark :  </b> "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph(" <b> Authorised and Signed By : </b> _________________.", styles["Normal"])
         
-        linea_firma = Line(2, 90, 670, 90)
-        d = Drawing(50, 1)
+        linea_firma = Line(0, 30, 525, 30)
+        d = Drawing(100, 1)
         d.add(linea_firma)
        
         
@@ -2746,22 +3001,31 @@ class TY_74_Ui_MainWindow(object):
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
         
         f2=Table(data2)
-        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (-1, 0), colors.grey), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (-1, 0), colors.aliceblue), ('BACKGROUND', (0, 2), (-1, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (-1, 4), colors.lightgrey), ('BACKGROUND', (0, 6), (-1, 6), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'), ('ALIGN', (0,0), (-1,-1), 'CENTER')]))       
          
         f3=Table(summary_data)
-        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey), ('BACKGROUND', (0, 2), (0, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (0, 4), colors.lightgrey), ('BACKGROUND', (2, 0), (2, 0), colors.lightgrey), ('BACKGROUND', (2, 2), (2, 2), colors.lightgrey), ('BACKGROUND', (2, 4), (2, 4), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red), ('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'), ('COLWIDTHS', (0, 0), (-1, -1), [50,100,50,100]), ('ALIGN', (1,0), (1,-1), 'CENTER'), ('ALIGN', (3,0), (3,-1), 'CENTER')]))       
         
         #self.show_all_specimens()
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img,
                         6 * inch, 4* inch)
-        
-        
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        report_logo_img="python_company_logo.png"        
+        pdf_logo_img = Image(report_logo_img,
+                        1 * inch, 1 * inch)
+        header = [[pdf_logo_img], [Title, Title2]]
+        col_widths = [1.2 * inch, 4.5 * inch]
+        f1 = Table([header], colWidths=col_widths)
+         
+        # ('COLWIDTHS', (0, 0), (-1, -1), col_widths), ('LEADING', (0, 0), (-1, -1), 12)
+        # f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('COLWIDTHS', (0, 0), (-1, -1), col_widths),  ('ALIGN', (1, 1), (-1,-1), 'CENTER'),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red)]))
+        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.white), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.white), ('ALIGN', (0, 0), (-1,-1), 'CENTER'), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])) 
+
+        Elements=[Spacer(1,12),f1,Spacer(1,40), d,f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         try:
                
-                doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
+                doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4, rightMargin=20,
                                         leftMargin=30,
                                         topMargin=10,
                                         bottomMargin=10)
@@ -2821,8 +3085,8 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
-              self.last_load_unit="Kg"
-              self.last_disp_unit="Mm"
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
               ax.set_xlim(0,float(x[2]))
               ax.set_ylim(0,float(x[3]))  
         connection.close()
@@ -2870,7 +3134,8 @@ class PlotCanvas(FigureCanvas):
                     results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
          
             else:
-                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                #     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                pass
             for k in results:        
                 self.x_num.append(k[0])
                 self.y_num.append(k[1])

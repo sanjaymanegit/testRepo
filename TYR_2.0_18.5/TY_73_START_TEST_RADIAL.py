@@ -1,6 +1,3 @@
-
-import datetime
-import sqlite3
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRegExp, Qt
