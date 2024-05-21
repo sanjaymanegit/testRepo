@@ -9,6 +9,13 @@ from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
 from pop_graph_data_radial import pop_graph_data_radial_Ui_MainWindow
 
+import subprocess, shutil, os, platform
+from reportlab.lib.units import mm, cm, inch
+from reportlab.pdfgen import canvas
+
+from matplotlib.table import Cell
+
+
 import inspect
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -2342,7 +2349,7 @@ class TY_73_Ui_MainWindow(object):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
-        self.tested_by=""
+        
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
@@ -2363,59 +2370,200 @@ class TY_73_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1), printf(\"%.2f\",D2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(STIFFNESS)),printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) , printf(\"%.2f\",avg(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max',printf(\"%.2f\",max(STIFFNESS)),printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for y in results:
-                                data2.append(y)
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",min(STIFFNESS)),printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 3) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1), printf(\"%.2f\",D2), printf(\"%.2f\",D3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
+                                # print(data2)
                   connection.close()
-        
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)), printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)), printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 4) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for y in results:
+                                data2.append(y)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)), printf(\"%.2f\",max(D4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)), printf(\"%.2f\",min(D4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 5) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for y in results:
+                                data2.append(y)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max',printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)), printf(\"%.2f\",max(D4)), printf(\"%.2f\",max(D5)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)), printf(\"%.2f\",min(D4)), printf(\"%.2f\",min(D5)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
         elif(int(str(self.comboBox.currentText())) == 6) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')',' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')',' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')',' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')']]
-                  
-                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",D1) ,printf(\"%.2f\",D2),printf(\"%.2f\",D3) ,printf(\"%.2f\",D4),printf(\"%.2f\",D5) ,printf(\"%.2f\",D6) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(STIFFNESS)),printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)),printf(\"%.2f\",avg(D3)) ,printf(\"%.2f\",avg(D4)),printf(\"%.2f\",avg(D5)) ,printf(\"%.2f\",avg(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
+                                # print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max',printf(\"%.2f\",max(STIFFNESS)),printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)),printf(\"%.2f\",max(D3)) ,printf(\"%.2f\",max(D4)),printf(\"%.2f\",max(D5)) ,printf(\"%.2f\",max(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for y in results:
-                                data2.append(y)
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)), printf(\"%.2f\",max(D4)), printf(\"%.2f\",max(D5)), printf(\"%.2f\",max(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",min(STIFFNESS)),printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)),printf(\"%.2f\",min(D3)) ,printf(\"%.2f\",min(D4)),printf(\"%.2f\",min(D5)) ,printf(\"%.2f\",min(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)), printf(\"%.2f\",min(D4)), printf(\"%.2f\",min(D5)), printf(\"%.2f\",min(D6)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 7) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6), printf(\"%.2f\",D7) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)), printf(\"%.2f\",avg(D7)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for y in results:
                                 data2.append(y)
-                  connection.close() 
-        
-        
-        
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)), printf(\"%.2f\",max(D4)), printf(\"%.2f\",max(D5)), printf(\"%.2f\",max(D6)), printf(\"%.2f\",max(D7)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)), printf(\"%.2f\",min(D4)), printf(\"%.2f\",min(D5)), printf(\"%.2f\",min(D6)), printf(\"%.2f\",min(D7)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 8) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Stiffness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_41.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_42.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_43.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_44.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",D1) ,printf(\"%.2f\",D2), printf(\"%.2f\",D3), printf(\"%.2f\",D4), printf(\"%.2f\",D5), printf(\"%.2f\",D6), printf(\"%.2f\",D7), printf(\"%.2f\",D8) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg',printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(D1)) ,printf(\"%.2f\",avg(D2)), printf(\"%.2f\",avg(D3)), printf(\"%.2f\",avg(D4)), printf(\"%.2f\",avg(D5)), printf(\"%.2f\",avg(D6)), printf(\"%.2f\",avg(D7)), printf(\"%.2f\",avg(D8)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for y in results:
+                                data2.append(y)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(D1)) ,printf(\"%.2f\",max(D2)), printf(\"%.2f\",max(D3)), printf(\"%.2f\",max(D4)), printf(\"%.2f\",max(D5)), printf(\"%.2f\",max(D6)), printf(\"%.2f\",max(D7)), printf(\"%.2f\",max(D8)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(D1)) ,printf(\"%.2f\",min(D2)), printf(\"%.2f\",min(D3)), printf(\"%.2f\",min(D4)), printf(\"%.2f\",min(D5)), printf(\"%.2f\",min(D6)), printf(\"%.2f\",min(D7)), printf(\"%.2f\",min(D8)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
         
         
         
@@ -2434,20 +2582,25 @@ class TY_73_Ui_MainWindow(object):
         results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
         for x in results:            
             Title = Paragraph(str(x[0]), styles["Title"])
+        #     Title = [Cell(str(x[0]), styles["Title"], ln = 1)]
             #Title2 = Paragraph(str(x[1]), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
+            
+            
+            
         connection.close()
+        
         blank=Paragraph("                                                                                          ", styles["Normal"])
         #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
-        if(str(self.remark) == ""):
-                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == "None"):
+                comments = Paragraph("    <b> Remark : </b>______________________________________________________________________________", styles["Normal"])
         else:
-                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
-        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+                comments = Paragraph("   <b>  Remark :  </b> "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph(" <b> Authorised and Signed By : </b> _________________.", styles["Normal"])
         
-        linea_firma = Line(2, 90, 670, 90)
-        d = Drawing(50, 1)
+        linea_firma = Line(0, 30, 525, 30)
+        d = Drawing(100, 1)
         d.add(linea_firma)
        
         
@@ -2458,26 +2611,38 @@ class TY_73_Ui_MainWindow(object):
         #TS_STR = Paragraph("Tensile Strength and Modulus Details :", styles["Normal"])
         
         f2=Table(data2)
-        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (-1, 0), colors.aliceblue), ('BACKGROUND', (0, 2), (-1, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (-1, 4), colors.lightgrey), ('BACKGROUND', (0, 6), (-1, 6), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'), ('ALIGN', (0,0), (-1,-1), 'CENTER')]))       
          
         f3=Table(summary_data)
-        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey), ('BACKGROUND', (0, 2), (0, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (0, 4), colors.lightgrey), ('BACKGROUND', (2, 0), (2, 0), colors.lightgrey), ('BACKGROUND', (2, 2), (2, 2), colors.lightgrey), ('BACKGROUND', (2, 4), (2, 4), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red), ('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'), ('COLWIDTHS', (0, 0), (-1, -1), [50,100,50,100]), ('ALIGN', (1,0), (1,-1), 'CENTER'), ('ALIGN', (3,0), (3,-1), 'CENTER')]))       
         
         #self.show_all_specimens()
         report_gr_img="last_graph.png"        
-        pdf_img= Image(report_gr_img, 6 * inch, 4* inch)
-        
-        
-        Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
-        
-       
-        doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
-                                leftMargin=30,
-                                topMargin=10,
-                                bottomMargin=10)
-        doc.build(Elements)
-        #print("Done")
+        pdf_img= Image(report_gr_img,
+                        6 * inch, 4* inch)
+        report_logo_img="python_company_logo.png"        
+        pdf_logo_img = Image(report_logo_img,
+                        1 * inch, 1 * inch)
+        header = [[pdf_logo_img], [Title, Title2]]
+        col_widths = [1.2 * inch, 4.5 * inch]
+        f1 = Table([header], colWidths=col_widths)
+         
+        # ('COLWIDTHS', (0, 0), (-1, -1), col_widths), ('LEADING', (0, 0), (-1, -1), 12)
+        # f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('COLWIDTHS', (0, 0), (-1, -1), col_widths),  ('ALIGN', (1, 1), (-1,-1), 'CENTER'),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red)]))
+        f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.white), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.white), ('ALIGN', (0, 0), (-1,-1), 'CENTER'), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])) 
 
+        Elements=[Spacer(1,12),f1,Spacer(1,40), d,f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        
+        try:
+               
+                doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4, rightMargin=20,
+                                        leftMargin=30,
+                                        topMargin=10,
+                                        bottomMargin=10)
+                doc.build(Elements)
+        except PermissionError as error:
+               print("Alredy Report :", error)        
+        #print("Done")    
       
     
     
