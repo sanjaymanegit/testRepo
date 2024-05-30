@@ -311,11 +311,11 @@ class TY_15_Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "SAVE"))
         self.pushButton_8.setText(_translate("MainWindow", "REFRESH"))
         self.pushButton_9.setText(_translate("MainWindow", "Login"))
-        self.label_24.setText(_translate("MainWindow", ""))
+        self.label_24.setText(_translate("MainWindow", "")) # error mag
         self.label_25.setText(_translate("MainWindow", "Serial. No.:"))
         self.label_26.setText(_translate("MainWindow", "Test Name :"))
         self.label_28.setText(_translate("MainWindow", "Active :"))
-        self.label_32.setText(_translate("MainWindow", "1"))
+        self.label_32.setText(_translate("MainWindow", "1")) # serial no.
         self.pushButton_10.setText(_translate("MainWindow", "DELETE"))
         self.label_21.setText(_translate("MainWindow", "Test Type List :"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Y"))

@@ -198,6 +198,7 @@ class Ui_MainWindow(object):
         self.label_4_1.setText("<font color=blue> AnyDesk ID: </font> "+str(self.anydesk_id))
         f.close()
         
+    
     def open_new_window(self):        
         f = open("/var/local/devid", "r")
         dev_id=f.read()
@@ -223,6 +224,8 @@ class Ui_MainWindow(object):
                 print("dev id :"+str(dev_id)[0:11])   
         else:
            print("Device Invalid :"+str(serial_no))
+  
+    
         
     def open_new_window2(self):       
         self.window = QtWidgets.QMainWindow()
