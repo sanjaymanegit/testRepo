@@ -13,7 +13,7 @@ from CONFIGURE_TEST import ConfigurTest
 
 import sqlite3, shutil, datetime
 from PyQt5.QtGui import QPixmap
-class Ui_MainWindow(object):
+class setting_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1367, 768)
@@ -323,6 +323,8 @@ class Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "Copy PDF Report to USB"))
         self.pushButton_11.setText(_translate("MainWindow", "Speed Setup"))
         self.pushButton_12.setText(_translate("MainWindow", "Break App"))
+        self.lineEdit.setText(_translate("MainWindow", "1000"))
+        
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)  
         self.timer1.start(1)      
@@ -421,7 +423,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = setting_Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
