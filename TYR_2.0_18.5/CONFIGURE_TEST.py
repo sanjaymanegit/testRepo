@@ -416,8 +416,9 @@ class ConfigurTest(object):
         font.setPointSize(12)
         font.setBold(True)
         self.comboBox.setFont(font)
-        self.comboBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.comboBox.setStyleSheet("#comboBox {background:None;background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 20px;}#comboBox:hover {background-color: rgb(220, 220, 220);border: 3px solid;    border-color: rgb(255, 255, 255);border-radius: 20px;}#comboBox:focus{background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 20px}")
+        #self.comboBox.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        #self.comboBox.setStyleSheet("#comboBox {background:None;background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 0px;}#comboBox:hover {border: 3px solid;    border-color: rgb(255, 255, 255);border-radius: 0px;}#comboBox:focus{background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 0px}")
+        self.comboBox.setStyleSheet("color: rgb(0, 0, 0);")
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -518,10 +519,10 @@ class ConfigurTest(object):
         self.pushButton_8.setText(_translate("MainWindow", "Refresh"))
         self.label_9.setText(_translate("MainWindow", "Test Type List (All) :"))
         self.label_10.setText(_translate("MainWindow", "Test Type List (Active) :"))
-        self.timer1=QtCore.QTimer()
-        self.timer1.setInterval(1000)  
-        self.timer1.start(1)      
-        self.timer1.timeout.connect(self.device_date)
+#         self.timer1=QtCore.QTimer()
+#         self.timer1.setInterval(1000)  
+#         self.timer1.start(1)      
+#         self.timer1.timeout.connect(self.device_date)
         self.pushButton_4.hide()
         self.frame_2.hide()
         self.label_5.hide()
@@ -535,6 +536,7 @@ class ConfigurTest(object):
         self.pushButton_7.clicked.connect(self.s_delete_click)
         self.pushButton_8.clicked.connect(functools.partial(self.selected_record, "Refresh"))
         self.pushButton_9.clicked.connect(self.set_default_test)
+        self.device_date()
          
 
     def set_default_test(self):
@@ -724,7 +726,8 @@ class ConfigurTest(object):
         self.label_5.hide()
 
     def device_date(self):
-        self.label_4.setText(datetime.datetime.now().strftime("%d %B %Y %H:%M:%S"))          
+        self.label_4.setText(datetime.datetime.now().strftime("%d %B %Y %H:%M:%S"))
+        
     def validate_ip(self):
         self.go_ahead = "No"
         if(self.lineEdit_2.text() == ""):

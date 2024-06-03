@@ -325,10 +325,10 @@ class setting_Ui_MainWindow(object):
         self.pushButton_12.setText(_translate("MainWindow", "Break App"))
         self.lineEdit.setText(_translate("MainWindow", "1000"))
         
-        self.timer1=QtCore.QTimer()
-        self.timer1.setInterval(1000)  
-        self.timer1.start(1)      
-        self.timer1.timeout.connect(self.device_date)
+#         self.timer1=QtCore.QTimer()
+#         self.timer1.setInterval(1000)  
+#         self.timer1.start(1)      
+#         self.timer1.timeout.connect(self.device_date)
         self.label_5.hide()
         self.frame_2.hide()
         self.pushButton_3.clicked.connect(MainWindow.close)
@@ -344,6 +344,7 @@ class setting_Ui_MainWindow(object):
         
         self.pushButton.clicked.connect(self.check_pass)
         self.load_data()
+        self.device_date()
     def device_date(self):
         self.label_4.setText(datetime.datetime.now().strftime("%d %B %Y %H:%M:%S"))
     
