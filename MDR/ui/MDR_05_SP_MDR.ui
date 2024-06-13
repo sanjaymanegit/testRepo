@@ -20,13 +20,13 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>20</y>
       <width>1331</width>
       <height>691</height>
@@ -38,8 +38,11 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(0, 0, 0);
-</string>
+     <string notr="true">#frame{
+color: rgb(0, 0, 0);
+border: 3px solid black;
+border-radius: 40px;
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
@@ -66,6 +69,9 @@
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>ForbiddenCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 0);</string>
@@ -94,9 +100,25 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(170, 0, 0);</string>
+      <string notr="true">#pushButton_3{
+color: rgb(255, 255, 255);
+background-color: rgb(170, 0, 0);
+border-radius:15px;
+}
+#pushButton_3:hover{
+border:2px solid white;
+padding-bottom: 3px;
+padding-right: 3px;
+}
+#pushButton_3:pressed{
+border:none;
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Search</string>
@@ -119,9 +141,26 @@ background-color: rgb(170, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(0, 180, 0);</string>
+      <string notr="true">#pushButton_4{
+color: rgb(255, 255, 255);
+background-color: rgb(0, 180, 0);
+border-radius: 15px;
+}
+#pushButton_4:hover{
+border:2px solid white;
+padding-bottom: 3px;
+padding-right: 3px;
+}
+#pushButton_4:pressed{
+border:none;
+padding-top: 5px;
+padding-left: 5px;
+}
+</string>
      </property>
      <property name="text">
       <string>View Pdf (Selected Tests)</string>
@@ -132,7 +171,7 @@ background-color: rgb(0, 180, 0);</string>
       <rect>
        <x>80</x>
        <y>20</y>
-       <width>101</width>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
@@ -145,11 +184,13 @@ background-color: rgb(0, 180, 0);</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#lineEdit {background:None;background-color: rgb(220, 220, 220);border: 1px solid rgba(131,131,131,255);border-radius: 15px; border:none;}#lineEdit:hover {background-color: rgb(220, 220, 220);border: 3px solid;	border-color: rgb(255, 255, 255);border-radius: 15px;}#lineEdit:focus{background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 15px}</string>
      </property>
      <property name="text">
       <string>2020-10-14</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -196,9 +237,25 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(90, 90, 134);
-color: rgb(255, 255, 255);</string>
+      <string notr="true">#pushButton_8{
+background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);
+border-radius: 15px;
+}
+#pushButton_8:hover{
+border:2px solid white;
+padding-bottom: 3px;
+padding-right: 3px;
+}
+#pushButton_8:pressed{
+border:none;
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>DATE</string>
@@ -236,7 +293,7 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>80</x>
        <y>80</y>
-       <width>101</width>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
@@ -249,11 +306,13 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#lineEdit_2 {background:None;background-color: rgb(220, 220, 220);border: 1px solid rgba(131,131,131,255);border-radius: 15px; border:none;}#lineEdit_2:hover {background-color: rgb(220, 220, 220);border: 3px solid;	border-color: rgb(255, 255, 255);border-radius: 15px;}#lineEdit_2:focus{background-color: rgb(255, 255, 255);border: 1px solid rgba(131,131,131,255);border-radius: 15px}</string>
      </property>
      <property name="text">
       <string>2020-10-14</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_12">
@@ -273,9 +332,25 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(90, 90, 134);
-color: rgb(255, 255, 255);</string>
+      <string notr="true">#pushButton_12{
+background-color: rgb(90, 90, 134);
+color: rgb(255, 255, 255);
+border-radius: 15px;
+}
+#pushButton_12:hover{
+border:2px solid white;
+padding-bottom: 3px;
+padding-right: 3px;
+}
+#pushButton_12:pressed{
+border:none;
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>DATE</string>
@@ -313,7 +388,7 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>340</x>
        <y>20</y>
-       <width>61</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -325,9 +400,15 @@ color: rgb(255, 255, 255);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox{
+	background-color: rgb(220, 220, 220);
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -404,9 +485,18 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox_2{
+	background-color: rgb(220, 220, 220);
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -456,9 +546,18 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox_7{
+	background-color: rgb(220, 220, 220);
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -523,7 +622,7 @@ color: rgb(0, 0, 0);</string>
       <rect>
        <x>440</x>
        <y>80</y>
-       <width>41</width>
+       <width>21</width>
        <height>31</height>
       </rect>
      </property>
@@ -550,7 +649,7 @@ color: rgb(0, 0, 0);</string>
       <rect>
        <x>340</x>
        <y>80</y>
-       <width>61</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -562,9 +661,16 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox_8{
+	background-color: rgb(220, 220, 220);
+
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -625,43 +731,327 @@ color: rgb(255, 255, 255);</string>
     <widget class="QCalendarWidget" name="calendarWidget">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>250</y>
-       <width>341</width>
-       <height>231</height>
+       <x>310</x>
+       <y>320</y>
+       <width>321</width>
+       <height>221</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="tabletTracking">
+      <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#calendarWidget QWidget {
+    alternate-background-color: #B8E2FF;
+}
+#qt_calendar_navigationbar {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid #B8E2FF;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#qt_calendar_prevmonth {
+    border: none;
+    qproperty-icon: none;
+    min-width: 13px;
+    max-width: 13px;
+    min-height: 13px;
+    max-height: 13px;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    margin-left: 3px;
+	image: url(:/newPrefix/back-arrow.png);
+}
+#qt_calendar_nextmonth {
+    border: none;
+    qproperty-icon: none;
+    min-width: 13px;
+    max-width: 13px;
+    min-height: 13px;
+    max-height: 13px;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    margin-right: 3px;
+	image: url(:/newPrefix/redo-arrow.png);
+}
+#qt_calendar_prevmonth:hover, #qt_calendar_nextmonth:hover {
+    background-color: #55aaff;
+}
+#qt_calendar_prevmonth:pressed, #qt_calendar_nextmonth:pressed {
+    background-color: rgb(255, 255, 255);
+}
+#qt_calendar_yearbutton{
+
+color: rgb(0, 0, 0);
+margin: 5px;
+border-radius: 5px;
+font-size: 13px;
+padding: 0 10px;
+	background-color: rgb(255, 255, 127);
+}
+#qt_calendar_monthbutton{
+width:110px;
+	background-color: rgb(255, 255, 127);
+	color: rgb(0, 0, 0);
+font-size: 13px;
+padding: 0 2px;
+margin: 5px 0;
+border-radius: 5px;
+}
+#qt_calendar_yearbutton:hover, #qt_calendar_monthbutton:hover{
+background-color: rgb(250, 255, 190);
+}
+#qt_calendar_yearbutton:pressed, #qt_calendar_monthbutton:pressed{
+background-color: #B8E2FF;
+}
+#qt_calendar_yearedit{
+min-width:60px;
+	color: rgb(0, 0, 0);
+background: transparent;
+font-size: 13px;
+}
+#qt_calendar_yearedit::down-button{
+subcontrol-position: left;
+	image: url(:/newPrefix/arrow.png);
+}
+#qt_calendar_yearedit::up-button{
+subcontrol-position: right;
+	image: url(:/newPrefix/arrow-up.png);
+}
+#qt_calendar_yearedit::down-button, #qt_calendar_yearedit::up-button{
+width: 18px;
+height: 18px;
+padding: 0px 5px;
+border-radius:3px;
+}
+#qt_calendar_yearedit::down-button:hover, #qt_calendar_yearedit::up-button:hover{
+background-color: #B8E2FF;
+}
+#qt_calendar_yearedit::down-button:pressed, #qt_calendar_yearedit::up-button:pressed{
+background-color: #fff;
+}
+#calendarWidget QToolButton QMenu {
+background-color: #fff;
+}
+#calendarWidget QToolButton QMenu::item{
+/*padding:5px;*/
+}
+#calendarWidget QToolButton QMenu::item:selected:enabled{
+background-color: #55aaff;
+}
+
+#calendarWidget QToolButton::menu-indicator{
+nosubcontrol-origin: margin;
+subcontrol-position: right center;
+margin-top: 10px; 
+width: 20px;
+}
+
+#qt_calendar_calendarview{
+border: 2px solid #B8E2FF;
+border-top: 0px;
+border-bottom-left-radius:5px;
+border-bottom-right-radius:5px;
+}
+#qt_calendar_calendarview::item:hover{
+background-color: #aaffff;
+border-radius: 5px;
+
+}
+#qt_calendar_calendarview::item:selected{
+background-color: #55aaff;
+border-radius: 5px;
+	background-color: rgb(0, 0, 0);
+}</string>
+     </property>
+     <property name="firstDayOfWeek">
+      <enum>Qt::Monday</enum>
      </property>
      <property name="gridVisible">
+      <bool>false</bool>
+     </property>
+     <property name="navigationBarVisible">
       <bool>true</bool>
      </property>
     </widget>
     <widget class="QCalendarWidget" name="calendarWidget_2">
      <property name="geometry">
       <rect>
-       <x>480</x>
-       <y>250</y>
-       <width>341</width>
-       <height>231</height>
+       <x>720</x>
+       <y>320</y>
+       <width>321</width>
+       <height>221</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#calendarWidget_2 QWidget {
+    alternate-background-color: #B8E2FF;
+}
+#qt_calendar_navigationbar {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid #B8E2FF;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#qt_calendar_prevmonth {
+    border: none;
+    qproperty-icon: none;
+    min-width: 13px;
+    max-width: 13px;
+    min-height: 13px;
+    max-height: 13px;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    margin-left: 3px;
+    image: url(:/newPrefix/back-arrow.png);
+}
+#qt_calendar_nextmonth {
+    border: none;
+    qproperty-icon: none;
+    min-width: 13px;
+    max-width: 13px;
+    min-height: 13px;
+    max-height: 13px;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    margin-right: 3px;
+    image: url(:/newPrefix/redo-arrow.png);
+}
+#qt_calendar_prevmonth:hover, #qt_calendar_nextmonth:hover {
+    background-color: #55aaff;
+}
+#qt_calendar_prevmonth:pressed, #qt_calendar_nextmonth:pressed {
+    background-color: rgb(255, 255, 255);
+}
+#qt_calendar_yearbutton {
+    color: rgb(0, 0, 0);
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 0 10px;
+    background-color: rgb(255, 255, 127);
+}
+#qt_calendar_monthbutton {
+    width: 110px;
+    background-color: rgb(255, 255, 127);
+    color: rgb(0, 0, 0);
+    font-size: 13px;
+    padding: 0 2px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+#qt_calendar_yearbutton:hover, #qt_calendar_monthbutton:hover {
+    background-color: rgb(250, 255, 190);
+}
+#qt_calendar_yearbutton:pressed, #qt_calendar_monthbutton:pressed {
+    background-color: #B8E2FF;
+}
+#qt_calendar_yearedit {
+    min-width: 60px;
+    color: rgb(0, 0, 0);
+    background: transparent;
+    font-size: 13px;
+}
+#qt_calendar_yearedit::down-button {
+    subcontrol-position: left;
+    image: url(:/newPrefix/arrow.png);
+}
+#qt_calendar_yearedit::up-button {
+    subcontrol-position: right;
+    image: url(:/newPrefix/arrow-up.png);
+}
+#qt_calendar_yearedit::down-button, #qt_calendar_yearedit::up-button {
+    width: 18px;
+    height: 18px;
+    padding: 0px 5px;
+    border-radius: 3px;
+}
+#qt_calendar_yearedit::down-button:hover, #qt_calendar_yearedit::up-button:hover {
+    background-color: #B8E2FF;
+}
+#qt_calendar_yearedit::down-button:pressed, #qt_calendar_yearedit::up-button:pressed {
+    background-color: #fff;
+}
+#calendarWidget_2 QToolButton QMenu {
+    background-color: #fff;
+}
+#calendarWidget_2 QToolButton QMenu::item {
+    /*padding:5px;*/
+}
+#calendarWidget_2 QToolButton QMenu::item:selected:enabled {
+    background-color: #55aaff;
+}
+
+#calendarWidget_2 QToolButton::menu-indicator {
+    nosubcontrol-origin: margin;
+    subcontrol-position: right center;
+    margin-top: 10px; 
+    width: 20px;
+}
+
+#qt_calendar_calendarview {
+    border: 2px solid #B8E2FF;
+    border-top: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+#qt_calendar_calendarview::item:hover {
+    background-color: #aaffff;
+    border-radius: 5px;
+}
+#qt_calendar_calendarview::item:selected {
+    background-color: #55aaff;
+    border-radius: 5px;
+}
+</string>
      </property>
      <property name="gridVisible">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="Line" name="line">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>130</y>
-       <width>1331</width>
+       <x>10</x>
+       <y>120</y>
+       <width>1311</width>
        <height>20</height>
       </rect>
      </property>
@@ -678,10 +1068,10 @@ color: rgb(0, 0, 0);</string>
     <widget class="QTableWidget" name="tableWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>160</y>
-       <width>1301</width>
-       <height>511</height>
+       <x>40</x>
+       <y>170</y>
+       <width>1251</width>
+       <height>481</height>
       </rect>
      </property>
      <property name="font">
@@ -690,8 +1080,23 @@ color: rgb(0, 0, 0);</string>
        <pointsize>16</pointsize>
       </font>
      </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
+      <string notr="true">#tableWidget{
+color: rgb(0, 0, 0);
+border: 1px solid white;
+	alternate-background-color: rgb(232, 232, 232);
+}
+QHeaderView{
+
+}
+QHeaderView::section{
+	background-color: rgb(203, 237, 255);
+}
+QTableWidget::item:hover{
+background-color: rgb(208, 208, 208);}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -702,12 +1107,33 @@ color: rgb(0, 0, 0);</string>
      <property name="lineWidth">
       <number>3</number>
      </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
      <property name="gridStyle">
       <enum>Qt::SolidLine</enum>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>150</number>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
      <row>
       <property name="text">
        <string>1</string>
@@ -733,6 +1159,9 @@ color: rgb(0, 0, 0);</string>
         <bold>true</bold>
        </font>
       </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
       <property name="background">
        <color>
         <red>255</red>
@@ -753,6 +1182,9 @@ color: rgb(0, 0, 0);</string>
         <bold>true</bold>
        </font>
       </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
      </column>
      <column>
       <property name="text">
@@ -765,6 +1197,9 @@ color: rgb(0, 0, 0);</string>
         <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
       </property>
      </column>
      <column>
@@ -779,10 +1214,13 @@ color: rgb(0, 0, 0);</string>
         <bold>true</bold>
        </font>
       </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
      </column>
      <column>
       <property name="text">
-       <string>Max. Torque </string>
+       <string>Method Name</string>
       </property>
       <property name="font">
        <font>
@@ -791,6 +1229,25 @@ color: rgb(0, 0, 0);</string>
         <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Max. Torque (N)</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
       </property>
      </column>
      <column>
@@ -805,6 +1262,9 @@ color: rgb(0, 0, 0);</string>
         <bold>true</bold>
        </font>
       </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
      </column>
      <column>
       <property name="text">
@@ -817,6 +1277,9 @@ color: rgb(0, 0, 0);</string>
         <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
       </property>
      </column>
      <item row="0" column="0">
@@ -867,20 +1330,9 @@ color: rgb(0, 0, 0);</string>
        </font>
       </property>
      </item>
-     <item row="0" column="4">
-      <property name="text">
-       <string>3</string>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-     </item>
      <item row="0" column="5">
       <property name="text">
-       <string>4</string>
+       <string>3</string>
       </property>
       <property name="font">
        <font>
@@ -900,13 +1352,24 @@ color: rgb(0, 0, 0);</string>
        </font>
       </property>
      </item>
+     <item row="0" column="7">
+      <property name="text">
+       <string>4</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+     </item>
     </widget>
     <widget class="QComboBox" name="comboBox_3">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>640</x>
        <y>80</y>
-       <width>241</width>
+       <width>201</width>
        <height>31</height>
       </rect>
      </property>
@@ -918,9 +1381,15 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox_3{
+	background-color: rgb(220, 220, 220);
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -936,9 +1405,9 @@ color: rgb(0, 0, 0);</string>
     <widget class="QComboBox" name="comboBox_4">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>640</x>
        <y>20</y>
-       <width>241</width>
+       <width>201</width>
        <height>31</height>
       </rect>
      </property>
@@ -950,9 +1419,18 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(170, 255, 255);
-color: rgb(0, 0, 0);</string>
+      <string notr="true">#comboBox_4{
+	background-color: rgb(220, 220, 220);
+color: rgb(0, 0, 0);
+border-radius:15px;
+}</string>
      </property>
      <item>
       <property name="text">
@@ -1002,9 +1480,31 @@ color: rgb(0, 0, 0);</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(90, 90, 134);
-color: rgb(255, 255, 255);</string>
+      <string notr="true">#pushButton_14 {background:None;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(37, 197, 255), stop:1  rgb(44, 69, 211));
+	
+	
+border-radius:15px;
+border-color: rgb(0, 0, 0);
+border-style:outset;
+border-width:3px;
+border:None;
+}
+#pushButton_14:hover {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(44, 69, 211), stop:1  rgb(37, 197, 255));
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_14:pressed {
+background-color: rgb(37, 197, 255);
+padding-top: 5px;
+padding-left: 5px;
+}</string>
      </property>
      <property name="text">
       <string>Return</string>
@@ -1013,9 +1513,9 @@ color: rgb(255, 255, 255);</string>
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
       <rect>
-       <x>880</x>
+       <x>890</x>
        <y>20</y>
-       <width>61</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -1026,6 +1526,9 @@ color: rgb(255, 255, 255);</string>
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="text">
       <string>ALL</string>
@@ -1051,6 +1554,9 @@ color: rgb(255, 255, 255);</string>
        <bold>false</bold>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>WhatsThisCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 127);</string>
      </property>
@@ -1066,12 +1572,21 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>560</x>
        <y>76</y>
-       <width>31</width>
+       <width>71</width>
        <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="text">
-      <string/>
+      <string>Method :</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="radioButton_2">
@@ -1079,14 +1594,49 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>560</x>
        <y>10</y>
-       <width>31</width>
+       <width>71</width>
        <height>51</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 10pt &quot;Arial&quot;;</string>
+     </property>
      <property name="text">
-      <string/>
+      <string>Batch :</string>
      </property>
     </widget>
+    <widget class="Line" name="line_3">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>10</y>
+       <width>20</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>3</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <zorder>tableWidget</zorder>
     <zorder>label_20</zorder>
     <zorder>pushButton_3</zorder>
     <zorder>pushButton_4</zorder>
@@ -1106,7 +1656,6 @@ color: rgb(255, 255, 255);</string>
     <zorder>comboBox_8</zorder>
     <zorder>pushButton_13</zorder>
     <zorder>line</zorder>
-    <zorder>tableWidget</zorder>
     <zorder>calendarWidget</zorder>
     <zorder>calendarWidget_2</zorder>
     <zorder>comboBox_3</zorder>
@@ -1116,20 +1665,30 @@ color: rgb(255, 255, 255);</string>
     <zorder>label_21</zorder>
     <zorder>radioButton</zorder>
     <zorder>radioButton_2</zorder>
+    <zorder>line_3</zorder>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1368</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="../../RapidRepair/images/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton_14</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1317</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1416</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
