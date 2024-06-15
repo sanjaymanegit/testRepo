@@ -1864,10 +1864,11 @@ class PlotCanvas_Auto(FigureCanvas):
         ## If Process == Stooped Then Set up inuts and start New Porcess.
         if(self.is_stopped == 0):
                        connection = sqlite3.connect("mdr.db")
-                       results=connection.execute("SELECT TEST_TEMP,TEST_TIME_MM from GLOBAL_VAR LIMIT 1") 
+                       results=connection.execute("SELECT TEST_TEMP,TEST_TIME_MM,TEST_TORQUE from GLOBAL_VAR LIMIT 1") 
                        for x in results:            
                             self.max_temp=int(x[0])
-                            self.max_time_min=int(x[1])                           
+                            self.max_time_min=int(x[1])
+                            self.max_torque=int(x[2])
                        connection.close() 
                        
                        #### Set Input Variables #######
@@ -1878,30 +1879,29 @@ class PlotCanvas_Auto(FigureCanvas):
                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
                             #time.sleep(5)
                        except IOError as e:
-                            print("Ignore-Modbus Error- Test Method..:"+str(e))
+                            print("Ignore-Modbus Error- MAX TEMPERATURE..:"+str(e))
                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
                             self.IO_error_flg=1
                        
                        try:
-                            print("\n\n\n\n##### SET : LOAD CELL NUMBER ######")
-                            self.instrument.write_register(1,int(self.load_cell_no),0,6)
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
+                            print("\n\n\n\n##### SET : MAX TIME MM ######")
+                            self.instrument.write_register(1,int(self.max_time_min),0,6)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
                             #time.sleep(5)
                        except IOError as e:
-                            print("Ignore-Modbus Error- Load Cell Number.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Load Cell Number :"+str(self.load_cell_no),self.login_user_role)
-                            self.IO_error_flg=1
-                       
+                            print("Ignore-Modbus Error-  MAX TIME MM.:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
+                            self.IO_error_flg=1                       
                     
                        try:
-                            print("\n\n\n\n##### SET : guage_length ######")
-                            self.instrument.write_float(3,0.0,2) 
+                            print("\n\n\n\n##### SET : MAX TORQUE ######")
+                            self.instrument.write_float(3,int(self.max_torque),2) 
                             #self.instrument.write_register(6,0,0)
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :0",self.login_user_role)
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :0",self.login_user_role)
                             #time.sleep(5)
                        except IOError as e:
-                            print("Ignore-Modbus Error- self.guage_length.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET guage_length :"+str(self.guage_length),self.login_user_role)
+                            print("Ignore-Modbus Error- MAX TORQUE:"+str(e))
+                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :"+str(self.max_torque),self.login_user_role)
                             self.IO_error_flg=1
             
                        time.sleep(5)
