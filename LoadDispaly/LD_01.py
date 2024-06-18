@@ -435,9 +435,9 @@ class Ui_MainWindow(object):
         except IOError:
             print("IO Errors-load cell connections error")
             self.IO_error_flg=1
-            self.groupBox_7.show()
-            self.label_2.show()
-            self.label_2.setText("LOAD CELL CONNECTION ERROR.")
+            #self.groupBox_7.show()
+            #self.label_2.show()
+            #self.label_2.setText("LOAD CELL CONNECTION ERROR.")
             
             
     def display_lcd_val(self):               
