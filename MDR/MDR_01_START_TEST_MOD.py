@@ -52,6 +52,14 @@ from reportlab.lib.pagesizes import portrait,landscape, letter,inch,A4
 from reportlab.lib import colors
 from reportlab.graphics.shapes import Line, Drawing
 
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+#minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.clear_buffers_before_each_transaction = True
+#minimalmodbus.BYTEORDER_BIG= 0
+#minimalmodbus.BYTEORDER_LITTLE= 1
+minimalmodbus.MODE_RTU= 'rtu'
+
 class MDR_01_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -1840,14 +1848,16 @@ class PlotCanvas_Auto(FigureCanvas):
                 #time.sleep(5)
                 self.IO_error_flg=0
                 self.mod_connection="Yes"
+                print("Modbus-Connection Successfull.")
         except IOError as e:
-                print("IO Errors- Connection to Modbus......:"+str(e))
+                print("IO Errors- Modbus-Connection Failed......:"+str(e))
                 self.IO_error_flg=1
+                self.mod_connection="No"
         
         ## Check the Current Status of Porcess.
         self.start_bit=0   #Default value
         self.is_stopped=-1
-        if(self.IO_error_flg==0):
+        if(self.IO_error_flg==0 and self.mod_connection=="Yes"):
             ####### Start Test-Read Coil Register. ############
             try:
                 print("\n\n\n\n##### GET -VERIFY CURENT STATUS : COIL start_bit ######")
@@ -1861,79 +1871,81 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
                 self.IO_error_flg=1
         
-        ## If Process == Stooped Then Set up inuts and start New Porcess.
-        if(self.is_stopped == 0):
-                       connection = sqlite3.connect("mdr.db")
-                       results=connection.execute("SELECT TEST_TEMP,TEST_TIME_MM,TEST_TORQUE from GLOBAL_VAR LIMIT 1") 
-                       for x in results:            
-                            self.max_temp=int(x[0])
-                            self.max_time_min=int(x[1])
-                            self.max_torque=int(x[2])
-                       connection.close() 
-                       
-                       #### Set Input Variables #######
-                       try:
-                            #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
-                            print("\n\n\n\n##### SET : MAX TEMPERATURE ######")
-                            self.instrument.write_register(0,int(self.max_temp),0,6)                    
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
-                            #time.sleep(5)
-                       except IOError as e:
-                            print("Ignore-Modbus Error- MAX TEMPERATURE..:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
-                            self.IO_error_flg=1
-                       
-                       try:
-                            print("\n\n\n\n##### SET : MAX TIME MM ######")
-                            self.instrument.write_register(1,int(self.max_time_min),0,6)
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
-                            #time.sleep(5)
-                       except IOError as e:
-                            print("Ignore-Modbus Error-  MAX TIME MM.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
-                            self.IO_error_flg=1                       
-                    
-                       try:
-                            print("\n\n\n\n##### SET : MAX TORQUE ######")
-                            self.instrument.write_float(3,int(self.max_torque),2) 
-                            #self.instrument.write_register(6,0,0)
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :0",self.login_user_role)
-                            #time.sleep(5)
-                       except IOError as e:
-                            print("Ignore-Modbus Error- MAX TORQUE:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :"+str(self.max_torque),self.login_user_role)
-                            self.IO_error_flg=1
-            
-                       time.sleep(5)
-                       ####### Start Test-Write in Coil Register. ############
-                       try:
-                             #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
-                             print("\n\n\n\n##### SET :COIL start_bit ######")
-                             self.instrument.write_bit(0,1,5)                    
-                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
-                              #time.sleep(5)
-                       except IOError as e:
-                             print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
-                             self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
-                             self.IO_error_flg=1                       
-             
-                       ####### Start Test-Read Coil Register. ############
-                       try:
-                            print("\n\n\n\n##### GET  : COIL start_bit ######")
-                            #read_bit(registeraddress: int, functioncode: int = 2) → int
-                            self.start_bit=self.instrument.read_bit(0,1)
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
-                            #time.sleep(5)                
-                       except IOError as e:                    
-                            print("Ignore-Modbus Error- Get start_bit.:"+str(e))
-                            self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
-                            self.IO_error_flg=1 
-            
+            ## If Process == Stooped Then Set up inuts and start New Porcess.
+            if(self.is_stopped == 0):
+                           connection = sqlite3.connect("mdr.db")
+                           results=connection.execute("SELECT TEST_TEMP,TEST_TIME_MM,TEST_TORQUE from GLOBAL_VAR LIMIT 1") 
+                           for x in results:            
+                                self.max_temp=int(x[0])
+                                self.max_time_min=int(x[1])
+                                self.max_torque=int(x[2])
+                           connection.close() 
+                           
+                           #### Set Input Variables #######
+                           try:
+                                #self.instrument.write_register(REGISTER, NEW_VALUE, DECIMALS, functioncode=6, signed=True)    
+                                print("\n\n\n\n##### SET : MAX TEMPERATURE ######")
+                                self.instrument.write_register(0,int(self.max_temp),0,6)                    
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
+                                #time.sleep(5)
+                           except IOError as e:
+                                print("Ignore-Modbus Error- MAX TEMPERATURE..:"+str(e))
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TEMPERATURE :"+str(self.max_temp),self.login_user_role)
+                                self.IO_error_flg=1
+                           
+                           try:
+                                print("\n\n\n\n##### SET : MAX TIME MM ######")
+                                self.instrument.write_register(1,int(self.max_time_min),0,6)
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
+                                #time.sleep(5)
+                           except IOError as e:
+                                print("Ignore-Modbus Error-  MAX TIME MM.:"+str(e))
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET  MAX TIME MM :"+str(self.max_time_min),self.login_user_role)
+                                self.IO_error_flg=1                       
                         
+                           try:
+                                print("\n\n\n\n##### SET : MAX TORQUE ######")
+                                self.instrument.write_float(3,int(self.max_torque),2) 
+                                #self.instrument.write_register(6,0,0)
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :0",self.login_user_role)
+                                #time.sleep(5)
+                           except IOError as e:
+                                print("Ignore-Modbus Error- MAX TORQUE:"+str(e))
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET MAX TORQUE :"+str(self.max_torque),self.login_user_role)
+                                self.IO_error_flg=1
+                
+                           time.sleep(5)
+                           ####### Start Test-Write in Coil Register. ############
+                           try:
+                                 #write_bit(registeraddress: int, value: int, functioncode: int = 5) → None[source]   
+                                 print("\n\n\n\n##### SET :COIL start_bit ######")
+                                 self.instrument.write_bit(0,1,5)                    
+                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET Test start_bit :1",self.login_user_role)
+                                  #time.sleep(5)
+                           except IOError as e:
+                                 print("Ignore-Modbus Error- SET COIL start_bit..:"+str(e))
+                                 self.record_modbus_logs(self.test_id,self.cycle_num,"SET","SET start_bit :"+str(self.start_bit),self.login_user_role)
+                                 self.IO_error_flg=1                       
+                 
+                           ####### Start Test-Read Coil Register. ############
+                           try:
+                                print("\n\n\n\n##### GET  : COIL start_bit ######")
+                                #read_bit(registeraddress: int, functioncode: int = 2) → int
+                                self.start_bit=self.instrument.read_bit(0,1)
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)
+                                #time.sleep(5)                
+                           except IOError as e:                    
+                                print("Ignore-Modbus Error- Get start_bit.:"+str(e))
+                                self.record_modbus_logs(self.test_id,self.cycle_num,"GET","GET start_bit :"+str(self.start_bit),self.login_user_role)                
+                                self.IO_error_flg=1 
+                
+                            
+            else:
+                    print("Test is already running......")       
+                
         else:
-                print("Test is already running......")       
-                
-                
+                    print("Modbus - Connection Failed.")       
+                        
                 
       
         
@@ -2103,7 +2115,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 ,interval=10
                     )
             
-            print("Done1")
+            #print("Done1")
             
     
     
