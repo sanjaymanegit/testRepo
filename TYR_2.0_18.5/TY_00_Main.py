@@ -263,6 +263,7 @@ class MAIN_Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(840, 460, 401, 106))
         #self.label.setPixmap(QtGui.QPixmap("./images/logo1.jpg"))
+        self.label.setStyleSheet("background-color:rgb(255, 255, 255); border:None;")
         self.label.setPixmap(QtGui.QPixmap("./logo-images/S tech logo (2).png"))
         self.label.setScaledContents(True)       
         self.label.setText("")        
