@@ -253,7 +253,7 @@ class Ui_Dialog(object):
         self.layoutWidget.setGeometry(QtCore.QRect(370, 260, 151, 111))
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(0, 0, 4, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.pushButton_2 = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_2.setMaximumSize(QtCore.QSize(16777215, 60))
@@ -264,7 +264,18 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_2.setStyleSheet("color: rgb(0, 170, 0);")
+        self.pushButton_2.setStyleSheet("#pushButton_2{\n"
+"color: rgb(0, 170, 0);\n"
+"border-radius:10px;\n"
+"background-color: rgb(255, 255, 255);\n"
+"}\n"
+"#pushButton_2:hover{\n"
+"padding-left:5px;\n"
+"border:1px solid black;\n"
+"}\n"
+"#pushButton_2:pressed{\n"
+"padding-bottom:5px;\n"
+"}")
         self.pushButton_2.setObjectName("pushButton_2")
         self.verticalLayout.addWidget(self.pushButton_2)
         self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget)
@@ -276,7 +287,18 @@ class Ui_Dialog(object):
         font.setWeight(75)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_3.setStyleSheet("color: rgb(255, 0, 0);")
+        self.pushButton_3.setStyleSheet("#pushButton_3{\n"
+"color: rgb(255, 0, 0);\n"
+"border-radius:10px;\n"
+"background-color: rgb(255, 255, 255);\n"
+"}\n"
+"#pushButton_3:hover{\n"
+"padding-left:5px;\n"
+"border:1px solid black;\n"
+"}\n"
+"#pushButton_3:pressed{\n"
+"padding-bottom:5px;\n"
+"}")
         self.pushButton_3.setObjectName("pushButton_3")
         self.verticalLayout.addWidget(self.pushButton_3)
         self.label_51 = QtWidgets.QLabel(Dialog)
@@ -405,8 +427,10 @@ class Ui_Dialog(object):
         self.label_52.setText(_translate("Dialog", "℃"))
         self.label_53.setText(_translate("Dialog", "N-m"))
         self.label_54.setText(_translate("Dialog", "RPM"))
-        self.label_19.setText(_translate("Dialog", ""))
-    
+        self.label_19.setText(_translate("Dialog", "Oops  : \n"
+" Something went\n"
+" wrong"))
+
 
 if __name__ == "__main__":
     import sys
