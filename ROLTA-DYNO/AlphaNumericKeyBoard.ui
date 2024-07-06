@@ -1,0 +1,2748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>631</width>
+    <height>310</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QFrame" name="frame_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>611</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 2px solid;
+border-color: rgb(159, 159, 159, 255);
+border-radius: 20px;
+background-color: rgba(207,211,216,255);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_4{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border-top-right-radius: 20px;
+}
+#pushButton_4:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_4:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>p</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>220</y>
+      <width>131</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pushButton {
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgba(170,175,185,255);
+border-radius:5px;
+border-bottom-right-radius: 20px;
+}
+
+QPushButton#pushButton:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+QPushButton#pushButton:pressed{
+padding-left: 5px;
+padding-top: 5px;
+background-color: rgba(171,176,188,255);
+}
+</string>
+    </property>
+    <property name="text">
+     <string>return</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_2{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border-top-left-radius: 20px;
+
+}
+#pushButton_2:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_2:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>q</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_3{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_3:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_3:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>w</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_5{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_5:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_5:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>e</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_6">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_6{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_6:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_6:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>r</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_7">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_7{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_7:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_7:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>t</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_8">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_8{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_8:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_8:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>y</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_9">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_9{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_9:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_9:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>u</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_10">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_10{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_10:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_10:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>i</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_11">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>10</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_11{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_11:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_11:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>o</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_12">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_12{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_12:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_12:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>a</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_13">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_13{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_13:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_13:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>s</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_14">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_14{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_14:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_14:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>d</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_15">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_15{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_15:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_15:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>f</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_16">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_16{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_16:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_16:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>g</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_17">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_17{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_17:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_17:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>h</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_18">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_18{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_18:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_18:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>j</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_19">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_19{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_19:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_19:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>k</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_20">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>80</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_20{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_20:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_20:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>l</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_21">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>71</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_21{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgba(171,176,188,255);
+border-radius: 5px;
+
+
+}
+
+#pushButton_21:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_21:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgb(255, 255, 255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>⌂</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_22">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_22{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_22:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_22:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>z</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_23">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_23{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_23:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_23:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>c</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_24">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_24{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_24:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_24:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>x</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_25">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_25{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_25:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_25:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>v</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_26">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_26{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_26:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_26:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>b</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_27">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_27{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_27:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_27:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>n</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_28">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>150</y>
+      <width>51</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_28{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+}
+#pushButton_28:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_28:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>m</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_29">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>150</y>
+      <width>71</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_29{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color:  rgba(171,176,188,255);
+border-radius: 5px;
+}
+#pushButton_29:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_29:pressed {
+padding-bottom: 10px;
+padding-right: 10px;
+background-color:rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>←</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_30">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_30{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgba(171,176,188,255);
+border-radius: 5px;
+border-bottom-left-radius: 20px;
+
+
+}
+
+#pushButton_30:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_30:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string>123</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_31">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>220</y>
+      <width>301</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>29</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#pushButton_31{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgba(171,176,188,255);
+border-radius: 5px;
+
+}
+
+#pushButton_31:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_31:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color:rgba(171,176,188,255);
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>591</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;
+border-radius:0px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="pushButton_32">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_32{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border-top-left-radius: 20px;
+
+}
+#pushButton_32:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_32:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>q</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_33">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_33{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border-top-right-radius: 20px;
+}
+#pushButton_33:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_33:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>p</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_34">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_34{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_34:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_34:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_35">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_35{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_35:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_35:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_36">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_36{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_36:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_36:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_37">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_37{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_37:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_37:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_38">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_38{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_38:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_38:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_39">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_39{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_39:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_39:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_40">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_40{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_40:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_40:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_41">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>0</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_41{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_41:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_41:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_42">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_42{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_42:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_42:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_43">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_43{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_43:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_43:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_44">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_44{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_44:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_44:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_45">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_45{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_45:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_45:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_46">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_46{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_46:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_46:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_47">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_47{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_47:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_47:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_48">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_48{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_48:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_48:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_49">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_49{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_49:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_49:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_50">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>70</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_50{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_50:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_50:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_51">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_51{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_51:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_51:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_52">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_52{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_52:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_52:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_53">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_53{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_53:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_53:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_54">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_54{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_54:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_54:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_55">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_55{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_55:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_55:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_56">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_56{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_56:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_56:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_57">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_57{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_57:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_57:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_58">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_58{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_58:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_58:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_59">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>30</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_59{
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+background-color:  rgba(171,176,188,255);
+border-radius: 5px;
+}
+#pushButton_59:hover{
+background-color: rgb(153,156,156);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+
+#pushButton_59:pressed {
+padding-bottom: 10px;
+padding-right: 10px;
+background-color:rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>←</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_60">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>140</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pushButton_60{
+
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 2px solid;
+border-left-color: none;
+border-right-color: none;
+border-top-color:  none;
+border-bottom-color: rgb(157, 157, 157);
+}
+#pushButton_60:hover{
+background-color: rgb(200,207,215);
+padding-bottom: 5px;
+padding-right: 5px;
+}
+#pushButton_60:pressed {
+padding-top:5px;
+padding-left:5px;
+background-color: rgba(171,176,188,255);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>w</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
