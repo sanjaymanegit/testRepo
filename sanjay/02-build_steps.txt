@@ -25,6 +25,9 @@ pyinstaller --clean "LD_01.py" -n WIN_LD_1.0 --add-data "LD.db;."
 ###ROLTA #####
 sudo pyinstaller --clean --onedir --add-data "tyr.db:." --name=ROLTA "TY_00_Main.py"
 
+###ROLTA-DYNO #####
+pyinstaller --clean --onedir --add-data "Rolla.db:." --name=DYNO "Main.py"
+
 ### MDR #####
 sudo pyinstaller --clean --onedir --add-data "mdr.db:." --name=MDR "MDR_01_START_TEST.py"
 
