@@ -136,10 +136,10 @@ class Setup(QMainWindow):
         self.setup_ui.lineEdit_23.setValidator(input_validator)
         self.setup_ui.label_69.hide()
         self.setup_ui.pushButton_2.clicked.connect(self.saveTestData)
-        self.setup_ui.lineEdit_26.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_26)
-        self.setup_ui.lineEdit_23.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_23)
-        self.setup_ui.lineEdit_24.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_24)
-        self.setup_ui.lineEdit_25.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_25)
+        # self.setup_ui.lineEdit_26.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_26)
+        # self.setup_ui.lineEdit_23.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_23)
+        # self.setup_ui.lineEdit_24.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_24)
+        # self.setup_ui.lineEdit_25.mousePressEvent = lambda event: self.openKeyBoard(self.setup_ui.lineEdit_25)
         
         
         self.setup_ui.pushButton_6.clicked.connect(self.resetFields)
@@ -151,7 +151,7 @@ class Setup(QMainWindow):
         self.setup_ui.label_72.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
     def specimen_name_on_change(self):
         connection = sqlite3.connect("Rolla.db") 
-        results=connection.execute("SELECT JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM SPECIMEN_MST WHERE SPECIMEN_ID = '"+str(self.setup_ui.comboBox_2.currentText())+"'")
+        results=connection.execute("SELECT JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM SPECIMEN_MST WHERE PRODUCT_ID = '"+str(self.setup_ui.comboBox_2.currentText())+"'")
         
         for x in results:
             self.setup_ui.lineEdit.setText(str(x[0]))
@@ -311,7 +311,7 @@ class Setup(QMainWindow):
 
     def loadData(self):
         connection = sqlite3.connect("Rolla.db") 
-        results = connection.execute("SELECT DISTINCT SPECIMEN_ID FROM SPECIMEN_MST WHERE SPECIMEN_ID IS NOT NULL")
+        results = connection.execute("SELECT DISTINCT PRODUCT_ID FROM SPECIMEN_MST WHERE PRODUCT_ID IS NOT NULL")
         for x in results:
             specimen_name = x[0]
             self.setup_ui.comboBox_2.addItem(specimen_name)
@@ -417,7 +417,6 @@ class SelectReport(QMainWindow):
         self._window = window
         self.select_Report_Ui.pushButton_3.clicked.connect(self.close)
         # self.select_Report_Ui.label_72.setText(current_time)
-        self.load_Data()
         self.onStart()
         self.i=0        
         for x in range(24):            
@@ -437,6 +436,7 @@ class SelectReport(QMainWindow):
             #print("i :"+str(x))
             self.i=self.i+1
     def onStart(self):
+        self.delete_all_records()
         self.timer1=QtCore.QTimer()
         self.timer1.start(1)
         
@@ -445,52 +445,52 @@ class SelectReport(QMainWindow):
         self.timer1.timeout.connect(self.setDateAndTime)
         self.select_Report_Ui.calendarWidget.hide()
         self.select_Report_Ui.calendarWidget_2.hide()
-        
+        self.select_Report_Ui.pushButton_5.hide()
         self.select_Report_Ui.pushButton_8.clicked.connect( lambda : self.select_Report_Ui.calendarWidget.show())
         self.select_Report_Ui.pushButton_12.clicked.connect(lambda : self.select_Report_Ui.calendarWidget_2.show())
         self.select_Report_Ui.calendarWidget.clicked.connect(partial(self.on_calendarWidget_clicked, source="_from"))
         self.select_Report_Ui.calendarWidget_2.clicked.connect(partial(self.on_calendarWidget_clicked, source="_to"))
     
-        # self.i=0
-        # self.comboBox_3.clear()
-        # connection = sqlite3.connect("mdr.db")
-        # results=connection.execute("SELECT DISTINCT METHOD_NAME FROM TEST_MST_MDR ") 
-        # for x in results:            
-        #     self.comboBox_3.addItem("")
-        #     self.comboBox_3.setItemText(self.i,str(x[0]))
-        #     #print("i :"+str(x[0]))
-        #     self.i=self.i+1
-        # connection.close()
+        self.i=0
+        self.select_Report_Ui.comboBox_3.clear()
+        connection = sqlite3.connect("Rolla.db")
+        results=connection.execute("SELECT DISTINCT JOB_NAME FROM TEST_MST ") 
+        for x in results:            
+            self.select_Report_Ui.comboBox_3.addItem("")
+            self.select_Report_Ui.comboBox_3.setItemText(self.i,str(x[0]))
+            
+            self.i=self.i+1
+        connection.close()
         
         
-        # self.i=0
-        # self.comboBox_4.clear()
-        # connection = sqlite3.connect("mdr.db")
-        # results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST_MDR ") 
-        # for x in results:            
-        #     self.comboBox_4.addItem("")
-        #     self.comboBox_4.setItemText(self.i,str(x[0]))           
-        #     self.i=self.i+1
-        # connection.close()
+        self.i=0
+        self.select_Report_Ui.comboBox_4.clear()
+        connection = sqlite3.connect("Rolla.db")
+        results=connection.execute("SELECT DISTINCT BATCH_ID FROM TEST_MST ") 
+        for x in results:            
+            self.select_Report_Ui.comboBox_4.addItem("")
+            self.select_Report_Ui.comboBox_4.setItemText(self.i,str(x[0]))           
+            self.i=self.i+1
+        connection.close()
        
-       
-        # self.pushButton_4.clicked.connect(self.select_all_tests)
+        self.select_Report_Ui.pushButton_4.clicked.connect(self.select_all_tests)
         self.select_Report_Ui.tableWidget.doubleClicked.connect(self.open_doubleClick_report)
-        # #self.checkBox.clicked.connect(self.check_uncheck_all_records)
-        # #self.pushButton_14_2.clicked.connect(self.del_cheked)
-       
+        self.select_Report_Ui.checkBox.clicked.connect(self.check_uncheck_all_records)
         
         # self.select_all_tests()
+    
+
+    
     def open_doubleClick_report(self):
         row = self.select_Report_Ui.tableWidget.currentRow()
         if(row != -1 ):
-            self.specimen_id=(self.select_Report_Ui.tableWidget.item(row, 1).text())
+            self.specimen_id=(self.select_Report_Ui.tableWidget.item(row, 0).text())
             print(" specimen_id :"+str(self.specimen_id))        
         
             connection = sqlite3.connect("Rolla.db")
             with connection:        
                   cursor = connection.cursor()                                        
-                  cursor.execute("UPDATE GLOBAL_VAR SET SPECIMEN_ID = '"+str(self.specimen_id)+"'")              
+                  cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID = '"+str(self.specimen_id)+"'")              
             connection.commit()
             connection.close() 
         else:
@@ -505,26 +505,65 @@ class SelectReport(QMainWindow):
         else:
             self.select_Report_Ui.lineEdit_2.setText(str(self.select_Report_Ui.calendarWidget_2.selectedDate().toString(QtCore.Qt.ISODate)))
             self.select_Report_Ui.calendarWidget_2.hide()
+
     def setDateAndTime(self):
-        # self.ui.label_60.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
         self.select_Report_Ui.label_72.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
-        # current_time = datetime.datetime.now().strftime("%d %b %Y %H : %M : %S")
-        # self.select_Report_Ui.label_72.setText(current_time)
+
     def delete_all_records(self):
         i = self.select_Report_Ui.tableWidget.rowCount()       
         while (i>0):      
             i=i-1
             self.select_Report_Ui.tableWidget.removeRow(i)
-    def load_Data(self):
+    def select_all_tests(self):
         self.delete_all_records()
-        connection = sqlite3.connect("Rolla.db")  
-        results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST")
-        for row_number, row_data in enumerate(results):            
-            self.select_Report_Ui.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data): 
-                self.select_Report_Ui.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data))) 
-        connection.commit()
-        connection.close() 
+        self.from_dt=f"{str(self.select_Report_Ui.lineEdit.text())} {str(self.select_Report_Ui.comboBox.currentText())}:{str(self.select_Report_Ui.comboBox_2.currentText())}:00"        
+        self.to_dt=f"{str(self.select_Report_Ui.lineEdit_2.text())} {str(self.select_Report_Ui.comboBox_8.currentText())}:{str(self.select_Report_Ui.comboBox_7.currentText())}:00"
+        
+        # Convert the date strings to datetime objects
+        from_dt = datetime.datetime.strptime(self.from_dt, '%Y-%m-%d %H:%M:%S')
+        to_dt = datetime.datetime.strptime(self.to_dt, '%Y-%m-%d %H:%M:%S')
+        # Check if to_dt is less than from_dt
+        if to_dt < from_dt:
+            # Show an error message
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("The 'to' date cannot be less than the 'from' date.")
+            msg.setWindowTitle("Invalid Date Range")
+            msg.exec_()
+        else:
+            connection = sqlite3.connect("Rolla.db") 
+            if(self.select_Report_Ui.radioButton.isChecked()):
+                results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' AND JOB_NAME = '"+str(self.select_Report_Ui.comboBox_3.currentText())+"'")
+            elif(self.select_Report_Ui.radioButton_2.isChecked()):
+                results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' AND BATCH_ID = '"+str(self.select_Report_Ui.comboBox_4.currentText())+"'")
+            else:
+                results = connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE CREATED_ON BETWEEN '" + self.from_dt + "' AND '" + self.to_dt + "'")
+
+                # results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' AND")
+            for row_number, row_data in enumerate(results):            
+                self.select_Report_Ui.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data): 
+                    if(int(column_number) == 0):
+                        item = QtWidgets.QTableWidgetItem()
+                        item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                        item.setCheckState(not QtCore.Qt.Checked)
+                        item.setText(str(data))
+                        self.select_Report_Ui.tableWidget.setItem(row_number,column_number,item)
+                    else:
+                        self.select_Report_Ui.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str (data))) 
+            connection.commit()
+            connection.close() 
+
+    def check_uncheck_all_records(self):
+        i = self.select_Report_Ui.tableWidget.rowCount()       
+        while (i>0):             
+            i=i-1
+            item = self.select_Report_Ui.tableWidget.item(i, 0)
+            if(self.select_Report_Ui.checkBox.isChecked()):
+                item.setCheckState(QtCore.Qt.Checked)
+            else:
+                item.setCheckState(not QtCore.Qt.Checked)
+
 class Reports(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self)
@@ -536,36 +575,38 @@ class Reports(QMainWindow):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.setDateAndTime)
         self.reports_ui.label_53.hide()
-        self.reports_ui.label_59.hide()
+        
         self.reports_ui.pushButton_3.clicked.connect(self.close)
         self.load_Data()
         self.reports_ui.label_69.hide()
     def setDateAndTime(self):
         self.reports_ui.label_72.setText(datetime.datetime.now().strftime("%d %b %Y %H : %M : %S"))
     def load_Data(self):
-        
+        self.readOnly()
         connection = sqlite3.connect("Rolla.db")
-        results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE SPECIMEN_ID IN (SELECT SPECIMEN_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT TEST_ID, SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_NAME, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION FROM TEST_MST WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
             self.reports_ui.label_54.setText(str(x[0]).zfill(3))
-            self.reports_ui.lineEdit.setText(str(x[1]))
-            self.reports_ui.lineEdit_2.setText(str(x[2]))
-            self.reports_ui.lineEdit_3.setText(str(x[3]))
-            self.reports_ui.lineEdit_11.setText(str(x[4]))
-            self.reports_ui.lineEdit_6.setText(str(x[5]))
-            self.reports_ui.lineEdit_9.setText(str(x[6]))
-            self.reports_ui.lineEdit_20.setText(str(x[7]))
-            self.reports_ui.lineEdit_5.setText(str(x[8]))
-            self.reports_ui.lineEdit_21.setText(str(x[9]))
-            self.reports_ui.lineEdit_22.setText(str(x[10]))
-            self.reports_ui.lineEdit_10.setText(str(x[11]))
-            self.reports_ui.lineEdit_19.setText(str(x[12]))
-            self.reports_ui.lineEdit_13.setText(str(x[13]))
-            self.reports_ui.lineEdit_12.setText(str(x[14]))
-            self.reports_ui.lineEdit_16.setText(str(x[15]))
-            self.reports_ui.lineEdit_17.setText(str(x[16]))
-            self.reports_ui.lineEdit_7.setText(str(x[17]))
-            self.reports_ui.textEdit.setText(str(x[18]))
+            # self.reports_ui.comboBox_2.addItem(str(x[1]))
+            self.reports_ui.label_59.setText("( "+str(x[1]).zfill(3)+" )")
+            self.reports_ui.lineEdit.setText(str(x[2]))
+            self.reports_ui.lineEdit_2.setText(str(x[3]))
+            self.reports_ui.lineEdit_3.setText(str(x[4]))
+            self.reports_ui.lineEdit_11.setText(str(x[5]))
+            self.reports_ui.lineEdit_6.setText(str(x[6]))
+            self.reports_ui.lineEdit_9.setText(str(x[7]))
+            self.reports_ui.lineEdit_20.setText(str(x[8]))
+            self.reports_ui.lineEdit_5.setText(str(x[9]))
+            self.reports_ui.lineEdit_21.setText(str(x[10]))
+            self.reports_ui.lineEdit_22.setText(str(x[11]))
+            self.reports_ui.lineEdit_10.setText(str(x[12]))
+            self.reports_ui.lineEdit_19.setText(str(x[13]))
+            self.reports_ui.lineEdit_13.setText(str(x[14]))
+            self.reports_ui.lineEdit_12.setText(str(x[15]))
+            self.reports_ui.lineEdit_16.setText(str(x[16]))
+            self.reports_ui.lineEdit_17.setText(str(x[17]))
+            self.reports_ui.lineEdit_7.setText(str(x[18]))
+            self.reports_ui.textEdit.setText(str(x[19]))
         self.delete_all_records() 
         connection.commit()
         connection.close() 
@@ -583,6 +624,17 @@ class Reports(QMainWindow):
         connection.close()  
         # self.sc_blank =PlotCanvas(self, width=8, height=5, dpi=100)          
         # self.reports_ui.graphicsView.setScene(self.sc_blank)  
+    
+    def readOnly(self):
+        lineEdits = [
+            self.reports_ui.lineEdit, self.reports_ui.lineEdit_2, self.reports_ui.lineEdit_3, self.reports_ui.lineEdit_11, 
+            self.reports_ui.lineEdit_6, self.reports_ui.lineEdit_9, self.reports_ui.lineEdit_20, self.reports_ui.lineEdit_5, 
+            self.reports_ui.lineEdit_21, self.reports_ui.lineEdit_22, self.reports_ui.lineEdit_10, self.reports_ui.lineEdit_19,
+            self.reports_ui.lineEdit_13, self.reports_ui.lineEdit_12, self.reports_ui.lineEdit_16, self.reports_ui.lineEdit_17, 
+            self.reports_ui.lineEdit_7, self.reports_ui.textEdit
+        ]
+        for x in lineEdits:
+            x.setReadOnly(True) 
     def delete_all_records(self):
         i = self.reports_ui.tableWidget.rowCount()       
 
@@ -601,6 +653,15 @@ class Specimen(QMainWindow):
         self.timer1.setInterval(1000)        
         self.timer1.timeout.connect(self.setDateAndTime)
         self.specimen_ui.label_69.hide()
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.specimen_ui.lineEdit_9)
+        self.specimen_ui.lineEdit_9.setValidator(input_validator)
+        input_validator = QRegExpValidator(reg_ex, self.specimen_ui.lineEdit_21)
+        self.specimen_ui.lineEdit_21.setValidator(input_validator)
+        input_validator = QRegExpValidator(reg_ex, self.specimen_ui.lineEdit_17)
+        self.specimen_ui.lineEdit_17.setValidator(input_validator)
+        input_validator = QRegExpValidator(reg_ex, self.specimen_ui.lineEdit_12)
+        self.specimen_ui.lineEdit_12.setValidator(input_validator)
         self.specimen_ui.pushButton_3.clicked.connect(self.close)
         self.specimen_ui.pushButton_2.setDisabled(True)
         self.specimen_ui.pushButton_4.setDisabled(True)
@@ -621,7 +682,7 @@ class Specimen(QMainWindow):
     def saveSpecimeDetails(self):
         self.validation()
         if self.go_ahead == "Yes":
-            SPECIMEN_ID = self.specimen_ui.lineEdit_3.text()
+            SPECIMEN_ID = self.specimen_ui.label_54.text()
             JOB_NAME = self.specimen_ui.lineEdit.text()
             BATCH_ID = self.specimen_ui.lineEdit_2.text()
             PRODUCT_ID = self.specimen_ui.lineEdit_3.text()
@@ -656,16 +717,16 @@ class Specimen(QMainWindow):
         else :
             print("go ahead is no...")
     def deleteSpecimen(self):
-        if(self.specimen_ui.lineEdit_3.text() != ""):
+        if(self.specimen_ui.label_54.text() != ""):
             close = QMessageBox()
-            close.setText("Confirm Deleteing SpecimenID : "+str(self.specimen_ui.lineEdit_3.text()))
+            close.setText("Confirm Deleteing SpecimenID : "+str(self.specimen_ui.label_54.text()))
             close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
             close = close.exec()
             if close == QMessageBox.Yes:
                     connection = sqlite3.connect("Rolla.db")
                     with connection:        
                             cursor = connection.cursor()
-                            cursor.execute("DELETE FROM SPECIMEN_MST WHERE SPECIMEN_ID ='"+str(self.specimen_ui.lineEdit_3.text()+"'") )                   
+                            cursor.execute("DELETE FROM SPECIMEN_MST WHERE SPECIMEN_ID ='"+str(self.specimen_ui.label_54.text()+"'") )                   
                     connection.commit()                    
                     connection.close()
                     
@@ -682,6 +743,7 @@ class Specimen(QMainWindow):
         self.specimen_ui.pushButton_5.setDisabled(True)
         row = self.specimen_ui.tableWidget.currentRow() 
         if (row != -1):
+            self.specimen_ui.label_54.setText(str(self.specimen_ui.tableWidget.item(row, 0).text()).zfill(3))
             self.specimen_ui.lineEdit.setText(str(self.specimen_ui.tableWidget.item(row, 1).text()))
             self.specimen_ui.lineEdit_2.setText(str(self.specimen_ui.tableWidget.item(row, 2).text()))
             self.specimen_ui.lineEdit_3.setText(str(self.specimen_ui.tableWidget.item(row, 3).text()))
@@ -787,7 +849,7 @@ class Specimen(QMainWindow):
         self.validation()
         if self.go_ahead == "Yes":
             fieldsValue = []
-            lineEdits = [
+            lineEdits = [  
                 self.specimen_ui.lineEdit, self.specimen_ui.lineEdit_2, self.specimen_ui.lineEdit_3, self.specimen_ui.lineEdit_11, 
                 self.specimen_ui.lineEdit_6, self.specimen_ui.lineEdit_9, self.specimen_ui.lineEdit_20, self.specimen_ui.lineEdit_5, 
                 self.specimen_ui.lineEdit_21, self.specimen_ui.lineEdit_22, self.specimen_ui.lineEdit_10, self.specimen_ui.lineEdit_8, 
@@ -806,6 +868,7 @@ class Specimen(QMainWindow):
                 "SERIAL_NO", "OUTPUT_POWER", "ROTATIONAL_DIRECTION", "STARTER_CAPACITOR", "OPERATION_CAPACITOR", 
                 "PHASE", "VOLTAGE", "POLE", "MOTER_SPEED", "FREQUENCY", "TEST_CONDITION"
             ]
+            SPECIMEN_ID = self.specimen_ui.label_54.text()
             JOB_NAME = fieldsValue[0]
             BATCH_ID = fieldsValue[1]
             PRODUCT_ID = fieldsValue[2]
@@ -828,7 +891,7 @@ class Specimen(QMainWindow):
             connection = sqlite3.connect("Rolla.db")
             with connection:
                 cursor = connection.cursor()
-                cursor.execute("INSERT INTO SPECIMEN_MST (SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?,?, ?, ?, ?)",(PRODUCT_ID, JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION))
+                cursor.execute("INSERT INTO SPECIMEN_MST (SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?,?, ?, ?, ?)",(SPECIMEN_ID, JOB_NAME, BATCH_ID, PRODUCT_ID, MODEL, PART_NO, CURRENT, CILENT, SERIAL_NO, OUTPUT_POWER, ROTATIONAL_DIRECTION, STARTER_CAPACITOR, OPERATION_CAPACITOR, PHASE, VOLTAGE, POLE, MOTER_SPEED, FREQUENCY, TEST_CONDITION))
                 self.specimen_ui.label_69.setText("Great : Specimen added......")
                 self.specimen_ui.label_69.show()
             connection.commit()
@@ -919,25 +982,27 @@ class AnalogWindow(QMainWindow):
         self.ui.label_37.hide()
         self.ui.pushButton_7.setDisabled(True)
         self.ui.pushButton_8.setDisabled(True)
+        self.ui.pushButton_5.setEnabled(False)
         self.ui.pushButton_7.clicked.connect(self.meterStart)
         self.ui.pushButton_2.clicked.connect(self.openSetMaxDialog)
         self.ui.pushButton_14.clicked.connect(self.openSpecimen)
         self.ui.pushButton_9.clicked.connect(self.openSelectReport)
         self.ui.pushButton_5.clicked.connect(self.refrashMeter)
-        self.ui.lineEdit_22.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_22)
-        self.ui.lineEdit_21.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_21)
-        self.ui.lineEdit_20.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_20)
-        self.ui.lineEdit_9.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_9)
-        self.ui.lineEdit_10.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_10)
-        self.ui.lineEdit_11.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_11)
-        self.ui.lineEdit_19.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_19)
-        self.ui.lineEdit.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit)
-        self.ui.lineEdit_2.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_2)
-        self.ui.lineEdit_3.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_3)
-        self.ui.lineEdit_4.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_4)
-        self.ui.lineEdit_5.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_5)
-        self.ui.lineEdit_6.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_6)
-        self.ui.lineEdit_8.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_8)
+        self.ui.lineEdit_22.mousePressEvent = lambda event: self.ui.pushButton_5.setEnabled(True)
+        # self.ui.lineEdit_22.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_22)
+        # self.ui.lineEdit_21.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_21)
+        # self.ui.lineEdit_20.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_20)
+        # self.ui.lineEdit_9.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_9)
+        # self.ui.lineEdit_10.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_10)
+        # self.ui.lineEdit_11.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_11)
+        # self.ui.lineEdit_19.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_19)
+        # self.ui.lineEdit.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit)
+        # self.ui.lineEdit_2.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_2)
+        # self.ui.lineEdit_3.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_3)
+        # self.ui.lineEdit_4.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_4)
+        # self.ui.lineEdit_5.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_5)
+        # self.ui.lineEdit_6.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_6)
+        # self.ui.lineEdit_8.mousePressEvent = lambda event: self.openKeyBoard(self.ui.lineEdit_8)
         
 
         

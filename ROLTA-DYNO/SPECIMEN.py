@@ -35,7 +35,7 @@ class Ui_Specimen(object):
         self.label_52.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_52.setObjectName("label_52")
         self.label_63 = QtWidgets.QLabel(self.centralwidget)
-        self.label_63.setGeometry(QtCore.QRect(790, 180, 91, 31))
+        self.label_63.setGeometry(QtCore.QRect(790, 180, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(11)
@@ -1243,6 +1243,34 @@ class Ui_Specimen(object):
         self.line_11.setLineWidth(3)
         self.line_11.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_11.setObjectName("line_11")
+        self.label_61 = QtWidgets.QLabel(self.centralwidget)
+        self.label_61.setGeometry(QtCore.QRect(800, 50, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_61.setFont(font)
+        self.label_61.setStyleSheet("color: rgb(0, 0, 0);\n"
+"\n"
+"\n"
+"")
+        self.label_61.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_61.setObjectName("label_61")
+        self.label_54 = QtWidgets.QLabel(self.centralwidget)
+        self.label_54.setGeometry(QtCore.QRect(910, 40, 71, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_54.setFont(font)
+        self.label_54.setStyleSheet("color: rgb(0, 0, 255);\n"
+"\n"
+"\n"
+"")
+        self.label_54.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_54.setObjectName("label_54")
         self.label_52.raise_()
         self.label_63.raise_()
         self.line_7.raise_()
@@ -1299,6 +1327,8 @@ class Ui_Specimen(object):
         self.line_4.raise_()
         self.line_10.raise_()
         self.line_11.raise_()
+        self.label_61.raise_()
+        self.label_54.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -1416,6 +1446,8 @@ class Ui_Specimen(object):
         self.label_71.setText(_translate("MainWindow", "Rotational Direction :"))
         self.label_72.setText(_translate("MainWindow", "24 June 2024 12 : 34 : 56"))
         self.label_58.setText(_translate("MainWindow", "Frequency :"))
+        self.label_61.setText(_translate("MainWindow", "Specimen ID :"))
+        self.label_54.setText(_translate("MainWindow", "001"))
 
 
 if __name__ == "__main__":

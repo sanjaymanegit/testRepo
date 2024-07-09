@@ -139,7 +139,7 @@ class Ui_SelectReport(object):
         font.setWeight(75)
         self.lineEdit.setFont(font)
         self.lineEdit.setStyleSheet("#lineEdit{\n"
-"background-color: rgb(255, 255, 255);\n"
+"background-color: rgb(255, 255, 255);border: 1px solid black;\n"
 "\n"
 "border-radius: 10px;\n"
 "}\n"
@@ -163,7 +163,7 @@ class Ui_SelectReport(object):
         self.comboBox.setFont(font)
         self.comboBox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox.setStyleSheet("#comboBox{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
 "}")
@@ -178,7 +178,7 @@ class Ui_SelectReport(object):
         self.comboBox_8.setFont(font)
         self.comboBox_8.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox_8.setStyleSheet("#comboBox_8{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
@@ -194,7 +194,7 @@ class Ui_SelectReport(object):
         self.comboBox_3.setFont(font)
         self.comboBox_3.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox_3.setStyleSheet("#comboBox_3{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
 "}")
@@ -223,7 +223,7 @@ class Ui_SelectReport(object):
         self.pushButton_4.setFont(font)
         self.pushButton_4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_4.setStyleSheet("#pushButton_4{\n"
-"color: rgb(255, 255, 255);\n"
+"color: rgb(255, 255, 255);border: 1px solid black;\n"
 "background-color: rgb(170, 0, 0);\n"
 "border-radius:15px;\n"
 "}\n"
@@ -416,7 +416,7 @@ class Ui_SelectReport(object):
         self.pushButton_12.setFont(font)
         self.pushButton_12.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_12.setStyleSheet("#pushButton_12{\n"
-"color: rgb(0, 0, 255);\n"
+"color: rgb(0, 0, 255);border: 1px solid black;\n"
 "border-radius:10px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "}\n"
@@ -441,7 +441,7 @@ class Ui_SelectReport(object):
         self.comboBox_4.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox_4.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.comboBox_4.setStyleSheet("#comboBox_4{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
 "}")
@@ -471,7 +471,7 @@ class Ui_SelectReport(object):
         font.setWeight(75)
         self.lineEdit_2.setFont(font)
         self.lineEdit_2.setStyleSheet("#lineEdit_2{\n"
-"background-color: rgb(255, 255, 255);\n"
+"background-color: rgb(255, 255, 255);border: 1px solid black;\n"
 "\n"
 "border-radius: 10px;\n"
 "}\n"
@@ -659,7 +659,7 @@ class Ui_SelectReport(object):
         self.comboBox_2.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox_2.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.comboBox_2.setStyleSheet("#comboBox_2{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
 "}")
@@ -674,7 +674,7 @@ class Ui_SelectReport(object):
         self.pushButton_8.setFont(font)
         self.pushButton_8.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_8.setStyleSheet("#pushButton_8{\n"
-"color: rgb(0, 0, 255);\n"
+"color: rgb(0, 0, 255);border: 1px solid black;\n"
 "border-radius:10px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "}\n"
@@ -699,7 +699,7 @@ class Ui_SelectReport(object):
         self.comboBox_7.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.comboBox_7.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.comboBox_7.setStyleSheet("#comboBox_7{\n"
-"    background-color: rgb(220, 220, 220);\n"
+"    background-color: rgb(220, 220, 220);border: 1px solid black;\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:15px;\n"
 "}")

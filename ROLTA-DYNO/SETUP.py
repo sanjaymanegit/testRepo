@@ -1483,7 +1483,7 @@ class Ui_Setup(object):
         self.pushButton_3.setText(_translate("MainWindow", "Return"))
         self.label_46.setText(_translate("MainWindow", "Batch ID :"))
         self.label_62.setText(_translate("MainWindow", "Phase :"))
-        self.label_48.setText(_translate("MainWindow", "Specimen ID :"))
+        self.label_48.setText(_translate("MainWindow", "Product ID :"))
         self.label_55.setText(_translate("MainWindow", "Model :"))
         self.pushButton_2.setText(_translate("MainWindow", "Save"))
         self.pushButton_6.setText(_translate("MainWindow", "Reset"))
