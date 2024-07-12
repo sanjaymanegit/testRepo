@@ -1463,7 +1463,14 @@ class TY_75_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
+        self.cycle_num=0
+        self.test_type=""
+        self.test_id="1"
+        self.remark=""
+        self.timer3=QtCore.QTimer()
+        self.timer31=QtCore.QTimer()
+        self.cycle_num=0
+        self.show_lcd_vals="N"
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1827,12 +1834,28 @@ class TY_75_Ui_MainWindow(object):
                         with connection:        
                                 cursor = connection.cursor()                                                
                                 cursor.execute("INSERT INTO TEST_MST(TEST_ID,SPECIMEN_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,PRE_LOAD,FINAL_WIDTH,FINAL_THICKNESS,LAST_UNIT_LOAD,LAST_UNIT_DISP) VALUES('"+str(int(self.label_12.text()))+"', '"+str(self.comboBox_4.currentText())+"', '"+str(self.lineEdit_15.text())+"', '"+str(self.lineEdit_16.text())+"', '"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"', '"+str(self.lineEdit_12.text())+"', '"+self.lineEdit_14.text()+"', '"+self.lineEdit_13.text()+"', '"+self.lineEdit_11.text()+"', '"+str(self.lineEdit_18.text())+"' ,'"+str(self.lineEdit_17.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.comboBox_3.currentText())+"')")
-                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"'")
-                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
+                                cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_10.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_17.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_17.text())+"',PRE_LOAD='"+str(self.lineEdit_11.text())+"'")
+                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"', TEST_TYPE='IFD'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
                                 cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_2.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
-                                
+                                cursor.execute("DELETE FROM IFD_GLOBAL_VAR")
+                                if(int(str(self.comboBox.currentText())) == 3):
+                                     cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"')")
+                
+                                elif(int(str(self.comboBox.currentText())) == 4):
+                                    cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3,D4) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"','"+str(self.lineEdit_40.text())+"')")
+                
+                                else:
+                                    cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"')")
                         connection.commit()
-                        connection.close()                              
+                        connection.close()
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
         else:
               print("go ahead is no....")      
     def load_data(self):
@@ -2703,10 +2726,19 @@ class PlotCanvas_Auto(FigureCanvas):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.DEF_CNT=0
+        self.D1=0
+        self.D2=0
+        self.D3=0
+        self.D4=0
+        
         self.chck_for_last_rec=0
         self.pre_load="0"
         self.load_cell_no="1"
         self.command_str_rev=""
+        
+        
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2734,7 +2766,23 @@ class PlotCanvas_Auto(FigureCanvas):
         for x in results:
                         self.load_unit=str(x[0])
                         self.disp_unit=str(x[1])
-        connection.close()                
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(DEF_CNT,0) from IFD_GLOBAL_VAR") 
+        for x in results:
+                        self.DEF_CNT=str(x[0])                        
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        if(int(self.DEF_CNT) == 3):           
+                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0) from IFD_GLOBAL_VAR") 
+        elif(int(self.DEF_CNT) == 4):
+                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0),IFNULL(D3,0) from IFD_GLOBAL_VAR") 
+        else:  
+                 results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0) from IFD_GLOBAL_VAR") 
+        connection.close()
+        
                         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),IFNULL(PRE_LOAD,0) from GLOBAL_VAR") 
@@ -3475,7 +3523,7 @@ class PlotCanvas_blank(FigureCanvas):
         
         self.p=list()
         self.q=list()
-        self.test_type="Tear"
+        self.test_type="IFD"
         ax = self.figure.add_subplot(111)
         ax.set_facecolor('#CCFFFF')
         ax.minorticks_on()
