@@ -1,4 +1,15 @@
+import subprocess, shutil, os, platform
+from reportlab.lib.units import mm, cm, inch
+from reportlab.pdfgen import canvas
 
+from matplotlib.table import Cell
+
+
+import inspect
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
+from PyQt5.Qt import QTableWidgetItem
 
 import datetime
 import sqlite3
@@ -1463,6 +1474,7 @@ class TY_75_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.non_empty_line_edits = []
         self.cycle_num=0
         self.test_type=""
         self.test_id="1"
@@ -1798,7 +1810,7 @@ class TY_75_Ui_MainWindow(object):
                         if empty_line_edits:
                                 self.msg = "Def point should not be empty.... "     
                         else:
-                                print("def point is not empty.")
+                                print("ok..")
         
         if not self.msg:
               self.msg="Confirm to start Test."
@@ -1839,13 +1851,11 @@ class TY_75_Ui_MainWindow(object):
                                 cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_2.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
                                 cursor.execute("DELETE FROM IFD_GLOBAL_VAR")
                                 if(int(str(self.comboBox.currentText())) == 3):
-                                     cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"')")
-                
+                                       cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"')")
                                 elif(int(str(self.comboBox.currentText())) == 4):
-                                    cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3,D4) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"','"+str(self.lineEdit_40.text())+"')")
-                
+                                       cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2,D3,D4) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"','"+str(self.lineEdit_40.text())+"')")
                                 else:
-                                    cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"')")
+                                       cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1,D2) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"')")
                         connection.commit()
                         connection.close()
                         
@@ -2624,7 +2634,7 @@ class PlotCanvas_Auto(FigureCanvas):
         #self.axes = plt.axes(xlim=(0, 100), ylim=(0, 100))
         self.axes.set_facecolor('#CCFFFF')  
         self.axes.minorticks_on()
-        self.test_type="Tensile"
+        self.test_type="IFD"
         self.axes.grid(which='major', linestyle='-', linewidth='0.5', color='red')
         self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
         self.compute_initial_figure()
@@ -2774,14 +2784,36 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.DEF_CNT=str(x[0])                        
         connection.close()
         
-        connection = sqlite3.connect("tyr.db")
-        if(int(self.DEF_CNT) == 3):           
-                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0) from IFD_GLOBAL_VAR") 
+        
+        if(int(self.DEF_CNT) == 3):
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0) from IFD_GLOBAL_VAR")
+                for x in results:
+                        self.D1=str(x[0])
+                        self.D2=str(x[1])
+                        self.D3=str(x[2])                        
+                connection.close()
         elif(int(self.DEF_CNT) == 4):
-                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0),IFNULL(D3,0) from IFD_GLOBAL_VAR") 
+                connection = sqlite3.connect("tyr.db")
+                results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0),IFNULL(D3,0),IFNULL(D3,0) from IFD_GLOBAL_VAR")
+                for x in results:
+                        self.D1=str(x[0])
+                        self.D2=str(x[1])
+                        self.D3=str(x[2])
+                        self.D4=str(x[3])
+                connection.close()
+                
         else:  
-                 results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0) from IFD_GLOBAL_VAR") 
-        connection.close()
+                 connection = sqlite3.connect("tyr.db")
+                 results=connection.execute("SELECT IFNULL(D1,0),IFNULL(D2,0) from IFD_GLOBAL_VAR")
+                 for x in results:
+                        self.D1=str(x[0])
+                        self.D2=str(x[1])                        
+                 connection.close()
+        
+        
+        
+        
         
                         
         connection = sqlite3.connect("tyr.db")
@@ -2865,7 +2897,7 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()
          
         try:
-            '''
+            
             self.ser = serial.Serial(
                         port='/dev/ttyUSB0',
                         baudrate=19200,
@@ -2875,40 +2907,8 @@ class PlotCanvas_Auto(FigureCanvas):
                         xonxoff=False,
                         timeout = 0.05
                     )
-            '''
-            print("indicatior -Modbus Flag :"+str(self.modbus_flag))
-            if(self.modbus_flag == 'Y'):
-                print("indicatior  non_modbus_port:"+str(self.non_modbus_port))
-                if(self.non_modbus_port=="/dev/ttyUSB1"):
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB1',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-                else:
-                        self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                )
-            else:
-                       self.ser = serial.Serial(
-                                    port='/dev/ttyUSB0',
-                                    baudrate=19200,
-                                    bytesize=serial.EIGHTBITS,
-                                    parity=serial.PARITY_NONE,
-                                    stopbits=serial.STOPBITS_ONE,
-                                    xonxoff=False,
-                                    timeout = 0.05
-                                ) 
+            
+            
             self.ser.flush()
             self.ser.write(b'*D\r')
             self.yline = self.ser.readline()
@@ -2927,9 +2927,10 @@ class PlotCanvas_Auto(FigureCanvas):
          
             #==== Guage Length Setting before staret =====
             self.ser.flush()
-            self.test_type="Compression"
+            self.test_type="IFD"
             
-            if(self.test_type=="Compression"):
+            
+            if(self.test_type=="IFD"):
                 #self.test_guage_mm=0
                 #self.command_str="*G0.00\r"
                 self.command_str="*G%.2f"%self.test_guage_mm+"\r"
@@ -2968,35 +2969,45 @@ class PlotCanvas_Auto(FigureCanvas):
             #time.sleep(2)
             #========Final Motor start Command =========    
             self.ser.flush()
-            if(self.test_type=="Compression"):
-                 print("Compression")                 
-                 if(len(self.ybuff) > 8):                    
+            if(self.test_type=="IFD"):
+                 print("IFD Test....")
+                 self.DEF_CNT=int(self.DEF_CNT)
+                 self.D1=float(self.D1)
+                 self.D2=float(self.D2)
+                 self.D3=float(self.D3)
+                 
+                 if(len(self.ybuff) > 8):                   
                     
                     if(str(self.ybuff[6])=="2"):
-                          self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
+                        
+                          if(int(self.DEF_CNT) == 3):
+                              self.command_str="*SI2_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"_%.1f"%float(self.D3)+"\r"                               
+                          elif(int(self.DEF_CNT) == 4):
+                              self.command_str="*SI2_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"_%.1f"%float(self.D3)+"_%.1f"%float(self.D4)+"\r"                              
+                          else:
+                               self.command_str="*SI2_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"\r"
+                              
+                          #self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     else:
-                          self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
+                        
+                          if(int(self.DEF_CNT) == 3):
+                              self.command_str="*SI1_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"_%.1f"%float(self.D3)+"\r"                              
+                          elif(int(self.DEF_CNT) == 4):
+                              self.command_str="*SI1_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"_%.1f"%float(self.D3)+"_%.1f"%float(self.D4)+"\r"                              
+                          else:
+                               self.command_str="*SI1_%05d"%self.DEF_CNT+"_00060_%.1f"%float(self.D1)+"_%.1f"%float(self.D2)+"\r"
+                        
+                        
+                          #self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
                     
                     print("self.command_str:"+str(self.command_str))
                     b = bytes(self.command_str, 'utf-8')
                     self.ser.write(b)                 
                  else:
-                    print("Compress test not started ") 
-            elif(self.test_type=="Flexural"):
-                print("Flexural")    
-            elif(self.test_type=="COF"):
-                print("COF")
+                    print("Error in serial OutPut.") 
+            
             else:
-                print("len(self.ybuff) :"+str(len(self.ybuff)))
-                if(len(self.ybuff) > 8):
-                    if(str(self.ybuff[6])=="2"):
-                        self.ser.write(b'*S2T000.0 000.0\r')
-                        print("Start Command :*S2T000.0 000.0\r")
-                    else:
-                        self.ser.write(b'*S1T000.0 000.0\r')
-                        print("Start Command:*S1T000.0 000.0\r")
-                else:
-                    print("Error :Serial O/P is not getting ")
+                    print("Invalid Test -Type.")
             
         except IOError:
             #print("IO Errors")
