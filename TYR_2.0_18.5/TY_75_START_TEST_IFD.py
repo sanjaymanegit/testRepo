@@ -1,3 +1,10 @@
+
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
+from pop_graph_data_radial import pop_graph_data_radial_Ui_MainWindow
+
 import subprocess, shutil, os, platform
 from reportlab.lib.units import mm, cm, inch
 from reportlab.pdfgen import canvas
@@ -1223,9 +1230,7 @@ class TY_75_Ui_MainWindow(object):
         self.label_10.setGeometry(QtCore.QRect(1000, 220, 311, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setUnderline(True)
+        font.setPointSize(10)            
         font.setWeight(75)
         self.label_10.setFont(font)
         self.label_10.setStyleSheet("color: rgb(170, 85, 127);")
@@ -1483,6 +1488,7 @@ class TY_75_Ui_MainWindow(object):
         self.timer31=QtCore.QTimer()
         self.cycle_num=0
         self.show_lcd_vals="N"
+        self.party_name=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1589,11 +1595,11 @@ class TY_75_Ui_MainWindow(object):
         self.label_10.hide()
         self.load_data()
         self.comboBox.currentTextChanged.connect(self.set_load_points)
-        self.lineEdit_37.textChanged.connect(self.onDefChange)
-        self.lineEdit_38.textChanged.connect(self.onDefChange)
-        self.lineEdit_39.textChanged.connect(self.onDefChange)
-        self.lineEdit_40.textChanged.connect(self.onDefChange)
-        self.lineEdit_17.textChanged.connect(self.onDefChange)
+        self.lineEdit_37.textChanged.connect(self.onDef1Change)
+        self.lineEdit_38.textChanged.connect(self.onDef2Change)
+        self.lineEdit_39.textChanged.connect(self.onDef3Change)
+        self.lineEdit_40.textChanged.connect(self.onDef4Change)
+        self.lineEdit_17.textChanged.connect(self.onThicknessChange)
         self.pushButton_8.clicked.connect(self.goForTest)
         self.pushButton_10.clicked.connect(self.graph_scale_on_change)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
@@ -1659,7 +1665,7 @@ class TY_75_Ui_MainWindow(object):
     
     def resetFields(self):
         self.pushButton_10.setDisabled(False)
-        self.pushButton_17.setDisabled(False)
+        #self.pushButton_17.setDisabled(False)
         self.pushButton_8.setDisabled(False)
         self.frame_3.hide()
         fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
@@ -1705,7 +1711,110 @@ class TY_75_Ui_MainWindow(object):
                         self.label_49.setText("Please start the test......")
                         self.label_49.show()
     
-    def onDefChange(self):
+#     def onDefChange(self):
+#         if (self.lineEdit_17.text() == "None"):
+#               pass
+#         else:
+#                 currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
+#            
+#                 def1 = float(self.lineEdit_37.text()) if self.lineEdit_37.text() != "" else 0  
+#                 def2 = float(self.lineEdit_38.text()) if self.lineEdit_38.text() != "" else 0 
+#                 def3 = float(self.lineEdit_39.text()) if self.lineEdit_39.text() != "" else 0  
+#                 def4 = float(self.lineEdit_40.text()) if self.lineEdit_40.text() != "" else 0 
+#                 if def1 <= 100:
+#                         percentof = float(((float(def1) * float(currentTickness)) / 100) )
+#                         self.label_92.setText(str(percentof))
+#                 else:
+#                         self.label_10.setText("Percentage should not less than 100%")  
+#                         self.label_10.show()
+#                 if def2 <= 100:
+#                         percentof = float(((float(def2) * float(currentTickness)) / 100) )
+#                         self.label_93.setText(str(percentof))
+#                 else:
+#                         self.label_10.setText("Percentage should not less than 100%")  
+#                         self.label_10.show()
+#                 if def3 <= 100:
+#                         percentof = float(((float(def3) * float(currentTickness)) / 100) )
+#                         self.label_96.setText(str(percentof))
+#                 else:
+#                         self.label_10.setText("Percentage should not less than 100%")  
+#                         self.label_10.show()
+#                 if def4 <= 100:
+#                         percentof = float(((float(def4) * float(currentTickness)) / 100) )
+#                         self.label_99.setText(str(percentof))
+#                 else:
+#                         self.label_10.setText("Percentage should not less than 100%")  
+#                         self.label_10.show()
+                        
+    def onDef1Change(self):
+        self.label_92.hide()
+        if (self.lineEdit_17.text() == "None"):
+              pass
+        else:
+                currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
+           
+                def1 = float(self.lineEdit_37.text()) if self.lineEdit_37.text() != "" else 0 
+                percentof = float(((float(def1) * float(currentTickness)) / 100) )
+                self.label_92.setText(str(percentof))
+                self.label_92.show() 
+    def onDef2Change(self):
+        self.label_93.hide()
+        if (self.lineEdit_17.text() == "None"):
+              pass
+        else:
+                currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
+           
+                def1 = float(self.lineEdit_37.text()) if self.lineEdit_37.text() != "" else 0 
+                def2 = float(self.lineEdit_38.text()) if self.lineEdit_38.text() != "" else 0 
+
+                if def1 < def2:
+                        percentof = float(((float(def2) * float(currentTickness)) / 100) )
+                        self.label_93.setText(str(percentof))
+                        self.label_93.show()
+                        self.label_10.hide()
+                        
+                else:
+                      self.label_10.setText("def2 should not less than def1 ")  
+                      self.label_10.show()
+                     
+    def onDef3Change(self):
+        self.label_96.hide()
+        if (self.lineEdit_17.text() == "None"):
+              pass
+        else:
+                currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
+                def2 = float(self.lineEdit_38.text()) if self.lineEdit_38.text() != "" else 0 
+                def3 = float(self.lineEdit_39.text()) if self.lineEdit_39.text() != "" else 0 
+                if def2 < def3:
+                        percentof = float(((float(def3) * float(currentTickness)) / 100) )
+                        self.label_96.setText(str(percentof))
+                        self.label_96.show()
+                        self.label_10.hide()
+                        
+                else:
+                      self.label_10.setText("def3 should not less than def2 ")  
+                      self.label_10.show()
+                     
+    def onDef4Change(self):
+        self.label_99.hide()
+        if (self.lineEdit_17.text() == "None"):
+              pass
+        else:
+                currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
+                def3 = float(self.lineEdit_39.text()) if self.lineEdit_39.text() != "" else 0 
+                def4 = float(self.lineEdit_40.text()) if self.lineEdit_40.text() != "" else 0 
+                if def3 < def4:
+                        percentof = float(((float(def4) * float(currentTickness)) / 100) )
+                        self.label_99.setText(str(percentof))
+                        self.label_99.show()
+                        self.label_10.hide()
+                        
+                else:
+                      self.label_10.setText("def4 should not less than def3 ")  
+                      self.label_10.show()
+                     
+    def onThicknessChange(self):
+        self.label_92.hide()
         if (self.lineEdit_17.text() == "None"):
               pass
         else:
@@ -1717,28 +1826,34 @@ class TY_75_Ui_MainWindow(object):
                 def4 = float(self.lineEdit_40.text()) if self.lineEdit_40.text() != "" else 0 
                 if def1 <= 100:
                         percentof = float(((float(def1) * float(currentTickness)) / 100) )
-                        self.label_92.setText(str(percentof))
-                else:
-                        self.label_10.setText("Percentage should not less than 100%")  
-                        self.label_10.show()
-                if def2 <= 100:
+                        self.label_92.setText(str(percentof) )
+                        self.label_92.show() 
+                
+                if def2 <= 100 and def1 < def2:
                         percentof = float(((float(def2) * float(currentTickness)) / 100) )
-                        self.label_93.setText(str(percentof))
-                else:
-                        self.label_10.setText("Percentage should not less than 100%")  
-                        self.label_10.show()
-                if def3 <= 100:
-                        percentof = float(((float(def3) * float(currentTickness)) / 100) )
-                        self.label_96.setText(str(percentof))
-                else:
-                        self.label_10.setText("Percentage should not less than 100%")  
-                        self.label_10.show()
-                if def4 <= 100:
-                        percentof = float(((float(def4) * float(currentTickness)) / 100) )
-                        self.label_99.setText(str(percentof))
-                else:
-                        self.label_10.setText("Percentage should not less than 100%")  
-                        self.label_10.show()
+                        self.label_93.setText(str(percentof) )
+                        self.label_93.show()
+                        # self.label_10.hide()
+                
+                if str(self.comboBox.currentText()) == "03":       
+                        if def3 <= 100 and def2 < def3:
+                                percentof = float(((float(def3) * float(currentTickness)) / 100) )
+                                self.label_96.setText( str(percentof))
+                                self.label_96.show()
+                                # self.label_10.hide()
+                        
+                if str(self.comboBox.currentText()) == "04":
+                      
+
+                        if def4 <= 100 and def3 < def4:
+                                percentof = float(((float(def4) * float(currentTickness)) / 100) )
+                                self.label_99.setText(str(percentof) )
+                                self.label_99.show()
+                                # self.label_10.hide()
+                        else:
+                                self.label_10.setText("def4 should not less than def3.")  
+                                self.label_10.show()
+        
         
                      
     def set_load_points(self):
@@ -1845,11 +1960,14 @@ class TY_75_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")              
                         with connection:        
                                 cursor = connection.cursor()                                                
-                                cursor.execute("INSERT INTO TEST_MST(TEST_ID,SPECIMEN_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,PRE_LOAD,FINAL_WIDTH,FINAL_THICKNESS,LAST_UNIT_LOAD,LAST_UNIT_DISP) VALUES('"+str(int(self.label_12.text()))+"', '"+str(self.comboBox_4.currentText())+"', '"+str(self.lineEdit_15.text())+"', '"+str(self.lineEdit_16.text())+"', '"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"', '"+str(self.lineEdit_12.text())+"', '"+self.lineEdit_14.text()+"', '"+self.lineEdit_13.text()+"', '"+self.lineEdit_11.text()+"', '"+str(self.lineEdit_18.text())+"' ,'"+str(self.lineEdit_17.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.comboBox_3.currentText())+"')")
+                                cursor.execute("INSERT INTO TEST_MST(TEST_ID,SPECIMEN_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,PRE_LOAD,FINAL_WIDTH,FINAL_THICKNESS,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_POINTS) VALUES('"+str(int(self.label_12.text()))+"', '"+str(self.comboBox_4.currentText())+"', '"+str(self.lineEdit_15.text())+"', '"+str(self.lineEdit_16.text())+"', '"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"', '"+str(self.lineEdit_12.text())+"', '"+self.lineEdit_14.text()+"', '"+self.lineEdit_13.text()+"', '"+self.lineEdit_11.text()+"', '"+str(self.lineEdit_18.text())+"' ,'"+str(self.lineEdit_17.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.comboBox_3.currentText())+"','"+str(self.comboBox.currentText())+"')")
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_10.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_17.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_17.text())+"',PRE_LOAD='"+str(self.lineEdit_11.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"', TEST_TYPE='IFD'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
-                                cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_2.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
+                                cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_3.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
+                                cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_13.text())+"' ,GRAPH_SCALE_CELL_2='"+str(self.lineEdit_14.text())+"'")
+                                cursor.execute("UPDATE TEST_MST SET OPERATOR=(SELECT  LOGIN_USER_NAME FROM GLOBAL_VAR),TESTED_BY=(SELECT  LOGIN_USER_NAME FROM GLOBAL_VAR),PARTY_NAME='"+str(self.party_name)+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                                 cursor.execute("DELETE FROM IFD_GLOBAL_VAR")
+                                
                                 if(int(str(self.comboBox.currentText())) == 3):
                                        cursor.execute("INSERT INTO IFD_GLOBAL_VAR(TEST_ID,DEF_CNT,D1_PER,D2_PER,D3_PER,D1,D2,D3) VALUES('"+str(int(self.label_12.text()))+"','"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_37.text())+"','"+str(self.lineEdit_38.text())+"','"+str(self.lineEdit_39.text())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"')")
                                 elif(int(str(self.comboBox.currentText())) == 4):
@@ -1880,7 +1998,7 @@ class TY_75_Ui_MainWindow(object):
         
         # Selecting the specimen name from SPECIMEN_MST
         connection = sqlite3.connect("tyr.db") 
-        results = connection.execute("SELECT DISTINCT SPECIMEN_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME IS NOT NULL")
+        results = connection.execute("SELECT DISTINCT SPECIMEN_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME IS NOT NULL order by SPECIMEN_ID desc")
         for x in results:
             specimen_name = x[0]
             self.comboBox_4.addItem(specimen_name)
@@ -1888,7 +2006,7 @@ class TY_75_Ui_MainWindow(object):
 
         
         connection = sqlite3.connect("tyr.db") 
-        results = connection.execute("SELECT LOAD_CELL, REV_MOTOR_SPEED, MOTOR_SPEED,  PRE_LOAD, WIDTH, IFNULL(THICKNESS, 0), GUAGE_LENGTH_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+self.comboBox_4.currentText()+"'") 
+        results = connection.execute("SELECT LOAD_CELL, REV_MOTOR_SPEED, MOTOR_SPEED,  PRE_LOAD, WIDTH, IFNULL(THICKNESS, 0), GUAGE_LENGTH_MM,PARTY_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+self.comboBox_4.currentText()+"'  ") 
         for column in results:
              self.lineEdit_19.setText(str(column[0]))
              self.lineEdit_10.setText(str(column[1])) 
@@ -1896,7 +2014,8 @@ class TY_75_Ui_MainWindow(object):
              self.lineEdit_11.setText(str(column[3])) 
              self.lineEdit_18.setText(str(column[4])) 
              self.lineEdit_17.setText(str(column[5]))
-             self.lineEdit_12.setText(str(column[6]))   
+             self.lineEdit_12.setText(str(column[6]))
+             self.party_name=str(column[7])
              
         connection.close() 
 
@@ -2180,7 +2299,7 @@ class TY_75_Ui_MainWindow(object):
                     try:
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET MAX_LOAD=(SELECT MAX(Y_NUM) from STG_GRAPH_MST),MAX_LENGTH=(SELECT MAX(X_NUM) from STG_GRAPH_MST),LOAD_UNIT='"+str(self.comboBox_2.currentText())+"',LENGTH_UNIT='"+str(self.comboBox_3.currentText())+"' WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                        cursor.execute("UPDATE TEST_DATA_RADIAL SET STIFFNESS='"+str(self.lineEdit_17.text())+"'  WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET STIFFNESS='"+str(self.lineEdit_17.text())+"',D1_PER='"+str(self.lineEdit_37.text())+"',D2_PER='"+str(self.lineEdit_38.text())+"',D3_PER='"+str(self.lineEdit_39.text())+"',D4_PER= '"+str(self.lineEdit_40.text())+"' WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                     except IOError:
                                      print("DB Errors-2")          
 
@@ -2302,7 +2421,7 @@ class TY_75_Ui_MainWindow(object):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
-        
+        data2= []
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
@@ -2314,9 +2433,9 @@ class TY_75_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.SPECIMEN_NAME,A.HARDNESS,B.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Spec. Name:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
             self.remark=str(x[12]) 
         connection.close()
         
@@ -2328,26 +2447,27 @@ class TY_75_Ui_MainWindow(object):
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                # print(data2)
+                                print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) , printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for y in results:
-                                data2.append(y)
-                                # print(data2)
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for z in results:
-                                data2.append(z)
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
                   connection.close()
                   
                   connection = sqlite3.connect("tyr.db")
                   results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for n in results:
-                                data2.append(n)
+                  for x in results:
+                                data2.append(x)
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 3) :
                   connection = sqlite3.connect("tyr.db")
@@ -2416,7 +2536,7 @@ class TY_75_Ui_MainWindow(object):
         Elements=[]
         
         
-        
+        print("data2 : "+str(data2))
         
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
@@ -2445,11 +2565,13 @@ class TY_75_Ui_MainWindow(object):
         linea_firma = Line(0, 30, 525, 30)
         d = Drawing(100, 1)
         d.add(linea_firma)
+        
+        f2=Table(data2)
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+       
        
         
           
-        f2=Table(data2)
-        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (-1, 0), colors.aliceblue), ('BACKGROUND', (0, 2), (-1, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (-1, 4), colors.lightgrey), ('BACKGROUND', (0, 6), (-1, 6), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'), ('ALIGN', (0,0), (-1,-1), 'CENTER')]))       
          
         f3=Table(summary_data)
         f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey), ('BACKGROUND', (0, 2), (0, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (0, 4), colors.lightgrey), ('BACKGROUND', (2, 0), (2, 0), colors.lightgrey), ('BACKGROUND', (2, 2), (2, 2), colors.lightgrey), ('BACKGROUND', (2, 4), (2, 4), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red), ('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'), ('COLWIDTHS', (0, 0), (-1, -1), [50,100,50,100]), ('ALIGN', (1,0), (1,-1), 'CENTER'), ('ALIGN', (3,0), (3,-1), 'CENTER')]))       
@@ -2458,7 +2580,7 @@ class TY_75_Ui_MainWindow(object):
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img,
                         6 * inch, 4* inch)
-        report_logo_img="python_company_logo.png"        
+        report_logo_img="./images/companylogo.jpg"        
         pdf_logo_img = Image(report_logo_img,
                         1 * inch, 1 * inch)
         header = [[pdf_logo_img], [Title, Title2]]
@@ -2467,7 +2589,7 @@ class TY_75_Ui_MainWindow(object):
          
         f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.white), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.white), ('ALIGN', (0, 0), (-1,-1), 'CENTER'), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])) 
 
-        Elements=[Spacer(1,12),f1,Spacer(1,40),d,f3,Spacer(1,12),pdf_img,Spacer(1,12),f2,Spacer(1,12),Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+        Elements=[Spacer(1,12),f1,Spacer(1,40),d,f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         try:
                
@@ -2478,7 +2600,7 @@ class TY_75_Ui_MainWindow(object):
                 doc.build(Elements)
         except PermissionError as error:
                print("Alredy Report :", error)        
-        #print("Done")    
+        #print("Done")  
       
     
     
@@ -3292,8 +3414,8 @@ class PlotCanvas(FigureCanvas):
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
-              ax.set_xlim(0,int(x[2]))
-              ax.set_ylim(0,int(x[3]))  
+              ax.set_xlim(0,float(x[2]))
+              ax.set_ylim(0,float(x[3]))  
         connection.close()
         
         

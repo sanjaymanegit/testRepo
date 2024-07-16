@@ -17,6 +17,7 @@ from TY_33_SP_REPORT_CYCLICK import TY_33_Ui_MainWindow
 from TY_35_LIST_REPORT_2 import TY_35_LIST_Ui_MainWindow
 from TY_35_LIST_REPORT_2_GOLD_SEAL import TY_35_LIST_Ui_MainWindow_GOLD_SEAL
 from TY_35_LIST_REPORT_2_COMP_3 import TY_35_LIST_Ui_MainWindow_COMP_3
+from TY_35_LIST_REPORT_IFD import TY_35_IDF_LIST_Ui_MainWindow
 
 
 
@@ -432,10 +433,21 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_cld3()
         elif(str(self.test_type_id) == "37"):
             self.save_test_radial()
+        elif(str(self.test_type_id) == "38"):
+            self.save_test_IFD()
         else:
             print("Invalid Test ID")
     
-    
+    def save_test_IFD(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='IFD'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_LIST_IFD()
+        
     def save_test_radial(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
@@ -728,6 +740,14 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         connection.commit();
         connection.close()    
         self.open_new_window_GASKET()
+    
+    
+    
+    def open_new_window_LIST_IFD(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_35_IDF_LIST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
     
     
     def open_new_window_COMP_3(self):                

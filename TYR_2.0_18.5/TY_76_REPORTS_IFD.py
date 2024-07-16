@@ -1,4 +1,11 @@
 
+
+from print_test_popup import P_POP_TEST_Ui_MainWindow
+from email_popup_test_report import popup_email_test_Ui_MainWindow
+from comment_popup import comment_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
+from pop_graph_data import pop_graph_data_Ui_MainWindow
+
 import datetime
 import platform
 import shutil
@@ -1426,7 +1433,7 @@ class TY_76_Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_41.setText(_translate("MainWindow", "Kgf."))
-        self.label_42.setText(_translate("MainWindow", "Mm."))
+        self.label_42.setText(_translate("MainWindow", "Mm"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_18.setText(_translate("MainWindow", "Data"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
@@ -1442,11 +1449,11 @@ class TY_76_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Test Speed: "))
         self.label_27.setText(_translate("MainWindow", "Length :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg."))
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "N."))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
         self.label_30.setText(_translate("MainWindow", "Deflection \n"
 " Unit:"))
-        self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm."))
+        self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
@@ -1504,9 +1511,70 @@ class TY_76_Ui_MainWindow(object):
         self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
         self.pushButton_8.clicked.connect(self.go_for_report)
         self.pushButton_13.clicked.connect(self.open_pdf)
+        
+        
+        self.pushButton_16.clicked.connect(self.print_file)
+        self.pushButton_14.clicked.connect(self.open_email_report)
+        self.pushButton_15.clicked.connect(self.open_comment_popup)
+        self.pushButton_12.clicked.connect(self.show_all_specimens)
+        
         self.go_for_report()
         # self.comboBox.currentTextChanged.connect(self.set_load_points)
+        
     
+    def print_file(self):        
+        #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
+        self.window = QtWidgets.QMainWindow()
+        self.ui=P_POP_TEST_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_email_report(self):
+        #self.test_id=(self.tableWidget.item(row, 1).text() )
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)
+        self.create_pdf_Tear()
+        print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                        cursor = connection.cursor()                
+                        cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_test_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def show_all_specimens(self):        
+        #self.pushButton_3.setDisabled(True) ### save
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                       cursor = connection.cursor()                
+                       cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE=''")                                   
+        connection.commit();
+        self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
+        self.gridLayout.addWidget(self.sc_data, 1,0,1,1)
+        
+        
+    def open_comment_popup(self):
+        
+        #print(" test_id :"+str(self.test_id))  
+        connection = sqlite3.connect("tyr.db")        
+        with connection:        
+                    cursor = connection.cursor()                
+                    cursor.execute("update global_var set EMAIL_TEST_ID=TEST_ID")                 
+        connection.commit()
+        connection.close()
+            
+        self.window = QtWidgets.QMainWindow()
+        self.ui=comment_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+        
+        
     def readWrite_fields(self):
         self.pushButton_8.setEnabled(True)
         self.frame_3.hide()
@@ -1538,7 +1606,7 @@ class TY_76_Ui_MainWindow(object):
                 cursor.execute("UPDATE TEST_DATA_RADIAL SET LOAD_UNIT = '"+str(self.comboBox_2.currentText())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                 cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_2 = '"+str(self.lineEdit_14.text())+"'")
 
-                if str(self.comboBox_2.currentText()) == "Kg.":
+                if str(self.comboBox_2.currentText()) == "Kg":
                       cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD = '"+str(self.lineEdit_14.text())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"' ")
                 else:
                       cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_N = '"+str(self.lineEdit_14.text())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"' ")
@@ -1608,7 +1676,7 @@ class TY_76_Ui_MainWindow(object):
              self.lineEdit_15.setText(str(column[7]))
              self.lineEdit_16.setText(str(column[8]))
              print("See the Units : ", str(column[9]))
-             if str(column[9]) == "Kg.":
+             if str(column[9]) == "Kg":
                 self.comboBox_2.setCurrentIndex(0)
                 self.lineEdit_14.setText(str(column[11]))
              else:
@@ -1663,18 +1731,18 @@ class TY_76_Ui_MainWindow(object):
     def load_unit_on_change(self):
         unit = str(self.comboBox_2.currentText())  
         load_unit_widgets = [self.label_33, self.label_63] 
-        if (unit == "Kg."):
-             self.current_unit = "Kg."  
+        if (unit == "Kg"):
+             self.current_unit = "Kg"  
              for label in load_unit_widgets:
                 label.setText("(" + str(unit) + ")")
         #      self.comboBox_3.setCurrentIndex(0)
         else:
-                self.current_unit = "N."  
+                self.current_unit = "N"  
                 for label in load_unit_widgets:
                         label.setText("(" + str(unit) + ")")
         #       self.comboBox_3.setCurrentIndex(0)
 
-        if self.initial_unit == "Kg.":
+        if self.initial_unit == "Kg":
              for x in self.preLoad_and_y_ax_value:
                 if x.strip():
                         self.Kg_to_N.append(float(x) * 9.81)
@@ -1684,15 +1752,15 @@ class TY_76_Ui_MainWindow(object):
                 if x.strip():
                         self.N_to_Kg.append(float(x) * 0.10197)
 
-        if (self.initial_unit == "Kg." and self.current_unit == "N."):
+        if (self.initial_unit == "Kg" and self.current_unit == "N"):
                 self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget)
-        elif (self.initial_unit == "Kg." and self.current_unit == "Kg."):
+        elif (self.initial_unit == "Kg" and self.current_unit == "Kg"):
                 for x in self.Kg_to_N:
                         self.N_to_Kg.append(float(x) * 0.10197)
                 self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget) 
-        elif (self.initial_unit == "N." and self.current_unit == "Kg."):
+        elif (self.initial_unit == "N" and self.current_unit == "Kg"):
                 self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget)  
-        elif (self.initial_unit == "N." and self.current_unit == "N."):
+        elif (self.initial_unit == "N" and self.current_unit == "N"):
                 for x in self.N_to_Kg:
                         self.Kg_to_N.append(float(x) * 9.81)
                 self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget)         
@@ -1857,11 +1925,13 @@ class TY_76_Ui_MainWindow(object):
         else:
                print("platform is macOS....")
 
+    
+               
     def create_pdf_Tear(self):
         self.remark=""
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
-        
+        data2= []
         
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
@@ -1873,44 +1943,110 @@ class TY_76_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.SPECIMEN_NAME,A.HARDNESS,B.TEST_TYPE,A.MACHINE_NO,A.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Spec. Name:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
             self.remark=str(x[12]) 
         connection.close()
         
-        if(str(self.comboBox.currentText()) == "03"):  
-              connection = sqlite3.connect("tyr.db")
-              data2= [['Spec.ID', 'Thickness', ' Def. '+str(self.lineEdit_37.text())+ ' % ',  ' Def. '+str(self.lineEdit_38.text())+ ' %', ' Def. '+str(self.lineEdit_39.text())+ ' %']]
-              results = connection.execute("SELECT SPEC_ID, (SELECT FINAL_THICKNESS FROM TEST_MST  WHERE TEST_ID = '"+str(self.label_12.text())+"') , D1, D2, D3 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
-              for x in results:
-                        data2.append(x)
-                        print(data2)
-              connection.close()
-        elif(str(self.comboBox.currentText()) == "04"):  
-              connection = sqlite3.connect("tyr.db")
-              data2= [['Spec.ID', 'Thickness', ' Def. '+str(self.lineEdit_37.text())+ ' %',  ' Def. '+str(self.lineEdit_38.text())+ ' %',   ' Def. '+str(self.lineEdit_39.text())+ ' %',   ' Def. '+str(self.lineEdit_40.text())+ ' %']]
-              results = connection.execute("SELECT SPEC_ID, (SELECT FINAL_THICKNESS FROM TEST_MST  WHERE TEST_ID = '"+str(self.label_12.text())+"') , D1, D2, D3, D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
-              for x in results:
-                        data2.append(x)
-                        print(data2)
-              connection.close()
+        
+        if(int(str(self.comboBox.currentText())) == 2) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) , printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 3) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for y in results:
+                                data2.append(y)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)), printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)), printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
+        elif(int(str(self.comboBox.currentText())) == 4) :
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                data2.append(x)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)), printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for y in results:
+                                data2.append(y)
+                                # print(data2)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)), printf(\"%.2f\",max(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for z in results:
+                                data2.append(z)
+                  connection.close()
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)), printf(\"%.2f\",min(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for n in results:
+                                data2.append(n)
+                  connection.close()
         else:
-              connection = sqlite3.connect("tyr.db")
-              data2= [['Spec.ID', 'Thickness', ' Def. '+str(self.lineEdit_37.text())+ ' % ',  ' Def. '+str(self.lineEdit_38.text())+ ' %']]
-              results = connection.execute("SELECT SPEC_ID, (SELECT FINAL_THICKNESS FROM TEST_MST  WHERE TEST_ID = '"+str(self.label_12.text())+"') , D1, D2 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
-              for x in results:
-                        data2.append(x)
-                        print(data2)
-              connection.close()
-
-
+           printe("Invalid Def Points")
+        
+        
+        
+               
         
         y=300
         Elements=[]
         
         
-        
+        print("data2 : "+str(data2))
         
         PAGE_HEIGHT=defaultPageSize[1]
         styles = getSampleStyleSheet()
@@ -1919,54 +2055,62 @@ class TY_76_Ui_MainWindow(object):
         results=connection.execute("select COMPANY_NAME,ADDRESS1 from SETTING_MST ") 
         for x in results:            
             Title = Paragraph(str(x[0]), styles["Title"])
+        #     Title = [Cell(str(x[0]), styles["Title"], ln = 1)]
             #Title2 = Paragraph(str(x[1]), styles["Title"])
             ptext = "<font name=Helvetica size=11>"+str(x[1])+" </font>"            
             Title2 = Paragraph(str(ptext), styles["Title"])
+            
+            
+            
         connection.close()
+        
         blank=Paragraph("                                                                                          ", styles["Normal"])
         #comments = Paragraph("Remark : ______________________________________________________________________________", styles["Normal"])
-        if(str(self.remark) == ""):
-                comments = Paragraph("    Remark : ______________________________________________________________________________", styles["Normal"])
+        if(str(self.remark) == "None"):
+                comments = Paragraph("    <b> Remark : </b>______________________________________________________________________________", styles["Normal"])
         else:
-                comments = Paragraph("    Remark : "+str(self.remark), styles["Normal"])
-        footer_2= Paragraph("Authorised and Signed By : _________________.", styles["Normal"])
+                comments = Paragraph("   <b>  Remark :  </b> "+str(self.remark), styles["Normal"])
+        footer_2= Paragraph(" <b> Authorised and Signed By : </b> _________________.", styles["Normal"])
         
         linea_firma = Line(0, 30, 525, 30)
-        d = Drawing(50, 1)
-        d.add(linea_firma)  
-
-
+        d = Drawing(100, 1)
+        d.add(linea_firma)
+        
         f2=Table(data2)
-        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (-1, 0), colors.grey), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+        f2.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.50, colors.black),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.black),('FONT', (0, 0), (-1, -1), "Helvetica", 9),('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold')]))       
+       
+       
+        
+          
          
         f3=Table(summary_data)
-        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red),('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold')]))       
+        f3.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.black), ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey), ('BACKGROUND', (0, 2), (0, 2), colors.lightgrey), ('BACKGROUND', (0, 4), (0, 4), colors.lightgrey), ('BACKGROUND', (2, 0), (2, 0), colors.lightgrey), ('BACKGROUND', (2, 2), (2, 2), colors.lightgrey), ('BACKGROUND', (2, 4), (2, 4), colors.lightgrey),('INNERGRID', (0, 0), (-1, -1), 0.50, colors.red), ('FONT', (0, 0), (-1, -1), "Helvetica", 10),('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),('FONTNAME', (2, 0), (2, -1), 'Helvetica-Bold'), ('COLWIDTHS', (0, 0), (-1, -1), [50,100,50,100]), ('ALIGN', (1,0), (1,-1), 'CENTER'), ('ALIGN', (3,0), (3,-1), 'CENTER')]))       
         
+        #self.show_all_specimens()
         report_gr_img="last_graph.png"        
         pdf_img= Image(report_gr_img,
                         6 * inch, 4* inch)
-        report_logo_img="python_company_logo.png"        
+        report_logo_img="./images/companylogo.jpg"        
         pdf_logo_img = Image(report_logo_img,
                         1 * inch, 1 * inch)
         header = [[pdf_logo_img], [Title, Title2]]
         col_widths = [1.2 * inch, 4.5 * inch]
         f1 = Table([header], colWidths=col_widths)
+         
         f1.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.00, colors.white), ('INNERGRID', (0, 0), (-1, -1), 0.50, colors.white), ('ALIGN', (0, 0), (-1,-1), 'CENTER'), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])) 
-        
-        Elements=[Spacer(1,12),f1,Spacer(1,40), d,f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
-        
-        # Elements=[Title,Title2,Spacer(1,12),f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
+
+        Elements=[Spacer(1,12),f1,Spacer(1,40),d,f3,Spacer(1,12),pdf_img,Spacer(1,12),Spacer(1,12),f2,Spacer(1,12),blank,comments,Spacer(1,12),Spacer(1,12),footer_2,Spacer(1,12)]
         
         try:
                
-                doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4,rightMargin=20,
+                doc = SimpleDocTemplate('./reports/test_report.pdf', pagesize=A4, rightMargin=20,
                                         leftMargin=30,
                                         topMargin=10,
                                         bottomMargin=10)
                 doc.build(Elements)
         except PermissionError as error:
                print("Alredy Report :", error)        
-        #print("Done")    
+        #print("Done") 
                
     
 class PlotCanvas(FigureCanvas):
@@ -2019,15 +2163,83 @@ class PlotCanvas(FigureCanvas):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,GRAPH_SCAL_X_LENGTH,GRAPH_SCAL_Y_LOAD from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
-              self.last_load_unit="Kg"
-              self.last_disp_unit="Mm"
+              self.last_load_unit=str(x[0])
+              self.last_disp_unit=str(x[1])
               ax.set_xlim(0,float(x[2]))
               ax.set_ylim(0,float(x[3]))  
         connection.close()
-
+        
+        
+        
+        
+        
+        self.graph_type="Load Vs Deflection"
+        for g in range(len(self.graph_ids)):
+            self.x_num=[0.0]
+            self.y_num=[0.0]
+            connection = sqlite3.connect("tyr.db")
+            if(self.graph_type=="Load Vs Deflection"):
+                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="N" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Cm"):
+                                    results=connection.execute("SELECT X_NUM_CM,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="KN" and self.last_disp_unit=="Inch"):
+                                    results=connection.execute("SELECT X_NUM_INCH,Y_NUM_KN FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    elif(self.last_load_unit=="gm" and self.last_disp_unit=="Mm"):
+                                    results=connection.execute("SELECT X_NUM,Y_NUM_MPA FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                    else:    
+                                    results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+            
+            elif(self.graph_type=="Load Vs Time"):                    
+                    results=connection.execute("SELECT T_SEC,Y_NUM FROM GRAPH_MST WHERE T_SEC > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+         
+            else:
+                #     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
+                pass
+            for k in results:        
+                self.x_num.append(k[0])
+                self.y_num.append(k[1])
+            connection.close()
+           
+            if(g < 8 ):
+                ax.plot(self.x_num,self.y_num, self.color[g],label="Specimen_"+str(g+1))
+        
+        print("self.graph_type :"+str(self.graph_type))
+        if(self.graph_type=="Load Vs Travel"):
+                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        
+        elif(self.graph_type=="Load Vs Time"):
+                ax.set_xlabel('Time (sec)')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        else:
+                ax.set_xlabel('Deflection ('+str(self.last_disp_unit)+')')
+                ax.set_ylabel('Load ('+str(self.last_load_unit)+')')
+        #self.connect('motion_notify_event', mouse_move)
         ax.legend()        
         self.draw()
         self.figure.savefig('last_graph.png',dpi=100)
+        
+        #ax.connect('motion_notify_event', mouse_move)
+    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

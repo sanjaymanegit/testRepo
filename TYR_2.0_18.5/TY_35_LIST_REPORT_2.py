@@ -10,7 +10,7 @@ from TY_56_REPORT_TRUNKLIDSEAL import TY_56_Ui_MainWindow
 from TY_60_REPORT_TRUNKLIDSEAL2 import TY_60_Ui_MainWindow
 from TY_58_REPORT_TEAR_PEAK_LOAD import TY_58_REPORT_TEAR_Ui_MainWindow
 from TY_74_REPORTS_RADIAL import TY_74_Ui_MainWindow
-
+from TY_76_REPORTS_IFD import TY_76_Ui_MainWindow
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -916,9 +916,17 @@ class TY_35_LIST_Ui_MainWindow(object):
                             self.open_report_tear_peak_load()
             elif(str(self.new_test_name) == "RADIAL_TEST"):               
                             self.open_report_redial()
+            elif(str(self.new_test_name) == "IFD"):               
+                            self.open_report_IFD()
             else:
                             self.open_report_tensile()
             
+        
+    def open_report_IFD(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_76_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def open_report_redial(self):
         self.window = QtWidgets.QMainWindow()
