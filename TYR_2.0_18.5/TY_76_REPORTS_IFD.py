@@ -5,6 +5,7 @@ from email_popup_test_report import popup_email_test_Ui_MainWindow
 from comment_popup import comment_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_3 import  TY_07_3_Ui_MainWindow
 from pop_graph_data import pop_graph_data_Ui_MainWindow
+from pop_graph_data_radial import pop_graph_data_radial_Ui_MainWindow
 
 import datetime
 import platform
@@ -1517,6 +1518,7 @@ class TY_76_Ui_MainWindow(object):
         self.pushButton_14.clicked.connect(self.open_email_report)
         self.pushButton_15.clicked.connect(self.open_comment_popup)
         self.pushButton_12.clicked.connect(self.show_all_specimens)
+        self.pushButton_18.clicked.connect(self.open_graph_data)
         
         self.go_for_report()
         # self.comboBox.currentTextChanged.connect(self.set_load_points)
@@ -1573,7 +1575,12 @@ class TY_76_Ui_MainWindow(object):
         self.ui=comment_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-        
+    
+    def open_graph_data(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=pop_graph_data_radial_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def readWrite_fields(self):
         self.pushButton_8.setEnabled(True)
@@ -1952,7 +1959,7 @@ class TY_76_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -1981,7 +1988,7 @@ class TY_76_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 3) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+') ']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -2009,7 +2016,7 @@ class TY_76_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 4) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:

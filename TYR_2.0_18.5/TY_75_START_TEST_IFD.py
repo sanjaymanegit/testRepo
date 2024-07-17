@@ -2444,7 +2444,7 @@ class TY_75_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -2473,7 +2473,7 @@ class TY_75_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 3) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+') ']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+') ']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -2501,7 +2501,7 @@ class TY_75_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 4) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
