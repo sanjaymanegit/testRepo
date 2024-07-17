@@ -1657,7 +1657,7 @@ class TY_75_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db") 
         with connection:
                 cursor = connection.cursor()
-                cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_13.text())+"', GRAPH_SCALE_CELL_2 ='"+str(self.lineEdit_14.text())+"'") 
+                cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_14.text())+"', GRAPH_SCALE_CELL_2 ='"+str(self.lineEdit_13.text())+"'") 
         connection.commit()
         connection.close()
         self.label_10.setText("Graph Scale Updated...") 
@@ -1706,6 +1706,8 @@ class TY_75_Ui_MainWindow(object):
                         self.pushButton_17.setDisabled(True)
                         self.pushButton_8.setDisabled(True)
                         self.frame_3.show()
+                        self.sc_blank =PlotCanvas_blank(self) 
+                        self.gridLayout.addWidget(self.sc_blank, 1, 0, 1, 1)
                         self.readOnly_fields()
                         self.show_grid_data()
                         self.label_49.setText("Please start the test......")
@@ -1964,7 +1966,7 @@ class TY_75_Ui_MainWindow(object):
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_10.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_17.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_17.text())+"',PRE_LOAD='"+str(self.lineEdit_11.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"', TEST_TYPE='IFD'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
                                 cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_3.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
-                                cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_13.text())+"' ,GRAPH_SCALE_CELL_2='"+str(self.lineEdit_14.text())+"'")
+                                cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_1='"+str(self.lineEdit_14.text())+"' ,GRAPH_SCALE_CELL_2='"+str(self.lineEdit_13.text())+"'")
                                 cursor.execute("UPDATE TEST_MST SET OPERATOR=(SELECT  LOGIN_USER_NAME FROM GLOBAL_VAR),TESTED_BY=(SELECT  LOGIN_USER_NAME FROM GLOBAL_VAR),PARTY_NAME='"+str(self.party_name)+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                                 cursor.execute("DELETE FROM IFD_GLOBAL_VAR")
                                 
@@ -2023,8 +2025,8 @@ class TY_75_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db") 
         results = connection.execute("SELECT GRAPH_SCALE_CELL_1, GRAPH_SCALE_CELL_2 FROM SETTING_MST") 
         for scale in results:
-             self.lineEdit_13.setText(str(scale[0]))
-             self.lineEdit_14.setText(str(scale[1]))
+             self.lineEdit_14.setText(str(scale[0]))
+             self.lineEdit_13.setText(str(scale[1]))
         connection.close() 
 
         # Creating the new test ID 
@@ -2877,8 +2879,8 @@ class PlotCanvas_Auto(FigureCanvas):
                          #print("inside sadasdasd")
                          self.axes.set_xlabel('Time (Sec)')
                          self.axes.set_ylabel("'"+str(self.load_unit)+"'")
-                 self.axes.set_xlim(0,int(x[0]))
-                 self.axes.set_ylim(0,int(x[1]))  
+                 self.axes.set_xlim(0,float(x[0]))
+                 self.axes.set_ylim(0,float(x[1]))  
         connection.close()
          
         try:
