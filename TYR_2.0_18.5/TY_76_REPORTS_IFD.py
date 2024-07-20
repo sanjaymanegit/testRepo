@@ -12,6 +12,7 @@ import platform
 import shutil
 import sqlite3
 import subprocess
+import statistics
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QSizePolicy
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -1506,7 +1507,7 @@ class TY_76_Ui_MainWindow(object):
         self.load_data()
         self.readOnly_fields()
         self.set_load_points()
-        self.load_unit_on_change()
+        # self.load_unit_on_change()
         self.show_grid_data()
         self.pushButton_9.clicked.connect(self.readWrite_fields)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
@@ -1556,7 +1557,7 @@ class TY_76_Ui_MainWindow(object):
         with connection:        
                        cursor = connection.cursor()                
                        cursor.execute("UPDATE GLOBAL_VAR2 SET GRAPH_TYPE=''")                                   
-        connection.commit();
+        connection.commit()
         self.sc_data =PlotCanvas(self,width=8, height=5,dpi=90)    
         self.gridLayout.addWidget(self.sc_data, 1,0,1,1)
         
@@ -1761,16 +1762,40 @@ class TY_76_Ui_MainWindow(object):
 
         if (self.initial_unit == "Kg" and self.current_unit == "N"):
                 self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget)
+                connection = sqlite3.connect("tyr.db")              
+                with connection:
+                        cursor = connection.cursor() 
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 9.81), L2 = printf(\"%.2f\",L2 * 9.81), L3 = printf(\"%.2f\",L3 * 9.81), L4 = printf(\"%.2f\",L4 * 9.81) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                connection.commit()
+                connection.close() 
         elif (self.initial_unit == "Kg" and self.current_unit == "Kg"):
                 for x in self.Kg_to_N:
                         self.N_to_Kg.append(float(x) * 0.10197)
-                self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget) 
+                self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget)
+                connection = sqlite3.connect("tyr.db")              
+                with connection:
+                        cursor = connection.cursor() 
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 0.10197), L2 = printf(\"%.2f\",L2 * 0.10197), L3 = printf(\"%.2f\",L3 * 0.10197), L4 = printf(\"%.2f\",L4 * 0.10197) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                connection.commit()
+                connection.close()  
         elif (self.initial_unit == "N" and self.current_unit == "Kg"):
-                self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget)  
+                self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget) 
+                connection = sqlite3.connect("tyr.db")              
+                with connection:
+                        cursor = connection.cursor() 
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 0.10197), L2 = printf(\"%.2f\",L2 * 0.10197), L3 = printf(\"%.2f\",L3 * 0.10197), L4 = printf(\"%.2f\",L4 * 0.10197) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                connection.commit()
+                connection.close() 
         elif (self.initial_unit == "N" and self.current_unit == "N"):
                 for x in self.N_to_Kg:
                         self.Kg_to_N.append(float(x) * 9.81)
-                self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget)         
+                self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget) 
+                connection = sqlite3.connect("tyr.db")              
+                with connection:
+                        cursor = connection.cursor() 
+                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 9.81), L2 = printf(\"%.2f\",L2 * 9.81), L3 = printf(\"%.2f\",L3 * 9.81), L4 = printf(\"%.2f\",L4 * 9.81) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
+                connection.commit()
+                connection.close()         
         else:
               pass
 
@@ -1959,91 +1984,358 @@ class TY_76_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')']]
-                  print(data2)
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+ ' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')']]
+                #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
-                                print(data2)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) , printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                                data2.append(x)
-                                print(data2)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                                data2.append(x)
-                                print(data2)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                                data2.append(x)
-                  connection.close()
-        elif(int(str(self.comboBox.currentText())) == 3) :
-                  connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+') ']]
-                #   print(data2)
-                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                                data2.append(x)
-                                print(data2)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for y in results:
-                                data2.append(y)
                                 # print(data2)
                   connection.close()
                   
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)), printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for z in results:
-                                data2.append(z)
-                  connection.close()
+                  if int(self.label_26.text()) > 1:
+
+                        stddev = ['Stddev']
+                        varianc = ['Variance']
+                        CV = ['CV']
+                        mean_Stiffness = []
+                        stddev_Stiffness = []
+                        varianc_Stiffness = []
+                        stddev_L1 = []
+                        stddev_L2 = []
+                        
+                        varianc_L1 = []
+                        varianc_L2 = []
+                        mean_L1 = []
+                        mean_L2 = []
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT printf(\"%.2f\",STIFFNESS) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                        for x in results:
+                                stddev_Stiffness.append(float(x[0])) 
+                                varianc_Stiffness.append(float(x[0])) 
+                        print("SEE THE STIFFNESS :", stddev_Stiffness)            
+                        std_dev = statistics.stdev(stddev_Stiffness)
+                        _varianc = statistics.variance(varianc_Stiffness)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+
+                        results=connection.execute("SELECT printf(\"%.2f\",L1) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                stddev_L1.append(float(x[0])) 
+                                varianc_L1.append(float(x[0])) 
+                                
+                        std_dev = statistics.stdev(stddev_L1)
+                        _varianc = statistics.variance(varianc_L1)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+                        results=connection.execute("SELECT printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                stddev_L2.append(float(x[0])) 
+                                varianc_L2.append(float(x[0])) 
+                                   
+                        std_dev = statistics.stdev(stddev_L2)
+                        _varianc = statistics.variance(varianc_L2)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+                        
+                        connection.close()
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) , printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                        data2.append(x)
+                                        # print(data2)
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                        data2.append(x)
+                                        # print(data2)
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                data2.append(x)
+                        connection.close()
+
+
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(STIFFNESS)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_Stiffness.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L1)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L1.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L2.append(float(x[0]))         
+                        connection.close()
+                        print("stddev :", stddev)
+                        print("mean_L1 :", mean_L1[0])
+                        CV.append(f"{(float(stddev[1]) / float(mean_Stiffness[0])):.2f}")
+                        CV.append(f"{(float(stddev[2]) / float(mean_L1[0])):.2f}")
+                        CV.append(f"{(float(stddev[3]) / float(mean_L2[0])):.2f}")
+                        data2.append(stddev)
+                        data2.append(varianc)
+                        data2.append(CV)
+
+        elif(int(str(self.comboBox.currentText())) == 3) :
+                   
+                  
                   
                   connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min',printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)), printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for n in results:
-                                data2.append(n)
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' % ('+str(self.comboBox_2.currentText())+') ']]
+                #   print(data2)
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                                
+                                data2.append(x)
+                                # print(data2)
                   connection.close()
+                #   print("see the spec number :", int(self.label_26.text()))
+                  if int(self.label_26.text()) > 1:
+
+                        # connection = sqlite3.connect("tyr.db")
+                        # results=connection.execute("SELECT 'Stddev', printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                        # # results=connection.execute("SELECT 'Stddev', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) , printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        # for x in results:
+                        #                 data2.append(x)
+                        #                 # print(data2)
+                        # connection.close() 
+                        # print("see the data2 value : ", data2) 
+                        stddev = ['Stddev']
+                        varianc = ['Variance']
+                        CV = ['CV']
+                        mean_Stiffness = []
+                        stddev_Stiffness = []
+                        varianc_Stiffness = []
+                        stddev_L1 = []
+                        stddev_L2 = []
+                        stddev_L3 = []
+                        varianc_L1 = []
+                        varianc_L2 = []
+                        varianc_L3 = []
+                        mean_L1 = []
+                        mean_L2 = []
+                        mean_L3 = []
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT printf(\"%.2f\",STIFFNESS) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                        for x in results:
+                                stddev_Stiffness.append(float(x[0])) 
+                                varianc_Stiffness.append(float(x[0])) 
+                        print("SEE THE STIFFNESS :", stddev_Stiffness)            
+                        std_dev = statistics.stdev(stddev_Stiffness)
+                        _varianc = statistics.variance(varianc_Stiffness)
+
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+
+                        results=connection.execute("SELECT printf(\"%.2f\",L1) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        # results=connection.execute("SELECT printf(\"%.2f\",L1) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                        for x in results:
+                                stddev_L1.append(float(x[0])) 
+                                varianc_L1.append(float(x[0]))         
+                        print("see the stddev :", stddev_L1)
+                        std_dev = statistics.stdev(stddev_L1)
+                        _varianc = statistics.variance(varianc_L1)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+                        results=connection.execute("SELECT printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        # results=connection.execute("SELECT printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                        for x in results:
+                                stddev_L2.append(float(x[0])) 
+                                varianc_L2.append(float(x[0])) 
+                                   
+                        std_dev = statistics.stdev(stddev_L2)
+                        _varianc = statistics.variance(varianc_L2)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+                        results=connection.execute("SELECT printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                stddev_L3.append(float(x[0])) 
+                                varianc_L3.append(float(x[0]))   
+                        std_dev = statistics.stdev(stddev_L3)
+                        _varianc = statistics.variance(varianc_L3)
+                        stddev.append(f"{std_dev:.2f}")
+                        varianc.append(f"{_varianc:.2f}")
+                        
+                        connection.close()
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(STIFFNESS)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_Stiffness.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L1)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L1.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L2.append(float(x[0]))         
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L3.append(float(x[0])) 
+                        connection.close()
+                        print("stddev :", stddev)
+                        print("mean_L1 :", mean_L1[0])
+                        CV.append(f"{(float(stddev[1]) / float(mean_Stiffness[0])):.2f}")
+                        CV.append(f"{(float(stddev[2]) / float(mean_L1[0])):.2f}")
+                        CV.append(f"{(float(stddev[3]) / float(mean_L2[0])):.2f}")
+                        CV.append(f"{(float(stddev[3]) / float(mean_L3[0])):.2f}")
+
+
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for y in results:
+                                        data2.append(y)
+                                        # print(data2)
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)), printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for z in results:
+                                        data2.append(z)
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Min',printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)), printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for n in results:
+                                data2.append(n)
+                        connection.close()
+                        data2.append(stddev)
+                        data2.append(varianc)
+                        data2.append(CV)
         elif(int(str(self.comboBox.currentText())) == 4) :
+                  stddev = ['Stddev']
+                  varianc = ['Variance']
+                  CV = ['CV']
+                  mean_Stiffness = []
+                  stddev_Stiffness = []
+                  varianc_Stiffness = []
+                  stddev_L1 = []
+                  stddev_L2 = []
+                  stddev_L3 = []
+                  stddev_L4 = []
+                  varianc_L1 = []
+                  varianc_L2 = []
+                  varianc_L3 = []
+                  varianc_L4 = []
+                  mean_L1 = []
+                  mean_L2 = []
+                  mean_L3 = []
+                  mean_L4 = []
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+'% ('+str(self.comboBox_2.currentText())+')']]
+                  results=connection.execute("SELECT printf(\"%.2f\",STIFFNESS) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        
+                  for x in results:
+                        stddev_Stiffness.append(float(x[0])) 
+                        varianc_Stiffness.append(float(x[0])) 
+                  print("SEE THE STIFFNESS :", stddev_Stiffness)            
+                  std_dev = statistics.stdev(stddev_Stiffness)
+                  _varianc = statistics.variance(varianc_Stiffness)
+                  stddev.append(f"{std_dev:.2f}")
+                  varianc.append(f"{_varianc:.2f}")
+
+                  results=connection.execute("SELECT printf(\"%.2f\",L1) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                        stddev_L1.append(float(x[0])) 
+                        varianc_L1.append(float(x[0])) 
+                                
+                  std_dev = statistics.stdev(stddev_L1)
+                  _varianc = statistics.variance(varianc_L1)
+                  stddev.append(f"{std_dev:.2f}")
+                  varianc.append(f"{_varianc:.2f}")
+                  results=connection.execute("SELECT printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                        stddev_L2.append(float(x[0])) 
+                        varianc_L2.append(float(x[0])) 
+                                   
+                  std_dev = statistics.stdev(stddev_L2)
+                  _varianc = statistics.variance(varianc_L2)
+                  stddev.append(f"{std_dev:.2f}")
+                  varianc.append(f"{_varianc:.2f}")
+                  results=connection.execute("SELECT printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                        stddev_L3.append(float(x[0])) 
+                        varianc_L3.append(float(x[0]))   
+                  std_dev = statistics.stdev(stddev_L3)
+                  _varianc = statistics.variance(varianc_L3)
+                  stddev.append(f"{std_dev:.2f}")
+                  varianc.append(f"{_varianc:.2f}")          
+                  results=connection.execute("SELECT printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  for x in results:
+                        stddev_L4.append(float(x[0])) 
+                        varianc_L4.append(float(x[0]))   
+                  std_dev = statistics.stdev(stddev_L4)
+                  _varianc = statistics.variance(varianc_L4)
+                  stddev.append(f"{std_dev:.2f}")
+                  varianc.append(f"{_varianc:.2f}")  
+                        
+                        
+                  connection.close()
+
+                  
+                  connection = sqlite3.connect("tyr.db")
+                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' % ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
                                 # print(data2)
                   connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)), printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for y in results:
+                  if int(self.label_26.text()) > 1:
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)), printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for y in results:
                                 data2.append(y)
                                 # print(data2)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)), printf(\"%.2f\",max(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for z in results:
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Max', printf(\"%.2f\",Max(STIFFNESS)), printf(\"%.2f\",max(L1)) ,printf(\"%.2f\",max(L2)), printf(\"%.2f\",max(L3)), printf(\"%.2f\",max(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for z in results:
                                 data2.append(z)
-                  connection.close()
-                  
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)), printf(\"%.2f\",min(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for n in results:
+                        connection.close()
+                        
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT 'Min', printf(\"%.2f\",Min(STIFFNESS)), printf(\"%.2f\",min(L1)) ,printf(\"%.2f\",min(L2)), printf(\"%.2f\",min(L3)), printf(\"%.2f\",min(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for n in results:
                                 data2.append(n)
-                  connection.close()
+                        connection.close()
+                        connection = sqlite3.connect("tyr.db")
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(STIFFNESS)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_Stiffness.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L1)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L1.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L2)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L2.append(float(x[0]))         
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L3)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L3.append(float(x[0])) 
+                        results=connection.execute("SELECT printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                        for x in results:
+                                mean_L4.append(float(x[0])) 
+                        
+                        connection.close()
+                        print("stddev :", stddev)
+                        print("mean_L1 :", mean_L1[0])
+                        CV.append(f"{(float(stddev[1]) / float(mean_Stiffness[0])):.2f}")
+                        CV.append(f"{(float(stddev[2]) / float(mean_L1[0])):.2f}")
+                        CV.append(f"{(float(stddev[3]) / float(mean_L2[0])):.2f}")
+                        CV.append(f"{(float(stddev[4]) / float(mean_L3[0])):.2f}")
+                        CV.append(f"{(float(stddev[5]) / float(mean_L4[0])):.2f}")
+                        data2.append(stddev)
+                        data2.append(varianc)
+                        data2.append(CV)
         else:
-           printe("Invalid Def Points")
+           print("Invalid Def Points")
         
         
         

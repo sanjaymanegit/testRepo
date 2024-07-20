@@ -821,7 +821,7 @@ class TY_01_Ui_MainWindow(object):
             self.graph_scal_y_load_n=float(self.graph_scal_y_load_kg)*9.81  ## Kg to Newton Conversion
             self.graph_scal_y_load_lb=float(self.graph_scal_y_load_kg)*2.20462  ##3 Kg to Lb conversion
             
-            self.graph_scal_x_length_mm=int(self.lineEdit_2_1_1.text()) ### Input as mm
+            self.graph_scal_x_length_mm=float(self.lineEdit_2_1_1.text()) ### Input as mm
             self.graph_scal_x_length_cm=float(self.graph_scal_x_length_mm)*0.1 ### MM to CM conversion
             self.graph_scal_x_length_inch=float(self.graph_scal_x_length_mm)*0.0393701 ### Mm to Inch conversion
         

@@ -2629,7 +2629,7 @@ class PlotCanvas(FigureCanvas):
                              ax.set_xlim(0,int(int(x[0])))
                              ax.set_ylim(0,int(x[1]))
                          else:
-                             ax.set_xlim(0,float(int(x[0])*0.1))
+                             ax.set_xlim(0,float(float(x[0])*0.1))
                              ax.set_ylim(0,float(x[1]))
                 
                                           
