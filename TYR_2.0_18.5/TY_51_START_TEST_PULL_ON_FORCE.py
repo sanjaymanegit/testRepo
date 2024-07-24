@@ -2109,6 +2109,10 @@ class PlotCanvas_Auto(FigureCanvas):
         self.modbus_port=""
         self.non_modbus_port=""
         
+        self.pre_load="0"
+        self.load_cell_no="1"
+        self.command_str_rev=""
+        
         self.plot_auto()
          
     def compute_initial_figure(self):
@@ -2306,6 +2310,12 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.ser.write(b'*P0050_0010\r')
                 #print("started with default motor speed . Not gohead ")
             #self.ser.write(b'*D\r\n')
+            
+            if(self.goahead_flag==1):
+                b = bytes(self.command_str_rev, 'utf-8')
+                self.ser.write(b)
+            else:   
+                print("rev speed command problem")
                 
             #time.sleep(2)
             #========Final Motor start Command =========    
@@ -2588,8 +2598,20 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
                  #print(" calc Speed : "+str(self.calc_speed))
                  #print(" command: *P"+str(self.calc_speed)+" \r")
-                 self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str="*P%04d"%self.calc_speed+"_%0.2f"%self.break_sence+"\r"
                  print("Morot Speed and Breaking speed Command  :"+str(self.command_str))
+            else:
+                 print(" not Ok ")
+            if(float(self.input_rev_speed_val) <= float(self.speed_val)):
+                 #print(" Ok ")
+                 self.goahead_flag=1
+                 self.calc_speed=(float(self.input_rev_speed_val)/float(self.speed_val))*1000                 
+                 #print(" calc Speed : "+str(self.calc_speed))
+                 #print(" command: *P"+str(self.calc_speed)+" \r")
+                 #self.command_str="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                 self.command_str_rev="*Y%04d"%self.calc_speed+"\r"
+                 print("Rever Speed Command   :"+str(self.command_str_rev))
             else:
                  print(" not Ok ")
                  
