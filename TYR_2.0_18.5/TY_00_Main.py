@@ -305,7 +305,7 @@ class MAIN_Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.open_new_window4) #Motor
         self.pushButton.clicked.connect(self.open_new_window3) #Setting
         self.pushButton_5.clicked.connect(self.open_new_window5) #Specimen
-        self.pushButton_6.clicked.connect(self.reboot_system) # Shutdown
+        self.pushButton_6.clicked.connect(self.shutdown_system) # Shutdown
         self.pushButton_7.clicked.connect(self.reboot_system) # Reboot
         self.anydesk_open()
     def shutdown_system(self):
