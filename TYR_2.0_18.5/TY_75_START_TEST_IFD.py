@@ -1668,13 +1668,13 @@ class TY_75_Ui_MainWindow(object):
         #self.pushButton_17.setDisabled(False)
         self.pushButton_8.setDisabled(False)
         self.frame_3.hide()
-        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4,self.pushButton_6, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
+        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4,self.pushButton_6,self.pushButton_17, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
                   self.lineEdit_9, self.lineEdit_17, self.lineEdit_18, self.lineEdit_10, self.lineEdit_13, self.lineEdit_14, self.lineEdit_37, self.lineEdit_39, 
                   self.lineEdit_38, self.lineEdit_39, self.lineEdit_40, self.lineEdit_11
                 ]
         self.indx=0
         for field in fields:
-                if ( int(self.indx) <= 4 ):
+                if ( int(self.indx) <= 5 ):
                       field.setEnabled(True)
                 else:
                       field.setReadOnly(False)
