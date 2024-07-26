@@ -894,11 +894,11 @@ class TY_05_Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "CS.Area:"))
         self.lineEdit_14.setText(_translate("MainWindow", "6"))
         self.label_26.setText(_translate("MainWindow", "Details:"))
-        self.label_35.setText(_translate("MainWindow", "Fwd.Speed:"))
+        self.label_35.setText(_translate("MainWindow", "UP.Speed:"))
         self.label_23.setText(_translate("MainWindow", "Spect.ID:"))
         self.label_2.setText(_translate("MainWindow", "0001"))
         self.label_28.setText(_translate("MainWindow", "(mm/min)"))
-        self.label_36.setText(_translate("MainWindow", "Rev. Speed:"))
+        self.label_36.setText(_translate("MainWindow", "DOWN. Speed:"))
         self.lineEdit_5.setText(_translate("MainWindow", "200"))
         self.label_37.setText(_translate("MainWindow", "(mm/min)"))
         self.label_39.setText(_translate("MainWindow", "(mm)"))
@@ -1289,7 +1289,7 @@ class TY_05_Ui_MainWindow(object):
         self.tableWidget.setColumnCount(15)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         
-        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Details','Test Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed'] )       
+        self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Details','UP Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','DOWN Speed'] )       
            
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,IFNULL(REV_MOTOR_SPEED,0)  FROM SPECIMEN_MST")                        
