@@ -435,9 +435,22 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
             self.save_test_radial()
         elif(str(self.test_type_id) == "38"):
             self.save_test_IFD()
+        elif(str(self.test_type_id) == "39"):
+            self.save_test_CLD_INS()    
         else:
             print("Invalid Test ID")
     
+    
+    def save_test_CLD_INS(self):
+        connection = sqlite3.connect("tyr.db")              
+        with connection:        
+                    cursor = connection.cursor()
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='CLD_INS'")                    
+        connection.commit();
+        connection.close()
+        
+        self.open_new_window_LIST_GOLD_SEAL()
+        
     def save_test_IFD(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
