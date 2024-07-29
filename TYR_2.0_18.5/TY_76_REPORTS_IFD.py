@@ -1647,7 +1647,9 @@ class TY_76_Ui_MainWindow(object):
         self.comboBox_4.clear()
         self.comboBox.clear()   
         connection = sqlite3.connect("tyr.db")
-        results = connection.execute("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"' LIMIT 1") 
+        #print("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
+       
+        results = connection.execute("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
         for x in results:
              self.comboBox.addItem(str(x[0]).zfill(2))
              self.lineEdit_37.setText(str(x[1]))
