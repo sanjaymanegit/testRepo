@@ -151,10 +151,10 @@ background-color: rgb(255, 231, 254);</string>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>500</x>
         <y>180</y>
-        <width>681</width>
-        <height>71</height>
+        <width>691</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="font">
@@ -169,7 +169,7 @@ background-color: rgb(255, 231, 254);</string>
        <string notr="true">color: rgb(170, 0, 127);</string>
       </property>
       <property name="text">
-       <string>Running with 40 % speed of maximum speed 500 ( mm/min)</string>
+       <string>Running with 40 % speed of maximum down speed 500 ( mm/min)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -431,7 +431,7 @@ background-color: rgb(255, 231, 254);</string>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>16</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -586,6 +586,35 @@ background-color: rgb(255, 231, 254);</string>
       </property>
       <property name="text">
        <string>Mannual Stop</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>910</x>
+        <y>300</y>
+        <width>241</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-style:outset;
+border-color: rgb(0, 0, 0);
+border-width:4px;
+color: rgb(0, 0, 0);
+border-radius:20px;
+background-color: rgb(255, 231, 254);</string>
+      </property>
+      <property name="text">
+       <string>Mannual Control</string>
       </property>
      </widget>
     </widget>
