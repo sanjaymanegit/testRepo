@@ -1504,7 +1504,7 @@ class TY_75_Ui_MainWindow(object):
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Def. % (mm)"))
+        item.setText(_translate("MainWindow", "IFD % (mm)"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Load  (Kgf)"))
         item = self.tableWidget.horizontalHeaderItem(2)
@@ -1567,7 +1567,7 @@ class TY_75_Ui_MainWindow(object):
         self.label_22.setText(_translate("MainWindow", "(Kg)"))
         self.label_23.setText(_translate("MainWindow", "Rev Speed: "))
         self.label_25.setText(_translate("MainWindow", "(mm/min)"))
-        self.pushButton_19.setText(_translate("MainWindow", "Set Def. Points"))
+        self.pushButton_19.setText(_translate("MainWindow", "Set IFD Points"))
         self.label_90.setText(_translate("MainWindow", "Def.(1):"))
         self.label_91.setText(_translate("MainWindow", "(%)"))
         self.label_13.setText(_translate("MainWindow", "IFD Test"))
@@ -1580,10 +1580,10 @@ class TY_75_Ui_MainWindow(object):
         self.label_95.setText(_translate("MainWindow", "Def.(2):"))
         self.label_96.setText(_translate("MainWindow", "( 25 mm)"))
         self.label_97.setText(_translate("MainWindow", "(%)"))
-        self.label_98.setText(_translate("MainWindow", "Def.(3):"))
+        self.label_98.setText(_translate("MainWindow", "Def. (3):"))
         self.label_99.setText(_translate("MainWindow", "( 25 mm)"))
         self.label_100.setText(_translate("MainWindow", "(%)"))
-        self.label_101.setText(_translate("MainWindow", "Def.(4):"))
+        self.label_101.setText(_translate("MainWindow", "Def. (4):"))
         self.label_24.setText(_translate("MainWindow", "Pre Load:"))
         self.label_33.setText(_translate("MainWindow", "(Kg)"))
         self.timer1=QtCore.QTimer()
@@ -1713,40 +1713,7 @@ class TY_75_Ui_MainWindow(object):
                         self.label_49.setText("Please start the test......")
                         self.label_49.show()
     
-#     def onDefChange(self):
-#         if (self.lineEdit_17.text() == "None"):
-#               pass
-#         else:
-#                 currentTickness = float(self.lineEdit_17.text()) if self.lineEdit_17.text() != "" else 0
-#            
-#                 def1 = float(self.lineEdit_37.text()) if self.lineEdit_37.text() != "" else 0  
-#                 def2 = float(self.lineEdit_38.text()) if self.lineEdit_38.text() != "" else 0 
-#                 def3 = float(self.lineEdit_39.text()) if self.lineEdit_39.text() != "" else 0  
-#                 def4 = float(self.lineEdit_40.text()) if self.lineEdit_40.text() != "" else 0 
-#                 if def1 <= 100:
-#                         percentof = float(((float(def1) * float(currentTickness)) / 100) )
-#                         self.label_92.setText(str(percentof))
-#                 else:
-#                         self.label_10.setText("Percentage should not less than 100%")  
-#                         self.label_10.show()
-#                 if def2 <= 100:
-#                         percentof = float(((float(def2) * float(currentTickness)) / 100) )
-#                         self.label_93.setText(str(percentof))
-#                 else:
-#                         self.label_10.setText("Percentage should not less than 100%")  
-#                         self.label_10.show()
-#                 if def3 <= 100:
-#                         percentof = float(((float(def3) * float(currentTickness)) / 100) )
-#                         self.label_96.setText(str(percentof))
-#                 else:
-#                         self.label_10.setText("Percentage should not less than 100%")  
-#                         self.label_10.show()
-#                 if def4 <= 100:
-#                         percentof = float(((float(def4) * float(currentTickness)) / 100) )
-#                         self.label_99.setText(str(percentof))
-#                 else:
-#                         self.label_10.setText("Percentage should not less than 100%")  
-#                         self.label_10.show()
+
                         
     def onDef1Change(self):
         self.label_92.hide()
@@ -2058,7 +2025,7 @@ class TY_75_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100) 
                 self.tableWidget.setColumnWidth(4, 100)                
-                self.tableWidget.setHorizontalHeaderLabels(['Sample # ','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','Def.@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Sample # ','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
    
@@ -2070,7 +2037,7 @@ class TY_75_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(3, 100)
                 self.tableWidget.setColumnWidth(4, 100)
                 self.tableWidget.setColumnWidth(5, 100)                
-                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','Def.@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_40.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_40.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3),printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
    
@@ -2080,7 +2047,7 @@ class TY_75_Ui_MainWindow(object):
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100)                
-                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','Def.@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'Def.@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
+                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
                 results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
    
@@ -2447,7 +2414,7 @@ class TY_75_Ui_MainWindow(object):
         
         if(int(str(self.comboBox.currentText())) == 2) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n (Mm)', ' IFD \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' IFD \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -2476,7 +2443,7 @@ class TY_75_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 3) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+') ']]
+                  data2= [['Spec.','Thickness'+' \n (Mm)', ' IFD \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' IFD \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' IFD \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+') ']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2), printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
@@ -2504,7 +2471,7 @@ class TY_75_Ui_MainWindow(object):
                   connection.close()
         elif(int(str(self.comboBox.currentText())) == 4) :
                   connection = sqlite3.connect("tyr.db")
-                  data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+'% ('+str(self.comboBox_2.currentText())+')']]
+                  data2= [['Spec.','Thickness'+' \n (Mm)', ' IFD \n @ '+str(self.lineEdit_37.text())+'% ('+str(self.comboBox_2.currentText())+') ',' IFD \n @ '+str(self.lineEdit_38.text())+'% ('+str(self.comboBox_2.currentText())+')', ' IFD \n @ '+str(self.lineEdit_39.text())+'% ('+str(self.comboBox_2.currentText())+')', ' IFD \n @ '+str(self.lineEdit_40.text())+'% ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:

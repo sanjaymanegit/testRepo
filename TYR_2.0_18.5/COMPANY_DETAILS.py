@@ -418,7 +418,7 @@ class CompanyDetails(QMainWindow):
         self.label_9.setGeometry(QtCore.QRect(480, 440, 121, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_9.setFont(font)
@@ -438,7 +438,7 @@ class CompanyDetails(QMainWindow):
         self.radioButton.setStyleSheet("border:None;")
         self.radioButton.setObjectName("radioButton")
         MainWindow.setCentralWidget(self.centralwidget)
-
+        self.motor_up_down=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -464,9 +464,9 @@ class CompanyDetails(QMainWindow):
         self.label_17.setText(_translate("MainWindow", "(X-Axis)"))
         self.label_7.setText(_translate("MainWindow", "Load :"))
         self.label_16.setText(_translate("MainWindow", "(Y-Axis)"))
-        self.radioButton_2.setText(_translate("MainWindow", "Auto Scale"))
-        self.label_9.setText(_translate("MainWindow", "Graph Ploting :"))
-        self.radioButton.setText(_translate("MainWindow", "Manual"))
+        self.radioButton_2.setText(_translate("MainWindow", "Pre-Load"))
+        self.label_9.setText(_translate("MainWindow", "Motor(UP/DOWN):"))
+        self.radioButton.setText(_translate("MainWindow", "Normal"))
         self.timer1=QtCore.QTimer()
         self.timer1.setInterval(1000)  
         self.timer1.start(1)      
@@ -482,7 +482,7 @@ class CompanyDetails(QMainWindow):
 
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT COMPANY_NAME,ADDRESS1,PHONE_NO,AUTO_REV_TIME_OFF,MOTOR_TEST_SPEED,MOTOR_MAX_SPEED,BREAKING_SENCE,GRAPH_SCALE_CELL_1,GRAPH_SCALE_CELL_2,GRAPH_SCALE_TYPE,PHONE_NO,NEW_DATE,GRAPH_SCALE_TYPE  FROM SETTING_MST")
+        results=connection.execute("SELECT COMPANY_NAME,ADDRESS1,PHONE_NO,AUTO_REV_TIME_OFF,MOTOR_TEST_SPEED,MOTOR_MAX_SPEED,BREAKING_SENCE,GRAPH_SCALE_CELL_1,GRAPH_SCALE_CELL_2,GRAPH_SCALE_TYPE,PHONE_NO,NEW_DATE,GRAPH_SCALE_TYPE,MOTOR_UP_DOWN_TYPE  FROM SETTING_MST")
         rows=results.fetchall()  
         self.lineEdit.setText(rows[0][0]) #COMPANY_NAME
         self.textEdit.setText(str(rows[0][1])) #ADDRESS1
@@ -492,16 +492,24 @@ class CompanyDetails(QMainWindow):
         self.lineEdit_2.setText(str(rows[0][7])) #GRAPH_SCALE_CELL_1
         self.lineEdit_3.setText(str(rows[0][8])) #GRAPH_SCALE_CELL_2
         if(rows[0][12]== 'AUTO'):
-            self.radioButton.setChecked(False)
-            self.radioButton_2.setChecked(True)
+            #self.radioButton.setChecked(False)
+            #self.radioButton_2.setChecked(True)
             self.lineEdit_2.setDisabled(True)
             self.lineEdit_3.setDisabled(True)
             
         else:    
-            self.radioButton.setChecked(True)
-            self.radioButton_2.setChecked(False)
+            #self.radioButton.setChecked(True)
+            #self.radioButton_2.setChecked(False)
             self.lineEdit_2.setEnabled(True)
             self.lineEdit_3.setEnabled(True)
+            
+        if(rows[0][13]== 'PRE_LOAD'):
+            self.radioButton.setChecked(False)
+            self.radioButton_2.setChecked(True)
+        else:
+            self.radioButton.setChecked(True)
+            self.radioButton_2.setChecked(False)
+            
             
         connection.close()
         connection = sqlite3.connect("tyr.db")
@@ -513,15 +521,19 @@ class CompanyDetails(QMainWindow):
         connection.close() 
         self.label_2.setPixmap(pixmap)
         self.label_2.setScaledContents(True) 
-    def save_data(self):
+    def save_data(self):   
         if(self.radioButton_2.isChecked()):
             self.graphscal_type="AUTO"
+            self.motor_up_down="PRE_LOAD"
         else:    
             self.graphscal_type="MANNUAL"
+            self.motor_up_down="NON_PRE_LOAD"
+            
+        print("self.motor_up_down  :"+str(self.motor_up_down))    
         connection = sqlite3.connect("tyr.db")        
         with connection:        
             cursor = connection.cursor()                    
-            cursor.execute("UPDATE SETTING_MST SET COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_5.text()+"', BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_2.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_3.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_4.text()+"'") 
+            cursor.execute("UPDATE SETTING_MST SET MOTOR_UP_DOWN_TYPE='"+str(self.motor_up_down)+"',COMPANY_NAME = '"+self.lineEdit.text()+"',ADDRESS1='"+self.textEdit.toPlainText()+"',AUTO_REV_TIME_OFF='"+self.lineEdit_5.text()+"', BREAKING_SENCE='"+self.lineEdit_6.text()+"',GRAPH_SCALE_CELL_1='"+self.lineEdit_2.text()+"',GRAPH_SCALE_CELL_2='"+self.lineEdit_3.text()+"',GRAPH_SCALE_TYPE='"+str(self.graphscal_type)+"',PHONE_NO='"+self.lineEdit_4.text()+"'") 
         connection.commit()
         connection.close() 
         self.label_5.setText("Saved Successfully !")

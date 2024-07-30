@@ -1,6 +1,7 @@
 from TY_12_TEST_LIST import TY_12_LIST_Ui_MainWindow
 from TY_50_TEST_LIST_SPECS import TY_50_LIST_Ui_MainWindow
 from TY_18_TEST_TYPE_REPORTS import TY_18_TEST_TYPE_REPORTS_Ui
+from TY_07_UTM_MANNUAL_CONTROL_3 import TY_07_3_Ui_MainWindow
 from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 #from TY_04_SETTING import TY_04_Ui_MainWindow
 from SETTINGS import setting_Ui_MainWindow
@@ -301,8 +302,17 @@ class MAIN_Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Reboot"))
         self.label_4_1.setText(_translate("MainWindow", "AnyDesk ID : "))
         self.pushButton_2.clicked.connect(self.open_new_window)#TEST
-        self.pushButton_3.clicked.connect(self.open_new_window2) #Report       
-        self.pushButton_4.clicked.connect(self.open_new_window4) #Motor
+        self.pushButton_3.clicked.connect(self.open_new_window2) #Report
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("select MOTOR_UP_DOWN_TYPE from SETTING_MST") 
+        for x in results:
+           print(" MOTOR_UP_DOWN_TYPE:  "+str(str(x[0])))
+           if(str(x[0]) == "NON_PRE_LOAD"):
+               self.pushButton_4.clicked.connect(self.open_new_window4) #NON_PRE_LOAD
+           else:
+               self.pushButton_4.clicked.connect(self.open_new_window7) #PRE_LOAD
+        connection.close()
+        
         self.pushButton.clicked.connect(self.open_new_window3) #Setting
         self.pushButton_5.clicked.connect(self.open_new_window5) #Specimen
         self.pushButton_6.clicked.connect(self.shutdown_system) # Shutdown
@@ -385,7 +395,12 @@ class MAIN_Ui_MainWindow(object):
         self.ui=TY_07_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
-        
+    
+    def open_new_window7(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_07_3_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
         
     def open_new_window5(self):
         self.window = QtWidgets.QMainWindow()
