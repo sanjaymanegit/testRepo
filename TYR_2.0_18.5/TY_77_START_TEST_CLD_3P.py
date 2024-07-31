@@ -1256,7 +1256,7 @@ class TY_77_Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_10.setText(_translate("MainWindow", "CLD_INS"))
+        self.label_10.setText(_translate("MainWindow", "CLD-3P"))
         self.label_47.setText(_translate("MainWindow", "05 Aug 2020 14:23:00"))
         self.pushButton_6.setText(_translate("MainWindow", "Return"))
         self.pushButton_7.setText(_translate("MainWindow", "Stop"))
@@ -1291,8 +1291,8 @@ class TY_77_Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "500"))
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
-        self.label_41.setText(_translate("MainWindow", "Kgf."))
-        self.label_42.setText(_translate("MainWindow", "Mm."))
+        self.label_41.setText(_translate("MainWindow", "Kgf"))
+        self.label_42.setText(_translate("MainWindow", "Mm"))
         self.label_49.setText(_translate("MainWindow", "Data Saved Successfully ......"))
         self.pushButton_18.setText(_translate("MainWindow", "Data"))
         self.pushButton_8.setText(_translate("MainWindow", "Go For Test"))
@@ -1309,15 +1309,15 @@ class TY_77_Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Pre Load:"))
         self.label_18.setText(_translate("MainWindow", "(Kgf)"))
         self.label_19.setText(_translate("MainWindow", "Rev.Speed:"))
-        self.label_20.setText(_translate("MainWindow", "(mm/min)"))
-        self.label_20_1.setText(_translate("MainWindow", "(mm/min)"))
+        self.label_20.setText(_translate("MainWindow", "(Mm/min)"))
+        self.label_20_1.setText(_translate("MainWindow", "(Mm/min)"))
         self.label_21.setText(_translate("MainWindow", "Test Speed: "))
         self.label_23.setText(_translate("MainWindow", "Hardness :"))
         self.label_25.setText(_translate("MainWindow", "M/C No :"))
         self.label_27.setText(_translate("MainWindow", "Operator :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "Lb"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
@@ -1340,7 +1340,7 @@ class TY_77_Ui_MainWindow(object):
         self.label_51.setText(_translate("MainWindow", "(Kgf)"))
         self.label_52.setText(_translate("MainWindow", "Graph Set Done."))
         self.label_52.hide()
-        self.pushButton_17.setText(_translate("MainWindow", "Set Pre.Load"))
+        self.pushButton_17.setText(_translate("MainWindow", "Set PreLoad."))
         self.label_53.setText(_translate("MainWindow", "Load (1):"))
         self.label_54.setText(_translate("MainWindow", "(Kgf)"))
         self.label_55.setText(_translate("MainWindow", " Load (2):"))
@@ -1353,7 +1353,7 @@ class TY_77_Ui_MainWindow(object):
         self.label_62.setText(_translate("MainWindow", "(Kgf)"))
         self.label_63.setText(_translate("MainWindow", "(Kgf)"))
         self.label_37.setText(_translate("MainWindow", "(Mm)"))
-        self.label_16.setText(_translate("MainWindow", "Method :"))
+        self.label_16.setText(_translate("MainWindow", "Mode :"))
         self.label_24.setText(_translate("MainWindow", "Compression"))
         self.radioButton.setText(_translate("MainWindow", "Load"))
         self.radioButton_2.setText(_translate("MainWindow", "Deflection"))
@@ -1420,7 +1420,7 @@ class TY_77_Ui_MainWindow(object):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
               self.i=self.i+1
-        elif(str(self.comboBox_2.currentText())=="Kg"):
+        elif(str(self.comboBox_2.currentText())=="Kgf"):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
               self.i=self.i+1
@@ -1664,7 +1664,7 @@ class TY_77_Ui_MainWindow(object):
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,MOTOR_SPEED,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD) VALUES('"+str(self.lineEdit_15.text())+"','CLD_INS','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"')")
+                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,MOTOR_SPEED,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD) VALUES('"+str(self.lineEdit_15.text())+"','CLD-3P','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1915,7 +1915,7 @@ class TY_77_Ui_MainWindow(object):
         
         self.y_axis_val=float(self.y_axis_val)            
         #elif(str(self.comboBox_2.currentText())== "KN"  and str(self.comboBox_3.currentText())== "Cm"):
-        if(self.comboBox_2.currentText()== "Kg"):
+        if(self.comboBox_2.currentText()== "Kgf"):
             self.y_axis_val=float(self.y_axis_val)
             self.y_axis_val_N=(self.y_axis_val)*9.80665  #Kg to N
             self.y_axis_val_LB=(self.y_axis_val)*2.20462  #Kg to Lb
@@ -2035,13 +2035,13 @@ class TY_77_Ui_MainWindow(object):
     
     def show_load_cell_val(self):
         if(self.show_lcd_vals=="Y"):
-                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
+                    if((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(self.sc_new.q))    #load
                                     self.lcdNumber_2.setProperty("value",str(self.sc_new.p))   #length
-                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
+                    elif((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Cm")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
-                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
+                    elif((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Inch")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
@@ -2159,7 +2159,7 @@ class TY_77_Ui_MainWindow(object):
                                 cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_22.text())+"')")
                                 cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_23.text())+"')")
                                 cursor.execute("INSERT INTO STG_TEST_DATA(LOAD)VALUES('"+str(self.lineEdit_24.text())+"')")
-                                if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                                if( str(self.comboBox_2.currentText()) =="Kgf" and str(self.comboBox_3.currentText()) =="Mm"):
                                             cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST where Y_NUM <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM >= LOAD)   ")                                    
                                 elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
                                              cursor.execute("UPDATE STG_TEST_DATA SET DEFLCTION = (SELECT MAX(X_NUM_INCH) FROM STG_GRAPH_MST where Y_NUM_LB <= LOAD),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE Y_NUM_LB >= LOAD) ")
@@ -2178,7 +2178,7 @@ class TY_77_Ui_MainWindow(object):
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_22.text())+"')")
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_23.text())+"')")
                         cursor.execute("INSERT INTO STG_TEST_DATA(DEFLCTION)VALUES('"+str(self.lineEdit_24.text())+"')")
-                        if( str(self.comboBox_2.currentText()) =="Kg" and str(self.comboBox_3.currentText()) =="Mm"):
+                        if( str(self.comboBox_2.currentText()) =="Kgf" and str(self.comboBox_3.currentText()) =="Mm"):
                                      cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM) FROM STG_GRAPH_MST where X_NUM <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM >= DEFLCTION) ")                                    
                         elif( str(self.comboBox_2.currentText()) =="Lb" and str(self.comboBox_3.currentText()) =="Inch"):
                                      cursor.execute("UPDATE STG_TEST_DATA SET LOAD = (SELECT MAX(Y_NUM_LB) FROM STG_GRAPH_MST where X_NUM_INCH <= DEFLCTION),DATA_EXIST_FLAG=(SELECT COUNT(*) FROM STG_GRAPH_MST WHERE X_NUM_INCH >= DEFLCTION) ")
@@ -2767,13 +2767,13 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.non_modbus_port=str(x[6])
                  self.graph_type="Load Vs Travel"
                  if(self.graph_type=="Load Vs Travel"):
-                             if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                             if(self.load_unit=="Kgf" and self.disp_unit=="Mm"):
                                              self.axes.set_xlabel('Deflection (Mm)')
                                              self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                             elif(self.load_unit=="Kgf" and self.disp_unit=="Inch"):
                                              self.axes.set_xlabel('Deflection (Inch)')
                                              self.axes.set_ylabel('Load (Kg)')
-                             elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                             elif(self.load_unit=="Kgf" and self.disp_unit=="Cm"):
                                              self.axes.set_xlabel('Deflection (Cm)')
                                              self.axes.set_ylabel('Load (Kg)')                                                               
                              elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
@@ -3181,13 +3181,13 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.graph_type="Load Vs Travel"
                 #print("self.load_unit :"+str(self.load_unit)+" self.disp_unit : "+str(self.disp_unit))
                 if(self.graph_type=="Load Vs Travel"):
-                                    if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                                    if(self.load_unit=="Kgf" and self.disp_unit=="Mm"):
                                                 self.line_cnt.set_data(self.arr_p,self.arr_q)
                                                 return [self.line_cnt]
-                                    elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                                    elif(self.load_unit=="Kgf" and self.disp_unit=="Cm"):
                                                 self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
                                                 return [self.line_cnt]
-                                    elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                                    elif(self.load_unit=="Kgf" and self.disp_unit=="Inch"):
                                                 self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
                                                 return [self.line_cnt]
                                     elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
@@ -3388,11 +3388,11 @@ class PlotCanvas(FigureCanvas):
             self.y_num=[0.0]
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type=="Load Vs Travel"):
-                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                    if(self.last_load_unit=="Kgf" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")

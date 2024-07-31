@@ -30,7 +30,7 @@ from TY_69_START_UNIRUB_ADHESION import TY_69_Ui_MainWindow
 from TY_71_START_TEST_CLD3 import TY_71_Ui_MainWindow
 from TY_73_START_TEST_RADIAL import TY_73_Ui_MainWindow
 from TY_75_START_TEST_IFD import TY_75_Ui_MainWindow
-from TY_77_START_TEST_CLD_INS import TY_77_Ui_MainWindow
+from TY_77_START_TEST_CLD_3P import TY_77_Ui_MainWindow
 
 
 

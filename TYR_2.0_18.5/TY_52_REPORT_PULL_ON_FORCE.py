@@ -883,7 +883,7 @@ class TY_52_Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Rev. Speed:"))
         self.label_22.setText(_translate("MainWindow", "(mm/min)"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
         self.comboBox_2.setItemText(2, _translate("MainWindow", "KN"))
         self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
@@ -982,7 +982,7 @@ class TY_52_Ui_MainWindow(object):
         self.i=0        
         if(str(self.comboBox_2.currentText())=="KN"):        
               self.comboBox_3.setCurrentText(str("Mm"))
-        elif(str(self.comboBox_2.currentText())=="Kg"):
+        elif(str(self.comboBox_2.currentText())=="Kgf"):
               self.comboBox_3.setCurrentText(str("Mm"))
         elif(str(self.comboBox_2.currentText())=="N"):
               self.comboBox_3.setCurrentText(str("Mm"))
@@ -1399,13 +1399,13 @@ class TY_52_Ui_MainWindow(object):
     
     def show_load_cell_val(self):
         if(self.show_lcd_vals=="Y"):
-                    if((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Mm")):
+                    if((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Mm")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p)))   #length
-                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Cm")):
+                    elif((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Cm")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_cm)))   #length
-                    elif((str(self.comboBox_2.currentText()) =="Kg") and (str(self.comboBox_3.currentText()) =="Inch")):
+                    elif((str(self.comboBox_2.currentText()) =="Kgf") and (str(self.comboBox_3.currentText()) =="Inch")):
                                     self.lcdNumber.setProperty("value", str(max(self.sc_new.arr_q)))    #load
                                     self.lcdNumber_2.setProperty("value",str(max(self.sc_new.arr_p_inch)))   #length
                     elif((str(self.comboBox_2.currentText()) =="Lb") and (str(self.comboBox_3.currentText()) =="Mm")):
@@ -2064,13 +2064,13 @@ class PlotCanvas_Auto(FigureCanvas):
                  self.auto_rev_time_off=int(x[2])
                  self.break_sence=int(x[3])
                  print("self.load_unit:"+str(self.load_unit)+"self.disp_unit:"+str(self.disp_unit))
-                 if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                 if(self.load_unit=="Kgf" and self.disp_unit=="Mm"):
                                  self.axes.set_xlabel('Travel (Mm)')
                                  self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                 elif(self.load_unit=="Kgf" and self.disp_unit=="Inch"):
                                  self.axes.set_xlabel('Travel (Inch)')
                                  self.axes.set_ylabel('Load (Kg)')
-                 elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                 elif(self.load_unit=="Kgf" and self.disp_unit=="Cm"):
                                  self.axes.set_xlabel('Travel (Cm)')
                                  self.axes.set_ylabel('Load (Kg)')                                                               
                  elif(self.load_unit=="Lb" and self.disp_unit=="Mm"):
@@ -2333,13 +2333,13 @@ class PlotCanvas_Auto(FigureCanvas):
             
                    
     def plot_grah_only(self,i):
-                if(self.load_unit=="Kg" and self.disp_unit=="Mm"):
+                if(self.load_unit=="Kgf" and self.disp_unit=="Mm"):
                             self.line_cnt.set_data(self.arr_p,self.arr_q)
                             return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Cm"):
+                elif(self.load_unit=="Kgf" and self.disp_unit=="Cm"):
                             self.line_cnt.set_data(self.arr_p_cm,self.arr_q)
                             return [self.line_cnt]
-                elif(self.load_unit=="Kg" and self.disp_unit=="Inch"):
+                elif(self.load_unit=="Kgf" and self.disp_unit=="Inch"):
                             self.line_cnt.set_data(self.arr_p_inch,self.arr_q)
                             return [self.line_cnt]
                 elif(self.load_unit=="Lb" and self.disp_unit=="Inch"):
@@ -2522,11 +2522,11 @@ class PlotCanvas(FigureCanvas):
            
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type=="Load Vs Travel"):
-                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                    if(self.last_load_unit=="Kgf" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
