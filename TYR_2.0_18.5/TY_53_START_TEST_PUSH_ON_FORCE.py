@@ -1863,15 +1863,15 @@ class TY_53_Ui_MainWindow(object):
                   
                   if( str(self.comboBox_2.currentText()) =="Kgf"):
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_KG) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 60 THEN 'Ok' ELSE 'Not Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 6.1183 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   if( str(self.comboBox_2.currentText()) =="N"):
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_N) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 60 THEN 'Ok' ELSE 'Not Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 60 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   else:
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_KG) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 60 THEN 'Ok' ELSE 'Not Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 6.1183 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   
                   #cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2081,7 +2081,7 @@ class TY_53_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result :",str(x[13])]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Insertion","Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (< 60) :",str(x[13])]]
             self.remark=str(x[12]) 
         connection.close() 
         
