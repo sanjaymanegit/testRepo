@@ -893,13 +893,13 @@ class TY_52_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "X-axis: "))
         self.label_32.setText(_translate("MainWindow", "Y-axis: "))
         self.pushButton_10.setText(_translate("MainWindow", "Set Graph"))
-        self.label_35.setText(_translate("MainWindow", "Job ID:"))
-        self.label_36.setText(_translate("MainWindow", "Batch ID:"))
+        self.label_35.setText(_translate("MainWindow", "Model:"))
+        self.label_36.setText(_translate("MainWindow", "Part Name:"))
         self.label_37.setText(_translate("MainWindow", "Spec.Count:"))
         self.label_38.setText(_translate("MainWindow", "0"))
         self.label_45.setText(_translate("MainWindow", "Graph Scale "))
-        self.label_17.setText(_translate("MainWindow", "Testing Mode:"))
-        self.label_18.setText(_translate("MainWindow", "Tensile"))
+        self.label_17.setText(_translate("MainWindow", "Specimen Type:"))
+        self.label_18.setText(_translate("MainWindow", "RecTangle"))
         #self.label_50.setText(_translate("MainWindow", "Graph Set Successfully."))
         self.comboBox.currentTextChanged.connect(self.onchage_combo)
         self.comboBox_4.currentTextChanged.connect(self.show_graph)
@@ -1011,7 +1011,7 @@ class TY_52_Ui_MainWindow(object):
         
     def load_data(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
+        results=connection.execute("SELECT TEST_ID,SPECIMEN_NAME,PARTY_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,LAST_UNIT_LOAD,LAST_UNIT_DISP,SPEC_TYPE_1 FROM TEST_MST WHERE TEST_ID IN (Select TEST_ID FROM GLOBAL_VAR)")       
         for x in results:           
                  self.label_12.setText(str(x[0]).zfill(3))
                  self.test_id=str(x[0])
@@ -1034,6 +1034,7 @@ class TY_52_Ui_MainWindow(object):
                  self.comboBox_2.setCurrentText(str(x[10]))
                  print("load unit to set :"+str(x[10]))
                  self.comboBox_3.setCurrentText(str(x[11]))
+                 self.label_18.setText(str(x[12]))
                  
         connection.close()
         #self.onchage_combo()
@@ -1851,9 +1852,9 @@ class TY_52_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Product Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (min/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Extraction","Test Method:","Tensile"],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (< 60) :",str(x[13])]]
             self.remark=str(x[12]) 
         connection.close() 
         
