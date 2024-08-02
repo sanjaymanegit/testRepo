@@ -2507,15 +2507,96 @@ class TY_77_Ui_MainWindow(object):
         else:
                 connection = sqlite3.connect("tyr.db")
                 if(str(self.cycle_num) == "2"):
-                        data2= [['Deflection \n ('+str(self.last_disp_unit)+')', 'Load_1 \n ('+str(self.last_load_unit)+')', 'Load_2 \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load','Results']]
-                        results=connection.execute("SELECT printf(\"%.2f\", A.DEFLECTION),printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD),CASE WHEN A.AVG_LOAD > 60 THEN 'Ok' ELSE 'Not OK' END FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                        data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.CYCLE_ID),printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
                 elif(str(self.cycle_num) == "3"):
-                        data2= [['Deflection \n ('+str(self.last_disp_unit)+')', 'Load_1 \n ('+str(self.last_load_unit)+')', 'Load_2 \n ('+str(self.last_load_unit)+')','Load_3 \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load','Results']]
-                        results=connection.execute("SELECT printf(\"%.2f\", A.DEFLECTION),printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.Load_3),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD),CASE WHEN A.AVG_LOAD > 60 THEN 'Ok' ELSE 'Not OK' END FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                        data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.CYCLE_ID),printf(\"%.2f\", A.Load_1),printf(\"%.2f\", A.Load_2),printf(\"%.2f\", A.Load_3),printf(\"%.2f\", A.AVG_LOAD),printf(\"%.2f\", A.MAX_LOAD),printf(\"%.2f\", A.MIN_LOAD) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
               
                 else:
-                        data2= [['Deflection \n ('+str(self.last_disp_unit)+')', 'Load_1 \n ('+str(self.last_load_unit)+')']]
-                        results=connection.execute("SELECT printf(\"%.2f\", A.DEFLECTION),printf(\"%.2f\", A.Load_1) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                        data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT printf(\"%.2f\", A.CYCLE_ID),printf(\"%.2f\", A.Load_1) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                if(str(self.cycle_num) == "2"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT 'Avg.',printf(\"%.2f\", avg(A.Load_1)),printf(\"%.2f\", avg(A.Load_2)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT 'Avg.',printf(\"%.2f\", avg(A.Load_1)),printf(\"%.2f\", avg(A.Load_2)),printf(\"%.2f\", avg(A.Load_3)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT 'Avg.',printf(\"%.2f\", avg(A.Load_1)) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                if(str(self.cycle_num) == "2"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT 'Max.',printf(\"%.2f\", max(A.Load_1)),printf(\"%.2f\", max(A.Load_2)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT 'Max.',printf(\"%.2f\", max(A.Load_1)),printf(\"%.2f\", max(A.Load_2)),printf(\"%.2f\", max(A.Load_3)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT 'Max.',printf(\"%.2f\", max(A.Load_1)) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                if(str(self.cycle_num) == "2"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT 'Min.',printf(\"%.2f\", min(A.Load_1)),printf(\"%.2f\", min(A.Load_2)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT 'Min.',printf(\"%.2f\", min(A.Load_1)),printf(\"%.2f\", min(A.Load_2)),printf(\"%.2f\", min(A.Load_3)),'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT 'Min.',printf(\"%.2f\", min(A.Load_1)) FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                if(str(self.cycle_num) == "2"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT 'Results.',CASE WHEN (A.LOAD_1 > 2.5 and A.LOAD_1 < 4.7) THEN 'Ok' ELSE 'Not Ok' END  ,CASE WHEN (A.LOAD_2 > 3.6 and A.LOAD_2 < 6.6) THEN 'Ok' ELSE 'Not Ok' END,'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT 'Results.',CASE WHEN (A.LOAD_1 > 2.5 and A.LOAD_1 < 4.7) THEN 'Ok' ELSE 'Not Ok' END,CASE WHEN (A.LOAD_2 > 3.6 and A.LOAD_2 < 6.6) THEN 'Ok' ELSE 'Not Ok' END,CASE WHEN (A.LOAD_3 > 8.6 and A.LOAD_3 < 16) THEN 'Ok' ELSE 'Not Ok' END,'','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT 'Results.',CASE WHEN (A.LOAD_1 > 2.5 and A.LOAD_1 < 4.7) THEN 'Ok' ELSE 'Not Ok' END FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
+                for x in results:
+                        data2.append(x)
+                connection.close()
+                
+                connection = sqlite3.connect("tyr.db")
+                if(str(self.cycle_num) == "2"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min_Load']]
+                        results=connection.execute("SELECT 'Range.','2.5 to 4.7','3.6 to 6.6','','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+                elif(str(self.cycle_num) == "3"):
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')', 'Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.last_load_unit)+')','Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.last_load_unit)+')','Avg.Load','Max.Load','Min.Load']]
+                        results=connection.execute("SELECT 'Range.','2.5 to 4.7','3.6 to 6.6','8.6 to 16','','','' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC")  
+              
+                else:
+                        #data2= [['Cycle No.', 'Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.last_load_unit)+')']]
+                        results=connection.execute("SELECT 'Range.','2.5 to 4.7' FROM LOAD_DATA A WHERE A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ORDER BY ID ASC") 
+                
                 for x in results:
                         data2.append(x)
                 connection.close()
