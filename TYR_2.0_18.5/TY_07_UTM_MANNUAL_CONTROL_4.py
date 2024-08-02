@@ -1,6 +1,25 @@
 
+from PyQt5 import QtCore, QtGui, QtWidgets
+from SPEED_SETUP_POPUP import spped_setup_Ui_MainWindow
+from TY_07_UTM_MANNUAL_CONTROL_2 import TY_07_Ui_MainWindow
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import serial,time
+import sqlite3
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+
+import sqlite3
+import re
+import datetime
+import time
+import os,sys
+
+import minimalmodbus
+#from minimalmodbus import BYTEORDER_LITTLE_SWAP
+minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
+minimalmodbus.BYTEORDER_BIG= 0
+minimalmodbus.BYTEORDER_LITTLE= 1
 
 
 class TY_07_4_Ui_MainWindow(object):
@@ -80,6 +99,9 @@ class TY_07_4_Ui_MainWindow(object):
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(self.frame_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(140, 50, 131, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -128,6 +150,9 @@ class TY_07_4_Ui_MainWindow(object):
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_2)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_2)
+        self.lineEdit_2.setValidator(input_validator)
         self.lineEdit_2.setGeometry(QtCore.QRect(580, 50, 111, 71))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -314,6 +339,11 @@ class TY_07_4_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.IO_error_flg=0
+        self.xstr3=""
+        self.xstr2=""
+        self.xstr4=""
+        self.current_value=0
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -322,9 +352,9 @@ class TY_07_4_Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Speed Setup"))
-        self.pushButton_2.setText(_translate("MainWindow", "Return"))
+        self.pushButton_2.setText(_translate("MainWindow", "Close"))
         self.label_4.setText(_translate("MainWindow", "Manual Control  - Only Compression"))
-        self.label_2.setText(_translate("MainWindow", "Running with 40 % speed of maximum down speed 500 ( Mm/min)"))
+        self.label_2.setText(_translate("MainWindow", "Click on Start-Down Button."))
         self.label.setText(_translate("MainWindow", " Speed (Down) :"))
         self.label_3.setText(_translate("MainWindow", "(Mm/min) "))
         self.label_5.setText(_translate("MainWindow", "Displacement :"))
@@ -334,11 +364,254 @@ class TY_07_4_Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "Current Load :"))
         self.label_8.setText(_translate("MainWindow", "Current Displacement :"))
         self.label_12.setText(_translate("MainWindow", "(Mm) "))
-        self.pushButton_4.setText(_translate("MainWindow", "Stop"))
+        self.pushButton_4.setText(_translate("MainWindow", "Stop Process"))
         self.pushButton_5.setText(_translate("MainWindow", "Mannual Control"))
         self.comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "2"))
         self.label_9.setText(_translate("MainWindow", "Load Cell No :"))
+        self.pushButton_2.clicked.connect(MainWindow.close)
+        self.pushButton.clicked.connect(self.open_new_window)
+        self.pushButton_5.clicked.connect(self.open_new_window5)
+        self.pushButton_3.clicked.connect(self.start_down)
+        self.pushButton_4.clicked.connect(self.stop_timer)
+        
+        self.timer2=QtCore.QTimer()
+    
+    def validate_speed(self):
+        self.command_str_speed=""
+        self.break_sence="0"
+        self.auto_rev_time_off="0"
+        if(str(self.lineEdit.text()) == ""):
+             self.goahead_flag=0
+             self.label_2.setText("Speed is Empty.")
+             self.label_2.show()
+        elif(str(self.lineEdit_2.text()) == ""):
+             self.goahead_flag=0
+             self.label_2.setText("Deflection is Empty.")
+             self.label_2.show()             
+        else:
+            self.goahead_flag=1
+        
+        
+        if(self.goahead_flag==1):
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT IFNULL(MOTOR_MAX_SPEED,0),BREAKING_SENCE,AUTO_REV_TIME_OFF from SETTING_MST") 
+                    for x in results:
+                         self.speed_val=str(x[0])
+                         self.break_sence=int(x[1])
+                         self.auto_rev_time_off=int(x[2])
+                    connection.close()
+                    self.goahead_flag=0
+                    
+                    connection = sqlite3.connect("tyr.db")
+                    results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+                    for x in results:
+                         self.input_speed_val=str(x[0])
+                    connection.close()
+                    
+                    if(self.input_speed_val != ""):
+                        if(int(self.input_speed_val) <= int(self.speed_val)):
+                             #print(" Ok ")
+                             self.goahead_flag=1
+                             self.calc_speed=(int(self.input_speed_val)/int(self.speed_val))*1000                 
+                             #print(" calc Speed : "+str(self.calc_speed))
+                             #print(" command: *P"+str(self.calc_speed)+" \r")
+                             self.command_str_speed="*P%04d"%self.calc_speed+"_%04d"%self.break_sence+"\r"
+                             print("Morot Speed and Breaking speed Command  :"+str(self.command_str_speed))
+                        else:
+                             print(" not Ok ")
+                             
+                    else:
+                        print(" not Ok ")
+        
+    
+    
+    def start_down(self):
+        
+        self.validate_speed()
+        if(self.goahead_flag==1):
+                    self.flag=1
+                    self.command_str=""
+                    self.test_guage_mm="100"
+                    self.test_guage_mm=float(self.test_guage_mm)
+                    connection = sqlite3.connect("tyr.db")              
+                    with connection:        
+                                cursor = connection.cursor()
+                                cursor.execute("UPDATE GLOBAL_VAR SET PRE_LOAD='"+str(self.lineEdit_2.text())+"',LOAD_CELL_NO='"+str(self.comboBox.currentText())+"',MANUAL_CONTROL_TEST_SPEED='"+str(self.lineEdit.text())+"'")
+                    connection.commit();
+                    connection.close() 
+                    self.ser = serial.Serial(
+                                        port='/dev/ttyUSB0',
+                                        baudrate=19200,
+                                        bytesize=serial.EIGHTBITS,
+                                        parity=serial.PARITY_NONE,
+                                        stopbits=serial.STOPBITS_ONE,
+                                        xonxoff=False,
+                                        timeout = 0.25
+                                    )            
+                    self.ser.flush()
+                    
+                    
+                    self.test_type="Compression"
+                    if(self.test_type=="Flexural"):
+                        self.test_guage_mm=0
+                        self.command_str="*G0.00\r"
+                    else:
+                        self.command_str="*G%.2f"%self.test_guage_mm+"\r"
+                        
+                    print("Guage Length Command : "+str(self.command_str))
+                    
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    #time.sleep(2)
+                    #===== Auto Reverse Time Off =====
+                    self.ser.flush()
+                    self.command_str="*O%04d"%self.auto_rev_time_off+"\r"
+                    print("Auto reve. Time off Command : "+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    
+                    
+                    b = bytes(self.command_str_speed, 'utf-8')
+                    self.ser.write(b)
+                    print("Speed command:"+str(self.command_str_speed)) 
+                    
+                    
+                    self.load_cell_no=str(self.comboBox.currentText())
+                    self.max_length=str(self.lineEdit_2.text())
+                    self.max_length=float(self.test_guage_mm)-float(self.max_length)
+                    self.max_load=int("09999")
+                    
+                    if(int(self.load_cell_no) ==1):                                    
+                                    self.command_str="*S1C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
+                    else:
+                                    self.command_str="*S2C%05d"%self.max_load+" %.1f"%float(self.max_length)+"\r"
+                                    
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    self.label_2.setText("Compression Started for Deflection:"+str(self.max_length)+" Mm. Load cell No:"+str(self.load_cell_no))               
+                    print("Compression command:"+str(self.command_str))                                    
+                    self.label_2.show()
+                    '''
+                    #====================================================
+                    self.command_str="*D"
+                    print("Tare Command : "+str(self.command_str))
+                    b = bytes(self.command_str, 'utf-8')
+                    self.ser.write(b)
+                    #===================================================
+                    '''
+                    self.load_cell_hi=1
+                    self.encoder=2
+                    self.line = self.ser.readline(15)
+                    print("o/p:"+str(self.line))
+                    self.timer2.setInterval(1000)        
+                    self.timer2.timeout.connect(self.display_lcd_val)
+                    self.timer2.start(1)
+                    
+                    
+                    
+        else:
+                    print("Invalid......")
+                
+        
+            
+            
+       
+            
+            
+    def display_lcd_val(self):               
+        #print(" inside display_lcd_val:"+str(self.IO_error_flg))
+        self.pushButton_2.setDisabled(True)
+        self.pushButton_4.setEnabled(True)
+        #self.label_2.hide()
+        self.label_2.setText("Running.....")       
+        self.label_2.show()
+        if(self.IO_error_flg==0):
+            try:
+                self.line = self.ser.readline()
+                print("Timer Job o/p:"+str(self.line))
+                self.ser.flush()
+                self.ser.write(b'*D\r')
+            except IOError:
+                print("IO Errors")
+            
+            xstr3=str(self.line)
+            xstr3=xstr3[1:int(len(xstr3)-1)]
+            xstr2=xstr3.replace("'\\r","")        
+            #print("replace3('\r):"+str(xstr2))
+            xstr1=xstr2.replace("'","")        
+            #print("replace2('):"+str(xstr1))
+            xstr=xstr1.replace("\\r","")
+            #print("replace1(\r):"+str(xstr))        
+            self.buff=xstr.split("_")
+            #print("length of array :"+str(len(self.buff)))
+            if(int(len(self.buff)) > 8 ):
+                #print("length of array :"+str(len(self.buff)))
+                self.check_R = re.findall(r"[R]", xstr)
+                self.check_S = re.findall("[S]", xstr)
+                self.check_OK = re.findall("[OK]", xstr)
+                #print("Checkking R Characher :"+str(self.check_R))
+                #print("Checkking OK Characher :"+str(len(self.check_OK))) 
+                if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+                    #print("Running.... :"+str(self.check_R))
+                    #print("length(X).... :"+str(self.buff[4]))
+                    #print("load(Y)... :"+str(self.buff[1]))
+                    #print("Load Cell No... :"+str(self.buff[7]))
+                    self.load_cell_hi=str(self.buff[7])
+                    #print("Encoder No.. :"+str(self.buff[6]))
+                    self.encoder=str(self.buff[6])
+                    print(" load_cell No :"+str(self.load_cell_hi)+" self.encoder:"+str(self.encoder))
+                    if(self.load_cell_hi==1):              
+                        self.q=abs(float(self.buff[0]))
+                    else:                        
+                        self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                    
+                    if(self.encoder==1):
+                        self.p=abs(float(self.buff[4])) #
+                    else:
+                        self.p=abs(float(self.buff[5]))
+                    
+                    if(self.test_type=="COMPRESS_2"):
+                        self.p=int(self.test_guage_mm)-self.p
+                        #print("self.p :"+str(self.p))
+                    elif(self.test_type=="Flexural"):
+                        #self.p=self.p
+                        self.p=int(self.test_guage_mm)-self.p
+                    else:
+                        self.p=int(self.test_guage_mm)-self.p
+                    
+                    
+                    self.lcdNumber_2.setProperty("value", str(self.p))
+                    self.lcdNumber.setProperty("value", str(self.q))
+                else:
+                      self.label_2.setText("Wait....Returning")       
+                      self.label_2.show()
+                      
+                               
+                    
+            
+            
+        
+    def stop_timer(self):
+       if(self.timer2.isActive()):
+           self.timer2.stop()
+           self.pushButton_2.setEnabled(True)
+           self.label_2.setText("Stopped Process...You can close window now.")       
+           self.label_2.show()
+           
+    
+    def open_new_window(self):       
+        self.window = QtWidgets.QMainWindow()
+        self.ui=spped_setup_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window5(self):
+        print("ok")
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_07_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
 
 if __name__ == "__main__":

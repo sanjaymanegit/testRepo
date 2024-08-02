@@ -436,16 +436,16 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
         elif(str(self.test_type_id) == "38"):
             self.save_test_IFD()
         elif(str(self.test_type_id) == "39"):
-            self.save_test_CLD_INS()    
+            self.save_test_CLD_3P()    
         else:
             print("Invalid Test ID")
     
     
-    def save_test_CLD_INS(self):
+    def save_test_CLD_3P(self):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='CLD_INS'")                    
+                    cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_NAME='CLD-3P'")                    
         connection.commit();
         connection.close()
         
