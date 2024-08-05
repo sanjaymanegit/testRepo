@@ -2178,7 +2178,12 @@ class TY_77_Ui_MainWindow(object):
                   cursor = connection.cursor() 
                   cursor.execute("INSERT INTO LOAD_DATA(TEST_ID,LOAD_1,CYCLE_ID) SELECT TEST_ID,LOAD,'"+str(self.cycle_num)+"' FROM STG_TEST_DATA WHERE DEFLCTION = '"+str(self.lineEdit_20.text())+"'")
                   cursor.execute("UPDATE LOAD_DATA SET LOAD_2 = ( SELECT LOAD FROM STG_TEST_DATA WHERE DEFLCTION = '"+str(self.lineEdit_21.text())+"') WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
-                  cursor.execute("UPDATE LOAD_DATA SET LOAD_3 = ( SELECT LOAD FROM STG_TEST_DATA WHERE DEFLCTION = '"+str(self.lineEdit_22.text())+"') WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")                            
+                  cursor.execute("UPDATE LOAD_DATA SET LOAD_3 = ( SELECT LOAD FROM STG_TEST_DATA WHERE DEFLCTION = '"+str(self.lineEdit_22.text())+"') WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
+                  cursor.execute("UPDATE LOAD_DATA SET DEFLECTION = (SELECT MAX(X_NUM) FROM STG_GRAPH_MST) WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
+                  cursor.execute("UPDATE LOAD_DATA SET LOAD_1 = (CASE WHEN DEFLECTION < '"+str(self.lineEdit_20.text())+"' THEN '0' ELSE LOAD_1 END ) WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
+                  cursor.execute("UPDATE LOAD_DATA SET LOAD_2 = (CASE WHEN DEFLECTION < '"+str(self.lineEdit_21.text())+"' THEN '0' ELSE LOAD_2 END ) WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
+                  cursor.execute("UPDATE LOAD_DATA SET LOAD_3 = (CASE WHEN DEFLECTION < '"+str(self.lineEdit_22.text())+"' THEN '0' ELSE LOAD_3 END ) WHERE LOAD_DATA.TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) AND LOAD_DATA.CYCLE_ID='"+str(self.cycle_num)+"'")
+                  
             connection.commit();
             connection.close()
             

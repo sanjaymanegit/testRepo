@@ -84,7 +84,7 @@ class TY_75_Ui_MainWindow(object):
         self.label_47.setGeometry(QtCore.QRect(1160, 10, 141, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(10)
+        font.setPointSize(8)
         font.setBold(True)
         font.setUnderline(False)
         font.setWeight(75)
@@ -1640,7 +1640,7 @@ class TY_75_Ui_MainWindow(object):
     
     def load_unit_on_change(self):
         unit = str(self.comboBox_2.currentText())  
-        load_unit_widgets = [self.label_22, self.label_33, self.label_63] 
+        load_unit_widgets = [self.label_22, self.label_63] 
         if (unit == "Kgf"):
              for label in load_unit_widgets:
                 label.setText("(" + str(unit) + ")")
@@ -2174,6 +2174,8 @@ class TY_75_Ui_MainWindow(object):
                     self.pushButton_7.setEnabled(True)
                     self.pushButton_6.setDisabled(True)
                     #print("lcd printing .......")
+                    self.label_49.setText("Timer(sec) : "+str(self.sc_new.t)+" ")
+                    self.label_49.show()
                     if(str(self.sc_new.save_data_flg) =="Yes"):
                             self.reset()
                             self.save_graph_data()
@@ -3048,6 +3050,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 else:
                     self.p=abs(float(self.buff[5]))
                 #print("self.test_typexx: "+str(self.test_type))
+                
+                self.t=abs(float(self.buff[3]))
                     
                 self.test_type="Compression"    
                 if(self.test_type=="Compression"):
@@ -3098,7 +3102,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_p.append(float(self.p))
                 self.arr_q.append(float(self.q))
                 
-                self.t=self.elapsed_time.total_seconds()
+#                 self.t=self.elapsed_time.total_seconds()
                 self.t_timestamp=str(self.end_time)
                 self.arr_t_timestamp.append(self.t_timestamp)
                 self.arr_t.append(float(self.t))
@@ -3152,6 +3156,9 @@ class PlotCanvas_Auto(FigureCanvas):
                         else:
                             self.p=abs(float(self.buff[5]))
                         #print("self.test_typexx: "+str(self.test_type))
+                            
+                        self.t=abs(float(self.buff[3]))   
+                            
                         if(self.test_type=="Compression"):
                             if(int(self.test_guage_mm) > int(self.p)):
                                     self.p=int(self.test_guage_mm)-self.p
@@ -3190,7 +3197,7 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.arr_p.append(float(self.p))
                         self.arr_q.append(float(self.q))
                         
-                        self.t=self.elapsed_time.total_seconds()
+#                         self.t=self.elapsed_time.total_seconds()
                         self.t_timestamp=str(self.end_time)
                         self.arr_t_timestamp.append(self.t_timestamp)
                         self.arr_t.append(float(self.t))
