@@ -375,6 +375,14 @@ class TY_07_4_Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.start_down)
         self.pushButton_4.clicked.connect(self.stop_timer)
         
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT IFNULL(PRE_LOAD,0),IFNULL(MANUAL_CONTROL_TEST_SPEED,0),LOAD_CELL_NO from GLOBAL_VAR") 
+        for x in results:                        
+                        self.lineEdit_2.setText(str(x[0]))
+                        self.lineEdit.setText(str(x[1]))
+                        self.comboBox.setCurrentText(str(x[2]))                        
+        connection.close()
+        
         self.timer2=QtCore.QTimer()
     
     def validate_speed(self):

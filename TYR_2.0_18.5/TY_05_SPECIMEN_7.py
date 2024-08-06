@@ -831,7 +831,7 @@ class TY_05_SPEC_7_Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Delete"))
         self.pushButton_5.setText(_translate("MainWindow", "Reset"))
         self.lineEdit_7.setText(_translate("MainWindow", "party"))
-        self.label_31.setText(_translate("MainWindow", "Pre. Load:"))
+        self.label_31.setText(_translate("MainWindow", "Pre. Def:"))
         self.label_33.setText(_translate("MainWindow", "Party:"))
         self.lineEdit_4.setText(_translate("MainWindow", "200"))
         self.label_34.setText(_translate("MainWindow", "Guage Length:"))
@@ -851,7 +851,7 @@ class TY_05_SPEC_7_Ui_MainWindow(object):
         self.label_37.setText(_translate("MainWindow", "(mm/min)"))
         self.label_39.setText(_translate("MainWindow", "(mm)"))
         self.label_40.setText(_translate("MainWindow", "(mm)"))
-        self.label_41.setText(_translate("MainWindow", "Kg"))
+        self.label_41.setText(_translate("MainWindow", "Mm"))
         self.label_42.setText(_translate("MainWindow", "(mm)"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

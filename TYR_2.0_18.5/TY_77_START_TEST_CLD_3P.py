@@ -2881,7 +2881,7 @@ class PlotCanvas_Auto(FigureCanvas):
             self.check_OK = re.findall("[OK]", xstr)
             #print("Checkking R Characher :"+str(self.check_R))
             #print("Checkking OK Characher :"+str(len(self.check_OK))) 
-            if (len(self.check_R) > 0 and len(self.check_OK) ==0):
+            if ((len(self.check_R) > 0 or len(self.check_S) > 0) and len(self.check_OK) ==0):
                 #print("Running.... :"+str(self.check_R))
                 #print("length(X).... :"+str(self.buff[4]))
                 #print("load(Y)... :"+str(self.buff[1]))
