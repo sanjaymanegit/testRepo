@@ -446,10 +446,8 @@ class TY_77_Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.frame)
         self.comboBox.setGeometry(QtCore.QRect(250, 10, 91, 31))
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+       
+        
         self.label_14 = QtWidgets.QLabel(self.frame)
         self.label_14.setGeometry(QtCore.QRect(150, 50, 111, 31))
         font = QtGui.QFont()
@@ -1300,10 +1298,13 @@ class TY_77_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Test ID:"))
         self.label_12.setText(_translate("MainWindow", "0001"))
         self.label_13.setText(_translate("MainWindow", "Spec. Name: "))
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.comboBox.setItemText(0, _translate("MainWindow", "1254"))
         self.comboBox.setItemText(1, _translate("MainWindow", "8788"))
         self.comboBox.setItemText(2, _translate("MainWindow", "6543"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "878"))
+#         self.comboBox.setItemText(3, _translate("MainWindow", "878"))
         self.label_14.setText(_translate("MainWindow", "Customer Name:"))
         self.label_15.setText(_translate("MainWindow", "Capacity :"))
         self.label_17.setText(_translate("MainWindow", "Pre Load:"))
@@ -1515,7 +1516,7 @@ class TY_77_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT SPECIMEN_NAME FROM SPECIMEN_MST WHERE TEST_MODE='Compression'") 
         for x in results:            
-            self.comboBox.addItem("")
+            self.comboBox.addItem(str(x[0]))
             self.comboBox.setItemText(self.i,str(x[0]))            
             self.i=self.i+1
         connection.close()
@@ -1853,7 +1854,7 @@ class TY_77_Ui_MainWindow(object):
     
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select PART_NAME,REV_MOTOR_SPEED,OPERATOR,LOAD_CELL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select PART_NAME,REV_MOTOR_SPEED,OPERATOR,LOAD_CELL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL,SPECIMEN_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
             self.lineEdit_15.setText(str(x[0])) # PART_NAME
             self.lineEdit_8.setText(str(x[1])) # TEST_TYPE
