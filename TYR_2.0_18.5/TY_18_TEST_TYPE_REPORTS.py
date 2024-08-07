@@ -330,11 +330,11 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
                    self.test_type_id=str(x[4])
                    
                    if(self.label_11.text() == "TENSILE"):
-                       self.frame_2.show()
+                       self.frame_2.hide()
                        connection = sqlite3.connect("tyr.db")
                        results=connection.execute("SELECT  IS_METAL,IS_INTERNAL_ENCODER FROM GLOBAL_VAR")
                        for x in results:
-                            if(str(x[0]) == 'Y'):
+                            if(str(x[0]) == 'Y1'):
                                 self.radioButton_2.setChecked(True)
                                 self.radioButton.setChecked(False)
                                 self.frame_5.show()
@@ -344,7 +344,7 @@ class TY_18_TEST_TYPE_REPORTS_Ui(object):
                                 self.frame_5.hide()
                                 
                                 
-                            if(str(x[1]) == 'Y'):
+                            if(str(x[1]) == 'Y1'):
                                 self.radioButton_5.setChecked(True)
                                 self.radioButton_6.setChecked(False)
                             else:
