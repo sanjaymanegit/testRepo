@@ -875,7 +875,7 @@ class TY_05_Ui_MainWindow(object):
         self.label_31.setText(_translate("MainWindow", "Pre. Load:"))
         self.label_33.setText(_translate("MainWindow", "Party:"))
         self.lineEdit_4.setText(_translate("MainWindow", "200"))
-        self.label_34.setText(_translate("MainWindow", "Product Length:"))
+        self.label_34.setText(_translate("MainWindow", "Guage Length:"))
         self.lineEdit_10.setText(_translate("MainWindow", "0.1"))
         self.label_38.setText(_translate("MainWindow", "Outer.Diameter :"))
         self.lineEdit_11.setText(_translate("MainWindow", "4"))

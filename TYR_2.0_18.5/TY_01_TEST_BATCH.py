@@ -587,7 +587,7 @@ class TY_01_Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "Customer Name:"))
         self.label_11.setText(_translate("MainWindow", "Test Speed (mm/min):"))
         self.label_12.setText(_translate("MainWindow", "200"))
-        self.label_13.setText(_translate("MainWindow", "Product Length(mm) :"))
+        self.label_13.setText(_translate("MainWindow", "Guage Length(mm) :"))
         self.label_14.setText(_translate("MainWindow", "60"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Specimen Diamentions"))
         self.label_15.setText(_translate("MainWindow", "CS.Area(mm2):"))

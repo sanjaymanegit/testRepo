@@ -836,21 +836,21 @@ class TY_02_Ui_MainWindow(object):
         print("self.last_load_unit:"+str(self.last_load_unit)+"    self.last_disp_unit:"+str(self.last_disp_unit))
         if(str(self.last_load_unit)=="MPa" and str(self.last_disp_unit)=="Mm"):
                 print("ok  11")
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area (Mm2)','Force at Peak \n (N)','Length at Peak \n (Mm)','Shape','Product Length \n (Mm)','Tensile Strength \n (MPa)','Mod@100% \n (MPa)','Mod@200% \n (MPa)','Mod@300% \n (MPa)','E@Peak (Mm)','%E@Peak','E@Break (Mm)','%E@Break','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area (Mm2)','Force at Peak \n (N)','Length at Peak \n (Mm)','Shape','Guage Length \n (Mm)','Tensile Strength \n (MPa)','Mod@100% \n (MPa)','Mod@200% \n (MPa)','Mod@300% \n (MPa)','E@Peak (Mm)','%E@Peak','E@Break (Mm)','%E@Break','Cycle Id'])        
                 self.label_35.setText("Force at Peak (N):")
                 self.label_37.setText("Length at Peak(mm):   ")
                 self.label_33.setText(" Force (N):   ")
                 self.label_39.setText("Displacement (mm):")
         
         elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area (Mm2)','Force at Peak \n (Kgf)','Length at Peak \n (Mm)','Shape','Product Length \n (Mm)','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','E@Peak (Mm)','%E@Peak','E@Break (Mm)','%E@Break','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area (Mm2)','Force at Peak \n (Kgf)','Length at Peak \n (Mm)','Shape','Guage Length \n (Mm)','Tensile Strength \n (Kgf/Cm2)','Mod@100% \n (Kgf/Cm2)','Mod@200% \n (Kgf/Cm2)','Mod@300% \n (Kgf/Cm2)','E@Peak (Mm)','%E@Peak','E@Break (Mm)','%E@Break','Cycle Id'])        
                 self.label_35.setText("Force at Peak (Kgf):")
                 self.label_37.setText("Length at Peak(mm):   ")
                 self.label_33.setText(" Force (Kgf):   ")
                 self.label_39.setText("Displacement (mm):")
         
         else:
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area ('+str(self.last_disp_unit)+')','Force at Peak \n ('+str(self.last_load_unit)+')','Length at Peak \n ('+str(self.last_disp_unit)+')','Shape','Product Length \n ('+str(self.last_disp_unit)+')','Tensile Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@100% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@200% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@300% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','E@Peak','%E@Peak','E@Break','%E@Break','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area ('+str(self.last_disp_unit)+')','Force at Peak \n ('+str(self.last_load_unit)+')','Length at Peak \n ('+str(self.last_disp_unit)+')','Shape','Guage Length \n ('+str(self.last_disp_unit)+')','Tensile Strength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@100% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@200% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','Mod@300% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)','E@Peak','%E@Peak','E@Break','%E@Break','Cycle Id'])        
                 self.label_35.setText("Force at Peak ("+str(self.last_load_unit)+"):")
                 self.label_37.setText("Length at Peak("+str(self.last_disp_unit)+"):   ")
                 self.label_33.setText(" Force ("+str(self.last_load_unit)+"):   ")
@@ -1356,11 +1356,11 @@ class TY_02_Ui_MainWindow(object):
         self.tableWidget.setColumnWidth(6, 150)
         self.tableWidget.setColumnWidth(7, 50)
         if(str(self.last_load_unit)=="MPa" and str(self.last_disp_unit)=="Mm"):
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (N) ', 'Comp.@ Peak (mm)', 'Comp. Strength (MPa)','Product Length (mm)','% Compression','Created On','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (N) ', 'Comp.@ Peak (mm)', 'Comp. Strength (MPa)','Guage Length (mm)','% Compression','Created On','Cycle Id'])        
         elif(str(self.last_load_unit)=="Kg" and str(self.last_disp_unit)=="Mm"):
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Product Length (mm)','% Compression','Created On','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kgf/Cm2)','Guage Length (mm)','% Compression','Created On','Cycle Id'])        
         else:
-                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kg/Cm2)','Product Length (mm)','% Compression','Created On','Cycle Id'])        
+                self.tableWidget.setHorizontalHeaderLabels(['CS Area(mm2)', ' Peak Load (Kgf) ', 'Comp.@ Peak (mm)', 'Comp. Strength (Kg/Cm2)','Guage Length (mm)','% Compression','Created On','Cycle Id'])        
        
         connection = sqlite3.connect("tyr.db")
         
@@ -2186,7 +2186,7 @@ class TY_02_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,A.TEST_METHOD   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -2314,7 +2314,7 @@ class TY_02_Ui_MainWindow(object):
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,A.MOTOR_SPEED as test_speed,B.GUAGE_LENGTH_MM,A.PARTY_NAME,B.SPECIMEN_SPECS,B.SHAPE,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,A.TEST_METHOD,A.TESTED_BY  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
         
         for x in results:
-            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Product Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
+            summary_data=[["Tested Date: ",str(x[10]),"Test No: ",str(x[0])],["Job ID : ",str(x[1]),"Batch ID: ",str(x[2])],["Specimen Name:  ",str(x[4])," Shape:",str(x[9])],["Test Type:",str(x[3]),"Test Method:",str(x[13])],["Customer Name :",str(x[7]),"Test Speed (mm/min):",str(x[5])],["Guage Length(mm):",str(x[6]),"Report Date: ",str(x[11])],["Tested By :", str(x[14]),"",""]]
             self.remark=str(x[12])
         
         connection.close() 
