@@ -3151,7 +3151,7 @@ class PlotCanvas_Auto(FigureCanvas):
                    self.xlim_update='YES'                   
                 #time.sleep(1)
                 self.save_data_flg="No"
-            else:               
+            elif(len(self.check_S) > 0 and len(self.check_OK) ==0):               
                 self.running_flg="S"
                 ### This is change to process last repcord
                 if(self.chck_for_last_rec==1):
@@ -3227,9 +3227,10 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.arr_t.append(float(self.t))
                         
                         print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                
-                self.save_data_flg="Yes"
-                self.on_ani_stop()
+                else:
+                        self.running_flg="X"
+                        self.save_data_flg="Yes"
+                        self.on_ani_stop()
             
                    
     def plot_grah_only(self,i):

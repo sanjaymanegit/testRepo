@@ -345,6 +345,7 @@ class TY_07_4_Ui_MainWindow(object):
         self.xstr4=""
         self.current_value=0
         self.test_guage_mm=""
+        self.chck_for_last_rec=1
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -637,39 +638,23 @@ class TY_07_4_Ui_MainWindow(object):
                                     self.p=self.p
               
 
-                                self.p_cm=float(self.p)/10
-                                self.arr_p_cm.append(float(self.p_cm))
-                                
-                                self.p_inch=float(self.p)*0.0393701
-                                self.arr_p_inch.append(float(self.p_inch))
-                                
-                                self.q_n=float(self.q)*9.81
-                                self.arr_q_n.append(float(self.q_n))
-                                
-                                self.q_lb=float(self.q)*2.20462
-                                self.arr_q_lb.append(float(self.q_lb))
-                                
-                                self.q_kn=float(self.q_n)/1000
-                                self.arr_q_kn.append(float(self.q_kn))
-                                
-                                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
-                                self.q_mpa=float(self.q)*1000
-                                self.arr_q_mpa.append(float(self.q_mpa))
                                 
                                 
-                                self.arr_speed.append(float(self.speed))
+                               # self.arr_speed.append(float(self.speed))
                                 
-                                self.arr_p.append(float(self.p))
-                                self.arr_q.append(float(self.q))
-                                
-        #                         self.t=self.elapsed_time.total_seconds()
-                                self.t_timestamp=str(self.end_time)
-                                self.arr_t_timestamp.append(self.t_timestamp)
-                                self.arr_t.append(float(self.t))
+#                                 self.arr_p.append(float(self.p))
+#                                 self.arr_q.append(float(self.q))
+#                                 
+#         #                         self.t=self.elapsed_time.total_seconds()
+#                                 self.t_timestamp=str(self.end_time)
+#                                 self.arr_t_timestamp.append(self.t_timestamp)
+#                                 self.arr_t.append(float(self.t))
                                 
                                 print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
+                                self.lcdNumber_2.setProperty("value", str(self.p))
+                                self.lcdNumber.setProperty("value", str(self.q))
                       
-                        self.on_ani_stop()
+                        #self.on_ani_stop()
                         self.label_2.setText("Wait....Returning")       
                         self.label_2.show()
                                
