@@ -344,6 +344,7 @@ class TY_07_4_Ui_MainWindow(object):
         self.xstr2=""
         self.xstr4=""
         self.current_value=0
+        self.test_guage_mm=""
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -412,9 +413,10 @@ class TY_07_4_Ui_MainWindow(object):
                     self.goahead_flag=0
                     
                     connection = sqlite3.connect("tyr.db")
-                    results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0) from GLOBAL_VAR") 
+                    results=connection.execute("SELECT IFNULL(NEW_TEST_MOTOR_SPEED,0),IFNULL(NEW_TEST_GUAGE_MM,0) from GLOBAL_VAR") 
                     for x in results:
                          self.input_speed_val=str(x[0])
+                         self.test_guage_mm=str(x[1])
                     connection.close()
                     
                     if(self.input_speed_val != ""):
@@ -439,8 +441,7 @@ class TY_07_4_Ui_MainWindow(object):
         self.validate_speed()
         if(self.goahead_flag==1):
                     self.flag=1
-                    self.command_str=""
-                    self.test_guage_mm="100"
+                    self.command_str=""                    
                     self.test_guage_mm=float(self.test_guage_mm)
                     connection = sqlite3.connect("tyr.db")              
                     with connection:        
@@ -592,9 +593,85 @@ class TY_07_4_Ui_MainWindow(object):
                     self.lcdNumber_2.setProperty("value", str(self.p))
                     self.lcdNumber.setProperty("value", str(self.q))
                 else:
-                      self.label_2.setText("Wait....Returning")       
-                      self.label_2.show()
+                        
+                        ### This is change to process last repcord
+                        if(self.chck_for_last_rec==1):
+                                self.chck_for_last_rec=0
+                                if(str(self.buff[6])=="2"):
+                                    self.load_cell_hi=1
+                                    self.load_cell_lo=0
+                                else:
+                                    self.load_cell_hi=0
+                                    self.load_cell_lo=1
+                                    
+                                if(str(self.buff[7])=="2"):
+                                    self.extiometer=1
+                                    self.encoder=0
+                                else:
+                                    self.extiometer=0
+                                    self.encoder=1
+                                
+                                if(self.load_cell_hi==1):              
+                                    self.q=abs(float(self.buff[1])) #+random.randint(0,50)
+                                else:
+                                    self.q=abs(float(self.buff[0]))
+                                
+                                if(self.encoder==1):
+                                    self.p=abs(float(self.buff[4])) #
+                                else:
+                                    self.p=abs(float(self.buff[5]))
+                                #print("self.test_typexx: "+str(self.test_type))
+                                    
+                                self.t=abs(float(self.buff[3]))   
+                                    
+                                if(self.test_type=="Compression"):
+                                    if(int(self.test_guage_mm) > int(self.p)):
+                                            self.p=int(self.test_guage_mm)-self.p
+                                    else:
+                                            self.p=int(self.p)-self.test_guage_mm
+                                    #print("self.p :"+str(self.p))
+                                elif(self.test_type=="Flexural"):
+                                    #self.p=self.p
+                                    self.p=int(self.test_guage_mm)-self.p
+                                else:
+                                    self.p=self.p
+              
+
+                                self.p_cm=float(self.p)/10
+                                self.arr_p_cm.append(float(self.p_cm))
+                                
+                                self.p_inch=float(self.p)*0.0393701
+                                self.arr_p_inch.append(float(self.p_inch))
+                                
+                                self.q_n=float(self.q)*9.81
+                                self.arr_q_n.append(float(self.q_n))
+                                
+                                self.q_lb=float(self.q)*2.20462
+                                self.arr_q_lb.append(float(self.q_lb))
+                                
+                                self.q_kn=float(self.q_n)/1000
+                                self.arr_q_kn.append(float(self.q_kn))
+                                
+                                self.kg_cm2=float(self.q)/float(self.cs_area_cm)
+                                self.q_mpa=float(self.q)*1000
+                                self.arr_q_mpa.append(float(self.q_mpa))
+                                
+                                
+                                self.arr_speed.append(float(self.speed))
+                                
+                                self.arr_p.append(float(self.p))
+                                self.arr_q.append(float(self.q))
+                                
+        #                         self.t=self.elapsed_time.total_seconds()
+                                self.t_timestamp=str(self.end_time)
+                                self.arr_t_timestamp.append(self.t_timestamp)
+                                self.arr_t.append(float(self.t))
+                                
+                                print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                       
+                        self.on_ani_stop()
+                        self.label_2.setText("Wait....Returning")       
+                        self.label_2.show()
                                
                     
             

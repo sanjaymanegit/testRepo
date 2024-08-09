@@ -2217,7 +2217,7 @@ class TY_75_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC,UNIT_TYPE) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"','"+str(self.sc_new.running_flg)+"')")
                                     
             connection.commit();
             connection.close()
@@ -2238,7 +2238,7 @@ class TY_75_Ui_MainWindow(object):
             connection = sqlite3.connect("tyr.db")              
             with connection:
                     cursor = connection.cursor() 
-                    cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC FROM STG_GRAPH_MST")
+                    cursor.execute("INSERT INTO GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC,UNIT_TYPE) SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_MPA,Y_NUM_LB,Y_NUM_KN,T_SEC,UNIT_TYPE FROM STG_GRAPH_MST")
                     cursor.execute("UPDATE STG_TEST_DATA SET TEST_ID = (SELECT TEST_ID FROM GLOBAL_VAR) ")
                     cursor.execute("UPDATE STG_TEST_DATA SET SPEC_ID = '"+str(self.cycle_num)+"'")
                     cursor.execute("UPDATE GRAPH_MST SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0))+1 FROM GRAPH_MST) WHERE GRAPH_ID IS NULL")
@@ -2248,22 +2248,22 @@ class TY_75_Ui_MainWindow(object):
                     if(int(str(self.comboBox.currentText())) == 2) :
                             cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,LOAD_UNIT) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.comboBox_2.currentText())+"')")
                             if(str(self.comboBox_2.currentText()) == "Kgf"):
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                             else:
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                           
                     elif(int(str(self.comboBox.currentText())) == 3):
                             cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,LOAD_UNIT) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.comboBox_2.currentText())+"')")
                             if(str(self.comboBox_2.currentText()) == "Kgf"):
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                             else:
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                    cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                            
                                  
                     elif(int(str(self.comboBox.currentText())) == 4):
@@ -2273,16 +2273,16 @@ class TY_75_Ui_MainWindow(object):
                                 cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,D4,LOAD_UNIT) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.label_99.text())+"')")
                                 
                                 if(str(self.comboBox_2.currentText()) == "Kgf"):
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L4= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_99.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L4= (SELECT MAX(Y_NUM) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_99.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                                         print("data Saved : 4")
                                 else:
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L4= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE X_NUM <= ('"+str(self.label_99.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L1= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_92.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L2= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_93.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L3= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_96.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                                        cursor.execute("UPDATE TEST_DATA_RADIAL SET L4= (SELECT MAX(Y_NUM_N) from STG_GRAPH_MST WHERE UNIT_TYPE='R' AND X_NUM <= ('"+str(self.label_99.text())+"')) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                                      
                                     
                             except IOError:
@@ -2390,7 +2390,7 @@ class TY_75_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         with connection:        
                     cursor = connection.cursor()                
-                    cursor.execute("update global_var set PRE_LOAD='"+str(self.lineEdit_11.text())+"'")                 
+                    cursor.execute("update global_var set PRE_LOAD='"+str(self.lineEdit_11.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_17.text())+"'")                 
         connection.commit()
         connection.close()
         self.window = QtWidgets.QMainWindow()
@@ -2729,7 +2729,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.pre_load="0"
         self.load_cell_no="1"
         self.command_str_rev=""
-        
+        self.running_flg=""
         
         
         self.plot_auto()
@@ -3048,6 +3048,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 #print("Load Cell No... :"+str(self.buff[7]))
                 #print("Encoder No.. :"+str(self.buff[6]))
                 self.chck_for_last_rec=1
+                self.running_flg="R"
                 
                 if(str(self.buff[6])=="2"):
                     self.load_cell_hi=1
@@ -3151,7 +3152,7 @@ class PlotCanvas_Auto(FigureCanvas):
                 #time.sleep(1)
                 self.save_data_flg="No"
             else:               
-                
+                self.running_flg="S"
                 ### This is change to process last repcord
                 if(self.chck_for_last_rec==1):
                         self.chck_for_last_rec=0
