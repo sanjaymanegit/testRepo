@@ -2217,7 +2217,7 @@ class TY_75_Ui_MainWindow(object):
             with connection:        
               cursor = connection.cursor()
               for g in range(len(self.sc_new.arr_p)):
-                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC,UNIT_TYPE) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"','"+str(self.sc_new.running_flg)+"')")
+                   cursor.execute("INSERT INTO STG_GRAPH_MST(X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_KN,Y_NUM_MPA,T_SEC,UNIT_TYPE) VALUES ('"+str(float(self.sc_new.arr_p[g]))+"','"+str(float(self.sc_new.arr_p_cm[g]))+"','"+str(float(self.sc_new.arr_p_inch[g]))+"','"+str(self.sc_new.arr_q[g])+"','"+str(self.sc_new.arr_q_n[g])+"','"+str(self.sc_new.arr_q_lb[g])+"','"+str(self.sc_new.arr_q_kn[g])+"','"+str(self.sc_new.arr_q_mpa[g])+"','"+str(float(self.sc_new.arr_t[g]))+"','"+str(self.sc_new.arr_running_flg[g])+"')")
                                     
             connection.commit();
             connection.close()
@@ -2730,6 +2730,7 @@ class PlotCanvas_Auto(FigureCanvas):
         self.load_cell_no="1"
         self.command_str_rev=""
         self.running_flg=""
+        self.arr_running_flg=[""]
         
         
         self.plot_auto()
@@ -3131,6 +3132,8 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_t_timestamp.append(self.t_timestamp)
                 self.arr_t.append(float(self.t))
                 
+                self.arr_running_flg.append(str(self.running_flg))
+                
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                
                 #print(" Array P:"+str(self.arr_p))
@@ -3151,7 +3154,7 @@ class PlotCanvas_Auto(FigureCanvas):
                    self.xlim_update='YES'                   
                 #time.sleep(1)
                 self.save_data_flg="No"
-            elif(len(self.check_S) > 0 and len(self.check_OK) ==0):               
+            else:               
                 self.running_flg="S"
                 ### This is change to process last repcord
                 if(self.chck_for_last_rec==1):
@@ -3225,12 +3228,12 @@ class PlotCanvas_Auto(FigureCanvas):
                         self.t_timestamp=str(self.end_time)
                         self.arr_t_timestamp.append(self.t_timestamp)
                         self.arr_t.append(float(self.t))
+                        self.arr_running_flg.append(str(self.running_flg))
                         
                         print("Last Record.... Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
-                else:
-                        self.running_flg="X"
-                        self.save_data_flg="Yes"
-                        self.on_ani_stop()
+                
+                self.save_data_flg="Yes"
+                self.on_ani_stop()
             
                    
     def plot_grah_only(self,i):
