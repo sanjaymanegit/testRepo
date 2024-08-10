@@ -1647,7 +1647,7 @@ class TY_76_Ui_MainWindow(object):
         self.comboBox_4.clear()
         self.comboBox.clear()   
         connection = sqlite3.connect("tyr.db")
-        #print("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
+        print("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
        
         results = connection.execute("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
         for x in results:
@@ -1849,41 +1849,51 @@ class TY_76_Ui_MainWindow(object):
     
     def show_grid_data(self):
         self.delete_all_records()
-        # font = QtGui.QFont()
-        # font.setPointSize(10)
-        # self.tableWidget.setFont(font)        
-        if(str(self.comboBox.currentText()) == "03"):       
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tableWidget.setFont(font)        
+        
+        if(int(str(self.comboBox.currentText())) == 3):       
                 self.tableWidget.setColumnCount(5)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
-                self.tableWidget.setColumnWidth(3, 100)
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.ID', 'Thickness', ' Def. @ '+str(self.lineEdit_37.text())+ ' % ',  ' Def. @ '+str(self.lineEdit_38.text())+ ' %', ' Def. @ '+str(self.lineEdit_39.text())+ ' %'])
+                self.tableWidget.setColumnWidth(3, 100) 
+                self.tableWidget.setColumnWidth(4, 100)                
+                self.tableWidget.setHorizontalHeaderLabels(['Sample # ','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results = connection.execute("SELECT SPEC_ID, IFNULL(STIFFNESS, 0), IFNULL(L1, 0), IFNULL(L2, 0), IFNULL(L3, 0) FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
-        elif(str(self.comboBox.currentText()) == "04"):       
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+   
+        elif(int(str(self.comboBox.currentText())) == 4):       
                 self.tableWidget.setColumnCount(6)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
                 self.tableWidget.setColumnWidth(2, 100)
                 self.tableWidget.setColumnWidth(3, 100)
-                self.tableWidget.setColumnWidth(4, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.ID', 'Thickness', ' Def. @ '+str(self.lineEdit_37.text())+ ' %',  ' Def. @ '+str(self.lineEdit_38.text())+ ' %',   ' Def. @ '+str(self.lineEdit_39.text())+ ' %',   ' Def. @ '+str(self.lineEdit_40.text())+ ' %'])
+                self.tableWidget.setColumnWidth(4, 100)
+                self.tableWidget.setColumnWidth(5, 100)                
+                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_40.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results = connection.execute("SELECT SPEC_ID, IFNULL(STIFFNESS, 0) ,IFNULL(L1, 0), IFNULL(L2, 0), IFNULL(L3, 0), IFNULL(L4, 0) FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3),printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+   
         else:
                 self.tableWidget.setColumnCount(4)
                 self.tableWidget.setColumnWidth(0, 100)
                 self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100) 
-                self.tableWidget.setHorizontalHeaderLabels(['Spec.ID', 'Thickness', ' Def. @'+str(self.lineEdit_37.text())+ ' %',  ' Def. @'+str(self.lineEdit_38.text())+ ' %'])
+                self.tableWidget.setColumnWidth(2, 100)
+                self.tableWidget.setColumnWidth(3, 100)                
+                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results = connection.execute("SELECT SPEC_ID, IFNULL(STIFFNESS, 0), IFNULL(L1, 0), IFNULL(L2, 0) FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")
+                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+   
+        
+
+
         for row_number, row_data in enumerate(results):            
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                        self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-                #self.tableWidget.resizeColumnsToContents()
+             self.tableWidget.insertRow(row_number)
+             for column_number, data in enumerate(row_data):
+                         self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+                 #self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
         connection.close() 
@@ -2096,7 +2106,7 @@ class TY_76_Ui_MainWindow(object):
                                 data2.append(x)
                                 # print(data2)
                   connection.close()
-                #   print("see the spec number :", int(self.label_26.text()))
+                  #print("see the spec number :", int(self.label_26.text()))
                   if int(self.label_26.text()) > 1:
 
                         # connection = sqlite3.connect("tyr.db")
@@ -2211,84 +2221,16 @@ class TY_76_Ui_MainWindow(object):
                         data2.append(stddev)
                         data2.append(varianc)
                         data2.append(CV)
-        elif(int(str(self.comboBox.currentText())) == 4) :
-                  stddev = ['Stddev']
-                  varianc = ['Variance']
-                  CV = ['CV']
-                  mean_Stiffness = []
-                  stddev_Stiffness = []
-                  varianc_Stiffness = []
-                  stddev_L1 = []
-                  stddev_L2 = []
-                  stddev_L3 = []
-                  stddev_L4 = []
-                  varianc_L1 = []
-                  varianc_L2 = []
-                  varianc_L3 = []
-                  varianc_L4 = []
-                  mean_L1 = []
-                  mean_L2 = []
-                  mean_L3 = []
-                  mean_L4 = []
-                  connection = sqlite3.connect("tyr.db")
-                  results=connection.execute("SELECT printf(\"%.2f\",STIFFNESS) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                        
-                  for x in results:
-                        stddev_Stiffness.append(float(x[0])) 
-                        varianc_Stiffness.append(float(x[0])) 
-                  print("SEE THE STIFFNESS :", stddev_Stiffness)            
-                  std_dev = statistics.stdev(stddev_Stiffness)
-                  _varianc = statistics.variance(varianc_Stiffness)
-                  stddev.append(f"{std_dev:.2f}")
-                  varianc.append(f"{_varianc:.2f}")
-
-                  results=connection.execute("SELECT printf(\"%.2f\",L1) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                        stddev_L1.append(float(x[0])) 
-                        varianc_L1.append(float(x[0])) 
-                                
-                  std_dev = statistics.stdev(stddev_L1)
-                  _varianc = statistics.variance(varianc_L1)
-                  stddev.append(f"{std_dev:.2f}")
-                  varianc.append(f"{_varianc:.2f}")
-                  results=connection.execute("SELECT printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                        stddev_L2.append(float(x[0])) 
-                        varianc_L2.append(float(x[0])) 
-                                   
-                  std_dev = statistics.stdev(stddev_L2)
-                  _varianc = statistics.variance(varianc_L2)
-                  stddev.append(f"{std_dev:.2f}")
-                  varianc.append(f"{_varianc:.2f}")
-                  results=connection.execute("SELECT printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                        stddev_L3.append(float(x[0])) 
-                        varianc_L3.append(float(x[0]))   
-                  std_dev = statistics.stdev(stddev_L3)
-                  _varianc = statistics.variance(varianc_L3)
-                  stddev.append(f"{std_dev:.2f}")
-                  varianc.append(f"{_varianc:.2f}")          
-                  results=connection.execute("SELECT printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-                  for x in results:
-                        stddev_L4.append(float(x[0])) 
-                        varianc_L4.append(float(x[0]))   
-                  std_dev = statistics.stdev(stddev_L4)
-                  _varianc = statistics.variance(varianc_L4)
-                  stddev.append(f"{std_dev:.2f}")
-                  varianc.append(f"{_varianc:.2f}")  
-                        
-                        
-                  connection.close()
-
-                  
+        elif(int(str(self.comboBox.currentText())) == 4) :                  
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' % ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
-                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1) ,printf(\"%.2f\",L2), printf(\"%.2f\",L3), printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(int(self.comboBox.currentText()))+"'")
                   for x in results:
                                 data2.append(x)
                                 # print(data2)
                   connection.close()
+                  print(" spec count :"+str(int(self.label_26.text())))
                   if int(self.label_26.text()) > 1:
                         connection = sqlite3.connect("tyr.db")
                         results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)), printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
