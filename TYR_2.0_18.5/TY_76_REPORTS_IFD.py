@@ -1614,7 +1614,7 @@ class TY_76_Ui_MainWindow(object):
                 cursor.execute("UPDATE TEST_DATA_RADIAL SET LOAD_UNIT = '"+str(self.comboBox_2.currentText())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")
                 cursor.execute("UPDATE SETTING_MST SET GRAPH_SCALE_CELL_2 = '"+str(self.lineEdit_14.text())+"'")
 
-                if str(self.comboBox_2.currentText()) == "Kg":
+                if str(self.comboBox_2.currentText()) == "Kgf":
                       cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD = '"+str(self.lineEdit_14.text())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"' ")
                 else:
                       cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD_N = '"+str(self.lineEdit_14.text())+"' WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"' ")
@@ -1686,12 +1686,12 @@ class TY_76_Ui_MainWindow(object):
              self.lineEdit_15.setText(str(column[7]))
              self.lineEdit_16.setText(str(column[8]))
              print("See the Units : ", str(column[9]))
-             if str(column[9]) == "Kg":
+             if str(column[9]) == "Kgf":
                 self.comboBox_2.setCurrentIndex(0)
                 self.lineEdit_14.setText(str(column[11]))
              else:
                 self.comboBox_2.setCurrentIndex(1)
-                self.lineEdit_14.setText(str(column[12]))
+                self.lineEdit_14.setText(str(column[11]))
              self.lineEdit_13.setText(str(column[10]))
              
                        
@@ -2422,11 +2422,11 @@ class PlotCanvas(FigureCanvas):
             self.y_num=[0.0]
             connection = sqlite3.connect("tyr.db")
             if(self.graph_type=="Load Vs Deflection"):
-                    if(self.last_load_unit=="Kg" and self.last_disp_unit=="Mm"):
+                    if(self.last_load_unit=="Kgf" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Cm"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT X_NUM_CM,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
-                    elif(self.last_load_unit=="Kg" and self.last_disp_unit=="Inch"):
+                    elif(self.last_load_unit=="Kgf" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Inch"):
                                     results=connection.execute("SELECT X_NUM_INCH,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
