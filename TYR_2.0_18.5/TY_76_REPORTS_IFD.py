@@ -295,97 +295,10 @@ class TY_76_Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.frame_3)
         self.tableWidget.setGeometry(QtCore.QRect(930, 20, 341, 241))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(6)
-        self.tableWidget.setRowCount(7)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.tableWidget.setHorizontalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget.setItem(0, 1, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        item.setFont(font)
-        self.tableWidget.setItem(0, 2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(1, 1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(2, 1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(3, 1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setItem(4, 1, item)
+        '''
+        
+        
+        '''
         self.pushButton_16 = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_16.setGeometry(QtCore.QRect(810, 160, 101, 41))
         font = QtGui.QFont()
@@ -1418,21 +1331,7 @@ class TY_76_Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "View Report"))
         self.pushButton_14.setText(_translate("MainWindow", "Email"))
         self.pushButton_15.setText(_translate("MainWindow", "Comment"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Def. % (mm)"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Load  (Kgf)"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Rec# "))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Sample #"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Sample #"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
+       
         self.pushButton_16.setText(_translate("MainWindow", "Print"))
         self.label_41.setText(_translate("MainWindow", "Kgf."))
         self.label_42.setText(_translate("MainWindow", "Mm"))
@@ -1507,10 +1406,10 @@ class TY_76_Ui_MainWindow(object):
         self.load_data()
         self.readOnly_fields()
         self.set_load_points()
-        self.load_unit_on_change()
-        self.show_grid_data()
+        #self.load_unit_on_change()
+        #self.show_grid_data()
         self.pushButton_9.clicked.connect(self.readWrite_fields)
-        self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
+        #self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
         self.pushButton_8.clicked.connect(self.go_for_report)
         self.pushButton_13.clicked.connect(self.open_pdf)
         
@@ -1601,7 +1500,7 @@ class TY_76_Ui_MainWindow(object):
         
     
     def go_for_report(self):
-        self.show_grid_data()    
+        #self.show_grid_data()    
         self.readOnly_fields()
         self.frame_3.show()
         self.label_49.setText("All Graphs")
@@ -1622,6 +1521,7 @@ class TY_76_Ui_MainWindow(object):
 
         connection.commit()
         connection.close()
+        self.show_grid_data()
     def load_data(self):
         # hiding the load fields initially
         widgets = [
@@ -1647,7 +1547,7 @@ class TY_76_Ui_MainWindow(object):
         self.comboBox_4.clear()
         self.comboBox.clear()   
         connection = sqlite3.connect("tyr.db")
-        print("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
+        #print("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
        
         results = connection.execute("SELECT LOAD_POINTS, IFNULL(D1_PER,0), D1, IFNULL(D2_PER,0), D2, IFNULL(D3_PER,0), D3, IFNULL(D4_PER,0), D4 FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' LIMIT 1") 
         for x in results:
@@ -1852,52 +1752,49 @@ class TY_76_Ui_MainWindow(object):
         self.delete_all_records()
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.tableWidget.setFont(font)        
-        
+        self.tableWidget.setFont(font)
+        self.tableWidget.setColumnCount(6)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 100) 
+        self.tableWidget.setColumnWidth(4, 100)
+        self.tableWidget.setColumnWidth(5, 100)  
+        '''
         if(int(str(self.comboBox.currentText())) == 3):       
-                self.tableWidget.setColumnCount(5)
-                self.tableWidget.setColumnWidth(0, 100)
-                self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100)
-                self.tableWidget.setColumnWidth(3, 100) 
-                self.tableWidget.setColumnWidth(4, 100)                
+                               
                 self.tableWidget.setHorizontalHeaderLabels(['Sample # ','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-   
+                results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"' order by ID ASC")
+                
         elif(int(str(self.comboBox.currentText())) == 4):       
-                self.tableWidget.setColumnCount(6)
-                self.tableWidget.setColumnWidth(0, 100)
-                self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100)
-                self.tableWidget.setColumnWidth(3, 100)
-                self.tableWidget.setColumnWidth(4, 100)
-                self.tableWidget.setColumnWidth(5, 100)                
+                
+                              
                 self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_39.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_40.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
                 connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3),printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-   
+                results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2),printf(\"%.2f\",L3),printf(\"%.2f\",L4) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"' order by ID ASC")
+                
         else:
-                self.tableWidget.setColumnCount(4)
-                self.tableWidget.setColumnWidth(0, 100)
-                self.tableWidget.setColumnWidth(1, 100)
-                self.tableWidget.setColumnWidth(2, 100)
-                self.tableWidget.setColumnWidth(3, 100)                
-                self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
-                connection = sqlite3.connect("tyr.db")
-                results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID),printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
-   
+                               
+                 
         
 
-
+        '''
+        self.tableWidget.setHorizontalHeaderLabels(['Sample #','Thickness \n'+str(self.lineEdit_17.text())+' ( mm )','IFD@ '+str(self.lineEdit_37.text())+' % \n ('+str(self.comboBox_2.currentText())+')', 'IFD@ '+str(self.lineEdit_38.text())+' % \n ('+str(self.comboBox_2.currentText())+')'])
+        connection = sqlite3.connect("tyr.db")
+        print("Grid ==> SELECT SPEC_ID,STIFFNESS,L1,L2 FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(int(self.comboBox.currentText()))+"' order by ID ASC")
+        
+        ##results=connection.execute("SELECT SPEC_ID,printf(\"%.2f\",STIFFNESS),printf(\"%.2f\",L1) ,printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(int(self.comboBox.currentText()))+"' order by ID ASC")
+        results=connection.execute("SELECT SPEC_ID,STIFFNESS,L1,L2 FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(int(self.comboBox.currentText()))+"' order by ID ASC")
+               
         for row_number, row_data in enumerate(results):            
-             self.tableWidget.insertRow(row_number)
-             for column_number, data in enumerate(row_data):
-                         self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
-                 #self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.resizeRowsToContents()
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                        self.tableWidget.setItem(row_number,column_number,QTableWidgetItem(str(data)))                
+        self.tableWidget.resizeColumnsToContents()
+        #self.tableWidget.resizeRowsToContents()
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
-        connection.close() 
+        connection.close()
 
 
 
@@ -1999,6 +1896,8 @@ class TY_76_Ui_MainWindow(object):
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+ ' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')']]
                 #   print(data2)
+                  print("llll=>SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
+                  
                   results=connection.execute("SELECT printf(\"%.2f\",SPEC_ID), printf(\"%.2f\",STIFFNESS), printf(\"%.2f\",L1), printf(\"%.2f\",L2) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                   for x in results:
                                 data2.append(x)
@@ -2093,6 +1992,7 @@ class TY_76_Ui_MainWindow(object):
                         data2.append(stddev)
                         data2.append(varianc)
                         data2.append(CV)
+                        
 
         elif(int(str(self.comboBox.currentText())) == 3) :
                    
@@ -2107,6 +2007,7 @@ class TY_76_Ui_MainWindow(object):
                                 data2.append(x)
                                 # print(data2)
                   connection.close()
+                  
                   #print("see the spec number :", int(self.label_26.text()))
                   if int(self.label_26.text()) > 1:
 
@@ -2169,6 +2070,7 @@ class TY_76_Ui_MainWindow(object):
                         _varianc = statistics.variance(varianc_L2)
                         stddev.append(f"{std_dev:.2f}")
                         varianc.append(f"{_varianc:.2f}")
+                        
                         results=connection.execute("SELECT printf(\"%.2f\",L3) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                         for x in results:
                                 stddev_L3.append(float(x[0])) 
@@ -2222,6 +2124,7 @@ class TY_76_Ui_MainWindow(object):
                         data2.append(stddev)
                         data2.append(varianc)
                         data2.append(CV)
+                        
         elif(int(str(self.comboBox.currentText())) == 4) :                  
                   connection = sqlite3.connect("tyr.db")
                   data2= [['Spec.','Thickness'+' \n ('+str(self.comboBox_2.currentText())+' / '+str(self.comboBox_3.currentText())+')', ' Def \n @ '+str(self.lineEdit_37.text())+' % ('+str(self.comboBox_2.currentText())+') ',' Def \n @ '+str(self.lineEdit_38.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_39.text())+' % ('+str(self.comboBox_2.currentText())+')', ' Def \n @ '+str(self.lineEdit_40.text())+' % ('+str(self.comboBox_2.currentText())+')']]
@@ -2232,6 +2135,7 @@ class TY_76_Ui_MainWindow(object):
                                 # print(data2)
                   connection.close()
                   print(" spec count :"+str(int(self.label_26.text())))
+                  
                   if int(self.label_26.text()) > 1:
                         connection = sqlite3.connect("tyr.db")
                         results=connection.execute("SELECT 'Avg', printf(\"%.2f\",avg(STIFFNESS)), printf(\"%.2f\",avg(L1)) ,printf(\"%.2f\",avg(L2)), printf(\"%.2f\",avg(L3)), printf(\"%.2f\",avg(L4)) FROM TEST_DATA_RADIAL WHERE TEST_ID='"+str(int(self.label_12.text()))+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
@@ -2279,6 +2183,7 @@ class TY_76_Ui_MainWindow(object):
                         data2.append(stddev)
                         data2.append(varianc)
                         data2.append(CV)
+                        
         else:
            print("Invalid Def Points")
         
@@ -2416,7 +2321,7 @@ class PlotCanvas(FigureCanvas):
         
         
         
-        
+        print("self.last_load_unit :"+str(self.last_load_unit)+" self.last_disp_unit:   "+str(self.last_disp_unit))
         self.graph_type="Load Vs Deflection"
         for g in range(len(self.graph_ids)):
             self.x_num=[0.0]
@@ -2436,6 +2341,8 @@ class PlotCanvas(FigureCanvas):
                     elif(self.last_load_unit=="Lb" and self.last_disp_unit=="Mm"):
                                     results=connection.execute("SELECT X_NUM,Y_NUM_LB FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Mm"):
+                                    print("ok...")
+                                    print("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                                     results=connection.execute("SELECT X_NUM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
                     elif(self.last_load_unit=="N" and self.last_disp_unit=="Cm"):
                                     results=connection.execute("SELECT X_NUM_CM,Y_NUM_N FROM GRAPH_MST WHERE X_NUM > 0 AND  GRAPH_ID='"+str(self.graph_ids[g])+"'")
