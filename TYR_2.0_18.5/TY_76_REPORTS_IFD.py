@@ -1507,7 +1507,7 @@ class TY_76_Ui_MainWindow(object):
         self.load_data()
         self.readOnly_fields()
         self.set_load_points()
-        # self.load_unit_on_change()
+        self.load_unit_on_change()
         self.show_grid_data()
         self.pushButton_9.clicked.connect(self.readWrite_fields)
         self.comboBox_2.currentTextChanged.connect(self.load_unit_on_change)
@@ -1523,7 +1523,7 @@ class TY_76_Ui_MainWindow(object):
         
         self.go_for_report()
         # self.comboBox.currentTextChanged.connect(self.set_load_points)
-        
+        #self.load_unit_on_change()
     
     def print_file(self):        
         #os.system("gnome-open /home/pi/TYR_2.0_18.5/reports/Reportxxx.pdf")
@@ -1739,10 +1739,11 @@ class TY_76_Ui_MainWindow(object):
         self.label_10.show()
 
     def load_unit_on_change(self):
-        unit = str(self.comboBox_2.currentText())  
+        unit = str(self.comboBox_2.currentText())
+        print("curr unit is :"+str(unit))
         load_unit_widgets = [self.label_33, self.label_63] 
-        if (unit == "Kg"):
-             self.current_unit = "Kg"  
+        if (unit == "Kgf"):
+             self.current_unit = "Kgf"  
              for label in load_unit_widgets:
                 label.setText("(" + str(unit) + ")")
         #      self.comboBox_3.setCurrentIndex(0)
@@ -1752,7 +1753,7 @@ class TY_76_Ui_MainWindow(object):
                         label.setText("(" + str(unit) + ")")
         #       self.comboBox_3.setCurrentIndex(0)
 
-        if self.initial_unit == "Kg":
+        if self.initial_unit == "Kgf":
              for x in self.preLoad_and_y_ax_value:
                 if x.strip():
                         self.Kg_to_N.append(float(x) * 9.81)
@@ -1762,7 +1763,7 @@ class TY_76_Ui_MainWindow(object):
                 if x.strip():
                         self.N_to_Kg.append(float(x) * 0.10197)
 
-        if (self.initial_unit == "Kg" and self.current_unit == "N"):
+        if (self.initial_unit == "Kgf" and self.current_unit == "N"):
                 self.updateConvertedValue(self.Kg_to_N, self.preLoad_and_y_ax_widget)
                 connection = sqlite3.connect("tyr.db")              
                 with connection:
@@ -1770,7 +1771,7 @@ class TY_76_Ui_MainWindow(object):
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 9.81), L2 = printf(\"%.2f\",L2 * 9.81), L3 = printf(\"%.2f\",L3 * 9.81), L4 = printf(\"%.2f\",L4 * 9.81) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
                 connection.commit()
                 connection.close() 
-        elif (self.initial_unit == "Kg" and self.current_unit == "Kg"):
+        elif (self.initial_unit == "Kgf" and self.current_unit == "Kgf"):
                 for x in self.Kg_to_N:
                         self.N_to_Kg.append(float(x) * 0.10197)
                 self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget)
@@ -1780,7 +1781,7 @@ class TY_76_Ui_MainWindow(object):
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET L1 = printf(\"%.2f\",L1 * 0.10197), L2 = printf(\"%.2f\",L2 * 0.10197), L3 = printf(\"%.2f\",L3 * 0.10197), L4 = printf(\"%.2f\",L4 * 0.10197) WHERE TEST_ID = '"+str(self.label_12.text())+"' ")       
                 connection.commit()
                 connection.close()  
-        elif (self.initial_unit == "N" and self.current_unit == "Kg"):
+        elif (self.initial_unit == "N" and self.current_unit == "Kgf"):
                 self.updateConvertedValue(self.N_to_Kg, self.preLoad_and_y_ax_widget) 
                 connection = sqlite3.connect("tyr.db")              
                 with connection:
