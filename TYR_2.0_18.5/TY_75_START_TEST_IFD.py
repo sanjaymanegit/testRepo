@@ -2359,10 +2359,10 @@ class TY_75_Ui_MainWindow(object):
                             cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,LOAD_UNIT,L1,L2) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+"')")
                          
                     elif(int(str(self.comboBox.currentText())) == 3):
-                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,LOAD_UNIT,L1,L2,L3) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+",'"+str(self.L3)+"')")
+                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,LOAD_UNIT,L1,L2,L3) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+"','"+str(self.L3)+"')")
                     
                     elif(int(str(self.comboBox.currentText())) == 4):
-                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,D4,LOAD_UNIT,L1,L2,L3,L4) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.label_99.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+",'"+str(self.L3)+"','"+str(self.L4)+"')")
+                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,D4,LOAD_UNIT,L1,L2,L3,L4) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.label_99.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+"','"+str(self.L3)+"','"+str(self.L4)+"')")
                     else :
                           print("Invalid Def.Count")
                     
