@@ -2205,6 +2205,11 @@ class TY_75_Ui_MainWindow(object):
     
     
     def save_graph_data(self):
+        self.L1="0"
+        self.L2="0"
+        self.L3="0"
+        self.L4="0"
+        self.a_i=0
         if (len(self.sc_new.arr_p) > 1):
             self.cycle_num=self.cycle_num+1
             #### Load Graph Data ######
@@ -2212,7 +2217,8 @@ class TY_75_Ui_MainWindow(object):
             with connection:
                     cursor = connection.cursor()
                     cursor.execute("DELETE FROM STG_TEST_DATA")
-                    cursor.execute("DELETE FROM STG_GRAPH_MST") 
+                    cursor.execute("DELETE FROM STG_GRAPH_MST")
+                    cursor.execute("DELETE FROM STG_RELX_DATA")
             connection.commit();
             connection.close()        
                     
@@ -2225,6 +2231,99 @@ class TY_75_Ui_MainWindow(object):
             connection.commit();
             connection.close()
             
+            
+            connection = sqlite3.connect("tyr.db")
+            with connection:        
+              cursor = connection.cursor()
+              for g in range(len(self.sc_new.relax_x_num_arr)):
+                   cursor.execute("INSERT INTO STG_RELX_DATA(X_NUM,Y_NUM,Y_NUM_N) VALUES ('"+str(float(self.sc_new.relax_x_num_arr[g]))+"','"+str(float(self.sc_new.relax_y_num_arr[g]))+"','"+str(float(self.sc_new.relax_y_num_n_arr[g]))+"')")
+                                    
+            connection.commit();
+            connection.close()
+            
+            ### get L1,L2,L3#####3
+           
+            
+            if(int(str(self.comboBox.currentText())) == 2):
+                connection = sqlite3.connect("tyr.db")
+                results = connection.execute("select xx.x_num, xx.load,xx.load_n from (select max(x_num) as x_num,count(x_num),min(y_num) as load,min(y_num_n) as load_n from STG_RELX_DATA group by x_num order by count(x_num) desc limit 2) xx order by xx.x_num asc") 
+                for x in results:
+                    if(str(self.comboBox_2.currentText()) == "Kgf"): 
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[1])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[1])
+                          else:
+                                 print("No data")
+                    
+                    else:
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[2])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[2])
+                          else:
+                                 print("No data")
+                    self.a_i=self.a_i+1             
+                connection.close()           
+            
+            elif(int(str(self.comboBox.currentText())) == 3):
+                connection = sqlite3.connect("tyr.db")
+                results = connection.execute("select xx.x_num, xx.load,xx.load_n from (select max(x_num) as x_num,count(x_num),min(y_num) as load,min(y_num_n) as load_n from STG_RELX_DATA group by x_num order by count(x_num) desc limit 3) xx order by xx.x_num asc") 
+                for x in results:
+                    if(str(self.comboBox_2.currentText()) == "Kgf"): 
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[1])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[1])
+                          elif(int(self.a_i) == 2):
+                                self.L3=float(x[1])
+                          else:
+                                 print("No data")
+                    
+                    else:
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[2])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[2])
+                          elif(int(self.a_i) == 2):
+                                self.L3=float(x[2])
+                          else:
+                                 print("No data")
+                    self.a_i=self.a_i+1             
+                connection.close()                 
+            elif(int(str(self.comboBox.currentText())) == 4) :
+                connection = sqlite3.connect("tyr.db")
+                results = connection.execute("select xx.x_num, xx.load,xx.load_n from (select max(x_num) as x_num,count(x_num),min(y_num) as load,min(y_num_n) as load_n from STG_RELX_DATA group by x_num order by count(x_num) desc limit 4) xx order by xx.x_num asc") 
+                for x in results:
+                    if(str(self.comboBox_2.currentText()) == "Kgf"): 
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[1])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[1])
+                          elif(int(self.a_i) == 2):
+                                self.L3=float(x[1])
+                          elif(int(self.a_i) == 3):
+                                self.L4=float(x[1])
+                          else:
+                                 print("No data")
+                    
+                    else:
+                          if(int(self.a_i) == 0):
+                                self.L1=float(x[2])
+                          elif(int(self.a_i) == 1):
+                                self.L2=float(x[2])
+                          elif(int(self.a_i) == 2):
+                                self.L3=float(x[2])
+                          elif(int(self.a_i) == 3):
+                                self.L4=float(x[2])
+                          else:
+                                 print("No data")
+                    self.a_i=self.a_i+1             
+                connection.close()
+            else:
+                print("Invalid L1,L2,L3,L4")
+            
+            
             ##### Populate STG_TEST_DATA Table ##########     
             connection = sqlite3.connect("tyr.db")              
             with connection:
@@ -2234,6 +2333,9 @@ class TY_75_Ui_MainWindow(object):
                             cursor.execute("INSERT INTO STG_TEST_DATA(TEST_ID,LOAD) VALUES ('"+str(int(self.label_12.text()))+"','"+str(l.text())+"')")
             connection.commit()
             connection.close()
+            
+            
+            
             
             ## Populate GRAPH _MST ##############################
             ## Update Graph id in TEST_MST, TEST_DATA ###########
@@ -2248,6 +2350,23 @@ class TY_75_Ui_MainWindow(object):
                     cursor.execute("UPDATE STG_TEST_DATA SET GRAPH_ID = (SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST)")
                     cursor.execute("UPDATE TEST_MST SET STATUS='LOADED GRAPH' WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
                     #cursor.execute("INSERT INTO TEST_DATA(TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG) SELECT TEST_ID,LOAD,DEFLCTION,FLAG,GRAPH_ID,SPEC_ID,DATA_EXIST_FLAG FROM STG_TEST_DATA")
+                    
+                    
+                    
+                    
+                    
+                    if(int(str(self.comboBox.currentText())) == 2) :
+                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,LOAD_UNIT,L1,L2) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+"')")
+                         
+                    elif(int(str(self.comboBox.currentText())) == 3):
+                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,LOAD_UNIT,L1,L2,L3) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+",'"+str(self.L3)+"')")
+                    
+                    elif(int(str(self.comboBox.currentText())) == 4):
+                            cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,D3,D4,LOAD_UNIT,L1,L2,L3,L4) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.label_96.text())+"','"+str(self.label_99.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.L1)+"','"+str(self.L2)+",'"+str(self.L3)+"','"+str(self.L4)+"')")
+                    else :
+                          print("Invalid Def.Count")
+                    
+                    '''
                     if(int(str(self.comboBox.currentText())) == 2) :
                             cursor.execute("INSERT INTO TEST_DATA_RADIAL(TEST_ID,SPEC_ID,LOAD_POINTS,D1,D2,LOAD_UNIT) VALUES ('"+str(int(self.label_12.text()))+"','"+str(self.cycle_num)+"','"+str(self.comboBox.currentText())+"','"+str(self.label_92.text())+"','"+str(self.label_93.text())+"','"+str(self.comboBox_2.currentText())+"')")
                             if(str(self.comboBox_2.currentText()) == "Kgf"):
@@ -2293,6 +2412,12 @@ class TY_75_Ui_MainWindow(object):
                     else:
                         print("Invalid Load Point can not load data")                    
                     print("Data saved........")
+                    '''
+                    
+                    
+                    
+                    
+                    
                     try:
                         cursor.execute("UPDATE TEST_DATA_RADIAL SET GRAPH_ID=(SELECT MAX(IFNULL(GRAPH_ID,0)) FROM GRAPH_MST) WHERE TEST_ID = '"+str(int(self.label_12.text()))+"' and SPEC_ID='"+str(self.cycle_num)+"' and LOAD_POINTS='"+str(self.comboBox.currentText())+"'")
                         if(str(self.comboBox_2.currentText()) == "Kgf"):
@@ -2735,6 +2860,14 @@ class PlotCanvas_Auto(FigureCanvas):
         self.running_flg=""
         self.arr_running_flg=[""]
         
+        self.relax_x_num=""
+        self.relax_x_num_arr=[]
+        self.relax_y_num=""
+        self.relax_y_num_arr=[]
+        self.relax_y_num_n=""
+        self.relax_y_num_n_arr=[]
+        self.relax_halt_no=""
+        self.relax_halt_no_arr=[]
         
         self.plot_auto()
          
@@ -3079,7 +3212,7 @@ class PlotCanvas_Auto(FigureCanvas):
                     self.p=abs(float(self.buff[5]))
                 #print("self.test_typexx: "+str(self.test_type))
                 
-                self.t=abs(float(self.buff[3]))
+                
                     
                 self.test_type="Compression"    
                 if(self.test_type=="Compression"):
@@ -3136,6 +3269,22 @@ class PlotCanvas_Auto(FigureCanvas):
                 self.arr_t.append(float(self.t))
                 
                 self.arr_running_flg.append(str(self.running_flg))
+                
+                
+                
+                self.t=abs(float(self.buff[3]))
+                if(int(self.t) > 0):
+                        self.relax_x_num=float(self.p)
+                        self.relax_x_num_arr.append(float(self.relax_x_num))
+                        self.relax_y_num=float(self.q)
+                        self.relax_y_num_arr.append(float(self.relax_y_num))
+                        self.relax_y_num_n=float(self.q_n)
+                        self.relax_y_num_n_arr.append(float(self.relax_y_num_n))
+                        #self.relax_halt_no_arr.append(float(self.relax_halt_no))
+                else:
+                        print("Running.....")
+                        
+                
                 
                 print(" Timer P:"+str(self.p)+" q:"+str(self.q)+" t:"+str(self.t))
                
