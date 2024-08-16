@@ -1318,8 +1318,8 @@ class TY_77_Ui_MainWindow(object):
         self.label_27.setText(_translate("MainWindow", "Operator :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         
-        self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf"))        
-        self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "N"))        
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Kgf"))
         #self.comboBox_2.setItemText(2, _translate("MainWindow", "Lb"))
         #self.comboBox_2.setItemText(3, _translate("MainWindow", "gm"))
         
@@ -1338,7 +1338,8 @@ class TY_77_Ui_MainWindow(object):
         self.label_46.setText(_translate("MainWindow", "Max. Load:"))
         self.label_50.setText(_translate("MainWindow", "Max. Deflection:"))
         self.label_34.setText(_translate("MainWindow", "(Mm)"))
-        self.label_51.setText(_translate("MainWindow", "(Kgf)"))
+        #self.label_51.setText(_translate("MainWindow", "(Kgf)"))
+        self.label_51.setText(_translate("MainWindow", "(N)"))
         self.label_52.setText(_translate("MainWindow", "Graph Set Done."))
         self.label_52.hide()
         self.pushButton_17.setText(_translate("MainWindow", "Set PreLoad."))
@@ -1352,7 +1353,7 @@ class TY_77_Ui_MainWindow(object):
         self.label_60.setText(_translate("MainWindow", "(Kgf)"))
         self.label_61.setText(_translate("MainWindow", " Load (5):"))
         self.label_62.setText(_translate("MainWindow", "(Kgf)"))
-        self.label_63.setText(_translate("MainWindow", "(Kgf)"))
+        self.label_63.setText(_translate("MainWindow", "(N)"))
         self.label_37.setText(_translate("MainWindow", "(Mm)"))
         self.label_16.setText(_translate("MainWindow", "Mode :"))
         self.label_24.setText(_translate("MainWindow", "Compression"))
@@ -1424,6 +1425,8 @@ class TY_77_Ui_MainWindow(object):
         elif(str(self.comboBox_2.currentText())=="Kgf"):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
+              self.label_51.setText("Kgf")
+              self.label_63.setText("Kgf")
 #               self.i=self.i+1
 #               self.comboBox_3.addItem("")
 #               self.comboBox_3.setItemText(self.i,"Cm")
@@ -1436,6 +1439,8 @@ class TY_77_Ui_MainWindow(object):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
               self.i=self.i+1
+              self.label_51.setText("N")
+              self.label_63.setText("N")
         elif(str(self.comboBox_2.currentText())=="gm"):
               self.comboBox_3.addItem("")
               self.comboBox_3.setItemText(self.i,"Mm")
@@ -1529,10 +1534,10 @@ class TY_77_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,NEW_TEST_PARTY_NAME FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT ifnull(NEW_TEST_MAX_LOAD,0),ifnull(NEW_TEST_MAX_LENGTH,0),NEW_TEST_PARTY_NAME FROM GLOBAL_VAR") 
         for x in results:            
-            self.lineEdit_10.setText(str(x[0]))
-            self.lineEdit_11.setText(str(x[1]))
+            self.lineEdit_17.setText(str(x[0]))
+            self.lineEdit_18.setText(str(x[1]))
             self.lineEdit_25.setText(str(x[2]))
         connection.close()
         
@@ -1861,8 +1866,8 @@ class TY_77_Ui_MainWindow(object):
             self.lineEdit_12.setText(str(x[2])) # OPERATOR
             self.lineEdit_19.setText(str(x[3])) # Material
             self.lineEdit_10.setText("Rectangle") # Hardness
-            self.lineEdit_17.setText(str(x[5])) # MAX LOAD
-            self.lineEdit_18.setText(str(x[6])) # MAX DEFLECTION
+            #self.lineEdit_17.setText(str(x[5])) # MAX LOAD
+            #self.lineEdit_18.setText(str(x[6])) # MAX DEFLECTION
             self.lineEdit_7.setText(str(x[7])) # PRE LOAD
             self.lineEdit_9.setText(str(x[8])) # TEST SPEED 
             self.label_24.setText(str(x[9])) #TEST MODE          
@@ -2632,7 +2637,11 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),IFNULL(PRE_LOAD,0) from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=200            
-             self.max_load=float(x[2])
+             if(str(self.load_unit) == 'N'):
+                  self.max_load=float(float(x[2])/9.80)
+                  print("Max Load converted to Kgf is :"+str(self.max_load))
+             else:                
+                  self.max_load=float(x[2])
              #self.max_load=100
              self.max_length=float(self.test_guage_mm)-float(float(x[3]))
              self.flex_max_length=float(x[3])
