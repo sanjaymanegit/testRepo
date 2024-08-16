@@ -1396,7 +1396,7 @@ class TY_77_Ui_MainWindow(object):
         self.non_modbus_port=""
         self.pre_load="0"
         self.load_cell_no="0"
-        
+        self.guage_len_mm="0"
         
         
         self.load_data()
@@ -1669,8 +1669,8 @@ class TY_77_Ui_MainWindow(object):
                                     with connection:        
                                           cursor = connection.cursor()
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
-                                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='200'")
-                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"'") 
+                                          cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.guage_len_mm)+"'")
+                                          cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
                                           cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,MOTOR_SPEED,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD,SPEC_TYPE_1) VALUES('"+str(self.comboBox.currentText())+"','CLD-3P','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_10.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1859,7 +1859,7 @@ class TY_77_Ui_MainWindow(object):
     
     def onchage_combo(self):
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select PART_NAME,REV_MOTOR_SPEED,OPERATOR,LOAD_CELL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL,SPECIMEN_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
+        results=connection.execute("select PART_NAME,REV_MOTOR_SPEED,OPERATOR,LOAD_CELL,HARDNESS,MAX_LOAD,MAX_DEFLECTION,PRE_LOAD,MOTOR_SPEED,TEST_MODE,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_CELL,SPECIMEN_NAME,IFNULL(GUAGE_LENGTH_MM,0) FROM SPECIMEN_MST WHERE SPECIMEN_NAME='"+self.comboBox.currentText()+"'")                 
         for x in results:
             self.lineEdit_15.setText(str(x[0])) # PART_NAME
             self.lineEdit_8.setText(str(x[1])) # TEST_TYPE
@@ -1873,6 +1873,7 @@ class TY_77_Ui_MainWindow(object):
             self.label_24.setText(str(x[9])) #TEST MODE          
             self.comboBox_2.setCurrentText(str(x[10])) #UNIT_LOAD
             self.comboBox_3.setCurrentText(str(x[11])) #UNIT_Travel
+            self.guage_len_mm=(str(x[14]))
         connection.close()
         #self.click_onRadiobutt()
         #self.cs_area_calculation()
@@ -2634,9 +2635,9 @@ class PlotCanvas_Auto(FigureCanvas):
         connection.close()                
                         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),IFNULL(PRE_LOAD,0) from GLOBAL_VAR") 
+        results=connection.execute("SELECT IFNULL(NEW_TEST_GUAGE_MM,0),NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0),IFNULL(PRE_LOAD,0) from GLOBAL_VAR") 
         for x in results:            
-             self.test_guage_mm=200            
+             self.test_guage_mm=float(x[0])           
              if(str(self.load_unit) == 'N'):
                   self.max_load=float(float(x[2])/9.80)
                   print("Max Load converted to Kgf is :"+str(self.max_load))
