@@ -834,24 +834,24 @@ class TY_35_IDF_LIST_Ui_MainWindow(object):
         if(self.radioButton.isChecked()):
                 print("date Range -select")
                 #results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,(SELECT COUNT(*) as cnt FROM CYCLES_MST A WHERE A.TEST_ID=B.TEST_ID) as CYCLES_CNT,B.BATCH_ID,B.SPECIMEN_NAME,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' order by TEST_ID DESC")                        
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"'  order by TEST_ID DESC")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where date(B.CREATED_ON) between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC")                        
                 
         elif(self.radioButton_2.isChecked()):
                 print("by Customer name -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' order by TEST_ID DESC")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TESTED_BY = '"+str(self.comboBox_4.currentText())+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC")                        
         elif(self.radioButton_3.isChecked()):
                 print("by batch id -select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' order by TEST_ID DESC ")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.BATCH_ID = '"+str(self.comboBox_6.currentText())+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC ")                        
         elif(self.radioButton_4.isChecked()):
                 if(self.lineEdit_17.text() != ""):
                     print("by Test Id / Serial No -select")
-                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' order by TEST_ID DESC")                        
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.TEST_ID='"+str(self.lineEdit_17.text())+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC")                        
                 else:
-                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' order by TEST_ID DESC")                        
+                    results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS  as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.TEST_TYPE='"+str(self.new_test_name)+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC")                        
             
         else:
                 print("by else part-select")
-                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS B.LOAD_POINTS as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"'")                        
+                results=connection.execute("SELECT B.TEST_ID,B.CREATED_ON,B.PARTY_NAME,B.LOAD_POINTS B.LOAD_POINTS as CYCLES_CNT,B.BATCH_ID,COMMENTS FROM TEST_MST B where B.CREATED_ON between '"+str(self.from_dt)+"' and '"+str(self.to_dt)+"' and B.TEST_TYPE='"+str(self.new_test_name)+"' and  B.PARTY_NAME = '"+str(self.comboBox.currentText())+"' and B.BATCH_ID = '"+str(self.comboBox_2.currentText())+"' and B.JOB_NAME='"+str(self.comboBox_3.currentText())+"' and B.TEST_ID in (SELECT TEST_ID FROM TEST_DATA_RADIAL) order by TEST_ID DESC ")                        
       
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)

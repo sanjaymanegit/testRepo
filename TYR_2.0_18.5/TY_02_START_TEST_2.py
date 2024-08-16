@@ -2057,6 +2057,10 @@ class TY_02_Ui_MainWindow(object):
         
         if(self.last_load_unit == "MPa" and self.last_disp_unit=="Mm"):
                 data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Force at Peak \n (N)' ,'E@Peak \n ('+str(self.last_disp_unit)+')','% E@Peak \n','E@Break \n ('+str(self.last_disp_unit)+')','%E@Break \n']]        
+        
+        elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):    
+                data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Force at Peak \n (Kgf)' ,'E@Peak \n ('+str(self.last_disp_unit)+')','% E@Peak \n','E@Break \n ('+str(self.last_disp_unit)+')','%E@Break \n']]
+        
         else:    
                 data= [['Spec. \n No.', 'CS.Area \n ('+str(self.last_disp_unit)+'2)','Force at Peak \n ('+str(self.last_load_unit)+')' ,'E@Peak \n ('+str(self.last_disp_unit)+')','% E@Peak \n','E@Break \n ('+str(self.last_disp_unit)+')','%E@Break \n']]
         
@@ -2123,7 +2127,7 @@ class TY_02_Ui_MainWindow(object):
         if(self.last_load_unit == "MPa" and self.last_disp_unit=="Mm"):              
                 data2= [ ['Spec. \n No', 'TensileStrength \n (MPa)', 'Mod@100% \n (MPa)', 'Mod@200% \n (MPa)', 'Mod@300% \n (MPa)']]
         elif(self.last_load_unit == "Kg" and self.last_disp_unit=="Mm"):              
-                data2= [ ['Spec. \n No', 'TensileStrength \n (Kg/Cm2)', 'Mod@100% \n (Kg/Cm2)', 'Mod@200% \n (Kg/Cm2)', 'Mod@300% \n (Kg/Cm2)']]
+                data2= [ ['Spec. \n No', 'TensileStrength \n (Kgf/Cm2)', 'Mod@100% \n (Kgf/Cm2)', 'Mod@200% \n (Kgf/Cm2)', 'Mod@300% \n (Kgf/Cm2)']]
       
         else:
                 data2= [ ['Spec. \n No', 'TensileStrength \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@100% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@200% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)', 'Mod@300% \n ('+str(self.last_load_unit)+'/'+str(self.last_disp_unit)+'2)']]
