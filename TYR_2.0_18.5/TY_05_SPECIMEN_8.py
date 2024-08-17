@@ -86,7 +86,7 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.tableWidget.setLineWidth(3)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(12)
+        self.tableWidget.setColumnCount(18)
         self.tableWidget.setRowCount(1)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, item)
@@ -186,6 +186,62 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(11, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(12, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(13, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(14, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(15, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(16, item)
+        
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        self.tableWidget.setHorizontalHeaderItem(17, item)
+        
+        
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -258,6 +314,44 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         font.setPointSize(10)
         item.setFont(font)
         self.tableWidget.setItem(0, 11, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 12, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 13, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 14, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 15, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 16, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        item.setFont(font)
+        self.tableWidget.setItem(0, 17, item)
+        
+        
         self.tableWidget.verticalHeader().setSortIndicatorShown(False)
         self.tableWidget.verticalHeader().setStretchLastSection(False)
         self.label_21 = QtWidgets.QLabel(self.frame)
@@ -309,6 +403,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_25.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_25.setObjectName("label_25")
         self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit)
+        self.lineEdit.setValidator(input_validator)
         self.lineEdit.setGeometry(QtCore.QRect(1110, 400, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -316,6 +413,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_3)
+        self.lineEdit_3.setValidator(input_validator)
         self.lineEdit_3.setGeometry(QtCore.QRect(810, 450, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -384,6 +484,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_33.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_33.setObjectName("label_33")
         self.lineEdit_4 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(input_validator)
         self.lineEdit_4.setGeometry(QtCore.QRect(810, 170, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -403,6 +506,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_34.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
         self.lineEdit_10 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10)
+        self.lineEdit_10.setValidator(input_validator)
         self.lineEdit_10.setGeometry(QtCore.QRect(810, 290, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -452,6 +558,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_27.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_27.setObjectName("label_27")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_6)
+        self.lineEdit_6.setValidator(input_validator)
         self.lineEdit_6.setGeometry(QtCore.QRect(1110, 450, 81, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -539,6 +648,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_36.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_36.setObjectName("label_36")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_5)
+        self.lineEdit_5.setValidator(input_validator)
         self.lineEdit_5.setGeometry(QtCore.QRect(810, 230, 71, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -605,13 +717,13 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_42.setStyleSheet("color: rgb(0, 0, 255);")
         self.label_42.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_42.setObjectName("label_42")
-        self.textBrowser = QtWidgets.QTextBrowser(self.frame)
-        self.textBrowser.setGeometry(QtCore.QRect(1130, 230, 161, 41))
+        self.textEdit = QtWidgets.QTextEdit(self.frame)
+        self.textEdit.setGeometry(QtCore.QRect(1130, 230, 161, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
-        self.textBrowser.setFont(font)
-        self.textBrowser.setObjectName("textBrowser")
+        self.textEdit.setFont(font)
+        self.textEdit.setObjectName("textEdit")
         self.pushButton_6 = QtWidgets.QPushButton(self.frame)
         self.pushButton_6.setGeometry(QtCore.QRect(690, 30, 101, 41))
         font = QtGui.QFont()
@@ -713,6 +825,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_50.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_50.setObjectName("label_50")
         self.lineEdit_8 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_8)
+        self.lineEdit_8.setValidator(input_validator)
         self.lineEdit_8.setGeometry(QtCore.QRect(990, 530, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -720,6 +835,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit_8.setFont(font)
         self.lineEdit_8.setObjectName("lineEdit_8")
         self.lineEdit_11 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_11)
+        self.lineEdit_11.setValidator(input_validator)
         self.lineEdit_11.setGeometry(QtCore.QRect(1160, 530, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -764,6 +882,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_44.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_44.setObjectName("label_44")
         self.lineEdit_13 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_13)
+        self.lineEdit_13.setValidator(input_validator)
         self.lineEdit_13.setGeometry(QtCore.QRect(990, 590, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -771,6 +892,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit_13.setFont(font)
         self.lineEdit_13.setObjectName("lineEdit_13")
         self.lineEdit_14 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_14)
+        self.lineEdit_14.setValidator(input_validator)
         self.lineEdit_14.setGeometry(QtCore.QRect(990, 660, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -778,6 +902,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit_14.setFont(font)
         self.lineEdit_14.setObjectName("lineEdit_14")
         self.lineEdit_15 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_15)
+        self.lineEdit_15.setValidator(input_validator)
         self.lineEdit_15.setGeometry(QtCore.QRect(1160, 590, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -785,6 +912,9 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit_15.setFont(font)
         self.lineEdit_15.setObjectName("lineEdit_15")
         self.lineEdit_16 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("\\d+\\.\\d+")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_16)
+        self.lineEdit_16.setValidator(input_validator)
         self.lineEdit_16.setGeometry(QtCore.QRect(1160, 660, 51, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -895,9 +1025,25 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(9)
         item.setText(_translate("MainWindow", "Rev.Speed \\n (mm/min)"))
         item = self.tableWidget.horizontalHeaderItem(10)
-        item.setText(_translate("MainWindow", "Load Unit"))
+        item.setText(_translate("MainWindow", "Thickness"))
         item = self.tableWidget.horizontalHeaderItem(11)
-        item.setText(_translate("MainWindow", "Length Unit"))
+        item.setText(_translate("MainWindow", "Width"))
+        item = self.tableWidget.horizontalHeaderItem(12)
+        
+        item.setText(_translate("MainWindow", "Range_1_From"))
+        item = self.tableWidget.horizontalHeaderItem(13)
+        item.setText(_translate("MainWindow", "Range_1_To"))
+        
+        item = self.tableWidget.horizontalHeaderItem(14)
+        item.setText(_translate("MainWindow", "Range_2_From"))
+        item = self.tableWidget.horizontalHeaderItem(15)
+        item.setText(_translate("MainWindow", "Range_2_To"))
+        
+        item = self.tableWidget.horizontalHeaderItem(16)
+        item.setText(_translate("MainWindow", "Range_3_From"))
+        item = self.tableWidget.horizontalHeaderItem(17)
+        item.setText(_translate("MainWindow", "Range_3_To"))
+        
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.item(0, 0)
@@ -948,11 +1094,13 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.label_40.setText(_translate("MainWindow", "(mm)"))
         self.label_41.setText(_translate("MainWindow", "Kg"))
         self.label_42.setText(_translate("MainWindow", "(mm)"))
+        '''
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">TM -00JT002</p></body></html>"))
+        '''
         self.pushButton_6.setText(_translate("MainWindow", "Export"))
         self.pushButton_7.setText(_translate("MainWindow", "Import"))
         self.label_47.setText(_translate("MainWindow", "Test Mode:"))
@@ -996,7 +1144,7 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
     def loadData(self):
         self.delete_all_records()
         connection = sqlite3.connect("tyr.db")
-        results = connection.execute("SELECT SPECIMEN_ID, SPECIMEN_NAME, TEST_MODE, LOAD_CELL, SHAPE, PARTY_NAME, GUAGE_LENGTH_MM, SPECIMEN_SPECS, MOTOR_SPEED, REV_MOTOR_SPEED, PRE_LOAD, THICKNESS, WIDTH FROM SPECIMEN_MST")
+        results = connection.execute("SELECT SPECIMEN_ID, SPECIMEN_NAME, LOAD_CELL, SHAPE, PARTY_NAME, GUAGE_LENGTH_MM, SPECIMEN_SPECS, MOTOR_SPEED, REV_MOTOR_SPEED, PRE_LOAD, THICKNESS,WIDTH,ifnull(RANGE_1_FROM,0),ifnull(RANGE_1_TO,0),ifnull(RANGE_2_FROM,0),ifnull(RANGE_2_TO,0),ifnull(RANGE_3_FROM,0),ifnull(RANGE_3_TO,0) FROM SPECIMEN_MST")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data): 
@@ -1005,17 +1153,30 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         connection.close()
         if(self.tableWidget.rowCount() > 0):
                 self.label_2.setText(str(self.tableWidget.item(0, 0).text().zfill(3)))   #Spect.ID:
-                self.lineEdit_4.setText(str(self.tableWidget.item(0, 8).text()))  #Test Speed:
-                self.lineEdit_5.setText(str(self.tableWidget.item(0, 9).text()))  #Rev. Speed:
-                self.lineEdit_10.setText(str(self.tableWidget.item(0, 6).text())) #Guage Length:
                 self.lineEdit_12.setText(str(self.tableWidget.item(0, 1).text()))  #Product.Name : SPECIMEN_NAME
-                self.lineEdit_7.setText(str(self.tableWidget.item(0, 5).text()))   #Party:
-                #self.textEdit.setText(str(self.tableWidget.item(0, 7).text()))  #Others:  SPECIMEN_SPECS
-                self.lineEdit_3.setText(str(self.tableWidget.item(0, 11).text()))  #Thickness:
-                self.lineEdit.setText(str(self.tableWidget.item(0, 10).text()))    #Pre. Load:
-                #self.lineEdit_6.setText(str(self.tableWidget.item(0, 12).text()))  #Width:
-                self.lineEdit_9.setText(str(self.tableWidget.item(0, 3).text()))  #Load Cell:
+                self.lineEdit_9.setText(str(self.tableWidget.item(0, 2).text()))  #Load Cell:
+                
+                self.lineEdit_7.setText(str(self.tableWidget.item(0, 4).text()))   #Party:
+                self.lineEdit_10.setText(str(self.tableWidget.item(0, 5).text())) #Guage Length:
+                
+                self.textEdit.setText(str(self.tableWidget.item(0, 6).text()))  #Others:  SPECIMEN_SPECS
+                self.lineEdit_4.setText(str(self.tableWidget.item(0, 7).text()))  #Test Speed:
+                self.lineEdit_5.setText(str(self.tableWidget.item(0, 8).text()))  #Rev. Speed:
+                
+                self.lineEdit.setText(str(self.tableWidget.item(0, 9).text()))    #Pre. Load:  
+                self.lineEdit_3.setText(str(self.tableWidget.item(0, 10).text()))  #Thickness:               
+                self.lineEdit_6.setText(str(self.tableWidget.item(0, 11).text()))  #Width:
+                
                 self.comboBox_2.setCurrentIndex(0)  #Shape:
+                
+                self.lineEdit_8.setText(str(self.tableWidget.item(0, 12).text()))  
+                self.lineEdit_11.setText(str(self.tableWidget.item(0, 13).text()))  
+                self.lineEdit_13.setText(str(self.tableWidget.item(0, 14).text()))  
+                self.lineEdit_15.setText(str(self.tableWidget.item(0, 15).text()))  
+                self.lineEdit_14.setText(str(self.tableWidget.item(0, 16).text()))  
+                self.lineEdit_16.setText(str(self.tableWidget.item(0, 17).text()))
+                
+                
     def fetchSpecimenData(self):
         self.lineEdit_12.setReadOnly(True)
         self.pushButton_2.setDisabled(True)
@@ -1023,17 +1184,41 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.pushButton_4.setDisabled(False)  
         row = self.tableWidget.currentRow() 
         if (row != -1):
+                '''
                 self.label_2.setText(str(self.tableWidget.item(row, 0).text().zfill(3)))   #Spect.ID:
                 self.lineEdit_4.setText(str(self.tableWidget.item(row, 8).text()))  #Test Speed:
                 self.lineEdit_5.setText(str(self.tableWidget.item(row, 9).text()))  #Rev. Speed:
                 self.lineEdit_10.setText(str(self.tableWidget.item(row, 6).text())) #Guage Length:
                 self.lineEdit_12.setText(str(self.tableWidget.item(row, 1).text()))  #Product.Name : SPECIMEN_NAME
                 self.lineEdit_7.setText(str(self.tableWidget.item(row, 5).text()))   #Party:
-                #self.textEdit.setText(str(self.tableWidget.item(row, 7).text()))  #Others:  SPECIMEN_SPECS
+                self.textEdit.setText(str(self.tableWidget.item(row, 7).text()))  #Others:  SPECIMEN_SPECS
                 self.lineEdit_3.setText(str(self.tableWidget.item(row, 11).text()))  #Thickness:
                 self.lineEdit.setText(str(self.tableWidget.item(row, 10).text()))    #Pre. Load:
                 #self.lineEdit_6.setText(str(self.tableWidget.item(row, 12).text()))  #Width:
                 self.lineEdit_9.setText(str(self.tableWidget.item(row, 3).text()))  #Load Cell:
+                '''
+                self.label_2.setText(str(self.tableWidget.item(row, 0).text().zfill(3)))   #Spect.ID:
+                self.lineEdit_12.setText(str(self.tableWidget.item(row, 1).text()))  #Product.Name : SPECIMEN_NAME
+                self.lineEdit_9.setText(str(self.tableWidget.item(row, 2).text()))  #Load Cell:
+                
+                self.lineEdit_7.setText(str(self.tableWidget.item(row, 4).text()))   #Party:
+                self.lineEdit_10.setText(str(self.tableWidget.item(row, 5).text())) #Guage Length:
+                
+                self.textEdit.setText(str(self.tableWidget.item(row, 6).text()))  #Others:  SPECIMEN_SPECS
+                self.lineEdit_4.setText(str(self.tableWidget.item(row, 7).text()))  #Test Speed:
+                self.lineEdit_5.setText(str(self.tableWidget.item(row, 8).text()))  #Rev. Speed:
+                
+                self.lineEdit.setText(str(self.tableWidget.item(row, 9).text()))    #Pre. Load:  
+                self.lineEdit_3.setText(str(self.tableWidget.item(row, 10).text()))  #Thickness:               
+                self.lineEdit_6.setText(str(self.tableWidget.item(row, 11).text()))  #Width:
+                
+                self.lineEdit_8.setText(str(self.tableWidget.item(row, 12).text()))  
+                self.lineEdit_11.setText(str(self.tableWidget.item(row, 13).text()))  
+                self.lineEdit_13.setText(str(self.tableWidget.item(row, 14).text()))  
+                self.lineEdit_15.setText(str(self.tableWidget.item(row, 15).text()))  
+                self.lineEdit_14.setText(str(self.tableWidget.item(row, 16).text()))  
+                self.lineEdit_16.setText(str(self.tableWidget.item(row, 17).text()))  
+                
                 self.comboBox_2.setCurrentIndex(0)  #Shape:
                    
     def delete_all_records(self):
@@ -1054,7 +1239,7 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         self.lineEdit_10.setText("") #Guage Length:
         self.lineEdit_12.setText("")  #Product.Name : SPECIMEN_NAME
         self.lineEdit_7.setText("")   #Party:
-        #self.textEdit.setText("")  #Others:  SPECIMEN_SPECS
+        self.textEdit.setText("")  #Others:  SPECIMEN_SPECS
         self.lineEdit_3.setText("")  #Thickness:
         self.lineEdit.setText("")    #Pre. Load:
         self.lineEdit_6.setText("")  #Width:
@@ -1120,8 +1305,21 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
                         self.msg="Width: Should Not Be Empty..."                   
               
                 elif (self.lineEdit_9.text() == ""):
-                        self.msg="Load Cell: Should Not Be Empty..."                   
-                  
+                        self.msg="Load Cell: Should Not Be Empty..."
+                
+                elif (self.lineEdit_8.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                elif (self.lineEdit_11.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                elif (self.lineEdit_13.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                elif (self.lineEdit_14.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                elif (self.lineEdit_15.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                elif (self.lineEdit_16.text() == ""):
+                        self.msg="Range: Should Not Be Empty..."
+                        
                 else:
                         self.go_ahead = "Yes"
 
@@ -1134,14 +1332,24 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
         close = close.exec()
         if close == QMessageBox.Ok:
                 if(self.go_ahead=="Yes"): 
-    
-                        connection = sqlite3.connect("tyr.db")
-                        with connection:
-                                cursor = connection.cursor()
-                                cursor.execute("UPDATE SPECIMEN_MST SET MOTOR_SPEED = ?, REV_MOTOR_SPEED = ?, GUAGE_LENGTH_MM = ?, SPECIMEN_NAME = ?, PARTY_NAME = ?, SPECIMEN_SPECS = ?, THICKNESS = ?, PRE_LOAD = ?, WIDTH = ?, LOAD_CELL = ?, SHAPE = ?, TEST_MODE = ? WHERE SPECIMEN_ID = ?" , (str(self.lineEdit_4.text()), str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectrangle', 'Compression', str(self.label_2.text())  ) )
-                        connection.commit()
-                        connection.close()
-                        self.label_21.setText("Specimen Save.....")
+                        try:
+                            connection = sqlite3.connect("tyr.db")
+                            with connection:
+                                    cursor = connection.cursor()
+                                    
+                                    #print("UPDATE SPECIMEN_MST SET MOTOR_SPEED = ?, REV_MOTOR_SPEED = ?, GUAGE_LENGTH_MM = ?, SPECIMEN_NAME = ?, PARTY_NAME = ?, SPECIMEN_SPECS = ?, THICKNESS = ?, PRE_LOAD = ?, WIDTH = ?, LOAD_CELL = ?, SHAPE = ?, TEST_MODE = ?, RANGE_1_FROM = ?, RANGE_1_TO=?, RANGE_2_FROM = ?, RANGE_2_TO=?, RANGE_3_FROM = ?, RANGE_3_TO=? WHERE SPECIMEN_ID = ?" , (str(self.lineEdit_4.text()), str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectrangle', 'Compression', str(self.label_2.text()), str(self.lineEdit_8.text()), str(self.lineEdit_11.text()), str(self.lineEdit_13.text()), str(self.lineEdit_15.text()), str(self.lineEdit_14.text()), str(self.lineEdit_16.text())) )
+                            
+                                    #cursor.execute("UPDATE SPECIMEN_MST SET MOTOR_SPEED = ?, REV_MOTOR_SPEED = ?, GUAGE_LENGTH_MM = ?, SPECIMEN_NAME = ?, PARTY_NAME = ?, SPECIMEN_SPECS = ?, THICKNESS = ?, PRE_LOAD = ?, WIDTH = ?, LOAD_CELL = ?, SHAPE = ?, TEST_MODE = ?, RANGE_1_FROM = ?, RANGE_1_TO= ?, RANGE_2_FROM = ?, RANGE_2_TO=?, RANGE_3_FROM = ?, RANGE_3_TO= ? WHERE SPECIMEN_ID = ?", (str(self.lineEdit_4.text()), str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectangle', 'Compression', str(self.label_2.text()), str(self.lineEdit_8.text()), str(self.lineEdit_11.text()), str(self.lineEdit_13.text()), str(self.lineEdit_15.text()), str(self.lineEdit_14.text()), str(self.lineEdit_16.text()) ))
+                                    cursor.execute("UPDATE SPECIMEN_MST SET MOTOR_SPEED = '"+str(self.lineEdit_4.text())+"', REV_MOTOR_SPEED = '"+str(self.lineEdit_5.text())+"', GUAGE_LENGTH_MM = '"+str(self.lineEdit_10.text())+"', SPECIMEN_NAME = '"+str(self.lineEdit_12.text())+"', PARTY_NAME = '"+str(self.lineEdit_7.text())+"', SPECIMEN_SPECS = '"+str(self.textEdit.toPlainText())+"', THICKNESS = '"+str(self.lineEdit_3.text())+"', PRE_LOAD = '"+str(self.lineEdit.text())+"', WIDTH = '"+str(self.lineEdit_6.text())+"', LOAD_CELL = '"+str(self.lineEdit_9.text())+"', SHAPE = 'Rectangle', TEST_MODE = 'Compression', RANGE_1_FROM = '"+str(self.lineEdit_8.text())+"', RANGE_1_TO= '"+str(self.lineEdit_11.text())+"', RANGE_2_FROM = '"+str(self.lineEdit_13.text())+"', RANGE_2_TO='"+str(self.lineEdit_15.text())+"', RANGE_3_FROM = '"+str(self.lineEdit_14.text())+"', RANGE_3_TO= '"+str(self.lineEdit_16.text())+"' WHERE SPECIMEN_ID = '"+str(self.label_2.text())+"'")
+                                                   
+                                                   #, (, str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectangle', 'Compression', str(self.label_2.text()), str(self.lineEdit_8.text()), str(self.lineEdit_11.text()), str(self.lineEdit_13.text()), str(self.lineEdit_15.text()), str(self.lineEdit_14.text()), str(self.lineEdit_16.text()) ))
+                            
+                                    print("ok ...saved")
+                            connection.commit()
+                            connection.close()
+                        except IOError as e:
+                            print("Error... : "+str(e))
+                        self.label_21.setText("Specimen Saved.")
                         self.label_21.show()
                         self.loadData()
             
@@ -1156,7 +1364,7 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
                         connection = sqlite3.connect("tyr.db")
                         with connection:
                                 cursor = connection.cursor()
-                                cursor.execute("INSERT INTO SPECIMEN_MST (MOTOR_SPEED, REV_MOTOR_SPEED, GUAGE_LENGTH_MM, SPECIMEN_NAME, PARTY_NAME, SPECIMEN_SPECS, THICKNESS, PRE_LOAD, WIDTH, LOAD_CELL, SHAPE, TEST_MODE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", (str(self.lineEdit_4.text()), str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectrangle', 'Compression' ) )
+                                cursor.execute("INSERT INTO SPECIMEN_MST (MOTOR_SPEED, REV_MOTOR_SPEED, GUAGE_LENGTH_MM, SPECIMEN_NAME, PARTY_NAME, SPECIMEN_SPECS, THICKNESS, PRE_LOAD, WIDTH, LOAD_CELL, SHAPE, TEST_MODE,RANGE_1_FROM,RANGE_1_TO,RANGE_2_FROM,RANGE_2_TO,RANGE_3_FROM,RANGE_3_TO) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (str(self.lineEdit_4.text()), str(self.lineEdit_5.text()), str(self.lineEdit_10.text()), str(self.lineEdit_12.text()), str(self.lineEdit_7.text()), str(self.textEdit.toPlainText()), str(self.lineEdit_3.text()), str(self.lineEdit.text()), str(self.lineEdit_6.text()), str(self.lineEdit_9.text()), 'Rectrangle', 'Compression', str(self.lineEdit_8.text()), str(self.lineEdit_11.text()), str(self.lineEdit_13.text()), str(self.lineEdit_15.text()), str(self.lineEdit_14.text()), str(self.lineEdit_16.text())))
                         connection.commit()
                         connection.close()
                         self.label_21.setText("Specimen Added.....")
