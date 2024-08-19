@@ -6,7 +6,7 @@ from TY_05_SPECIMEN_4 import TY_05_SPECI_4_ui_MainWindow
 from TY_05_SPECIMEN_5 import TY_05_SPECI_5_ui_MainWindow
 from TY_05_SPECIMEN_6 import TY_05_SPECI_6_ui_MainWindow
 from TY_05_SPECIMEN_7 import TY_05_SPEC_7_Ui_MainWindow
-
+from TY_05_SPECIMEN_8 import TY_05_SPEC_8_Ui_MainWindow
 
 import sqlite3
 import re
@@ -349,7 +349,7 @@ class TY_50_LIST_Ui_MainWindow(object):
         elif(str(self.test_type_id) == "38"):    
              self.open_new_window_7()
         elif(str(self.test_type_id) == "39"):    
-             self.open_new_window_4()
+             self.open_new_window_8()
         else:
             self.open_new_window()
             print("Invalid Test ID"+str(self.test_type_id))
@@ -389,6 +389,12 @@ class TY_50_LIST_Ui_MainWindow(object):
     def open_new_window_7(self):                
         self.window = QtWidgets.QMainWindow()
         self.ui=TY_05_SPEC_7_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
+    
+    def open_new_window_8(self):                
+        self.window = QtWidgets.QMainWindow()
+        self.ui=TY_05_SPEC_8_Ui_MainWindow()
         self.ui.setupUi(self.window)           
         self.window.show()
     

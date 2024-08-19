@@ -1854,7 +1854,7 @@ class TY_52_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")        
         results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Extraction","Test Method:","Tensile"],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (< 60) :",str(x[13])]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Extraction","Test Method:","Tensile"],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (> 60) :",str(x[13])]]
             self.remark=str(x[12]) 
         connection.close() 
         

@@ -2417,14 +2417,33 @@ class TY_78_Ui_MainWindow(object):
         self.login_user_name=""
         self.unit_typex="Kg/Cm"
         self.tested_by=""
+        self.spec_name=""
+        self.range_1_from="0"
+        self.range_1_to="0"
+        self.range_2_from="0"
+        self.range_2_to="0"
+        self.range_3_from="0"
+        self.range_3_to="0"
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
+        results=connection.execute("SELECT LAST_UNIT_LOAD,LAST_UNIT_DISP,TEST_ID,TESTED_BY,SPECIMEN_NAME from TEST_MST  WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR) ") 
         for x in results:
               self.last_load_unit=str(x[0])
               self.last_disp_unit=str(x[1])
               self.test_id=str(x[2])
               self.tested_by=str(x[3])
+              self.spec_name=str(x[4])
+        connection.close()
+        
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT ifnull(RANGE_1_FROM,0),ifnull(RANGE_1_TO,0),ifnull(RANGE_2_FROM,0),ifnull(RANGE_2_TO,0),ifnull(RANGE_3_FROM,0),ifnull(RANGE_3_TO,0) FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.spec_name)+"'") 
+        for x in results:
+                self.range_1_from=str(x[0])
+                self.range_1_to=str(x[1])
+                self.range_2_from=str(x[2])
+                self.range_2_to=str(x[3])
+                self.range_3_from=str(x[4])
+                self.range_3_to=str(x[5])
         connection.close()
         
         data2= [[' Cycle.ID ',' Load_@'+str(self.lineEdit_20.text())+'mm \n ('+str(self.comboBox_2.currentText())+') ',' Load_@'+str(self.lineEdit_21.text())+'mm \n ('+str(self.comboBox_2.currentText())+') ',' Load_@'+str(self.lineEdit_22.text())+'mm \n ('+str(self.comboBox_2.currentText())+')']]
@@ -2454,13 +2473,13 @@ class TY_78_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Results.',CASE WHEN (LOAD_1 > 2.7 AND LOAD_1 < 4.7) THEN 'Ok' ELSE 'Not Ok' END ,CASE WHEN (LOAD_2 > 3.6 AND LOAD_2 < 6.6) THEN 'Ok' ELSE 'Not Ok' END,CASE WHEN (LOAD_3 > 8.6 AND LOAD_3 < 16) THEN 'Ok' ELSE 'Not Ok' END  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") #2.7 and 4.7 =====
+        results=connection.execute("SELECT 'Results.',CASE WHEN (LOAD_1 > "+str(self.range_1_from)+" AND LOAD_1 < "+str(self.range_1_to)+") THEN 'Ok' ELSE 'Not Ok' END ,CASE WHEN (LOAD_2 > "+str(self.range_2_from)+" AND LOAD_2 < "+str(self.range_2_to)+") THEN 'Ok' ELSE 'Not Ok' END,CASE WHEN (LOAD_3 > "+str(self.range_3_from)+" AND LOAD_3 < "+str(self.range_3_to)+") THEN 'Ok' ELSE 'Not Ok' END  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") #2.7 and 4.7 =====
         for x in results:
                 data2.append(x)
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Range.','2.7 To 4.7' ,'3.6 To 6.6', '8.6 To 16'  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") 
+        results=connection.execute("SELECT 'Range.','"+str(self.range_1_from)+" To "+str(self.range_2_to)+"' ,'"+str(self.range_2_from)+" To "+str(self.range_2_to)+"', '"+str(self.range_3_from)+" To "+str(self.range_3_to)+"'  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") 
         for x in results:
                 data2.append(x)
         connection.close()    
@@ -2528,6 +2547,7 @@ class TY_78_Ui_MainWindow(object):
                                 bottomMargin=10)
         doc.build(Elements)
         #print("Done")
+
 
       
     
