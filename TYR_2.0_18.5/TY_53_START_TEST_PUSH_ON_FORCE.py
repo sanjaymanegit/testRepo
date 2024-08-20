@@ -67,6 +67,7 @@ class TY_53_Ui_MainWindow(object):
         self.line.setLineWidth(3)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
+        
         self.label_10 = QtWidgets.QLabel(self.frame)
         self.label_10.setGeometry(QtCore.QRect(1160, 50, 151, 41))
         font = QtGui.QFont()
@@ -79,6 +80,7 @@ class TY_53_Ui_MainWindow(object):
         self.label_10.setStyleSheet("color: rgb(170, 85, 127);")
         self.label_10.setAlignment(QtCore.Qt.AlignCenter)
         self.label_10.setObjectName("label_10")
+        
         self.label_47 = QtWidgets.QLabel(self.frame)
         self.label_47.setGeometry(QtCore.QRect(1170, 10, 141, 41))
         font = QtGui.QFont()
@@ -650,7 +652,7 @@ class TY_53_Ui_MainWindow(object):
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
+        #self.comboBox_2.addItem("")
 #         self.comboBox_2.addItem("")
 #         self.comboBox_2.addItem("")
         self.label_30 = QtWidgets.QLabel(self.frame)
@@ -840,8 +842,9 @@ class TY_53_Ui_MainWindow(object):
         self.line_5.setLineWidth(3)
         self.line_5.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_5.setObjectName("line_5")
+        
         self.label_50 = QtWidgets.QLabel(self.frame)
-        self.label_50.setGeometry(QtCore.QRect(520, 190, 161, 31))
+        self.label_50.setGeometry(QtCore.QRect(520, 220, 161, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -852,6 +855,7 @@ class TY_53_Ui_MainWindow(object):
         self.label_50.setStyleSheet("color: rgb(170, 0, 255);")
         self.label_50.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_50.setObjectName("label_50")
+        
         self.label_23 = QtWidgets.QLabel(self.frame)
         self.label_23.setGeometry(QtCore.QRect(510, 140, 81, 31))
         font = QtGui.QFont()
@@ -886,6 +890,50 @@ class TY_53_Ui_MainWindow(object):
         self.label_24.setStyleSheet("")
         self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
+        
+        
+        self.label_23_1 = QtWidgets.QLabel(self.frame)
+        self.label_23_1.setGeometry(QtCore.QRect(510, 190, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_23_1.setFont(font)
+        self.label_23_1.setText("Wt.Range:")
+        #self.label_23_1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_23_1.setObjectName("label_23_1")
+        
+        self.lineEdit_10_1 = QtWidgets.QLineEdit(self.frame)
+        reg_ex = QRegExp("(\\d+\\.\\d+)")
+        input_validator = QRegExpValidator(reg_ex, self.lineEdit_10_1)
+        self.lineEdit_10_1.setValidator(input_validator)
+        self.lineEdit_10_1.setGeometry(QtCore.QRect(620, 190, 61, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lineEdit_10_1.setFont(font)
+        self.lineEdit_10_1.setObjectName("lineEdit_10")
+        
+        self.label_24_1 = QtWidgets.QLabel(self.frame)
+        self.label_24_1.setGeometry(QtCore.QRect(690, 190, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_24_1.setFont(font)
+        self.label_24_1.setStyleSheet("")
+        self.label_24_1.setText(" ( N )")
+        #self.label_24_1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_24_1.setObjectName("label_24_1")
+        
+        
+        
+        
+        
         self.label_25 = QtWidgets.QLabel(self.frame)
         self.label_25.setGeometry(QtCore.QRect(725, 140, 141, 31))
         font = QtGui.QFont()
@@ -1037,7 +1085,7 @@ class TY_53_Ui_MainWindow(object):
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
-        self.comboBox_2.setItemText(2, _translate("MainWindow", "gm"))
+        #self.comboBox_2.setItemText(2, _translate("MainWindow", "gm"))
 #         self.comboBox_2.setItemText(3, _translate("MainWindow", "KN"))
 #         self.comboBox_2.setItemText(4, _translate("MainWindow", "Lb"))
         self.label_30.setText(_translate("MainWindow", "Travel.  Unit:"))
@@ -1099,12 +1147,17 @@ class TY_53_Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderLabels([' Peak Load ('+str(self.comboBox_2.currentText())+') ','cycle_id'])        
         
         self.pushButton_9.setDisabled(True)
+    
     def load_unit_onchange(self):
         self.i=0        
-        if(str(self.comboBox_2.currentText())=="KN"):        
+        if(str(self.comboBox_2.currentText())=="N"):        
               self.comboBox_3.setCurrentText(str("Mm"))
-        elif(str(self.comboBox_2.currentText())=="MPa"):
+              self.label_24_1.setText("(N)")
+              self.label_24.setText("(N)")
+        elif(str(self.comboBox_2.currentText())=="Kgf"):
               self.comboBox_3.setCurrentText(str("Mm"))
+              self.label_24_1.setText("(Kgf)")
+              self.label_24.setText("(Kgf)")
         else:
               print("No change in combo3")
         
@@ -1153,10 +1206,12 @@ class TY_53_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH FROM GLOBAL_VAR") 
+        results=connection.execute("SELECT NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,IFNULL(RANGE_WT,0) FROM GLOBAL_VAR") 
         for x in results:            
             self.lineEdit_10.setText(str(x[0]))
             self.lineEdit_11.setText(str(x[1]))
+            self.lineEdit_10_1.setText(str(x[2]))
+            
         connection.close()
         
         self.sc_blank =PlotCanvas_blank(self) 
@@ -1199,6 +1254,8 @@ class TY_53_Ui_MainWindow(object):
              self.msg="Rev.Speed is Empty"
         elif(self.lineEdit_10.text() == ""):
              self.msg="Max. Load is Empty"
+        elif(self.lineEdit_10.text() == ""):
+             self.msg="Range weight should not empty."
         elif(float(self.lineEdit_10.text()) == 0):
              self.msg="Max. Load should not zero"
         elif(self.lineEdit_11.text() == ""):
@@ -1257,9 +1314,9 @@ class TY_53_Ui_MainWindow(object):
                         with connection:        
                               cursor = connection.cursor()
                               cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_10.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_11.text())+"',NEW_TEST_SPECIMEN_NAME='"+self.comboBox.currentText()+"',NEW_TEST_SPE_SHAPE='"+str(self.label_16.text())+"',NEW_TEST_PARTY_NAME='"+str(self.label_48.text())+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_JOB_NAME='"+str(self.lineEdit_15.text())+"',NEW_TEST_BATCH_ID='"+self.lineEdit_16.text()+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"'")
+                              cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_12.text())+"',RANGE_WT='"+str(self.lineEdit_10_1.text())+"'")
                               
-                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,SPEC_TYPE_1) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"','"+str(self.label_18.text())+"')")
+                              cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,BATCH_ID,PARTY_NAME,TEST_TYPE,GUAGE_LENGTH,MOTOR_SPEED,MOTOR_REV_SPEED,JOB_NAME,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,SPEC_TYPE_1,RANGE_WT) VALUES('"+str(self.comboBox.currentText())+"','"+str(self.lineEdit_16.text())+"','"+str(self.label_48.text())+"','PUSH_ON_FORCE','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_11.text())+"','"+str(self.label_18.text())+"','"+str(self.lineEdit_10_1.text())+"')")
                               cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                               cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1863,15 +1920,15 @@ class TY_53_Ui_MainWindow(object):
                   
                   if( str(self.comboBox_2.currentText()) =="Kgf"):
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_KG) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 6.1183 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < "+str(self.lineEdit_10_1.text())+" THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   if( str(self.comboBox_2.currentText()) =="N"):
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_N) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 60 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < "+str(self.lineEdit_10_1.text())+" THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   else:
                                cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2=(SELECT avg(PEAK_LOAD_KG) FROM CYCLES_MST  WHERE CYCLES_MST.TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
-                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < 6.1183 THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
+                               cursor.execute("UPDATE TEST_MST SET TEST_TYPE_2= CASE WHEN TEST_TYPE_2 < "+str(self.lineEdit_10_1.text())+" THEN 'Not Ok' ELSE 'Ok' END WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
       
                   
                   #cursor.execute("UPDATE TEST_MST SET TEMPERATURE = (SELECT TEMPERATURE FROM GLOBAL_VAR) WHERE TEST_ID IN (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -2079,9 +2136,9 @@ class TY_53_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")        
-        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK'),ifnull(A.RANGE_WT ,0)  FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Insertion","Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (> 60) :",str(x[13])]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","Insertion","Test Method:",str(x[8])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"Result (> "+str(x[14])+") :",str(x[13])]]
             self.remark=str(x[12]) 
         connection.close() 
         
@@ -2300,7 +2357,10 @@ class PlotCanvas_Auto(FigureCanvas):
         results=connection.execute("SELECT NEW_TEST_GUAGE_MM,NEW_TEST_NAME,IFNULL(NEW_TEST_MAX_LOAD,0),IFNULL(NEW_TEST_MAX_LENGTH,0),IFNULL(TEST_LENGTH_MM,0),CURR_UNIT_TYPE,IFNULL(NEW_TEST_AREA*0.1*0.1,0) from GLOBAL_VAR") 
         for x in results:            
              self.test_guage_mm=int(x[0])             
-             self.max_load=int(x[2])
+             if(str(self.load_unit) == "N"):
+                    self.max_load=int(x[2]/9.8)
+             else:
+                    self.max_load=int(x[2])
              #self.max_load=100
              self.max_length=float(float(x[3]))
              self.flex_max_length=float(x[3])
