@@ -937,7 +937,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.test_mode="Tensile"
         self.length_device="Extentiometer"  
-
+        self.test_name=""
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -949,55 +949,7 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Add"))
         self.pushButton_3.setText(_translate("MainWindow", "Save"))
         '''
-        self.tableWidget.setSortingEnabled(True)
-        item = self.tableWidget.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Spec.ID"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Product Name"))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Test Mode"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Load Cell"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Length device"))
-        item = self.tableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Shape"))
-        item = self.tableWidget.horizontalHeaderItem(6)
-        item.setText(_translate("MainWindow", "Party"))
-        item = self.tableWidget.horizontalHeaderItem(7)
-        item.setText(_translate("MainWindow", "Guage Length \\n (mm)"))
-        item = self.tableWidget.horizontalHeaderItem(8)
-        item.setText(_translate("MainWindow", "Range"))
-        item = self.tableWidget.horizontalHeaderItem(9)
-        item.setText(_translate("MainWindow", "Test.Speed \\n (mm/min)"))
-        item = self.tableWidget.horizontalHeaderItem(10)
-        item.setText(_translate("MainWindow", "Rev.Speed \\n (mm/min)"))
-        item = self.tableWidget.horizontalHeaderItem(11)
-        item.setText(_translate("MainWindow", "Load Unit"))
-        item = self.tableWidget.horizontalHeaderItem(12)
-        item.setText(_translate("MainWindow", "Length Unit"))
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
         
-        item = self.tableWidget.item(0, 0)
-        item.setText(_translate("MainWindow", "1"))
-        item = self.tableWidget.item(0, 1)
-        item.setText(_translate("MainWindow", "w"))
-        item = self.tableWidget.item(0, 5)
-        item.setText(_translate("MainWindow", "we"))
-        item = self.tableWidget.item(0, 6)
-        item.setText(_translate("MainWindow", "ee"))
-        item = self.tableWidget.item(0, 7)
-        item.setText(_translate("MainWindow", "e"))
-        item = self.tableWidget.item(0, 8)
-        item.setText(_translate("MainWindow", "222ewe"))
-        item = self.tableWidget.item(0, 9)
-        item.setText(_translate("MainWindow", "22"))
-        item = self.tableWidget.item(0, 10)
-        item.setText(_translate("MainWindow", "23"))
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
         '''
         self.label_21.setText(_translate("MainWindow", "Please select the record to Edit."))
         self.label_22.setText(_translate("MainWindow", "Product.Name :"))
@@ -1056,6 +1008,17 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.label_49.setText(_translate("MainWindow", "Load Cell:"))
         self.lineEdit_9.setText(_translate("MainWindow", "5KN"))
         self.pushButton_9.clicked.connect(MainWindow.close)
+        self.test_name=""
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT  NEW_TEST_NAME FROM GLOBAL_VAR ")
+        for x in results:
+             #print("test_type:"+str(x[0]))
+             self.test_name=str(x[0])
+             if(str(x[0]) == "PULL_ON_FORCE" or  str(x[0]) == "PUSH_ON_FORCE"):
+                   self.label_24.setText("Specimen:")                   
+             else:
+                   self.label_24.setText("Shape:")
+        connection.close()
         
         self.comboBox_2.currentTextChanged.connect(self.specimen_diamentions)
         self.lineEdit_3.textChanged.connect(self.width_onchange)
@@ -1078,6 +1041,8 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.pushButton_5.clicked.connect(self.c_rest_fun)
         self.pushButton_6.clicked.connect(self.open_new_window)
         self.pushButton_7.clicked.connect(self.open_new_window2)
+        
+        
     
     def device_date(self):     
         self.label_20.setText(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S"))
@@ -1477,11 +1442,19 @@ class TY_05_SPECI_4_ui_MainWindow(object):
         self.tableWidget.setFont(font)
         self.tableWidget.setColumnCount(18)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        
+        print("test name : "+str(self.test_name))
         self.tableWidget.setHorizontalHeaderLabels(['Spec.Id.','Product Name', 'Shape',' Party Name ','Test Method','Test Speed',' Product Length  ','Pre Load','Thickness','Width','Inner Diameter','Outer Diameter','Diameter ','CS Area','Rev.Test Speed','Load Cell','Test Mode','Length Device'] )       
            
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE  FROM SPECIMEN_MST")                        
+        if(str(self.test_name) == "PULL_ON_FORCE"):
+                 results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE  FROM SPECIMEN_MST WHERE TEST_MODE ='Tensile'")                        
+    
+        elif(str(self.test_name) == "PUSH_ON_FORCE"):
+                 results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE  FROM SPECIMEN_MST WHERE TEST_MODE ='Compression'")                        
+    
+        else:
+                results=connection.execute("select SPECIMEN_ID ,SPECIMEN_NAME ,SHAPE,PARTY_NAME ,SPECIMEN_SPECS,MOTOR_SPEED,GUAGE_LENGTH_MM ,PRE_LOAD ,THICKNESS, WIDTH , IN_DIAMETER_MM ,OUTER_DIAMETER_MM, DIAMETER ,C_A_AREA,REV_MOTOR_SPEED,LOAD_CELL,TEST_MODE,LENGTH_DEVICE  FROM SPECIMEN_MST")                        
+        
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data):

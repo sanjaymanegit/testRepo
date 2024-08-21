@@ -1144,7 +1144,7 @@ class TY_05_SPEC_8_Ui_MainWindow(object):
     def loadData(self):
         self.delete_all_records()
         connection = sqlite3.connect("tyr.db")
-        results = connection.execute("SELECT SPECIMEN_ID, SPECIMEN_NAME, LOAD_CELL, SHAPE, PARTY_NAME, GUAGE_LENGTH_MM, SPECIMEN_SPECS, MOTOR_SPEED, REV_MOTOR_SPEED, PRE_LOAD, THICKNESS,WIDTH,ifnull(RANGE_1_FROM,0),ifnull(RANGE_1_TO,0),ifnull(RANGE_2_FROM,0),ifnull(RANGE_2_TO,0),ifnull(RANGE_3_FROM,0),ifnull(RANGE_3_TO,0) FROM SPECIMEN_MST")
+        results = connection.execute("SELECT SPECIMEN_ID, SPECIMEN_NAME, LOAD_CELL, SHAPE, PARTY_NAME, GUAGE_LENGTH_MM, SPECIMEN_SPECS, MOTOR_SPEED, REV_MOTOR_SPEED, PRE_LOAD, THICKNESS,WIDTH,ifnull(RANGE_1_FROM,0),ifnull(RANGE_1_TO,0),ifnull(RANGE_2_FROM,0),ifnull(RANGE_2_TO,0),ifnull(RANGE_3_FROM,0),ifnull(RANGE_3_TO,0) FROM SPECIMEN_MST where TEST_MODE='Compression'")
         for row_number, row_data in enumerate(results):            
             self.tableWidget.insertRow(row_number)
             for column_number, data in enumerate(row_data): 

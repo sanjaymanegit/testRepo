@@ -287,6 +287,7 @@ class TY_50_LIST_Ui_MainWindow(object):
         self.pushButton_15.setText("")
         self.list_type=self.listWidget.currentItem().text()
         connection = sqlite3.connect("tyr.db")
+        
         results=connection.execute("SELECT  TEST_TYPE_NAME,TEST_TYPE_DTLS,TEST_TYPE_IMG_FILE,ACTIVE_Y_N,TEST_TYPE_ID FROM TEST_TYPE_MST WHERE ACTIVE_Y_N = 'Y' and TEST_TYPE_NAME||'('||TEST_TYPE_ID||')' = '"+str(self.list_type)+"'")
         for x in results:                    
                    self.label_11.setText(str(x[0]))
@@ -313,7 +314,7 @@ class TY_50_LIST_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db")              
         with connection:        
                     cursor = connection.cursor()
-                    cursor.execute("UPDATE GLOBAL_VAR SET LOGIN_USER_NAME='"+str(self.lineEdit.text())+"'")
+                    cursor.execute("UPDATE GLOBAL_VAR SET LOGIN_USER_NAME='"+str(self.lineEdit.text())+"',NEW_TEST_NAME='"+str(self.label_11.text())+"'")
         connection.commit();
         connection.close()
         if(str(self.test_type_id) == "18"):
