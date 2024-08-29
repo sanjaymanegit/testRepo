@@ -437,7 +437,7 @@ class TY_07_3_Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "Compress"))
         self.pushButton_3.setText(_translate("MainWindow", "Set Pre Load"))
         self.pushButton_3_1.setText(_translate("MainWindow", "Stop"))
-        self.pushButton_3_1.setDisabled(True)
+        #self.pushButton_3_1.setDisabled(True)
         self.pushButton_3_1.clicked.connect(self.stop_run)
         self.label_10.setText(_translate("MainWindow", ""))
         self.pushButton_2.clicked.connect(MainWindow.close)       

@@ -1306,7 +1306,7 @@ class TY_77_Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "6543"))
 #         self.comboBox.setItemText(3, _translate("MainWindow", "878"))
         self.label_14.setText(_translate("MainWindow", "Customer Name:"))
-        self.label_15.setText(_translate("MainWindow", "Capacity :"))
+        self.label_15.setText(_translate("MainWindow", "Batch ID :"))
         self.label_17.setText(_translate("MainWindow", "Pre Load:"))
         self.label_18.setText(_translate("MainWindow", "(Kgf)"))
         self.label_19.setText(_translate("MainWindow", "Rev.Speed:"))
@@ -1599,7 +1599,7 @@ class TY_77_Ui_MainWindow(object):
         elif(self.lineEdit_16.text() == ""):
               self.msg="Model Should not Empty."
         elif(self.lineEdit_19.text() == ""):
-              self.msg="Capacity Should not Empty."
+              self.msg="Batch ID Should not Empty."
         elif(self.lineEdit_9.text() == ""):
               self.msg="Test Speed Should not Empty."
         elif(self.lineEdit_18.text() == ""):
@@ -1671,7 +1671,7 @@ class TY_77_Ui_MainWindow(object):
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_MAX_LOAD='"+str(self.lineEdit_17.text())+"',NEW_TEST_MAX_LENGTH='"+str(self.lineEdit_18.text())+"',PART_NO='"+self.comboBox.currentText()+"',NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"'") 
                                           cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_GUAGE_MM='"+str(self.guage_len_mm)+"'")
                                           cursor.execute("UPDATE GLOBAL_VAR SET NEW_TEST_PARTY_NAME='"+str(self.lineEdit_25.text())+"',PRE_LOAD='"+str(self.lineEdit_7.text())+"',LOAD_CELL_NO='',TEST_MODE='',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_8.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_9.text())+"'") 
-                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,MOTOR_SPEED,HARDNESS,MATERIAL,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD,SPEC_TYPE_1) VALUES('"+str(self.comboBox.currentText())+"','CLD-3P','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_10.text())+"')")
+                                          cursor.execute("INSERT INTO TEST_MST(SPECIMEN_NAME,TEST_TYPE,MOTOR_REV_SPEED,NEW_TEST_MAX_LOAD,NEW_TEST_MAX_LENGTH,PART_NO,PART_NAME,MOTOR_SPEED,HARDNESS,BATCH_ID,MACHINE_NO,TEST_MODE,OPERATOR,PARTY_NAME,BATCH_ID,PRE_LOAD,SPEC_TYPE_1) VALUES('"+str(self.comboBox.currentText())+"','CLD-3P','"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_17.text())+"','"+str(self.lineEdit_18.text())+"','"+self.comboBox.currentText()+"','"+str(self.lineEdit_15.text())+"','"+str(self.lineEdit_8.text())+"','"+str(self.lineEdit_10.text())+"','"+str(self.lineEdit_19.text())+"','"+str(self.lineEdit_11.text())+"','Compression','"+str(self.lineEdit_12.text())+"','"+str(self.lineEdit_25.text())+"','"+str(self.lineEdit_16.text())+"','"+str(self.lineEdit_7.text())+"','"+str(self.lineEdit_10.text())+"')")
                                           cursor.execute("UPDATE TEST_MST SET GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"',GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET LAST_UNIT_LOAD='"+str(self.comboBox_2.currentText())+"',LAST_UNIT_DISP='"+str(self.comboBox_3.currentText())+"'  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
                                           cursor.execute("UPDATE TEST_MST SET TESTED_BY=(SELECT LOGIN_USER_NAME FROM GLOBAL_VAR)  where TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
@@ -1864,7 +1864,7 @@ class TY_77_Ui_MainWindow(object):
             self.lineEdit_15.setText(str(x[0])) # PART_NAME
             self.lineEdit_8.setText(str(x[1])) # TEST_TYPE
             self.lineEdit_12.setText(str(x[2])) # OPERATOR
-            self.lineEdit_19.setText(str(x[3])) # Material
+            #self.lineEdit_19.setText(str(x[3])) # Material
             self.lineEdit_10.setText("Rectangle") # Hardness
             #self.lineEdit_17.setText(str(x[5])) # MAX LOAD
             #self.lineEdit_18.setText(str(x[6])) # MAX DEFLECTION
@@ -2429,7 +2429,7 @@ class TY_77_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT 'Range.','"+str(self.range_1_from)+" To "+str(self.range_2_to)+"' ,'"+str(self.range_2_from)+" To "+str(self.range_2_to)+"', '"+str(self.range_3_from)+" To "+str(self.range_3_to)+"'  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") 
+        results=connection.execute("SELECT 'Spec.','"+str(self.range_1_from)+" To "+str(self.range_2_to)+"' ,'"+str(self.range_2_from)+" To "+str(self.range_2_to)+"', '"+str(self.range_3_from)+" To "+str(self.range_3_to)+"'  FROM LOAD_DATA WHERE TEST_ID = '"+self.test_id+"' order by ID DESC LIMIT 1") 
         for x in results:
                 data2.append(x)
         connection.close()    
@@ -2439,11 +2439,10 @@ class TY_77_Ui_MainWindow(object):
         
         
         connection = sqlite3.connect("tyr.db")
-        print("SELECT A.TEST_ID,A.JOB_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
-        
-        results=connection.execute("SELECT A.TEST_ID,A.PART_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+         
+        results=connection.execute("SELECT A.TEST_ID,A.PART_NAME,A.BATCH_ID,A.TEST_TYPE,A.SPECIMEN_NAME,B.MOTOR_SPEED,B.LOAD_CELL,A.PARTY_NAME,B.SPECIMEN_SPECS,A.SPEC_TYPE_1,A.CREATED_ON,datetime(current_timestamp,'localtime'),A.COMMENTS,IFNULL(A.TEST_TYPE_2,'Not OK'),A.BATCH_ID   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","CLD","Test Method:","Compression"],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Load cell:",str(x[6]),"Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
+            summary_data=[["Tested Date-Time: ",str(x[10]),"Test No: ",str(x[0])],["Model: ",str(x[1]),"Part Name: ",str(x[2])],["Product Name:  ",str(x[4])," Spec. Type:",str(x[9])],["Test Type:","CLD","Batch. ID:",str(x[14])],["Customer Name :",str(x[7]),"Test Speed (mm/min) :",str(x[5])],["Test Mode:","Compression","Report Date-Time: ",str(x[11])],["Tested By :", str(self.tested_by),"",""]]
             self.remark=str(x[12]) 
         connection.close()  
         
