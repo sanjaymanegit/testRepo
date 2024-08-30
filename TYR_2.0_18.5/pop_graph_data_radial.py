@@ -3,6 +3,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.Qt import QTableWidgetItem
 import sqlite3
+import csv
+import sys,os
 
 class pop_graph_data_radial_Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -69,6 +71,22 @@ class pop_graph_data_radial_Ui_MainWindow(object):
 "border-radius:20px;\n"
 "background-color: rgb(226, 239, 255);")
         self.pushButton_9.setObjectName("pushButton_9")
+        
+        self.pushButton_9_1 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_9_1.setGeometry(QtCore.QRect(290, 5, 251, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_9_1.setFont(font)
+        self.pushButton_9_1.setText("Copy CSV Data File to Ped-Drive")
+        self.pushButton_9_1.setStyleSheet("border-style:outset;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-width:4px;\n"
+"color: rgb(0, 0, 0);\n"
+"background-color: rgb(226, 239, 255);")
+        self.pushButton_9.setObjectName("pushButton_9_1")
         
         
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
@@ -161,6 +179,7 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.graph_id="0"
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -208,8 +227,15 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         self.load_data()
         self.listWidget.doubleClicked.connect(self.show_single_graph_data)
         self.pushButton_9.clicked.connect(MainWindow.close)
+        self.pushButton_9_1.clicked.connect(self.COPY_CSV_USB)
         
-    def load_data(self):
+        
+    def load_data(self):      
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT TEST_ID FROM GLOBAL_VAR") 
+        for x in results:
+            self.test_id=str(x[0])
+        connection.close()
         self.i=0
         self.g=[]
         self.listWidget.clear() 
@@ -222,7 +248,49 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         connection.close()
         self.listWidget.setCurrentRow(0)
         self.show_single_graph_data()
-        
+    
+    def COPY_CSV_USB(self):
+        self.file_name="Data_test_id_"+str(self.test_id)+"_spec_"+str(self.spec_id)+".csv"
+        conn = sqlite3.connect('tyr.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,Y_NUM_KN  FROM GRAPH_MST where X_NUM >0  AND Y_NUM > 0  AND GRAPH_ID = '"+str(self.graph_id)+"' ")
+        with open("./reports/"+str(self.file_name), 'w',newline='') as csv_file:                
+                csv_writer = csv.writer(csv_file)               
+                csv_writer.writerow([i[0] for i in cursor.description]) 
+                csv_writer.writerows(cursor)
+        conn.close()
+        product_id=self.get_usb_storage_id()
+        if(product_id != "ERROR"):
+                os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
+                os.system("cp ./reports/"+str(self.file_name)+" /media/usb/"+str(self.file_name))
+                os.system("sudo umount /media/usb")
+                print("File Name :"+str(self.file_name))
+                self.label.show()
+                self.label.setText("File Name :"+str(self.file_name))
+        else:
+                print("Please connect usb storage device")
+                self.label.show()
+                self.label.setText("Please connect usb storage device")
+    
+    def get_usb_storage_id(self):
+        os.system("rm -rf lsusb_data_db_bkp.txt")  
+        product_id = "ERROR"
+        os.system("lsusb >> lsusb_data_db_bkp.txt")
+        try:
+           f = open('lsusb_data_db_bkp.txt','r')
+           for line in f:
+               cnt=0                
+               cnt=int(line.find("SanDisk"))
+               if cnt > 0 :                   
+                   product_id = line[28:33]
+                   product_id = "0x"+str(product_id)
+           f.close()
+        except:
+           product_id = "ERROR"
+           self.label.show()
+           self.label.setText("USB Error.")             
+        return product_id
+    
     def show_single_graph_data(self):        
         #print("inside tear list.....")
         self.delete_all_records()
@@ -243,7 +311,9 @@ class pop_graph_data_radial_Ui_MainWindow(object):
                     self.tableWidget.setColumnWidth(4, 100)
                     self.tableWidget.setColumnWidth(5, 100)
                     self.tableWidget.setColumnWidth(6, 100)
-                    
+                    self.spec_id=str(row+1)
+                    self.graph_id=str(self.g[row])
+                    self.pushButton_9_1.setText("Copy CSV Data (Spec:"+str(self.spec_id)+")")
                     connection = sqlite3.connect("tyr.db")
                      
                     results=connection.execute("SELECT printf(\"%.2f\", X_NUM),printf(\"%.2f\", X_NUM_CM),printf(\"%.2f\", X_NUM_INCH),printf(\"%.2f\", Y_NUM),printf(\"%.2f\", Y_NUM_N),printf(\"%.2f\", Y_NUM_LB),REC_ID FROM GRAPH_MST where X_NUM >0  AND Y_NUM > 0  AND GRAPH_ID = '"+str(self.g[row])+"' ")
