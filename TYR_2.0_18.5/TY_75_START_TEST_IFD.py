@@ -991,17 +991,15 @@ class TY_75_Ui_MainWindow(object):
         self.label_34.setStyleSheet("")
         self.label_34.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
-        self.lineEdit_19 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_19.setGeometry(QtCore.QRect(300, 170, 91, 31))
+        self.lineEdit_19 = QtWidgets.QComboBox(self.frame)
+        self.lineEdit_19.setGeometry(QtCore.QRect(300, 170, 151, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_19.setFont(font)
-        self.lineEdit_19.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"border: 1px solid rgba(131,131,131,255);\n"
-"border-radius: 8px;")
+        self.lineEdit_19.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.lineEdit_19.setObjectName("lineEdit_19")
         self.pushButton_17 = QtWidgets.QPushButton(self.frame)
         self.pushButton_17.setGeometry(QtCore.QRect(1160, 100, 131, 41))
@@ -1539,13 +1537,18 @@ class TY_75_Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "03"))
         self.comboBox.setItemText(2, _translate("MainWindow", "04"))
         self.label_14.setText(_translate("MainWindow", "Specimen Name:"))
-        self.label_15.setText(_translate("MainWindow", "LoadCell. Capacity :"))
+        self.label_15.setText(_translate("MainWindow", "Spec.Shape :"))
         self.label_20.setText(_translate("MainWindow", "(mm/min)"))
         self.label_21.setText(_translate("MainWindow", "Test Speed: "))
         self.label_27.setText(_translate("MainWindow", "Length :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kgf"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
+        self.lineEdit_19.addItem("")
+        self.lineEdit_19.addItem("")
+        self.lineEdit_19.setItemText(0, _translate("MainWindow", "Rectangle"))
+        self.lineEdit_19.setItemText(1, _translate("MainWindow", "Cylindrical"))
+        
         self.label_30.setText(_translate("MainWindow", "Deflection \n"
 " Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
@@ -1627,7 +1630,7 @@ class TY_75_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db") 
         results = connection.execute("SELECT LOAD_CELL, REV_MOTOR_SPEED, MOTOR_SPEED,  PRE_LOAD, WIDTH, IFNULL(THICKNESS, 0), GUAGE_LENGTH_MM FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+self.comboBox_4.currentText()+"'") 
         for column in results:
-             self.lineEdit_19.setText(str(column[0]))
+             #self.lineEdit_19.setText(str(column[0]))
              self.lineEdit_10.setText(str(column[1])) 
              self.lineEdit_9.setText(str(column[2]))
              self.lineEdit_11.setText(str(column[3])) 
@@ -1934,7 +1937,7 @@ class TY_75_Ui_MainWindow(object):
                                 cursor = connection.cursor()                                                
                                 cursor.execute("INSERT INTO TEST_MST(TEST_ID,SPECIMEN_NAME,JOB_NAME,BATCH_ID,MOTOR_SPEED,MOTOR_REV_SPEED,GUAGE_LENGTH,GRAPH_SCAL_Y_LOAD,GRAPH_SCAL_X_LENGTH,PRE_LOAD,FINAL_WIDTH,FINAL_THICKNESS,LAST_UNIT_LOAD,LAST_UNIT_DISP,LOAD_POINTS) VALUES('"+str(int(self.label_12.text()))+"', '"+str(self.comboBox_4.currentText())+"', '"+str(self.lineEdit_15.text())+"', '"+str(self.lineEdit_16.text())+"', '"+str(self.lineEdit_9.text())+"','"+str(self.lineEdit_10.text())+"', '"+str(self.lineEdit_12.text())+"', '"+self.lineEdit_14.text()+"', '"+self.lineEdit_13.text()+"', '"+self.lineEdit_11.text()+"', '"+str(self.lineEdit_18.text())+"' ,'"+str(self.lineEdit_17.text())+"','"+str(self.comboBox_2.currentText())+"','"+str(self.comboBox_3.currentText())+"','"+str(self.comboBox.currentText())+"')")
                                 cursor.execute("UPDATE GLOBAL_VAR SET TEST_ID='"+str(int(self.label_12.text()))+"',NEW_TEST_MOTOR_SPEED='"+str(self.lineEdit_9.text())+"',NEW_TEST_MOTOR_REV_SPEED='"+str(self.lineEdit_10.text())+"',NEW_TEST_GUAGE_MM='"+str(self.lineEdit_17.text())+"',TEST_LENGTH_MM='"+str(self.lineEdit_17.text())+"',PRE_LOAD='"+str(self.lineEdit_11.text())+"'")
-                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"', TEST_TYPE='IFD'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
+                                cursor.execute("UPDATE TEST_MST SET SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"', JOB_NAME = '"+str(self.lineEdit_15.text())+"', BATCH_ID = '"+str(self.lineEdit_16.text())+"', MOTOR_SPEED = '"+str(self.lineEdit_9.text())+"', MOTOR_REV_SPEED = '"+str(self.lineEdit_10.text())+"', GUAGE_LENGTH = '"+str(self.lineEdit_12.text())+"', GRAPH_SCAL_Y_LOAD='"+self.lineEdit_14.text()+"', GRAPH_SCAL_X_LENGTH='"+self.lineEdit_13.text()+"', PRE_LOAD ='"+str(self.lineEdit_11.text())+"', FINAL_WIDTH ='"+str(self.lineEdit_18.text())+"', FINAL_THICKNESS ='"+str(self.lineEdit_17.text())+"', TEST_TYPE='IFD', SHAPE='"+str(self.lineEdit_19.currentText())+"'  WHERE  TEST_ID = '"+str(int(self.label_12.text()))+"'")             
                                 cursor.execute("UPDATE SPECIMEN_MST SET  LAST_UNIT_LOAD = '"+str(self.comboBox_2.currentText())+"', LAST_UNIT_DISP = '"+str(self.comboBox_3.currentText())+"' WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")
                                 ##SELECT LAST_LOAD_UNIT,LAST_DISP_UNIT from GLOBAL_VAR2
                                 cursor.execute("UPDATE GLOBAL_VAR2 SET LAST_LOAD_UNIT='"+str(self.comboBox_2.currentText())+"',LAST_DISP_UNIT='"+str(self.comboBox_3.currentText())+"'")
@@ -1982,7 +1985,7 @@ class TY_75_Ui_MainWindow(object):
         connection = sqlite3.connect("tyr.db") 
         results = connection.execute("SELECT LOAD_CELL, REV_MOTOR_SPEED, MOTOR_SPEED,  PRE_LOAD, WIDTH, IFNULL(THICKNESS, 0), GUAGE_LENGTH_MM,PARTY_NAME FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+self.comboBox_4.currentText()+"'  ") 
         for column in results:
-             self.lineEdit_19.setText(str(column[0]))
+             #self.lineEdit_19.setText(str(column[0]))
              self.lineEdit_10.setText(str(column[1])) 
              self.lineEdit_9.setText(str(column[2]))
              self.lineEdit_11.setText(str(column[3])) 
@@ -2559,9 +2562,9 @@ class TY_75_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED,IFNULL(A.SHAPE,'Rectangle')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), "Spec.Shape: ", str(x[15])]]
             self.remark=str(x[12]) 
         connection.close()
         

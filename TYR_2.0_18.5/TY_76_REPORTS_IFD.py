@@ -854,7 +854,7 @@ class TY_76_Ui_MainWindow(object):
         self.label_34.setStyleSheet("")
         self.label_34.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_34.setObjectName("label_34")
-        self.lineEdit_19 = QtWidgets.QLineEdit(self.frame)
+        self.lineEdit_19 = QtWidgets.QComboBox(self.frame)
         self.lineEdit_19.setGeometry(QtCore.QRect(300, 170, 91, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -862,9 +862,10 @@ class TY_76_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.lineEdit_19.setFont(font)
-        self.lineEdit_19.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"border: 1px solid rgba(131,131,131,255);\n"
-"border-radius: 8px;")
+#         self.lineEdit_19.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+# "border: 1px solid rgba(131,131,131,255);\n"
+# "border-radius: 8px;")
+        self.lineEdit_19.setStyleSheet("background-color: rgb(170, 255, 255);\n color: rgb(0, 0, 0);")
         self.lineEdit_19.setObjectName("lineEdit_19")
         self.pushButton_17 = QtWidgets.QPushButton(self.frame)
         self.pushButton_17.setGeometry(QtCore.QRect(1160, 100, 131, 41))
@@ -1345,13 +1346,19 @@ class TY_76_Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "03"))
         self.comboBox.setItemText(2, _translate("MainWindow", "04"))
         self.label_14.setText(_translate("MainWindow", "Specimen Name:"))
-        self.label_15.setText(_translate("MainWindow", "LoadCell. Capacity :"))
+        self.label_15.setText(_translate("MainWindow", "Spec.Shape :"))
         self.label_20.setText(_translate("MainWindow", "(mm/min)"))
         self.label_21.setText(_translate("MainWindow", "Test Speed: "))
         self.label_27.setText(_translate("MainWindow", "Length :"))
         self.label_29.setText(_translate("MainWindow", "Load Unit:"))
         self.comboBox_2.setItemText(0, _translate("MainWindow", "Kg"))
         self.comboBox_2.setItemText(1, _translate("MainWindow", "N"))
+        
+        self.lineEdit_19.addItem("")
+        self.lineEdit_19.addItem("")
+        self.lineEdit_19.setItemText(0, _translate("MainWindow", "Rectangle"))
+        self.lineEdit_19.setItemText(1, _translate("MainWindow", "Cylindrical"))
+        
         self.label_30.setText(_translate("MainWindow", "Deflection \n"
 " Unit:"))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "Mm"))
@@ -1574,7 +1581,7 @@ class TY_76_Ui_MainWindow(object):
 
         
         connection = sqlite3.connect("tyr.db") 
-        results = connection.execute("SELECT SPECIMEN_NAME, MOTOR_REV_SPEED, MOTOR_SPEED, PRE_LOAD, FINAL_WIDTH, IFNULL(FINAL_THICKNESS, 0), GUAGE_LENGTH, JOB_NAME, BATCH_ID, LAST_UNIT_LOAD, GRAPH_SCAL_X_LENGTH, GRAPH_SCAL_Y_LOAD, IFNULL(GRAPH_SCAL_Y_LOAD_N, 0)  FROM TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'") 
+        results = connection.execute("SELECT SPECIMEN_NAME, MOTOR_REV_SPEED, MOTOR_SPEED, PRE_LOAD, FINAL_WIDTH, IFNULL(FINAL_THICKNESS, 0), GUAGE_LENGTH, JOB_NAME, BATCH_ID, LAST_UNIT_LOAD, GRAPH_SCAL_X_LENGTH, GRAPH_SCAL_Y_LOAD, IFNULL(GRAPH_SCAL_Y_LOAD_N, 0),IFNULL(SHAPE,'Rectangle')  FROM TEST_MST WHERE TEST_ID = '"+str(self.label_12.text())+"'") 
         for column in results:
              self.comboBox_4.addItem(str(column[0]))
              self.lineEdit_10.setText(str(column[1])) 
@@ -1593,7 +1600,12 @@ class TY_76_Ui_MainWindow(object):
                 self.comboBox_2.setCurrentIndex(1)
                 self.lineEdit_14.setText(str(column[11]))
              self.lineEdit_13.setText(str(column[10]))
-             
+             if str(column[13]) == "Rectangle":
+                self.lineEdit_19.setCurrentIndex(0)
+                #self.lineEdit_14.setText(str(column[11]))
+             else:
+                self.lineEdit_19.setCurrentIndex(1)
+                #self.lineEdit_14.setText(str(column[11]))
                        
 
 
@@ -1609,11 +1621,11 @@ class TY_76_Ui_MainWindow(object):
         #      self.lineEdit_14.setText(str(scale[1]))
         # connection.close() 
 
-        connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")       
-        for x in results:         
-                self.lineEdit_19.setText(str(x[0]))
-        connection.close() 
+#         connection = sqlite3.connect("tyr.db")
+#         results=connection.execute("SELECT LOAD_CELL FROM SPECIMEN_MST WHERE SPECIMEN_NAME = '"+str(self.comboBox_4.currentText())+"'")       
+#         for x in results:         
+#                 self.lineEdit_19.setText(str(x[0]))
+#         connection.close() 
 
         connection = sqlite3.connect("tyr.db")
         results=connection.execute("SELECT COUNT(*) FROM TEST_DATA_RADIAL WHERE TEST_ID = '"+str(self.label_12.text())+"'")       
@@ -1736,7 +1748,7 @@ class TY_76_Ui_MainWindow(object):
             i=i-1
             self.tableWidget.removeRow(i)       
     def readOnly_fields(self):
-        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
+        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16, self.lineEdit_12, 
                   self.lineEdit_9, self.lineEdit_17, self.lineEdit_18, self.lineEdit_10, self.lineEdit_13, self.lineEdit_14, self.lineEdit_37, self.lineEdit_39, 
                   self.lineEdit_38, self.lineEdit_39, self.lineEdit_40, self.lineEdit_11
                 ]
@@ -1885,9 +1897,9 @@ class TY_76_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED,IFNULL(A.SHAPE,'Rectangle')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), " ", " "]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), "Spec.Shape :", str(x[15])]]
             self.remark=str(x[12]) 
         connection.close()
         
