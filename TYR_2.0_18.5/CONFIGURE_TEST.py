@@ -96,7 +96,7 @@ class ConfigurTest(object):
         self.label_4.setGeometry(QtCore.QRect(1110, 20, 181, 21))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(12)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.label_4.setFont(font)
