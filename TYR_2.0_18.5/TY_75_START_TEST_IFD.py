@@ -1685,7 +1685,7 @@ class TY_75_Ui_MainWindow(object):
                 self.indx = self.indx + 1
     
     def readOnly_fields(self):
-        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16, self.lineEdit_19, self.lineEdit_12, 
+        fields = [self.comboBox, self.comboBox_2, self.comboBox_3, self.comboBox_4, self.lineEdit_15, self.lineEdit_16,  self.lineEdit_12, 
                   self.lineEdit_9, self.lineEdit_17, self.lineEdit_18, self.lineEdit_10, self.lineEdit_13, self.lineEdit_14, self.lineEdit_37, self.lineEdit_39, 
                   self.lineEdit_38, self.lineEdit_39, self.lineEdit_40, self.lineEdit_11
                 ]
@@ -1854,8 +1854,8 @@ class TY_75_Ui_MainWindow(object):
                         self.msg="job Name Should not Empty."
                 elif(self.lineEdit_16.text() == ""):
                         self.msg="Batch Number Should not Empty."
-                elif(self.lineEdit_19.text() == ""):
-                        self.msg="LoadCell Capacity: Should not Empty."
+#                 elif(self.lineEdit_19.text() == ""):
+#                         self.msg="LoadCell Capacity: Should not Empty."
                 elif(self.lineEdit_9.text() == ""):
                         self.msg="Test Speed: Should not Empty."
                 elif(self.lineEdit_18.text() == ""):
