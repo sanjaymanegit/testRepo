@@ -340,9 +340,9 @@ class C_02_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_20.setFont(font)
-        self.pushButton_20.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);\n"
-"border-radius: 15px; ")
+#         self.pushButton_20.setStyleSheet(
+# "color: rgb(0, 0, 0);\n"
+# "border-radius: 15px; ")
         self.pushButton_20.setObjectName("pushButton_20")
         self.pushButton_21 = QtWidgets.QPushButton(self.frame)
         self.pushButton_21.setGeometry(QtCore.QRect(170, 570, 131, 41))
@@ -352,9 +352,8 @@ class C_02_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_21.setFont(font)
-        self.pushButton_21.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255); \n"
-"border-radius: 15px; ")
+
+
         self.pushButton_21.setObjectName("pushButton_21")
         self.pushButton_22 = QtWidgets.QPushButton(self.frame)
         self.pushButton_22.setGeometry(QtCore.QRect(330, 570, 131, 41))
@@ -364,9 +363,9 @@ class C_02_Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_22.setFont(font)
-        self.pushButton_22.setStyleSheet("background-color: rgb(90, 90, 134);\n"
-"color: rgb(255, 255, 255);\n"
-" border-radius: 15px; ")
+#         self.pushButton_22.setStyleSheet("background-color: rgb(90, 90, 134);\n"
+# "color: rgb(255, 255, 255);\n"
+# " border-radius: 15px; ")
         self.pushButton_22.setObjectName("pushButton_22")
         self.line_22 = QtWidgets.QFrame(self.frame)
         self.line_22.setGeometry(QtCore.QRect(590, 0, 20, 131))
@@ -498,7 +497,7 @@ class C_02_Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "RPM Vs Time"))
         self.pushButton_16.setText(_translate("MainWindow", "View Graph"))
         self.pushButton_17.setText(_translate("MainWindow", "Setting"))
-        self.pushButton_18.setText(_translate("MainWindow", "Reports"))
+        self.pushButton_18.setText(_translate("MainWindow", "View Report"))
         self.pushButton_19.setText(_translate("MainWindow", "Reset"))
         self.label_7.setText(_translate("MainWindow", "Graph Type :"))
         self.label_8.setText(_translate("MainWindow", " Time ( Seconds. ) :"))
@@ -507,7 +506,9 @@ class C_02_Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "00001"))
         self.pushButton_20.setText(_translate("MainWindow", "Compressor State"))
         self.pushButton_21.setText(_translate("MainWindow", "CondensorState"))
+        self.pushButton_21.setDisabled(True)
         self.pushButton_22.setText(_translate("MainWindow", "Vessal State"))
+        self.pushButton_22.setDisabled(True)
         self.label_12.setText(_translate("MainWindow", "RPM(Compressor)"))
         self.label_23.setText(_translate("MainWindow", "Calorimetry"))
         self.label_16.setText(_translate("MainWindow", "Test ID :"))
