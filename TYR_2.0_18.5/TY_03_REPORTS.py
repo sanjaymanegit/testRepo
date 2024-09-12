@@ -780,7 +780,6 @@ class TY_03_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Report - 1"))
         self.radioButton_2.setText(_translate("MainWindow", "Report - 2"))
         self.radioButton_2_1.setText(_translate("MainWindow", "Special Reports"))
-        self.radioButton_2_1.setDisabled(True)
         #self.radioButton_2_1.hide()
         self.pushButton_2_1.setText(_translate("MainWindow", "Proceed" ))
         #self.pushButton_2_1.hide()
@@ -2623,12 +2622,12 @@ class PlotCanvas(FigureCanvas):
                          ax.set_xlim(0,int((float(x[0]))))
                          ax.set_ylim(0,int((float(x[1])*9.81)))                     
                      elif(self.unit_type == "MPA"):
-                         ax.set_xlim(0,int(x[0]))
-                         ax.set_ylim(0,int((float(x[1])*9.81))) 
+                         ax.set_xlim(0,float(x[0]))
+                         ax.set_ylim(0,float((float(x[1])*9.81))) 
                      else:
                          if(self.test_type=="COF"):
-                             ax.set_xlim(0,int(int(x[0])))
-                             ax.set_ylim(0,int(x[1]))
+                             ax.set_xlim(0,float(int(x[0])))
+                             ax.set_ylim(0,float(x[1]))
                          else:
                              ax.set_xlim(0,float(float(x[0])*0.1))
                              ax.set_ylim(0,float(x[1]))
