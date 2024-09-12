@@ -780,6 +780,7 @@ class TY_03_Ui_MainWindow(object):
         self.radioButton.setText(_translate("MainWindow", "Report - 1"))
         self.radioButton_2.setText(_translate("MainWindow", "Report - 2"))
         self.radioButton_2_1.setText(_translate("MainWindow", "Special Reports"))
+        self.radioButton_2_1.setDisabled(True)
         #self.radioButton_2_1.hide()
         self.pushButton_2_1.setText(_translate("MainWindow", "Proceed" ))
         #self.pushButton_2_1.hide()
