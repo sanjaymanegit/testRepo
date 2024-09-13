@@ -514,11 +514,17 @@ class C_02_Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Test ID :"))
         self.label_17.setText(_translate("MainWindow", "0002"))
         self.label_24.setText(_translate("MainWindow", "Set Graph Scale"))
+        self.pushButton_15.clicked.connect(MainWindow.close)
+        self.pushButton_17.clicked.connect(self.break_app)
         self.display_bank_graphs()
         
     def display_bank_graphs(self):
         self.sc_blank =PlotCanvas_blank(self,width=5, height=4, dpi=80)          
         self.gridLayout.addWidget(self.sc_blank, 0, 0, 1, 1)
+    
+    def break_app(self):
+        os.systbem("edxit")
+        
         
         
 
