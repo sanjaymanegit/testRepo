@@ -1,4 +1,4 @@
-
+from email_popup_graph_data_csv import popup_email_csv_Ui_MainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget, QPushButton
 from PyQt5.Qt import QTableWidgetItem
@@ -56,7 +56,7 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         
         
         self.pushButton_9 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_9.setGeometry(QtCore.QRect(620, 5, 91, 41))
+        self.pushButton_9.setGeometry(QtCore.QRect(670, 5, 91, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -88,6 +88,24 @@ class pop_graph_data_radial_Ui_MainWindow(object):
 "background-color: rgb(226, 239, 255);")
         self.pushButton_9.setObjectName("pushButton_9_1")
         
+        
+        self.pushButton_9_2 = QtWidgets.QPushButton(self.frame)
+        self.pushButton_9_2.setGeometry(QtCore.QRect(560, 5, 91, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_9_2.setFont(font)
+        self.pushButton_9_2.setText("Email")
+        self.pushButton_9_2.setStyleSheet("border-style:outset;\n"
+"border-color: rgb(0, 0, 0);\n"
+"border-width:4px;\n"
+"color: rgb(0, 0, 0);\n"
+"border-radius:20px;\n"
+"background-color: rgb(226, 239, 255);")
+        self.pushButton_9_2.setDisabled(True)
+        self.pushButton_9_2.setObjectName("pushButton_9_2")
         
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(140, 50, 611, 471))
@@ -227,7 +245,8 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         self.load_data()
         self.listWidget.doubleClicked.connect(self.show_single_graph_data)
         self.pushButton_9.clicked.connect(MainWindow.close)
-        self.pushButton_9_1.clicked.connect(self.COPY_CSV_USB)
+        self.pushButton_9_1.clicked.connect(self.COPY_CSV_USB)        
+        self.pushButton_9_2.clicked.connect(self.open_email)
         
         
     def load_data(self):      
@@ -250,15 +269,30 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         self.show_single_graph_data()
     
     def COPY_CSV_USB(self):
+        self.pushButton_9_2.setEnabled(True)
         self.file_name="Data_test_id_"+str(self.test_id)+"_spec_"+str(self.spec_id)+".csv"
+        print("SELECT A.CREATED_ON as TEST_CREATED_ON,A.TEST_ID as TEST_ID,B.LOAD_CELL as LOAD_CELL_CAP,A.FINAL_THICKNESS as THISCKNESS,A.TEST_TYPE as TEST_NAME,B.PARTY_NAME as CUSTOMER_NAME,A.MOTOR_REV_SPEED as REV_SPEED,datetime(current_timestamp,'localtime') AS ON_DATE,A.OPERATOR as OPERATOR,A.MOTOR_SPEED AS TEST_SPEED,IFNULL(A.SHAPE,'Rectangle') AS SPECIMEN,A.SPECIMEN_NAME AS SPECIMEN_NAME,A.JOB_NAME AS JOB_NAME,A.BATCH_ID as BATCH_NAME,A.GUAGE_LENGTH AS LENGTH ,A.FINAL_WIDTH AS WIDTH,A.LOAD_POINTS as DEF_POINTS,A.PRE_LOAD as PRE_DEF_MM   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+       
+        
         conn = sqlite3.connect('tyr.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT X_NUM,X_NUM_CM,X_NUM_INCH,Y_NUM,Y_NUM_N,Y_NUM_LB,Y_NUM_MPA,Y_NUM_KN  FROM GRAPH_MST where X_NUM >0  AND Y_NUM > 0  AND GRAPH_ID = '"+str(self.graph_id)+"' ")
+        cursor.execute("SELECT A.CREATED_ON as TEST_CREATED_ON,A.TEST_ID as TEST_ID,B.LOAD_CELL as LOAD_CELL_CAP,A.FINAL_THICKNESS as THISCKNESS,A.TEST_TYPE as TEST_NAME,B.PARTY_NAME as CUSTOMER_NAME,A.MOTOR_REV_SPEED as REV_SPEED,datetime(current_timestamp,'localtime') AS ON_DATE,A.OPERATOR as OPERATOR,A.MOTOR_SPEED AS TEST_SPEED,IFNULL(A.SHAPE,'Rectangle') AS SPECIMEN,A.SPECIMEN_NAME AS SPECIMEN_NAME,A.JOB_NAME AS JOB_NAME,A.BATCH_ID as BATCH_NAME,A.GUAGE_LENGTH AS LENGTH ,A.FINAL_WIDTH AS WIDTH,A.LOAD_POINTS as DEF_POINTS,A.PRE_LOAD as PRE_DEF_MM   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         with open("./reports/"+str(self.file_name), 'w',newline='') as csv_file:                
                 csv_writer = csv.writer(csv_file)               
                 csv_writer.writerow([i[0] for i in cursor.description]) 
                 csv_writer.writerows(cursor)
         conn.close()
+        
+        
+        conn = sqlite3.connect('tyr.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT X_NUM as DEF_MM,X_NUM_CM as DEF_CM,X_NUM_INCH as DEF_INCH,Y_NUM as LOAD_KG,Y_NUM_N as LOAD_N,Y_NUM_LB as LOAD_LB,Y_NUM_KN as LOAD_KN FROM GRAPH_MST where X_NUM >0  AND Y_NUM > 0  AND GRAPH_ID = '"+str(self.graph_id)+"' ")
+        with open("./reports/"+str(self.file_name), 'a',newline='') as csv_file:                
+                csv_writer = csv.writer(csv_file)               
+                csv_writer.writerow([i[0] for i in cursor.description]) 
+                csv_writer.writerows(cursor)
+        conn.close()
+        
         product_id=self.get_usb_storage_id()
         if(product_id != "ERROR"):
                 os.system("sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi")
@@ -267,10 +301,17 @@ class pop_graph_data_radial_Ui_MainWindow(object):
                 print("File Name :"+str(self.file_name))
                 self.label.show()
                 self.label.setText("File Name :"+str(self.file_name))
+                
         else:
                 print("Please connect usb storage device")
                 self.label.show()
                 self.label.setText("Please connect usb storage device")
+        connection = sqlite3.connect("tyr.db") 
+        with connection:
+                       cursor = connection.cursor()
+                       cursor.execute("UPDATE GLOBAL_VAR SET EMAIL_CSV_FILE_NAME='"+str(self.file_name)+"'") 
+        connection.commit()
+        connection.close()
     
     def get_usb_storage_id(self):
         os.system("rm -rf lsusb_data_db_bkp.txt")  
@@ -302,7 +343,7 @@ class pop_graph_data_radial_Ui_MainWindow(object):
                     self.tableWidget.setFont(font)
                     self.tableWidget.setColumnCount(7)
                     self.tableWidget.horizontalHeader().setStretchLastSection(True)
-                    self.tableWidget.setHorizontalHeaderLabels(['X_MM','X_CM','X_INCH','Y_KG','Y_N','Y_LB','Rec.ID'])  
+                    self.tableWidget.setHorizontalHeaderLabels(['Def. (mm)','Def. (Cm)','Def. (Inch)','Load (Kgf)','Load (N)','Load (LB)','Rec.ID'])  
                           
                     self.tableWidget.setColumnWidth(0, 100)
                     self.tableWidget.setColumnWidth(1, 100)
@@ -333,6 +374,12 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         while (i>0):             
             i=i-1
             self.tableWidget.removeRow(i)
+            
+    def open_email(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui=popup_email_csv_Ui_MainWindow()
+        self.ui.setupUi(self.window)           
+        self.window.show()
 
 
 if __name__ == "__main__":
