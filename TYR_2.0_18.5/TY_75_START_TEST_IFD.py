@@ -2562,9 +2562,9 @@ class TY_75_Ui_MainWindow(object):
         connection.close()
         
         connection = sqlite3.connect("tyr.db")
-        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED,IFNULL(A.SHAPE,'Rectangle')   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        results=connection.execute("SELECT A.CREATED_ON,A.TEST_ID,B.LOAD_CELL,A.BATCH_ID,A.FINAL_THICKNESS,A.HARDNESS,A.TEST_TYPE,A.MACHINE_NO,B.PARTY_NAME,A.MOTOR_REV_SPEED,A.MATERIAL,datetime(current_timestamp,'localtime'),A.COMMENTS,A.OPERATOR,A.MOTOR_SPEED,IFNULL(A.SHAPE,'Rectangle'),A.SPECIMEN_NAME,A.JOB_NAME,A.BATCH_ID,A.GUAGE_LENGTH,A.FINAL_WIDTH,A.LOAD_POINTS,A.PRE_LOAD   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         for x in results:
-            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Type:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (min/min) :",str(x[14]),"Rev. Speed (min/min) :",str(x[9])],["Operator :",str(x[13]), "Spec.Shape: ", str(x[15])]]
+            summary_data=[["Tested Date-Time: ",str(x[0]),"Test No: ",str(x[1])],["Thickness:  ",str(x[4]),"Batch ID: ",str(x[3])],["Test Name:",str(x[6]),"Load Cell Cap. : ",str(x[2])],["Specimen Name:",str(x[16]),"Job Name. : ",str(x[17])],["Batch Name:",str(x[18]),"Length. : ",str(x[19])],["Width:",str(x[20]),"Test Mode. : ","Compression"],["Def.Points:",str(x[21]),"Pre.Def(mm). : ",str(x[22])],["Customer Name :",str(x[8]),"Report Date-Time: ",str(x[11])],["Test Speed (mm/min) :",str(x[14]),"Rev. Speed (mm/min) :",str(x[9])],["Operator :",str(x[13]), "Spec.Shape :", str(x[15])]]
             self.remark=str(x[12]) 
         connection.close()
         
