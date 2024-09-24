@@ -2617,18 +2617,18 @@ class PlotCanvas(FigureCanvas):
                 for x in results:
                      if(self.unit_type == "Lb/Inch"):
                          #int_inch=x[0]*
-                         ax.set_xlim(0,int((float(x[0])*0.0393701)))
-                         ax.set_ylim(0,int((float(x[1])*2.20462)))
+                         ax.set_xlim(0,float((float(x[0])*0.0393701)))
+                         ax.set_ylim(0,float((float(x[1])*2.20462)))
                      elif(self.unit_type == "Newton/Mm"):
-                         ax.set_xlim(0,int((float(x[0]))))
-                         ax.set_ylim(0,int((float(x[1])*9.81)))                     
+                         ax.set_xlim(0,float((float(x[0]))))
+                         ax.set_ylim(0,float((float(x[1])*9.81)))                     
                      elif(self.unit_type == "MPA"):
-                         ax.set_xlim(0,int(x[0]))
-                         ax.set_ylim(0,int((float(x[1])*9.81))) 
+                         ax.set_xlim(0,float(x[0]))
+                         ax.set_ylim(0,float((float(x[1])*9.81))) 
                      else:
                          if(self.test_type=="COF"):
-                             ax.set_xlim(0,int(int(x[0])))
-                             ax.set_ylim(0,int(x[1]))
+                             ax.set_xlim(0,float(int(x[0])))
+                             ax.set_ylim(0,float(x[1]))
                          else:
                              ax.set_xlim(0,float(float(x[0])*0.1))
                              ax.set_ylim(0,float(x[1]))
