@@ -269,15 +269,46 @@ class pop_graph_data_radial_Ui_MainWindow(object):
         self.show_single_graph_data()
     
     def COPY_CSV_USB(self):
+        self.load_points="0"
         self.pushButton_9_2.setEnabled(True)
         self.file_name="Data_test_id_"+str(self.test_id)+"_spec_"+str(self.spec_id)+".csv"
-        print("SELECT A.CREATED_ON as TEST_CREATED_ON,A.TEST_ID as TEST_ID,B.LOAD_CELL as LOAD_CELL_CAP,A.FINAL_THICKNESS as THISCKNESS,A.TEST_TYPE as TEST_NAME,B.PARTY_NAME as CUSTOMER_NAME,A.MOTOR_REV_SPEED as REV_SPEED,datetime(current_timestamp,'localtime') AS ON_DATE,A.OPERATOR as OPERATOR,A.MOTOR_SPEED AS TEST_SPEED,IFNULL(A.SHAPE,'Rectangle') AS SPECIMEN,A.SPECIMEN_NAME AS SPECIMEN_NAME,A.JOB_NAME AS JOB_NAME,A.BATCH_ID as BATCH_NAME,A.GUAGE_LENGTH AS LENGTH ,A.FINAL_WIDTH AS WIDTH,A.LOAD_POINTS as DEF_POINTS,A.PRE_LOAD as PRE_DEF_MM   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
+        #print("SELECT A.CREATED_ON as TEST_CREATED_ON,A.TEST_ID as TEST_ID,B.LOAD_CELL as LOAD_CELL_CAP,A.FINAL_THICKNESS as THISCKNESS,A.TEST_TYPE as TEST_NAME,B.PARTY_NAME as CUSTOMER_NAME,A.MOTOR_REV_SPEED as REV_SPEED,datetime(current_timestamp,'localtime') AS ON_DATE,A.OPERATOR as OPERATOR,A.MOTOR_SPEED AS TEST_SPEED,IFNULL(A.SHAPE,'Rectangle') AS SPECIMEN,A.SPECIMEN_NAME AS SPECIMEN_NAME,A.JOB_NAME AS JOB_NAME,A.BATCH_ID as BATCH_NAME,A.GUAGE_LENGTH AS LENGTH ,A.FINAL_WIDTH AS WIDTH,A.LOAD_POINTS as DEF_POINTS,A.PRE_LOAD as PRE_DEF_MM   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
        
         
         conn = sqlite3.connect('tyr.db')
         cursor = conn.cursor()
         cursor.execute("SELECT A.CREATED_ON as TEST_CREATED_ON,A.TEST_ID as TEST_ID,B.LOAD_CELL as LOAD_CELL_CAP,A.FINAL_THICKNESS as THISCKNESS,A.TEST_TYPE as TEST_NAME,B.PARTY_NAME as CUSTOMER_NAME,A.MOTOR_REV_SPEED as REV_SPEED,datetime(current_timestamp,'localtime') AS ON_DATE,A.OPERATOR as OPERATOR,A.MOTOR_SPEED AS TEST_SPEED,IFNULL(A.SHAPE,'Rectangle') AS SPECIMEN,A.SPECIMEN_NAME AS SPECIMEN_NAME,A.JOB_NAME AS JOB_NAME,A.BATCH_ID as BATCH_NAME,A.GUAGE_LENGTH AS LENGTH ,A.FINAL_WIDTH AS WIDTH,A.LOAD_POINTS as DEF_POINTS,A.PRE_LOAD as PRE_DEF_MM   FROM TEST_MST A, SPECIMEN_MST B WHERE A.SPECIMEN_NAME=B.SPECIMEN_NAME AND A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)")
         with open("./reports/"+str(self.file_name), 'w',newline='') as csv_file:                
+                csv_writer = csv.writer(csv_file)               
+                csv_writer.writerow([i[0] for i in cursor.description]) 
+                csv_writer.writerows(cursor)
+        conn.close()
+        
+        ## Load Points
+        connection = sqlite3.connect("tyr.db")
+        results=connection.execute("SELECT A.LOAD_POINTS FROM TEST_MST A WHERE A.TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR)") 
+        for x in results:
+            self.load_points=str(x[0])
+        conn.close()
+        ## SQL
+        conn = sqlite3.connect('tyr.db')
+        cursor = conn.cursor()
+        if(int(self.load_points) ==2):
+              cursor.execute("select 'DEF_1:[ '|| D1_PER || ' % ]'|| '['|| D1 ||' mm] ['|| L1||LOAD_UNIT||']' as Point1 ,'DEF_2:[ '|| D2_PER || ' % ]'|| '['|| D2 ||' mm] ['|| L2||LOAD_UNIT||']' as Point2   from TEST_DATA_RADIAL WHERE SPEC_ID = '"+str(self.spec_id)+"' AND TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR) ")       
+            
+        elif(int(self.load_points) ==3):
+              cursor.execute("select 'DEF_1:[ '|| D1_PER || ' % ]'|| '['|| D1 ||' mm] ['|| L1||LOAD_UNIT||']' as Point1 ,'DEF_2:[ '|| D2_PER || ' % ]'|| '['|| D2 ||' mm] ['|| L2||LOAD_UNIT||']' as Point2,'DEF_3:[ '|| D3_PER || ' % ]'|| '['|| D3 ||' mm] ['|| L3||LOAD_UNIT||']' as Point3   from TEST_DATA_RADIAL WHERE SPEC_ID = '"+str(self.spec_id)+"' AND TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR) ")       
+       
+            
+        elif(int(self.load_points) ==4):
+              cursor.execute("select 'DEF_1:[ '|| D1_PER || ' % ]'|| '['|| D1 ||' mm] ['|| L1||LOAD_UNIT||']' as Point1 ,'DEF_2:[ '|| D2_PER || ' % ]'|| '['|| D2 ||' mm] ['|| L2||LOAD_UNIT||']' as Point2,'DEF_3:[ '|| D3_PER || ' % ]'|| '['|| D3 ||' mm] ['|| L3||LOAD_UNIT||']' as Point3 ,'DEF_4:[ '|| D4_PER || ' % ]'|| '['|| D4 ||' mm] ['|| L4||LOAD_UNIT||']' as Point4    from TEST_DATA_RADIAL WHERE SPEC_ID = '"+str(self.spec_id)+"' AND TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR) ")       
+       
+            
+        else:
+              cursor.execute("select 'DEF_1:[ '|| D1_PER || ' % ]'|| '['|| D1 ||' mm] ['|| L1||LOAD_UNIT||']' as Point1 ,'DEF_2:[ '|| D2_PER || ' % ]'|| '['|| D2 ||' mm] ['|| L2||LOAD_UNIT||']' as Point2,'DEF_3:[ '|| D3_PER || ' % ]'|| '['|| D3 ||' mm] ['|| L3||LOAD_UNIT||']' as Point3 ,'DEF_4:[ '|| D4_PER || ' % ]'|| '['|| D4 ||' mm] ['|| L4||LOAD_UNIT||']' as Point4    from TEST_DATA_RADIAL WHERE SPEC_ID = '"+str(self.spec_id)+"' AND TEST_ID in (SELECT TEST_ID FROM GLOBAL_VAR) ")       
+       
+            
+        with open("./reports/"+str(self.file_name), 'a',newline='') as csv_file:                
                 csv_writer = csv.writer(csv_file)               
                 csv_writer.writerow([i[0] for i in cursor.description]) 
                 csv_writer.writerows(cursor)
